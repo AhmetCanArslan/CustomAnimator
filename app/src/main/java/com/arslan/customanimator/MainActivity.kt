@@ -113,50 +113,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             
-            // Current Values Display
-            item {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Current System Values",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Column {
-                                Text("Window Animation", fontSize = 12.sp, color = Color.Gray)
-                                Text(
-                                    String.format("%.2f", windowAnimScale),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                            Column {
-                                Text("Transition Animation", fontSize = 12.sp, color = Color.Gray)
-                                Text(
-                                    String.format("%.2f", transitionAnimScale),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                            Column {
-                                Text("Animator Duration", fontSize = 12.sp, color = Color.Gray)
-                                Text(
-                                    String.format("%.2f", animatorDurScale),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-                }
-            }
+            
             
             // Animation Sliders
             item {
