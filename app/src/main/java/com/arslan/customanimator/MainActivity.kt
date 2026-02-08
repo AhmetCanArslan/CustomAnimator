@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -136,12 +137,34 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "Animation Scale Slider",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Animation Scale Slider",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                IconButton(
+                                    onClick = {
+                                        windowAnimScale = 1.0f
+                                        transitionAnimScale = 1.0f
+                                        animatorDurScale = 1.0f
+                                        windowInputValue = "1.00"
+                                        transitionInputValue = "1.00"
+                                        animatorInputValue = "1.00"
+                                    },
+                                    modifier = Modifier.size(32.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = "Restore to default"
+                                    )
+                                }
+                            }
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         // Window Animation Slider
@@ -281,12 +304,34 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = "Manual Input",
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Manual Input",
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                IconButton(
+                                    onClick = {
+                                        windowAnimScale = 1.0f
+                                        transitionAnimScale = 1.0f
+                                        animatorDurScale = 1.0f
+                                        windowInputValue = "1.00"
+                                        transitionInputValue = "1.00"
+                                        animatorInputValue = "1.00"
+                                    },
+                                    modifier = Modifier.size(32.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = "Restore to default"
+                                    )
+                                }
+                            }
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         OutlinedTextField(
