@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -330,13 +331,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             )
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalArrangement = Arrangement.spacedBy(12.dp)
                             ) {
-                                Column(modifier = Modifier.weight(1f)) {
+                                Column(modifier = Modifier.fillMaxWidth()) {
                                     Text(
                                         preset.name,
                                         fontSize = 14.sp,
@@ -349,6 +348,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     )
                                 }
                                 Row(
+                                    modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
                                     Button(
@@ -361,7 +361,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             animatorInputValue = String.format("%.2f", preset.animatorDurationScale)
                                             Toast.makeText(context, "Preset loaded!", Toast.LENGTH_SHORT).show()
                                         },
-                                        modifier = Modifier.width(80.dp)
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .height(42.dp)
                                     ) {
                                         Text("Load", fontSize = 12.sp)
                                     }
@@ -374,7 +376,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = MaterialTheme.colorScheme.error
                                         ),
-                                        modifier = Modifier.width(80.dp)
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .height(42.dp)
                                     ) {
                                         Text("Delete", fontSize = 12.sp)
                                     }
