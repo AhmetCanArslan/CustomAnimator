@@ -69,8 +69,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var menuExpanded by remember { mutableStateOf(false) }
     var inputMode by remember { mutableStateOf("slider") }
     
-    val maxValue = 5.0f
-    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -138,7 +136,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = "Adjust Animation Scales (0.0 - $maxValue)",
+                                text = "Adjust Animation Scales (0.0 - 5.0)",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.primary
@@ -153,7 +151,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 windowAnimScale = it
                                 windowInputValue = String.format("%.2f", it)
                             },
-                            valueRange = 0f..maxValue,
+                            valueRange = 0f..5.0f,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(16.dp))
@@ -166,7 +164,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 transitionAnimScale = it
                                 transitionInputValue = String.format("%.2f", it)
                             },
-                            valueRange = 0f..maxValue,
+                            valueRange = 0f..5.0f,
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(16.dp))
@@ -179,7 +177,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 animatorDurScale = it
                                 animatorInputValue = String.format("%.2f", it)
                             },
-                            valueRange = 0f..maxValue,
+                            valueRange = 0f..5.0f,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
@@ -205,7 +203,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             onValueChange = { 
                                 windowInputValue = it
                                 val floatVal = it.toFloatOrNull()
-                                if (floatVal != null && floatVal in 0f..maxValue) {
+                                if (floatVal != null && floatVal in 0f..5.0f) {
                                     windowAnimScale = floatVal
                                 }
                             },
@@ -220,7 +218,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             onValueChange = { 
                                 transitionInputValue = it
                                 val floatVal = it.toFloatOrNull()
-                                if (floatVal != null && floatVal in 0f..maxValue) {
+                                if (floatVal != null && floatVal in 0f..5.0f) {
                                     transitionAnimScale = floatVal
                                 }
                             },
@@ -235,7 +233,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             onValueChange = { 
                                 animatorInputValue = it
                                 val floatVal = it.toFloatOrNull()
-                                if (floatVal != null && floatVal in 0f..maxValue) {
+                                if (floatVal != null && floatVal in 0f..5.0f) {
                                     animatorDurScale = floatVal
                                 }
                             },
