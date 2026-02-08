@@ -32,6 +32,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import kotlinx.coroutines.delay
+import androidx.compose.ui.graphics.graphicsLayer
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
@@ -82,6 +86,29 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     
+    // Animation state for fade in/out when mode changes
+    var shouldShowContent by remember { mutableStateOf(true) }
+    var pendingInputMode by remember { mutableStateOf<String?>(null) }
+    val contentAlpha by animateFloatAsState(
+        targetValue = if (shouldShowContent) 1f else 0f,
+        animationSpec = tween(durationMillis = 300),
+        label = "content fade animation"
+    )
+    
+    // Handle mode transition with fade animation
+    LaunchedEffect(pendingInputMode) {
+        if (pendingInputMode != null) {
+            // Fade out current content
+            shouldShowContent = false
+            delay(300) // Wait for fade out to complete
+            // Change the mode
+            inputMode = pendingInputMode!!
+            // Fade in new content
+            shouldShowContent = true
+            pendingInputMode = null
+        }
+    }
+    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -117,7 +144,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     text = { Text("Use Manual Input") },
                                     onClick = {
                                         menuExpanded = false
-                                        inputMode = "manual"
+                                        pendingInputMode = "manual"
                                     }
                                 )
                             } else {
@@ -125,7 +152,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     text = { Text("Use Sliders") },
                                     onClick = {
                                         menuExpanded = false
-                                        inputMode = "slider"
+                                        pendingInputMode = "slider"
                                     }
                                 )
                             }
@@ -163,7 +190,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             // Animation Sliders
             if (inputMode == "slider") {
                 item {
-                    Card(modifier = Modifier.fillMaxWidth()) {
+                    Card(modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer(alpha = contentAlpha)) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -330,7 +359,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             // Manual Input Fields
             if (inputMode == "manual") {
                 item {
-                    Card(modifier = Modifier.fillMaxWidth()) {
+                    Card(modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer(alpha = contentAlpha)) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -448,7 +479,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
+                        .height(50.dp)
+                        .graphicsLayer(alpha = contentAlpha),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
@@ -462,6 +494,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         text = "Saved Presets",
+                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary
@@ -475,6 +508,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .graphicsLayer(alpha = contentAlpha)
                             .background(
                                 if (expandedPresetId == preset.id)
                                     MaterialTheme.colorScheme.primaryContainer
@@ -571,7 +605,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         "No presets saved yet. Create one from the menu!",
                         fontSize = 12.sp,
                         color = Color.Gray,
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .graphicsLayer(alpha = contentAlpha)
                     )
                 }
             }
