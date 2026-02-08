@@ -67,6 +67,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var menuExpanded by remember { mutableStateOf(false) }
+    var inputMode by remember { mutableStateOf("slider") }
     
     val maxValue = 5.0f
     
@@ -99,6 +100,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     showPresetDialog = true
                                 }
                             )
+                            Divider()
+                            if (inputMode == "slider") {
+                                DropdownMenuItem(
+                                    text = { Text("Use Manual Input") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        inputMode = "manual"
+                                    }
+                                )
+                            } else {
+                                DropdownMenuItem(
+                                    text = { Text("Use Sliders") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        inputMode = "slider"
+                                    }
+                                )
+                            }
                         }
                     }
                 }
@@ -113,19 +132,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             
-            
-            
             // Animation Sliders
-            item {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Adjust Animation Scales (0.0 - $maxValue)",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
+            if (inputMode == "slider") {
+                item {
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = "Adjust Animation Scales (0.0 - $maxValue)",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
                         
                         // Window Animation Slider
                         Text("Window Animation Scale: ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
@@ -166,19 +184,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                 }
+                }
             }
             
             // Manual Input Fields
-            item {
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = "Manual Input",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
+            if (inputMode == "manual") {
+                item {
+                    Card(modifier = Modifier.fillMaxWidth()) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = "Manual Input",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
                         
                         OutlinedTextField(
                             value = windowInputValue,
@@ -224,6 +244,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             singleLine = true
                         )
                     }
+                }
                 }
             }
             
