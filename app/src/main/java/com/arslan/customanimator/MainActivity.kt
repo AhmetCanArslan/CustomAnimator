@@ -1,12 +1,16 @@
 package com.arslan.customanimator
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +24,7 @@ import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -72,6 +77,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var menuExpanded by remember { mutableStateOf(false) }
     var inputMode by remember { mutableStateOf("slider") }
+    var showPermissionDialog by remember { mutableStateOf(false) }
+    var permissionErrorMessage by remember { mutableStateOf("") }
     
     Scaffold(
         topBar = {
@@ -405,6 +412,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             item {
                 Button(
                     onClick = {
+                        // Check if permission is granted
+                        val hasPermission = ContextCompat.checkSelfPermission(
+                            context,
+                            "android.permission.WRITE_SECURE_SETTINGS"
+                        ) == PackageManager.PERMISSION_GRANTED
+
+                        if (!hasPermission) {
+                            permissionErrorMessage = "Permission not granted"
+                            showPermissionDialog = true
+                            return@Button
+                        }
+
                         try {
                             SettingsManager.applyAllScales(
                                 contentResolver,
@@ -418,11 +437,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } catch (e: Exception) {
-                            Toast.makeText(
-                                context,
-                                "Error: ${e.message}. You may need WRITE_SECURE_SETTINGS permission.",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            permissionErrorMessage = e.message ?: "Unknown error"
+                            showPermissionDialog = true
                         }
                     },
                     modifier = Modifier
@@ -484,6 +500,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 ) {
                                     Button(
                                         onClick = {
+                                            val hasPermission = ContextCompat.checkSelfPermission(
+                                                context,
+                                                "android.permission.WRITE_SECURE_SETTINGS"
+                                            ) == PackageManager.PERMISSION_GRANTED
+
+                                            if (!hasPermission) {
+                                                permissionErrorMessage = "Permission not granted"
+                                                showPermissionDialog = true
+                                                return@Button
+                                            }
+
                                             windowAnimScale = preset.windowAnimationScale
                                             transitionAnimScale = preset.transitionAnimationScale
                                             animatorDurScale = preset.animatorDurationScale
@@ -548,6 +575,71 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }
+    
+    // Permission Error Dialog
+    if (showPermissionDialog) {
+        AlertDialog(
+            onDismissRequest = { showPermissionDialog = false },
+            title = { Text("Permission Required") },
+            text = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        "This app requires the WRITE_SECURE_SETTINGS permission to modify animation scales.",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+                    Text(
+                        "Error: $permissionErrorMessage",
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                    Text(
+                        "To grant this permission, run the following command with ADB:",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    SelectionContainer {
+                        Text(
+                            "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(8.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val clipboard = context.getSystemService(ClipboardManager::class.java)
+                        val clip = ClipData.newPlainText(
+                            "ADB Command",
+                            "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS"
+                        )
+                        clipboard.setPrimaryClip(clip)
+                        Toast.makeText(context, "Command copied to clipboard!", Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    Text("Copy Command")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showPermissionDialog = false },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Text("Close")
+                }
+            }
+        )
     }
     
     // Preset Creation Dialog
