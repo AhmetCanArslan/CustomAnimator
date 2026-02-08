@@ -28,6 +28,8 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
@@ -371,7 +373,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             },
                             label = { Text("Window Animation") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         
@@ -386,7 +389,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             },
                             label = { Text("Transition Animation") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         
@@ -401,7 +405,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             },
                             label = { Text("Animator Duration") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
                     }
                 }
