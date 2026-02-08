@@ -136,7 +136,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Card(modifier = Modifier.fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
-                                text = "Adjust Animation Scales (0.0 - 5.0)",
+                                text = "Animation Scale Slider",
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.primary
