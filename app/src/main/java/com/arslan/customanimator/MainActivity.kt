@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -145,41 +146,131 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         // Window Animation Slider
                         Text("Window Animation Scale: ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
-                        Slider(
-                            value = windowAnimScale,
-                            onValueChange = { 
-                                windowAnimScale = it
-                                windowInputValue = String.format("%.2f", it)
-                            },
-                            valueRange = 0f..5.0f,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Button(
+                                onClick = {
+                                    windowAnimScale = (windowAnimScale - 0.01f).coerceAtLeast(0f)
+                                    windowInputValue = String.format("%.2f", windowAnimScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Slider(
+                                value = windowAnimScale,
+                                onValueChange = { 
+                                    windowAnimScale = it
+                                    windowInputValue = String.format("%.2f", it)
+                                },
+                                valueRange = 0f..5.0f,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Button(
+                                onClick = {
+                                    windowAnimScale = (windowAnimScale + 0.01f).coerceAtMost(5f)
+                                    windowInputValue = String.format("%.2f", windowAnimScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
                         Text("Transition Animation Scale: ${String.format("%.2f", transitionAnimScale)}", fontSize = 12.sp)
-                        Slider(
-                            value = transitionAnimScale,
-                            onValueChange = { 
-                                transitionAnimScale = it
-                                transitionInputValue = String.format("%.2f", it)
-                            },
-                            valueRange = 0f..5.0f,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Button(
+                                onClick = {
+                                    transitionAnimScale = (transitionAnimScale - 0.01f).coerceAtLeast(0f)
+                                    transitionInputValue = String.format("%.2f", transitionAnimScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Slider(
+                                value = transitionAnimScale,
+                                onValueChange = { 
+                                    transitionAnimScale = it
+                                    transitionInputValue = String.format("%.2f", it)
+                                },
+                                valueRange = 0f..5.0f,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Button(
+                                onClick = {
+                                    transitionAnimScale = (transitionAnimScale + 0.01f).coerceAtMost(5f)
+                                    transitionInputValue = String.format("%.2f", transitionAnimScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Animator Duration Slider
                         Text("Animator Duration Scale: ${String.format("%.2f", animatorDurScale)}", fontSize = 12.sp)
-                        Slider(
-                            value = animatorDurScale,
-                            onValueChange = { 
-                                animatorDurScale = it
-                                animatorInputValue = String.format("%.2f", it)
-                            },
-                            valueRange = 0f..5.0f,
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Button(
+                                onClick = {
+                                    animatorDurScale = (animatorDurScale - 0.01f).coerceAtLeast(0f)
+                                    animatorInputValue = String.format("%.2f", animatorDurScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                            Slider(
+                                value = animatorDurScale,
+                                onValueChange = { 
+                                    animatorDurScale = it
+                                    animatorInputValue = String.format("%.2f", it)
+                                },
+                                valueRange = 0f..5.0f,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Button(
+                                onClick = {
+                                    animatorDurScale = (animatorDurScale + 0.01f).coerceAtMost(5f)
+                                    animatorInputValue = String.format("%.2f", animatorDurScale)
+                                },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(0.dp),
+                                contentPadding = PaddingValues(0.dp)
+                            ) {
+                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                     }
                 }
                 }
