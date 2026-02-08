@@ -471,7 +471,22 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             windowInputValue = String.format("%.2f", preset.windowAnimationScale)
                                             transitionInputValue = String.format("%.2f", preset.transitionAnimationScale)
                                             animatorInputValue = String.format("%.2f", preset.animatorDurationScale)
-                                            Toast.makeText(context, "Preset loaded!", Toast.LENGTH_SHORT).show()
+                                            try {
+                                                SettingsManager.applyAllScales(
+                                                    contentResolver,
+                                                    preset.windowAnimationScale,
+                                                    preset.transitionAnimationScale,
+                                                    preset.animatorDurationScale
+                                                )
+                                            } catch (e: Exception) {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Error applying preset: ${e.message}",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                return@Button
+                                            }
+                                            Toast.makeText(context, "Preset loaded and applied!", Toast.LENGTH_SHORT).show()
                                         },
                                         modifier = Modifier
                                             .weight(1f)
