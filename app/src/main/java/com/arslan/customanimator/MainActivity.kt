@@ -1,5 +1,7 @@
 package com.arslan.customanimator
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -76,7 +78,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             TopAppBar(
                 title = {
                     Text(
-                        "Animation Speed Controller",
+                        "Custom Animator",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -118,6 +120,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 )
                             }
+                            Divider()
+                            DropdownMenuItem(
+                                text = { Text("Source Code") },
+                                onClick = {
+                                    menuExpanded = false
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/ahmetcanarslan/customanimator"))
+                                    context.startActivity(intent)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Buy Me a Coffee") },
+                                onClick = {
+                                    menuExpanded = false
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://buymeacoffee.com/ahmetcanarslan"))
+                                    context.startActivity(intent)
+                                }
+                            )
                         }
                     }
                 }
