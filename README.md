@@ -24,6 +24,10 @@ adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SET
 
 - **Buy Me a Coffee**: [Support Development](https://buymeacoffee.com/ahmetcanarslan)
 
+## Privacy Policy
+
+Custom Animator does not collect any personal data or usage analytics. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for full details.
+
 ---
 
 **Note**: This app modifies system-level animation settings. Use with caution and test thoroughly on your device.
