@@ -167,7 +167,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 title = {
                     Text(
                         "Custom Animator",
-                        fontSize = 18.sp,
+                        fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
                 },
@@ -688,49 +688,103 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        "This app requires the WRITE_SECURE_SETTINGS permission to modify animation scales.",
+                        "WRITE_SECURE_SETTINGS Permission",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(bottom = 6.dp)
+                    )
+                    Text(
+                        "This app requires the WRITE_SECURE_SETTINGS permission to modify system animation scales. This is a privileged permission that needs special setup.",
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
-                    if (isShizukuAvailable && hasShizukuPermission.value) {
-                        Text(
-                            "You have Shizuku enabled! The permission should be automatically granted.",
-                            fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                    }
-                    if (isShizukuAvailable && !hasShizukuPermission.value) {
-                        Text(
-                            "Shizuku is available on your device! You can use it to grant permission automatically.",
-                            fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                    }
+                    
                     Text(
-                        "Error: $permissionErrorMessage",
+                        "⏱️ One-Time Only",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    Text(
+                        "After you grant this permission once, it stays granted permanently. You don't need to do it again!",
                         fontSize = 12.sp,
                         color = Color.Gray,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom = 12.dp)
                     )
-                    Text(
-                        "To grant this permission, run the following command with ADB:",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    SelectionContainer {
+                    
+                    if (isShizukuAvailable && hasShizukuPermission.value) {
                         Text(
-                            "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                            "✓ Shizuku Ready",
+                            fontSize = 13.sp,
+                            color = Color.Green,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Text(
+                            "You have Shizuku set up! Open this app again to automatically grant the permission.",
+                            fontSize = 12.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    } else if (isShizukuAvailable && !hasShizukuPermission.value) {
+                        Text(
+                            "💡 Shizuku Available",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 4.dp)
+                        )
+                        Text(
+                            "Shizuku app is installed on your device! It can grant this permission with just one tap (see Permission Details in the menu).",
+                            fontSize = 12.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
+                    
+                    if (permissionErrorMessage.isNotEmpty()) {
+                        Text(
+                            "Error: $permissionErrorMessage",
+                            fontSize = 11.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
+                    
+                    // Only show permission granting instructions if permission is not granted
+                    if (!hasWriteSecureSettings.value) {
+                        Text(
+                            "Use ADB Command",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        Text(
+                            "Connect to a computer and run this command once:",
+                            fontSize = 12.sp,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
+                        SelectionContainer {
+                            Text(
+                                "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
+                        
+                        Text(
+                            "\n📖 See 'Permission Details' in the menu for complete step-by-step instructions.",
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
-                                .padding(8.dp)
-                                .fillMaxWidth()
+                            fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                            modifier = Modifier.padding(top = 12.dp)
                         )
                     }
                 }
@@ -771,8 +825,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        "Write Secure Settings",
-                        fontSize = 13.sp,
+                        "WRITE_SECURE_SETTINGS Permission",
+                        fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -780,62 +834,114 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     if (hasWriteSecureSettings.value) {
                         Text(
                             "✓ Granted",
-                            fontSize = 12.sp,
+                            fontSize = 13.sp,
                             color = Color.Green,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            "You can modify system animation settings directly from this app.",
-                            fontSize = 11.sp,
-                            modifier = Modifier.padding(bottom = 16.dp)
+                            "Congratulations! You can now modify system animation settings directly from this app.",
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(bottom = 16.dp),
+                            lineHeight = 16.sp
                         )
                     } else {
                         Text(
                             "✗ Not Granted",
-                            fontSize = 12.sp,
+                            fontSize = 13.sp,
                             color = Color(0xFFE74C3C),
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            "The app works without special permissions, but to modify system animation settings, you need this permission.",
-                            fontSize = 11.sp,
-                            modifier = Modifier.padding(bottom = 12.dp)
+                            "What does this permission do?\n" +
+                            "This privileged permission allows the app to modify system animation settings:\n" +
+                            "• Window Animation Scale (open/close animations)\n" +
+                            "• Transition Animation Scale (activity transitions)\n" +
+                            "• Animator Duration Scale (animation timing)\n\n" +
+                            "Without it, the app can only read current settings but cannot change them.",
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(bottom = 12.dp),
+                            lineHeight = 16.sp
                         )
                         Text(
-                            "You can grant it via Shizuku (one-click, optional) or use ADB commands.",
-                            fontSize = 11.sp,
+                            "Note: You only need to do this ONCE. The permission\n" +
+                            "stays granted even after closing and reopening the app or restarting the mobile.",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(bottom = 16.dp)
                         )
                     }
                     
-                    Divider(modifier = Modifier.padding(vertical = 12.dp))
-                    
-                    Text(
-                        "How to Grant Permission:",
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    
-                    Text(
-                        "Option 1: Shizuku (Easier)\n" +
-                        "• Install Shizuku app\n" +
-                        "• Grant access in Shizuku settings\n" +
-                        "• Return to this app",
-                        fontSize = 11.sp,
-                        modifier = Modifier.padding(bottom = 12.dp),
-                        lineHeight = 16.sp
-                    )
-                    
-                    Text(
-                        "Option 2: ADB (Manual)\n" +
-                        "• Connect to computer\n" +
-                        "• Run: adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
-                        fontSize = 11.sp,
-                        lineHeight = 16.sp
-                    )
+                    // Only show permission granting instructions if permission is not granted
+                    if (!hasWriteSecureSettings.value) {
+                        Divider(modifier = Modifier.padding(vertical = 12.dp))
+                        
+                        Text(
+                            "How to Grant Permission:",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        
+                        Text(
+                            "⌨️ Option 1: ADB (Requires Computer)",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
+                        
+                        Text(
+                            "Step 1: Enable USB Debugging\n" +
+                            "• Go to Settings > About Phone\n" +
+                            "• Tap Build Number 7 times to unlock Developer Options\n" +
+                            "• Go to Settings > Developer Options > Enable USB Debugging\n\n" +
+                            "Step 2: Connect to PC and Run Command\n" +
+                            "• Connect your phone to a computer with a USB cable\n" +
+                            "• Open terminal/command prompt on the computer\n" +
+                            "• Copy and run the command below (one-time only):\n",
+                            fontSize = 12.sp,
+                            lineHeight = 16.sp
+                        )
+                        
+                        SelectionContainer {
+                            Text(
+                                "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.primary,
+                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                                    .padding(8.dp)
+                                    .fillMaxWidth()
+                            )
+                        }
+                        
+                        Text(
+                            "\n📱 Option 2: Shizuku",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        )
+                        
+                        Text(
+                            "Step 1: Install Shizuku\n" +
+                            "• Download 'Shizuku' from Google Play Store or GitHub\n" +
+                            "• Open the app and follow initial setup\n" +
+                            "• Grant it device admin permission (one-time, in Shizuku settings)\n\n" +
+                            "Step 2: Grant Access to Custom Animator\n" +
+                            "• Return to this app (or restart it)\n" +
+                            "• A dialog will appear in Shizuku asking to grant permission\n" +
+                            "• Tap 'Allow' or 'Grant' to approve (takes 1 second)\n" +
+                            "• The WRITE_SECURE_SETTINGS permission is now granted\n\n",
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(bottom = 12.dp),
+                            lineHeight = 16.sp
+                        )
+                    }
                 }
             },
             confirmButton = {
