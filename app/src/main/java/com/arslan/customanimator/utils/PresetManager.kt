@@ -31,9 +31,9 @@ class PresetManager(context: Context) {
             val presetJson = JSONObject().apply {
                 put("id", preset.id)
                 put("name", preset.name)
-                put("windowAnimationScale", preset.windowAnimationScale)
-                put("transitionAnimationScale", preset.transitionAnimationScale)
-                put("animatorDurationScale", preset.animatorDurationScale)
+                put("windowAnimationScale", preset.windowAnimationScale.toString())
+                put("transitionAnimationScale", preset.transitionAnimationScale.toString())
+                put("animatorDurationScale", preset.animatorDurationScale.toString())
             }
             
             presets.put(presetJson)
@@ -54,9 +54,9 @@ class PresetManager(context: Context) {
                     return AnimatorPreset(
                         id = json.getString("id"),
                         name = json.getString("name"),
-                        windowAnimationScale = json.getDouble("windowAnimationScale").toFloat(),
-                        transitionAnimationScale = json.getDouble("transitionAnimationScale").toFloat(),
-                        animatorDurationScale = json.getDouble("animatorDurationScale").toFloat()
+                        windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
+                        transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
+                        animatorDurationScale = json.getString("animatorDurationScale").toFloat()
                     )
                 }
             }
@@ -77,9 +77,9 @@ class PresetManager(context: Context) {
                     AnimatorPreset(
                         id = json.getString("id"),
                         name = json.getString("name"),
-                        windowAnimationScale = json.getDouble("windowAnimationScale").toFloat(),
-                        transitionAnimationScale = json.getDouble("transitionAnimationScale").toFloat(),
-                        animatorDurationScale = json.getDouble("animatorDurationScale").toFloat()
+                        windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
+                        transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
+                        animatorDurationScale = json.getString("animatorDurationScale").toFloat()
                     )
                 )
             }
