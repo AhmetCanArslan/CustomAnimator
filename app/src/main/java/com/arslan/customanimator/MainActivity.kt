@@ -39,11 +39,30 @@ import androidx.compose.ui.graphics.graphicsLayer
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
+import com.arslan.customanimator.utils.ShizukuHelper
+import rikka.shizuku.Shizuku
 
 class MainActivity : ComponentActivity() {
+    private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
+        if (grantResult == 0) {
+            // Permission granted
+            ShizukuHelper.grantWriteSecureSettingsPermission(this)
+        }
+    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // Add Shizuku listener
+        Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
+        
+        // Request Shizuku permission on first launch if available and not yet requested
+        if (ShizukuHelper.isShizukuAvailable() && !ShizukuHelper.hasShizukuBeenRequested(this) && !ShizukuHelper.hasShizukuPermission()) {
+            ShizukuHelper.requestShizukuPermission(this)
+            ShizukuHelper.markShizukuRequested(this)
+        }
+        
         setContent {
             CustomAnimatorTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -51,6 +70,26 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        // Check if Shizuku permission was granted and try to grant WRITE_SECURE_SETTINGS
+        if (ShizukuHelper.hasShizukuPermission()) {
+            val hasSecureSettings = ContextCompat.checkSelfPermission(
+                this,
+                "android.permission.WRITE_SECURE_SETTINGS"
+            ) == PackageManager.PERMISSION_GRANTED
+            
+            if (!hasSecureSettings) {
+                ShizukuHelper.grantWriteSecureSettingsPermission(this)
+            }
+        }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        Shizuku.removeRequestPermissionResultListener(shizukuRequestListener)
     }
 }
 
@@ -60,6 +99,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val context = activity
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
+    
+    // Shizuku state
+    val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
+    val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
+    var showShizukuDialog by remember { mutableStateOf(false) }
     
     // Current values from system settings
     var windowAnimScale by remember {
@@ -153,6 +197,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     onClick = {
                                         menuExpanded = false
                                         pendingInputMode = "slider"
+                                    }
+                                )
+                            }
+                            if (isShizukuAvailable) {
+                                Divider()
+                                DropdownMenuItem(
+                                    text = { Text("Shizuku Info") },
+                                    onClick = {
+                                        menuExpanded = false
+                                        showShizukuDialog = true
                                     }
                                 )
                             }
@@ -630,6 +684,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
+                    if (isShizukuAvailable && hasShizukuPermission.value) {
+                        Text(
+                            "You have Shizuku enabled! The permission should be automatically granted.",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
+                    if (isShizukuAvailable && !hasShizukuPermission.value) {
+                        Text(
+                            "Shizuku is available on your device! You can use it to grant permission automatically.",
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
                     Text(
                         "Error: $permissionErrorMessage",
                         fontSize = 12.sp,
@@ -678,6 +750,56 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 ) {
                     Text("Close")
+                }
+            }
+        )
+    }
+    
+    // Shizuku Info Dialog
+    if (showShizukuDialog && isShizukuAvailable) {
+        AlertDialog(
+            onDismissRequest = { showShizukuDialog = false },
+            title = { Text("Shizuku Support") },
+            text = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    if (hasShizukuPermission.value) {
+                        Text(
+                            "✓ Connected to Shizuku",
+                            fontSize = 14.sp,
+                            color = Color.Green,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                        Text(
+                            "Shizuku will automatically grant the WRITE_SECURE_SETTINGS permission to this app, eliminating the need for ADB commands.",
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                    } else {
+                        Text(
+                            "Shizuku is available on your device. Enable it to grant permissions automatically.",
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                        Text(
+                            "Steps:",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                        Text(
+                            "1. Install Shizuku from your app store\n2. Open Shizuku and grant access when prompted\n3. Return to this app",
+                            fontSize = 11.sp,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showShizukuDialog = false }
+                ) {
+                    Text("OK")
                 }
             }
         )
