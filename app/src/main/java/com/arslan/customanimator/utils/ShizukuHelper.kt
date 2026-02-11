@@ -1,8 +1,10 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuProvider
 import java.lang.reflect.Method
@@ -82,5 +84,16 @@ object ShizukuHelper {
     fun hasShizukuBeenRequested(context: Context): Boolean {
         val prefs = context.getSharedPreferences("shizuku_prefs", Context.MODE_PRIVATE)
         return prefs.getBoolean("shizuku_request_sent", false)
+    }
+    
+    fun hasWriteSecureSettingsPermission(context: Context): Boolean {
+        return try {
+            ContextCompat.checkSelfPermission(
+                context,
+                "android.permission.WRITE_SECURE_SETTINGS"
+            ) == PackageManager.PERMISSION_GRANTED
+        } catch (e: Exception) {
+            false
+        }
     }
 }
