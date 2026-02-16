@@ -30,12 +30,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
@@ -99,6 +102,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val context = activity
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
+    val focusManager = LocalFocusManager.current
     
     // Shizuku state and permission state
     val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
@@ -118,16 +122,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     
     // UI state
-    var windowInputValue by remember { mutableStateOf(windowAnimScale.toString()) }
-    var transitionInputValue by remember { mutableStateOf(transitionAnimScale.toString()) }
-    var animatorInputValue by remember { mutableStateOf(animatorDurScale.toString()) }
+    var windowInputValue by remember { mutableStateOf(String.format("%.2f", windowAnimScale)) }
+    var transitionInputValue by remember { mutableStateOf(String.format("%.2f", transitionAnimScale)) }
+    var animatorInputValue by remember { mutableStateOf(String.format("%.2f", animatorDurScale)) }
     
     var presetName by remember { mutableStateOf("") }
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var menuExpanded by remember { mutableStateOf(false) }
-    var inputMode by remember { mutableStateOf("slider") }
+    var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     
@@ -148,6 +152,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             delay(300) // Wait for fade out to complete
             // Change the mode
             inputMode = pendingInputMode!!
+            // Save input mode preference
+            SettingsManager.setInputMode(context, inputMode)
+            // Sync input values when switching to manual mode
+            if (inputMode == "manual") {
+                windowInputValue = String.format("%.2f", windowAnimScale)
+                transitionInputValue = String.format("%.2f", transitionAnimScale)
+                animatorInputValue = String.format("%.2f", animatorDurScale)
+            }
             // Fade in new content
             shouldShowContent = true
             pendingInputMode = null
@@ -245,7 +257,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(16.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = {
+                            focusManager.clearFocus()
+                        }
+                    )
+                },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             
@@ -423,7 +442,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Card(modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)) {
+                        .graphicsLayer(alpha = contentAlpha)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    focusManager.clearFocus()
+                                }
+                            )
+                        }) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -461,7 +487,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 windowInputValue = it
                                 val floatVal = it.toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    windowAnimScale = floatVal
+                                    windowAnimScale = String.format("%.2f", floatVal).toFloat()
                                 }
                             },
                             label = { Text("Window Animation (window opening/closing)") },
@@ -477,7 +503,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 transitionInputValue = it
                                 val floatVal = it.toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    transitionAnimScale = floatVal
+                                    transitionAnimScale = String.format("%.2f", floatVal).toFloat()
                                 }
                             },
                             label = { Text("Transition Animation (screen transitions)") },
@@ -493,7 +519,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 animatorInputValue = it
                                 val floatVal = it.toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    animatorDurScale = floatVal
+                                    animatorDurScale = String.format("%.2f", floatVal).toFloat()
                                 }
                             },
                             label = { Text("Animator Duration (app animations)") },

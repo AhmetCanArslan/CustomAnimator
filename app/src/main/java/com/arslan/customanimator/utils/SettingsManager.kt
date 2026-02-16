@@ -1,9 +1,26 @@
 package com.arslan.customanimator.utils
 
 import android.content.ContentResolver
+import android.content.Context
+import android.content.SharedPreferences
 import android.provider.Settings
 
 object SettingsManager {
+    
+    private const val PREFS_NAME = "custom_animator_prefs"
+    private const val KEY_INPUT_MODE = "input_mode"
+    
+    private fun getPrefs(context: Context): SharedPreferences {
+        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+    
+    fun getInputMode(context: Context): String {
+        return getPrefs(context).getString(KEY_INPUT_MODE, "slider") ?: "slider"
+    }
+    
+    fun setInputMode(context: Context, mode: String) {
+        getPrefs(context).edit().putString(KEY_INPUT_MODE, mode).apply()
+    }
     
     fun getWindowAnimationScale(contentResolver: ContentResolver): Float {
         return try {
