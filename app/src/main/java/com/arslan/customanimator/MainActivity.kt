@@ -287,7 +287,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         // Window Animation Slider
-                        Text("Window Animation Scale: ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
+                        Text("Window Animation Scale (window opening/closing): ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -330,7 +330,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
-                        Text("Transition Animation Scale: ${String.format("%.2f", transitionAnimScale)}", fontSize = 12.sp)
+                        Text("Transition Animation Scale (screen transitions): ${String.format("%.2f", transitionAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -373,7 +373,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Animator Duration Slider
-                        Text("Animator Duration Scale: ${String.format("%.2f", animatorDurScale)}", fontSize = 12.sp)
+                        Text("Animator Duration Scale (app animations): ${String.format("%.2f", animatorDurScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -464,7 +464,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     windowAnimScale = floatVal
                                 }
                             },
-                            label = { Text("Window Animation") },
+                            label = { Text("Window Animation (window opening/closing)") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -480,7 +480,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     transitionAnimScale = floatVal
                                 }
                             },
-                            label = { Text("Transition Animation") },
+                            label = { Text("Transition Animation (screen transitions)") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -496,7 +496,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     animatorDurScale = floatVal
                                 }
                             },
-                            label = { Text("Animator Duration") },
+                            label = { Text("Animator Duration (app animations)") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
