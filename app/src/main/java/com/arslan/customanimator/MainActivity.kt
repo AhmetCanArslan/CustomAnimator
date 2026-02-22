@@ -132,6 +132,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var menuExpanded by remember { mutableStateOf(false) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
+    var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     
@@ -203,6 +204,20 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 }
                             )
                             Divider()
+                            DropdownMenuItem(
+                                text = { Text(if (isSimpleMode) "Advanced Mode" else "Simple Mode") },
+                                onClick = {
+                                    menuExpanded = false
+                                    isSimpleMode = !isSimpleMode
+                                    SettingsManager.setSimpleMode(context, isSimpleMode)
+                                    if (isSimpleMode) {
+                                        transitionAnimScale = windowAnimScale
+                                        animatorDurScale = windowAnimScale
+                                        transitionInputValue = windowInputValue
+                                        animatorInputValue = windowInputValue
+                                    }
+                                }
+                            )
                             if (inputMode == "slider") {
                                 DropdownMenuItem(
                                     text = { Text("Use Manual Input") },
@@ -306,7 +321,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         // Window Animation Slider
-                        Text("Window Animation Scale (window opening/closing): ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
+                        val sliderLabel = if (isSimpleMode) "Animation Scale (applies to all)" else "Window Animation Scale (window opening/closing)"
+                        Text("$sliderLabel: ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -316,6 +332,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onClick = {
                                     windowAnimScale = (windowAnimScale - 0.01f).coerceAtLeast(0f)
                                     windowInputValue = String.format("%.2f", windowAnimScale)
+                                    if (isSimpleMode) {
+                                        transitionAnimScale = windowAnimScale
+                                        transitionInputValue = windowInputValue
+                                        animatorDurScale = windowAnimScale
+                                        animatorInputValue = windowInputValue
+                                    }
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -329,6 +351,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onValueChange = { 
                                     windowAnimScale = it
                                     windowInputValue = String.format("%.2f", it)
+                                    if (isSimpleMode) {
+                                        transitionAnimScale = it
+                                        transitionInputValue = windowInputValue
+                                        animatorDurScale = it
+                                        animatorInputValue = windowInputValue
+                                    }
                                 },
                                 valueRange = 0f..5.0f,
                                 modifier = Modifier.weight(1f)
@@ -337,6 +365,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onClick = {
                                     windowAnimScale = (windowAnimScale + 0.01f).coerceAtMost(5f)
                                     windowInputValue = String.format("%.2f", windowAnimScale)
+                                    if (isSimpleMode) {
+                                        transitionAnimScale = windowAnimScale
+                                        transitionInputValue = windowInputValue
+                                        animatorDurScale = windowAnimScale
+                                        animatorInputValue = windowInputValue
+                                    }
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -346,7 +380,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
-                        Spacer(modifier = Modifier.height(16.dp))
+                        if (!isSimpleMode) {
+                            Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
                         Text("Transition Animation Scale (screen transitions): ${String.format("%.2f", transitionAnimScale)}", fontSize = 12.sp)
@@ -432,6 +467,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
+                        }
                     }
                 }
                 }
@@ -481,6 +517,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
+                        val inputLabel = if (isSimpleMode) "Animation Scale (applies to all)" else "Window Animation (window opening/closing)"
                         OutlinedTextField(
                             value = windowInputValue,
                             onValueChange = { 
@@ -488,14 +525,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 val floatVal = it.toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
                                     windowAnimScale = String.format("%.2f", floatVal).toFloat()
+                                    if (isSimpleMode) {
+                                        transitionAnimScale = windowAnimScale
+                                        animatorDurScale = windowAnimScale
+                                    }
+                                }
+                                if (isSimpleMode) {
+                                    transitionInputValue = it
+                                    animatorInputValue = it
                                 }
                             },
-                            label = { Text("Window Animation (window opening/closing)") },
+                            label = { Text(inputLabel) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        if (!isSimpleMode) {
+                            Spacer(modifier = Modifier.height(8.dp))
                         
                         OutlinedTextField(
                             value = transitionInputValue,
@@ -527,6 +573,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                         )
+                        }
                     }
                 }
                 }

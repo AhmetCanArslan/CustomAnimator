@@ -22,6 +22,15 @@ object SettingsManager {
         getPrefs(context).edit().putString(KEY_INPUT_MODE, mode).apply()
     }
     
+    fun getSimpleMode(context: Context): Boolean {
+        // Simple mode is default as requested
+        return getPrefs(context).getBoolean("simple_mode", true)
+    }
+    
+    fun setSimpleMode(context: Context, isSimpleMode: Boolean) {
+        getPrefs(context).edit().putBoolean("simple_mode", isSimpleMode).apply()
+    }
+    
     fun getWindowAnimationScale(contentResolver: ContentResolver): Float {
         return try {
             Settings.Global.getFloat(
