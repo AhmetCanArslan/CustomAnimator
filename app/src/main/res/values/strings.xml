@@ -1,3 +1,74 @@
 <resources>
     <string name="app_name">CustomAnimator</string>
+
+    <!-- Main Activity Strings -->
+    <string name="menu">Menu</string>
+    <string name="create_new_preset">Create New Preset</string>
+    <string name="advanced_mode">Advanced Mode</string>
+    <string name="simple_mode">Simple Mode</string>
+    <string name="use_manual_input">Use Manual Input</string>
+    <string name="use_sliders">Use Sliders</string>
+    <string name="permission_details">Permission Details</string>
+    <string name="source_code">Source Code</string>
+    <string name="buy_me_a_coffee">Buy Me a Coffee</string>
+    <string name="animation_scale_slider">Animation Scale Slider</string>
+    <string name="restore_to_default">Restore to default</string>
+    <string name="animation_scale_applies_to_all">Animation Scale (applies to all)</string>
+    <string name="window_animation_scale">Window Animation Scale (window opening/closing)</string>
+    <string name="transition_animation_scale">Transition Animation Scale (screen transitions)</string>
+    <string name="animator_duration_scale">Animator Duration Scale (app animations)</string>
+    <string name="manual_input">Manual Input</string>
+    <string name="window_animation">Window Animation (window opening/closing)</string>
+    <string name="transition_animation">Transition Animation (screen transitions)</string>
+    <string name="animator_duration">Animator Duration (app animations)</string>
+    <string name="apply_settings">Apply Settings</string>
+    <string name="saved_presets">Saved Presets</string>
+    <string name="preset_values">W: %1$.2f | T: %2$.2f | A: %3$.2f</string>
+    <string name="load">Load</string>
+    <string name="delete">Delete</string>
+    <string name="no_presets_saved">No presets saved yet. Create one from the menu!</string>
+    <string name="permission_required">Permission Required</string>
+    <string name="write_secure_settings_permission">WRITE_SECURE_SETTINGS Permission</string>
+    <string name="permission_description">This app requires the WRITE_SECURE_SETTINGS permission to modify system animation scales. This is a privileged permission that needs special setup.</string>
+    <string name="one_time_only">⏱️ One-Time Only</string>
+    <string name="one_time_description">After you grant this permission once, it stays granted permanently. You don\'t need to do it again!</string>
+    <string name="shizuku_ready">✓ Shizuku Ready</string>
+    <string name="shizuku_ready_description">You have Shizuku set up! Open this app again to automatically grant the permission.</string>
+    <string name="shizuku_available">💡 Shizuku Available</string>
+    <string name="shizuku_available_description">Shizuku app is installed on your device! It can grant this permission with just one tap (see Permission Details in the menu).</string>
+    <string name="error">Error: %s</string>
+    <string name="use_adb_command">Use ADB Command</string>
+    <string name="adb_description">Connect to a computer and run this command once:</string>
+    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="see_permission_details">📖 See \'Permission Details\' in the menu for complete step-by-step instructions.</string>
+    <string name="copy_command">Copy Command</string>
+    <string name="close">Close</string>
+    <string name="permission_details_title">Permission Details</string>
+    <string name="granted">✓ Granted</string>
+    <string name="granted_description">Congratulations! You can now modify system animation settings directly from this app.</string>
+    <string name="not_granted">✗ Not Granted</string>
+    <string name="permission_purpose">What does this permission do?\nThis privileged permission allows the app to modify system animation settings:\n• Window Animation Scale (open/close animations)\n• Transition Animation Scale (activity transitions)\n• Animator Duration Scale (animation timing)\n\nWithout it, the app can only read current settings but cannot change them.</string>
+    <string name="note_one_time">Note: You only need to do this ONCE. The permission\nstays granted even after closing and reopening the app or restarting the mobile.</string>
+    <string name="how_to_grant">How to Grant Permission:</string>
+    <string name="option_adb">⌨️ Option 1: ADB (Requires Computer)</string>
+    <string name="adb_steps">Step 1: Enable USB Debugging\n• Go to Settings > About Phone\n• Tap Build Number 7 times to unlock Developer Options\n• Go to Settings > Developer Options > Enable USB Debugging\n\nStep 2: Connect to PC and Run Command\n• Connect your phone to a computer with a USB cable\n• Open terminal/command prompt on the computer\n• Copy and run the command below (one-time only):\n</string>
+    <string name="option_shizuku">📱 Option 2: Shizuku</string>
+    <string name="shizuku_steps">Step 1: Install Shizuku\n• Download \'Shizuku\' from Google Play Store or GitHub\n• Open the app and follow initial setup\n• Grant it device admin permission (one-time, in Shizuku settings)\n\nStep 2: Grant Access to Custom Animator\n• Return to this app (or restart it)\n• A dialog will appear in Shizuku asking to grant permission\n• Tap \'Allow\' or \'Grant\' to approve (takes 1 second)\n• The WRITE_SECURE_SETTINGS permission is now granted\n\n</string>
+    <string name="ok">OK</string>
+    <string name="create_new_preset_title">Create New Preset</string>
+    <string name="preset_name">Preset name</string>
+    <string name="current_values_saved">Current values will be saved:</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Toast Messages -->
+    <string name="animation_scales_updated">Animation scales updated successfully!</string>
+    <string name="error_applying_preset">Error applying preset: %s</string>
+    <string name="preset_loaded_applied">Preset loaded and applied!</string>
+    <string name="preset_deleted">Preset deleted!</string>
+    <string name="command_copied">Command copied to clipboard!</string>
+    <string name="permission_not_granted">Permission not granted</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="enter_preset_name">Please enter a preset name</string>
+    <string name="preset_saved">Preset saved!</string>
 </resources>

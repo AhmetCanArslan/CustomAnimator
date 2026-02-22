@@ -44,6 +44,8 @@ import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import rikka.shizuku.Shizuku
+import androidx.compose.ui.res.stringResource
+import com.arslan.customanimator.R
 
 class MainActivity : ComponentActivity() {
     private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
@@ -189,7 +191,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         IconButton(onClick = { menuExpanded = true }) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
-                                contentDescription = "Menu"
+                                contentDescription = stringResource(R.string.menu)
                             )
                         }
                         DropdownMenu(
@@ -197,7 +199,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             onDismissRequest = { menuExpanded = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Create New Preset") },
+                                text = { Text(stringResource(R.string.create_new_preset)) },
                                 onClick = {
                                     menuExpanded = false
                                     showPresetDialog = true
@@ -205,7 +207,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             )
                             Divider()
                             DropdownMenuItem(
-                                text = { Text(if (isSimpleMode) "Advanced Mode" else "Simple Mode") },
+                                text = { Text(if (isSimpleMode) stringResource(R.string.advanced_mode) else stringResource(R.string.simple_mode)) },
                                 onClick = {
                                     menuExpanded = false
                                     isSimpleMode = !isSimpleMode
@@ -220,7 +222,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             )
                             if (inputMode == "slider") {
                                 DropdownMenuItem(
-                                    text = { Text("Use Manual Input") },
+                                    text = { Text(stringResource(R.string.use_manual_input)) },
                                     onClick = {
                                         menuExpanded = false
                                         pendingInputMode = "manual"
@@ -228,7 +230,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 )
                             } else {
                                 DropdownMenuItem(
-                                    text = { Text("Use Sliders") },
+                                    text = { Text(stringResource(R.string.use_sliders)) },
                                     onClick = {
                                         menuExpanded = false
                                         pendingInputMode = "slider"
@@ -238,7 +240,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             if (isShizukuAvailable) {
                                 Divider()
                                 DropdownMenuItem(
-                                    text = { Text("Permission Details") },
+                                    text = { Text(stringResource(R.string.permission_details)) },
                                     onClick = {
                                         menuExpanded = false
                                         showPermissionDetailsDialog = true
@@ -247,7 +249,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Divider()
                             DropdownMenuItem(
-                                text = { Text("Source Code") },
+                                text = { Text(stringResource(R.string.source_code)) },
                                 onClick = {
                                     menuExpanded = false
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/ahmetcanarslan/customanimator"))
@@ -255,7 +257,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Buy Me a Coffee") },
+                                text = { Text(stringResource(R.string.buy_me_a_coffee)) },
                                 onClick = {
                                     menuExpanded = false
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://buymeacoffee.com/ahmetcanarslan"))
@@ -296,7 +298,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Animation Scale Slider",
+                                    text = stringResource(R.string.animation_scale_slider),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = MaterialTheme.colorScheme.primary
@@ -314,14 +316,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Refresh,
-                                        contentDescription = "Restore to default"
+                                        contentDescription = stringResource(R.string.restore_to_default)
                                     )
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         // Window Animation Slider
-                        val sliderLabel = if (isSimpleMode) "Animation Scale (applies to all)" else "Window Animation Scale (window opening/closing)"
+                        val sliderLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation_scale)
                         Text("$sliderLabel: ${String.format(java.util.Locale.US, "%.2f", windowAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -384,7 +386,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
-                        Text("Transition Animation Scale (screen transitions): ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)}", fontSize = 12.sp)
+                        Text("${stringResource(R.string.transition_animation_scale)}: ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -427,7 +429,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Animator Duration Slider
-                        Text("Animator Duration Scale (app animations): ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}", fontSize = 12.sp)
+                        Text("${stringResource(R.string.animator_duration_scale)}: ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -493,7 +495,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "Manual Input",
+                                    text = stringResource(R.string.manual_input),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = MaterialTheme.colorScheme.primary
@@ -511,13 +513,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Refresh,
-                                        contentDescription = "Restore to default"
+                                        contentDescription = stringResource(R.string.restore_to_default)
                                     )
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
-                        val inputLabel = if (isSimpleMode) "Animation Scale (applies to all)" else "Window Animation (window opening/closing)"
+                        val inputLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation)
                         OutlinedTextField(
                             value = windowInputValue,
                             onValueChange = { 
@@ -552,7 +554,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     transitionAnimScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
                                 }
                             },
-                            label = { Text("Transition Animation (screen transitions)") },
+                            label = { Text(stringResource(R.string.transition_animation)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -568,7 +570,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     animatorDurScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
                                 }
                             },
-                            label = { Text("Animator Duration (app animations)") },
+                            label = { Text(stringResource(R.string.animator_duration)) },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -590,7 +592,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         ) == PackageManager.PERMISSION_GRANTED
 
                         if (!hasPermission) {
-                            permissionErrorMessage = "Permission not granted"
+                            permissionErrorMessage = context.getString(R.string.permission_not_granted)
                             showPermissionDialog = true
                             return@Button
                         }
@@ -614,11 +616,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Toast.makeText(
                                 context,
-                                "Animation scales updated successfully!",
+                                context.getString(R.string.animation_scales_updated),
                                 Toast.LENGTH_SHORT
                             ).show()
                         } catch (e: Exception) {
-                            permissionErrorMessage = e.message ?: "Unknown error"
+                            permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
                             showPermissionDialog = true
                         }
                     },
@@ -630,7 +632,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("Apply Settings", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.apply_settings), fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 }
             }
             
@@ -638,7 +640,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             if (allPresets.isNotEmpty()) {
                 item {
                     Text(
-                        text = "Saved Presets",
+                        text = stringResource(R.string.saved_presets),
                         modifier = Modifier.graphicsLayer(alpha = contentAlpha),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -673,7 +675,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        "W: ${String.format(java.util.Locale.US, "%.2f", preset.windowAnimationScale)} | T: ${String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)} | A: ${String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)}",
+                                        stringResource(R.string.preset_values, preset.windowAnimationScale, preset.transitionAnimationScale, preset.animatorDurationScale),
                                         fontSize = 12.sp,
                                         color = Color.Gray
                                     )
@@ -690,7 +692,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             ) == PackageManager.PERMISSION_GRANTED
 
                                             if (!hasPermission) {
-                                                permissionErrorMessage = "Permission not granted"
+                                                permissionErrorMessage = context.getString(R.string.permission_not_granted)
                                                 showPermissionDialog = true
                                                 return@Button
                                             }
@@ -711,24 +713,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             } catch (e: Exception) {
                                                 Toast.makeText(
                                                     context,
-                                                    "Error applying preset: ${e.message}",
+                                                    context.getString(R.string.error_applying_preset, e.message),
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                                 return@Button
                                             }
-                                            Toast.makeText(context, "Preset loaded and applied!", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
                                         },
                                         modifier = Modifier
                                             .weight(1f)
                                             .height(42.dp)
                                     ) {
-                                        Text("Load", fontSize = 12.sp)
+                                        Text(stringResource(R.string.load), fontSize = 12.sp)
                                     }
                                     Button(
                                         onClick = {
                                             presetManager.deletePreset(preset.id)
                                             allPresets = presetManager.getAllPresets()
-                                            Toast.makeText(context, "Preset deleted!", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
                                         },
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = MaterialTheme.colorScheme.error
@@ -737,7 +739,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             .weight(1f)
                                             .height(42.dp)
                                     ) {
-                                        Text("Delete", fontSize = 12.sp)
+                                        Text(stringResource(R.string.delete), fontSize = 12.sp)
                                     }
                                 }
                             }
@@ -747,7 +749,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             } else {
                 item {
                     Text(
-                        "No presets saved yet. Create one from the menu!",
+                        stringResource(R.string.no_presets_saved),
                         fontSize = 12.sp,
                         color = Color.Gray,
                         modifier = Modifier
@@ -767,30 +769,30 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
-            title = { Text("Permission Required") },
+            title = { Text(stringResource(R.string.permission_required)) },
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        "WRITE_SECURE_SETTINGS Permission",
+                        stringResource(R.string.write_secure_settings_permission),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(bottom = 6.dp)
                     )
                     Text(
-                        "This app requires the WRITE_SECURE_SETTINGS permission to modify system animation scales. This is a privileged permission that needs special setup.",
+                        stringResource(R.string.permission_description),
                         fontSize = 14.sp,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
                     Text(
-                        "⏱️ One-Time Only",
+                        stringResource(R.string.one_time_only),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
-                        "After you grant this permission once, it stays granted permanently. You don't need to do it again!",
+                        stringResource(R.string.one_time_description),
                         fontSize = 12.sp,
                         color = Color.Gray,
                         modifier = Modifier.padding(bottom = 12.dp)
@@ -798,28 +800,28 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     
                     if (isShizukuAvailable && hasShizukuPermission.value) {
                         Text(
-                            "✓ Shizuku Ready",
+                            stringResource(R.string.shizuku_ready),
                             fontSize = 13.sp,
                             color = Color.Green,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
-                            "You have Shizuku set up! Open this app again to automatically grant the permission.",
+                            stringResource(R.string.shizuku_ready_description),
                             fontSize = 12.sp,
                             color = Color.Gray,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     } else if (isShizukuAvailable && !hasShizukuPermission.value) {
                         Text(
-                            "💡 Shizuku Available",
+                            stringResource(R.string.shizuku_available),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
-                            "Shizuku app is installed on your device! It can grant this permission with just one tap (see Permission Details in the menu).",
+                            stringResource(R.string.shizuku_available_description),
                             fontSize = 12.sp,
                             color = Color.Gray,
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -828,7 +830,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     
                     if (permissionErrorMessage.isNotEmpty()) {
                         Text(
-                            "Error: $permissionErrorMessage",
+                            stringResource(R.string.error, permissionErrorMessage),
                             fontSize = 11.sp,
                             color = Color.Gray,
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -838,20 +840,20 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     // Only show permission granting instructions if permission is not granted
                     if (!hasWriteSecureSettings.value) {
                         Text(
-                            "Use ADB Command",
+                            stringResource(R.string.use_adb_command),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         Text(
-                            "Connect to a computer and run this command once:",
+                            stringResource(R.string.adb_description),
                             fontSize = 12.sp,
                             color = Color.Gray,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
                         SelectionContainer {
                             Text(
-                                "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                                stringResource(R.string.adb_command),
                                 fontSize = 10.sp,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
@@ -863,7 +865,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         }
                         
                         Text(
-                            "\n📖 See 'Permission Details' in the menu for complete step-by-step instructions.",
+                            stringResource(R.string.see_permission_details),
                             fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.primary,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
@@ -881,10 +883,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS"
                         )
                         clipboard.setPrimaryClip(clip)
-                        Toast.makeText(context, "Command copied to clipboard!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.command_copied), Toast.LENGTH_SHORT).show()
                     }
                 ) {
-                    Text("Copy Command")
+                    Text(stringResource(R.string.copy_command))
                 }
             },
             dismissButton = {
@@ -894,7 +896,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         containerColor = MaterialTheme.colorScheme.secondary
                     )
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.close))
                 }
             }
         )
@@ -904,7 +906,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (showPermissionDetailsDialog && isShizukuAvailable) {
         AlertDialog(
             onDismissRequest = { showPermissionDetailsDialog = false },
-            title = { Text("Permission Details") },
+            title = { Text(stringResource(R.string.permission_details_title)) },
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
@@ -916,40 +918,34 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     
                     if (hasWriteSecureSettings.value) {
                         Text(
-                            "✓ Granted",
+                            stringResource(R.string.granted),
                             fontSize = 13.sp,
                             color = Color.Green,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            "Congratulations! You can now modify system animation settings directly from this app.",
+                            stringResource(R.string.granted_description),
                             fontSize = 12.sp,
                             modifier = Modifier.padding(bottom = 16.dp),
                             lineHeight = 16.sp
                         )
                     } else {
                         Text(
-                            "✗ Not Granted",
+                            stringResource(R.string.not_granted),
                             fontSize = 13.sp,
                             color = Color(0xFFE74C3C),
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                         Text(
-                            "What does this permission do?\n" +
-                            "This privileged permission allows the app to modify system animation settings:\n" +
-                            "• Window Animation Scale (open/close animations)\n" +
-                            "• Transition Animation Scale (activity transitions)\n" +
-                            "• Animator Duration Scale (animation timing)\n\n" +
-                            "Without it, the app can only read current settings but cannot change them.",
+                            stringResource(R.string.permission_purpose),
                             fontSize = 12.sp,
                             modifier = Modifier.padding(bottom = 12.dp),
                             lineHeight = 16.sp
                         )
                         Text(
-                            "Note: You only need to do this ONCE. The permission\n" +
-                            "stays granted even after closing and reopening the app or restarting the mobile.",
+                            stringResource(R.string.note_one_time),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary,
@@ -962,14 +958,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         Divider(modifier = Modifier.padding(vertical = 12.dp))
                         
                         Text(
-                            "How to Grant Permission:",
+                            stringResource(R.string.how_to_grant),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         
                         Text(
-                            "⌨️ Option 1: ADB (Requires Computer)",
+                            stringResource(R.string.option_adb),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary,
@@ -977,21 +973,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                         
                         Text(
-                            "Step 1: Enable USB Debugging\n" +
-                            "• Go to Settings > About Phone\n" +
-                            "• Tap Build Number 7 times to unlock Developer Options\n" +
-                            "• Go to Settings > Developer Options > Enable USB Debugging\n\n" +
-                            "Step 2: Connect to PC and Run Command\n" +
-                            "• Connect your phone to a computer with a USB cable\n" +
-                            "• Open terminal/command prompt on the computer\n" +
-                            "• Copy and run the command below (one-time only):\n",
+                            stringResource(R.string.adb_steps),
                             fontSize = 12.sp,
                             lineHeight = 16.sp
                         )
                         
                         SelectionContainer {
                             Text(
-                                "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS",
+                                stringResource(R.string.adb_command),
                                 fontSize = 11.sp,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
@@ -1003,7 +992,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         }
                         
                         Text(
-                            "\n📱 Option 2: Shizuku",
+                            stringResource(R.string.option_shizuku),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary,
@@ -1011,15 +1000,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                         
                         Text(
-                            "Step 1: Install Shizuku\n" +
-                            "• Download 'Shizuku' from Google Play Store or GitHub\n" +
-                            "• Open the app and follow initial setup\n" +
-                            "• Grant it device admin permission (one-time, in Shizuku settings)\n\n" +
-                            "Step 2: Grant Access to Custom Animator\n" +
-                            "• Return to this app (or restart it)\n" +
-                            "• A dialog will appear in Shizuku asking to grant permission\n" +
-                            "• Tap 'Allow' or 'Grant' to approve (takes 1 second)\n" +
-                            "• The WRITE_SECURE_SETTINGS permission is now granted\n\n",
+                            stringResource(R.string.shizuku_steps),
                             fontSize = 12.sp,
                             modifier = Modifier.padding(bottom = 12.dp),
                             lineHeight = 16.sp
@@ -1031,7 +1012,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 Button(
                     onClick = { showPermissionDetailsDialog = false }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -1041,24 +1022,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (showPresetDialog) {
         AlertDialog(
             onDismissRequest = { showPresetDialog = false },
-            title = { Text("Create New Preset") },
+            title = { Text(stringResource(R.string.create_new_preset_title)) },
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     OutlinedTextField(
                         value = presetName,
                         onValueChange = { presetName = it },
-                        label = { Text("Preset name") },
+                        label = { Text(stringResource(R.string.preset_name)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Current values will be saved:",
+                        stringResource(R.string.current_values_saved),
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
                     Text(
-                        "W: ${String.format(java.util.Locale.US, "%.2f", windowAnimScale)} | T: ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)} | A: ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}",
+                        stringResource(R.string.preset_values, windowAnimScale, transitionAnimScale, animatorDurScale),
                         fontSize = 12.sp
                     )
                 }
@@ -1076,13 +1057,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             allPresets = presetManager.getAllPresets()
                             presetName = ""
                             showPresetDialog = false
-                            Toast.makeText(context, "Preset saved!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.preset_saved), Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(context, "Please enter a preset name", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
                         }
                     }
                 ) {
-                    Text("Save")
+                    Text(stringResource(R.string.save))
                 }
             },
             dismissButton = {
@@ -1095,7 +1076,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         containerColor = MaterialTheme.colorScheme.secondary
                     )
                 ) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
