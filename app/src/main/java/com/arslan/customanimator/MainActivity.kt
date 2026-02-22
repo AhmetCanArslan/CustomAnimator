@@ -122,9 +122,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     
     // UI state
-    var windowInputValue by remember { mutableStateOf(String.format("%.2f", windowAnimScale)) }
-    var transitionInputValue by remember { mutableStateOf(String.format("%.2f", transitionAnimScale)) }
-    var animatorInputValue by remember { mutableStateOf(String.format("%.2f", animatorDurScale)) }
+    var windowInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", windowAnimScale)) }
+    var transitionInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", transitionAnimScale)) }
+    var animatorInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", animatorDurScale)) }
     
     var presetName by remember { mutableStateOf("") }
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
@@ -157,9 +157,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             SettingsManager.setInputMode(context, inputMode)
             // Sync input values when switching to manual mode
             if (inputMode == "manual") {
-                windowInputValue = String.format("%.2f", windowAnimScale)
-                transitionInputValue = String.format("%.2f", transitionAnimScale)
-                animatorInputValue = String.format("%.2f", animatorDurScale)
+                windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
+                transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
+                animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
             }
             // Fade in new content
             shouldShowContent = true
@@ -322,7 +322,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         // Window Animation Slider
                         val sliderLabel = if (isSimpleMode) "Animation Scale (applies to all)" else "Window Animation Scale (window opening/closing)"
-                        Text("$sliderLabel: ${String.format("%.2f", windowAnimScale)}", fontSize = 12.sp)
+                        Text("$sliderLabel: ${String.format(java.util.Locale.US, "%.2f", windowAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -331,7 +331,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     windowAnimScale = (windowAnimScale - 0.01f).coerceAtLeast(0f)
-                                    windowInputValue = String.format("%.2f", windowAnimScale)
+                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
                                     if (isSimpleMode) {
                                         transitionAnimScale = windowAnimScale
                                         transitionInputValue = windowInputValue
@@ -350,7 +350,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 value = windowAnimScale,
                                 onValueChange = { 
                                     windowAnimScale = it
-                                    windowInputValue = String.format("%.2f", it)
+                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", it)
                                     if (isSimpleMode) {
                                         transitionAnimScale = it
                                         transitionInputValue = windowInputValue
@@ -364,7 +364,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     windowAnimScale = (windowAnimScale + 0.01f).coerceAtMost(5f)
-                                    windowInputValue = String.format("%.2f", windowAnimScale)
+                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
                                     if (isSimpleMode) {
                                         transitionAnimScale = windowAnimScale
                                         transitionInputValue = windowInputValue
@@ -384,7 +384,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
-                        Text("Transition Animation Scale (screen transitions): ${String.format("%.2f", transitionAnimScale)}", fontSize = 12.sp)
+                        Text("Transition Animation Scale (screen transitions): ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -393,7 +393,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     transitionAnimScale = (transitionAnimScale - 0.01f).coerceAtLeast(0f)
-                                    transitionInputValue = String.format("%.2f", transitionAnimScale)
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -406,7 +406,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 value = transitionAnimScale,
                                 onValueChange = { 
                                     transitionAnimScale = it
-                                    transitionInputValue = String.format("%.2f", it)
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", it)
                                 },
                                 valueRange = 0f..5.0f,
                                 modifier = Modifier.weight(1f)
@@ -414,7 +414,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     transitionAnimScale = (transitionAnimScale + 0.01f).coerceAtMost(5f)
-                                    transitionInputValue = String.format("%.2f", transitionAnimScale)
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -427,7 +427,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Animator Duration Slider
-                        Text("Animator Duration Scale (app animations): ${String.format("%.2f", animatorDurScale)}", fontSize = 12.sp)
+                        Text("Animator Duration Scale (app animations): ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}", fontSize = 12.sp)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -436,7 +436,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     animatorDurScale = (animatorDurScale - 0.01f).coerceAtLeast(0f)
-                                    animatorInputValue = String.format("%.2f", animatorDurScale)
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -449,7 +449,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 value = animatorDurScale,
                                 onValueChange = { 
                                     animatorDurScale = it
-                                    animatorInputValue = String.format("%.2f", it)
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", it)
                                 },
                                 valueRange = 0f..5.0f,
                                 modifier = Modifier.weight(1f)
@@ -457,7 +457,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     animatorDurScale = (animatorDurScale + 0.01f).coerceAtMost(5f)
-                                    animatorInputValue = String.format("%.2f", animatorDurScale)
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
                                 },
                                 modifier = Modifier
                                     .size(40.dp)
@@ -522,9 +522,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             value = windowInputValue,
                             onValueChange = { 
                                 windowInputValue = it
-                                val floatVal = it.toFloatOrNull()
+                                val floatVal = it.replace(',', '.').toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    windowAnimScale = String.format("%.2f", floatVal).toFloat()
+                                    windowAnimScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
                                     if (isSimpleMode) {
                                         transitionAnimScale = windowAnimScale
                                         animatorDurScale = windowAnimScale
@@ -547,9 +547,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             value = transitionInputValue,
                             onValueChange = { 
                                 transitionInputValue = it
-                                val floatVal = it.toFloatOrNull()
+                                val floatVal = it.replace(',', '.').toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    transitionAnimScale = String.format("%.2f", floatVal).toFloat()
+                                    transitionAnimScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
                                 }
                             },
                             label = { Text("Transition Animation (screen transitions)") },
@@ -563,9 +563,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             value = animatorInputValue,
                             onValueChange = { 
                                 animatorInputValue = it
-                                val floatVal = it.toFloatOrNull()
+                                val floatVal = it.replace(',', '.').toFloatOrNull()
                                 if (floatVal != null && floatVal in 0f..5.0f) {
-                                    animatorDurScale = String.format("%.2f", floatVal).toFloat()
+                                    animatorDurScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
                                 }
                             },
                             label = { Text("Animator Duration (app animations)") },
@@ -596,12 +596,22 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         }
 
                         try {
+                            val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
+                            val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
+                            
                             SettingsManager.applyAllScales(
                                 contentResolver,
                                 windowAnimScale,
-                                transitionAnimScale,
-                                animatorDurScale
+                                finalTransition,
+                                finalAnimator
                             )
+                            
+                            if (isSimpleMode) {
+                                transitionAnimScale = finalTransition
+                                animatorDurScale = finalAnimator
+                                transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
+                                animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
+                            }
                             Toast.makeText(
                                 context,
                                 "Animation scales updated successfully!",
@@ -663,7 +673,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        "W: ${String.format("%.2f", preset.windowAnimationScale)} | T: ${String.format("%.2f", preset.transitionAnimationScale)} | A: ${String.format("%.2f", preset.animatorDurationScale)}",
+                                        "W: ${String.format(java.util.Locale.US, "%.2f", preset.windowAnimationScale)} | T: ${String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)} | A: ${String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)}",
                                         fontSize = 12.sp,
                                         color = Color.Gray
                                     )
@@ -688,9 +698,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             windowAnimScale = preset.windowAnimationScale
                                             transitionAnimScale = preset.transitionAnimationScale
                                             animatorDurScale = preset.animatorDurationScale
-                                            windowInputValue = String.format("%.2f", preset.windowAnimationScale)
-                                            transitionInputValue = String.format("%.2f", preset.transitionAnimationScale)
-                                            animatorInputValue = String.format("%.2f", preset.animatorDurationScale)
+                                            windowInputValue = String.format(java.util.Locale.US, "%.2f", preset.windowAnimationScale)
+                                            transitionInputValue = String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)
+                                            animatorInputValue = String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)
                                             try {
                                                 SettingsManager.applyAllScales(
                                                     contentResolver,
@@ -1048,7 +1058,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         color = Color.Gray
                     )
                     Text(
-                        "W: ${String.format("%.2f", windowAnimScale)} | T: ${String.format("%.2f", transitionAnimScale)} | A: ${String.format("%.2f", animatorDurScale)}",
+                        "W: ${String.format(java.util.Locale.US, "%.2f", windowAnimScale)} | T: ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)} | A: ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}",
                         fontSize = 12.sp
                     )
                 }
