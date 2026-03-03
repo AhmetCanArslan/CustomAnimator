@@ -26,6 +26,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,8 +35,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.shape.CircleShape
 import kotlinx.coroutines.delay
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
@@ -284,6 +285,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            
+            // Animation Speed Preview
+            item {
+                SyncedAnimationPreview(
+                    currentScale = windowAnimScale,
+                    modifier = Modifier.graphicsLayer(alpha = contentAlpha)
+                )
+            }
             
             // Animation Sliders
             if (inputMode == "slider") {
@@ -1081,4 +1090,165 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
         )
     }
+}
+
+@Composable
+fun SyncedAnimationPreview(
+    currentScale: Float,
+    modifier: Modifier = Modifier
+) {
+    // Base durations
+    val baseSlideMs = 300f
+    val pauseMs = 600f
+    val restMs = 400f
+
+    // Slide-in durations per card (each at own speed, squared for clearer difference)
+    val slideIn1x = baseSlideMs
+    val slideInCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
+
+    // Slide-out durations per card (each at own speed, squared for clearer difference)
+    val slideOut1x = baseSlideMs
+    val slideOutCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
+
+    // Phase timeline (absolute ms):
+    // 0 → maxSlideIn             : slide in (each at own speed, faster waits)
+    // maxSlideIn → +pauseMs      : both paused at center
+    // slideOutStart → +maxSlideOut: slide out (each at own speed, faster waits)
+    // maxSlideOut end → +restMs  : rest before restart
+    val maxSlideIn = maxOf(slideIn1x, slideInCurrent)
+    val slideOutStart = maxSlideIn + pauseMs
+    val maxSlideOut = maxOf(slideOut1x, slideOutCurrent)
+    val totalCycleMs = slideOutStart + maxSlideOut + restMs
+
+    var elapsedMs by remember { mutableFloatStateOf(0f) }
+
+    LaunchedEffect(currentScale) {
+        elapsedMs = 0f
+        var last = withFrameNanos { it }
+        while (true) {
+            withFrameNanos { now ->
+                val dt = (now - last) / 1_000_000f
+                last = now
+                elapsedMs += dt
+                if (elapsedMs >= totalCycleMs) {
+                    elapsedMs -= totalCycleMs
+                }
+            }
+        }
+    }
+
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        AppOpenCloseCard(
+            label = "1.0x (Default)",
+            slideInMs = slideIn1x,
+            slideOutStartMs = slideOutStart,
+            slideOutMs = slideOut1x,
+            totalCycleMs = totalCycleMs,
+            elapsedMs = elapsedMs,
+            animOff = false,
+            isPrimary = true
+        )
+        AppOpenCloseCard(
+            label = "${String.format(java.util.Locale.US, "%.2f", currentScale)}x (Current)",
+            slideInMs = slideInCurrent,
+            slideOutStartMs = slideOutStart,
+            slideOutMs = slideOutCurrent,
+            totalCycleMs = totalCycleMs,
+            elapsedMs = elapsedMs,
+            animOff = currentScale <= 0f,
+            isPrimary = false
+        )
+    }
+}
+
+@Composable
+private fun AppOpenCloseCard(
+    label: String,
+    slideInMs: Float,
+    slideOutStartMs: Float,
+    slideOutMs: Float,
+    totalCycleMs: Float,
+    elapsedMs: Float,
+    animOff: Boolean,
+    isPrimary: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val progress: Float  // 0 = scaled down/bottom, 1 = scaled up/centered
+
+    when {
+        animOff -> {
+            progress = 1f
+        }
+        elapsedMs < slideInMs -> {
+            // Popping in from bottom (at own speed)
+            val frac = decelerateInterpolation(elapsedMs / slideInMs)
+            progress = frac
+        }
+        elapsedMs < slideOutStartMs -> {
+            // Waiting at center (own slide-in done, waiting for slower + pause)
+            progress = 1f
+        }
+        elapsedMs < slideOutStartMs + slideOutMs -> {
+            // Popping out to bottom (at own speed)
+            val frac = accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
+            progress = 1f - frac
+        }
+        else -> {
+            // Rest phase — scaled down
+            progress = 0f
+        }
+    }
+
+    val accentColor = if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+    val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
+
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = accentColor
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .background(surfaceColor, RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(40.dp)
+                        .graphicsLayer(
+                            scaleX = 0.4f + 0.6f * progress,
+                            scaleY = 0.4f + 0.6f * progress,
+                            translationY = (1f - progress) * 100f,
+                            alpha = progress
+                        )
+                        .background(accentColor, RoundedCornerShape(8.dp)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = if (progress > 0.3f) "App" else "",
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun decelerateInterpolation(input: Float): Float {
+    return 1f - (1f - input) * (1f - input)
+}
+
+private fun accelerateInterpolation(input: Float): Float {
+    return input * input
 }
