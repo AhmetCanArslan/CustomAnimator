@@ -23,7 +23,12 @@
     <string name="animator_duration">Animator Duration (app animations)</string>
     <string name="apply_settings">Apply Settings</string>
     <string name="saved_presets">Saved Presets</string>
-    <string name="preset_values">W: %1$.2f | T: %2$.2f | A: %3$.2f</string>
+    <string name="preset_values">Window Animation: %1$.2f
+Transition Animation: %2$.2f
+Animator Duration: %3$.2f</string>
+    <string name="preset_window_animation_value">Window Animation: %1$.2f</string>
+    <string name="preset_transition_animation_value">Transition Animation: %1$.2f</string>
+    <string name="preset_animator_duration_value">Animator Duration: %1$.2f</string>
     <string name="load">Load</string>
     <string name="delete">Delete</string>
     <string name="no_presets_saved">No presets saved yet. Create one from the menu!</string>
@@ -71,4 +76,5 @@
     <string name="unknown_error">Unknown error</string>
     <string name="enter_preset_name">Please enter a preset name</string>
     <string name="preset_saved">Preset saved!</string>
+    <string name="animation_speed_preview">Animation Speed Preview</string>
 </resources>

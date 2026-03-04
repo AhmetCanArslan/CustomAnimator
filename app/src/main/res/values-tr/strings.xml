@@ -23,7 +23,12 @@
     <string name="animator_duration">Animatör Süresi (uygulama animasyonları)</string>
     <string name="apply_settings">Ayarları Uygula</string>
     <string name="saved_presets">Kaydedilmiş Ön Ayarlar</string>
-    <string name="preset_values">P: %1$.2f | G: %2$.2f | A: %3$.2f</string>
+    <string name="preset_values">Pencere Animasyonu: %1$.2f
+Geçiş Animasyonu: %2$.2f
+Animatör Süresi: %3$.2f</string>
+    <string name="preset_window_animation_value">Pencere Animasyonu: %1$.2f</string>
+    <string name="preset_transition_animation_value">Geçiş Animasyonu: %1$.2f</string>
+    <string name="preset_animator_duration_value">Animatör Süresi: %1$.2f</string>
     <string name="load">Yükle</string>
     <string name="delete">Sil</string>
     <string name="no_presets_saved">Henüz kaydedilmiş ön ayar yok. Menüden bir tane oluşturun!</string>
@@ -71,4 +76,5 @@
     <string name="unknown_error">Bilinmeyen hata</string>
     <string name="enter_preset_name">Lütfen bir ön ayar adı girin</string>
     <string name="preset_saved">Ön ayar kaydedildi!</string>
+    <string name="animation_speed_preview">Animasyon Hızı Önizlemesi</string>
 </resources>

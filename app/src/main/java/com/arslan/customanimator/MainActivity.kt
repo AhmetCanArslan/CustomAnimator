@@ -46,6 +46,9 @@ import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import rikka.shizuku.Shizuku
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.arslan.customanimator.R
 
 class MainActivity : ComponentActivity() {
@@ -592,56 +595,58 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             
             // Apply Button
             item {
-                Button(
-                    onClick = {
-                        // Check if permission is granted
-                        val hasPermission = ContextCompat.checkSelfPermission(
-                            context,
-                            "android.permission.WRITE_SECURE_SETTINGS"
-                        ) == PackageManager.PERMISSION_GRANTED
-
-                        if (!hasPermission) {
-                            permissionErrorMessage = context.getString(R.string.permission_not_granted)
-                            showPermissionDialog = true
-                            return@Button
-                        }
-
-                        try {
-                            val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
-                            val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
-                            
-                            SettingsManager.applyAllScales(
-                                contentResolver,
-                                windowAnimScale,
-                                finalTransition,
-                                finalAnimator
-                            )
-                            
-                            if (isSimpleMode) {
-                                transitionAnimScale = finalTransition
-                                animatorDurScale = finalAnimator
-                                transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
-                                animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
-                            }
-                            Toast.makeText(
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Button(
+                        onClick = {
+                            // Check if permission is granted
+                            val hasPermission = ContextCompat.checkSelfPermission(
                                 context,
-                                context.getString(R.string.animation_scales_updated),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } catch (e: Exception) {
-                            permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
-                            showPermissionDialog = true
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                        .graphicsLayer(alpha = contentAlpha),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text(stringResource(R.string.apply_settings), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                                "android.permission.WRITE_SECURE_SETTINGS"
+                            ) == PackageManager.PERMISSION_GRANTED
+
+                            if (!hasPermission) {
+                                permissionErrorMessage = context.getString(R.string.permission_not_granted)
+                                showPermissionDialog = true
+                                return@Button
+                            }
+
+                            try {
+                                val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
+                                val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
+                                
+                                SettingsManager.applyAllScales(
+                                    contentResolver,
+                                    windowAnimScale,
+                                    finalTransition,
+                                    finalAnimator
+                                )
+                                
+                                if (isSimpleMode) {
+                                    transitionAnimScale = finalTransition
+                                    animatorDurScale = finalAnimator
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
+                                }
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.animation_scales_updated),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } catch (e: Exception) {
+                                permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
+                                showPermissionDialog = true
+                            }
+                        },
+                        modifier = Modifier
+                            .widthIn(max = 200.dp)
+                            .height(50.dp)
+                            .graphicsLayer(alpha = contentAlpha),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(stringResource(R.string.apply_settings), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
             
@@ -673,25 +678,40 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             )
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
-                            Column(
+                            Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                verticalAlignment = Alignment.Top
                             ) {
-                                Column(modifier = Modifier.fillMaxWidth()) {
+                                Column(
+                                    modifier = Modifier.weight(1f),
+                                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
                                     Text(
                                         preset.name,
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        stringResource(R.string.preset_values, preset.windowAnimationScale, preset.transitionAnimationScale, preset.animatorDurationScale),
+                                        stringResource(R.string.preset_window_animation_value, preset.windowAnimationScale),
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        stringResource(R.string.preset_transition_animation_value, preset.transitionAnimationScale),
+                                        fontSize = 12.sp,
+                                        color = Color.Gray
+                                    )
+                                    Text(
+                                        stringResource(R.string.preset_animator_duration_value, preset.animatorDurationScale),
                                         fontSize = 12.sp,
                                         color = Color.Gray
                                     )
                                 }
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                Column(
+                                    modifier = Modifier.width(112.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                                    horizontalAlignment = Alignment.End
                                 ) {
                                     Button(
                                         onClick = {
@@ -730,7 +750,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
                                         },
                                         modifier = Modifier
-                                            .weight(1f)
+                                            .fillMaxWidth()
                                             .height(42.dp)
                                     ) {
                                         Text(stringResource(R.string.load), fontSize = 12.sp)
@@ -745,7 +765,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             containerColor = MaterialTheme.colorScheme.error
                                         ),
                                         modifier = Modifier
-                                            .weight(1f)
+                                            .fillMaxWidth()
                                             .height(42.dp)
                                     ) {
                                         Text(stringResource(R.string.delete), fontSize = 12.sp)
@@ -1122,42 +1142,73 @@ fun SyncedAnimationPreview(
 
     var elapsedMs by remember { mutableFloatStateOf(0f) }
 
-    LaunchedEffect(currentScale) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    var isAppForeground by remember { mutableStateOf(true) }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                isAppForeground = true
+            } else if (event == Lifecycle.Event.ON_PAUSE || event == Lifecycle.Event.ON_STOP) {
+                isAppForeground = false
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(currentScale, isAppForeground) {
+        if (!isAppForeground) return@LaunchedEffect
+        
         elapsedMs = 0f
         var last = withFrameNanos { it }
         while (true) {
             withFrameNanos { now ->
                 val dt = (now - last) / 1_000_000f
                 last = now
-                elapsedMs += dt
+                // Cap dt at a reasonable amount to prevent large jumps 
+                // when returning to the app before lifecycle state updates
+                val step = if (dt > 500f) 0f else dt
+                elapsedMs += step
                 if (elapsedMs >= totalCycleMs) {
-                    elapsedMs -= totalCycleMs
+                    elapsedMs %= totalCycleMs
                 }
             }
         }
     }
 
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        AppOpenCloseCard(
-            label = "1.0x (Default)",
-            slideInMs = slideIn1x,
-            slideOutStartMs = slideOutStart,
-            slideOutMs = slideOut1x,
-            totalCycleMs = totalCycleMs,
-            elapsedMs = elapsedMs,
-            animOff = false,
-            isPrimary = true
-        )
-        AppOpenCloseCard(
-            label = "${String.format(java.util.Locale.US, "%.2f", currentScale)}x (Current)",
-            slideInMs = slideInCurrent,
-            slideOutStartMs = slideOutStart,
-            slideOutMs = slideOutCurrent,
-            totalCycleMs = totalCycleMs,
-            elapsedMs = elapsedMs,
-            animOff = currentScale <= 0f,
-            isPrimary = false
-        )
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                AppOpenCloseCard(
+                    label = "1.0x (Default)",
+                    slideInMs = slideIn1x,
+                    slideOutStartMs = slideOutStart,
+                    slideOutMs = slideOut1x,
+                    totalCycleMs = totalCycleMs,
+                    elapsedMs = elapsedMs,
+                    animOff = false,
+                    isPrimary = true,
+                    modifier = Modifier.weight(1f)
+                )
+                AppOpenCloseCard(
+                    label = "${String.format(java.util.Locale.US, "%.2f", currentScale)}x (Current)",
+                    slideInMs = slideInCurrent,
+                    slideOutStartMs = slideOutStart,
+                    slideOutMs = slideOutCurrent,
+                    totalCycleMs = totalCycleMs,
+                    elapsedMs = elapsedMs,
+                    animOff = currentScale <= 0f,
+                    isPrimary = false,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 }
 
@@ -1202,44 +1253,42 @@ private fun AppOpenCloseCard(
     val accentColor = if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
     val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
 
-    Card(modifier = modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
-            Text(
-                text = label,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = accentColor
-            )
-            Spacer(modifier = Modifier.height(6.dp))
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            text = label,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = accentColor,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .background(surfaceColor, RoundedCornerShape(12.dp))
+                .clip(RoundedCornerShape(12.dp)),
+            contentAlignment = Alignment.Center
+        ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(surfaceColor, RoundedCornerShape(12.dp))
-                    .clip(RoundedCornerShape(12.dp)),
+                    .fillMaxWidth(0.5f)
+                    .height(80.dp)
+                    .graphicsLayer(
+                        scaleX = 0.4f + 0.6f * progress,
+                        scaleY = 0.4f + 0.6f * progress,
+                        translationY = (1f - progress) * 100f,
+                        alpha = progress
+                    )
+                    .background(accentColor, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(40.dp)
-                        .graphicsLayer(
-                            scaleX = 0.4f + 0.6f * progress,
-                            scaleY = 0.4f + 0.6f * progress,
-                            translationY = (1f - progress) * 100f,
-                            alpha = progress
-                        )
-                        .background(accentColor, RoundedCornerShape(8.dp)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = if (progress > 0.3f) "App" else "",
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = if (progress > 0.3f) "App" else "",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
