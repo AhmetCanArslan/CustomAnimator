@@ -1,14 +1,20 @@
 # Custom Animator
 
-Custom Animator is an Android application designed to simplify the process of fine-tuning your device's animation scales. Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own animation presets without requiring root access.
-
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.arslan.customanimator)
+Custom Animator is an Android application designed to simplify the process of fine-tuning your device's animation scales. Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own animation presets.
 
 *Note: This repository contains only the source code. The compiled app is available on the Play Store.*
 
-## Visual Glimpse
 
-![App Preview](art/customAnimator.gif)
+<div align="center">
+  <div style="border: 1px solid #d0d7de; border-radius: 12px; padding: 24px; display: inline-block; max-width: 400px;">
+    <h3 style="margin-top: 0;">App Preview</h3>
+    <img src="art/customAnimator.gif" width="220" style="border-radius: 8px; margin-bottom: 20px;">
+    <br>
+    <a href="https://play.google.com/store/apps/details?id=com.arslan.customanimator">
+      <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="300">
+    </a>
+  </div>
+</div>
 
 ## Features
 
