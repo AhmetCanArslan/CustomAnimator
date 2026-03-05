@@ -1,20 +1,32 @@
 # Custom Animator
 
-A simple Android app to customize your device's animation scales in real-time without needing root access or Shizuku.
+Custom Animator is an Android application designed to simplify the process of fine-tuning your device's animation scales. Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own animation presets without requiring root access.
+
+[![Get it on Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.arslan.customanimator)
+
+*Note: This repository contains only the source code. The compiled app is available on the Play Store.*
+
+## Visual Glimpse
+
+![App Preview](art/customAnimator.gif)
 
 ## Features
 
-- **Slider Mode**: Quick adjustment with intuitive sliders
-- **Manual Input Mode**: Precise control with numeric input fields
+- **Precise Control**: Set animation scales to any value, not just the standard 0.5x, 1x, 1.5x, etc.
+- **Slider Mode**: Quick adjustment with intuitive sliders for Window, Transition and Animator scales.
+- **Manual Input Mode**: Control with numeric input fields.
+- **Preset System**: Save your favorite configurations and switch between them instantly.
+- **Shizuku Support**: Automatically grant necessary permissions for once if Shizuku is running.
 
+## Getting Started
 
-## Preset System
-- Save your favorite animation configurations
-- Quick-load presets for instant switching
+To function correctly, the app requires the `WRITE_SECURE_SETTINGS` permission only once to modify system animation scales. **No other permissions are required.**
 
-## Requirements
+### Option 1: Shizuku (Recommended - One Time Setup)
+If you have [Shizuku](https://shizuku.rikka.app/) installed and running, the app can automatically request and grant the required permission. Shizuku will only grant the permission. It doesn't do anything else with it.
 
-- Write Secure Settings permission to modify system animation scales.
+### Option 2: ADB (One Time Setup)
+If you don't use Shizuku, you can grant the permission manually via ADB once:
 
 ```bash
 adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS
@@ -27,6 +39,10 @@ adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SET
 ## Privacy Policy
 
 Custom Animator does not collect any personal data or usage analytics. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for full details.
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 ---
 
