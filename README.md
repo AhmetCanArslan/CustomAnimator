@@ -2,9 +2,6 @@
 
 Custom Animator is an Android application designed to simplify the process of fine-tuning your device's animation scales. Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own animation presets.
 
-*Note: This repository contains only the source code. The compiled app is available on the Play Store.*
-
-
 <div align="center">
   <div style="border: 1px solid #d0d7de; border-radius: 12px; padding: 24px; display: inline-block; max-width: 400px;">
     <h3 style="margin-top: 0;">App Preview</h3>
