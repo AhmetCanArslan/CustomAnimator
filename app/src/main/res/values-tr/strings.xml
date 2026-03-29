@@ -45,7 +45,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="use_adb_command">ADB Komutu Kullan</string>
     <string name="adb_description">Bir bilgisayara bağlanın ve bu komutu bir kez çalıştırın:</string>
     <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
-    <string name="see_permission_details">📖 Tam adım adım talimatlar için menüdeki \'İzin Detayları\'na bakın.</string>
+    <string name="see_permission_details">Tam adım adım talimatlar için menudeki Izin Detaylari bolumune bakin.</string>
     <string name="copy_command">Komutu Kopyala</string>
     <string name="close">Kapat</string>
     <string name="adb_command_title">ADB Komutu</string>
@@ -64,9 +64,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="note_one_time">Not: Bunu sadece BİR KEZ yapmanız gerekir. İzin,\nuygulamayı kapatıp tekrar açtıktan veya telefonu yeniden başlattıktan sonra bile verilmiş kalır.</string>
     <string name="how_to_grant">İzni Verme Yöntemi:</string>
     <string name="option_adb">⌨️ Seçenek 1: ADB (Bilgisayar Gerekir)</string>
-    <string name="adb_steps">Adım 1: USB Hata Ayıklamayı Etkinleştir\n• Ayarlar > Telefon Hakkında\'ya gidin\n• Geliştirici Seçeneklerini açmak için Derleme Numarası\'na 7 kez dokunun\n• Ayarlar > Geliştirici Seçenekleri > USB Hata Ayıklamayı Etkinleştir\n\nAdım 2: PC\'ye Bağlan ve Komutu Çalıştır\n• Telefonunuzu bir USB kablosuyla bilgisayara bağlayın\n• Bilgisayarda terminal/komut istemi açın\n• Aşağıdaki komutu kopyalayıp çalıştırın (sadece bir kez):\n</string>
+    <string name="adb_steps">USB hata ayiklamayi acin, telefonu bilgisayara baglayin ve asagidaki komutu bir kez calistirin.</string>
     <string name="option_shizuku">📱 Seçenek 2: Shizuku</string>
-    <string name="shizuku_steps">Adım 1: Shizuku\'yu Yükle\n• \'Shizuku\'yu Google Play Store\'dan veya GitHub\'dan indirin\n• Uygulamayı açın ve ilk kurulumu takip edin\n• Cihaz yöneticisi iznini verin (Shizuku ayarlarında, bir kez)\n\nAdım 2: Özel Animatör\'e Erişim Ver\n• Bu uygulamaya geri dönün (veya yeniden başlatın)\n• Shizuku\'da izin vermeyi soran bir iletişim kutusu görünecek\n• Onaylamak için \'İzin Ver\' veya \'Grant\'e dokunun (1 saniye sürer)\n• WRITE_SECURE_SETTINGS izni artık verildi\n\n</string>
+    <string name="shizuku_steps">Shizuku uygulamasini kurup baslatin, ardindan bu uygulamaya izin verin.</string>
     <string name="ok">Tamam</string>
     <string name="create_new_preset_title">Yeni Ön Ayar Oluştur</string>
     <string name="preset_name">Ön ayar adı</string>
@@ -98,7 +98,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="shizuku_recommended_for_stability">Ayar fallback yöntemle uygulandı. Daha stabil sonuç için Shizuku kullanmanız önerilir.</string>
     <string name="write_secure_applied_title">Bilgilendirme</string>
     <string name="write_secure_applied_question">Fallback yöntem kullanıldı. Ayar cihazınızda uygulandı mı?</string>
-    <string name="write_secure_not_supported_message">Bu yöntem cihazınızda beklenen sonucu vermemiş olabilir. Shizuku'yu aktif edip tekrar deneyebilirsiniz.</string>
+    <string name="write_secure_not_supported_message">Bu yöntem cihazınızda beklenen sonucu vermemiş olabilir. Shizuku uygulamasını etkinleştirip tekrar deneyebilirsiniz.</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="information">Bilgi</string>

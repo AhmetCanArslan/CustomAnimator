@@ -156,6 +156,81 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         animationSpec = tween(durationMillis = 300),
         label = "content fade animation"
     )
+
+    val showPermissionError: (String) -> Unit = { message ->
+        permissionErrorMessage = message
+        showPermissionDialog = true
+    }
+
+    val showDefaultShizukuRecommendation = {
+        showPermissionError(context.getString(R.string.shizuku_use_recommended))
+    }
+
+    val resetAnimationScalesToDefault = {
+        windowAnimScale = 1.0f
+        transitionAnimScale = 1.0f
+        animatorDurScale = 1.0f
+        windowInputValue = "1.00"
+        transitionInputValue = "1.00"
+        animatorInputValue = "1.00"
+    }
+
+    val showSmallestWidthSuccess: (SettingsManager.SmallestWidthResult, String) -> Unit = { result, successMessage ->
+        if (result.usedWriteSecureFallback) {
+            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                showWriteSecureWidthConfirmDialog = true
+            }
+        } else {
+            Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val applyAnimationScalesAndHandleResult: (Float, Float, Float, () -> Unit) -> Unit = { windowScale, transitionScale, animatorScale, onSuccess ->
+        try {
+            val success = SettingsManager.applyAllScales(
+                context,
+                contentResolver,
+                windowScale,
+                transitionScale,
+                animatorScale
+            )
+
+            if (!success) {
+                showDefaultShizukuRecommendation()
+            } else {
+                onSuccess()
+            }
+        } catch (e: Exception) {
+            showPermissionError(e.message ?: context.getString(R.string.unknown_error))
+        }
+    }
+
+    val syncSimpleModeValuesAfterApply: (Float, Float) -> Unit = { finalTransition, finalAnimator ->
+        if (isSimpleMode) {
+            transitionAnimScale = finalTransition
+            animatorDurScale = finalAnimator
+            transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
+            animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
+        }
+    }
+
+    val applySelectedAnimationScales = {
+        val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
+        val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
+
+        applyAnimationScalesAndHandleResult(
+            windowAnimScale,
+            finalTransition,
+            finalAnimator
+        ) {
+            syncSimpleModeValuesAfterApply(finalTransition, finalAnimator)
+            Toast.makeText(
+                context,
+                context.getString(R.string.animation_scales_updated),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
     
     // Handle mode transition with fade animation
     LaunchedEffect(pendingInputMode) {
@@ -329,20 +404,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     if (result.success) {
                                         smallestWidth = SettingsManager.getSmallestWidth(context)
                                         smallestWidthInputValue = ""
-                                        if (result.usedWriteSecureFallback) {
-                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
-                                                showWriteSecureWidthConfirmDialog = true
-                                            }
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.smallest_width_reset),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                        showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
                                     } else {
-                                        permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                        showPermissionDialog = true
+                                        showDefaultShizukuRecommendation()
                                     }
                                 },
                                 modifier = Modifier.size(32.dp)
@@ -393,20 +457,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     if (result.success) {
                                         smallestWidth = targetSmallestWidth
                                         smallestWidthInputValue = targetSmallestWidth.toString()
-                                        if (result.usedWriteSecureFallback) {
-                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
-                                                showWriteSecureWidthConfirmDialog = true
-                                            }
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                context.getString(R.string.smallest_width_applied, targetSmallestWidth),
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                                        showSmallestWidthSuccess(
+                                            result,
+                                            context.getString(R.string.smallest_width_applied, targetSmallestWidth)
+                                        )
                                     } else {
-                                        permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                        showPermissionDialog = true
+                                        showDefaultShizukuRecommendation()
                                     }
                                 },
                                 modifier = Modifier
@@ -448,12 +504,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 )
                                 IconButton(
                                     onClick = {
-                                        windowAnimScale = 1.0f
-                                        transitionAnimScale = 1.0f
-                                        animatorDurScale = 1.0f
-                                        windowInputValue = "1.00"
-                                        transitionInputValue = "1.00"
-                                        animatorInputValue = "1.00"
+                                        resetAnimationScalesToDefault()
                                     },
                                     modifier = Modifier.size(32.dp)
                                 ) {
@@ -644,39 +695,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.weight(0.7f))
                             Button(
                                 onClick = {
-                                    try {
-                                        val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
-                                        val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
-
-                                        val success = SettingsManager.applyAllScales(
-                                            context,
-                                            contentResolver,
-                                            windowAnimScale,
-                                            finalTransition,
-                                            finalAnimator
-                                        )
-
-                                        if (!success) {
-                                            permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                            showPermissionDialog = true
-                                            return@Button
-                                        }
-
-                                        if (isSimpleMode) {
-                                            transitionAnimScale = finalTransition
-                                            animatorDurScale = finalAnimator
-                                            transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
-                                            animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
-                                        }
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.animation_scales_updated),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } catch (e: Exception) {
-                                        permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
-                                        showPermissionDialog = true
-                                    }
+                                    applySelectedAnimationScales()
                                 },
                                 modifier = Modifier
                                     .weight(0.3f)
@@ -720,12 +739,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 )
                                 IconButton(
                                     onClick = {
-                                        windowAnimScale = 1.0f
-                                        transitionAnimScale = 1.0f
-                                        animatorDurScale = 1.0f
-                                        windowInputValue = "1.00"
-                                        transitionInputValue = "1.00"
-                                        animatorInputValue = "1.00"
+                                        resetAnimationScalesToDefault()
                                     },
                                     modifier = Modifier.size(32.dp)
                                 ) {
@@ -768,39 +782,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
 
                             Button(
                                 onClick = {
-                                    try {
-                                        val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
-                                        val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
-
-                                        val success = SettingsManager.applyAllScales(
-                                            context,
-                                            contentResolver,
-                                            windowAnimScale,
-                                            finalTransition,
-                                            finalAnimator
-                                        )
-
-                                        if (!success) {
-                                            permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                            showPermissionDialog = true
-                                            return@Button
-                                        }
-
-                                        if (isSimpleMode) {
-                                            transitionAnimScale = finalTransition
-                                            animatorDurScale = finalAnimator
-                                            transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
-                                            animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
-                                        }
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.animation_scales_updated),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } catch (e: Exception) {
-                                        permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
-                                        showPermissionDialog = true
-                                    }
+                                    applySelectedAnimationScales()
                                 },
                                 modifier = Modifier
                                     .weight(0.3f)
@@ -932,8 +914,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                                 )
 
                                                 if (!success) {
-                                                    permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                                    showPermissionDialog = true
+                                                    showDefaultShizukuRecommendation()
                                                     return@Button
                                                 }
                                             } catch (e: Exception) {
