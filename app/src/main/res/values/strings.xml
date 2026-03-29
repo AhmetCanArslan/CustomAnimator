@@ -21,7 +21,7 @@
     <string name="window_animation">Window Animation (window opening/closing)</string>
     <string name="transition_animation">Transition Animation (screen transitions)</string>
     <string name="animator_duration">Animator Duration (app animations)</string>
-    <string name="apply_settings">Apply Settings</string>
+    <string name="apply_settings">Apply</string>
     <string name="saved_presets">Saved Presets</string>
     <string name="preset_values">Window Animation: %1$.2f
 Transition Animation: %2$.2f
@@ -48,6 +48,14 @@ Animator Duration: %3$.2f</string>
     <string name="see_permission_details">📖 See \'Permission Details\' in the menu for complete step-by-step instructions.</string>
     <string name="copy_command">Copy Command</string>
     <string name="close">Close</string>
+    <string name="adb_command_title">ADB Command</string>
+    <string name="dp_short">dp</string>
+    <string name="labeled_value">%1$s: %2$s</string>
+    <string name="plus_symbol">+</string>
+    <string name="minus_symbol">-</string>
+    <string name="preview_app_text">App</string>
+    <string name="preview_default_scale_label">1.0x (Default)</string>
+    <string name="preview_current_scale_label">%1$sx (Current)</string>
     <string name="permission_details_title">Permission Details</string>
     <string name="granted">✓ Granted</string>
     <string name="granted_description">Congratulations! You can now modify system animation settings directly from this app.</string>
@@ -80,7 +88,6 @@ Animator Duration: %3$.2f</string>
     
     <!-- Smallest Width Strings -->
     <string name="smallest_width">Smallest Width</string>
-    <string name="smallest_width_description">Override the smallest width of the device</string>
     <string name="smallest_width_dp">%1$d dp</string>
     <string name="smallest_width_current">Current: %1$d dp</string>
     <string name="smallest_width_not_set">Not set</string>

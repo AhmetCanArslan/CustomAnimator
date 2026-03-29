@@ -189,7 +189,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             TopAppBar(
                 title = {
                     Text(
-                        "Custom Animator",
+                        stringResource(R.string.app_name),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -313,12 +313,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     fontWeight = FontWeight.SemiBold
                                 )
                                 Text(
-                                    text = stringResource(R.string.smallest_width_description),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
-                                )
-                                Text(
-                                    text = "Current width: ${SettingsManager.getSmallestWidth(context)} dp",
+                                    text = stringResource(
+                                        R.string.smallest_width_current,
+                                        SettingsManager.getSmallestWidth(context)
+                                    ),
                                     fontSize = 12.sp,
                                     color = Color.Gray
                                 )
@@ -350,30 +348,27 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
-                        // Current value text input
-                        OutlinedTextField(
-                            value = smallestWidthInputValue,
-                            onValueChange = { newValue ->
-                                smallestWidthInputValue = newValue
-                                val intVal = newValue.toIntOrNull()
-                                if (intVal != null && intVal in 320..1024) {
-                                    smallestWidth = intVal
-                                }
-                            },
-                            label = { Text("dp") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                        )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        // Buttons row
+                        // Input + Apply row (70/30)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Apply button
+                            OutlinedTextField(
+                                value = smallestWidthInputValue,
+                                onValueChange = { newValue ->
+                                    smallestWidthInputValue = newValue
+                                    val intVal = newValue.toIntOrNull()
+                                    if (intVal != null && intVal in 320..1024) {
+                                        smallestWidth = intVal
+                                    }
+                                },
+                                label = { Text(stringResource(R.string.dp_short)) },
+                                modifier = Modifier.weight(0.7f),
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+
                             Button(
                                 onClick = {
                                     val targetSmallestWidth = smallestWidthInputValue.toIntOrNull()
@@ -400,9 +395,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         showPermissionDialog = true
                                     }
                                 },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .weight(0.3f)
+                                    .height(56.dp)
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 14.sp)
+                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp)
                             }
                         }
                     }
@@ -456,7 +453,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         // Window Animation Slider
                         val sliderLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation_scale)
-                        Text("$sliderLabel: ${String.format(java.util.Locale.US, "%.2f", windowAnimScale)}", fontSize = 12.sp)
+                        Text(
+                            stringResource(
+                                R.string.labeled_value,
+                                sliderLabel,
+                                String.format(java.util.Locale.US, "%.2f", windowAnimScale)
+                            ),
+                            fontSize = 12.sp
+                        )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -478,7 +482,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                             Slider(
                                 value = windowAnimScale,
@@ -511,14 +515,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                         if (!isSimpleMode) {
                             Spacer(modifier = Modifier.height(16.dp))
                         
                         // Transition Animation Slider
-                        Text("${stringResource(R.string.transition_animation_scale)}: ${String.format(java.util.Locale.US, "%.2f", transitionAnimScale)}", fontSize = 12.sp)
+                        Text(
+                            stringResource(
+                                R.string.labeled_value,
+                                stringResource(R.string.transition_animation_scale),
+                                String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
+                            ),
+                            fontSize = 12.sp
+                        )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -534,7 +545,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                             Slider(
                                 value = transitionAnimScale,
@@ -555,13 +566,20 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         
                         // Animator Duration Slider
-                        Text("${stringResource(R.string.animator_duration_scale)}: ${String.format(java.util.Locale.US, "%.2f", animatorDurScale)}", fontSize = 12.sp)
+                        Text(
+                            stringResource(
+                                R.string.labeled_value,
+                                stringResource(R.string.animator_duration_scale),
+                                String.format(java.util.Locale.US, "%.2f", animatorDurScale)
+                            ),
+                            fontSize = 12.sp
+                        )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -577,7 +595,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("-", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                             Slider(
                                 value = animatorDurScale,
@@ -598,9 +616,63 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text("+", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             }
                         }
+                        }
+
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.weight(0.7f))
+                            Button(
+                                onClick = {
+                                    try {
+                                        val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
+                                        val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
+
+                                        val success = SettingsManager.applyAllScales(
+                                            context,
+                                            contentResolver,
+                                            windowAnimScale,
+                                            finalTransition,
+                                            finalAnimator
+                                        )
+
+                                        if (!success) {
+                                            permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                            showPermissionDialog = true
+                                            return@Button
+                                        }
+
+                                        if (isSimpleMode) {
+                                            transitionAnimScale = finalTransition
+                                            animatorDurScale = finalAnimator
+                                            transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
+                                            animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
+                                        }
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.animation_scales_updated),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } catch (e: Exception) {
+                                        permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
+                                        showPermissionDialog = true
+                                    }
+                                },
+                                modifier = Modifier
+                                    .weight(0.3f)
+                                    .height(50.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            }
                         }
                     }
                 }
@@ -652,28 +724,80 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Spacer(modifier = Modifier.height(12.dp))
                         
                         val inputLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation)
-                        OutlinedTextField(
-                            value = windowInputValue,
-                            onValueChange = { 
-                                windowInputValue = it
-                                val floatVal = it.replace(',', '.').toFloatOrNull()
-                                if (floatVal != null && floatVal in 0f..5.0f) {
-                                    windowAnimScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        animatorDurScale = windowAnimScale
-                                    }
-                                }
-                                if (isSimpleMode) {
-                                    transitionInputValue = it
-                                    animatorInputValue = it
-                                }
-                            },
-                            label = { Text(inputLabel) },
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                        )
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            OutlinedTextField(
+                                value = windowInputValue,
+                                onValueChange = {
+                                    windowInputValue = it
+                                    val floatVal = it.replace(',', '.').toFloatOrNull()
+                                    if (floatVal != null && floatVal in 0f..5.0f) {
+                                        windowAnimScale = String.format(java.util.Locale.US, "%.2f", floatVal).toFloat()
+                                        if (isSimpleMode) {
+                                            transitionAnimScale = windowAnimScale
+                                            animatorDurScale = windowAnimScale
+                                        }
+                                    }
+                                    if (isSimpleMode) {
+                                        transitionInputValue = it
+                                        animatorInputValue = it
+                                    }
+                                },
+                                label = { Text(inputLabel) },
+                                modifier = Modifier.weight(0.7f),
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+
+                            Button(
+                                onClick = {
+                                    try {
+                                        val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
+                                        val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
+
+                                        val success = SettingsManager.applyAllScales(
+                                            context,
+                                            contentResolver,
+                                            windowAnimScale,
+                                            finalTransition,
+                                            finalAnimator
+                                        )
+
+                                        if (!success) {
+                                            permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                            showPermissionDialog = true
+                                            return@Button
+                                        }
+
+                                        if (isSimpleMode) {
+                                            transitionAnimScale = finalTransition
+                                            animatorDurScale = finalAnimator
+                                            transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
+                                            animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
+                                        }
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.animation_scales_updated),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } catch (e: Exception) {
+                                        permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
+                                        showPermissionDialog = true
+                                    }
+                                },
+                                modifier = Modifier
+                                    .weight(0.3f)
+                                    .height(56.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
                         if (!isSimpleMode) {
                             Spacer(modifier = Modifier.height(8.dp))
                         
@@ -710,58 +834,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         }
                     }
                 }
-                }
-            }
-            
-            // Apply Button
-            item {
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Button(
-                        onClick = {
-                            try {
-                                val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
-                                val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
-                                
-                                val success = SettingsManager.applyAllScales(
-                                    context,
-                                    contentResolver,
-                                    windowAnimScale,
-                                    finalTransition,
-                                    finalAnimator
-                                )
-
-                                if (!success) {
-                                    permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
-                                    showPermissionDialog = true
-                                    return@Button
-                                }
-                                
-                                if (isSimpleMode) {
-                                    transitionAnimScale = finalTransition
-                                    animatorDurScale = finalAnimator
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", finalTransition)
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", finalAnimator)
-                                }
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.animation_scales_updated),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } catch (e: Exception) {
-                                permissionErrorMessage = e.message ?: context.getString(R.string.unknown_error)
-                                showPermissionDialog = true
-                            }
-                        },
-                        modifier = Modifier
-                            .widthIn(max = 200.dp)
-                            .height(50.dp)
-                            .graphicsLayer(alpha = contentAlpha),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(stringResource(R.string.apply_settings), fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                    }
                 }
             }
             
@@ -1019,8 +1091,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = {
                         val clipboard = context.getSystemService(ClipboardManager::class.java)
                         val clip = ClipData.newPlainText(
-                            "ADB Command",
-                            "adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS"
+                            context.getString(R.string.adb_command_title),
+                            context.getString(R.string.adb_command)
                         )
                         clipboard.setPrimaryClip(clip)
                         Toast.makeText(context, context.getString(R.string.command_copied), Toast.LENGTH_SHORT).show()
@@ -1050,7 +1122,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             text = {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        "WRITE_SECURE_SETTINGS Permission",
+                        stringResource(R.string.write_secure_settings_permission),
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -1297,7 +1369,7 @@ fun SyncedAnimationPreview(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 AppOpenCloseCard(
-                    label = "1.0x (Default)",
+                    label = stringResource(R.string.preview_default_scale_label),
                     slideInMs = slideIn1x,
                     slideOutStartMs = slideOutStart,
                     slideOutMs = slideOut1x,
@@ -1308,7 +1380,10 @@ fun SyncedAnimationPreview(
                     modifier = Modifier.weight(1f)
                 )
                 AppOpenCloseCard(
-                    label = "${String.format(java.util.Locale.US, "%.2f", currentScale)}x (Current)",
+                    label = stringResource(
+                        R.string.preview_current_scale_label,
+                        String.format(java.util.Locale.US, "%.2f", currentScale)
+                    ),
                     slideInMs = slideInCurrent,
                     slideOutStartMs = slideOutStart,
                     slideOutMs = slideOutCurrent,
@@ -1395,7 +1470,7 @@ private fun AppOpenCloseCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (progress > 0.3f) "App" else "",
+                    text = if (progress > 0.3f) stringResource(R.string.preview_app_text) else "",
                     color = MaterialTheme.colorScheme.onPrimary,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold

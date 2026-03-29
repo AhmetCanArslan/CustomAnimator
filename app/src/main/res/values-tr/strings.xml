@@ -21,7 +21,7 @@
     <string name="window_animation">Pencere Animasyonu (pencere açma/kapama)</string>
     <string name="transition_animation">Geçiş Animasyonu (ekran geçişleri)</string>
     <string name="animator_duration">Animatör Süresi (uygulama animasyonları)</string>
-    <string name="apply_settings">Ayarları Uygula</string>
+    <string name="apply_settings">Uygula</string>
     <string name="saved_presets">Kaydedilmiş Ön Ayarlar</string>
     <string name="preset_values">Pencere Animasyonu: %1$.2f
 Geçiş Animasyonu: %2$.2f
@@ -48,6 +48,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="see_permission_details">📖 Tam adım adım talimatlar için menüdeki \'İzin Detayları\'na bakın.</string>
     <string name="copy_command">Komutu Kopyala</string>
     <string name="close">Kapat</string>
+    <string name="adb_command_title">ADB Komutu</string>
+    <string name="dp_short">dp</string>
+    <string name="labeled_value">%1$s: %2$s</string>
+    <string name="plus_symbol">+</string>
+    <string name="minus_symbol">-</string>
+    <string name="preview_app_text">Uyg</string>
+    <string name="preview_default_scale_label">1.0x (Varsayılan)</string>
+    <string name="preview_current_scale_label">%1$sx (Mevcut)</string>
     <string name="permission_details_title">İzin Detayları</string>
     <string name="granted">✓ Verildi</string>
     <string name="granted_description">Tebrikler! Artık sistem animasyon ayarlarını doğrudan bu uygulamadan değiştirebilirsiniz.</string>
@@ -77,4 +85,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="enter_preset_name">Lütfen bir ön ayar adı girin</string>
     <string name="preset_saved">Ön ayar kaydedildi!</string>
     <string name="animation_speed_preview">Animasyon Hızı Önizlemesi</string>
+
+    <!-- Smallest Width Strings -->
+    <string name="smallest_width">En Küçük Genişlik</string>
+    <string name="smallest_width_dp">%1$d dp</string>
+    <string name="smallest_width_current">Mevcut: %1$d dp</string>
+    <string name="smallest_width_not_set">Ayarlanmadı</string>
+    <string name="smallest_width_applied">En küçük genişlik uygulandı: %1$d dp</string>
+    <string name="smallest_width_reset">Varsayılana sıfırla</string>
+    <string name="smallest_width_range">Aralık: 320 - 1024 dp</string>
+    <string name="shizuku_use_recommended">İşlem başarısız. Lütfen Shizuku kullanın ve Shizuku iznini doğrulayın.</string>
 </resources>
