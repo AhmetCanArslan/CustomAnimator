@@ -95,4 +95,11 @@ Animatör Süresi: %3$.2f</string>
     <string name="smallest_width_reset">Varsayılana sıfırla</string>
     <string name="smallest_width_range">Aralık: 320 - 1024 dp</string>
     <string name="shizuku_use_recommended">İşlem başarısız. Lütfen Shizuku kullanın ve Shizuku iznini doğrulayın.</string>
+    <string name="shizuku_recommended_for_stability">Ayar fallback yöntemle uygulandı. Daha stabil sonuç için Shizuku kullanmanız önerilir.</string>
+    <string name="write_secure_applied_title">Bilgilendirme</string>
+    <string name="write_secure_applied_question">Fallback yöntem kullanıldı. Ayar cihazınızda uygulandı mı?</string>
+    <string name="write_secure_not_supported_message">Bu yöntem cihazınızda beklenen sonucu vermemiş olabilir. Shizuku'yu aktif edip tekrar deneyebilirsiniz.</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="information">Bilgi</string>
 </resources>

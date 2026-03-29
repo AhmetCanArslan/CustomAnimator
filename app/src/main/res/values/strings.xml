@@ -33,8 +33,8 @@ Animator Duration: %3$.2f</string>
     <string name="delete">Delete</string>
     <string name="no_presets_saved">No presets saved yet. Create one from the menu!</string>
     <string name="permission_required">Permission Required</string>
-    <string name="write_secure_settings_permission">WRITE_SECURE_SETTINGS Permission</string>
-    <string name="permission_description">This app requires the WRITE_SECURE_SETTINGS permission to modify system animation scales. This is a privileged permission that needs special setup.</string>
+    <string name="write_secure_settings_permission">Special System Permission</string>
+    <string name="permission_description">This app needs a special system permission to change animation and screen size settings. You can grant it once using Shizuku or ADB.</string>
     <string name="one_time_only">⏱️ One-Time Only</string>
     <string name="one_time_description">After you grant this permission once, it stays granted permanently. You don\'t need to do it again!</string>
     <string name="shizuku_ready">✓ Shizuku Ready</string>
@@ -60,13 +60,13 @@ Animator Duration: %3$.2f</string>
     <string name="granted">✓ Granted</string>
     <string name="granted_description">Congratulations! You can now modify system animation settings directly from this app.</string>
     <string name="not_granted">✗ Not Granted</string>
-    <string name="permission_purpose">What does this permission do?\nThis privileged permission allows the app to modify system animation settings:\n• Window Animation Scale (open/close animations)\n• Transition Animation Scale (activity transitions)\n• Animator Duration Scale (animation timing)\n\nWithout it, the app can only read current settings but cannot change them.</string>
+    <string name="permission_purpose">What does this permission do?\nThis special system permission allows the app to modify system animation settings:\n• Window Animation Scale (open/close animations)\n• Transition Animation Scale (activity transitions)\n• Animator Duration Scale (animation timing)\n\nWithout it, the app can only read current settings but cannot change them.</string>
     <string name="note_one_time">Note: You only need to do this ONCE. The permission\nstays granted even after closing and reopening the app or restarting the mobile.</string>
     <string name="how_to_grant">How to Grant Permission:</string>
     <string name="option_adb">⌨️ Option 1: ADB (Requires Computer)</string>
     <string name="adb_steps">Step 1: Enable USB Debugging\n• Go to Settings > About Phone\n• Tap Build Number 7 times to unlock Developer Options\n• Go to Settings > Developer Options > Enable USB Debugging\n\nStep 2: Connect to PC and Run Command\n• Connect your phone to a computer with a USB cable\n• Open terminal/command prompt on the computer\n• Copy and run the command below (one-time only):\n</string>
     <string name="option_shizuku">📱 Option 2: Shizuku</string>
-    <string name="shizuku_steps">Step 1: Install Shizuku\n• Download \'Shizuku\' from Google Play Store or GitHub\n• Open the app and follow initial setup\n• Grant it device admin permission (one-time, in Shizuku settings)\n\nStep 2: Grant Access to Custom Animator\n• Return to this app (or restart it)\n• A dialog will appear in Shizuku asking to grant permission\n• Tap \'Allow\' or \'Grant\' to approve (takes 1 second)\n• The WRITE_SECURE_SETTINGS permission is now granted\n\n</string>
+    <string name="shizuku_steps">Step 1: Install Shizuku\n• Download \'Shizuku\' from Google Play Store or GitHub\n• Open the app and follow initial setup\n• Grant it device admin permission (one-time, in Shizuku settings)\n\nStep 2: Grant Access to Custom Animator\n• Return to this app (or restart it)\n• A dialog will appear in Shizuku asking to grant permission\n• Tap \'Allow\' or \'Grant\' to approve (takes 1 second)\n• Special system permission is now granted\n\n</string>
     <string name="ok">OK</string>
     <string name="create_new_preset_title">Create New Preset</string>
     <string name="preset_name">Preset name</string>
@@ -94,5 +94,12 @@ Animator Duration: %3$.2f</string>
     <string name="smallest_width_applied">Smallest width applied: %1$d dp</string>
     <string name="smallest_width_reset">Reset to default</string>
     <string name="smallest_width_range">Range: 320 - 1024 dp</string>
-    <string name="shizuku_use_recommended">İşlem başarısız. Lütfen Shizuku kullanın ve Shizuku iznini doğrulayın.</string>
+    <string name="shizuku_use_recommended">Operation failed. Please use Shizuku and verify Shizuku permission.</string>
+    <string name="shizuku_recommended_for_stability">Settings were applied using a fallback method. For more stable results, using Shizuku is recommended.</string>
+    <string name="write_secure_applied_title">Information</string>
+    <string name="write_secure_applied_question">A fallback method was used. Was the setting applied on your device?</string>
+    <string name="write_secure_not_supported_message">This method may not have worked as expected on your device. You can enable Shizuku and try again.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="information">Information</string>
 </resources>

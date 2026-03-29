@@ -10,9 +10,15 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 object SettingsManager {
+
+    data class SmallestWidthResult(
+        val success: Boolean,
+        val usedWriteSecureFallback: Boolean
+    )
     
     private const val PREFS_NAME = "custom_animator_prefs"
     private const val KEY_INPUT_MODE = "input_mode"
+    private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -24,6 +30,14 @@ object SettingsManager {
     
     fun setInputMode(context: Context, mode: String) {
         getPrefs(context).edit().putString(KEY_INPUT_MODE, mode).apply()
+    }
+
+    fun shouldShowWriteSecureWidthConfirmDialog(context: Context): Boolean {
+        return !getPrefs(context).getBoolean(KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM, false)
+    }
+
+    fun setSkipWriteSecureWidthConfirmDialog(context: Context, skip: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM, skip).apply()
     }
     
     fun getSimpleMode(context: Context): Boolean {
@@ -126,7 +140,7 @@ object SettingsManager {
         return context.resources.configuration.smallestScreenWidthDp
     }
 
-    fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): Boolean {
+    fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): SmallestWidthResult {
         return try {
             if (width <= 0) {
                 // First try Shizuku command path.
@@ -134,11 +148,18 @@ object SettingsManager {
                     val shizukuSuccess = ShizukuHelper.executeShellCommand(
                         arrayOf("wm", "density", "reset")
                     )
-                    if (shizukuSuccess) return true
+                    if (shizukuSuccess) {
+                        return SmallestWidthResult(success = true, usedWriteSecureFallback = false)
+                    }
                 }
 
                 // Fallback to WRITE_SECURE_SETTINGS path.
-                return Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null)
+                val writeSuccess = Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null)
+                val verifySuccess = Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED) == null
+                return SmallestWidthResult(
+                    success = writeSuccess && verifySuccess,
+                    usedWriteSecureFallback = true
+                )
             }
 
             val metrics = context.resources.displayMetrics
@@ -152,13 +173,21 @@ object SettingsManager {
                 val shizukuSuccess = ShizukuHelper.executeShellCommand(
                     arrayOf("wm", "density", targetDensity.toString())
                 )
-                if (shizukuSuccess) return true
+                if (shizukuSuccess) {
+                    return SmallestWidthResult(success = true, usedWriteSecureFallback = false)
+                }
             }
 
             // Fallback to WRITE_SECURE_SETTINGS path.
-            Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, targetDensity.toString())
+            val targetDensityString = targetDensity.toString()
+            val writeSuccess = Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, targetDensityString)
+            val currentValue = Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED)
+            SmallestWidthResult(
+                success = writeSuccess && currentValue == targetDensityString,
+                usedWriteSecureFallback = true
+            )
         } catch (e: Exception) {
-            false
+            SmallestWidthResult(success = false, usedWriteSecureFallback = false)
         }
     }
 }

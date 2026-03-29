@@ -141,6 +141,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
+    var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
+    var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
     // Smallest Width state
     var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
@@ -323,15 +325,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             IconButton(
                                 onClick = {
-                                    val success = SettingsManager.setSmallestWidth(contentResolver, context, 0)
-                                    if (success) {
+                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                                    if (result.success) {
                                         smallestWidth = SettingsManager.getSmallestWidth(context)
                                         smallestWidthInputValue = ""
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.smallest_width_reset),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        if (result.usedWriteSecureFallback) {
+                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                                                showWriteSecureWidthConfirmDialog = true
+                                            }
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.smallest_width_reset),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     } else {
                                         permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
                                         showPermissionDialog = true
@@ -381,15 +389,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         return@Button
                                     }
 
-                                    val success = SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
-                                    if (success) {
+                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
+                                    if (result.success) {
                                         smallestWidth = targetSmallestWidth
                                         smallestWidthInputValue = targetSmallestWidth.toString()
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.smallest_width_applied, targetSmallestWidth),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        if (result.usedWriteSecureFallback) {
+                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                                                showWriteSecureWidthConfirmDialog = true
+                                            }
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.smallest_width_applied, targetSmallestWidth),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     } else {
                                         permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
                                         showPermissionDialog = true
@@ -1109,6 +1123,52 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 ) {
                     Text(stringResource(R.string.close))
+                }
+            }
+        )
+    }
+
+    if (showWriteSecureWidthConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showWriteSecureWidthConfirmDialog = false },
+            title = { Text(stringResource(R.string.write_secure_applied_title)) },
+            text = { Text(stringResource(R.string.write_secure_applied_question)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        SettingsManager.setSkipWriteSecureWidthConfirmDialog(context, true)
+                        showWriteSecureWidthConfirmDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.yes))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        showWriteSecureWidthConfirmDialog = false
+                        showWriteSecureWidthUnsupportedDialog = true
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Text(stringResource(R.string.no))
+                }
+            }
+        )
+    }
+
+    if (showWriteSecureWidthUnsupportedDialog) {
+        AlertDialog(
+            onDismissRequest = { showWriteSecureWidthUnsupportedDialog = false },
+            title = { Text(stringResource(R.string.information)) },
+            text = { Text(stringResource(R.string.write_secure_not_supported_message)) },
+            confirmButton = {
+                Button(
+                    onClick = { showWriteSecureWidthUnsupportedDialog = false }
+                ) {
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
