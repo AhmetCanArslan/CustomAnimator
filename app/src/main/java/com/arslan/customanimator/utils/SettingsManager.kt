@@ -4,6 +4,10 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import android.provider.Settings
+import android.util.DisplayMetrics
+import java.util.Locale
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 object SettingsManager {
     
@@ -67,50 +71,94 @@ object SettingsManager {
         }
     }
     
-    fun setWindowAnimationScale(contentResolver: ContentResolver, value: Float): Boolean {
-        return try {
-            Settings.Global.putFloat(
-                contentResolver,
-                Settings.Global.WINDOW_ANIMATION_SCALE,
-                value
+    private fun setGlobalFloat(
+        context: Context,
+        contentResolver: ContentResolver,
+        key: String,
+        value: Float
+    ): Boolean {
+        val formattedValue = String.format(Locale.US, "%.2f", value)
+
+        // First try Shizuku path.
+        if (ShizukuHelper.hasShizukuPermission()) {
+            val success = ShizukuHelper.executeShellCommand(
+                arrayOf("settings", "put", "global", key, formattedValue)
             )
+            if (success) return true
+        }
+
+        // Fallback to WRITE_SECURE_SETTINGS path.
+        return try {
+            Settings.Global.putFloat(contentResolver, key, value)
         } catch (e: Exception) {
             false
         }
     }
-    
-    fun setTransitionAnimationScale(contentResolver: ContentResolver, value: Float): Boolean {
-        return try {
-            Settings.Global.putFloat(
-                contentResolver,
-                Settings.Global.TRANSITION_ANIMATION_SCALE,
-                value
-            )
-        } catch (e: Exception) {
-            false
-        }
+
+    fun setWindowAnimationScale(context: Context, contentResolver: ContentResolver, value: Float): Boolean {
+        return setGlobalFloat(context, contentResolver, Settings.Global.WINDOW_ANIMATION_SCALE, value)
     }
-    
-    fun setAnimatorDurationScale(contentResolver: ContentResolver, value: Float): Boolean {
-        return try {
-            Settings.Global.putFloat(
-                contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                value
-            )
-        } catch (e: Exception) {
-            false
-        }
+
+    fun setTransitionAnimationScale(context: Context, contentResolver: ContentResolver, value: Float): Boolean {
+        return setGlobalFloat(context, contentResolver, Settings.Global.TRANSITION_ANIMATION_SCALE, value)
+    }
+
+    fun setAnimatorDurationScale(context: Context, contentResolver: ContentResolver, value: Float): Boolean {
+        return setGlobalFloat(context, contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, value)
     }
     
     fun applyAllScales(
+        context: Context,
         contentResolver: ContentResolver,
         windowScale: Float,
         transitionScale: Float,
         animatorScale: Float
     ): Boolean {
-        return setWindowAnimationScale(contentResolver, windowScale) &&
-                setTransitionAnimationScale(contentResolver, transitionScale) &&
-                setAnimatorDurationScale(contentResolver, animatorScale)
+        return setWindowAnimationScale(context, contentResolver, windowScale) &&
+                setTransitionAnimationScale(context, contentResolver, transitionScale) &&
+                setAnimatorDurationScale(context, contentResolver, animatorScale)
+    }
+    
+    // Smallest Width methods
+    private const val DISPLAY_DENSITY_FORCED = "display_density_forced"
+
+    fun getSmallestWidth(context: Context): Int {
+        return context.resources.configuration.smallestScreenWidthDp
+    }
+
+    fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): Boolean {
+        return try {
+            if (width <= 0) {
+                // First try Shizuku command path.
+                if (ShizukuHelper.hasShizukuPermission()) {
+                    val shizukuSuccess = ShizukuHelper.executeShellCommand(
+                        arrayOf("wm", "density", "reset")
+                    )
+                    if (shizukuSuccess) return true
+                }
+
+                // Fallback to WRITE_SECURE_SETTINGS path.
+                return Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null)
+            }
+
+            val metrics = context.resources.displayMetrics
+            val smallestPx = min(metrics.widthPixels, metrics.heightPixels).toFloat()
+            val targetDensity = (smallestPx * DisplayMetrics.DENSITY_DEFAULT / width)
+                .roundToInt()
+                .coerceIn(72, 1000)
+
+            // First try Shizuku command path.
+            if (ShizukuHelper.hasShizukuPermission()) {
+                val shizukuSuccess = ShizukuHelper.executeShellCommand(
+                    arrayOf("wm", "density", targetDensity.toString())
+                )
+                if (shizukuSuccess) return true
+            }
+
+            // Fallback to WRITE_SECURE_SETTINGS path.
+            Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, targetDensity.toString())
+        } catch (e: Exception) {
+            false
+        }
     }
 }

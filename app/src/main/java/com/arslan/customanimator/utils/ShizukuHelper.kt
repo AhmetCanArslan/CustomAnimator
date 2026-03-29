@@ -96,4 +96,37 @@ object ShizukuHelper {
             false
         }
     }
+
+    fun executeShellCommand(command: Array<String>): Boolean {
+        return try {
+            if (!hasShizukuPermission()) {
+                Log.d(TAG, "Shizuku permission not granted for command: ${command.joinToString(" ")}")
+                return false
+            }
+
+            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
+                "newProcess",
+                Array<String>::class.java,
+                Array<String>::class.java,
+                String::class.java
+            )
+            newProcessMethod.isAccessible = true
+
+            @Suppress("UNCHECKED_CAST")
+            val process = newProcessMethod.invoke(
+                null,
+                command,
+                null,
+                null
+            ) as Any
+
+            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
+            val result = waitForMethod.invoke(process) as Int
+            Log.d(TAG, "Shizuku command result=$result, cmd=${command.joinToString(" ")}")
+            result == 0
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed Shizuku shell command: ${command.joinToString(" ")}", e)
+            false
+        }
+    }
 }

@@ -142,6 +142,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     
+    // Smallest Width state
+    var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
+    var smallestWidthInputValue by remember { mutableStateOf(if (smallestWidth > 0) smallestWidth.toString() else "") }
+    
     // Animation state for fade in/out when mode changes
     var shouldShowContent by remember { mutableStateOf(true) }
     var pendingInputMode by remember { mutableStateOf<String?>(null) }
@@ -289,6 +293,122 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             
+            // Smallest Width Card
+            item {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer(alpha = contentAlpha)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.smallest_width),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                                Text(
+                                    text = stringResource(R.string.smallest_width_description),
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = "Current width: ${SettingsManager.getSmallestWidth(context)} dp",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            IconButton(
+                                onClick = {
+                                    val success = SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                                    if (success) {
+                                        smallestWidth = SettingsManager.getSmallestWidth(context)
+                                        smallestWidthInputValue = ""
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.smallest_width_reset),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                        showPermissionDialog = true
+                                    }
+                                },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = stringResource(R.string.smallest_width_reset)
+                                )
+                            }
+                        }
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        // Current value text input
+                        OutlinedTextField(
+                            value = smallestWidthInputValue,
+                            onValueChange = { newValue ->
+                                smallestWidthInputValue = newValue
+                                val intVal = newValue.toIntOrNull()
+                                if (intVal != null && intVal in 320..1024) {
+                                    smallestWidth = intVal
+                                }
+                            },
+                            label = { Text("dp") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                        )
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        // Buttons row
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Apply button
+                            Button(
+                                onClick = {
+                                    val targetSmallestWidth = smallestWidthInputValue.toIntOrNull()
+                                    if (targetSmallestWidth == null || targetSmallestWidth !in 320..1024) {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.smallest_width_range),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        return@Button
+                                    }
+
+                                    val success = SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
+                                    if (success) {
+                                        smallestWidth = targetSmallestWidth
+                                        smallestWidthInputValue = targetSmallestWidth.toString()
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.smallest_width_applied, targetSmallestWidth),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                        showPermissionDialog = true
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(stringResource(R.string.apply_settings), fontSize = 14.sp)
+                            }
+                        }
+                    }
+                }
+            }
+
             // Animation Speed Preview
             item {
                 SyncedAnimationPreview(
@@ -598,28 +718,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Button(
                         onClick = {
-                            // Check if permission is granted
-                            val hasPermission = ContextCompat.checkSelfPermission(
-                                context,
-                                "android.permission.WRITE_SECURE_SETTINGS"
-                            ) == PackageManager.PERMISSION_GRANTED
-
-                            if (!hasPermission) {
-                                permissionErrorMessage = context.getString(R.string.permission_not_granted)
-                                showPermissionDialog = true
-                                return@Button
-                            }
-
                             try {
                                 val finalTransition = if (isSimpleMode) windowAnimScale else transitionAnimScale
                                 val finalAnimator = if (isSimpleMode) windowAnimScale else animatorDurScale
                                 
-                                SettingsManager.applyAllScales(
+                                val success = SettingsManager.applyAllScales(
+                                    context,
                                     contentResolver,
                                     windowAnimScale,
                                     finalTransition,
                                     finalAnimator
                                 )
+
+                                if (!success) {
+                                    permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                    showPermissionDialog = true
+                                    return@Button
+                                }
                                 
                                 if (isSimpleMode) {
                                     transitionAnimScale = finalTransition
@@ -715,17 +830,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 ) {
                                     Button(
                                         onClick = {
-                                            val hasPermission = ContextCompat.checkSelfPermission(
-                                                context,
-                                                "android.permission.WRITE_SECURE_SETTINGS"
-                                            ) == PackageManager.PERMISSION_GRANTED
-
-                                            if (!hasPermission) {
-                                                permissionErrorMessage = context.getString(R.string.permission_not_granted)
-                                                showPermissionDialog = true
-                                                return@Button
-                                            }
-
                                             windowAnimScale = preset.windowAnimationScale
                                             transitionAnimScale = preset.transitionAnimationScale
                                             animatorDurScale = preset.animatorDurationScale
@@ -733,12 +837,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             transitionInputValue = String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)
                                             animatorInputValue = String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)
                                             try {
-                                                SettingsManager.applyAllScales(
+                                                val success = SettingsManager.applyAllScales(
+                                                    context,
                                                     contentResolver,
                                                     preset.windowAnimationScale,
                                                     preset.transitionAnimationScale,
                                                     preset.animatorDurationScale
                                                 )
+
+                                                if (!success) {
+                                                    permissionErrorMessage = context.getString(R.string.shizuku_use_recommended)
+                                                    showPermissionDialog = true
+                                                    return@Button
+                                                }
                                             } catch (e: Exception) {
                                                 Toast.makeText(
                                                     context,

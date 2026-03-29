@@ -77,4 +77,15 @@ Animator Duration: %3$.2f</string>
     <string name="enter_preset_name">Please enter a preset name</string>
     <string name="preset_saved">Preset saved!</string>
     <string name="animation_speed_preview">Animation Speed Preview</string>
+    
+    <!-- Smallest Width Strings -->
+    <string name="smallest_width">Smallest Width</string>
+    <string name="smallest_width_description">Override the smallest width of the device</string>
+    <string name="smallest_width_dp">%1$d dp</string>
+    <string name="smallest_width_current">Current: %1$d dp</string>
+    <string name="smallest_width_not_set">Not set</string>
+    <string name="smallest_width_applied">Smallest width applied: %1$d dp</string>
+    <string name="smallest_width_reset">Reset to default</string>
+    <string name="smallest_width_range">Range: 320 - 1024 dp</string>
+    <string name="shizuku_use_recommended">İşlem başarısız. Lütfen Shizuku kullanın ve Shizuku iznini doğrulayın.</string>
 </resources>
