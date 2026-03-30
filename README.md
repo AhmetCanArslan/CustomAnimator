@@ -1,6 +1,6 @@
 # Custom Animator
 
-Custom Animator is an Android application designed to simplify the process of fine-tuning your device's animation scales. Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own animation presets.
+Custom Animator is an Android application designed to simplify fine-tuning your device's animation scales and display density (DPI). Instead of navigating through deep developer settings and being limited to standard presets, this app allows you to set custom values and create your own presets.
 
 <div align="center">
   <div style="border: 1px solid #d0d7de; border-radius: 12px; padding: 24px; display: inline-block; max-width: 400px;">
@@ -19,11 +19,12 @@ Custom Animator is an Android application designed to simplify the process of fi
 - **Slider Mode**: Quick adjustment with intuitive sliders for Window, Transition and Animator scales.
 - **Manual Input Mode**: Control with numeric input fields.
 - **Preset System**: Save your favorite configurations and switch between them instantly.
+- **DPI Changer**: Adjust display density. Note: Changing DPI is not allowed on some OEMS, so i've added shizuku fallback for that. If you have shizuku, you can change DPI on any device.
 - **Shizuku Support**: Automatically grant necessary permissions for once if Shizuku is running.
 
 ## Getting Started
 
-To function correctly, the app requires the `WRITE_SECURE_SETTINGS` permission only once to modify system animation scales. **No other permissions are required.**
+To function correctly, the app requires the `WRITE_SECURE_SETTINGS` permission only once to modify system animation scales and DPI settings. **No other permissions are required.**
 
 ### Option 1: Shizuku (Recommended - One Time Setup)
 If you have [Shizuku](https://shizuku.rikka.app/) installed and running, the app can automatically request and grant the required permission. Shizuku will only grant the permission. It doesn't do anything else with it.
@@ -49,4 +50,4 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 
 ---
 
-**Note**: This app modifies system-level animation settings. Use with caution and test thoroughly on your device.
+**Note**: This app modifies system-level animation and display settings. Use with caution and test thoroughly on your device.
