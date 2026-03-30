@@ -17,6 +17,7 @@
     <string name="window_animation_scale">Window Animation Scale (window opening/closing)</string>
     <string name="transition_animation_scale">Transition Animation Scale (screen transitions)</string>
     <string name="animator_duration_scale">Animator Duration Scale (app animations)</string>
+    <string name="animation_header">Animation</string>
     <string name="manual_input">Manual Input</string>
     <string name="window_animation">Window Animation (window opening/closing)</string>
     <string name="transition_animation">Transition Animation (screen transitions)</string>

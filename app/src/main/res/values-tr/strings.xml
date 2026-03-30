@@ -17,6 +17,7 @@
     <string name="window_animation_scale">Pencere Animasyon Ölçeği (pencere açma/kapama)</string>
     <string name="transition_animation_scale">Geçiş Animasyon Ölçeği (ekran geçişleri)</string>
     <string name="animator_duration_scale">Animatör Süre Ölçeği (uygulama animasyonları)</string>
+    <string name="animation_header">Animasyon</string>
     <string name="manual_input">Manuel Giriş</string>
     <string name="window_animation">Pencere Animasyonu (pencere açma/kapama)</string>
     <string name="transition_animation">Geçiş Animasyonu (ekran geçişleri)</string>
