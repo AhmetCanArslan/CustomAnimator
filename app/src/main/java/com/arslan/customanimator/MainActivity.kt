@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
@@ -116,6 +117,10 @@ enum class HomeTab {
     ANIMATION, WIDTH
 }
 
+enum class HomeScreen {
+    MAIN, SETTINGS, DEVELOPER
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatorSelectorScreen(activity: MainActivity) {
@@ -151,7 +156,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
-    var showSettingsScreen by remember { mutableStateOf(false) }
+    var currentScreen by remember { mutableStateOf(HomeScreen.MAIN) }
     var selectedTab by remember { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
@@ -295,10 +300,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    BackHandler(enabled = showSettingsScreen) {
-        showSettingsScreen = false
+    BackHandler(enabled = currentScreen != HomeScreen.MAIN) {
+        currentScreen = HomeScreen.MAIN
     }
-    BackHandler(enabled = !showSettingsScreen) {
+    BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
         if (backPressedOnce) {
             activity.finish()
         } else {
@@ -308,9 +313,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     AnimatedContent(
-        targetState = showSettingsScreen,
+        targetState = currentScreen,
         transitionSpec = {
-            if (targetState) {
+            if (targetState.ordinal > initialState.ordinal) {
                 (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
                     (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
             } else {
@@ -318,11 +323,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
             }
         },
-        label = "settings transition"
-    ) { targetShowSettings ->
-    if (targetShowSettings) {
+        label = "screen transition"
+    ) { targetScreen ->
+    if (targetScreen == HomeScreen.SETTINGS) {
         SettingsScreen(
-            onBack = { showSettingsScreen = false },
+            onBack = { currentScreen = HomeScreen.MAIN },
             isSimpleMode = isSimpleMode,
             onSimpleModeChange = toggleSimpleMode,
             inputMode = inputMode,
@@ -341,6 +346,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             onShowPermissionDetails = { showPermissionDetailsDialog = true },
             onOpenSourceCode = openSourceCode
+        )
+    } else if (targetScreen == HomeScreen.DEVELOPER) {
+        DeveloperScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value
         )
     } else {
     Scaffold(
@@ -368,7 +379,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             contentDescription = stringResource(R.string.new_preset)
                         )
                     }
-                    IconButton(onClick = { showSettingsScreen = true }) {
+                    IconButton(onClick = { currentScreen = HomeScreen.SETTINGS }) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = stringResource(R.string.settings)
@@ -400,6 +411,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     },
                     label = { Text(stringResource(R.string.nav_width)) }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { currentScreen = HomeScreen.DEVELOPER },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.DeveloperMode,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.nav_developer)) }
                 )
             }
         }
