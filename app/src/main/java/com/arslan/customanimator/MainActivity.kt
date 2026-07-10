@@ -341,14 +341,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     context.startActivity(intent)
                                 }
                             )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.buy_me_a_coffee)) },
-                                onClick = {
-                                    menuExpanded = false
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://buymeacoffee.com/ahmetcanarslan"))
-                                    context.startActivity(intent)
-                                }
-                            )
                         }
                     }
                 }

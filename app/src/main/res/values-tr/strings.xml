@@ -10,7 +10,6 @@
     <string name="use_sliders">Kaydırıcıları Kullan</string>
     <string name="permission_details">İzin Detayları</string>
     <string name="source_code">Kaynak Kodu</string>
-    <string name="buy_me_a_coffee">Bana Bir Kahve Al</string>
     <string name="animation_scale_slider">Animasyon Ölçeği Kaydırıcısı</string>
     <string name="restore_to_default">Varsayılana geri yükle</string>
     <string name="animation_scale_applies_to_all">Animasyon Ölçeği (tümüne uygulanır)</string>
