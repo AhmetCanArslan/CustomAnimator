@@ -8,9 +8,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,8 +25,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -136,7 +143,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
-    var menuExpanded by remember { mutableStateOf(false) }
+    var showSettingsScreen by remember { mutableStateOf(false) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -261,6 +268,69 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
+    val toggleSimpleMode: (Boolean) -> Unit = { newSimpleMode ->
+        isSimpleMode = newSimpleMode
+        SettingsManager.setSimpleMode(context, isSimpleMode)
+        if (isSimpleMode) {
+            transitionAnimScale = windowAnimScale
+            animatorDurScale = windowAnimScale
+            transitionInputValue = windowInputValue
+            animatorInputValue = windowInputValue
+        }
+    }
+
+    val openSourceCode = {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/ahmetcanarslan/customanimator"))
+        context.startActivity(intent)
+    }
+
+    // Double-back-to-exit on the home screen
+    var backPressedOnce by remember { mutableStateOf(false) }
+    LaunchedEffect(backPressedOnce) {
+        if (backPressedOnce) {
+            delay(2000)
+            backPressedOnce = false
+        }
+    }
+
+    BackHandler(enabled = showSettingsScreen) {
+        showSettingsScreen = false
+    }
+    BackHandler(enabled = !showSettingsScreen) {
+        if (backPressedOnce) {
+            activity.finish()
+        } else {
+            backPressedOnce = true
+            Toast.makeText(context, context.getString(R.string.press_back_again_to_exit), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    AnimatedContent(
+        targetState = showSettingsScreen,
+        transitionSpec = {
+            if (targetState) {
+                (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
+                    (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
+            } else {
+                (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
+                    (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
+            }
+        },
+        label = "settings transition"
+    ) { targetShowSettings ->
+    if (targetShowSettings) {
+        SettingsScreen(
+            onBack = { showSettingsScreen = false },
+            isSimpleMode = isSimpleMode,
+            onSimpleModeChange = toggleSimpleMode,
+            inputMode = inputMode,
+            onInputModeChange = { newMode -> if (newMode != inputMode) pendingInputMode = newMode },
+            isShizukuAvailable = isShizukuAvailable,
+            hasWriteSecureSettings = hasWriteSecureSettings.value,
+            onShowPermissionDetails = { showPermissionDetailsDialog = true },
+            onOpenSourceCode = openSourceCode
+        )
+    } else {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -272,76 +342,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 },
                 actions = {
-                    Box {
-                        IconButton(onClick = { menuExpanded = true }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.menu)
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = menuExpanded,
-                            onDismissRequest = { menuExpanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.create_new_preset)) },
-                                onClick = {
-                                    menuExpanded = false
-                                    showPresetDialog = true
-                                }
-                            )
-                            Divider()
-                            DropdownMenuItem(
-                                text = { Text(if (isSimpleMode) stringResource(R.string.advanced_mode) else stringResource(R.string.simple_mode)) },
-                                onClick = {
-                                    menuExpanded = false
-                                    isSimpleMode = !isSimpleMode
-                                    SettingsManager.setSimpleMode(context, isSimpleMode)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        animatorDurScale = windowAnimScale
-                                        transitionInputValue = windowInputValue
-                                        animatorInputValue = windowInputValue
-                                    }
-                                }
-                            )
-                            if (inputMode == "slider") {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.use_manual_input)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        pendingInputMode = "manual"
-                                    }
-                                )
-                            } else {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.use_sliders)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        pendingInputMode = "slider"
-                                    }
-                                )
-                            }
-                            if (isShizukuAvailable) {
-                                Divider()
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.permission_details)) },
-                                    onClick = {
-                                        menuExpanded = false
-                                        showPermissionDetailsDialog = true
-                                    }
-                                )
-                            }
-                            Divider()
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.source_code)) },
-                                onClick = {
-                                    menuExpanded = false
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/ahmetcanarslan/customanimator"))
-                                    context.startActivity(intent)
-                                }
-                            )
-                        }
+                    IconButton(onClick = { showPresetDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = stringResource(R.string.new_preset)
+                        )
+                    }
+                    IconButton(onClick = { showSettingsScreen = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = stringResource(R.string.settings)
+                        )
                     }
                 }
             )
@@ -963,7 +974,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
         }
     }
-    
+    }
+    }
+
     // Permission Error Dialog
     if (showPermissionDialog) {
         AlertDialog(

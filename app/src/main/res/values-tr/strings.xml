@@ -10,6 +10,19 @@
     <string name="use_sliders">Kaydırıcıları Kullan</string>
     <string name="permission_details">İzin Detayları</string>
     <string name="source_code">Kaynak Kodu</string>
+    <string name="settings">Ayarlar</string>
+    <string name="new_preset">Yeni Ön Ayar</string>
+    <string name="back">Geri</string>
+    <string name="settings_general">Genel</string>
+    <string name="settings_simple_mode_desc">Tüm animasyonlar için tek bir ölçek kullan</string>
+    <string name="settings_advanced_mode_desc">Pencere, geçiş ve animatör ölçeklerini ayrı ayrı kontrol et</string>
+    <string name="settings_input_mode">Giriş Yöntemi</string>
+    <string name="settings_slider_desc">Değerleri kaydırıcılar ve +/- düğmeleriyle ayarla</string>
+    <string name="settings_manual_desc">Klavyeyle tam değerler gir</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="settings_permission_status_granted">İzin verildi</string>
+    <string name="settings_permission_status_not_granted">İzin verilmedi</string>
+    <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
     <string name="animation_scale_slider">Animasyon Ölçeği Kaydırıcısı</string>
     <string name="restore_to_default">Varsayılana geri yükle</string>
     <string name="animation_scale_applies_to_all">Animasyon Ölçeği (tümüne uygulanır)</string>
@@ -84,6 +97,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="unknown_error">Bilinmeyen hata</string>
     <string name="enter_preset_name">Lütfen bir ön ayar adı girin</string>
     <string name="preset_saved">Ön ayar kaydedildi!</string>
+    <string name="press_back_again_to_exit">Çıkmak için tekrar geri tuşuna basın</string>
     <string name="animation_speed_preview">Animasyon Hızı Önizlemesi</string>
 
     <!-- Smallest Width Strings -->
