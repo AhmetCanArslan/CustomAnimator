@@ -25,8 +25,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -51,6 +53,7 @@ import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.utils.WidthPresetManager
 import rikka.shizuku.Shizuku
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
@@ -109,12 +112,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+enum class HomeTab {
+    ANIMATION, WIDTH
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimatorSelectorScreen(activity: MainActivity) {
     val context = activity
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
+    val widthPresetManager = remember { WidthPresetManager(context) }
     val focusManager = LocalFocusManager.current
     
     // Shizuku state and permission state
@@ -144,6 +152,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var showSettingsScreen by remember { mutableStateOf(false) }
+    var selectedTab by remember { mutableStateOf(HomeTab.ANIMATION) }
+    var widthPresetName by remember { mutableStateOf("") }
+    var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
+    var showWidthPresetDialog by remember { mutableStateOf(false) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -239,25 +251,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    // Handle mode transition with fade animation
-    LaunchedEffect(pendingInputMode) {
-        if (pendingInputMode != null) {
-            // Fade out current content
+    // Fade the home-screen cards on mode change (cosmetic only, doesn't gate state)
+    var isFirstModeRender by remember { mutableStateOf(true) }
+    LaunchedEffect(inputMode) {
+        if (isFirstModeRender) {
+            isFirstModeRender = false
+        } else {
             shouldShowContent = false
-            delay(300) // Wait for fade out to complete
-            // Change the mode
-            inputMode = pendingInputMode!!
-            // Save input mode preference
-            SettingsManager.setInputMode(context, inputMode)
-            // Sync input values when switching to manual mode
-            if (inputMode == "manual") {
-                windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-            }
-            // Fade in new content
+            delay(150)
             shouldShowContent = true
-            pendingInputMode = null
         }
     }
     
@@ -324,7 +326,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             isSimpleMode = isSimpleMode,
             onSimpleModeChange = toggleSimpleMode,
             inputMode = inputMode,
-            onInputModeChange = { newMode -> if (newMode != inputMode) pendingInputMode = newMode },
+            onInputModeChange = { newMode ->
+                if (newMode != inputMode) {
+                    inputMode = newMode
+                    SettingsManager.setInputMode(context, inputMode)
+                    if (inputMode == "manual") {
+                        windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
+                        transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
+                        animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
+                    }
+                }
+            },
             isShizukuAvailable = isShizukuAvailable,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             onShowPermissionDetails = { showPermissionDetailsDialog = true },
@@ -342,7 +354,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 },
                 actions = {
-                    IconButton(onClick = { showPresetDialog = true }) {
+                    IconButton(
+                        onClick = {
+                            if (selectedTab == HomeTab.ANIMATION) {
+                                showPresetDialog = true
+                            } else {
+                                showWidthPresetDialog = true
+                            }
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = stringResource(R.string.new_preset)
@@ -356,12 +376,52 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     }
                 }
             )
+        },
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = selectedTab == HomeTab.ANIMATION,
+                    onClick = { selectedTab = HomeTab.ANIMATION },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.nav_animation)) }
+                )
+                NavigationBarItem(
+                    selected = selectedTab == HomeTab.WIDTH,
+                    onClick = { selectedTab = HomeTab.WIDTH },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Straighten,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.nav_width)) }
+                )
+            }
         }
     ) { paddingValues ->
+        AnimatedContent(
+            targetState = selectedTab,
+            transitionSpec = {
+                if (targetState.ordinal > initialState.ordinal) {
+                    (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
+                        (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
+                } else {
+                    (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
+                        (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
+                }
+            },
+            modifier = Modifier.padding(paddingValues),
+            label = "tab transition"
+        ) { targetTab ->
+        if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(16.dp)
                 .pointerInput(Unit) {
                     detectTapGestures(
@@ -372,7 +432,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            
+
             // Smallest Width Card
             item {
                 Card(
@@ -478,6 +538,115 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     }
                 }
             }
+
+            // Width Presets List Header
+            if (allWidthPresets.isNotEmpty()) {
+                item {
+                    Text(
+                        text = stringResource(R.string.width_presets),
+                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // Width Presets List
+            if (allWidthPresets.isNotEmpty()) {
+                items(allWidthPresets) { widthPreset ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .graphicsLayer(alpha = contentAlpha)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    widthPreset.name,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    stringResource(R.string.preset_width_value, widthPreset.widthDp),
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
+                                    if (result.success) {
+                                        smallestWidth = widthPreset.widthDp
+                                        smallestWidthInputValue = widthPreset.widthDp.toString()
+                                        if (result.usedWriteSecureFallback) {
+                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                                                showWriteSecureWidthConfirmDialog = true
+                                            }
+                                        } else {
+                                            Toast.makeText(context, context.getString(R.string.width_preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                        }
+                                    } else {
+                                        showDefaultShizukuRecommendation()
+                                    }
+                                },
+                                modifier = Modifier.height(42.dp)
+                            ) {
+                                Text(stringResource(R.string.load), fontSize = 12.sp)
+                            }
+                            Button(
+                                onClick = {
+                                    widthPresetManager.deletePreset(widthPreset.id)
+                                    allWidthPresets = widthPresetManager.getAllPresets()
+                                    Toast.makeText(context, context.getString(R.string.width_preset_deleted), Toast.LENGTH_SHORT).show()
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.error
+                                ),
+                                modifier = Modifier.height(42.dp)
+                            ) {
+                                Text(stringResource(R.string.delete), fontSize = 12.sp)
+                            }
+                        }
+                    }
+                }
+            } else {
+                item {
+                    Text(
+                        stringResource(R.string.no_width_presets_saved),
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .graphicsLayer(alpha = contentAlpha)
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+        } else {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = {
+                            focusManager.clearFocus()
+                        }
+                    )
+                },
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
 
             // Animation Speed Preview
             item {
@@ -736,9 +905,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     text = stringResource(R.string.animation_header),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
                                 IconButton(
                                     onClick = {
@@ -973,6 +1142,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+        }
+    }
     }
     }
     }
@@ -1329,6 +1500,65 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = {
                         showPresetDialog = false
                         presetName = ""
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
+
+    // Width Preset Creation Dialog
+    if (showWidthPresetDialog) {
+        AlertDialog(
+            onDismissRequest = { showWidthPresetDialog = false },
+            title = { Text(stringResource(R.string.create_new_width_preset_title)) },
+            text = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = widthPresetName,
+                        onValueChange = { widthPresetName = it },
+                        label = { Text(stringResource(R.string.preset_name)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        stringResource(R.string.current_width_saved),
+                        fontSize = 12.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        stringResource(R.string.preset_width_value, smallestWidth),
+                        fontSize = 12.sp
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (widthPresetName.isNotBlank()) {
+                            widthPresetManager.savePreset(widthPresetName, smallestWidth)
+                            allWidthPresets = widthPresetManager.getAllPresets()
+                            widthPresetName = ""
+                            showWidthPresetDialog = false
+                            Toast.makeText(context, context.getString(R.string.width_preset_saved), Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                ) {
+                    Text(stringResource(R.string.save))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        showWidthPresetDialog = false
+                        widthPresetName = ""
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary

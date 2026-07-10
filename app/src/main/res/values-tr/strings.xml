@@ -23,6 +23,16 @@
     <string name="settings_permission_status_granted">İzin verildi</string>
     <string name="settings_permission_status_not_granted">İzin verilmedi</string>
     <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
+    <string name="nav_animation">Animasyon</string>
+    <string name="nav_width">Genişlik</string>
+    <string name="width_presets">Kaydedilmiş Genişlik Ön Ayarları</string>
+    <string name="no_width_presets_saved">Henüz kaydedilmiş genişlik ön ayarı yok. Oluşturmak için + simgesine dokunun!</string>
+    <string name="create_new_width_preset_title">Yeni Genişlik Ön Ayarı Oluştur</string>
+    <string name="preset_width_value">Genişlik: %1$d dp</string>
+    <string name="width_preset_saved">Genişlik ön ayarı kaydedildi!</string>
+    <string name="width_preset_deleted">Genişlik ön ayarı silindi!</string>
+    <string name="width_preset_loaded_applied">Genişlik ön ayarı yüklendi ve uygulandı!</string>
+    <string name="current_width_saved">Geçerli genişlik kaydedilecek:</string>
     <string name="animation_scale_slider">Animasyon Ölçeği Kaydırıcısı</string>
     <string name="restore_to_default">Varsayılana geri yükle</string>
     <string name="animation_scale_applies_to_all">Animasyon Ölçeği (tümüne uygulanır)</string>
@@ -44,7 +54,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="preset_animator_duration_value">Animatör Süresi: %1$.2f</string>
     <string name="load">Yükle</string>
     <string name="delete">Sil</string>
-    <string name="no_presets_saved">Henüz kaydedilmiş ön ayar yok. Menüden bir tane oluşturun!</string>
+    <string name="no_presets_saved">Henüz kaydedilmiş ön ayar yok. Oluşturmak için + simgesine dokunun!</string>
     <string name="permission_required">İzin Gerekli</string>
     <string name="write_secure_settings_permission">WRITE_SECURE_SETTINGS İzni</string>
     <string name="permission_description">Bu uygulama, sistem animasyon ölçeklerini değiştirmek için WRITE_SECURE_SETTINGS iznine ihtiyaç duyar. Bu, özel kurulum gerektiren ayrıcalıklı bir izindir.</string>
