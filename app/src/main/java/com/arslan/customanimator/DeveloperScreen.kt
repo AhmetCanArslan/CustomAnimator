@@ -3,12 +3,15 @@ package com.arslan.customanimator
 import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CleaningServices
+import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -32,7 +35,8 @@ import kotlinx.coroutines.withContext
 fun DeveloperScreen(
     onBack: () -> Unit,
     isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean
+    hasShizukuPermission: Boolean,
+    onNavigateToAutoForceStop: () -> Unit
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
@@ -211,6 +215,21 @@ fun DeveloperScreen(
             }
 
             item {
+                DevSectionTitle(stringResource(R.string.auto_force_stop))
+            }
+
+            item {
+                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    NavigationRow(
+                        icon = Icons.Filled.PlaylistRemove,
+                        title = stringResource(R.string.auto_force_stop),
+                        description = stringResource(R.string.auto_force_stop_desc),
+                        onClick = onNavigateToAutoForceStop
+                    )
+                }
+            }
+
+            item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -308,6 +327,48 @@ private fun ToggleRow(
             Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Switch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun NavigationRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    description: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Icon(
+            imageVector = Icons.Filled.ChevronRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 

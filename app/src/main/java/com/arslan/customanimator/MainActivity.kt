@@ -118,7 +118,7 @@ enum class HomeTab {
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, DEVELOPER
+    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -300,7 +300,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    BackHandler(enabled = currentScreen != HomeScreen.MAIN) {
+    BackHandler(enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP) {
+        currentScreen = HomeScreen.DEVELOPER
+    }
+    BackHandler(enabled = currentScreen == HomeScreen.SETTINGS || currentScreen == HomeScreen.DEVELOPER) {
         currentScreen = HomeScreen.MAIN
     }
     BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
@@ -350,6 +353,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.DEVELOPER) {
         DeveloperScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
+            isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value,
+            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP }
+        )
+    } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
+        AutoForceStopScreen(
+            onBack = { currentScreen = HomeScreen.DEVELOPER },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value
         )
