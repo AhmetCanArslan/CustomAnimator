@@ -26,7 +26,6 @@
     <string name="nav_animation">Animasi</string>
     <string name="nav_width">Lebar</string>
     <string name="nav_developer">Developer</string>
-    <string name="developer">Developer</string>
     <string name="developer_toggles">Pengalih Sistem</string>
     <string name="developer_quick_actions">Aksi Cepat</string>
     <string name="developer_performance">Performa</string>
@@ -47,6 +46,7 @@
     <string name="clear_caches_confirm_message">Ini akan menghapus file cache dari setiap aplikasi untuk membebaskan penyimpanan. Data aplikasi dan login tidak akan terpengaruh.</string>
     <string name="close_apps_confirm_title">Tutup Aplikasi Latar Belakang?</string>
     <string name="close_apps_confirm_message">Ini akan memaksa menghentikan semua aplikasi terpasang lainnya. Pekerjaan yang belum disimpan di aplikasi tersebut dapat hilang.</string>
+    <string name="auto_actions">Tindakan Otomatis</string>
     <string name="auto_force_stop">Hentikan Paksa Otomatis</string>
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>
     <string name="auto_force_stop_needs_usage_access">Fitur ini memerlukan Akses Penggunaan untuk mendeteksi kapan aplikasi keluar dari latar depan.</string>

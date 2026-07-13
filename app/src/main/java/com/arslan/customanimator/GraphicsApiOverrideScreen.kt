@@ -32,11 +32,13 @@ private const val DRIVER_ANGLE = "angle"
 @Composable
 fun GraphicsApiOverrideScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean
+    hasShizukuPermission: Boolean,
+    hasWriteSecureSettings: Boolean
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
+    val actionsEnabled = hasShizukuPermission || hasWriteSecureSettings
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -126,7 +128,7 @@ fun GraphicsApiOverrideScreen(
                 }
             }
 
-            if (!hasShizukuPermission) {
+            if (!actionsEnabled) {
                 item {
                     WarningCard(
                         message = stringResource(R.string.developer_needs_shizuku),
@@ -174,7 +176,7 @@ fun GraphicsApiOverrideScreen(
                     DriverSelectionRow(
                         app = app,
                         selectedDriver = selections[app.packageName],
-                        enabled = hasShizukuPermission,
+                        enabled = actionsEnabled,
                         onDriverSelected = { driver -> onDriverSelected(app.packageName, driver) }
                     )
                 }

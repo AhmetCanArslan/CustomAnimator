@@ -26,7 +26,6 @@
     <string name="nav_animation">Анимация</string>
     <string name="nav_width">Ширина</string>
     <string name="nav_developer">Разработчик</string>
-    <string name="developer">Разработчик</string>
     <string name="developer_toggles">Системные переключатели</string>
     <string name="developer_quick_actions">Быстрые действия</string>
     <string name="developer_performance">Производительность</string>
@@ -47,6 +46,7 @@
     <string name="clear_caches_confirm_message">Это удалит кэшированные файлы всех приложений для освобождения места. Данные приложений и входы в аккаунты не затрагиваются.</string>
     <string name="close_apps_confirm_title">Закрыть фоновые приложения?</string>
     <string name="close_apps_confirm_message">Это принудительно остановит все остальные установленные приложения. Несохранённая работа в них может быть потеряна.</string>
+    <string name="auto_actions">Автоматические действия</string>
     <string name="auto_force_stop">Автоостановка приложений</string>
     <string name="auto_force_stop_desc">Принудительно останавливает выбранные приложения сразу после выхода из переднего плана</string>
     <string name="auto_force_stop_needs_usage_access">Для этой функции нужен доступ к статистике использования, чтобы определять выход приложений из переднего плана.</string>

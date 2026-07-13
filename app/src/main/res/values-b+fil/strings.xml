@@ -26,7 +26,6 @@
     <string name="nav_animation">Animation</string>
     <string name="nav_width">Lapad</string>
     <string name="nav_developer">Developer</string>
-    <string name="developer">Developer</string>
     <string name="developer_toggles">Mga System Toggle</string>
     <string name="developer_quick_actions">Mabilisang mga Aksyon</string>
     <string name="developer_performance">Performance</string>
@@ -47,6 +46,7 @@
     <string name="clear_caches_confirm_message">Aalisin nito ang mga cached na file ng bawat app para makakuha ng storage. Hindi maaapektuhan ang data ng app at mga login.</string>
     <string name="close_apps_confirm_title">Isara ang mga Background App?</string>
     <string name="close_apps_confirm_message">Puwersahang ihihinto nito ang lahat ng ibang naka-install na app. Maaaring mawala ang hindi na-save na gawain sa mga app na iyon.</string>
+    <string name="auto_actions">Mga Awtomatikong Aksyon</string>
     <string name="auto_force_stop">Auto Force-Stop ng mga App</string>
     <string name="auto_force_stop_desc">Puwersahang ihihinto ang mga napiling app sa sandaling umalis ang mga ito sa foreground</string>
     <string name="auto_force_stop_needs_usage_access">Kailangan ng feature na ito ng Usage Access para malaman kung kailan umaalis ang mga app sa foreground.</string>

@@ -26,7 +26,6 @@
     <string name="nav_animation">Animación</string>
     <string name="nav_width">Ancho</string>
     <string name="nav_developer">Desarrollador</string>
-    <string name="developer">Desarrollador</string>
     <string name="developer_toggles">Opciones del Sistema</string>
     <string name="developer_quick_actions">Acciones Rápidas</string>
     <string name="developer_performance">Rendimiento</string>
@@ -47,6 +46,7 @@
     <string name="clear_caches_confirm_message">Esto eliminará los archivos en caché de cada app para liberar espacio. Los datos de las apps y las sesiones no se ven afectados.</string>
     <string name="close_apps_confirm_title">¿Cerrar Apps en Segundo Plano?</string>
     <string name="close_apps_confirm_message">Esto forzará el cierre de todas las demás apps instaladas. El trabajo sin guardar en esas apps podría perderse.</string>
+    <string name="auto_actions">Acciones Automáticas</string>
     <string name="auto_force_stop">Detención Forzada Automática</string>
     <string name="auto_force_stop_desc">Fuerza el cierre de las apps seleccionadas en el instante en que salen del primer plano</string>
     <string name="auto_force_stop_needs_usage_access">Esta función necesita Acceso al Uso para detectar cuándo las apps salen del primer plano.</string>

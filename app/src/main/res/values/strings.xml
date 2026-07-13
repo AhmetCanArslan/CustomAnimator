@@ -26,7 +26,6 @@
     <string name="nav_animation">Animation</string>
     <string name="nav_width">Width</string>
     <string name="nav_developer">Developer</string>
-    <string name="developer">Developer</string>
     <string name="developer_toggles">System Toggles</string>
     <string name="developer_quick_actions">Quick Actions</string>
     <string name="developer_performance">Performance</string>
@@ -190,4 +189,5 @@ Animator Duration: %3$.2f</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="information">Information</string>
+    <string name="auto_actions">Auto Actions</string>
 </resources>

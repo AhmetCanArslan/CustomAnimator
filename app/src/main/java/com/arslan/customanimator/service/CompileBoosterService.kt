@@ -16,6 +16,7 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
+import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -57,6 +58,12 @@ class CompileBoosterService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (!ShizukuHelper.hasShizukuPermission()) {
+            Log.d(TAG, "Stopping: Shizuku permission not granted")
+            finish()
+            return START_NOT_STICKY
+        }
+
         if (compileJob?.isActive != true) {
             compileJob = scope.launch { runCompileAll() }
         }
@@ -76,6 +83,12 @@ class CompileBoosterService : Service() {
 
         for ((index, app) in apps.withIndex()) {
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
+
+            if (!ShizukuHelper.hasShizukuPermission()) {
+                Log.d(TAG, "Shizuku permission revoked mid-run, stopping")
+                finish()
+                return
+            }
 
             CompileBoosterProgressTracker.update(isRunning = true, current = index, total = total, currentLabel = app.label)
             updateNotification(index, total, app.label)

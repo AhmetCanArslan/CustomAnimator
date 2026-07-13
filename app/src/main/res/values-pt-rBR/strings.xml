@@ -26,7 +26,6 @@
     <string name="nav_animation">Animação</string>
     <string name="nav_width">Largura</string>
     <string name="nav_developer">Desenvolvedor</string>
-    <string name="developer">Desenvolvedor</string>
     <string name="developer_toggles">Alternâncias do Sistema</string>
     <string name="developer_quick_actions">Ações Rápidas</string>
     <string name="developer_performance">Desempenho</string>
@@ -48,6 +47,7 @@
     <string name="clear_caches_confirm_message">Isso remove arquivos de cache de todos os apps para liberar espaço. Dados do app e logins não são afetados.</string>
     <string name="close_apps_confirm_title">Fechar Apps em Segundo Plano?</string>
     <string name="close_apps_confirm_message">Isso forçará a parada de todos os outros apps instalados. Trabalhos não salvos nesses apps podem ser perdidos.</string>
+    <string name="auto_actions">Ações Automáticas</string>
     <string name="auto_force_stop">Parada Forçada Automática</string>
     <string name="auto_force_stop_desc">Força a parada dos apps selecionados assim que saem do primeiro plano</string>
     <string name="auto_force_stop_needs_usage_access">Este recurso precisa de Acesso ao Uso para detectar quando os apps saem do primeiro plano.</string>

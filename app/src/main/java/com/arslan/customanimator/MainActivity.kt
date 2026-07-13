@@ -371,7 +371,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
-            hasShizukuPermission = hasShizukuPermission.value
+            hasShizukuPermission = hasShizukuPermission.value,
+            hasWriteSecureSettings = hasWriteSecureSettings.value
         )
     } else {
     Scaffold(
@@ -464,8 +465,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         ) { targetTab ->
         if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
-            isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value,
+            hasWriteSecureSettings = hasWriteSecureSettings.value,
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }

@@ -42,8 +42,8 @@ import kotlinx.coroutines.withContext
 @Composable
 fun DeveloperScreenContent(
     modifier: Modifier = Modifier,
-    isShizukuAvailable: Boolean,
     hasShizukuPermission: Boolean,
+    hasWriteSecureSettings: Boolean,
     onNavigateToAutoForceStop: () -> Unit,
     onNavigateToAutoPermissionDisabler: () -> Unit,
     onNavigateToGraphicsApiOverride: () -> Unit
@@ -65,6 +65,7 @@ fun DeveloperScreenContent(
     val compileProgress by CompileBoosterProgressTracker.progress.collectAsState()
 
     val actionsEnabled = hasShizukuPermission && !isBusy
+    val toggleActionsEnabled = hasShizukuPermission || hasWriteSecureSettings
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -138,6 +139,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.usb_debugging),
                             description = stringResource(R.string.usb_debugging_desc),
                             checked = adbEnabled,
+                            enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
                                 val previous = adbEnabled
                                 adbEnabled = newValue
@@ -153,6 +155,7 @@ fun DeveloperScreenContent(
                                 title = stringResource(R.string.wireless_debugging),
                                 description = stringResource(R.string.wireless_debugging_desc),
                                 checked = adbWifiEnabled,
+                                enabled = toggleActionsEnabled,
                                 onCheckedChange = { newValue ->
                                     val previous = adbWifiEnabled
                                     adbWifiEnabled = newValue
@@ -168,6 +171,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.dont_keep_activities),
                             description = stringResource(R.string.dont_keep_activities_desc),
                             checked = dontKeepActivities,
+                            enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
                                 val previous = dontKeepActivities
                                 dontKeepActivities = newValue
@@ -182,6 +186,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.limit_background_processes),
                             description = stringResource(R.string.limit_background_processes_desc),
                             checked = limitBackgroundProcesses,
+                            enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
                                 val previous = limitBackgroundProcesses
                                 limitBackgroundProcesses = newValue
@@ -222,7 +227,7 @@ fun DeveloperScreenContent(
             }
 
             item {
-                DevSectionTitle(stringResource(R.string.auto_force_stop))
+                DevSectionTitle(stringResource(R.string.auto_actions))
             }
 
             item {
@@ -378,6 +383,7 @@ private fun ToggleRow(
     title: String,
     description: String,
     checked: Boolean,
+    enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
@@ -391,7 +397,7 @@ private fun ToggleRow(
             Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
             Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Switch(checked = checked, onCheckedChange = onCheckedChange)
+        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }
 
