@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
@@ -156,8 +157,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
-    var currentScreen by remember { mutableStateOf(HomeScreen.MAIN) }
-    var selectedTab by remember { mutableStateOf(HomeTab.ANIMATION) }
+    var currentScreen by rememberSaveable { mutableStateOf(HomeScreen.MAIN) }
+    var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
