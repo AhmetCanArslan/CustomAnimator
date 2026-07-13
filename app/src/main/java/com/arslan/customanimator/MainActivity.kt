@@ -115,11 +115,11 @@ class MainActivity : ComponentActivity() {
 }
 
 enum class HomeTab {
-    ANIMATION, WIDTH
+    ANIMATION, WIDTH, DEVELOPER
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE
+    MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -306,9 +306,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER ||
             currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE
     ) {
-        currentScreen = HomeScreen.DEVELOPER
+        currentScreen = HomeScreen.MAIN
+        selectedTab = HomeTab.DEVELOPER
     }
-    BackHandler(enabled = currentScreen == HomeScreen.SETTINGS || currentScreen == HomeScreen.DEVELOPER) {
+    BackHandler(enabled = currentScreen == HomeScreen.SETTINGS) {
         currentScreen = HomeScreen.MAIN
     }
     BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
@@ -355,30 +356,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onShowPermissionDetails = { showPermissionDetailsDialog = true },
             onOpenSourceCode = openSourceCode
         )
-    } else if (targetScreen == HomeScreen.DEVELOPER) {
-        DeveloperScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
-            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
-            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
-            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }
-        )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
-            onBack = { currentScreen = HomeScreen.DEVELOPER },
+            onBack = { currentScreen = HomeScreen.MAIN },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value
         )
     } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         AutoPermissionDisablerScreen(
-            onBack = { currentScreen = HomeScreen.DEVELOPER },
+            onBack = { currentScreen = HomeScreen.MAIN },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value
         )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
-            onBack = { currentScreen = HomeScreen.DEVELOPER },
+            onBack = { currentScreen = HomeScreen.MAIN },
             hasShizukuPermission = hasShizukuPermission.value
         )
     } else {
@@ -393,19 +385,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 },
                 actions = {
-                    IconButton(
-                        onClick = {
-                            if (selectedTab == HomeTab.ANIMATION) {
-                                showPresetDialog = true
-                            } else {
-                                showWidthPresetDialog = true
+                    if (selectedTab != HomeTab.DEVELOPER) {
+                        IconButton(
+                            onClick = {
+                                if (selectedTab == HomeTab.ANIMATION) {
+                                    showPresetDialog = true
+                                } else {
+                                    showWidthPresetDialog = true
+                                }
                             }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.new_preset)
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.new_preset)
-                        )
                     }
                     IconButton(onClick = { currentScreen = HomeScreen.SETTINGS }) {
                         Icon(
@@ -441,8 +435,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     label = { Text(stringResource(R.string.nav_width)) }
                 )
                 NavigationBarItem(
-                    selected = false,
-                    onClick = { currentScreen = HomeScreen.DEVELOPER },
+                    selected = selectedTab == HomeTab.DEVELOPER,
+                    onClick = { selectedTab = HomeTab.DEVELOPER },
                     icon = {
                         Icon(
                             imageVector = Icons.Default.DeveloperMode,
@@ -468,7 +462,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             modifier = Modifier.padding(paddingValues),
             label = "tab transition"
         ) { targetTab ->
-        if (targetTab == HomeTab.WIDTH) {
+        if (targetTab == HomeTab.DEVELOPER) {
+        DeveloperScreenContent(
+            isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value,
+            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
+            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
+            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }
+        )
+        } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
