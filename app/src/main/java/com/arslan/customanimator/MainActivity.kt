@@ -118,7 +118,7 @@ enum class HomeTab {
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP
+    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -300,7 +300,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    BackHandler(enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP) {
+    BackHandler(enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP || currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         currentScreen = HomeScreen.DEVELOPER
     }
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS || currentScreen == HomeScreen.DEVELOPER) {
@@ -355,10 +355,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.MAIN },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value,
-            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP }
+            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
+            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
+            onBack = { currentScreen = HomeScreen.DEVELOPER },
+            isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value
+        )
+    } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
+        AutoPermissionDisablerScreen(
             onBack = { currentScreen = HomeScreen.DEVELOPER },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value

@@ -99,4 +99,12 @@ object DeveloperOptionsManager {
     fun forceStopApp(packageName: String): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("am", "force-stop", packageName))
     }
+
+    fun revokePermission(packageName: String, permission: String): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("pm", "revoke", packageName, permission))
+    }
+
+    fun grantPermission(packageName: String, permission: String): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
+    }
 }

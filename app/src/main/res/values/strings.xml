@@ -57,8 +57,15 @@
     <string name="auto_force_stop_channel_desc">Shows while apps you selected are being auto force-stopped on exit</string>
     <string name="auto_force_stop_notif_title">Auto Force-Stop active</string>
     <string name="auto_force_stop_notif_text">Selected apps will be force-stopped when you leave them</string>
+    <string name="auto_force_stop_notif_text_combined">Selected apps will be force-stopped or have permissions managed when you leave them</string>
+    <string name="auto_permission_disabler">Auto Permission Disabler</string>
+    <string name="auto_permission_disabler_desc">Revoke selected apps\' permissions the instant they leave the foreground, restore them when reopened</string>
+    <string name="auto_permission_disabler_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
+    <string name="auto_permission_disabler_status_active">Auto permission disabler active for %1$d app(s)</string>
+    <string name="auto_permission_disabler_status_paused">Selection saved, but service is paused until permissions are granted</string>
     <string name="no_apps_found">No apps found</string>
     <string name="search_apps">Search apps</string>
+    <string name="show_selected_only">Show selected only</string>
     <string name="clear">Clear</string>
     <string name="action_succeeded">Done!</string>
     <string name="action_failed">Action failed. Make sure Shizuku is running and permission is granted.</string>

@@ -11,11 +11,15 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.AutoForceStopManager
+import com.arslan.customanimator.utils.DangerousPermissionsHelper
 import com.arslan.customanimator.utils.DeveloperOptionsManager
+import com.arslan.customanimator.utils.PermissionDisablerManager
+import com.arslan.customanimator.utils.RevokedPermissionsStore
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +29,12 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Shared foreground/background app watcher. Drives two independent dev-tools off a
+ * single UsageStatsManager poll loop and single notification: force-stopping selected
+ * apps when they leave the foreground, and revoking/regranting selected apps'
+ * dangerous permissions on exit/re-entry.
+ */
 class AutoForceStopService : Service() {
 
     companion object {
@@ -34,6 +44,7 @@ class AutoForceStopService : Service() {
         private const val POLL_INTERVAL_MS = 1500L
         private const val RECENTLY_KILLED_TTL_MS = 3000L
 
+        /** Starts (or, if already running, redelivers onStartCommand to) the shared watcher service. */
         fun start(context: Context) {
             val intent = Intent(context, AutoForceStopService::class.java)
             ContextCompat.startForegroundService(context, intent)
@@ -47,25 +58,37 @@ class AutoForceStopService : Service() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
     private var pollingJob: Job? = null
-    private lateinit var manager: AutoForceStopManager
+    private lateinit var forceStopManager: AutoForceStopManager
+    private lateinit var permissionDisablerManager: PermissionDisablerManager
+    private lateinit var revokedStore: RevokedPermissionsStore
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
-        manager = AutoForceStopManager(applicationContext)
+        forceStopManager = AutoForceStopManager(applicationContext)
+        permissionDisablerManager = PermissionDisablerManager(applicationContext)
+        revokedStore = RevokedPermissionsStore(applicationContext)
         createNotificationChannel()
         startForeground(NOTIF_ID, buildNotification())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val anySelection = forceStopManager.getSelectedPackages().isNotEmpty() ||
+            permissionDisablerManager.getSelectedPackages().isNotEmpty()
         val prerequisitesMet = ShizukuHelper.hasShizukuPermission() &&
             UsageAccessHelper.hasUsageAccess(applicationContext)
 
-        if (manager.getSelectedPackages().isEmpty() || !prerequisitesMet) {
+        if (!anySelection || !prerequisitesMet) {
             Log.d(TAG, "Stopping: selection empty or prerequisites missing")
             stopSelf()
             return START_NOT_STICKY
+        }
+
+        try {
+            NotificationManagerCompat.from(this).notify(NOTIF_ID, buildNotification())
+        } catch (e: SecurityException) {
+            Log.d(TAG, "Notification permission not granted, skipping notification refresh")
         }
 
         if (pollingJob?.isActive != true) {
@@ -84,8 +107,9 @@ class AutoForceStopService : Service() {
         while (true) {
             delay(POLL_INTERVAL_MS)
 
-            val selected = manager.getSelectedPackages()
-            if (selected.isEmpty()) {
+            val forceStopSelected = forceStopManager.getSelectedPackages()
+            val permissionSelected = permissionDisablerManager.getSelectedPackages()
+            if (forceStopSelected.isEmpty() && permissionSelected.isEmpty()) {
                 Log.d(TAG, "Selection became empty, stopping service")
                 stopSelf()
                 return
@@ -113,20 +137,52 @@ class AutoForceStopService : Service() {
 
             if (currentForegroundPackage != null && currentForegroundPackage != previousForegroundPackage) {
                 val leftPackage = previousForegroundPackage
-                if (leftPackage != null &&
-                    leftPackage != applicationContext.packageName &&
-                    leftPackage in selected &&
-                    !recentlyKilled.containsKey(leftPackage)
-                ) {
-                    recentlyKilled[leftPackage] = now
-                    scope.launch(Dispatchers.IO) {
-                        val success = DeveloperOptionsManager.forceStopApp(leftPackage)
-                        Log.d(TAG, "Force-stopped $leftPackage success=$success")
+
+                if (leftPackage != null && leftPackage != applicationContext.packageName) {
+                    if (leftPackage in forceStopSelected && !recentlyKilled.containsKey(leftPackage)) {
+                        recentlyKilled[leftPackage] = now
+                        scope.launch(Dispatchers.IO) {
+                            val success = DeveloperOptionsManager.forceStopApp(leftPackage)
+                            Log.d(TAG, "Force-stopped $leftPackage success=$success")
+                        }
+                    }
+
+                    if (leftPackage in permissionSelected) {
+                        scope.launch(Dispatchers.IO) {
+                            revokePermissionsForPackage(leftPackage)
+                        }
                     }
                 }
+
+                if (currentForegroundPackage != applicationContext.packageName &&
+                    currentForegroundPackage in permissionSelected
+                ) {
+                    scope.launch(Dispatchers.IO) {
+                        regrantPermissionsForPackage(currentForegroundPackage)
+                    }
+                }
+
                 previousForegroundPackage = currentForegroundPackage
             }
         }
+    }
+
+    private fun revokePermissionsForPackage(packageName: String) {
+        val granted = DangerousPermissionsHelper.getGrantedDangerousPermissions(applicationContext, packageName)
+        if (granted.isEmpty()) return
+        val actuallyRevoked = granted.filter { DeveloperOptionsManager.revokePermission(packageName, it) }
+        revokedStore.recordRevoked(packageName, actuallyRevoked)
+        Log.d(TAG, "Revoked ${actuallyRevoked.size}/${granted.size} permissions for $packageName")
+    }
+
+    private fun regrantPermissionsForPackage(packageName: String) {
+        val toRegrant = revokedStore.getRevoked(packageName)
+        if (toRegrant.isEmpty()) return
+        val allSucceeded = toRegrant.map { DeveloperOptionsManager.grantPermission(packageName, it) }.all { it }
+        if (allSucceeded) {
+            revokedStore.clearRevoked(packageName)
+        }
+        Log.d(TAG, "Regranted permissions for $packageName allSucceeded=$allSucceeded")
     }
 
     private fun queryLatestForegroundPackage(
@@ -175,9 +231,15 @@ class AutoForceStopService : Service() {
             openAppIntent,
             android.app.PendingIntent.FLAG_IMMUTABLE
         )
+        val hasPermissionSelection = permissionDisablerManager.getSelectedPackages().isNotEmpty()
+        val text = if (hasPermissionSelection) {
+            getString(R.string.auto_force_stop_notif_text_combined)
+        } else {
+            getString(R.string.auto_force_stop_notif_text)
+        }
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.auto_force_stop_notif_title))
-            .setContentText(getString(R.string.auto_force_stop_notif_text))
+            .setContentText(text)
             .setSmallIcon(R.drawable.ic_notification_auto_force_stop)
             .setOngoing(true)
             .setContentIntent(pendingIntent)

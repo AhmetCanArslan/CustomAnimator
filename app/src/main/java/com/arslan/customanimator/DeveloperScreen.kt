@@ -12,6 +12,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -36,7 +37,8 @@ fun DeveloperScreen(
     onBack: () -> Unit,
     isShizukuAvailable: Boolean,
     hasShizukuPermission: Boolean,
-    onNavigateToAutoForceStop: () -> Unit
+    onNavigateToAutoForceStop: () -> Unit,
+    onNavigateToAutoPermissionDisabler: () -> Unit
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
@@ -220,12 +222,21 @@ fun DeveloperScreen(
 
             item {
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
-                    NavigationRow(
-                        icon = Icons.Filled.PlaylistRemove,
-                        title = stringResource(R.string.auto_force_stop),
-                        description = stringResource(R.string.auto_force_stop_desc),
-                        onClick = onNavigateToAutoForceStop
-                    )
+                    Column {
+                        NavigationRow(
+                            icon = Icons.Filled.PlaylistRemove,
+                            title = stringResource(R.string.auto_force_stop),
+                            description = stringResource(R.string.auto_force_stop_desc),
+                            onClick = onNavigateToAutoForceStop
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Shield,
+                            title = stringResource(R.string.auto_permission_disabler),
+                            description = stringResource(R.string.auto_permission_disabler_desc),
+                            onClick = onNavigateToAutoPermissionDisabler
+                        )
+                    }
                 }
             }
 

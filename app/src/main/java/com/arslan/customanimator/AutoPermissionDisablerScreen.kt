@@ -2,26 +2,18 @@ package com.arslan.customanimator
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -40,14 +32,14 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AutoForceStopScreen(
+fun AutoPermissionDisablerScreen(
     onBack: () -> Unit,
     isShizukuAvailable: Boolean,
     hasShizukuPermission: Boolean
 ) {
     val context = LocalContext.current
-    val manager = remember { AutoForceStopManager(context) }
-    val otherManager = remember { PermissionDisablerManager(context) }
+    val manager = remember { PermissionDisablerManager(context) }
+    val otherManager = remember { AutoForceStopManager(context) }
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedPackages by remember { mutableStateOf(manager.getSelectedPackages()) }
@@ -111,7 +103,7 @@ fun AutoForceStopScreen(
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.auto_force_stop),
+                        stringResource(R.string.auto_permission_disabler),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -147,7 +139,7 @@ fun AutoForceStopScreen(
             if (!hasUsageAccess) {
                 item {
                     WarningCard(
-                        message = stringResource(R.string.auto_force_stop_needs_usage_access),
+                        message = stringResource(R.string.auto_permission_disabler_needs_usage_access),
                         actionLabel = stringResource(R.string.open_usage_access_settings),
                         onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
                     )
@@ -157,11 +149,11 @@ fun AutoForceStopScreen(
             item {
                 Text(
                     text = if (selectedPackages.isNotEmpty() && prerequisitesMet) {
-                        stringResource(R.string.auto_force_stop_status_active, selectedPackages.size)
+                        stringResource(R.string.auto_permission_disabler_status_active, selectedPackages.size)
                     } else if (selectedPackages.isNotEmpty()) {
-                        stringResource(R.string.auto_force_stop_status_paused)
+                        stringResource(R.string.auto_permission_disabler_status_paused)
                     } else {
-                        stringResource(R.string.auto_force_stop_desc)
+                        stringResource(R.string.auto_permission_disabler_desc)
                     },
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -184,15 +176,6 @@ fun AutoForceStopScreen(
                     Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
-                }
-            } else if (apps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
                 }
             } else if (filteredApps.isEmpty()) {
                 item {
@@ -221,125 +204,4 @@ fun AutoForceStopScreen(
             }
         }
     }
-}
-
-@Composable
-fun AppSearchBar(
-    searchQuery: String,
-    onSearchQueryChange: (String) -> Unit,
-    showSelectedOnly: Boolean,
-    onShowSelectedOnlyChange: (Boolean) -> Unit
-) {
-    Column {
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = onSearchQueryChange,
-            modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(stringResource(R.string.search_apps)) },
-            singleLine = true,
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = null)
-            },
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { onSearchQueryChange("") }) {
-                        Icon(imageVector = Icons.Filled.Clear, contentDescription = stringResource(R.string.clear))
-                    }
-                }
-            },
-            keyboardOptions = KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
-            shape = RoundedCornerShape(12.dp)
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = showSelectedOnly,
-                onCheckedChange = onShowSelectedOnlyChange
-            )
-            Text(
-                text = stringResource(R.string.show_selected_only),
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
-fun WarningCard(message: String, actionLabel: String, onAction: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-    ) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Warning,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onErrorContainer
-                )
-                Text(
-                    text = message,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onAction, modifier = Modifier.align(Alignment.End)) {
-                Text(actionLabel, fontSize = 12.sp)
-            }
-        }
-    }
-}
-
-@Composable
-fun AppRow(
-    app: InstalledAppInfo,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
-            Text(
-                text = app.label,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.weight(1f)
-            )
-            Checkbox(checked = checked, onCheckedChange = onCheckedChange)
-        }
-    }
-}
-
-@Composable
-fun AppIcon(icon: Drawable?, modifier: Modifier = Modifier) {
-    if (icon == null) {
-        Box(modifier = modifier)
-        return
-    }
-    val bitmap = remember(icon) {
-        val width = icon.intrinsicWidth.coerceAtLeast(1)
-        val height = icon.intrinsicHeight.coerceAtLeast(1)
-        val bmp = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bmp)
-        icon.setBounds(0, 0, canvas.width, canvas.height)
-        icon.draw(canvas)
-        bmp.asImageBitmap()
-    }
-    Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
 }
