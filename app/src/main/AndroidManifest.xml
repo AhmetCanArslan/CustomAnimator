@@ -42,6 +42,15 @@
                 android:value="Force-stops user-selected apps when they leave the foreground (dev tool)" />
         </service>
 
+        <service
+            android:name=".service.CompileBoosterService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Force-compiles installed apps in the background (dev tool)" />
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

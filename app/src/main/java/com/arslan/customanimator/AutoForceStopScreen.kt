@@ -227,8 +227,9 @@ fun AutoForceStopScreen(
 fun AppSearchBar(
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    showSelectedOnly: Boolean,
-    onShowSelectedOnlyChange: (Boolean) -> Unit
+    showSelectedOnly: Boolean = false,
+    onShowSelectedOnlyChange: (Boolean) -> Unit = {},
+    showFilterCheckbox: Boolean = true
 ) {
     Column {
         OutlinedTextField(
@@ -250,21 +251,23 @@ fun AppSearchBar(
             keyboardOptions = KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
             shape = RoundedCornerShape(12.dp)
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = showSelectedOnly,
-                onCheckedChange = onShowSelectedOnlyChange
-            )
-            Text(
-                text = stringResource(R.string.show_selected_only),
-                fontSize = 13.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        if (showFilterCheckbox) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = showSelectedOnly,
+                    onCheckedChange = onShowSelectedOnlyChange
+                )
+                Text(
+                    text = stringResource(R.string.show_selected_only),
+                    fontSize = 13.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }

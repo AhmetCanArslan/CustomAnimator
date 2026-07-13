@@ -118,7 +118,7 @@ enum class HomeTab {
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER
+    MAIN, SETTINGS, DEVELOPER, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -300,7 +300,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    BackHandler(enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP || currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
+    BackHandler(
+        enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP ||
+            currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER ||
+            currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE
+    ) {
         currentScreen = HomeScreen.DEVELOPER
     }
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS || currentScreen == HomeScreen.DEVELOPER) {
@@ -356,7 +360,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value,
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
-            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER }
+            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
+            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
@@ -368,6 +373,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         AutoPermissionDisablerScreen(
             onBack = { currentScreen = HomeScreen.DEVELOPER },
             isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value
+        )
+    } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
+        GraphicsApiOverrideScreen(
+            onBack = { currentScreen = HomeScreen.DEVELOPER },
             hasShizukuPermission = hasShizukuPermission.value
         )
     } else {

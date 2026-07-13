@@ -107,4 +107,52 @@ object DeveloperOptionsManager {
     fun grantPermission(packageName: String, permission: String): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
     }
+
+    // Compile Booster
+    fun compileApp(packageName: String): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-f", packageName))
+    }
+
+    fun compileAllApps(): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-a"))
+    }
+
+    // Graphics API Override (per-app ANGLE driver selection)
+    private const val ANGLE_PKGS_KEY = "angle_gl_driver_selection_pkgs"
+    private const val ANGLE_VALUES_KEY = "angle_gl_driver_selection_values"
+
+    fun getAngleDriverSelections(contentResolver: ContentResolver): Map<String, String> {
+        return try {
+            val pkgsCsv = Settings.Global.getString(contentResolver, ANGLE_PKGS_KEY)
+            val valuesCsv = Settings.Global.getString(contentResolver, ANGLE_VALUES_KEY)
+            if (pkgsCsv.isNullOrBlank() || valuesCsv.isNullOrBlank()) return emptyMap()
+            val pkgs = pkgsCsv.split(",")
+            val values = valuesCsv.split(",")
+            if (pkgs.size != values.size) return emptyMap()
+            pkgs.zip(values).toMap()
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    fun setAngleDriverSelection(
+        context: Context,
+        contentResolver: ContentResolver,
+        packageName: String,
+        driver: String?
+    ): Boolean {
+        val current = getAngleDriverSelections(contentResolver).toMutableMap()
+        if (driver == null) {
+            current.remove(packageName)
+        } else {
+            current[packageName] = driver
+        }
+
+        val pkgsCsv = current.keys.joinToString(",")
+        val valuesCsv = current.values.joinToString(",")
+
+        val pkgsResult = putGlobalString(context, contentResolver, ANGLE_PKGS_KEY, pkgsCsv.ifEmpty { null })
+        val valuesResult = putGlobalString(context, contentResolver, ANGLE_VALUES_KEY, valuesCsv.ifEmpty { null })
+        return pkgsResult && valuesResult
+    }
 }
