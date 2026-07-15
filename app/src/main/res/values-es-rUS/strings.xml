@@ -9,7 +9,6 @@
     <string name="use_manual_input">Usar Entrada Manual</string>
     <string name="use_sliders">Usar Controles Deslizantes</string>
     <string name="permission_details">Detalles del Permiso</string>
-    <string name="source_code">Código Fuente</string>
     <string name="settings">Configuración</string>
     <string name="new_preset">Nuevo Preset</string>
     <string name="back">Atrás</string>
@@ -22,7 +21,6 @@
     <string name="settings_about">Acerca de</string>
     <string name="settings_permission_status_granted">Permiso concedido</string>
     <string name="settings_permission_status_not_granted">Permiso no concedido</string>
-    <string name="settings_source_code_desc">Ver el proyecto en GitHub</string>
     <string name="nav_animation">Animación</string>
     <string name="nav_width">Ancho</string>
     <string name="nav_developer">Desarrollador</string>
@@ -190,4 +188,7 @@ Duración del Animador: %3$.2f</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="information">Información</string>
+    <string name="ad_info_title">Apoyar el Desarrollo</string>
+    <string name="ad_info_message">¡Hola! 👋\n\nPara mantener esta app gratuita y seguir mejorándola, he añadido pequeños banners publicitarios.\n\nSolo aparecen en la parte inferior de la pantalla y nunca son intrusivos.\n\nGracias por su comprensión y apoyo. ❤️</string>
+    <string name="ad_info_ok">Entendido</string>
 </resources>

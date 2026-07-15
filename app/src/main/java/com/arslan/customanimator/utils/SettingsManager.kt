@@ -19,6 +19,7 @@ object SettingsManager {
     private const val PREFS_NAME = "custom_animator_prefs"
     private const val KEY_INPUT_MODE = "input_mode"
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
+    private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -47,6 +48,14 @@ object SettingsManager {
     
     fun setSimpleMode(context: Context, isSimpleMode: Boolean) {
         getPrefs(context).edit().putBoolean("simple_mode", isSimpleMode).apply()
+    }
+
+    fun hasShownAdInfoDialog(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_AD_INFO_DIALOG_SHOWN, false)
+    }
+
+    fun markAdInfoDialogShown(context: Context) {
+        getPrefs(context).edit().putBoolean(KEY_AD_INFO_DIALOG_SHOWN, true).apply()
     }
     
     fun getWindowAnimationScale(contentResolver: ContentResolver): Float {

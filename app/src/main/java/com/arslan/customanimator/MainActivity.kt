@@ -21,6 +21,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -61,7 +62,49 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.viewinterop.AndroidView
+import android.util.Log
 import com.arslan.customanimator.R
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+
+private val BANNER_AD_UNIT_ID: String
+    get() = if (BuildConfig.DEBUG) {
+        "ca-app-pub-3940256099942544/6300978111"
+    } else {
+        BuildConfig.BANNER_AD_UNIT_ID
+    }
+
+@Composable
+fun BannerAdView() {
+    AndroidView(
+        modifier = Modifier.fillMaxWidth(),
+        factory = { context ->
+            val widthPx = context.resources.displayMetrics.widthPixels
+            val density = context.resources.displayMetrics.density
+            val adWidth = (widthPx / density).toInt()
+            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
+            AdView(context).apply {
+                setAdSize(adSize)
+                adUnitId = BANNER_AD_UNIT_ID
+                adListener = object : AdListener() {
+                    override fun onAdLoaded() {
+                        Log.d("BannerAd", "Ad loaded successfully")
+                    }
+                    override fun onAdFailedToLoad(error: LoadAdError) {
+                        Log.e("BannerAd", "Ad failed to load: ${error.code} ${error.message}")
+                    }
+                }
+                loadAd(AdRequest.Builder().build())
+            }
+        }
+    )
+}
 
 class MainActivity : ComponentActivity() {
     private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
@@ -74,7 +117,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
+        MobileAds.initialize(this)
+
         // Add Shizuku listener
         Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
         
@@ -158,6 +202,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var currentScreen by rememberSaveable { mutableStateOf(HomeScreen.MAIN) }
+    val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
@@ -167,6 +215,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
+    var showAdInfoDialog by remember { mutableStateOf(!SettingsManager.hasShownAdInfoDialog(context)) }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
     // Smallest Width state
@@ -287,11 +336,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    val openSourceCode = {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.github.com/ahmetcanarslan/customanimator"))
-        context.startActivity(intent)
-    }
-
     // Double-back-to-exit on the home screen
     var backPressedOnce by remember { mutableStateOf(false) }
     LaunchedEffect(backPressedOnce) {
@@ -353,26 +397,28 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             },
             isShizukuAvailable = isShizukuAvailable,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
-            onShowPermissionDetails = { showPermissionDetailsDialog = true },
-            onOpenSourceCode = openSourceCode
+            onShowPermissionDetails = { showPermissionDetailsDialog = true }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
             isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = autoForceStopListState
         )
     } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         AutoPermissionDisablerScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
             isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = autoPermissionDisablerListState
         )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
             hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value
+            hasWriteSecureSettings = hasWriteSecureSettings.value,
+            listState = graphicsApiOverrideListState
         )
     } else {
     Scaffold(
@@ -412,7 +458,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             )
         },
         bottomBar = {
-            NavigationBar {
+            Column {
+                BannerAdView()
+                NavigationBar {
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.ANIMATION,
                     onClick = { selectedTab = HomeTab.ANIMATION },
@@ -446,6 +494,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     label = { Text(stringResource(R.string.nav_developer)) }
                 )
+                }
             }
         }
     ) { paddingValues ->
@@ -469,7 +518,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
-            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }
+            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
+            listState = developerTabListState
         )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
@@ -1364,6 +1414,27 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 ) {
                     Text(stringResource(R.string.no))
+                }
+            }
+        )
+    }
+
+    if (showAdInfoDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                SettingsManager.markAdInfoDialogShown(context)
+                showAdInfoDialog = false
+            },
+            title = { Text(stringResource(R.string.ad_info_title)) },
+            text = { Text(stringResource(R.string.ad_info_message)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        SettingsManager.markAdInfoDialogShown(context)
+                        showAdInfoDialog = false
+                    }
+                ) {
+                    Text(stringResource(R.string.ad_info_ok))
                 }
             }
         )

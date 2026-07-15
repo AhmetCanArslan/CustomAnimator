@@ -9,7 +9,6 @@
     <string name="use_manual_input">Gunakan Input Manual</string>
     <string name="use_sliders">Gunakan Penggeser</string>
     <string name="permission_details">Detail Izin</string>
-    <string name="source_code">Kode Sumber</string>
     <string name="settings">Pengaturan</string>
     <string name="new_preset">Preset Baru</string>
     <string name="back">Kembali</string>
@@ -22,7 +21,6 @@
     <string name="settings_about">Tentang</string>
     <string name="settings_permission_status_granted">Izin telah diberikan</string>
     <string name="settings_permission_status_not_granted">Izin belum diberikan</string>
-    <string name="settings_source_code_desc">Lihat proyek di GitHub</string>
     <string name="nav_animation">Animasi</string>
     <string name="nav_width">Lebar</string>
     <string name="nav_developer">Developer</string>
@@ -190,4 +188,7 @@ Durasi Animator: %3$.2f</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="information">Informasi</string>
+    <string name="ad_info_title">Dukung Pengembangan</string>
+    <string name="ad_info_message">Halo! 👋\n\nUntuk menjaga aplikasi ini tetap gratis dan terus mengembangkannya, saya menambahkan banner iklan kecil.\n\nIklan hanya muncul di bagian bawah layar dan tidak pernah mengganggu.\n\nTerima kasih atas pengertian dan dukungan Anda. ❤️</string>
+    <string name="ad_info_ok">Oke</string>
 </resources>

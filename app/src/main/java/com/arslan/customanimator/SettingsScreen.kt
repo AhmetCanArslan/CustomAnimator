@@ -32,8 +32,7 @@ fun SettingsScreen(
     onInputModeChange: (String) -> Unit,
     isShizukuAvailable: Boolean,
     hasWriteSecureSettings: Boolean,
-    onShowPermissionDetails: () -> Unit,
-    onOpenSourceCode: () -> Unit
+    onShowPermissionDetails: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -54,7 +53,8 @@ fun SettingsScreen(
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BannerAdView() }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -117,12 +117,6 @@ fun SettingsScreen(
                     )
                     SettingDivider()
                 }
-                ActionSettingRow(
-                    icon = Icons.Filled.Info,
-                    title = stringResource(R.string.source_code),
-                    description = stringResource(R.string.settings_source_code_desc),
-                    onClick = onOpenSourceCode
-                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))

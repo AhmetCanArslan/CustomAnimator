@@ -7,7 +7,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -35,7 +37,8 @@ import kotlinx.coroutines.withContext
 fun AutoPermissionDisablerScreen(
     onBack: () -> Unit,
     isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean
+    hasShizukuPermission: Boolean,
+    listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
     val manager = remember { PermissionDisablerManager(context) }
@@ -117,9 +120,11 @@ fun AutoPermissionDisablerScreen(
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BannerAdView() }
     ) { paddingValues ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

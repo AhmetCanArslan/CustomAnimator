@@ -3,7 +3,9 @@ package com.arslan.customanimator
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -33,7 +35,8 @@ private const val DRIVER_ANGLE = "angle"
 fun GraphicsApiOverrideScreen(
     onBack: () -> Unit,
     hasShizukuPermission: Boolean,
-    hasWriteSecureSettings: Boolean
+    hasWriteSecureSettings: Boolean,
+    listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
@@ -95,9 +98,11 @@ fun GraphicsApiOverrideScreen(
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BannerAdView() }
     ) { paddingValues ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
