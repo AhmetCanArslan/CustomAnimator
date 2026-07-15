@@ -191,4 +191,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="ad_info_title">Geliştirmeyi Destekleyin</string>
     <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için küçük banner reklamlar ekledim.\n\nSadece ekranın alt kısmında görünürler ve asla rahatsız edici değildirler.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
     <string name="ad_info_ok">Anladım</string>
+    <string name="rate_dialog_title">Uygulamayı Beğendiniz mi?</string>
+    <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
+    <string name="rate_dialog_rate">Derecelendir</string>
+    <string name="rate_dialog_later">Sonra</string>
 </resources>

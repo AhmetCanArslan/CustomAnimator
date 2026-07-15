@@ -191,4 +191,8 @@ Animator Duration: %3$.2f</string>
     <string name="ad_info_title">Suportahan ang Pag-develop</string>
     <string name="ad_info_message">Kumusta! 👋\n\nUpang panatilihing libre ang app na ito at patuloy itong pagandahin, nagdagdag ako ng maliliit na banner ad.\n\nLumilitaw lang ang mga ito sa ibaba ng screen at hindi kailanman nakakaabala.\n\nSalamat sa iyong pag-unawa at suporta. ❤️</string>
     <string name="ad_info_ok">Naunawaan</string>
+    <string name="rate_dialog_title">Nage-enjoy ka ba sa App?</string>
+    <string name="rate_dialog_message">Kung gusto mo ang Custom Animator, maglaan ng sandali para i-rate ito sa Play Store. Malaki ang naidudulot ng iyong suporta!</string>
+    <string name="rate_dialog_rate">I-rate</string>
+    <string name="rate_dialog_later">Mamaya</string>
 </resources>

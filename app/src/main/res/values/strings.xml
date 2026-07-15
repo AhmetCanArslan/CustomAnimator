@@ -191,4 +191,8 @@ Animator Duration: %3$.2f</string>
     <string name="ad_info_title">Support Development</string>
     <string name="ad_info_message">Hi! 👋\n\nTo keep this app free and continue improving it, I\'ve added small banner ads.\n\nThey only appear at the bottom of the screen and are never intrusive.\n\nThank you for your understanding and support. ❤️</string>
     <string name="ad_info_ok">Got it</string>
+    <string name="rate_dialog_title">Enjoying the App?</string>
+    <string name="rate_dialog_message">If you like Custom Animator, please take a moment to rate it on the Play Store. Your support really makes a difference!</string>
+    <string name="rate_dialog_rate">Rate</string>
+    <string name="rate_dialog_later">Later</string>
 </resources>

@@ -191,4 +191,8 @@ Durasi Animator: %3$.2f</string>
     <string name="ad_info_title">Dukung Pengembangan</string>
     <string name="ad_info_message">Halo! 👋\n\nUntuk menjaga aplikasi ini tetap gratis dan terus mengembangkannya, saya menambahkan banner iklan kecil.\n\nIklan hanya muncul di bagian bawah layar dan tidak pernah mengganggu.\n\nTerima kasih atas pengertian dan dukungan Anda. ❤️</string>
     <string name="ad_info_ok">Oke</string>
+    <string name="rate_dialog_title">Menikmati Aplikasinya?</string>
+    <string name="rate_dialog_message">Jika Anda menyukai Custom Animator, luangkan waktu sejenak untuk memberi peringkat di Play Store. Dukungan Anda sangat berarti!</string>
+    <string name="rate_dialog_rate">Beri Nilai</string>
+    <string name="rate_dialog_later">Nanti</string>
 </resources>

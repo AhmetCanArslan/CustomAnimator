@@ -20,6 +20,7 @@ object SettingsManager {
     private const val KEY_INPUT_MODE = "input_mode"
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
+    private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -56,6 +57,21 @@ object SettingsManager {
 
     fun markAdInfoDialogShown(context: Context) {
         getPrefs(context).edit().putBoolean(KEY_AD_INFO_DIALOG_SHOWN, true).apply()
+    }
+
+    fun shouldShowRateDialog(context: Context): Boolean {
+        val nextShow = getPrefs(context).getLong(KEY_RATE_DIALOG_NEXT_SHOW, 0L)
+        return nextShow == 0L || System.currentTimeMillis() >= nextShow
+    }
+
+    fun markRateDialogRated(context: Context) {
+        val next = System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000
+        getPrefs(context).edit().putLong(KEY_RATE_DIALOG_NEXT_SHOW, next).apply()
+    }
+
+    fun markRateDialogLater(context: Context) {
+        val next = System.currentTimeMillis() + 24L * 60 * 60 * 1000
+        getPrefs(context).edit().putLong(KEY_RATE_DIALOG_NEXT_SHOW, next).apply()
     }
     
     fun getWindowAnimationScale(contentResolver: ContentResolver): Float {

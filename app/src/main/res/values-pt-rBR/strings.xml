@@ -191,4 +191,8 @@ Duração do Animador: %3$.2f</string>
     <string name="ad_info_title">Apoie o Desenvolvimento</string>
     <string name="ad_info_message">Olá! 👋\n\nPara manter este app gratuito e continuar melhorando-o, adicionei pequenos banners de anúncios.\n\nEles aparecem apenas na parte inferior da tela e nunca são intrusivos.\n\nObrigado pela sua compreensão e apoio. ❤️</string>
     <string name="ad_info_ok">Entendi</string>
+    <string name="rate_dialog_title">Gostando do App?</string>
+    <string name="rate_dialog_message">Se você gosta do Custom Animator, reserve um momento para avaliá-lo na Play Store. Seu apoio realmente faz a diferença!</string>
+    <string name="rate_dialog_rate">Avaliar</string>
+    <string name="rate_dialog_later">Mais tarde</string>
 </resources>

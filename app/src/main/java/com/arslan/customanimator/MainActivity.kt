@@ -216,6 +216,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
     var showAdInfoDialog by remember { mutableStateOf(!SettingsManager.hasShownAdInfoDialog(context)) }
+    var showRateDialog by remember {
+        mutableStateOf(
+            SettingsManager.hasShownAdInfoDialog(context)
+                && SettingsManager.shouldShowRateDialog(context)
+        )
+    }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
     // Smallest Width state
@@ -1435,6 +1441,49 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     }
                 ) {
                     Text(stringResource(R.string.ad_info_ok))
+                }
+            }
+        )
+    }
+
+    if (showRateDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                SettingsManager.markRateDialogLater(context)
+                showRateDialog = false
+            },
+            title = { Text(stringResource(R.string.rate_dialog_title)) },
+            text = { Text(stringResource(R.string.rate_dialog_message)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        SettingsManager.markRateDialogRated(context)
+                        showRateDialog = false
+                        try {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}"))
+                            )
+                        } catch (_: Exception) {
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
+                            )
+                        }
+                    }
+                ) {
+                    Text(stringResource(R.string.rate_dialog_rate))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        SettingsManager.markRateDialogLater(context)
+                        showRateDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Text(stringResource(R.string.rate_dialog_later))
                 }
             }
         )

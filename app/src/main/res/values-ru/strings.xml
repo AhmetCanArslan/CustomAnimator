@@ -191,4 +191,8 @@
     <string name="ad_info_title">Поддержка разработки</string>
     <string name="ad_info_message">Привет! 👋\n\nЧтобы это приложение оставалось бесплатным и продолжало развиваться, я добавил небольшие баннеры.\n\nОни появляются только внизу экрана и никогда не бывают навязчивыми.\n\nСпасибо за понимание и поддержку. ❤️</string>
     <string name="ad_info_ok">Понятно</string>
+    <string name="rate_dialog_title">Нравится приложение?</string>
+    <string name="rate_dialog_message">Если вам нравится Custom Animator, оцените его в Play Store. Ваша поддержка действительно важна!</string>
+    <string name="rate_dialog_rate">Оценить</string>
+    <string name="rate_dialog_later">Позже</string>
 </resources>
