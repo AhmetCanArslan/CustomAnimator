@@ -26,6 +26,7 @@
     <string name="nav_animation">Animación</string>
     <string name="nav_width">Ancho</string>
     <string name="nav_developer">Desarrollador</string>
+    <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Opciones del Sistema</string>
     <string name="developer_quick_actions">Acciones Rápidas</string>
     <string name="developer_performance">Rendimiento</string>
@@ -190,4 +191,21 @@ Duración del Animador: %3$.2f</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="information">Información</string>
+
+    <!-- Terminal Strings -->
+    <string name="terminal_needs_shizuku">La terminal requiere que Shizuku esté conectado.</string>
+    <string name="terminal_command_hint">Comando</string>
+    <string name="terminal_run">Ejecutar</string>
+    <string name="terminal_presets">Preajustes</string>
+    <string name="terminal_no_presets">Aún no hay preajustes guardados. Escribe un comando y toca Guardar.</string>
+    <string name="terminal_save_current">Guardar</string>
+    <string name="terminal_preset_name">Nombre del preajuste</string>
+    <string name="terminal_add_preset">Nuevo Preajuste</string>
+    <string name="terminal_edit_preset">Editar</string>
+    <string name="terminal_delete_preset">Eliminar</string>
+    <string name="terminal_preset_options">Opciones del preajuste</string>
+    <string name="terminal_output">Salida</string>
+    <string name="terminal_output_empty">Aún no hay salida.</string>
+    <string name="terminal_clear_output">Limpiar</string>
+    <string name="terminal_exit_code">salida %1$d</string>
 </resources>

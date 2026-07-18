@@ -21,6 +21,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Straighten
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -115,7 +117,7 @@ class MainActivity : ComponentActivity() {
 }
 
 enum class HomeTab {
-    ANIMATION, WIDTH, DEVELOPER
+    ANIMATION, WIDTH, DEVELOPER, TERMINAL
 }
 
 enum class HomeScreen {
@@ -158,6 +160,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
     var currentScreen by rememberSaveable { mutableStateOf(HomeScreen.MAIN) }
+    val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
@@ -386,7 +393,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     )
                 },
                 actions = {
-                    if (selectedTab != HomeTab.DEVELOPER) {
+                    if (selectedTab == HomeTab.ANIMATION || selectedTab == HomeTab.WIDTH) {
                         IconButton(
                             onClick = {
                                 if (selectedTab == HomeTab.ANIMATION) {
@@ -446,6 +453,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     label = { Text(stringResource(R.string.nav_developer)) }
                 )
+                NavigationBarItem(
+                    selected = selectedTab == HomeTab.TERMINAL,
+                    onClick = { selectedTab = HomeTab.TERMINAL },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Terminal,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.nav_terminal)) }
+                )
             }
         }
     ) { paddingValues ->
@@ -470,6 +488,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE }
+        )
+        } else if (targetTab == HomeTab.TERMINAL) {
+        TerminalScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = terminalTabListState
         )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(

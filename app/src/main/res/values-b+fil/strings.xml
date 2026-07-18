@@ -26,6 +26,7 @@
     <string name="nav_animation">Animation</string>
     <string name="nav_width">Lapad</string>
     <string name="nav_developer">Developer</string>
+    <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Mga System Toggle</string>
     <string name="developer_quick_actions">Mabilisang mga Aksyon</string>
     <string name="developer_performance">Performance</string>
@@ -190,4 +191,21 @@ Animator Duration: %3$.2f</string>
     <string name="yes">Oo</string>
     <string name="no">Hindi</string>
     <string name="information">Impormasyon</string>
+
+    <!-- Terminal Strings -->
+    <string name="terminal_needs_shizuku">Kailangan ng terminal na nakakonekta ang Shizuku.</string>
+    <string name="terminal_command_hint">Command</string>
+    <string name="terminal_run">Patakbuhin</string>
+    <string name="terminal_presets">Mga Preset</string>
+    <string name="terminal_no_presets">Wala pang naka-save na preset. Mag-type ng command at i-tap ang I-save.</string>
+    <string name="terminal_save_current">I-save</string>
+    <string name="terminal_preset_name">Pangalan ng preset</string>
+    <string name="terminal_add_preset">Bagong Preset</string>
+    <string name="terminal_edit_preset">I-edit</string>
+    <string name="terminal_delete_preset">Tanggalin</string>
+    <string name="terminal_preset_options">Mga opsyon sa preset</string>
+    <string name="terminal_output">Output</string>
+    <string name="terminal_output_empty">Wala pang output.</string>
+    <string name="terminal_clear_output">I-clear</string>
+    <string name="terminal_exit_code">exit %1$d</string>
 </resources>
