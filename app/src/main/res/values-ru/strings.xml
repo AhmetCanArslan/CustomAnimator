@@ -24,6 +24,7 @@
     <string name="nav_animation">Анимация</string>
     <string name="nav_width">Ширина</string>
     <string name="nav_developer">Разработчик</string>
+    <string name="nav_terminal">Терминал</string>
     <string name="developer_toggles">Системные переключатели</string>
     <string name="developer_quick_actions">Быстрые действия</string>
     <string name="developer_performance">Производительность</string>
@@ -195,4 +196,21 @@
     <string name="rate_dialog_message">Если вам нравится Custom Animator, оцените его в Play Store. Ваша поддержка действительно важна!</string>
     <string name="rate_dialog_rate">Оценить</string>
     <string name="rate_dialog_later">Позже</string>
+
+    <!-- Terminal Strings -->
+    <string name="terminal_needs_shizuku">Для терминала требуется подключение Shizuku.</string>
+    <string name="terminal_command_hint">Команда</string>
+    <string name="terminal_run">Выполнить</string>
+    <string name="terminal_presets">Сохранённые команды</string>
+    <string name="terminal_no_presets">Сохранённых команд пока нет. Введите команду и нажмите «Сохранить».</string>
+    <string name="terminal_save_current">Сохранить</string>
+    <string name="terminal_preset_name">Название</string>
+    <string name="terminal_add_preset">Новая команда</string>
+    <string name="terminal_edit_preset">Изменить</string>
+    <string name="terminal_delete_preset">Удалить</string>
+    <string name="terminal_preset_options">Параметры команды</string>
+    <string name="terminal_output">Вывод</string>
+    <string name="terminal_output_empty">Вывода пока нет.</string>
+    <string name="terminal_clear_output">Очистить</string>
+    <string name="terminal_exit_code">код %1$d</string>
 </resources>

@@ -24,6 +24,7 @@
     <string name="nav_animation">Animasyon</string>
     <string name="nav_width">Genişlik</string>
     <string name="nav_developer">Geliştirici</string>
+    <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Sistem Anahtarları</string>
     <string name="developer_quick_actions">Hızlı İşlemler</string>
     <string name="developer_needs_shizuku">Bu işlemler için Shizuku bağlı olmalı.</string>
@@ -195,4 +196,21 @@ Animatör Süresi: %3$.2f</string>
     <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
     <string name="rate_dialog_rate">Derecelendir</string>
     <string name="rate_dialog_later">Sonra</string>
+
+    <!-- Terminal Strings -->
+    <string name="terminal_needs_shizuku">Terminal için Shizuku bağlantısı gerekir.</string>
+    <string name="terminal_command_hint">Komut</string>
+    <string name="terminal_run">Çalıştır</string>
+    <string name="terminal_presets">Hazır Komutlar</string>
+    <string name="terminal_no_presets">Henüz kayıtlı komut yok. Bir komut yazıp Kaydet düğmesine dokunun.</string>
+    <string name="terminal_save_current">Kaydet</string>
+    <string name="terminal_preset_name">Komut adı</string>
+    <string name="terminal_add_preset">Yeni Komut</string>
+    <string name="terminal_edit_preset">Düzenle</string>
+    <string name="terminal_delete_preset">Sil</string>
+    <string name="terminal_preset_options">Komut seçenekleri</string>
+    <string name="terminal_output">Çıktı</string>
+    <string name="terminal_output_empty">Henüz çıktı yok.</string>
+    <string name="terminal_clear_output">Temizle</string>
+    <string name="terminal_exit_code">çıkış %1$d</string>
 </resources>

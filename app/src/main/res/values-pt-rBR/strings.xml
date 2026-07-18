@@ -24,6 +24,7 @@
     <string name="nav_animation">Animação</string>
     <string name="nav_width">Largura</string>
     <string name="nav_developer">Desenvolvedor</string>
+    <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Alternâncias do Sistema</string>
     <string name="developer_quick_actions">Ações Rápidas</string>
     <string name="developer_performance">Desempenho</string>
@@ -195,4 +196,21 @@ Duração do Animador: %3$.2f</string>
     <string name="rate_dialog_message">Se você gosta do Custom Animator, reserve um momento para avaliá-lo na Play Store. Seu apoio realmente faz a diferença!</string>
     <string name="rate_dialog_rate">Avaliar</string>
     <string name="rate_dialog_later">Mais tarde</string>
+
+    <!-- Terminal Strings -->
+    <string name="terminal_needs_shizuku">O terminal exige que o Shizuku esteja conectado.</string>
+    <string name="terminal_command_hint">Comando</string>
+    <string name="terminal_run">Executar</string>
+    <string name="terminal_presets">Predefinições</string>
+    <string name="terminal_no_presets">Nenhuma predefinição salva. Digite um comando e toque em Salvar.</string>
+    <string name="terminal_save_current">Salvar</string>
+    <string name="terminal_preset_name">Nome da predefinição</string>
+    <string name="terminal_add_preset">Nova Predefinição</string>
+    <string name="terminal_edit_preset">Editar</string>
+    <string name="terminal_delete_preset">Excluir</string>
+    <string name="terminal_preset_options">Opções da predefinição</string>
+    <string name="terminal_output">Saída</string>
+    <string name="terminal_output_empty">Ainda sem saída.</string>
+    <string name="terminal_clear_output">Limpar</string>
+    <string name="terminal_exit_code">saída %1$d</string>
 </resources>
