@@ -9,7 +9,6 @@
     <string name="use_manual_input">Usar Entrada Manual</string>
     <string name="use_sliders">Usar Controles Deslizantes</string>
     <string name="permission_details">Detalhes da Permissão</string>
-    <string name="source_code">Código Fonte</string>
     <string name="settings">Configurações</string>
     <string name="new_preset">Novo Preset</string>
     <string name="back">Voltar</string>
@@ -22,7 +21,6 @@
     <string name="settings_about">Sobre</string>
     <string name="settings_permission_status_granted">Permissão concedida</string>
     <string name="settings_permission_status_not_granted">Permissão não concedida</string>
-    <string name="settings_source_code_desc">Ver o projeto no GitHub</string>
     <string name="nav_animation">Animação</string>
     <string name="nav_width">Largura</string>
     <string name="nav_developer">Desenvolvedor</string>
@@ -191,6 +189,13 @@ Duração do Animador: %3$.2f</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="information">Informação</string>
+    <string name="ad_info_title">Apoie o Desenvolvimento</string>
+    <string name="ad_info_message">Olá! 👋\n\nPara manter este app gratuito e continuar melhorando-o, adicionei pequenos banners de anúncios.\n\nEles aparecem apenas na parte inferior da tela e nunca são intrusivos.\n\nObrigado pela sua compreensão e apoio. ❤️</string>
+    <string name="ad_info_ok">Entendi</string>
+    <string name="rate_dialog_title">Gostando do App?</string>
+    <string name="rate_dialog_message">Se você gosta do Custom Animator, reserve um momento para avaliá-lo na Play Store. Seu apoio realmente faz a diferença!</string>
+    <string name="rate_dialog_rate">Avaliar</string>
+    <string name="rate_dialog_later">Mais tarde</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">O terminal exige que o Shizuku esteja conectado.</string>

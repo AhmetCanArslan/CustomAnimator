@@ -9,7 +9,6 @@
     <string name="use_manual_input">Manuel Giriş Kullan</string>
     <string name="use_sliders">Kaydırıcıları Kullan</string>
     <string name="permission_details">İzin Detayları</string>
-    <string name="source_code">Kaynak Kodu</string>
     <string name="settings">Ayarlar</string>
     <string name="new_preset">Yeni Ön Ayar</string>
     <string name="back">Geri</string>
@@ -22,7 +21,6 @@
     <string name="settings_about">Hakkında</string>
     <string name="settings_permission_status_granted">İzin verildi</string>
     <string name="settings_permission_status_not_granted">İzin verilmedi</string>
-    <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
     <string name="nav_animation">Animasyon</string>
     <string name="nav_width">Genişlik</string>
     <string name="nav_developer">Geliştirici</string>
@@ -191,6 +189,13 @@ Animatör Süresi: %3$.2f</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="information">Bilgi</string>
+    <string name="ad_info_title">Geliştirmeyi Destekleyin</string>
+    <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için küçük banner reklamlar ekledim.\n\nSadece ekranın alt kısmında görünürler ve asla rahatsız edici değildirler.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
+    <string name="ad_info_ok">Anladım</string>
+    <string name="rate_dialog_title">Uygulamayı Beğendiniz mi?</string>
+    <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
+    <string name="rate_dialog_rate">Derecelendir</string>
+    <string name="rate_dialog_later">Sonra</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Terminal için Shizuku bağlantısı gerekir.</string>

@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
+
+val localProps = rootProject.file("local.properties").takeIf { it.exists() }?.let {
+    Properties().apply { load(it.inputStream()) }
+}
+
+fun propOrEnv(name: String, default: String): String {
+    return localProps?.getProperty(name) ?: System.getenv(name.replace('.', '_')) ?: default
+}
+
+val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~3347511713")
+val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
 
 android {
     namespace = "com.arslan.customanimator"
@@ -18,6 +31,9 @@ android {
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["admobAppId"] = admobAppId
+        buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
     }
 
     buildTypes {
@@ -38,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -53,6 +70,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
+    implementation(libs.play.services.ads)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -9,7 +9,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -43,7 +45,8 @@ import kotlinx.coroutines.withContext
 fun AutoForceStopScreen(
     onBack: () -> Unit,
     isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean
+    hasShizukuPermission: Boolean,
+    listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
     val manager = remember { AutoForceStopManager(context) }
@@ -125,9 +128,11 @@ fun AutoForceStopScreen(
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BannerAdView() }
     ) { paddingValues ->
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

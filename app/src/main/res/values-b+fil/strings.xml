@@ -9,7 +9,6 @@
     <string name="use_manual_input">Gamitin ang Manual na Input</string>
     <string name="use_sliders">Gamitin ang mga Slider</string>
     <string name="permission_details">Mga Detalye ng Pahintulot</string>
-    <string name="source_code">Source Code</string>
     <string name="settings">Mga Setting</string>
     <string name="new_preset">Bagong Preset</string>
     <string name="back">Bumalik</string>
@@ -22,7 +21,6 @@
     <string name="settings_about">Tungkol Dito</string>
     <string name="settings_permission_status_granted">Ipinagkaloob na ang pahintulot</string>
     <string name="settings_permission_status_not_granted">Hindi pa ipinagkaloob ang pahintulot</string>
-    <string name="settings_source_code_desc">Tingnan ang proyekto sa GitHub</string>
     <string name="nav_animation">Animation</string>
     <string name="nav_width">Lapad</string>
     <string name="nav_developer">Developer</string>
@@ -191,6 +189,13 @@ Animator Duration: %3$.2f</string>
     <string name="yes">Oo</string>
     <string name="no">Hindi</string>
     <string name="information">Impormasyon</string>
+    <string name="ad_info_title">Suportahan ang Pag-develop</string>
+    <string name="ad_info_message">Kumusta! 👋\n\nUpang panatilihing libre ang app na ito at patuloy itong pagandahin, nagdagdag ako ng maliliit na banner ad.\n\nLumilitaw lang ang mga ito sa ibaba ng screen at hindi kailanman nakakaabala.\n\nSalamat sa iyong pag-unawa at suporta. ❤️</string>
+    <string name="ad_info_ok">Naunawaan</string>
+    <string name="rate_dialog_title">Nage-enjoy ka ba sa App?</string>
+    <string name="rate_dialog_message">Kung gusto mo ang Custom Animator, maglaan ng sandali para i-rate ito sa Play Store. Malaki ang naidudulot ng iyong suporta!</string>
+    <string name="rate_dialog_rate">I-rate</string>
+    <string name="rate_dialog_later">Mamaya</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Kailangan ng terminal na nakakonekta ang Shizuku.</string>

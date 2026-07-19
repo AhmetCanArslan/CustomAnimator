@@ -10,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
@@ -46,7 +48,8 @@ fun DeveloperScreenContent(
     hasWriteSecureSettings: Boolean,
     onNavigateToAutoForceStop: () -> Unit,
     onNavigateToAutoPermissionDisabler: () -> Unit,
-    onNavigateToGraphicsApiOverride: () -> Unit
+    onNavigateToGraphicsApiOverride: () -> Unit,
+    listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
     val contentResolver = context.contentResolver
@@ -97,6 +100,7 @@ fun DeveloperScreenContent(
 
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
+            state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
