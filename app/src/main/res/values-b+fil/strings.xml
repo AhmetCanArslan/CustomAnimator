@@ -213,4 +213,6 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_output_empty">Wala pang output.</string>
     <string name="terminal_clear_output">I-clear</string>
     <string name="terminal_exit_code">exit %1$d</string>
+    <string name="source_code">Source Code</string>
+    <string name="settings_source_code_desc">Tingnan ang proyekto sa GitHub</string>
 </resources>

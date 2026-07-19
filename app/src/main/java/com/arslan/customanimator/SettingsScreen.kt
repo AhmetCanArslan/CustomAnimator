@@ -1,5 +1,7 @@
 package com.arslan.customanimator
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -116,6 +119,22 @@ fun SettingsScreen(
                         onClick = onShowPermissionDetails
                     )
                     SettingDivider()
+                }
+                if (!BuildConfig.HAS_ADS) {
+                    val context = LocalContext.current
+                    ActionSettingRow(
+                        icon = Icons.Filled.Info,
+                        title = stringResource(R.string.source_code),
+                        description = stringResource(R.string.settings_source_code_desc),
+                        onClick = {
+                            context.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.github.com/ahmetcanarslan/customanimator")
+                                )
+                            )
+                        }
+                    )
                 }
             }
 

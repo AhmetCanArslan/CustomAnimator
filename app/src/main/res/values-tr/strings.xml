@@ -213,4 +213,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="terminal_output_empty">Henüz çıktı yok.</string>
     <string name="terminal_clear_output">Temizle</string>
     <string name="terminal_exit_code">çıkış %1$d</string>
+    <string name="source_code">Kaynak Kodu</string>
+    <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
 </resources>

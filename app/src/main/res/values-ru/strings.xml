@@ -213,4 +213,6 @@
     <string name="terminal_output_empty">Вывода пока нет.</string>
     <string name="terminal_clear_output">Очистить</string>
     <string name="terminal_exit_code">код %1$d</string>
+    <string name="source_code">Исходный код</string>
+    <string name="settings_source_code_desc">Посмотреть проект на GitHub</string>
 </resources>

@@ -27,10 +27,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomAnimator">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${admobAppId}" />
-
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
             android:authorities="${applicationId}.shizuku"

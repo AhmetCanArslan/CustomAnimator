@@ -31,9 +31,20 @@ android {
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
-        manifestPlaceholders["admobAppId"] = admobAppId
-        buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("github") {
+            dimension = "distribution"
+            buildConfigField("boolean", "HAS_ADS", "false")
+        }
+        create("playstore") {
+            dimension = "distribution"
+            buildConfigField("boolean", "HAS_ADS", "true")
+            manifestPlaceholders["admobAppId"] = admobAppId
+            buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
+        }
     }
 
     buildTypes {
@@ -70,7 +81,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
-    implementation(libs.play.services.ads)
+    "playstoreImplementation"(libs.play.services.ads)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

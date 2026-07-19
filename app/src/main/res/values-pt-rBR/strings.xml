@@ -213,4 +213,6 @@ Duração do Animador: %3$.2f</string>
     <string name="terminal_output_empty">Ainda sem saída.</string>
     <string name="terminal_clear_output">Limpar</string>
     <string name="terminal_exit_code">saída %1$d</string>
+    <string name="source_code">Código Fonte</string>
+    <string name="settings_source_code_desc">Ver o projeto no GitHub</string>
 </resources>

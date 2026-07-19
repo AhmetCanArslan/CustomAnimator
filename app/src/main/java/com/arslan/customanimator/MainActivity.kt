@@ -63,49 +63,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.viewinterop.AndroidView
-import android.util.Log
 import com.arslan.customanimator.R
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-
-private val BANNER_AD_UNIT_ID: String
-    get() = if (BuildConfig.DEBUG) {
-        "ca-app-pub-3940256099942544/6300978111"
-    } else {
-        BuildConfig.BANNER_AD_UNIT_ID
-    }
-
-@Composable
-fun BannerAdView() {
-    AndroidView(
-        modifier = Modifier.fillMaxWidth(),
-        factory = { context ->
-            val widthPx = context.resources.displayMetrics.widthPixels
-            val density = context.resources.displayMetrics.density
-            val adWidth = (widthPx / density).toInt()
-            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
-            AdView(context).apply {
-                setAdSize(adSize)
-                adUnitId = BANNER_AD_UNIT_ID
-                adListener = object : AdListener() {
-                    override fun onAdLoaded() {
-                        Log.d("BannerAd", "Ad loaded successfully")
-                    }
-                    override fun onAdFailedToLoad(error: LoadAdError) {
-                        Log.e("BannerAd", "Ad failed to load: ${error.code} ${error.message}")
-                    }
-                }
-                loadAd(AdRequest.Builder().build())
-            }
-        }
-    )
-}
 
 class MainActivity : ComponentActivity() {
     private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
@@ -118,7 +76,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        MobileAds.initialize(this)
+        initAds(this)
 
         // Add Shizuku listener
         Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
@@ -217,10 +175,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
-    var showAdInfoDialog by remember { mutableStateOf(!SettingsManager.hasShownAdInfoDialog(context)) }
+    // Ad disclosure and Play Store rating prompts only ship in the playstore flavor.
+    var showAdInfoDialog by remember {
+        mutableStateOf(BuildConfig.HAS_ADS && !SettingsManager.hasShownAdInfoDialog(context))
+    }
     var showRateDialog by remember {
         mutableStateOf(
-            SettingsManager.hasShownAdInfoDialog(context)
+            BuildConfig.HAS_ADS
+                && SettingsManager.hasShownAdInfoDialog(context)
                 && SettingsManager.shouldShowRateDialog(context)
         )
     }

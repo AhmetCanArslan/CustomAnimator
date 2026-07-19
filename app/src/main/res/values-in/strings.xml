@@ -213,4 +213,6 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_output_empty">Belum ada keluaran.</string>
     <string name="terminal_clear_output">Bersihkan</string>
     <string name="terminal_exit_code">keluar %1$d</string>
+    <string name="source_code">Kode Sumber</string>
+    <string name="settings_source_code_desc">Lihat proyek di GitHub</string>
 </resources>
