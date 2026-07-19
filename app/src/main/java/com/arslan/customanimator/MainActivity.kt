@@ -545,6 +545,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = terminalTabListState
         )
+        } else if (targetTab == HomeTab.TERMINAL) {
+        TerminalScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = terminalTabListState
+        )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
             modifier = Modifier
