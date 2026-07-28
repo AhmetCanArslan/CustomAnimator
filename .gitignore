@@ -10,3 +10,5 @@
 local.properties
 app/release/
 .idea/.gitignore
+app/playstore/release/
+app/github/release/
