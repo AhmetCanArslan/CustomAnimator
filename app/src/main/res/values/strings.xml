@@ -215,4 +215,16 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_exit_code">exit %1$d</string>
     <string name="source_code">Source Code</string>
     <string name="settings_source_code_desc">View the project on GitHub</string>
+    <string name="developer_tweaks">Tweaks</string>
+    <string name="disable_keyboard_animation">Disable Keyboard Animation</string>
+    <string name="disable_keyboard_animation_desc">Turn off the fancy keyboard opening animation (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Show Clock Seconds</string>
+    <string name="show_clock_seconds_desc">Display seconds in the status bar clock</string>
+    <string name="lock_screen_rotation">Lock Screen Rotation</string>
+    <string name="lock_screen_rotation_desc">Fix screen rotation to a user-selected orientation</string>
+    <string name="rotation_orientation">Orientation</string>
+    <string name="rotation_portrait">Portrait (0°)</string>
+    <string name="rotation_landscape_90">Landscape (90° left)</string>
+    <string name="rotation_reverse_portrait">Reverse Portrait (180°)</string>
+    <string name="rotation_landscape_270">Landscape (90° right)</string>
 </resources>

@@ -60,6 +60,11 @@ fun DeveloperScreenContent(
     var dontKeepActivities by remember { mutableStateOf(DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)) }
     var limitBackgroundProcesses by remember { mutableStateOf(DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)) }
 
+    var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
+    var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
+    var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
+    var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
+
     var isBusy by remember { mutableStateOf(false) }
     var showClearCachesConfirm by remember { mutableStateOf(false) }
     var showCloseAppsConfirm by remember { mutableStateOf(false) }
@@ -275,6 +280,76 @@ fun DeveloperScreenContent(
                             description = stringResource(R.string.graphics_api_override_desc),
                             onClick = onNavigateToGraphicsApiOverride
                         )
+                    }
+                }
+            }
+
+            item {
+                DevSectionTitle(stringResource(R.string.developer_tweaks))
+            }
+
+            item {
+                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    Column {
+                        ToggleRow(
+                            title = stringResource(R.string.disable_keyboard_animation),
+                            description = stringResource(R.string.disable_keyboard_animation_desc),
+                            checked = fancyImeDisabled,
+                            enabled = toggleActionsEnabled,
+                            onCheckedChange = { newValue ->
+                                val previous = fancyImeDisabled
+                                fancyImeDisabled = newValue
+                                if (!DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue)) {
+                                    fancyImeDisabled = previous
+                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.show_clock_seconds),
+                            description = stringResource(R.string.show_clock_seconds_desc),
+                            checked = clockSecondsEnabled,
+                            enabled = toggleActionsEnabled,
+                            onCheckedChange = { newValue ->
+                                val previous = clockSecondsEnabled
+                                clockSecondsEnabled = newValue
+                                if (!DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue)) {
+                                    clockSecondsEnabled = previous
+                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.lock_screen_rotation),
+                            description = stringResource(R.string.lock_screen_rotation_desc),
+                            checked = isRotationLocked,
+                            enabled = toggleActionsEnabled,
+                            onCheckedChange = { newValue ->
+                                val previous = isRotationLocked
+                                isRotationLocked = newValue
+                                if (!DeveloperOptionsManager.setAutoRotation(context, contentResolver, !newValue)) {
+                                    isRotationLocked = previous
+                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        )
+                        if (isRotationLocked) {
+                            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                            RotationSelector(
+                                currentRotation = userRotation,
+                                enabled = toggleActionsEnabled,
+                                onRotationSelected = { rotation ->
+                                    val previous = userRotation
+                                    userRotation = rotation
+                                    if (!DeveloperOptionsManager.setUserRotation(context, contentResolver, rotation)) {
+                                        userRotation = previous
+                                        Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -541,6 +616,52 @@ private fun CompileBoosterRow(
         } else {
             Button(onClick = onClick, enabled = enabled) {
                 Text(stringResource(R.string.compile_all_apps), fontSize = 12.sp)
+            }
+        }
+    }
+}
+
+@Composable
+private fun RotationSelector(
+    currentRotation: Int,
+    enabled: Boolean,
+    onRotationSelected: (Int) -> Unit
+) {
+    val rotations = listOf(
+        0 to stringResource(R.string.rotation_portrait),
+        1 to stringResource(R.string.rotation_landscape_90),
+        2 to stringResource(R.string.rotation_reverse_portrait),
+        3 to stringResource(R.string.rotation_landscape_270)
+    )
+
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Text(
+            text = stringResource(R.string.rotation_orientation).uppercase(),
+            fontSize = 11.sp,
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.5.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        rotations.forEach { (value, label) ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable(enabled = enabled) { onRotationSelected(value) }
+                    .padding(vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = currentRotation == value,
+                    onClick = { if (enabled) onRotationSelected(value) },
+                    enabled = enabled
+                )
+                Text(
+                    text = label,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
             }
         }
     }

@@ -34,6 +34,30 @@ object DeveloperOptionsManager {
         }
     }
 
+    private fun putSecureInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
+        if (ShizukuHelper.hasShizukuPermission()) {
+            val success = ShizukuHelper.executeShellCommand(arrayOf("settings", "put", "secure", key, value.toString()))
+            if (success) return true
+        }
+        return try {
+            Settings.Secure.putInt(contentResolver, key, value)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun putSystemInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
+        if (ShizukuHelper.hasShizukuPermission()) {
+            val success = ShizukuHelper.executeShellCommand(arrayOf("settings", "put", "system", key, value.toString()))
+            if (success) return true
+        }
+        return try {
+            Settings.System.putInt(contentResolver, key, value)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     // USB debugging
     fun isAdbEnabled(contentResolver: ContentResolver): Boolean {
         return try {
@@ -118,6 +142,62 @@ object DeveloperOptionsManager {
     }
 
     // Graphics API Override (per-app ANGLE driver selection)
+    private const val FANCY_IME_ANIMATIONS_KEY = "fancy_ime_animations"
+    private const val CLOCK_SECONDS_KEY = "clock_seconds"
+    private const val ACCELEROMETER_ROTATION_KEY = "accelerometer_rotation"
+    private const val USER_ROTATION_KEY = "user_rotation"
+
+    fun isFancyImeAnimationsDisabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Secure.getInt(contentResolver, FANCY_IME_ANIMATIONS_KEY, 1) == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setFancyImeAnimations(context: Context, contentResolver: ContentResolver, disabled: Boolean): Boolean {
+        return putSecureInt(context, contentResolver, FANCY_IME_ANIMATIONS_KEY, if (disabled) 0 else 1)
+    }
+
+    fun isClockSecondsEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Secure.getInt(contentResolver, CLOCK_SECONDS_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setClockSeconds(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isAutoRotationEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.System.getInt(contentResolver, ACCELEROMETER_ROTATION_KEY, 1) == 1
+        } catch (e: Exception) {
+            true
+        }
+    }
+
+    fun setAutoRotation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        if (ShizukuHelper.hasShizukuPermission() && !enabled) {
+            ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "enabled"))
+        }
+        return putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, if (enabled) 1 else 0)
+    }
+
+    fun getUserRotation(contentResolver: ContentResolver): Int {
+        return try {
+            Settings.System.getInt(contentResolver, USER_ROTATION_KEY, 0)
+        } catch (e: Exception) {
+            0
+        }
+    }
+
+    fun setUserRotation(context: Context, contentResolver: ContentResolver, rotation: Int): Boolean {
+        return putSystemInt(context, contentResolver, USER_ROTATION_KEY, rotation.coerceIn(0, 3))
+    }
+
     private const val ANGLE_PKGS_KEY = "angle_gl_driver_selection_pkgs"
     private const val ANGLE_VALUES_KEY = "angle_gl_driver_selection_values"
 

@@ -215,4 +215,16 @@ Animatör Süresi: %3$.2f</string>
     <string name="terminal_exit_code">çıkış %1$d</string>
     <string name="source_code">Kaynak Kodu</string>
     <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
+    <string name="developer_tweaks">İnce Ayarlar</string>
+    <string name="disable_keyboard_animation">Klavye Animasyonunu Kapat</string>
+    <string name="disable_keyboard_animation_desc">Klavye açılış animasyonunu kapatır (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Saatte Saniye Göster</string>
+    <string name="show_clock_seconds_desc">Durum çubuğu saatinde saniyeyi gösterir</string>
+    <string name="lock_screen_rotation">Ekran Döndürmeyi Kilitle</string>
+    <string name="lock_screen_rotation_desc">Ekran döndürmeyi kullanıcı tercihine kilitler</string>
+    <string name="rotation_orientation">Yön</string>
+    <string name="rotation_portrait">Dikey (0°)</string>
+    <string name="rotation_landscape_90">Yatay (90° sol)</string>
+    <string name="rotation_reverse_portrait">Ters Dikey (180°)</string>
+    <string name="rotation_landscape_270">Yatay (90° sağ)</string>
 </resources>
