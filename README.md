@@ -8,6 +8,19 @@ Custom Animator is an Android tweaking app for things Android normally buries in
   </a>
 </div>
 
+## Screenshots
+
+<div align="center">
+  <img src="docs/screenshots/screenshot-1.png" width="24%" alt="Animation scale control with presets">
+  <img src="docs/screenshots/screenshot-2.png" width="24%" alt="DPI and smallest width settings">
+  <img src="docs/screenshots/screenshot-3.png" width="24%" alt="Developer options and quick actions">
+  <img src="docs/screenshots/screenshot-4.png" width="24%" alt="Compile Booster and Graphics API Override">
+  <br>
+  <img src="docs/screenshots/screenshot-5.png" width="24%" alt="Extra tweaks and screen rotation lock">
+  <img src="docs/screenshots/screenshot-6.png" width="24%" alt="Built-in terminal with command presets">
+  <img src="docs/screenshots/screenshot-7.png" width="24%" alt="Settings: simple/advanced mode and input method">
+</div>
+
 ## Animation & Display
 
 - **Precise Control**: Set animation scales to any value, not just the standard 0.5x, 1x, 1.5x steps.
@@ -49,20 +62,6 @@ The background features ask for a few extra permissions only when you enable the
 
 - `PACKAGE_USAGE_STATS` — detect when a monitored app moves to the background (Auto Force-Stop, Auto Permission Disabler).
 - `FOREGROUND_SERVICE` / `POST_NOTIFICATIONS` — keep those background services alive and show their ongoing notification.
-
-## Building
-
-Requires JDK 11+ and Android SDK 36 (minSdk 24). Two product flavors:
-
-| Flavor | Notes |
-| --- | --- |
-| `github` | Ad-free build, distributed here on GitHub. |
-| `playstore` | Play Store build, includes AdMob banners. Needs `admobAppId` / `admobBannerId` in `local.properties`. |
-
-```bash
-./gradlew assembleGithubRelease
-```
-
 
 ## Support
 
