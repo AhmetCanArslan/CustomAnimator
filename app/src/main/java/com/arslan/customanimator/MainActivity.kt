@@ -104,6 +104,8 @@ class MainActivity : ComponentActivity() {
     
     override fun onResume() {
         super.onResume()
+        preloadInterstitial(this)
+
         // Check if Shizuku permission was granted and try to grant WRITE_SECURE_SETTINGS
         if (ShizukuHelper.hasShizukuPermission()) {
             val hasSecureSettings = ContextCompat.checkSelfPermission(
@@ -261,7 +263,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
             isApplyingSettings = false
             result.fold(
-                onSuccess = { success -> if (success) onSuccess() else showDefaultShizukuRecommendation() },
+                onSuccess = { success ->
+                    if (success) {
+                        onSuccess()
+                        maybeShowInterstitial(context)
+                    } else {
+                        showDefaultShizukuRecommendation()
+                    }
+                },
                 onFailure = { e -> showPermissionError(e.message ?: context.getString(R.string.unknown_error)) }
             )
         }
@@ -1251,6 +1260,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                                     onSuccess = { success ->
                                                         if (success) {
                                                             Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                                            maybeShowInterstitial(context)
                                                         } else {
                                                             showDefaultShizukuRecommendation()
                                                         }

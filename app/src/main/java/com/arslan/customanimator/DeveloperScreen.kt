@@ -129,7 +129,9 @@ fun DeveloperScreenContent(
         setState(newValue)
         coroutineScope.launch {
             val success = withContext(Dispatchers.IO) { action() }
-            if (!success) {
+            if (success) {
+                maybeShowInterstitial(context)
+            } else {
                 setState(!newValue)
                 Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }

@@ -16,6 +16,7 @@ fun propOrEnv(name: String, default: String): String {
 
 val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~3347511713")
 val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
+val admobInterstitialId = propOrEnv("admob.interstitial.id", "ca-app-pub-3940256099942544/1033173712")
 
 android {
     namespace = "com.arslan.customanimator"
@@ -44,6 +45,7 @@ android {
             buildConfigField("boolean", "HAS_ADS", "true")
             manifestPlaceholders["admobAppId"] = admobAppId
             buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
+            buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
         }
     }
 
