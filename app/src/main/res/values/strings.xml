@@ -227,4 +227,31 @@ Animator Duration: %3$.2f</string>
     <string name="rotation_landscape_90">Landscape (90° left)</string>
     <string name="rotation_reverse_portrait">Reverse Portrait (180°)</string>
     <string name="rotation_landscape_270">Landscape (90° right)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Exclusion List</string>
+    <string name="close_apps_exclusions_desc">Pick apps that "Close background apps" should never force-stop</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
+    <string name="compile_all_apps_short">Compile</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">Reset Rotation</string>
+    <string name="reset_rotation_desc">Restores auto-rotate and clears the forced orientation override</string>
+    <string name="reset">Reset</string>
+    <string name="restart_system_ui">Restart System UI</string>
+    <string name="restart_system_ui_desc">Some devices only apply status bar tweaks after System UI restarts</string>
+    <string name="restart">Restart</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Backup &amp; Recovery</string>
+    <string name="backup_app_data">Backup App Data</string>
+    <string name="backup_app_data_desc">Saves presets and app lists to a JSON file</string>
+    <string name="backup_saved">Backup saved</string>
+    <string name="restore_app_data">Restore App Data</string>
+    <string name="restore_app_data_desc">Loads presets and app lists from a backup file</string>
+    <string name="restore_done">Backup restored — reopen the app to see it</string>
+    <string name="restore_failed">Could not read that backup file</string>
+    <string name="revert_everything">Revert Everything</string>
+    <string name="revert_everything_desc">Undoes every system change made by this app</string>
+    <string name="revert_everything_confirm">This restores animation scales, screen width, rotation, tweaks and graphics overrides to their defaults, re-grants permissions taken by the auto permission disabler and stops background services. Your presets and app lists are kept.</string>
+    <string name="revert_everything_done">Everything reverted to defaults</string>
+    <string name="revert_everything_partial">Some settings could not be reverted</string>
+    <string name="show_clock_seconds_samsung_note">Note: on some Samsung (One UI) devices this setting is ignored by the system and the seconds may not appear, even if the toggle stays on. Try restarting System UI below.</string>
 </resources>

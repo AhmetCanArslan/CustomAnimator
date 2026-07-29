@@ -215,4 +215,43 @@ Duración del Animador: %3$.2f</string>
     <string name="terminal_exit_code">salida %1$d</string>
     <string name="source_code">Código Fuente</string>
     <string name="settings_source_code_desc">Ver el proyecto en GitHub</string>
+    <string name="developer_tweaks">Ajustes</string>
+    <string name="disable_keyboard_animation">Desactivar animación del teclado</string>
+    <string name="disable_keyboard_animation_desc">Apaga la animación de apertura del teclado (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Mostrar segundos en el reloj</string>
+    <string name="show_clock_seconds_desc">Muestra los segundos en el reloj de la barra de estado</string>
+    <string name="lock_screen_rotation">Bloquear rotación de pantalla</string>
+    <string name="lock_screen_rotation_desc">Fija la pantalla en la orientación que elijas</string>
+    <string name="rotation_orientation">Orientación</string>
+    <string name="rotation_portrait">Vertical (0°)</string>
+    <string name="rotation_landscape_90">Horizontal (90° izquierda)</string>
+    <string name="rotation_reverse_portrait">Vertical invertida (180°)</string>
+    <string name="rotation_landscape_270">Horizontal (90° derecha)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Lista de exclusiones</string>
+    <string name="close_apps_exclusions_desc">Elige las apps que “Cerrar apps en segundo plano” nunca debe forzar a detenerse</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) excluidas del cierre</string>
+    <string name="compile_all_apps_short">Compilar</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">Restablecer rotación</string>
+    <string name="reset_rotation_desc">Restaura la rotación automática y quita la orientación forzada</string>
+    <string name="reset">Restablecer</string>
+    <string name="restart_system_ui">Reiniciar System UI</string>
+    <string name="restart_system_ui_desc">Algunos dispositivos solo aplican los ajustes de la barra de estado tras reiniciar System UI</string>
+    <string name="restart">Reiniciar</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Copia de seguridad y recuperación</string>
+    <string name="backup_app_data">Copia de seguridad de datos</string>
+    <string name="backup_app_data_desc">Guarda los ajustes preestablecidos y las listas de apps en un archivo JSON</string>
+    <string name="backup_saved">Copia de seguridad guardada</string>
+    <string name="restore_app_data">Restaurar datos</string>
+    <string name="restore_app_data_desc">Carga los ajustes preestablecidos y las listas de apps desde una copia de seguridad</string>
+    <string name="restore_done">Copia restaurada: vuelve a abrir la app para verla</string>
+    <string name="restore_failed">No se pudo leer ese archivo de copia de seguridad</string>
+    <string name="revert_everything">Revertir todo</string>
+    <string name="revert_everything_desc">Deshace todos los cambios de sistema hechos por esta app</string>
+    <string name="revert_everything_confirm">Esto restaura las escalas de animación, el ancho de pantalla, la rotación, los ajustes y las anulaciones gráficas a sus valores predeterminados, devuelve los permisos que quitó el desactivador automático y detiene los servicios en segundo plano. Tus ajustes preestablecidos y listas de apps se conservan.</string>
+    <string name="revert_everything_done">Todo revertido a los valores predeterminados</string>
+    <string name="revert_everything_partial">Algunos ajustes no se pudieron revertir</string>
+    <string name="show_clock_seconds_samsung_note">Nota: en algunos dispositivos Samsung (One UI) el sistema ignora este ajuste y puede que los segundos no aparezcan, aunque el interruptor siga activado. Prueba a reiniciar System UI más abajo.</string>
 </resources>

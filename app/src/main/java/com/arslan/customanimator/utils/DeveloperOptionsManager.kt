@@ -159,16 +159,36 @@ object DeveloperOptionsManager {
         return putSecureInt(context, contentResolver, FANCY_IME_ANIMATIONS_KEY, if (disabled) 0 else 1)
     }
 
+    // One UI ignores the AOSP secure key and keeps its own flag in the System table instead.
+    private const val ONEUI_CLOCK_SECONDS_KEY = "clockshow_second"
+
+    fun isOneUi(): Boolean = android.os.Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+
     fun isClockSecondsEnabled(contentResolver: ContentResolver): Boolean {
         return try {
-            Settings.Secure.getInt(contentResolver, CLOCK_SECONDS_KEY, 0) == 1
+            if (isOneUi() && Settings.System.getInt(contentResolver, ONEUI_CLOCK_SECONDS_KEY, -1) != -1) {
+                Settings.System.getInt(contentResolver, ONEUI_CLOCK_SECONDS_KEY, 0) == 1
+            } else {
+                Settings.Secure.getInt(contentResolver, CLOCK_SECONDS_KEY, 0) == 1
+            }
         } catch (e: Exception) {
             false
         }
     }
 
     fun setClockSeconds(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
-        return putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, if (enabled) 1 else 0)
+        val value = if (enabled) 1 else 0
+        val secure = putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, value)
+        if (!isOneUi()) return secure
+        // Write both keys on Samsung: which one SystemUI reads varies across One UI versions.
+        val system = putSystemInt(context, contentResolver, ONEUI_CLOCK_SECONDS_KEY, value)
+        return secure || system
+    }
+
+    /** Restarts SystemUI so status-bar tweaks that are only read at boot take effect. */
+    fun restartSystemUi(): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("killall", "com.android.systemui")) ||
+            ShizukuHelper.executeShellCommand(arrayOf("am", "crash", "com.android.systemui"))
     }
 
     fun isAutoRotationEnabled(contentResolver: ContentResolver): Boolean {
@@ -180,10 +200,28 @@ object DeveloperOptionsManager {
     }
 
     fun setAutoRotation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
-        if (ShizukuHelper.hasShizukuPermission() && !enabled) {
-            ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "enabled"))
+        if (ShizukuHelper.hasShizukuPermission()) {
+            // This override has to be undone when unlocking. Leaving it enabled pins the display to
+            // user_rotation forever, which is what strands devices in landscape.
+            ShizukuHelper.executeShellCommand(
+                arrayOf("wm", "set-fix-to-user-rotation", if (enabled) "disabled" else "enabled")
+            )
         }
         return putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, if (enabled) 1 else 0)
+    }
+
+    /**
+     * Puts rotation back to stock: drops the fix-to-user-rotation override, restores auto-rotate
+     * and resets the locked orientation to portrait. Recovery path for devices stuck in landscape.
+     */
+    fun resetRotation(context: Context, contentResolver: ContentResolver): Boolean {
+        if (ShizukuHelper.hasShizukuPermission()) {
+            ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "disabled"))
+            ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "system", "user_rotation"))
+        }
+        val rotation = putSystemInt(context, contentResolver, USER_ROTATION_KEY, 0)
+        val auto = putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, 1)
+        return rotation && auto
     }
 
     fun getUserRotation(contentResolver: ContentResolver): Int {
@@ -213,6 +251,12 @@ object DeveloperOptionsManager {
         } catch (e: Exception) {
             emptyMap()
         }
+    }
+
+    fun clearAngleDriverSelections(context: Context, contentResolver: ContentResolver): Boolean {
+        val pkgs = putGlobalString(context, contentResolver, ANGLE_PKGS_KEY, null)
+        val values = putGlobalString(context, contentResolver, ANGLE_VALUES_KEY, null)
+        return pkgs && values
     }
 
     fun setAngleDriverSelection(

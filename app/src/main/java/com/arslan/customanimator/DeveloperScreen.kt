@@ -14,8 +14,12 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Shield
@@ -33,12 +37,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.service.CompileBoosterService
+import com.arslan.customanimator.utils.CloseAppsExclusionManager
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private enum class QuickAction { CLEAR_CACHES, CLOSE_APPS }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,6 +56,7 @@ fun DeveloperScreenContent(
     onNavigateToAutoForceStop: () -> Unit,
     onNavigateToAutoPermissionDisabler: () -> Unit,
     onNavigateToGraphicsApiOverride: () -> Unit,
+    onNavigateToCloseAppsExclusions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -65,10 +73,33 @@ fun DeveloperScreenContent(
     var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
     var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
 
-    var isBusy by remember { mutableStateOf(false) }
+    // Tracks which quick action is running so only that row shows its busy state.
+    var runningAction by remember { mutableStateOf<QuickAction?>(null) }
+    val isBusy = runningAction != null
     var showClearCachesConfirm by remember { mutableStateOf(false) }
     var showCloseAppsConfirm by remember { mutableStateOf(false) }
     var showCompileAllConfirm by remember { mutableStateOf(false) }
+
+    // Re-read the real system values on resume: they can change behind this screen's back
+    // (Revert Everything, system Settings, another app), and a stale switch would write the
+    // wrong value on the next tap.
+    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                adbEnabled = DeveloperOptionsManager.isAdbEnabled(contentResolver)
+                adbWifiEnabled = DeveloperOptionsManager.isAdbWifiEnabled(contentResolver)
+                dontKeepActivities = DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)
+                limitBackgroundProcesses = DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
+                fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
+                clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
+                isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
+                userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     val compileProgress by CompileBoosterProgressTracker.progress.collectAsState()
 
@@ -90,11 +121,26 @@ fun DeveloperScreenContent(
         CompileBoosterService.start(context)
     }
 
-    val runAction: (() -> Boolean, Int) -> Unit = { action, successMessageRes ->
-        isBusy = true
+    /**
+     * Flips a toggle optimistically and writes the setting off the main thread — every write goes
+     * through a blocking Shizuku binder call, which stalls the UI (and can ANR) if run inline.
+     */
+    val applyToggle: (Boolean, (Boolean) -> Unit, () -> Boolean) -> Unit = { newValue, setState, action ->
+        setState(newValue)
         coroutineScope.launch {
             val success = withContext(Dispatchers.IO) { action() }
-            isBusy = false
+            if (!success) {
+                setState(!newValue)
+                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    val runAction: (QuickAction, () -> Boolean, Int) -> Unit = { which, action, successMessageRes ->
+        runningAction = which
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) { action() }
+            runningAction = null
             Toast.makeText(
                 context,
                 context.getString(if (success) successMessageRes else R.string.action_failed),
@@ -150,12 +196,11 @@ fun DeveloperScreenContent(
                             checked = adbEnabled,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = adbEnabled
-                                adbEnabled = newValue
-                                if (!DeveloperOptionsManager.setAdbEnabled(context, contentResolver, newValue)) {
-                                    adbEnabled = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                }
+                                applyToggle(
+                                    newValue,
+                                    { adbEnabled = it },
+                                    { DeveloperOptionsManager.setAdbEnabled(context, contentResolver, newValue) }
+                                )
                             }
                         )
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -166,12 +211,11 @@ fun DeveloperScreenContent(
                                 checked = adbWifiEnabled,
                                 enabled = toggleActionsEnabled,
                                 onCheckedChange = { newValue ->
-                                    val previous = adbWifiEnabled
-                                    adbWifiEnabled = newValue
-                                    if (!DeveloperOptionsManager.setAdbWifiEnabled(context, contentResolver, newValue)) {
-                                        adbWifiEnabled = previous
-                                        Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                    }
+                                    applyToggle(
+                                        newValue,
+                                        { adbWifiEnabled = it },
+                                        { DeveloperOptionsManager.setAdbWifiEnabled(context, contentResolver, newValue) }
+                                    )
                                 }
                             )
                         }
@@ -182,12 +226,11 @@ fun DeveloperScreenContent(
                             checked = dontKeepActivities,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = dontKeepActivities
-                                dontKeepActivities = newValue
-                                if (!DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, newValue)) {
-                                    dontKeepActivities = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                }
+                                applyToggle(
+                                    newValue,
+                                    { dontKeepActivities = it },
+                                    { DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, newValue) }
+                                )
                             }
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
@@ -197,12 +240,11 @@ fun DeveloperScreenContent(
                             checked = limitBackgroundProcesses,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = limitBackgroundProcesses
-                                limitBackgroundProcesses = newValue
-                                if (!DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, newValue)) {
-                                    limitBackgroundProcesses = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                }
+                                applyToggle(
+                                    newValue,
+                                    { limitBackgroundProcesses = it },
+                                    { DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, newValue) }
+                                )
                             }
                         )
                     }
@@ -221,6 +263,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.clear_all_app_caches),
                             description = stringResource(R.string.clear_all_app_caches_desc),
                             enabled = actionsEnabled,
+                            isRunning = runningAction == QuickAction.CLEAR_CACHES,
                             onClick = { showClearCachesConfirm = true }
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
@@ -229,7 +272,15 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.close_background_apps),
                             description = stringResource(R.string.close_background_apps_desc),
                             enabled = actionsEnabled,
+                            isRunning = runningAction == QuickAction.CLOSE_APPS,
                             onClick = { showCloseAppsConfirm = true }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Block,
+                            title = stringResource(R.string.close_apps_exclusions),
+                            description = stringResource(R.string.close_apps_exclusions_desc),
+                            onClick = onNavigateToCloseAppsExclusions
                         )
                     }
                 }
@@ -297,12 +348,11 @@ fun DeveloperScreenContent(
                             checked = fancyImeDisabled,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = fancyImeDisabled
-                                fancyImeDisabled = newValue
-                                if (!DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue)) {
-                                    fancyImeDisabled = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                }
+                                applyToggle(
+                                    newValue,
+                                    { fancyImeDisabled = it },
+                                    { DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue) }
+                                )
                             }
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
@@ -312,11 +362,39 @@ fun DeveloperScreenContent(
                             checked = clockSecondsEnabled,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = clockSecondsEnabled
-                                clockSecondsEnabled = newValue
-                                if (!DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue)) {
-                                    clockSecondsEnabled = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                applyToggle(
+                                    newValue,
+                                    { clockSecondsEnabled = it },
+                                    { DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                        if (DeveloperOptionsManager.isOneUi()) {
+                            // One UI keeps its own clock-seconds flag and some builds ignore both
+                            // keys entirely, so warn instead of letting the toggle look broken.
+                            InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note))
+                        }
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        // One UI (and some other skins) only pick up the clock-seconds flag when
+                        // SystemUI restarts.
+                        ActionRow(
+                            icon = Icons.Filled.RestartAlt,
+                            title = stringResource(R.string.restart_system_ui),
+                            description = stringResource(R.string.restart_system_ui_desc),
+                            buttonLabel = stringResource(R.string.restart),
+                            enabled = hasShizukuPermission,
+                            onClick = {
+                                coroutineScope.launch {
+                                    val success = withContext(Dispatchers.IO) {
+                                        DeveloperOptionsManager.restartSystemUi()
+                                    }
+                                    if (!success) {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.action_failed),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                 }
                             }
                         )
@@ -327,12 +405,11 @@ fun DeveloperScreenContent(
                             checked = isRotationLocked,
                             enabled = toggleActionsEnabled,
                             onCheckedChange = { newValue ->
-                                val previous = isRotationLocked
-                                isRotationLocked = newValue
-                                if (!DeveloperOptionsManager.setAutoRotation(context, contentResolver, !newValue)) {
-                                    isRotationLocked = previous
-                                    Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                }
+                                applyToggle(
+                                    newValue,
+                                    { isRotationLocked = it },
+                                    { DeveloperOptionsManager.setAutoRotation(context, contentResolver, !newValue) }
+                                )
                             }
                         )
                         if (isRotationLocked) {
@@ -343,13 +420,42 @@ fun DeveloperScreenContent(
                                 onRotationSelected = { rotation ->
                                     val previous = userRotation
                                     userRotation = rotation
-                                    if (!DeveloperOptionsManager.setUserRotation(context, contentResolver, rotation)) {
-                                        userRotation = previous
-                                        Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                    coroutineScope.launch {
+                                        val success = withContext(Dispatchers.IO) {
+                                            DeveloperOptionsManager.setUserRotation(context, contentResolver, rotation)
+                                        }
+                                        if (!success) {
+                                            userRotation = previous
+                                            Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                             )
                         }
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        // Escape hatch: some devices keep honouring the rotation override after the
+                        // toggle is turned off, leaving the screen stuck in one orientation.
+                        ActionRow(
+                            icon = Icons.Filled.ScreenRotation,
+                            title = stringResource(R.string.reset_rotation),
+                            description = stringResource(R.string.reset_rotation_desc),
+                            buttonLabel = stringResource(R.string.reset),
+                            enabled = toggleActionsEnabled,
+                            onClick = {
+                                coroutineScope.launch {
+                                    val success = withContext(Dispatchers.IO) {
+                                        DeveloperOptionsManager.resetRotation(context, contentResolver)
+                                    }
+                                    isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
+                                    userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
+                                    Toast.makeText(
+                                        context,
+                                        context.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        )
                     }
                 }
             }
@@ -368,7 +474,11 @@ fun DeveloperScreenContent(
             confirmButton = {
                 Button(onClick = {
                     showClearCachesConfirm = false
-                    runAction({ DeveloperOptionsManager.clearAllAppCaches() }, R.string.action_succeeded)
+                    runAction(
+                        QuickAction.CLEAR_CACHES,
+                        { DeveloperOptionsManager.clearAllAppCaches() },
+                        R.string.action_succeeded
+                    )
                 }) {
                     Text(stringResource(R.string.clear_all_app_caches))
                 }
@@ -392,13 +502,16 @@ fun DeveloperScreenContent(
             confirmButton = {
                 Button(onClick = {
                     showCloseAppsConfirm = false
-                    isBusy = true
+                    runningAction = QuickAction.CLOSE_APPS
                     coroutineScope.launch {
                         val closedCount = withContext(Dispatchers.IO) {
+                            val skip = CloseAppsExclusionManager(context).getSelectedPackages() +
+                                InstalledAppsProvider.getUnsafeToKillPackages(context)
                             InstalledAppsProvider.getLaunchableApps(context)
+                                .filterNot { skip.contains(it.packageName) }
                                 .count { DeveloperOptionsManager.forceStopApp(it.packageName) }
                         }
-                        isBusy = false
+                        runningAction = null
                         Toast.makeText(
                             context,
                             context.getString(R.string.apps_closed_count, closedCount),
@@ -528,6 +641,7 @@ private fun QuickActionRow(
     title: String,
     description: String,
     enabled: Boolean,
+    isRunning: Boolean,
     onClick: () -> Unit
 ) {
     Row(
@@ -554,7 +668,73 @@ private fun QuickActionRow(
             Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Button(onClick = onClick, enabled = enabled) {
-            Text(text = if (!enabled) stringResource(R.string.working) else stringResource(R.string.apply_settings), fontSize = 12.sp)
+            Text(
+                text = if (isRunning) stringResource(R.string.working) else stringResource(R.string.apply_settings),
+                fontSize = 12.sp,
+                maxLines = 1
+            )
+        }
+    }
+}
+
+@Composable
+private fun InfoNote(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Info,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(16.dp)
+        )
+        Text(
+            text = text,
+            fontSize = 11.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun ActionRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    title: String,
+    description: String,
+    buttonLabel: String,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+        Button(onClick = onClick, enabled = enabled) {
+            Text(text = buttonLabel, fontSize = 12.sp, maxLines = 1)
         }
     }
 }
@@ -611,11 +791,12 @@ private fun CompileBoosterRow(
                 onClick = onCancel,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
             ) {
-                Text(stringResource(R.string.cancel), fontSize = 12.sp)
+                Text(stringResource(R.string.cancel), fontSize = 12.sp, maxLines = 1)
             }
         } else {
+            // maxLines keeps a long translated label from wrapping and stretching the whole row.
             Button(onClick = onClick, enabled = enabled) {
-                Text(stringResource(R.string.compile_all_apps), fontSize = 12.sp)
+                Text(stringResource(R.string.compile_all_apps_short), fontSize = 12.sp, maxLines = 1)
             }
         }
     }

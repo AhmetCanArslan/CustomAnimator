@@ -215,4 +215,43 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_exit_code">keluar %1$d</string>
     <string name="source_code">Kode Sumber</string>
     <string name="settings_source_code_desc">Lihat proyek di GitHub</string>
+    <string name="developer_tweaks">Penyesuaian</string>
+    <string name="disable_keyboard_animation">Nonaktifkan Animasi Keyboard</string>
+    <string name="disable_keyboard_animation_desc">Mematikan animasi pembukaan keyboard (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Tampilkan Detik pada Jam</string>
+    <string name="show_clock_seconds_desc">Menampilkan detik pada jam di bilah status</string>
+    <string name="lock_screen_rotation">Kunci Rotasi Layar</string>
+    <string name="lock_screen_rotation_desc">Mengunci layar pada orientasi yang Anda pilih</string>
+    <string name="rotation_orientation">Orientasi</string>
+    <string name="rotation_portrait">Potret (0°)</string>
+    <string name="rotation_landscape_90">Lanskap (90° kiri)</string>
+    <string name="rotation_reverse_portrait">Potret Terbalik (180°)</string>
+    <string name="rotation_landscape_270">Lanskap (90° kanan)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Daftar Pengecualian</string>
+    <string name="close_apps_exclusions_desc">Pilih aplikasi yang tidak boleh dihentikan oleh “Tutup aplikasi latar belakang”</string>
+    <string name="close_apps_exclusions_count">%1$d aplikasi dikecualikan dari penutupan</string>
+    <string name="compile_all_apps_short">Kompilasi</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">Setel Ulang Rotasi</string>
+    <string name="reset_rotation_desc">Mengembalikan rotasi otomatis dan menghapus orientasi yang dipaksakan</string>
+    <string name="reset">Setel Ulang</string>
+    <string name="restart_system_ui">Mulai Ulang System UI</string>
+    <string name="restart_system_ui_desc">Beberapa perangkat baru menerapkan penyesuaian bilah status setelah System UI dimulai ulang</string>
+    <string name="restart">Mulai Ulang</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Cadangan &amp; Pemulihan</string>
+    <string name="backup_app_data">Cadangkan Data Aplikasi</string>
+    <string name="backup_app_data_desc">Menyimpan preset dan daftar aplikasi ke berkas JSON</string>
+    <string name="backup_saved">Cadangan disimpan</string>
+    <string name="restore_app_data">Pulihkan Data Aplikasi</string>
+    <string name="restore_app_data_desc">Memuat preset dan daftar aplikasi dari berkas cadangan</string>
+    <string name="restore_done">Cadangan dipulihkan — buka ulang aplikasi untuk melihatnya</string>
+    <string name="restore_failed">Berkas cadangan itu tidak dapat dibaca</string>
+    <string name="revert_everything">Kembalikan Semua</string>
+    <string name="revert_everything_desc">Membatalkan semua perubahan sistem yang dibuat aplikasi ini</string>
+    <string name="revert_everything_confirm">Ini mengembalikan skala animasi, lebar layar, rotasi, penyesuaian, dan penggantian grafis ke setelan bawaan, memberikan kembali izin yang dicabut oleh penonaktif izin otomatis, dan menghentikan layanan latar belakang. Preset dan daftar aplikasi Anda tetap tersimpan.</string>
+    <string name="revert_everything_done">Semua dikembalikan ke setelan bawaan</string>
+    <string name="revert_everything_partial">Beberapa setelan tidak dapat dikembalikan</string>
+    <string name="show_clock_seconds_samsung_note">Catatan: pada sebagian perangkat Samsung (One UI), setelan ini diabaikan sistem dan detik mungkin tidak muncul meski sakelar tetap aktif. Coba mulai ulang System UI di bawah.</string>
 </resources>

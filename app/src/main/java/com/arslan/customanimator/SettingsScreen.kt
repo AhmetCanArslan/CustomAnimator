@@ -2,7 +2,12 @@ package com.arslan.customanimator
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -13,8 +18,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,6 +37,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arslan.customanimator.utils.BackupManager
+import com.arslan.customanimator.utils.SystemResetManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +55,35 @@ fun SettingsScreen(
     hasWriteSecureSettings: Boolean,
     onShowPermissionDetails: () -> Unit
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    var showRevertConfirm by remember { mutableStateOf(false) }
+    var isReverting by remember { mutableStateOf(false) }
+
+    val toast: (Int) -> Unit = { res ->
+        Toast.makeText(context, context.getString(res), Toast.LENGTH_SHORT).show()
+    }
+
+    val backupLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument("application/json")
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) { BackupManager.writeBackup(context, uri) }
+            toast(if (success) R.string.backup_saved else R.string.action_failed)
+        }
+    }
+
+    val restoreLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) { BackupManager.restoreBackup(context, uri) }
+            toast(if (success) R.string.restore_done else R.string.restore_failed)
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -63,6 +110,7 @@ fun SettingsScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -99,6 +147,33 @@ fun SettingsScreen(
                     description = stringResource(R.string.settings_manual_desc),
                     selected = inputMode == "manual",
                     onClick = { onInputModeChange("manual") }
+                )
+            }
+
+            // Backup / recovery section
+            SettingsSection(title = stringResource(R.string.settings_backup)) {
+                ActionSettingRow(
+                    icon = Icons.Filled.Save,
+                    title = stringResource(R.string.backup_app_data),
+                    description = stringResource(R.string.backup_app_data_desc),
+                    onClick = {
+                        backupLauncher.launch(BackupManager.suggestedFileName())
+                    }
+                )
+                SettingDivider()
+                ActionSettingRow(
+                    icon = Icons.Filled.Restore,
+                    title = stringResource(R.string.restore_app_data),
+                    description = stringResource(R.string.restore_app_data_desc),
+                    onClick = { restoreLauncher.launch(arrayOf("application/json", "text/plain", "*/*")) }
+                )
+                SettingDivider()
+                ActionSettingRow(
+                    icon = Icons.Filled.SettingsBackupRestore,
+                    title = stringResource(R.string.revert_everything),
+                    description = stringResource(R.string.revert_everything_desc),
+                    descriptionColor = MaterialTheme.colorScheme.error,
+                    onClick = { showRevertConfirm = true }
                 )
             }
 
@@ -140,6 +215,48 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+
+    if (showRevertConfirm) {
+        AlertDialog(
+            onDismissRequest = { if (!isReverting) showRevertConfirm = false },
+            title = { Text(stringResource(R.string.revert_everything)) },
+            text = { Text(stringResource(R.string.revert_everything_confirm)) },
+            confirmButton = {
+                Button(
+                    enabled = !isReverting,
+                    onClick = {
+                        isReverting = true
+                        coroutineScope.launch {
+                            val result = withContext(Dispatchers.IO) {
+                                SystemResetManager.revertEverything(context, context.contentResolver)
+                            }
+                            isReverting = false
+                            showRevertConfirm = false
+                            toast(
+                                if (result.allSucceeded) R.string.revert_everything_done
+                                else R.string.revert_everything_partial
+                            )
+                        }
+                    }
+                ) {
+                    Text(
+                        stringResource(
+                            if (isReverting) R.string.working else R.string.revert_everything
+                        )
+                    )
+                }
+            },
+            dismissButton = {
+                Button(
+                    enabled = !isReverting,
+                    onClick = { showRevertConfirm = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
     }
 }
 

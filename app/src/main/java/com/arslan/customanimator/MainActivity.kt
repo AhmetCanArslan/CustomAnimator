@@ -19,6 +19,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -42,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -50,7 +53,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.shape.CircleShape
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
@@ -122,7 +128,8 @@ enum class HomeTab {
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE
+    MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
+    CLOSE_APPS_EXCLUSIONS
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -131,6 +138,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val context = activity
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
+    val coroutineScope = rememberCoroutineScope()
+    // Every settings write goes through a blocking Shizuku binder call, so it runs off the main
+    // thread; this flag keeps the user from stacking writes while one is in flight.
+    var isApplyingSettings by remember { mutableStateOf(false) }
     val widthPresetManager = remember { WidthPresetManager(context) }
     val focusManager = LocalFocusManager.current
     
@@ -165,6 +176,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
@@ -230,22 +242,28 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     val applyAnimationScalesAndHandleResult: (Float, Float, Float, () -> Unit) -> Unit = { windowScale, transitionScale, animatorScale, onSuccess ->
-        try {
-            val success = SettingsManager.applyAllScales(
-                context,
-                contentResolver,
-                windowScale,
-                transitionScale,
-                animatorScale
-            )
-
-            if (!success) {
-                showDefaultShizukuRecommendation()
-            } else {
-                onSuccess()
+        isApplyingSettings = true
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    Result.success(
+                        SettingsManager.applyAllScales(
+                            context,
+                            contentResolver,
+                            windowScale,
+                            transitionScale,
+                            animatorScale
+                        )
+                    )
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
             }
-        } catch (e: Exception) {
-            showPermissionError(e.message ?: context.getString(R.string.unknown_error))
+            isApplyingSettings = false
+            result.fold(
+                onSuccess = { success -> if (success) onSuccess() else showDefaultShizukuRecommendation() },
+                onFailure = { e -> showPermissionError(e.message ?: context.getString(R.string.unknown_error)) }
+            )
         }
     }
 
@@ -318,7 +336,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     BackHandler(
         enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP ||
             currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER ||
-            currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE
+            currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE ||
+            currentScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
@@ -390,6 +409,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
+    } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
+        CloseAppsExclusionsScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            listState = closeAppsExclusionsListState
+        )
     } else {
     Scaffold(
         topBar = {
@@ -440,7 +464,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             contentDescription = null
                         )
                     },
-                    label = { Text(stringResource(R.string.nav_animation)) }
+                    label = { Text(stringResource(R.string.nav_animation), maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.WIDTH,
@@ -451,7 +475,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             contentDescription = null
                         )
                     },
-                    label = { Text(stringResource(R.string.nav_width)) }
+                    label = { Text(stringResource(R.string.nav_width), maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.DEVELOPER,
@@ -462,7 +486,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             contentDescription = null
                         )
                     },
-                    label = { Text(stringResource(R.string.nav_developer)) }
+                    label = { Text(stringResource(R.string.nav_developer), maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.TERMINAL,
@@ -473,7 +497,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             contentDescription = null
                         )
                     },
-                    label = { Text(stringResource(R.string.nav_terminal)) }
+                    label = { Text(stringResource(R.string.nav_terminal), maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 )
                 }
             }
@@ -500,12 +524,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
+            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
             listState = developerTabListState
-        )
-        } else if (targetTab == HomeTab.TERMINAL) {
-        TerminalScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            listState = terminalTabListState
         )
         } else if (targetTab == HomeTab.TERMINAL) {
         TerminalScreenContent(
@@ -557,13 +577,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             IconButton(
                                 onClick = {
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, 0)
-                                    if (result.success) {
-                                        smallestWidth = SettingsManager.getSmallestWidth(context)
-                                        smallestWidthInputValue = ""
-                                        showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
-                                    } else {
-                                        showDefaultShizukuRecommendation()
+                                    isApplyingSettings = true
+                                    coroutineScope.launch {
+                                        val result = withContext(Dispatchers.IO) {
+                                            SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                                        }
+                                        isApplyingSettings = false
+                                        if (result.success) {
+                                            smallestWidth = SettingsManager.getSmallestWidth(context)
+                                            smallestWidthInputValue = ""
+                                            showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
+                                        } else {
+                                            showDefaultShizukuRecommendation()
+                                        }
                                     }
                                 },
                                 modifier = Modifier.size(32.dp)
@@ -610,23 +636,35 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         return@Button
                                     }
 
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
-                                    if (result.success) {
-                                        smallestWidth = targetSmallestWidth
-                                        smallestWidthInputValue = targetSmallestWidth.toString()
-                                        showSmallestWidthSuccess(
-                                            result,
-                                            context.getString(R.string.smallest_width_applied, targetSmallestWidth)
-                                        )
-                                    } else {
-                                        showDefaultShizukuRecommendation()
+                                    isApplyingSettings = true
+                                    coroutineScope.launch {
+                                        val result = withContext(Dispatchers.IO) {
+                                            SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
+                                        }
+                                        isApplyingSettings = false
+                                        if (result.success) {
+                                            smallestWidth = targetSmallestWidth
+                                            smallestWidthInputValue = targetSmallestWidth.toString()
+                                            showSmallestWidthSuccess(
+                                                result,
+                                                context.getString(R.string.smallest_width_applied, targetSmallestWidth)
+                                            )
+                                        } else {
+                                            showDefaultShizukuRecommendation()
+                                        }
                                     }
                                 },
+                                enabled = !isApplyingSettings,
                                 modifier = Modifier
                                     .weight(0.3f)
-                                    .height(56.dp)
+                                    .heightIn(min = 56.dp)
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp)
+                                Text(
+                                    stringResource(R.string.apply_settings),
+                                    fontSize = 13.sp,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             }
                         }
                     }
@@ -675,24 +713,31 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Button(
                                 onClick = {
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
-                                    if (result.success) {
-                                        smallestWidth = widthPreset.widthDp
-                                        smallestWidthInputValue = widthPreset.widthDp.toString()
-                                        if (result.usedWriteSecureFallback) {
-                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
-                                                showWriteSecureWidthConfirmDialog = true
+                                    isApplyingSettings = true
+                                    coroutineScope.launch {
+                                        val result = withContext(Dispatchers.IO) {
+                                            SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
+                                        }
+                                        isApplyingSettings = false
+                                        if (result.success) {
+                                            smallestWidth = widthPreset.widthDp
+                                            smallestWidthInputValue = widthPreset.widthDp.toString()
+                                            if (result.usedWriteSecureFallback) {
+                                                if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                                                    showWriteSecureWidthConfirmDialog = true
+                                                }
+                                            } else {
+                                                Toast.makeText(context, context.getString(R.string.width_preset_loaded_applied), Toast.LENGTH_SHORT).show()
                                             }
                                         } else {
-                                            Toast.makeText(context, context.getString(R.string.width_preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                            showDefaultShizukuRecommendation()
                                         }
-                                    } else {
-                                        showDefaultShizukuRecommendation()
                                     }
                                 },
-                                modifier = Modifier.height(42.dp)
+                                enabled = !isApplyingSettings,
+                                modifier = Modifier.heightIn(min = 42.dp)
                             ) {
-                                Text(stringResource(R.string.load), fontSize = 12.sp)
+                                Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
                             }
                             Button(
                                 onClick = {
@@ -703,9 +748,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.error
                                 ),
-                                modifier = Modifier.height(42.dp)
+                                modifier = Modifier.heightIn(min = 42.dp)
                             ) {
-                                Text(stringResource(R.string.delete), fontSize = 12.sp)
+                                Text(stringResource(R.string.delete), fontSize = 12.sp, maxLines = 1)
                             }
                         }
                     }
@@ -963,14 +1008,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onClick = {
                                     applySelectedAnimationScales()
                                 },
+                                enabled = !isApplyingSettings,
                                 modifier = Modifier
                                     .weight(0.3f)
-                                    .height(50.dp),
+                                    .heightIn(min = 50.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 )
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    stringResource(R.string.apply_settings),
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             }
                         }
                     }
@@ -1050,14 +1102,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onClick = {
                                     applySelectedAnimationScales()
                                 },
+                                enabled = !isApplyingSettings,
                                 modifier = Modifier
                                     .weight(0.3f)
-                                    .height(56.dp),
+                                    .heightIn(min = 56.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 )
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    stringResource(R.string.apply_settings),
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             }
                         }
                         if (!isSimpleMode) {
@@ -1158,7 +1217,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     )
                                 }
                                 Column(
-                                    modifier = Modifier.width(112.dp),
+                                    modifier = Modifier.widthIn(min = 88.dp, max = 132.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
                                     horizontalAlignment = Alignment.End
                                 ) {
@@ -1170,34 +1229,48 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             windowInputValue = String.format(java.util.Locale.US, "%.2f", preset.windowAnimationScale)
                                             transitionInputValue = String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)
                                             animatorInputValue = String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)
-                                            try {
-                                                val success = SettingsManager.applyAllScales(
-                                                    context,
-                                                    contentResolver,
-                                                    preset.windowAnimationScale,
-                                                    preset.transitionAnimationScale,
-                                                    preset.animatorDurationScale
-                                                )
-
-                                                if (!success) {
-                                                    showDefaultShizukuRecommendation()
-                                                    return@Button
+                                            isApplyingSettings = true
+                                            coroutineScope.launch {
+                                                val result = withContext(Dispatchers.IO) {
+                                                    try {
+                                                        Result.success(
+                                                            SettingsManager.applyAllScales(
+                                                                context,
+                                                                contentResolver,
+                                                                preset.windowAnimationScale,
+                                                                preset.transitionAnimationScale,
+                                                                preset.animatorDurationScale
+                                                            )
+                                                        )
+                                                    } catch (e: Exception) {
+                                                        Result.failure(e)
+                                                    }
                                                 }
-                                            } catch (e: Exception) {
-                                                Toast.makeText(
-                                                    context,
-                                                    context.getString(R.string.error_applying_preset, e.message),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                return@Button
+                                                isApplyingSettings = false
+                                                result.fold(
+                                                    onSuccess = { success ->
+                                                        if (success) {
+                                                            Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                                        } else {
+                                                            showDefaultShizukuRecommendation()
+                                                        }
+                                                    },
+                                                    onFailure = { e ->
+                                                        Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.error_applying_preset, e.message),
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                )
                                             }
-                                            Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
                                         },
+                                        enabled = !isApplyingSettings,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(42.dp)
+                                            .heightIn(min = 42.dp)
                                     ) {
-                                        Text(stringResource(R.string.load), fontSize = 12.sp)
+                                        Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
                                     }
                                     Button(
                                         onClick = {
@@ -1210,9 +1283,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         ),
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(42.dp)
+                                            .heightIn(min = 42.dp)
                                     ) {
-                                        Text(stringResource(R.string.delete), fontSize = 12.sp)
+                                        Text(stringResource(R.string.delete), fontSize = 12.sp, maxLines = 1)
                                     }
                                 }
                             }
@@ -1248,7 +1321,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onDismissRequest = { showPermissionDialog = false },
             title = { Text(stringResource(R.string.permission_required)) },
             text = {
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Text(
                         stringResource(R.string.write_secure_settings_permission),
                         fontSize = 15.sp,
@@ -1495,7 +1572,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onDismissRequest = { showPermissionDetailsDialog = false },
             title = { Text(stringResource(R.string.permission_details_title)) },
             text = {
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Text(
                         stringResource(R.string.write_secure_settings_permission),
                         fontSize = 15.sp,

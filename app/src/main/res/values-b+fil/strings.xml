@@ -215,4 +215,43 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_exit_code">exit %1$d</string>
     <string name="source_code">Source Code</string>
     <string name="settings_source_code_desc">Tingnan ang proyekto sa GitHub</string>
+    <string name="developer_tweaks">Mga Tweak</string>
+    <string name="disable_keyboard_animation">I-off ang Animation ng Keyboard</string>
+    <string name="disable_keyboard_animation_desc">Ino-off ang animation sa pagbukas ng keyboard (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Ipakita ang Segundo sa Orasan</string>
+    <string name="show_clock_seconds_desc">Nagpapakita ng segundo sa orasan ng status bar</string>
+    <string name="lock_screen_rotation">I-lock ang Pag-ikot ng Screen</string>
+    <string name="lock_screen_rotation_desc">Ini-lock ang screen sa oryentasyong pipiliin mo</string>
+    <string name="rotation_orientation">Oryentasyon</string>
+    <string name="rotation_portrait">Patayo (0°)</string>
+    <string name="rotation_landscape_90">Pahiga (90° kaliwa)</string>
+    <string name="rotation_reverse_portrait">Baligtad na Patayo (180°)</string>
+    <string name="rotation_landscape_270">Pahiga (90° kanan)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Listahan ng Eksklusyon</string>
+    <string name="close_apps_exclusions_desc">Piliin ang mga app na hindi dapat isara ng “Isara ang mga app sa background”</string>
+    <string name="close_apps_exclusions_count">%1$d (na) app ang hindi isasara</string>
+    <string name="compile_all_apps_short">I-compile</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">I-reset ang Pag-ikot</string>
+    <string name="reset_rotation_desc">Ibinabalik ang auto-rotate at inaalis ang sapilitang oryentasyon</string>
+    <string name="reset">I-reset</string>
+    <string name="restart_system_ui">I-restart ang System UI</string>
+    <string name="restart_system_ui_desc">May mga device na nag-a-apply lang ng mga tweak sa status bar kapag nag-restart ang System UI</string>
+    <string name="restart">I-restart</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Backup at Pagbawi</string>
+    <string name="backup_app_data">I-backup ang Data ng App</string>
+    <string name="backup_app_data_desc">Sine-save ang mga preset at listahan ng app sa isang JSON file</string>
+    <string name="backup_saved">Na-save ang backup</string>
+    <string name="restore_app_data">Ibalik ang Data ng App</string>
+    <string name="restore_app_data_desc">Naglo-load ng mga preset at listahan ng app mula sa isang backup file</string>
+    <string name="restore_done">Naibalik ang backup — buksan muli ang app para makita ito</string>
+    <string name="restore_failed">Hindi mabasa ang backup file na iyon</string>
+    <string name="revert_everything">Ibalik ang Lahat</string>
+    <string name="revert_everything_desc">Binabawi ang lahat ng pagbabago sa system na ginawa ng app na ito</string>
+    <string name="revert_everything_confirm">Ibinabalik nito sa default ang mga animation scale, lapad ng screen, pag-ikot, mga tweak at graphics override, ibinabalik ang mga pahintulot na inalis ng auto permission disabler, at hinihinto ang mga serbisyo sa background. Nananatili ang iyong mga preset at listahan ng app.</string>
+    <string name="revert_everything_done">Naibalik lahat sa default</string>
+    <string name="revert_everything_partial">May mga setting na hindi naibalik</string>
+    <string name="show_clock_seconds_samsung_note">Tandaan: sa ilang Samsung (One UI) na device, binabalewala ng system ang setting na ito at maaaring hindi lumabas ang mga segundo kahit naka-on ang toggle. Subukang i-restart ang System UI sa ibaba.</string>
 </resources>

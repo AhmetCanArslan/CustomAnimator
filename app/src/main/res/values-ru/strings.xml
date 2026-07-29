@@ -215,4 +215,43 @@
     <string name="terminal_exit_code">код %1$d</string>
     <string name="source_code">Исходный код</string>
     <string name="settings_source_code_desc">Посмотреть проект на GitHub</string>
+    <string name="developer_tweaks">Настройки</string>
+    <string name="disable_keyboard_animation">Отключить анимацию клавиатуры</string>
+    <string name="disable_keyboard_animation_desc">Выключает эффектную анимацию открытия клавиатуры (fancy_ime_animations)</string>
+    <string name="show_clock_seconds">Секунды на часах</string>
+    <string name="show_clock_seconds_desc">Показывать секунды в часах строки состояния</string>
+    <string name="lock_screen_rotation">Заблокировать поворот экрана</string>
+    <string name="lock_screen_rotation_desc">Фиксирует экран в выбранной ориентации</string>
+    <string name="rotation_orientation">Ориентация</string>
+    <string name="rotation_portrait">Портретная (0°)</string>
+    <string name="rotation_landscape_90">Альбомная (90° влево)</string>
+    <string name="rotation_reverse_portrait">Перевёрнутая портретная (180°)</string>
+    <string name="rotation_landscape_270">Альбомная (90° вправо)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Список исключений</string>
+    <string name="close_apps_exclusions_desc">Выберите приложения, которые «Закрыть фоновые приложения» никогда не должно останавливать</string>
+    <string name="close_apps_exclusions_count">Приложений в исключениях: %1$d</string>
+    <string name="compile_all_apps_short">Компилировать</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">Сбросить поворот</string>
+    <string name="reset_rotation_desc">Возвращает автоповорот и снимает принудительную ориентацию</string>
+    <string name="reset">Сбросить</string>
+    <string name="restart_system_ui">Перезапустить System UI</string>
+    <string name="restart_system_ui_desc">На некоторых устройствах настройки строки состояния применяются только после перезапуска System UI</string>
+    <string name="restart">Перезапустить</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Резервная копия и восстановление</string>
+    <string name="backup_app_data">Резервная копия данных</string>
+    <string name="backup_app_data_desc">Сохраняет пресеты и списки приложений в файл JSON</string>
+    <string name="backup_saved">Резервная копия сохранена</string>
+    <string name="restore_app_data">Восстановить данные</string>
+    <string name="restore_app_data_desc">Загружает пресеты и списки приложений из резервной копии</string>
+    <string name="restore_done">Копия восстановлена — откройте приложение заново</string>
+    <string name="restore_failed">Не удалось прочитать этот файл резервной копии</string>
+    <string name="revert_everything">Вернуть всё</string>
+    <string name="revert_everything_desc">Отменяет все системные изменения, сделанные приложением</string>
+    <string name="revert_everything_confirm">Масштабы анимации, ширина экрана, поворот, твики и графические переопределения вернутся к значениям по умолчанию, разрешения, снятые автоотключателем, будут возвращены, а фоновые службы остановлены. Ваши пресеты и списки приложений сохранятся.</string>
+    <string name="revert_everything_done">Всё возвращено к значениям по умолчанию</string>
+    <string name="revert_everything_partial">Некоторые настройки не удалось вернуть</string>
+    <string name="show_clock_seconds_samsung_note">Примечание: на некоторых устройствах Samsung (One UI) система игнорирует эту настройку, и секунды могут не появиться, даже если переключатель включён. Попробуйте перезапустить System UI ниже.</string>
 </resources>

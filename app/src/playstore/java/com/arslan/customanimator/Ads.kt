@@ -3,6 +3,8 @@ package com.arslan.customanimator
 import android.app.Activity
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.viewinterop.AndroidView
@@ -26,13 +28,14 @@ fun initAds(activity: Activity) {
 
 @Composable
 fun BannerAdView() {
+    // Keyed on width so a rotation or a density/smallest-width change rebuilds the AdView with an
+    // ad size that still matches the screen instead of keeping the size captured at first layout.
+    val screenWidthDp = LocalConfiguration.current.screenWidthDp
+    key(screenWidthDp) {
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = { context ->
-            val widthPx = context.resources.displayMetrics.widthPixels
-            val density = context.resources.displayMetrics.density
-            val adWidth = (widthPx / density).toInt()
-            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
+            val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
             AdView(context).apply {
                 setAdSize(adSize)
                 adUnitId = BANNER_AD_UNIT_ID
@@ -48,4 +51,5 @@ fun BannerAdView() {
             }
         }
     )
+    }
 }

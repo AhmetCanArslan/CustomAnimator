@@ -227,4 +227,31 @@ Animatör Süresi: %3$.2f</string>
     <string name="rotation_landscape_90">Yatay (90° sol)</string>
     <string name="rotation_reverse_portrait">Ters Dikey (180°)</string>
     <string name="rotation_landscape_270">Yatay (90° sağ)</string>
+    <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Hariç Tutulanlar</string>
+    <string name="close_apps_exclusions_desc">“Arka plandaki uygulamaları kapat” işleminin asla kapatmayacağı uygulamaları seçin</string>
+    <string name="close_apps_exclusions_count">%1$d uygulama kapatma dışında tutuluyor</string>
+    <string name="compile_all_apps_short">Derle</string>
+    <!-- Rotation recovery -->
+    <string name="reset_rotation">Ekran Dönüşünü Sıfırla</string>
+    <string name="reset_rotation_desc">Otomatik döndürmeyi geri getirir ve zorlanan yön ayarını kaldırır</string>
+    <string name="reset">Sıfırla</string>
+    <string name="restart_system_ui">System UI\'ı Yeniden Başlat</string>
+    <string name="restart_system_ui_desc">Bazı cihazlar durum çubuğu ayarlarını yalnızca System UI yeniden başlayınca uygular</string>
+    <string name="restart">Yeniden Başlat</string>
+    <!-- Backup and recovery -->
+    <string name="settings_backup">Yedekleme ve Kurtarma</string>
+    <string name="backup_app_data">Uygulama Verilerini Yedekle</string>
+    <string name="backup_app_data_desc">Ayar setlerini ve uygulama listelerini bir JSON dosyasına kaydeder</string>
+    <string name="backup_saved">Yedek kaydedildi</string>
+    <string name="restore_app_data">Uygulama Verilerini Geri Yükle</string>
+    <string name="restore_app_data_desc">Ayar setlerini ve uygulama listelerini bir yedek dosyasından yükler</string>
+    <string name="restore_done">Yedek geri yüklendi — görmek için uygulamayı yeniden açın</string>
+    <string name="restore_failed">Bu yedek dosyası okunamadı</string>
+    <string name="revert_everything">Her Şeyi Geri Al</string>
+    <string name="revert_everything_desc">Bu uygulamanın yaptığı tüm sistem değişikliklerini geri alır</string>
+    <string name="revert_everything_confirm">Animasyon ölçekleri, ekran genişliği, ekran dönüşü, ince ayarlar ve grafik geçersiz kılmaları varsayılana döner; otomatik izin devre dışı bırakıcının aldığı izinler geri verilir ve arka plan servisleri durdurulur. Ayar setleriniz ve uygulama listeleriniz korunur.</string>
+    <string name="revert_everything_done">Her şey varsayılana döndürüldü</string>
+    <string name="revert_everything_partial">Bazı ayarlar geri alınamadı</string>
+    <string name="show_clock_seconds_samsung_note">Not: Bazı Samsung (One UI) cihazlarda bu ayar sistem tarafından yok sayılır ve anahtar açık kalsa bile saniyeler görünmeyebilir. Aşağıdan System UI\'ı yeniden başlatmayı deneyin.</string>
 </resources>

@@ -45,6 +45,28 @@ class RevokedPermissionsStore(context: Context) {
     }
 
     @Synchronized
+    fun getAllRevoked(): Map<String, List<String>> {
+        return try {
+            val map = readMap()
+            val result = mutableMapOf<String, List<String>>()
+            map.keys().forEach { pkg ->
+                val array = map.optJSONArray(pkg) ?: return@forEach
+                val list = mutableListOf<String>()
+                for (i in 0 until array.length()) list.add(array.getString(i))
+                result[pkg] = list
+            }
+            result
+        } catch (e: Exception) {
+            emptyMap()
+        }
+    }
+
+    @Synchronized
+    fun clearAll() {
+        prefs.edit().remove(key).apply()
+    }
+
+    @Synchronized
     fun clearRevoked(packageName: String) {
         val map = readMap()
         map.remove(packageName)
