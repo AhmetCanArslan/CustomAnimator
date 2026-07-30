@@ -250,9 +250,22 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_tile_collapse">Collapse Quick Settings</string>
     <string name="terminal_tile_collapse_description">Close the panel as soon as the command starts.</string>
     <string name="terminal_tile_add">Add to Quick Settings</string>
-    <string name="terminal_tile_add_hint">Save first, then add the tile to your panel.</string>
     <string name="terminal_tile_add_manual_hint">Add the tile by hand from the Quick Settings edit screen.</string>
     <string name="terminal_tile_preview">Preview</string>
+
+    <!-- Width / animation preset tiles -->
+    <string name="width_tile_default_label">Width preset</string>
+    <string name="animation_tile_default_label">Animation preset</string>
+    <string name="preset_tile_needs_permission">Grant Shizuku or WRITE_SECURE_SETTINGS first.</string>
+    <string name="preset_tile_subtitle_no_permission">No permission</string>
+    <string name="preset_tile_toast_applied">%1$s applied</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s applied — if nothing changed, connect Shizuku</string>
+    <string name="preset_tile_toast_failed">%1$s could not be applied</string>
+    <string name="preset_tile_enable_description">Apply this preset from the Quick Settings panel.</string>
+    <string name="preset_tile_number">Tile number</string>
+    <string name="preset_tile_number_description">The tile shows this value instead of an icon.</string>
+    <string name="preset_tile_toast_description">Confirm on the screen when the preset is applied.</string>
+    <string name="preset_tile_collapse_description">Close the panel as soon as the preset is applied.</string>
     <string name="source_code">Source Code</string>
     <string name="settings_source_code_desc">View the project on GitHub</string>
     <string name="developer_tweaks">Tweaks</string>

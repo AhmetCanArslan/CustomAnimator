@@ -3,13 +3,15 @@ package com.arslan.customanimator.utils
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import com.arslan.customanimator.data.AnimatorPreset
+import com.arslan.customanimator.data.PresetTileConfig
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
 
 class PresetManager(context: Context) {
     
-    private val sharedPreferences = context.getSharedPreferences("animator_presets", Context.MODE_PRIVATE)
+    private val appContext = context.applicationContext
+    private val sharedPreferences = appContext.getSharedPreferences("animator_presets", Context.MODE_PRIVATE)
     private val presetsKey = "presets_list"
     
     fun savePreset(
@@ -56,7 +58,8 @@ class PresetManager(context: Context) {
                         name = json.getString("name"),
                         windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
                         transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
-                        animatorDurationScale = json.getString("animatorDurationScale").toFloat()
+                        animatorDurationScale = json.getString("animatorDurationScale").toFloat(),
+                        tile = PresetTileJson.read(json)
                     )
                 }
             }
@@ -79,7 +82,8 @@ class PresetManager(context: Context) {
                         name = json.getString("name"),
                         windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
                         transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
-                        animatorDurationScale = json.getString("animatorDurationScale").toFloat()
+                        animatorDurationScale = json.getString("animatorDurationScale").toFloat(),
+                        tile = PresetTileJson.read(json)
                     )
                 )
             }
@@ -110,6 +114,7 @@ class PresetManager(context: Context) {
                     }
                 }
                 sharedPreferences.edit().putString(presetsKey, newPresets.toString()).apply()
+                AnimationTileSlots.sync(appContext, this)
                 true
             } else {
                 false
@@ -139,6 +144,48 @@ class PresetManager(context: Context) {
         }
     }
     
+    fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
+        return try {
+            val presets = getAllPresetsJson()
+            var index = -1
+            for (i in 0 until presets.length()) {
+                if (presets.getJSONObject(i).getString("id") == id) {
+                    index = i
+                    break
+                }
+            }
+            if (index < 0) return false
+
+            val resolved = when {
+                config == null -> null
+                config.slot in 0 until PresetTileJson.MAX_TILE_SLOTS -> config
+                else -> {
+                    val free = firstFreeSlot(excludingPresetId = id) ?: return false
+                    config.copy(slot = free)
+                }
+            }
+
+            val json = presets.getJSONObject(index)
+            json.remove(PresetTileJson.KEY)
+            PresetTileJson.write(json, resolved)
+            presets.put(index, json)
+            sharedPreferences.edit().putString(presetsKey, presets.toString()).apply()
+            AnimationTileSlots.sync(appContext, this)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun getPresetForSlot(slot: Int): AnimatorPreset? =
+        getAllPresets().firstOrNull { it.tile?.slot == slot }
+
+    fun firstFreeSlot(excludingPresetId: String? = null): Int? =
+        PresetTileJson.firstFreeSlot(
+            getAllPresets().filter { it.id != excludingPresetId }.mapNotNull { it.tile?.slot }
+        )
+
     private fun getAllPresetsJson(): JSONArray {
         return try {
             val presetStr = sharedPreferences.getString(presetsKey, "[]") ?: "[]"

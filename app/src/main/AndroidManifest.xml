@@ -111,6 +111,126 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.WidthTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.WidthTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.WidthTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.WidthTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.WidthTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AnimationTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AnimationTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AnimationTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AnimationTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.AnimationTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

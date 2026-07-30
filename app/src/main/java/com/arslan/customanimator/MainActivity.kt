@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Terminal
+import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -63,7 +64,12 @@ import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.data.AnimatorPreset
+import com.arslan.customanimator.data.WidthPreset
+import com.arslan.customanimator.utils.AnimationTileSlots
 import com.arslan.customanimator.utils.TerminalPresetManager
+import com.arslan.customanimator.utils.TileNumberIcon
+import com.arslan.customanimator.utils.WidthTileSlots
 import com.arslan.customanimator.utils.TerminalTileSlots
 import com.arslan.customanimator.utils.WidthPresetManager
 import rikka.shizuku.Shizuku
@@ -87,6 +93,8 @@ class MainActivity : ComponentActivity() {
         initAds(this)
 
         TerminalTileSlots.sync(this, TerminalPresetManager(this))
+        WidthTileSlots.sync(this, WidthPresetManager(this))
+        AnimationTileSlots.sync(this, PresetManager(this))
 
         // Add Shizuku listener
         Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
@@ -188,6 +196,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
+    var widthTilePreset by remember { mutableStateOf<WidthPreset?>(null) }
+    var animationTilePreset by remember { mutableStateOf<AnimatorPreset?>(null) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -713,15 +723,28 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    widthPreset.name,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        widthPreset.name,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.weight(1f, fill = false)
+                                    )
+                                    widthPreset.tile?.let {
+                                        Spacer(Modifier.width(6.dp))
+                                        PresetTileBadge(TileNumberIcon.widthText(widthPreset.widthDp))
+                                    }
+                                }
                                 Text(
                                     stringResource(R.string.preset_width_value, widthPreset.widthDp),
                                     fontSize = 12.sp,
                                     color = Color.Gray
+                                )
+                            }
+                            IconButton(onClick = { widthTilePreset = widthPreset }) {
+                                Icon(
+                                    imageVector = Icons.Default.Widgets,
+                                    contentDescription = stringResource(R.string.terminal_tile_menu)
                                 )
                             }
                             Button(
@@ -1208,11 +1231,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     modifier = Modifier.weight(1f),
                                     verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    Text(
-                                        preset.name,
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            preset.name,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier.weight(1f, fill = false)
+                                        )
+                                        preset.tile?.let {
+                                            Spacer(Modifier.width(6.dp))
+                                            PresetTileBadge(
+                                                TileNumberIcon.animationText(
+                                                    preset.windowAnimationScale,
+                                                    preset.transitionAnimationScale,
+                                                    preset.animatorDurationScale
+                                                )
+                                            )
+                                        }
+                                    }
                                     Text(
                                         stringResource(R.string.preset_window_animation_value, preset.windowAnimationScale),
                                         fontSize = 12.sp,
@@ -1227,6 +1263,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         stringResource(R.string.preset_animator_duration_value, preset.animatorDurationScale),
                                         fontSize = 12.sp,
                                         color = Color.Gray
+                                    )
+                                }
+                                IconButton(onClick = { animationTilePreset = preset }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Widgets,
+                                        contentDescription = stringResource(R.string.terminal_tile_menu)
                                     )
                                 }
                                 Column(
@@ -1765,6 +1807,65 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     // Width Preset Creation Dialog
+    widthTilePreset?.let { preset ->
+        PresetTileDialog(
+            presetName = preset.name,
+            numberText = TileNumberIcon.widthText(preset.widthDp),
+            existing = preset.tile,
+            freeSlot = widthPresetManager.firstFreeSlot(excludingPresetId = preset.id),
+            canRequestAdd = WidthTileSlots.canRequestAdd(),
+            onDismiss = { widthTilePreset = null },
+            onSave = { config ->
+                widthPresetManager.setTileConfig(preset.id, config)
+                allWidthPresets = widthPresetManager.getAllPresets()
+                widthTilePreset = null
+            },
+            onSaveAndAdd = { config ->
+                widthPresetManager.setTileConfig(preset.id, config)
+                allWidthPresets = widthPresetManager.getAllPresets()
+                WidthTileSlots.requestAddTile(
+                    context,
+                    config.slot,
+                    config.label.ifBlank { preset.name },
+                    TileNumberIcon.create(TileNumberIcon.widthText(preset.widthDp))
+                )
+                widthTilePreset = null
+            }
+        )
+    }
+
+    animationTilePreset?.let { preset ->
+        val numberText = TileNumberIcon.animationText(
+            preset.windowAnimationScale,
+            preset.transitionAnimationScale,
+            preset.animatorDurationScale
+        )
+        PresetTileDialog(
+            presetName = preset.name,
+            numberText = numberText,
+            existing = preset.tile,
+            freeSlot = presetManager.firstFreeSlot(excludingPresetId = preset.id),
+            canRequestAdd = AnimationTileSlots.canRequestAdd(),
+            onDismiss = { animationTilePreset = null },
+            onSave = { config ->
+                presetManager.setTileConfig(preset.id, config)
+                allPresets = presetManager.getAllPresets()
+                animationTilePreset = null
+            },
+            onSaveAndAdd = { config ->
+                presetManager.setTileConfig(preset.id, config)
+                allPresets = presetManager.getAllPresets()
+                AnimationTileSlots.requestAddTile(
+                    context,
+                    config.slot,
+                    config.label.ifBlank { preset.name },
+                    TileNumberIcon.create(numberText)
+                )
+                animationTilePreset = null
+            }
+        )
+    }
+
     if (showWidthPresetDialog) {
         AlertDialog(
             onDismissRequest = { showWidthPresetDialog = false },

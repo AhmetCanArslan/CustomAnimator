@@ -264,6 +264,17 @@ fun TerminalScreenContent(
                 presetManager.setTileConfig(preset.id, config)
                 presets = presetManager.getAllPresets()
                 tilePreset = null
+            },
+            onSaveAndAdd = { config ->
+                presetManager.setTileConfig(preset.id, config)
+                presets = presetManager.getAllPresets()
+                TerminalTileSlots.requestAddTile(
+                    context = context,
+                    slot = config.slot,
+                    label = config.label.ifBlank { preset.name },
+                    iconKey = config.iconKey
+                )
+                tilePreset = null
             }
         )
     }
@@ -436,9 +447,9 @@ private fun TileConfigDialog(
     preset: TerminalPreset,
     freeSlot: Int?,
     onDismiss: () -> Unit,
-    onSave: (TerminalTileConfig?) -> Unit
+    onSave: (TerminalTileConfig?) -> Unit,
+    onSaveAndAdd: (TerminalTileConfig) -> Unit
 ) {
-    val context = LocalContext.current
     val existing = preset.tile
 
     var enabled by remember { mutableStateOf(existing != null) }
@@ -452,6 +463,19 @@ private fun TileConfigDialog(
 
     val slot = existing?.slot ?: freeSlot
     val trimmedLabel = label.trim()
+    val buildConfig: () -> TerminalTileConfig? = {
+        if (enabled && slot != null) {
+            TerminalTileConfig(
+                slot = slot,
+                label = trimmedLabel,
+                iconKey = iconKey,
+                showToast = showToast,
+                collapsePanel = collapsePanel
+            )
+        } else {
+            null
+        }
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -538,22 +562,10 @@ private fun TileConfigDialog(
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                    } else if (existing == null) {
-                        Text(
-                            text = stringResource(R.string.terminal_tile_add_hint),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
                     } else {
                         OutlinedButton(
-                            onClick = {
-                                TerminalTileSlots.requestAddTile(
-                                    context = context,
-                                    slot = slot,
-                                    label = trimmedLabel.ifEmpty { preset.name },
-                                    iconKey = iconKey
-                                )
-                            },
+                            onClick = { buildConfig()?.let(onSaveAndAdd) },
+                            enabled = trimmedLabel.isNotEmpty(),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Icon(
@@ -570,20 +582,7 @@ private fun TileConfigDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = {
-                    val config = if (enabled && slot != null) {
-                        TerminalTileConfig(
-                            slot = slot,
-                            label = trimmedLabel,
-                            iconKey = iconKey,
-                            showToast = showToast,
-                            collapsePanel = collapsePanel
-                        )
-                    } else {
-                        null
-                    }
-                    onSave(config)
-                },
+                onClick = { onSave(buildConfig()) },
                 enabled = !enabled || (slot != null && trimmedLabel.isNotEmpty())
             ) {
                 Text(stringResource(R.string.save))
