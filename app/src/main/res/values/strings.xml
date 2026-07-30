@@ -213,6 +213,46 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_output_empty">No output yet.</string>
     <string name="terminal_clear_output">Clear</string>
     <string name="terminal_exit_code">exit %1$d</string>
+
+    <!-- Quick Settings tile -->
+    <string name="terminal_tile_default_label">Terminal preset</string>
+    <string name="terminal_tile_unassigned">Unassigned</string>
+    <string name="terminal_tile_unassigned_message">This tile is not linked to a preset.</string>
+    <string name="terminal_tile_needs_shizuku">Shizuku is not connected. Open the app and grant permission.</string>
+    <string name="terminal_tile_subtitle_no_shizuku">Shizuku off</string>
+    <string name="terminal_tile_toast_success">%1$s finished</string>
+    <string name="terminal_tile_toast_failed">%1$s failed (exit %2$d)</string>
+
+    <string name="terminal_tile_menu">Quick Settings tile</string>
+    <string name="terminal_tile_title">Quick Settings tile</string>
+    <string name="terminal_tile_badge">Tile</string>
+    <string name="terminal_tile_enable">Show as a tile</string>
+    <string name="terminal_tile_enable_description">Run this preset from the Quick Settings panel.</string>
+    <string name="terminal_tile_slots_full">All %1$d tile slots are in use. Turn a tile off on another preset first.</string>
+    <string name="terminal_tile_label">Tile label</string>
+    <string name="terminal_tile_label_helper">Shown under the tile. Short labels fit best.</string>
+    <string name="terminal_tile_icon">Icon</string>
+    <string name="terminal_tile_icon_change">Change</string>
+    <string name="terminal_tile_icon_picker_title">Choose an icon</string>
+    <string name="terminal_tile_icon_search">Search icons</string>
+    <string name="terminal_tile_icon_none">No icons match that search.</string>
+    <string name="terminal_tile_cat_terminal">Terminal &amp; code</string>
+    <string name="terminal_tile_cat_power">Power &amp; performance</string>
+    <string name="terminal_tile_cat_system">System</string>
+    <string name="terminal_tile_cat_apps">Apps &amp; storage</string>
+    <string name="terminal_tile_cat_network">Network</string>
+    <string name="terminal_tile_cat_display">Display &amp; media</string>
+    <string name="terminal_tile_cat_security">Security</string>
+    <string name="terminal_tile_cat_actions">Actions</string>
+    <string name="terminal_tile_cat_labels">Labels</string>
+    <string name="terminal_tile_toast">Show result toast</string>
+    <string name="terminal_tile_toast_description">Confirm when the command finishes, with its exit code.</string>
+    <string name="terminal_tile_collapse">Collapse Quick Settings</string>
+    <string name="terminal_tile_collapse_description">Close the panel as soon as the command starts.</string>
+    <string name="terminal_tile_add">Add to Quick Settings</string>
+    <string name="terminal_tile_add_hint">Save first, then add the tile to your panel.</string>
+    <string name="terminal_tile_add_manual_hint">Add the tile by hand from the Quick Settings edit screen.</string>
+    <string name="terminal_tile_preview">Preview</string>
     <string name="source_code">Source Code</string>
     <string name="settings_source_code_desc">View the project on GitHub</string>
     <string name="developer_tweaks">Tweaks</string>

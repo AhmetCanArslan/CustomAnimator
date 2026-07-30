@@ -51,6 +51,66 @@
                 android:value="Force-compiles installed apps in the background (dev tool)" />
         </service>
 
+        <service
+            android:name=".service.TerminalTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.TerminalTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.TerminalTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.TerminalTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.TerminalTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

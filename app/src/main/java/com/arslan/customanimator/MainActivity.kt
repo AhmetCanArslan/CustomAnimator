@@ -63,6 +63,8 @@ import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.utils.TerminalPresetManager
+import com.arslan.customanimator.utils.TerminalTileSlots
 import com.arslan.customanimator.utils.WidthPresetManager
 import rikka.shizuku.Shizuku
 import androidx.compose.ui.res.stringResource
@@ -83,6 +85,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         initAds(this)
+
+        TerminalTileSlots.sync(this, TerminalPresetManager(this))
 
         // Add Shizuku listener
         Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
