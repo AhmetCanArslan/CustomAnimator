@@ -130,7 +130,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="error">Hata: %s</string>
     <string name="use_adb_command">ADB Komutu Kullan</string>
     <string name="adb_description">Bir bilgisayara bağlanın ve bu komutu bir kez çalıştırın:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">Tam adım adım talimatlar için menudeki Izin Detaylari bolumune bakin.</string>
     <string name="copy_command">Komutu Kopyala</string>
     <string name="close">Kapat</string>

@@ -60,29 +60,17 @@ object ShizukuHelper {
             }
             
             val packageName = context.packageName
-            
-            // Use reflection to access the private newProcess method
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
+
+            val granted = executeShellCommand(
+                arrayOf("pm", "grant", packageName, "android.permission.WRITE_SECURE_SETTINGS")
             )
-            newProcessMethod.isAccessible = true
-            
-            @Suppress("UNCHECKED_CAST")
-            val process = newProcessMethod.invoke(
-                null,
-                arrayOf("pm", "grant", packageName, "android.permission.WRITE_SECURE_SETTINGS"),
-                null,
-                null
-            ) as Any // ShizukuRemoteProcess
-            
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val result = waitForMethod.invoke(process) as Int
-            
-            Log.d(TAG, "Grant permission result: $result")
-            result == 0
+
+            val animationScaleGranted = executeShellCommand(
+                arrayOf("pm", "grant", packageName, "android.permission.SET_ANIMATION_SCALE")
+            )
+            Log.d(TAG, "SET_ANIMATION_SCALE grant result: $animationScaleGranted")
+
+            granted
         } catch (e: Exception) {
             Log.e(TAG, "Failed to grant permission via Shizuku: ${e.message}", e)
             false

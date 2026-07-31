@@ -130,7 +130,7 @@ Duração do Animador: %3$.2f</string>
     <string name="error">Erro: %s</string>
     <string name="use_adb_command">Usar Comando ADB</string>
     <string name="adb_description">Conecte-se a um computador e execute este comando uma vez:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Veja \'Detalhes da Permissão\' no menu para instruções passo a passo completas.</string>
     <string name="copy_command">Copiar Comando</string>
     <string name="close">Fechar</string>

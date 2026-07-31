@@ -130,7 +130,7 @@ Durasi Animator: %3$.2f</string>
     <string name="error">Kesalahan: %s</string>
     <string name="use_adb_command">Gunakan Perintah ADB</string>
     <string name="adb_description">Hubungkan ke komputer dan jalankan perintah ini sekali:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Lihat \'Detail Izin\' di menu untuk petunjuk langkah demi langkah lengkap.</string>
     <string name="copy_command">Salin Perintah</string>
     <string name="close">Tutup</string>

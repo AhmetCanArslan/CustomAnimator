@@ -130,7 +130,7 @@ Animator Duration: %3$.2f</string>
     <string name="error">Error: %s</string>
     <string name="use_adb_command">Gumamit ng ADB Command</string>
     <string name="adb_description">Kumonekta sa computer at patakbuhin ang command na ito nang isang beses:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Tingnan ang \'Mga Detalye ng Pahintulot\' sa menu para sa kumpletong hakbang-hakbang na tagubilin.</string>
     <string name="copy_command">Kopyahin ang Command</string>
     <string name="close">Isara</string>
