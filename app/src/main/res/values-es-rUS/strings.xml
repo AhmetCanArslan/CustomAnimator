@@ -447,4 +447,16 @@ Duración del Animador: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Si algo falla, usa la opción de restablecer en la sección correspondiente o en Ajustes para volver a los valores originales. Ante la duda, anota lo que cambiaste antes de cambiarlo.</string>
     <string name="settings_privacy_options">Opciones de Privacidad</string>
     <string name="settings_privacy_options_desc">Cambia tus opciones de consentimiento para anuncios personalizados</string>
+    <string name="settings_premium">Premium</string>
+    <string name="remove_ads">Quitar anuncios</string>
+    <string name="remove_ads_desc">Compra única que elimina todos los anuncios</string>
+    <string name="remove_ads_desc_price">Compra única — %1$s</string>
+    <string name="remove_ads_owned">Comprado: ¡gracias por tu apoyo!</string>
+    <string name="remove_ads_thanks">Anuncios eliminados. ¡Gracias!</string>
+    <string name="remove_ads_pending">Compra pendiente. Los anuncios se quitarán al completarse.</string>
+    <string name="remove_ads_unavailable">La compra no está disponible ahora. Inténtalo más tarde.</string>
+    <string name="remove_ads_restore">Restaurar compra</string>
+    <string name="remove_ads_restore_desc">¿Ya la compraste? Restáurala en este dispositivo</string>
+    <string name="remove_ads_restored">Compra restaurada</string>
+    <string name="remove_ads_nothing_to_restore">No se encontró ninguna compra anterior</string>
 </resources>

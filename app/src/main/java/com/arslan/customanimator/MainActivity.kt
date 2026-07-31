@@ -91,6 +91,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        initBilling(this)
         initAds(this)
 
         TerminalTileSlots.sync(this, TerminalPresetManager(this))
@@ -129,6 +130,7 @@ class MainActivity : ComponentActivity() {
     
     override fun onResume() {
         super.onResume()
+        initBilling(this)
         preloadInterstitial(this)
 
         // Check if Shizuku permission was granted and try to grant WRITE_SECURE_SETTINGS
@@ -225,7 +227,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
     // Ad disclosure and Play Store rating prompts only ship in the playstore flavor.
     var showAdInfoDialog by remember {
-        mutableStateOf(BuildConfig.HAS_ADS && !SettingsManager.hasShownAdInfoDialog(context))
+        mutableStateOf(BuildConfig.HAS_ADS && !isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
     }
     var showRateDialog by remember {
         mutableStateOf(

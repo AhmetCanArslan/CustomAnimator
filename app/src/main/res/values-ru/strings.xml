@@ -447,4 +447,16 @@
     <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь — запишите, что меняете, до изменения.</string>
     <string name="settings_privacy_options">Настройки конфиденциальности</string>
     <string name="settings_privacy_options_desc">Изменить согласие на персонализацию рекламы</string>
+    <string name="settings_premium">Премиум</string>
+    <string name="remove_ads">Убрать рекламу</string>
+    <string name="remove_ads_desc">Разовая покупка, убирающая всю рекламу</string>
+    <string name="remove_ads_desc_price">Разовая покупка — %1$s</string>
+    <string name="remove_ads_owned">Куплено — спасибо за поддержку!</string>
+    <string name="remove_ads_thanks">Реклама убрана. Спасибо!</string>
+    <string name="remove_ads_pending">Покупка обрабатывается. Реклама исчезнет после завершения.</string>
+    <string name="remove_ads_unavailable">Покупка сейчас недоступна. Попробуйте позже.</string>
+    <string name="remove_ads_restore">Восстановить покупку</string>
+    <string name="remove_ads_restore_desc">Уже покупали? Восстановите на этом устройстве</string>
+    <string name="remove_ads_restored">Покупка восстановлена</string>
+    <string name="remove_ads_nothing_to_restore">Предыдущих покупок не найдено</string>
 </resources>

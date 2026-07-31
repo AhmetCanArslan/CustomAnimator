@@ -8,6 +8,7 @@ import android.os.SystemClock
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.key
 import androidx.compose.ui.platform.LocalConfiguration
@@ -65,6 +66,10 @@ private const val ADS_PREFS = "custom_animator_ads"
 private val isMobileAdsInitialized = AtomicBoolean(false)
 
 fun initAds(activity: Activity) {
+    if (isAdFreeNow()) {
+        Log.d("Ads", "Skipped: ads removed by purchase")
+        return
+    }
     AdsConsent.gather(activity) {
         initializeMobileAds(activity)
     }
@@ -181,6 +186,9 @@ object FullScreenAdState {
 
 @Composable
 fun BannerAdView() {
+    val isAdFree by rememberIsAdFree()
+    if (isAdFree) return
+
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -277,6 +285,7 @@ object AppOpenAds {
     }
 
     fun preload(context: Context) {
+        if (isAdFreeNow()) return
         if (isLoading || isAdAvailable()) return
         if (!AdsConsent.canRequestAds(context)) return
 
@@ -307,6 +316,7 @@ object AppOpenAds {
     }
 
     private fun showIfEligible() {
+        if (isAdFreeNow()) return
         val activity = currentActivity ?: return
         if (FullScreenAdState.isShowing) return
 
@@ -381,6 +391,7 @@ object InterstitialAds {
     private var isLoading = false
 
     fun preload(context: Context) {
+        if (isAdFreeNow()) return
         if (ad != null || isLoading) {
             Log.d(TAG, "preload skipped (ready=${ad != null}, loading=$isLoading)")
             return
@@ -412,6 +423,7 @@ object InterstitialAds {
     }
 
     fun maybeShow(context: Context) {
+        if (isAdFreeNow()) return
         val activity = context.findActivity()
         if (activity == null) {
             Log.w(TAG, "Skipped: no Activity behind the context")

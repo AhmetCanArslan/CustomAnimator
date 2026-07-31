@@ -19,6 +19,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsBackupRestore
@@ -64,6 +66,10 @@ fun SettingsScreen(
     val toast: (Int) -> Unit = { res ->
         Toast.makeText(context, context.getString(res), Toast.LENGTH_SHORT).show()
     }
+
+    val isAdFree by rememberIsAdFree()
+    val removeAdsPrice by rememberRemoveAdsPrice()
+    var isRestoring by remember { mutableStateOf(false) }
 
     val backupLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("application/json")
@@ -178,6 +184,63 @@ fun SettingsScreen(
                 )
             }
 
+            if (BuildConfig.HAS_ADS) {
+                SettingsSection(title = stringResource(R.string.settings_premium)) {
+                    if (isAdFree) {
+                        ActionSettingRow(
+                            icon = Icons.Filled.CheckCircle,
+                            title = stringResource(R.string.remove_ads),
+                            description = stringResource(R.string.remove_ads_owned),
+                            descriptionColor = Color(0xFF2E7D32),
+                            onClick = {}
+                        )
+                    } else {
+                        ActionSettingRow(
+                            icon = Icons.Filled.Block,
+                            title = stringResource(R.string.remove_ads),
+                            description = removeAdsPrice?.let {
+                                stringResource(R.string.remove_ads_desc_price, it)
+                            } ?: stringResource(R.string.remove_ads_desc),
+                            onClick = {
+                                val activity = context as? android.app.Activity
+                                if (activity == null) {
+                                    toast(R.string.remove_ads_unavailable)
+                                } else {
+                                    launchRemoveAdsPurchase(activity) { result ->
+                                        when (result) {
+                                            Billing.PurchaseResult.PURCHASED ->
+                                                toast(R.string.remove_ads_thanks)
+                                            Billing.PurchaseResult.PENDING ->
+                                                toast(R.string.remove_ads_pending)
+                                            Billing.PurchaseResult.CANCELLED -> Unit
+                                            Billing.PurchaseResult.ERROR ->
+                                                toast(R.string.remove_ads_unavailable)
+                                        }
+                                    }
+                                }
+                            }
+                        )
+                        SettingDivider()
+                        ActionSettingRow(
+                            icon = Icons.Filled.ShoppingCart,
+                            title = stringResource(R.string.remove_ads_restore),
+                            description = stringResource(R.string.remove_ads_restore_desc),
+                            onClick = {
+                                if (isRestoring) return@ActionSettingRow
+                                isRestoring = true
+                                restorePurchases { owned ->
+                                    isRestoring = false
+                                    toast(
+                                        if (owned) R.string.remove_ads_restored
+                                        else R.string.remove_ads_nothing_to_restore
+                                    )
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+
             // About section
             SettingsSection(title = stringResource(R.string.settings_about)) {
                 if (isShizukuAvailable) {
@@ -196,7 +259,7 @@ fun SettingsScreen(
                     )
                     SettingDivider()
                 }
-                if (BuildConfig.HAS_ADS && isPrivacyOptionsRequired()) {
+                if (BuildConfig.HAS_ADS && !isAdFree && isPrivacyOptionsRequired()) {
                     val context = LocalContext.current
                     ActionSettingRow(
                         icon = Icons.Filled.PrivacyTip,

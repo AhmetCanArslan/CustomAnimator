@@ -89,6 +89,7 @@ dependencies {
     "playstoreImplementation"(libs.play.services.ads)
     "playstoreImplementation"(libs.user.messaging.platform)
     "playstoreImplementation"(libs.androidx.lifecycle.process)
+    "playstoreImplementation"(libs.billing.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

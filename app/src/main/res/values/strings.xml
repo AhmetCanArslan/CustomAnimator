@@ -467,4 +467,16 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_experimental_highlight">If something misbehaves, use the reset option in the relevant section or in Settings to return to stock values. When in doubt, note down what you changed before changing it.</string>
     <string name="settings_privacy_options">Privacy Options</string>
     <string name="settings_privacy_options_desc">Change your ad personalisation consent choices</string>
+    <string name="settings_premium">Premium</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="remove_ads_desc">One-time purchase that removes all ads</string>
+    <string name="remove_ads_desc_price">One-time purchase — %1$s</string>
+    <string name="remove_ads_owned">Purchased — thank you for the support!</string>
+    <string name="remove_ads_thanks">Ads removed. Thank you!</string>
+    <string name="remove_ads_pending">Purchase pending. Ads will be removed once it completes.</string>
+    <string name="remove_ads_unavailable">Purchase is not available right now. Please try again later.</string>
+    <string name="remove_ads_restore">Restore Purchase</string>
+    <string name="remove_ads_restore_desc">Already bought it? Restore it on this device</string>
+    <string name="remove_ads_restored">Purchase restored</string>
+    <string name="remove_ads_nothing_to_restore">No previous purchase found</string>
 </resources>

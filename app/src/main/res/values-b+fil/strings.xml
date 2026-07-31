@@ -447,4 +447,16 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Kung may mali, gamitin ang reset sa kaukulang seksyon o sa Settings para bumalik sa orihinal na halaga. Kapag may pagdududa, itala kung ano ang binago mo bago mo baguhin.</string>
     <string name="settings_privacy_options">Mga Opsyon sa Privacy</string>
     <string name="settings_privacy_options_desc">Baguhin ang iyong pahintulot sa personalisasyon ng ad</string>
+    <string name="settings_premium">Premium</string>
+    <string name="remove_ads">Alisin ang mga Ad</string>
+    <string name="remove_ads_desc">Isang beses na pagbili na nag-aalis ng lahat ng ad</string>
+    <string name="remove_ads_desc_price">Isang beses na pagbili — %1$s</string>
+    <string name="remove_ads_owned">Nabili na — salamat sa suporta!</string>
+    <string name="remove_ads_thanks">Naalis na ang mga ad. Salamat!</string>
+    <string name="remove_ads_pending">Nakabinbin ang pagbili. Maaalis ang mga ad kapag natapos na.</string>
+    <string name="remove_ads_unavailable">Hindi available ang pagbili ngayon. Subukan ulit mamaya.</string>
+    <string name="remove_ads_restore">Ibalik ang Pagbili</string>
+    <string name="remove_ads_restore_desc">Nabili mo na? Ibalik ito sa device na ito</string>
+    <string name="remove_ads_restored">Naibalik ang pagbili</string>
+    <string name="remove_ads_nothing_to_restore">Walang nakitang naunang pagbili</string>
 </resources>

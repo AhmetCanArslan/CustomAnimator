@@ -447,4 +447,16 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Jika ada yang bermasalah, gunakan opsi setel ulang di bagian terkait atau di Pengaturan untuk kembali ke nilai bawaan. Jika ragu, catat apa yang Anda ubah sebelum mengubahnya.</string>
     <string name="settings_privacy_options">Opsi Privasi</string>
     <string name="settings_privacy_options_desc">Ubah pilihan persetujuan personalisasi iklan Anda</string>
+    <string name="settings_premium">Premium</string>
+    <string name="remove_ads">Hapus Iklan</string>
+    <string name="remove_ads_desc">Pembelian sekali bayar yang menghapus semua iklan</string>
+    <string name="remove_ads_desc_price">Pembelian sekali bayar — %1$s</string>
+    <string name="remove_ads_owned">Sudah dibeli — terima kasih atas dukungannya!</string>
+    <string name="remove_ads_thanks">Iklan dihapus. Terima kasih!</string>
+    <string name="remove_ads_pending">Pembelian tertunda. Iklan akan dihapus setelah selesai.</string>
+    <string name="remove_ads_unavailable">Pembelian tidak tersedia saat ini. Coba lagi nanti.</string>
+    <string name="remove_ads_restore">Pulihkan Pembelian</string>
+    <string name="remove_ads_restore_desc">Sudah membeli? Pulihkan di perangkat ini</string>
+    <string name="remove_ads_restored">Pembelian dipulihkan</string>
+    <string name="remove_ads_nothing_to_restore">Tidak ada pembelian sebelumnya</string>
 </resources>

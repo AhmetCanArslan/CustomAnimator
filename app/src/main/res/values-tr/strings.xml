@@ -447,4 +447,16 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Bir şey ters giderse ilgili bölümdeki ya da Ayarlar\'daki sıfırlama seçeneğiyle varsayılan değerlere dönün. Emin değilseniz, değiştirmeden önce neyi değiştirdiğinizi not alın.</string>
     <string name="settings_privacy_options">Gizlilik Seçenekleri</string>
     <string name="settings_privacy_options_desc">Reklam kişiselleştirme onay tercihlerinizi değiştirin</string>
+    <string name="settings_premium">Premium</string>
+    <string name="remove_ads">Reklamları Kaldır</string>
+    <string name="remove_ads_desc">Tüm reklamları kaldıran tek seferlik satın alma</string>
+    <string name="remove_ads_desc_price">Tek seferlik satın alma — %1$s</string>
+    <string name="remove_ads_owned">Satın alındı — desteğiniz için teşekkürler!</string>
+    <string name="remove_ads_thanks">Reklamlar kaldırıldı. Teşekkürler!</string>
+    <string name="remove_ads_pending">Satın alma beklemede. Tamamlandığında reklamlar kaldırılacak.</string>
+    <string name="remove_ads_unavailable">Satın alma şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="remove_ads_restore">Satın Almayı Geri Yükle</string>
+    <string name="remove_ads_restore_desc">Daha önce satın aldıysanız bu cihazda geri yükleyin</string>
+    <string name="remove_ads_restored">Satın alma geri yüklendi</string>
+    <string name="remove_ads_nothing_to_restore">Önceki bir satın alma bulunamadı</string>
 </resources>
