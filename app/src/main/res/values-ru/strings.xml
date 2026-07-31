@@ -23,7 +23,7 @@
     <string name="settings_permission_status_not_granted">Разрешение не предоставлено</string>
     <string name="nav_animation">Анимация</string>
     <string name="nav_width">Ширина</string>
-    <string name="nav_developer">Разработчик</string>
+    <string name="nav_developer">Разраб.</string>
     <string name="nav_terminal">Терминал</string>
     <string name="developer_toggles">Системные переключатели</string>
     <string name="developer_quick_actions">Быстрые действия</string>
@@ -190,7 +190,7 @@
     <string name="no">Нет</string>
     <string name="information">Информация</string>
     <string name="ad_info_title">Поддержка разработки</string>
-    <string name="ad_info_message">Привет! 👋\n\nЧтобы это приложение оставалось бесплатным и продолжало развиваться, я добавил небольшие баннеры.\n\nОни появляются только внизу экрана и никогда не бывают навязчивыми.\n\nСпасибо за понимание и поддержку. ❤️</string>
+    <string name="ad_info_message">Привет! 👋\n\nЧтобы приложение оставалось бесплатным и развивалось, я добавил рекламу: небольшой баннер внизу экрана и иногда полноэкранное объявление после применения изменения или повторного открытия приложения.\n\nЧастота показов ограничена, чтобы не мешать вам.\n\nСпасибо за понимание и поддержку. ❤️</string>
     <string name="ad_info_ok">Понятно</string>
     <string name="rate_dialog_title">Нравится приложение?</string>
     <string name="rate_dialog_message">Если вам нравится Custom Animator, оцените его в Play Store. Ваша поддержка действительно важна!</string>
@@ -429,4 +429,22 @@
     <string name="width_revert_body">Возврат к %1$d dp через %2$d секунд, если вы не подтвердите. Это защищает от размера, при котором экраном невозможно пользоваться.</string>
     <string name="width_revert_keep">Оставить</string>
     <string name="width_revert_now">Вернуть сейчас</string>
+
+    <string name="onboarding_skip">Пропустить</string>
+    <string name="onboarding_next">Далее</string>
+    <string name="onboarding_back">Назад</string>
+    <string name="onboarding_start">Начать</string>
+    <string name="onboarding_welcome_title">Добро пожаловать в Custom Animator</string>
+    <string name="onboarding_welcome_body">Ускорьте устройство, настроив скорость анимаций, плотность экрана, поведение батареи и скрытые параметры разработчика — всё в одном месте, без root.</string>
+    <string name="onboarding_permission_title">Разовая настройка</string>
+    <string name="onboarding_permission_body">Эти параметры принадлежат системе, поэтому приложению нужно особое разрешение, чтобы что-то менять. Выдайте его через Shizuku или одной командой ADB с компьютера.</string>
+    <string name="onboarding_permission_highlight">Без этого разрешения приложение может читать настройки, но не изменять их. На каждом экране, которому оно нужно, вы увидите предупреждение сверху.</string>
+    <string name="onboarding_battery_title">Измеряйте батарею сами</string>
+    <string name="onboarding_battery_body">Настройки батареи меняют, насколько агрессивно Android усыпляет и ограничивает приложения. Лучшего значения нет — всё зависит от устройства, прошивки и ваших приложений.</string>
+    <string name="onboarding_battery_highlight">Меняйте по одному параметру, день пользуйтесь как обычно и сравните. Агрессивные настройки ускоряют разряд и мешают уведомлениям, фоновым приложениям и будильникам.</string>
+    <string name="onboarding_experimental_title">Экспериментально по своей природе</string>
+    <string name="onboarding_experimental_body">Производители сильно изменяют Android. Некоторые твики на вашем устройстве просто ничего не делают, другие откатываются системой, третьим нужна перезагрузка.</string>
+    <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь — запишите, что меняете, до изменения.</string>
+    <string name="settings_privacy_options">Настройки конфиденциальности</string>
+    <string name="settings_privacy_options_desc">Изменить согласие на персонализацию рекламы</string>
 </resources>

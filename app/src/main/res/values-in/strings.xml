@@ -78,7 +78,7 @@
     <string name="graphics_api_override">Penggantian API Grafis</string>
     <string name="graphics_api_override_desc">Paksa aplikasi menggunakan ANGLE (terjemahan Vulkan) atau driver GLES/Vulkan bawaan</string>
     <string name="graphics_api_override_disclaimer">Ini menggunakan pengaturan driver ANGLE per aplikasi bawaan Android (Android 10+). Apakah benar-benar berpengaruh tergantung pada perangkat dan versi Android Anda — paling andal di perangkat Pixel dan bisa saja diabaikan sepenuhnya pada build dari beberapa produsen lain.</string>
-    <string name="driver_default">Default</string>
+    <string name="driver_default">Bawaan</string>
     <string name="driver_native">Native</string>
     <string name="driver_angle">ANGLE</string>
     <string name="search_apps">Cari aplikasi</string>
@@ -140,7 +140,7 @@ Durasi Animator: %3$.2f</string>
     <string name="plus_symbol">+</string>
     <string name="minus_symbol">-</string>
     <string name="preview_app_text">Aplikasi</string>
-    <string name="preview_default_scale_label">1.0x (Default)</string>
+    <string name="preview_default_scale_label">1,0x (Bawaan)</string>
     <string name="preview_current_scale_label">%1$sx (Saat ini)</string>
     <string name="permission_details_title">Detail Izin</string>
     <string name="granted">✓ Diberikan</string>
@@ -190,7 +190,7 @@ Durasi Animator: %3$.2f</string>
     <string name="no">Tidak</string>
     <string name="information">Informasi</string>
     <string name="ad_info_title">Dukung Pengembangan</string>
-    <string name="ad_info_message">Halo! 👋\n\nUntuk menjaga aplikasi ini tetap gratis dan terus mengembangkannya, saya menambahkan banner iklan kecil.\n\nIklan hanya muncul di bagian bawah layar dan tidak pernah mengganggu.\n\nTerima kasih atas pengertian dan dukungan Anda. ❤️</string>
+    <string name="ad_info_message">Hai! 👋\n\nAgar aplikasi ini tetap gratis dan terus berkembang, saya menambahkan iklan: banner kecil di bagian bawah layar, dan sesekali iklan layar penuh setelah Anda menerapkan perubahan atau membuka kembali aplikasi.\n\nFrekuensinya dibatasi agar tidak mengganggu.\n\nTerima kasih atas pengertian dan dukungan Anda. ❤️</string>
     <string name="ad_info_ok">Oke</string>
     <string name="rate_dialog_title">Menikmati Aplikasinya?</string>
     <string name="rate_dialog_message">Jika Anda menyukai Custom Animator, luangkan waktu sejenak untuk memberi peringkat di Play Store. Dukungan Anda sangat berarti!</string>
@@ -206,7 +206,7 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_save_current">Simpan</string>
     <string name="terminal_preset_name">Nama prasetel</string>
     <string name="terminal_add_preset">Prasetel Baru</string>
-    <string name="terminal_edit_preset">Edit</string>
+    <string name="terminal_edit_preset">Ubah</string>
     <string name="terminal_delete_preset">Hapus</string>
     <string name="terminal_preset_options">Opsi prasetel</string>
     <string name="terminal_output">Keluaran</string>
@@ -429,4 +429,22 @@ Durasi Animator: %3$.2f</string>
     <string name="width_revert_body">Kembali ke %1$d dp dalam %2$d detik jika Anda tidak mengonfirmasi. Ini melindungi Anda dari ukuran yang membuat layar tidak dapat digunakan.</string>
     <string name="width_revert_keep">Pertahankan</string>
     <string name="width_revert_now">Kembalikan sekarang</string>
+
+    <string name="onboarding_skip">Lewati</string>
+    <string name="onboarding_next">Lanjut</string>
+    <string name="onboarding_back">Kembali</string>
+    <string name="onboarding_start">Mulai</string>
+    <string name="onboarding_welcome_title">Selamat Datang di Custom Animator</string>
+    <string name="onboarding_welcome_body">Percepat perangkat Anda dengan mengatur skala animasi, kepadatan layar, perilaku baterai, dan pengaturan pengembang tersembunyi — semuanya dari satu tempat, tanpa root.</string>
+    <string name="onboarding_permission_title">Penyiapan Sekali Saja</string>
+    <string name="onboarding_permission_body">Pengaturan ini milik sistem, jadi aplikasi memerlukan izin khusus sebelum dapat mengubah apa pun. Berikan izin melalui Shizuku, atau dengan menjalankan satu perintah ADB dari komputer.</string>
+    <string name="onboarding_permission_highlight">Tanpa izin ini aplikasi hanya bisa membaca pengaturan, tidak bisa mengubahnya. Anda akan melihat peringatan di bagian atas layar yang membutuhkannya.</string>
+    <string name="onboarding_battery_title">Ukur Baterai Sendiri</string>
+    <string name="onboarding_battery_body">Penyesuaian baterai mengubah seberapa agresif Android menidurkan, membatasi, dan membekukan aplikasi. Tidak ada satu nilai terbaik — tergantung perangkat, ROM, dan aplikasi yang Anda pakai.</string>
+    <string name="onboarding_battery_highlight">Ubah satu hal dalam satu waktu, lalu gunakan perangkat secara normal selama sehari dan bandingkan. Pengaturan agresif dapat membuat baterai lebih cepat habis, menunda notifikasi, atau menghentikan aplikasi latar belakang dan alarm.</string>
+    <string name="onboarding_experimental_title">Bersifat Eksperimental</string>
+    <string name="onboarding_experimental_body">Produsen banyak memodifikasi Android. Beberapa penyesuaian diam-diam tidak berpengaruh di perangkat Anda, sebagian dikembalikan oleh sistem, dan sebagian butuh mulai ulang agar berlaku.</string>
+    <string name="onboarding_experimental_highlight">Jika ada yang bermasalah, gunakan opsi setel ulang di bagian terkait atau di Pengaturan untuk kembali ke nilai bawaan. Jika ragu, catat apa yang Anda ubah sebelum mengubahnya.</string>
+    <string name="settings_privacy_options">Opsi Privasi</string>
+    <string name="settings_privacy_options_desc">Ubah pilihan persetujuan personalisasi iklan Anda</string>
 </resources>

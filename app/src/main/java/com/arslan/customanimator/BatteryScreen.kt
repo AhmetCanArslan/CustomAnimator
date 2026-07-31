@@ -105,19 +105,27 @@ fun BatteryScreenContent(
     // need are silently ignored by the current parser, so the section would do nothing.
     val policySupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
-    fun writeGlobal(key: String, value: String) {
-        mgr.putGlobal(context, resolver, key, value)
+    fun afterWrite(success: Boolean) {
         refreshToken++
+        if (success) maybeShowInterstitial(context)
+    }
+
+    fun writeGlobal(key: String, value: String) {
+        afterWrite(mgr.putGlobal(context, resolver, key, value))
+    }
+
+    fun writeSecure(key: String, value: String) {
+        afterWrite(mgr.putSecure(context, resolver, key, value))
     }
 
     fun writePolicy(key: String, value: String) {
         val next = policyValues.toMutableMap()
         next[key] = value
-        mgr.putGlobal(
+        val success = mgr.putGlobal(
             context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS, mgr.serialiseConstants(next)
         )
         mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "")
-        refreshToken++
+        afterWrite(success)
     }
 
     LazyColumn(
@@ -286,7 +294,7 @@ fun BatteryScreenContent(
                 selected = matches,
                 enabled = canWrite
             ) {
-                if (preset.constants.isEmpty()) {
+                val success = if (preset.constants.isEmpty()) {
                     mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
                 } else {
                     val next = policyValues.toMutableMap()
@@ -297,7 +305,7 @@ fun BatteryScreenContent(
                     )
                 }
                 mgr.setAppliedPreset(context, mgr.GROUP_SAVER, preset.id)
-                refreshToken++
+                afterWrite(success)
             }
         }
 
@@ -381,7 +389,7 @@ fun BatteryScreenContent(
                 selected = matches,
                 enabled = canWrite
             ) {
-                if (preset.constants.isEmpty()) {
+                val success = if (preset.constants.isEmpty()) {
                     mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS)
                 } else {
                     mgr.putGlobal(
@@ -390,7 +398,7 @@ fun BatteryScreenContent(
                     )
                 }
                 mgr.setAppliedPreset(context, mgr.GROUP_DOZE, preset.id)
-                refreshToken++
+                afterWrite(success)
             }
         }
 
@@ -458,8 +466,7 @@ fun BatteryScreenContent(
                         checked = adaptiveCharging,
                         enabled = canWrite
                     ) {
-                        mgr.putSecure(context, resolver, mgr.KEY_ADAPTIVE_CHARGING, if (it) "1" else "0")
-                        refreshToken++
+                        writeSecure(mgr.KEY_ADAPTIVE_CHARGING, if (it) "1" else "0")
                     }
 
                     HorizontalDivider()
@@ -469,8 +476,7 @@ fun BatteryScreenContent(
                         checked = chargingSounds,
                         enabled = canWrite
                     ) {
-                        mgr.putSecure(context, resolver, mgr.KEY_CHARGING_SOUNDS, if (it) "1" else "0")
-                        refreshToken++
+                        writeSecure(mgr.KEY_CHARGING_SOUNDS, if (it) "1" else "0")
                     }
 
                     HorizontalDivider()
@@ -480,8 +486,7 @@ fun BatteryScreenContent(
                         checked = chargingVibration,
                         enabled = canWrite
                     ) {
-                        mgr.putSecure(context, resolver, mgr.KEY_CHARGING_VIBRATION, if (it) "1" else "0")
-                        refreshToken++
+                        writeSecure(mgr.KEY_CHARGING_VIBRATION, if (it) "1" else "0")
                     }
                 }
             }
@@ -490,14 +495,14 @@ fun BatteryScreenContent(
         item {
             OutlinedButton(
                 onClick = {
-                    mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
-                    mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS)
-                    mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER, "0")
-                    mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER_TRIGGER, "0")
-                    mgr.putGlobal(context, resolver, mgr.KEY_APP_STANDBY, "1")
+                    var success = mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
+                    success = mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS) || success
+                    success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER, "0") || success
+                    success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER_TRIGGER, "0") || success
+                    success = mgr.putGlobal(context, resolver, mgr.KEY_APP_STANDBY, "1") || success
                     mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "default")
                     mgr.setAppliedPreset(context, mgr.GROUP_DOZE, "default")
-                    refreshToken++
+                    afterWrite(success)
                 },
                 enabled = canWrite,
                 modifier = Modifier.fillMaxWidth()

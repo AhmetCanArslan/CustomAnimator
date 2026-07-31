@@ -190,7 +190,7 @@ Duración del Animador: %3$.2f</string>
     <string name="no">No</string>
     <string name="information">Información</string>
     <string name="ad_info_title">Apoyar el Desarrollo</string>
-    <string name="ad_info_message">¡Hola! 👋\n\nPara mantener esta app gratuita y seguir mejorándola, he añadido pequeños banners publicitarios.\n\nSolo aparecen en la parte inferior de la pantalla y nunca son intrusivos.\n\nGracias por su comprensión y apoyo. ❤️</string>
+    <string name="ad_info_message">¡Hola! 👋\n\nPara mantener la app gratis y seguir mejorándola, agregué anuncios: un banner pequeño en la parte inferior de la pantalla y, ocasionalmente, un anuncio de pantalla completa después de aplicar un cambio o volver a abrir la app.\n\nSu frecuencia está limitada para no estorbar.\n\nGracias por tu comprensión y apoyo. ❤️</string>
     <string name="ad_info_ok">Entendido</string>
     <string name="rate_dialog_title">¿Disfrutas la App?</string>
     <string name="rate_dialog_message">Si te gusta Custom Animator, tómate un momento para calificarla en Play Store. ¡Tu apoyo realmente marca la diferencia!</string>
@@ -429,4 +429,22 @@ Duración del Animador: %3$.2f</string>
     <string name="width_revert_body">Se volverá a %1$d dp en %2$d segundos si no confirmas. Esto te protege de un tamaño que deje la pantalla inservible.</string>
     <string name="width_revert_keep">Mantener</string>
     <string name="width_revert_now">Revertir ahora</string>
+
+    <string name="onboarding_skip">Omitir</string>
+    <string name="onboarding_next">Siguiente</string>
+    <string name="onboarding_back">Atrás</string>
+    <string name="onboarding_start">Comenzar</string>
+    <string name="onboarding_welcome_title">Bienvenido a Custom Animator</string>
+    <string name="onboarding_welcome_body">Acelera tu dispositivo ajustando las escalas de animación, la densidad de pantalla, el comportamiento de la batería y opciones ocultas de desarrollador — todo en un solo lugar, sin root.</string>
+    <string name="onboarding_permission_title">Configuración Única</string>
+    <string name="onboarding_permission_body">Estos ajustes pertenecen al sistema, así que la app necesita un permiso especial antes de poder cambiar algo. Concédelo con Shizuku o ejecutando un solo comando ADB desde una computadora.</string>
+    <string name="onboarding_permission_highlight">Sin este permiso la app puede leer tus ajustes pero no cambiarlos. Verás una advertencia en la parte superior de cada pantalla que lo necesite.</string>
+    <string name="onboarding_battery_title">Mide la Batería Tú Mismo</string>
+    <string name="onboarding_battery_body">Los ajustes de batería cambian qué tan agresivamente Android duerme, limita y congela las apps. No hay un único valor ideal — depende de tu dispositivo, tu ROM y las apps que uses.</string>
+    <string name="onboarding_battery_highlight">Cambia una cosa a la vez, luego usa el dispositivo con normalidad durante un día y compara. Los ajustes agresivos pueden agotar la batería más rápido, retrasar notificaciones o impedir que funcionen las apps en segundo plano y las alarmas.</string>
+    <string name="onboarding_experimental_title">Experimental por Naturaleza</string>
+    <string name="onboarding_experimental_body">Los fabricantes modifican mucho Android. Algunos ajustes simplemente no hacen nada en tu dispositivo, otros los revierte el sistema y algunos requieren reiniciar para aplicarse.</string>
+    <string name="onboarding_experimental_highlight">Si algo falla, usa la opción de restablecer en la sección correspondiente o en Ajustes para volver a los valores originales. Ante la duda, anota lo que cambiaste antes de cambiarlo.</string>
+    <string name="settings_privacy_options">Opciones de Privacidad</string>
+    <string name="settings_privacy_options_desc">Cambia tus opciones de consentimiento para anuncios personalizados</string>
 </resources>

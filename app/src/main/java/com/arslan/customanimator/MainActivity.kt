@@ -109,7 +109,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             CustomAnimatorTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    AnimatorSelectorScreen(this)
+                    var showOnboarding by rememberSaveable {
+                        mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
+                    }
+                    if (showOnboarding) {
+                        OnboardingScreen(
+                            onFinished = {
+                                SettingsManager.markOnboardingCompleted(this)
+                                showOnboarding = false
+                            }
+                        )
+                    } else {
+                        AnimatorSelectorScreen(this)
+                    }
                 }
             }
         }

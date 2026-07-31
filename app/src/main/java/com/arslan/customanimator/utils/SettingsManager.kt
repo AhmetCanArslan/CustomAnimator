@@ -61,6 +61,16 @@ object SettingsManager {
         getPrefs(context).edit().putBoolean(KEY_TERMINAL_RISK_ACCEPTED, true).apply()
     }
 
+    private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+
+    fun hasCompletedOnboarding(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_ONBOARDING_COMPLETED, false)
+    }
+
+    fun markOnboardingCompleted(context: Context) {
+        getPrefs(context).edit().putBoolean(KEY_ONBOARDING_COMPLETED, true).apply()
+    }
+
     fun hasShownAdInfoDialog(context: Context): Boolean {
         return getPrefs(context).getBoolean(KEY_AD_INFO_DIALOG_SHOWN, false)
     }

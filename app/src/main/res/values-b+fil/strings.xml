@@ -21,13 +21,13 @@
     <string name="settings_about">Tungkol Dito</string>
     <string name="settings_permission_status_granted">Ipinagkaloob na ang pahintulot</string>
     <string name="settings_permission_status_not_granted">Hindi pa ipinagkaloob ang pahintulot</string>
-    <string name="nav_animation">Animation</string>
+    <string name="nav_animation">Animasyon</string>
     <string name="nav_width">Lapad</string>
     <string name="nav_developer">Developer</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Mga System Toggle</string>
     <string name="developer_quick_actions">Mabilisang mga Aksyon</string>
-    <string name="developer_performance">Performance</string>
+    <string name="developer_performance">Pagganap</string>
     <string name="developer_needs_shizuku">Kailangan ng mga aksyong ito na nakakonekta ang Shizuku.</string>
     <string name="usb_debugging">USB Debugging</string>
     <string name="usb_debugging_desc">Payagan ang debugging sa pamamagitan ng koneksyon sa USB</string>
@@ -58,7 +58,7 @@
     <string name="auto_force_stop_notif_title">Aktibo ang Auto Force-Stop</string>
     <string name="auto_force_stop_notif_text">Puwersahang ihihinto ang mga napiling app kapag umalis ka sa mga ito</string>
     <string name="auto_force_stop_notif_text_combined">Puwersahang ihihinto o mababago ang mga pahintulot ng mga napiling app kapag umalis ka sa mga ito</string>
-    <string name="auto_permission_disabler">Auto Permission Disabler</string>
+    <string name="auto_permission_disabler">Awtomatikong Pag-disable ng Permission</string>
     <string name="auto_permission_disabler_desc">Bawiin ang mga pahintulot ng napiling app sa sandaling umalis ito sa foreground, at ibalik kapag muling binuksan</string>
     <string name="auto_permission_disabler_needs_usage_access">Kailangan ng feature na ito ng Usage Access para malaman kung kailan umaalis ang mga app sa foreground.</string>
     <string name="auto_permission_disabler_status_active">Aktibo ang auto permission disabler para sa %1$d app</string>
@@ -102,19 +102,19 @@
     <string name="window_animation_scale">Window Animation Scale (pagbukas/pagsara ng window)</string>
     <string name="transition_animation_scale">Transition Animation Scale (mga transition ng screen)</string>
     <string name="animator_duration_scale">Animator Duration Scale (mga animation ng app)</string>
-    <string name="animation_header">Animation</string>
+    <string name="animation_header">Animasyon</string>
     <string name="manual_input">Manual na Input</string>
     <string name="window_animation">Window Animation (pagbukas/pagsara ng window)</string>
     <string name="transition_animation">Transition Animation (mga transition ng screen)</string>
     <string name="animator_duration">Animator Duration (mga animation ng app)</string>
     <string name="apply_settings">I-apply</string>
     <string name="saved_presets">Mga Naka-save na Preset</string>
-    <string name="preset_values">Window Animation: %1$.2f
-Transition Animation: %2$.2f
-Animator Duration: %3$.2f</string>
-    <string name="preset_window_animation_value">Window Animation: %1$.2f</string>
-    <string name="preset_transition_animation_value">Transition Animation: %1$.2f</string>
-    <string name="preset_animator_duration_value">Animator Duration: %1$.2f</string>
+    <string name="preset_values">Animation ng Window: %1$.2f
+Animation ng Transition: %2$.2f
+Tagal ng Animator: %3$.2f</string>
+    <string name="preset_window_animation_value">Animation ng Window: %1$.2f</string>
+    <string name="preset_transition_animation_value">Animation ng Transition: %1$.2f</string>
+    <string name="preset_animator_duration_value">Tagal ng Animator: %1$.2f</string>
     <string name="load">I-load</string>
     <string name="delete">Burahin</string>
     <string name="no_presets_saved">Wala pang naka-save na preset. I-tap ang + para gumawa ng isa!</string>
@@ -190,7 +190,7 @@ Animator Duration: %3$.2f</string>
     <string name="no">Hindi</string>
     <string name="information">Impormasyon</string>
     <string name="ad_info_title">Suportahan ang Pag-develop</string>
-    <string name="ad_info_message">Kumusta! 👋\n\nUpang panatilihing libre ang app na ito at patuloy itong pagandahin, nagdagdag ako ng maliliit na banner ad.\n\nLumilitaw lang ang mga ito sa ibaba ng screen at hindi kailanman nakakaabala.\n\nSalamat sa iyong pag-unawa at suporta. ❤️</string>
+    <string name="ad_info_message">Kumusta! 👋\n\nUpang manatiling libre ang app at patuloy itong mapabuti, nagdagdag ako ng mga ad: maliit na banner sa ibaba ng screen, at paminsan-minsan ay full-screen na ad pagkatapos mong maglapat ng pagbabago o muling buksan ang app.\n\nLimitado ang dalas nito para hindi makaabala.\n\nSalamat sa iyong pang-unawa at suporta. ❤️</string>
     <string name="ad_info_ok">Naunawaan</string>
     <string name="rate_dialog_title">Nage-enjoy ka ba sa App?</string>
     <string name="rate_dialog_message">Kung gusto mo ang Custom Animator, maglaan ng sandali para i-rate ito sa Play Store. Malaki ang naidudulot ng iyong suporta!</string>
@@ -199,7 +199,7 @@ Animator Duration: %3$.2f</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Kailangan ng terminal na nakakonekta ang Shizuku.</string>
-    <string name="terminal_command_hint">Command</string>
+    <string name="terminal_command_hint">Utos</string>
     <string name="terminal_run">Patakbuhin</string>
     <string name="terminal_presets">Mga Preset</string>
     <string name="terminal_no_presets">Wala pang naka-save na preset. Mag-type ng command at i-tap ang I-save.</string>
@@ -209,7 +209,7 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_edit_preset">I-edit</string>
     <string name="terminal_delete_preset">Tanggalin</string>
     <string name="terminal_preset_options">Mga opsyon sa preset</string>
-    <string name="terminal_output">Output</string>
+    <string name="terminal_output">Resulta</string>
     <string name="terminal_output_empty">Wala pang output.</string>
     <string name="terminal_clear_output">I-clear</string>
     <string name="terminal_exit_code">exit %1$d</string>
@@ -276,7 +276,7 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_tile_icon_none">Walang icon na tumugma sa paghahanap.</string>
     <string name="terminal_tile_cat_terminal">Terminal at code</string>
     <string name="terminal_tile_cat_power">Power at performance</string>
-    <string name="terminal_tile_cat_system">System</string>
+    <string name="terminal_tile_cat_system">Sistema</string>
     <string name="terminal_tile_cat_apps">Mga app at storage</string>
     <string name="terminal_tile_cat_network">Network</string>
     <string name="terminal_tile_cat_display">Display at media</string>
@@ -289,7 +289,7 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_tile_collapse_description">Isara ang panel kapag nagsimula ang command.</string>
     <string name="terminal_tile_add">Idagdag sa Quick Settings</string>
     <string name="terminal_tile_add_manual_hint">Idagdag ang tile nang manu-mano mula sa edit screen ng Quick Settings.</string>
-    <string name="terminal_tile_preview">Preview</string>
+    <string name="terminal_tile_preview">Silip</string>
     <string name="width_tile_default_label">Preset ng lapad</string>
     <string name="animation_tile_default_label">Preset ng animation</string>
     <string name="preset_tile_needs_permission">Magbigay muna ng Shizuku o WRITE_SECURE_SETTINGS.</string>
@@ -304,7 +304,7 @@ Animator Duration: %3$.2f</string>
     <string name="preset_tile_collapse_description">Isara ang panel kapag nailapat ang preset.</string>
     <string name="nav_battery">Baterya</string>
     <string name="bt_needs_permission">Kailangan ng Shizuku o WRITE_SECURE_SETTINGS para sa mga tweak ng baterya.</string>
-    <string name="bt_section_saver">Battery Saver</string>
+    <string name="bt_section_saver">Pagtitipid ng Baterya</string>
     <string name="bt_section_presets">Mga Power Save Mode</string>
     <string name="bt_section_policy">Patakaran ng Battery Saver</string>
     <string name="bt_section_doze">Doze / Idle</string>
@@ -317,7 +317,7 @@ Animator Duration: %3$.2f</string>
     <string name="bt_reset_done">Naibalik ang mga tweak ng baterya sa default ng system</string>
     <string name="bt_shizuku_only">Kailangan ng Shizuku</string>
     <string name="bt_show_advanced">Mga advanced na policy key</string>
-    <string name="bt_low_power">Battery Saver</string>
+    <string name="bt_low_power">Pagtitipid ng Baterya</string>
     <string name="bt_low_power_desc">I-on ang power save mode ngayon</string>
     <string name="bt_trigger_level">Awtomatikong i-on sa antas ng baterya</string>
     <string name="bt_trigger_level_desc">Awtomatikong i-on ang Battery Saver kapag mas mababa sa porsyentong ito. Ang 0 ay nagdi-disable nito.</string>
@@ -330,10 +330,10 @@ Animator Duration: %3$.2f</string>
     <string name="bt_auto_mode">Awtomatikong mode</string>
     <string name="bt_auto_mode_desc">Kung paano nagpapasya ang Battery Saver na mag-on</string>
     <string name="bt_auto_mode_percentage">Ayon sa porsyento</string>
-    <string name="bt_auto_mode_routine">Adaptive / routine</string>
-    <string name="bt_adaptive_saver">Adaptive Power Saver</string>
+    <string name="bt_auto_mode_routine">Adaptive / nakagawian</string>
+    <string name="bt_adaptive_saver">Adaptive na Pagtitipid ng Kuryente</string>
     <string name="bt_adaptive_saver_desc">Hayaang i-tune ng system ang power saving base sa iyong routine</string>
-    <string name="bt_fixed_perf">Fixed performance mode</string>
+    <string name="bt_fixed_perf">Nakapirming performance mode</string>
     <string name="bt_fixed_perf_desc">Itakda ang CPU sa isang antas ng performance. Para sa development lamang.</string>
     <string name="bt_disable_vibration">I-off ang vibration</string>
     <string name="bt_disable_vibration_desc">Patahimikin ang haptics at vibration habang nagtitipid</string>
@@ -367,7 +367,7 @@ Animator Duration: %3$.2f</string>
     <string name="bt_brightness_adjust_desc">Babaan ang liwanag ng screen habang nagtitipid</string>
     <string name="bt_brightness_factor">Factor ng liwanag</string>
     <string name="bt_brightness_factor_desc">Multiplier na inilalapat sa liwanag ng screen</string>
-    <string name="bt_location_mode">Location mode</string>
+    <string name="bt_location_mode">Mode ng lokasyon</string>
     <string name="bt_location_mode_desc">Kung paano kumikilos ang lokasyon kapag naka-on ang Battery Saver</string>
     <string name="bt_location_no_change">Walang pagbabago</string>
     <string name="bt_location_gps_off_screen_off">Patay ang GPS kapag patay ang screen</string>
@@ -399,7 +399,7 @@ Animator Duration: %3$.2f</string>
     <string name="bt_doze_enabled_desc">Ganap na i-on o i-off ang idle mode ng Android</string>
     <string name="bt_app_standby">Mga App Standby bucket</string>
     <string name="bt_app_standby_desc">Hayaang limitahan ng Android ang mga app na bihira mong buksan</string>
-    <string name="bt_adaptive_battery">Adaptive Battery</string>
+    <string name="bt_adaptive_battery">Adaptive na Baterya</string>
     <string name="bt_adaptive_battery_desc">Limitahan ang baterya para sa mga app na bihira mong gamitin</string>
     <string name="bt_app_auto_restriction">Awtomatikong limitahan ang apps</string>
     <string name="bt_app_auto_restriction_desc">Awtomatikong limitahan ang mga app na nag-uubos ng baterya</string>
@@ -407,7 +407,7 @@ Animator Duration: %3$.2f</string>
     <string name="bt_cached_freezer_desc">Ihinto ang cached na proseso ng app para hindi gumamit ng CPU</string>
     <string name="bt_ble_scan">Laging naka-on na Bluetooth scanning</string>
     <string name="bt_ble_scan_desc">Payagan ang mga app na mag-scan ng BLE device kahit patay ang Bluetooth</string>
-    <string name="bt_adaptive_charging">Adaptive Charging</string>
+    <string name="bt_adaptive_charging">Adaptive na Pag-charge</string>
     <string name="bt_adaptive_charging_desc">Bagalan ang huling bahagi ng pag-charge sa gabi</string>
     <string name="bt_charging_sounds">Mga tunog sa pag-charge</string>
     <string name="bt_charging_sounds_desc">Magpatugtog ng tunog kapag nakakonekta ang charger</string>
@@ -429,4 +429,22 @@ Animator Duration: %3$.2f</string>
     <string name="width_revert_body">Babalik sa %1$d dp sa loob ng %2$d segundo kung hindi mo kukumpirmahin. Pinoprotektahan ka nito mula sa laking hindi na magamit ang screen.</string>
     <string name="width_revert_keep">Panatilihin</string>
     <string name="width_revert_now">Ibalik ngayon</string>
+
+    <string name="onboarding_skip">Laktawan</string>
+    <string name="onboarding_next">Susunod</string>
+    <string name="onboarding_back">Bumalik</string>
+    <string name="onboarding_start">Magsimula</string>
+    <string name="onboarding_welcome_title">Maligayang Pagdating sa Custom Animator</string>
+    <string name="onboarding_welcome_body">Pabilisin ang iyong device sa pamamagitan ng pag-aayos ng animation scales, screen density, pag-uugali ng baterya at mga nakatagong developer setting — lahat sa isang lugar, walang root.</string>
+    <string name="onboarding_permission_title">Isang Beses na Setup</string>
+    <string name="onboarding_permission_body">Pag-aari ng sistema ang mga setting na ito, kaya kailangan ng app ng espesyal na pahintulot bago ito makapagbago ng kahit ano. Ibigay ito gamit ang Shizuku, o sa pamamagitan ng isang ADB command mula sa computer.</string>
+    <string name="onboarding_permission_highlight">Kung wala ang pahintulot na ito, mababasa lang ng app ang iyong mga setting ngunit hindi ito mababago. Makakakita ka ng babala sa itaas ng bawat screen na nangangailangan nito.</string>
+    <string name="onboarding_battery_title">Sukatin Mismo ang Baterya</string>
+    <string name="onboarding_battery_body">Binabago ng battery tweaks kung gaano kaagresibo natutulog, hinihigpitan at nifi-freeze ng Android ang mga app. Walang iisang pinakamahusay na halaga — depende ito sa device, ROM at mga app mo.</string>
+    <string name="onboarding_battery_highlight">Isa-isang baguhin, gamitin nang normal ang device sa loob ng isang araw, at ihambing. Ang agresibong setting ay maaaring magpabilis ng pagkaubos ng baterya, magpaantala ng notification, o pumigil sa background apps at alarm.</string>
+    <string name="onboarding_experimental_title">Likas na Eksperimental</string>
+    <string name="onboarding_experimental_body">Malaki ang binabago ng mga manufacturer sa Android. May mga tweak na tahimik na walang epekto sa device mo, may ibinabalik ng sistema, at may nangangailangan ng reboot bago gumana.</string>
+    <string name="onboarding_experimental_highlight">Kung may mali, gamitin ang reset sa kaukulang seksyon o sa Settings para bumalik sa orihinal na halaga. Kapag may pagdududa, itala kung ano ang binago mo bago mo baguhin.</string>
+    <string name="settings_privacy_options">Mga Opsyon sa Privacy</string>
+    <string name="settings_privacy_options_desc">Baguhin ang iyong pahintulot sa personalisasyon ng ad</string>
 </resources>

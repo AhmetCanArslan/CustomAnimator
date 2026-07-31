@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsBackupRestore
@@ -192,6 +193,18 @@ fun SettingsScreen(
                         else
                             MaterialTheme.colorScheme.error,
                         onClick = onShowPermissionDetails
+                    )
+                    SettingDivider()
+                }
+                if (BuildConfig.HAS_ADS && isPrivacyOptionsRequired()) {
+                    val context = LocalContext.current
+                    ActionSettingRow(
+                        icon = Icons.Filled.PrivacyTip,
+                        title = stringResource(R.string.settings_privacy_options),
+                        description = stringResource(R.string.settings_privacy_options_desc),
+                        onClick = {
+                            (context as? android.app.Activity)?.let { showPrivacyOptions(it) }
+                        }
                     )
                     SettingDivider()
                 }

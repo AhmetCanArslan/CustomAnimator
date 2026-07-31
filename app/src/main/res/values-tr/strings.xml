@@ -190,7 +190,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="no">Hayır</string>
     <string name="information">Bilgi</string>
     <string name="ad_info_title">Geliştirmeyi Destekleyin</string>
-    <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için küçük banner reklamlar ekledim.\n\nSadece ekranın alt kısmında görünürler ve asla rahatsız edici değildirler.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
+    <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için reklam ekledim: ekranın altında küçük bir banner ve ara sıra, bir değişiklik uyguladıktan veya uygulamayı yeniden açtıktan sonra tam ekran bir reklam.\n\nSıklıkları sınırlıdır, yolunuza çıkmazlar.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
     <string name="ad_info_ok">Anladım</string>
     <string name="rate_dialog_title">Uygulamayı Beğendiniz mi?</string>
     <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
@@ -429,4 +429,22 @@ Animatör Süresi: %3$.2f</string>
     <string name="width_revert_body">Onaylamazsanız %2$d saniye içinde %1$d dp değerine geri dönülecek. Bu, ekranı kullanılamaz hale getiren bir boyuttan sizi korur.</string>
     <string name="width_revert_keep">Koru</string>
     <string name="width_revert_now">Şimdi geri al</string>
+
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_next">İleri</string>
+    <string name="onboarding_back">Geri</string>
+    <string name="onboarding_start">Başla</string>
+    <string name="onboarding_welcome_title">Custom Animator\'a Hoş Geldiniz</string>
+    <string name="onboarding_welcome_body">Animasyon hızlarını, ekran yoğunluğunu, batarya davranışını ve gizli geliştirici ayarlarını tek yerden düzenleyerek cihazınızı hızlandırın — root gerekmez.</string>
+    <string name="onboarding_permission_title">Tek Seferlik Kurulum</string>
+    <string name="onboarding_permission_body">Bu ayarlar sisteme ait olduğu için uygulamanın bir şeyi değiştirebilmesi için özel bir izne ihtiyacı var. İzni Shizuku ile veya bilgisayardan tek bir ADB komutu çalıştırarak verebilirsiniz.</string>
+    <string name="onboarding_permission_highlight">Bu izin olmadan uygulama ayarlarınızı okuyabilir ama değiştiremez. İzne ihtiyaç duyan her ekranın üstünde bir uyarı görürsünüz.</string>
+    <string name="onboarding_battery_title">Bataryayı Kendiniz Ölçün</string>
+    <string name="onboarding_battery_body">Batarya ayarları Android\'in uygulamaları ne kadar sert uyuttuğunu, kıstığını ve dondurduğunu değiştirir. Tek bir en iyi değer yoktur — cihazınıza, ROM\'unuza ve kullandığınız uygulamalara göre değişir.</string>
+    <string name="onboarding_battery_highlight">Tek seferde tek bir şeyi değiştirin, sonra cihazınızı bir gün normal kullanıp karşılaştırın. Agresif ayarlar bataryanızın daha hızlı tükenmesine, bildirimlerin gecikmesine ya da arka plan uygulamalarının ve alarmların çalışmamasına yol açabilir.</string>
+    <string name="onboarding_experimental_title">Doğası Gereği Deneysel</string>
+    <string name="onboarding_experimental_body">Üreticiler Android\'i çokça değiştiriyor. Bazı ayarlar cihazınızda sessizce hiçbir şey yapmaz, bazıları sistem tarafından geri alınır, bazıları da etkili olmak için yeniden başlatma ister.</string>
+    <string name="onboarding_experimental_highlight">Bir şey ters giderse ilgili bölümdeki ya da Ayarlar\'daki sıfırlama seçeneğiyle varsayılan değerlere dönün. Emin değilseniz, değiştirmeden önce neyi değiştirdiğinizi not alın.</string>
+    <string name="settings_privacy_options">Gizlilik Seçenekleri</string>
+    <string name="settings_privacy_options_desc">Reklam kişiselleştirme onay tercihlerinizi değiştirin</string>
 </resources>

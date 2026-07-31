@@ -17,6 +17,7 @@ fun propOrEnv(name: String, default: String): String {
 val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~3347511713")
 val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
 val admobInterstitialId = propOrEnv("admob.interstitial.id", "ca-app-pub-3940256099942544/1033173712")
+val admobAppOpenId = propOrEnv("admob.appopen.id", "ca-app-pub-3940256099942544/9257395921")
 
 android {
     namespace = "com.arslan.customanimator"
@@ -46,6 +47,7 @@ android {
             manifestPlaceholders["admobAppId"] = admobAppId
             buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
             buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
+            buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"$admobAppOpenId\"")
         }
     }
 
@@ -85,6 +87,8 @@ dependencies {
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
     "playstoreImplementation"(libs.play.services.ads)
+    "playstoreImplementation"(libs.user.messaging.platform)
+    "playstoreImplementation"(libs.androidx.lifecycle.process)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
