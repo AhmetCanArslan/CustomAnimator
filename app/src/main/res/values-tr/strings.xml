@@ -459,4 +459,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_restore_desc">Daha önce satın aldıysanız bu cihazda geri yükleyin</string>
     <string name="remove_ads_restored">Satın alma geri yüklendi</string>
     <string name="remove_ads_nothing_to_restore">Önceki bir satın alma bulunamadı</string>
+    <string name="remove_ads_prompt_title">Reklam istemiyor musun?</string>
+    <string name="remove_ads_prompt_body">Tek seferlik satın alma ile kaldır</string>
+    <string name="remove_ads_prompt_body_price">%1$s ile tek seferde kaldır</string>
+    <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
+    <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin — istediğin zaman, Ayarlar › Premium bölümünden.</string>
 </resources>

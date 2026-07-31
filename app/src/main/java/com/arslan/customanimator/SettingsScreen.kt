@@ -201,24 +201,7 @@ fun SettingsScreen(
                             description = removeAdsPrice?.let {
                                 stringResource(R.string.remove_ads_desc_price, it)
                             } ?: stringResource(R.string.remove_ads_desc),
-                            onClick = {
-                                val activity = context as? android.app.Activity
-                                if (activity == null) {
-                                    toast(R.string.remove_ads_unavailable)
-                                } else {
-                                    launchRemoveAdsPurchase(activity) { result ->
-                                        when (result) {
-                                            Billing.PurchaseResult.PURCHASED ->
-                                                toast(R.string.remove_ads_thanks)
-                                            Billing.PurchaseResult.PENDING ->
-                                                toast(R.string.remove_ads_pending)
-                                            Billing.PurchaseResult.CANCELLED -> Unit
-                                            Billing.PurchaseResult.ERROR ->
-                                                toast(R.string.remove_ads_unavailable)
-                                        }
-                                    }
-                                }
-                            }
+                            onClick = { startRemoveAdsPurchase(context) }
                         )
                         SettingDivider()
                         ActionSettingRow(

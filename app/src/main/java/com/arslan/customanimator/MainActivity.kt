@@ -498,6 +498,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         },
         bottomBar = {
             Column {
+                RemoveAdsPrompt()
                 BannerAdView()
                 NavigationBar {
                 NavigationBarItem(
@@ -1606,7 +1607,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 showAdInfoDialog = false
             },
             title = { Text(stringResource(R.string.ad_info_title)) },
-            text = { Text(stringResource(R.string.ad_info_message)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(stringResource(R.string.ad_info_message))
+                    Text(
+                        text = stringResource(R.string.ad_info_remove_ads_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
             confirmButton = {
                 Button(
                     onClick = {
@@ -1615,6 +1625,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     }
                 ) {
                     Text(stringResource(R.string.ad_info_ok))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        SettingsManager.markAdInfoDialogShown(context)
+                        showAdInfoDialog = false
+                        startRemoveAdsPurchase(context)
+                    }
+                ) {
+                    Text(stringResource(R.string.remove_ads))
                 }
             }
         )

@@ -459,4 +459,9 @@ Duración del Animador: %3$.2f</string>
     <string name="remove_ads_restore_desc">¿Ya la compraste? Restáurala en este dispositivo</string>
     <string name="remove_ads_restored">Compra restaurada</string>
     <string name="remove_ads_nothing_to_restore">No se encontró ninguna compra anterior</string>
+    <string name="remove_ads_prompt_title">¿Prefieres sin anuncios?</string>
+    <string name="remove_ads_prompt_body">Quítalos con una compra única</string>
+    <string name="remove_ads_prompt_body_price">Quítalos por %1$s, una sola vez</string>
+    <string name="remove_ads_prompt_dismiss">Ocultar</string>
+    <string name="ad_info_remove_ads_hint">Si prefieres no ver anuncios, puedes quitarlos para siempre con una compra única, cuando quieras, desde Ajustes › Premium.</string>
 </resources>

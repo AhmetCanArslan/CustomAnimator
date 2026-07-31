@@ -479,4 +479,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="remove_ads_restore_desc">Lo hai già acquistato? Ripristinalo su questo dispositivo</string>
     <string name="remove_ads_restored">Acquisto ripristinato</string>
     <string name="remove_ads_nothing_to_restore">Nessun acquisto precedente trovato</string>
+    <string name="remove_ads_prompt_title">Preferisci senza annunci?</string>
+    <string name="remove_ads_prompt_body">Rimuovili con un acquisto singolo</string>
+    <string name="remove_ads_prompt_body_price">Rimuovili per %1$s, una volta sola</string>
+    <string name="remove_ads_prompt_dismiss">Nascondi</string>
+    <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo — quando vuoi, da Impostazioni › Premium.</string>
 </resources>

@@ -459,4 +459,9 @@ Durasi Animator: %3$.2f</string>
     <string name="remove_ads_restore_desc">Sudah membeli? Pulihkan di perangkat ini</string>
     <string name="remove_ads_restored">Pembelian dipulihkan</string>
     <string name="remove_ads_nothing_to_restore">Tidak ada pembelian sebelumnya</string>
+    <string name="remove_ads_prompt_title">Lebih suka tanpa iklan?</string>
+    <string name="remove_ads_prompt_body">Hapus dengan pembelian sekali bayar</string>
+    <string name="remove_ads_prompt_body_price">Hapus seharga %1$s, sekali bayar</string>
+    <string name="remove_ads_prompt_dismiss">Sembunyikan</string>
+    <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar — kapan saja, lewat Setelan › Premium.</string>
 </resources>

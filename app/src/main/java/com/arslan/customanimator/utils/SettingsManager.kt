@@ -21,6 +21,7 @@ object SettingsManager {
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
+    private const val KEY_REMOVE_ADS_PROMPT_DISMISSED = "remove_ads_prompt_dismissed"
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -77,6 +78,14 @@ object SettingsManager {
 
     fun markAdInfoDialogShown(context: Context) {
         getPrefs(context).edit().putBoolean(KEY_AD_INFO_DIALOG_SHOWN, true).apply()
+    }
+
+    fun isRemoveAdsPromptDismissed(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_REMOVE_ADS_PROMPT_DISMISSED, false)
+    }
+
+    fun dismissRemoveAdsPrompt(context: Context) {
+        getPrefs(context).edit().putBoolean(KEY_REMOVE_ADS_PROMPT_DISMISSED, true).apply()
     }
 
     fun shouldShowRateDialog(context: Context): Boolean {

@@ -479,4 +479,9 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="remove_ads_restore_desc">Already bought it? Restore it on this device</string>
     <string name="remove_ads_restored">Purchase restored</string>
     <string name="remove_ads_nothing_to_restore">No previous purchase found</string>
+    <string name="remove_ads_prompt_title">Prefer no ads?</string>
+    <string name="remove_ads_prompt_body">Remove them with a one-time purchase</string>
+    <string name="remove_ads_prompt_body_price">Remove them for %1$s, once</string>
+    <string name="remove_ads_prompt_dismiss">Hide this</string>
+    <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase — anytime, from Settings › Premium.</string>
 </resources>

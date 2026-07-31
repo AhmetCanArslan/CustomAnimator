@@ -459,4 +459,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="remove_ads_restore_desc">Nabili mo na? Ibalik ito sa device na ito</string>
     <string name="remove_ads_restored">Naibalik ang pagbili</string>
     <string name="remove_ads_nothing_to_restore">Walang nakitang naunang pagbili</string>
+    <string name="remove_ads_prompt_title">Ayaw mo ba ng mga ad?</string>
+    <string name="remove_ads_prompt_body">Alisin ang mga ito sa isang beses na pagbili</string>
+    <string name="remove_ads_prompt_body_price">Alisin sa halagang %1$s, isang beses lang</string>
+    <string name="remove_ads_prompt_dismiss">Itago ito</string>
+    <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili — anumang oras, sa Mga Setting › Premium.</string>
 </resources>

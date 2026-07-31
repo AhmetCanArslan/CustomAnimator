@@ -459,4 +459,9 @@
     <string name="remove_ads_restore_desc">Уже покупали? Восстановите на этом устройстве</string>
     <string name="remove_ads_restored">Покупка восстановлена</string>
     <string name="remove_ads_nothing_to_restore">Предыдущих покупок не найдено</string>
+    <string name="remove_ads_prompt_title">Не хотите рекламу?</string>
+    <string name="remove_ads_prompt_body">Уберите её разовой покупкой</string>
+    <string name="remove_ads_prompt_body_price">Убрать за %1$s, один раз</string>
+    <string name="remove_ads_prompt_dismiss">Скрыть</string>
+    <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой — в любой момент, в разделе Настройки › Премиум.</string>
 </resources>
