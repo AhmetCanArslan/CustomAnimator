@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Straighten
+import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
@@ -137,8 +138,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private const val WIDTH_REVERT_MS = 15_000L
+
 enum class HomeTab {
-    ANIMATION, WIDTH, DEVELOPER, TERMINAL
+    ANIMATION, WIDTH, BATTERY, DEVELOPER, TERMINAL
 }
 
 enum class HomeScreen {
@@ -192,11 +195,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
     var widthTilePreset by remember { mutableStateOf<WidthPreset?>(null) }
+    // A bad smallest-width can leave the screen unusable, so a change is reverted unless confirmed.
+    var widthRevertTarget by rememberSaveable { mutableIntStateOf(-1) }
+    var widthRevertDeadline by rememberSaveable { mutableLongStateOf(0L) }
+    var widthRevertNow by remember { mutableLongStateOf(0L) }
     var animationTilePreset by remember { mutableStateOf<AnimatorPreset?>(null) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
@@ -501,6 +509,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     label = { Text(stringResource(R.string.nav_width), maxLines = 1, overflow = TextOverflow.Ellipsis) }
                 )
                 NavigationBarItem(
+                    selected = selectedTab == HomeTab.BATTERY,
+                    onClick = { selectedTab = HomeTab.BATTERY },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.BatterySaver,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(R.string.nav_battery), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                )
+                NavigationBarItem(
                     selected = selectedTab == HomeTab.DEVELOPER,
                     onClick = { selectedTab = HomeTab.DEVELOPER },
                     icon = {
@@ -549,6 +568,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
             listState = developerTabListState
+        )
+        } else if (targetTab == HomeTab.BATTERY) {
+        BatteryScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = batteryTabListState
         )
         } else if (targetTab == HomeTab.TERMINAL) {
         TerminalScreenContent(
@@ -660,12 +684,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
 
                                     isApplyingSettings = true
+                                    val previousSmallestWidth =
+                                        SettingsManager.getSmallestWidth(context)
                                     coroutineScope.launch {
                                         val result = withContext(Dispatchers.IO) {
                                             SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
                                         }
                                         isApplyingSettings = false
                                         if (result.success) {
+                                            if (!result.usedWriteSecureFallback &&
+                                                previousSmallestWidth != targetSmallestWidth
+                                            ) {
+                                                widthRevertTarget = previousSmallestWidth
+                                                widthRevertDeadline =
+                                                    System.currentTimeMillis() + WIDTH_REVERT_MS
+                                            }
                                             smallestWidth = targetSmallestWidth
                                             smallestWidthInputValue = targetSmallestWidth.toString()
                                             showSmallestWidthSuccess(
@@ -750,12 +783,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Button(
                                 onClick = {
                                     isApplyingSettings = true
+                                    val previousSmallestWidth =
+                                        SettingsManager.getSmallestWidth(context)
                                     coroutineScope.launch {
                                         val result = withContext(Dispatchers.IO) {
                                             SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
                                         }
                                         isApplyingSettings = false
                                         if (result.success) {
+                                            if (!result.usedWriteSecureFallback &&
+                                                previousSmallestWidth != widthPreset.widthDp
+                                            ) {
+                                                widthRevertTarget = previousSmallestWidth
+                                                widthRevertDeadline =
+                                                    System.currentTimeMillis() + WIDTH_REVERT_MS
+                                            }
                                             smallestWidth = widthPreset.widthDp
                                             smallestWidthInputValue = widthPreset.widthDp.toString()
                                             if (result.usedWriteSecureFallback) {
@@ -1807,6 +1849,62 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     // Width Preset Creation Dialog
+    LaunchedEffect(widthRevertDeadline) {
+        if (widthRevertDeadline > 0L) {
+            while (System.currentTimeMillis() < widthRevertDeadline) {
+                widthRevertNow = System.currentTimeMillis()
+                kotlinx.coroutines.delay(250)
+            }
+            val target = widthRevertTarget
+            widthRevertDeadline = 0L
+            widthRevertTarget = -1
+            if (target >= 0) {
+                withContext(Dispatchers.IO) {
+                    SettingsManager.setSmallestWidth(contentResolver, context, target)
+                }
+                smallestWidth = SettingsManager.getSmallestWidth(context)
+                smallestWidthInputValue = smallestWidth.toString()
+            }
+        }
+    }
+
+    if (widthRevertDeadline > 0L) {
+        val secondsLeft = ((widthRevertDeadline - widthRevertNow).coerceAtLeast(0L) / 1000L).toInt() + 1
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(stringResource(R.string.width_revert_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.width_revert_body,
+                        widthRevertTarget,
+                        secondsLeft
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    widthRevertDeadline = 0L
+                    widthRevertTarget = -1
+                }) { Text(stringResource(R.string.width_revert_keep)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    val target = widthRevertTarget
+                    widthRevertDeadline = 0L
+                    widthRevertTarget = -1
+                    coroutineScope.launch {
+                        withContext(Dispatchers.IO) {
+                            SettingsManager.setSmallestWidth(contentResolver, context, target)
+                        }
+                        smallestWidth = SettingsManager.getSmallestWidth(context)
+                        smallestWidthInputValue = smallestWidth.toString()
+                    }
+                }) { Text(stringResource(R.string.width_revert_now)) }
+            }
+        )
+    }
+
     widthTilePreset?.let { preset ->
         PresetTileDialog(
             presetName = preset.name,

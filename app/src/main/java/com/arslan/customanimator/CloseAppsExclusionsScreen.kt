@@ -85,6 +85,21 @@ fun CloseAppsExclusionsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer
+                    )
+                ) {
+                    Text(
+                        text = stringResource(R.string.close_apps_info),
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+            item {
                 Text(
                     text = if (excludedPackages.isEmpty()) {
                         stringResource(R.string.close_apps_exclusions_desc)

@@ -307,4 +307,146 @@ Animator Duration: %3$.2f</string>
     <string name="revert_everything_done">Everything reverted to defaults</string>
     <string name="revert_everything_partial">Some settings could not be reverted</string>
     <string name="show_clock_seconds_samsung_note">Note: on some Samsung (One UI) devices this setting is ignored by the system and the seconds may not appear, even if the toggle stays on. Try restarting System UI below.</string>
+
+    <!-- Battery tweaks -->
+    <string name="nav_battery">Battery</string>
+    <string name="bt_needs_permission">Battery tweaks need Shizuku or WRITE_SECURE_SETTINGS.</string>
+    <string name="bt_section_saver">Battery Saver</string>
+    <string name="bt_section_presets">Power Save Modes</string>
+    <string name="bt_section_policy">Battery Saver Policy</string>
+    <string name="bt_section_doze">Doze / Idle</string>
+    <string name="bt_section_background">Background Restrictions</string>
+    <string name="bt_section_charging">Charging</string>
+    <string name="bt_policy_note">These only take effect while Battery Saver is ON.</string>
+    <string name="bt_applied">Applied</string>
+    <string name="bt_apply_failed">Could not apply</string>
+    <string name="bt_reset_all">Reset all battery tweaks</string>
+    <string name="bt_reset_done">Battery tweaks reset to system defaults</string>
+    <string name="bt_shizuku_only">Needs Shizuku</string>
+    <string name="bt_show_advanced">Advanced policy keys</string>
+
+    <string name="bt_low_power">Battery Saver</string>
+    <string name="bt_low_power_desc">Turn power save mode on right now</string>
+    <string name="bt_trigger_level">Auto-enable at battery level</string>
+    <string name="bt_trigger_level_desc">Turn Battery Saver on automatically below this percentage. 0 disables it.</string>
+    <string name="bt_sticky">Sticky Battery Saver</string>
+    <string name="bt_sticky_desc">Stay on after the device is unplugged and recharged</string>
+    <string name="bt_sticky_auto_disable">Auto-disable sticky mode</string>
+    <string name="bt_sticky_auto_disable_desc">Drop sticky mode once the battery gets back above the level below</string>
+    <string name="bt_sticky_level">Sticky auto-disable level</string>
+    <string name="bt_sticky_level_desc">Battery percentage that clears sticky Battery Saver</string>
+    <string name="bt_auto_mode">Automatic mode</string>
+    <string name="bt_auto_mode_desc">How Battery Saver decides to switch itself on</string>
+    <string name="bt_auto_mode_percentage">By percentage</string>
+    <string name="bt_auto_mode_routine">Adaptive / routine</string>
+    <string name="bt_adaptive_saver">Adaptive Power Saver</string>
+    <string name="bt_adaptive_saver_desc">Let the system tune power saving from your usage routine</string>
+    <string name="bt_fixed_perf">Fixed performance mode</string>
+    <string name="bt_fixed_perf_desc">Pin the CPU to a fixed performance level. Development use only.</string>
+
+    <string name="bt_disable_vibration">Disable vibration</string>
+    <string name="bt_disable_vibration_desc">Silence haptics and vibration while saving</string>
+    <string name="bt_disable_animation">Disable animations</string>
+    <string name="bt_disable_animation_desc">Skip window and transition animations</string>
+    <string name="bt_enable_firewall">Network firewall</string>
+    <string name="bt_enable_firewall_desc">Block background network access for idle apps</string>
+    <string name="bt_enable_datasaver">Force Data Saver</string>
+    <string name="bt_enable_datasaver_desc">Turn Data Saver on while Battery Saver runs</string>
+    <string name="bt_force_all_apps_standby">Force all apps to standby</string>
+    <string name="bt_force_all_apps_standby_desc">Suspend background work for every non-foreground app</string>
+    <string name="bt_force_background_check">Force background check</string>
+    <string name="bt_force_background_check_desc">Block background services from starting</string>
+    <string name="bt_quick_doze">Quick Doze</string>
+    <string name="bt_quick_doze_desc">Enter deep Doze much sooner after the screen turns off</string>
+    <string name="bt_optional_sensors">Disable optional sensors</string>
+    <string name="bt_optional_sensors_desc">Turn off non-essential sensors such as motion detection</string>
+    <string name="bt_disable_aod">Disable Always-On Display</string>
+    <string name="bt_disable_aod_desc">Turn the ambient display off while saving</string>
+    <string name="bt_night_mode">Force dark theme</string>
+    <string name="bt_night_mode_desc">Switch the system to night mode while saving</string>
+    <string name="bt_launch_boost">Disable launch boost</string>
+    <string name="bt_launch_boost_desc">Skip the CPU boost applied when opening apps</string>
+    <string name="bt_defer_full_backup">Defer full backups</string>
+    <string name="bt_defer_full_backup_desc">Postpone full-data backups until saving ends</string>
+    <string name="bt_defer_kv_backup">Defer key/value backups</string>
+    <string name="bt_defer_kv_backup_desc">Postpone incremental backups until saving ends</string>
+    <string name="bt_advertise">Advertise as enabled</string>
+    <string name="bt_advertise_desc">Report Battery Saver as active to apps that ask</string>
+    <string name="bt_brightness_adjust">Reduce brightness</string>
+    <string name="bt_brightness_adjust_desc">Scale screen brightness down while saving</string>
+    <string name="bt_brightness_factor">Brightness factor</string>
+    <string name="bt_brightness_factor_desc">Multiplier applied to screen brightness</string>
+    <string name="bt_location_mode">Location mode</string>
+    <string name="bt_location_mode_desc">How location behaves while Battery Saver is on</string>
+    <string name="bt_location_no_change">No change</string>
+    <string name="bt_location_gps_off_screen_off">GPS off when screen off</string>
+    <string name="bt_location_all_off_screen_off">All location off when screen off</string>
+    <string name="bt_location_foreground_only">Foreground apps only</string>
+    <string name="bt_location_throttle">Throttle when screen off</string>
+    <string name="bt_soundtrigger">Sound trigger</string>
+    <string name="bt_soundtrigger_desc">Hotword and always-listening detection</string>
+    <string name="bt_soundtrigger_all">All allowed</string>
+    <string name="bt_soundtrigger_critical">Critical only</string>
+    <string name="bt_soundtrigger_none">All disabled</string>
+
+    <string name="bt_preset_default">System default</string>
+    <string name="bt_preset_default_desc">Android\'s stock Battery Saver policy</string>
+    <string name="bt_preset_light">Light</string>
+    <string name="bt_preset_light_desc">Barely restrictive. Keeps location, sensors and animations.</string>
+    <string name="bt_preset_balanced">Balanced</string>
+    <string name="bt_preset_balanced_desc">Stops background work and dims the screen, keeps vibration.</string>
+    <string name="bt_preset_aggressive">Aggressive</string>
+    <string name="bt_preset_aggressive_desc">Adds Data Saver, throttled location and no vibration.</string>
+    <string name="bt_preset_extreme">Extreme</string>
+    <string name="bt_preset_extreme_desc">Location off with the screen off, hotword off, dimmest screen.</string>
+
+    <string name="bt_doze_default">System default</string>
+    <string name="bt_doze_default_desc">Stock Doze timings</string>
+    <string name="bt_doze_aggressive">Aggressive</string>
+    <string name="bt_doze_aggressive_desc">Enter Doze in about 10 seconds instead of 30 minutes</string>
+    <string name="bt_doze_extreme">Extreme</string>
+    <string name="bt_doze_extreme_desc">Doze almost immediately and stay idle far longer</string>
+    <string name="bt_doze_enabled">Doze enabled</string>
+    <string name="bt_doze_enabled_desc">Turn Android\'s idle mode on or off entirely</string>
+
+    <string name="bt_app_standby">App Standby buckets</string>
+    <string name="bt_app_standby_desc">Let Android throttle apps you rarely open</string>
+    <string name="bt_adaptive_battery">Adaptive Battery</string>
+    <string name="bt_adaptive_battery_desc">Limit battery for apps you use infrequently</string>
+    <string name="bt_app_auto_restriction">Auto-restrict apps</string>
+    <string name="bt_app_auto_restriction_desc">Automatically restrict apps that drain the battery</string>
+    <string name="bt_cached_freezer">Freeze cached apps</string>
+    <string name="bt_cached_freezer_desc">Suspend cached app processes so they use no CPU</string>
+    <string name="bt_ble_scan">Always-on Bluetooth scanning</string>
+    <string name="bt_ble_scan_desc">Allow apps to scan for BLE devices even with Bluetooth off</string>
+
+    <string name="bt_adaptive_charging">Adaptive Charging</string>
+    <string name="bt_adaptive_charging_desc">Slow the last part of charging overnight</string>
+    <string name="bt_charging_sounds">Charging sounds</string>
+    <string name="bt_charging_sounds_desc">Play a sound when the charger is connected</string>
+    <string name="bt_charging_vibration">Charging vibration</string>
+    <string name="bt_charging_vibration_desc">Vibrate when the charger is connected</string>
+
+    <!-- Safety / risk notices -->
+    <string name="bt_info_title">Before you change anything</string>
+    <string name="bt_info_body">These are system-level settings. What they actually do depends on your Android version and manufacturer, and some phones ignore or restore them. Changes stay until you undo them or reset.</string>
+    <string name="bt_info_shizuku_active">Shizuku is connected — tweaks are applied the reliable way.</string>
+    <string name="bt_info_shizuku_missing">Shizuku is not connected. Some tweaks may silently fail. Connecting Shizuku is strongly recommended.</string>
+    <string name="bt_requires_android10">Power Save Mode tweaks need Android 10 or newer. Your device runs Android %1$s, where these settings use older names the system no longer accepts.</string>
+    <string name="bt_doze_warning">Aggressive Doze can delay alarms, notifications, messages and background sync. If something stops arriving on time, set this back to System default.</string>
+
+    <string name="risk_dialog_title">Understand the risks</string>
+    <string name="risk_dialog_terminal">Commands run here execute with elevated system privileges, the same level as ADB. They can uninstall apps, delete data or leave your device unusable.
+
+What you run is entirely your responsibility. The developer of this app cannot be held responsible for any damage, data loss or dangerous command you choose to execute.</string>
+    <string name="risk_dialog_accept">I understand the risks</string>
+    <string name="risk_dialog_decline">Cancel</string>
+    <string name="terminal_disclaimer">Commands run with ADB-level privileges. You are responsible for what you run.</string>
+
+    <string name="close_apps_info">Force-stopping apps can lose unsaved work and stop alarms, reminders and message delivery for those apps until you open them again. Add anything you rely on to the exclusion list below.</string>
+
+    <string name="width_revert_title">Keep this screen size?</string>
+    <string name="width_revert_body">Reverting to %1$d dp in %2$d seconds if you do not confirm. This protects you from a size that leaves the screen unusable.</string>
+    <string name="width_revert_keep">Keep</string>
+    <string name="width_revert_now">Revert now</string>
 </resources>

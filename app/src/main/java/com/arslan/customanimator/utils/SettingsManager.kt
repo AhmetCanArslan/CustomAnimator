@@ -51,6 +51,16 @@ object SettingsManager {
         getPrefs(context).edit().putBoolean("simple_mode", isSimpleMode).apply()
     }
 
+    private const val KEY_TERMINAL_RISK_ACCEPTED = "terminal_risk_accepted"
+
+    fun hasAcceptedTerminalRisk(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_TERMINAL_RISK_ACCEPTED, false)
+    }
+
+    fun markTerminalRiskAccepted(context: Context) {
+        getPrefs(context).edit().putBoolean(KEY_TERMINAL_RISK_ACCEPTED, true).apply()
+    }
+
     fun hasShownAdInfoDialog(context: Context): Boolean {
         return getPrefs(context).getBoolean(KEY_AD_INFO_DIALOG_SHOWN, false)
     }

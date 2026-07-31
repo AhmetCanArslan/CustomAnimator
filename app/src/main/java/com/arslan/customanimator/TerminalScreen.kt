@@ -72,6 +72,11 @@ fun TerminalScreenContent(
 
     var tilePreset by remember { mutableStateOf<TerminalPreset?>(null) }
 
+    // Shown once; accepting is remembered so it never interrupts again.
+    var showRiskDialog by remember {
+        mutableStateOf(!com.arslan.customanimator.utils.SettingsManager.hasAcceptedTerminalRisk(context))
+    }
+
     val canRun = hasShizukuPermission && !isRunning
 
     val run: (String) -> Unit = { raw ->
@@ -102,6 +107,14 @@ fun TerminalScreenContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        item {
+            Text(
+                text = stringResource(R.string.terminal_disclaimer),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
         if (!hasShizukuPermission) {
             item {
                 WarningCard(
@@ -249,6 +262,27 @@ fun TerminalScreenContent(
                 }
                 presets = presetManager.getAllPresets()
                 editingPreset = null
+            }
+        )
+    }
+
+    if (showRiskDialog) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(stringResource(R.string.risk_dialog_title)) },
+            text = {
+                Text(
+                    text = stringResource(R.string.risk_dialog_terminal),
+                    fontSize = 13.sp
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    com.arslan.customanimator.utils.SettingsManager.markTerminalRiskAccepted(context)
+                    showRiskDialog = false
+                }) {
+                    Text(stringResource(R.string.risk_dialog_accept))
+                }
             }
         )
     }
