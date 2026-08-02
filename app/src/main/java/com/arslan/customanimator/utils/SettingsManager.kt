@@ -147,8 +147,6 @@ object SettingsManager {
     ): Boolean {
         val formattedValue = String.format(Locale.US, "%.2f", value)
 
-        if (setScalesViaWindowManager(scaleIndexFor(key) to value)) return true
-
         // First try Shizuku path.
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = ShizukuHelper.executeShellCommand(
@@ -167,28 +165,6 @@ object SettingsManager {
 
     private fun scalesMatch(actual: Float, expected: Float): Boolean {
         return !actual.isNaN() && kotlin.math.abs(actual - expected) < 0.001f
-    }
-
-    private fun scaleIndexFor(key: String): Int = when (key) {
-        Settings.Global.WINDOW_ANIMATION_SCALE -> WindowManagerHelper.WINDOW_SCALE_INDEX
-        Settings.Global.TRANSITION_ANIMATION_SCALE -> WindowManagerHelper.TRANSITION_SCALE_INDEX
-        Settings.Global.ANIMATOR_DURATION_SCALE -> WindowManagerHelper.ANIMATOR_SCALE_INDEX
-        else -> -1
-    }
-
-    private fun setScalesViaWindowManager(vararg changes: Pair<Int, Float>): Boolean {
-        if (changes.any { it.first !in 0..2 }) return false
-
-        val current = WindowManagerHelper.getAnimationScales() ?: return false
-        if (current.size < 3) return false
-
-        val target = floatArrayOf(current[0], current[1], current[2])
-        changes.forEach { (index, value) -> target[index] = value }
-
-        if (!WindowManagerHelper.setAnimationScales(target[0], target[1], target[2])) return false
-
-        val applied = WindowManagerHelper.getAnimationScales() ?: return false
-        return applied.size >= 3 && changes.all { (index, value) -> scalesMatch(applied[index], value) }
     }
 
     fun setWindowAnimationScale(context: Context, contentResolver: ContentResolver, value: Float): Boolean {
@@ -210,16 +186,6 @@ object SettingsManager {
         transitionScale: Float,
         animatorScale: Float
     ): Boolean {
-        // One binder call for all three avoids three separate config changes on the way through.
-        if (setScalesViaWindowManager(
-                WindowManagerHelper.WINDOW_SCALE_INDEX to windowScale,
-                WindowManagerHelper.TRANSITION_SCALE_INDEX to transitionScale,
-                WindowManagerHelper.ANIMATOR_SCALE_INDEX to animatorScale
-            )
-        ) {
-            return true
-        }
-
         return setWindowAnimationScale(context, contentResolver, windowScale) &&
                 setTransitionAnimationScale(context, contentResolver, transitionScale) &&
                 setAnimatorDurationScale(context, contentResolver, animatorScale)
@@ -245,10 +211,6 @@ object SettingsManager {
                     }
                 }
 
-                if (WindowManagerHelper.clearForcedDisplayDensity()) {
-                    return SmallestWidthResult(success = true, usedWriteSecureFallback = false)
-                }
-
                 val writeSuccess = Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null)
                 val verifySuccess = Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED) == null
                 return SmallestWidthResult(
@@ -271,10 +233,6 @@ object SettingsManager {
                 if (shizukuSuccess) {
                     return SmallestWidthResult(success = true, usedWriteSecureFallback = false)
                 }
-            }
-
-            if (WindowManagerHelper.setForcedDisplayDensity(targetDensity)) {
-                return SmallestWidthResult(success = true, usedWriteSecureFallback = false)
             }
 
             val targetDensityString = targetDensity.toString()

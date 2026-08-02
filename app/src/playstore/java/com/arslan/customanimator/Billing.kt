@@ -146,7 +146,8 @@ object Billing {
                 Log.w(TAG, "Product query failed: ${result.responseCode} ${result.debugMessage}")
                 return@queryProductDetailsAsync
             }
-            val product = details.firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
+            val product = details.productDetailsList
+                .firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
             productDetails = product
             _price.value = product?.oneTimePurchaseOfferDetails?.formattedPrice
         }
