@@ -518,10 +518,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     icon = {
                         Icon(
                             imageVector = Icons.Default.PlayArrow,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.nav_animation)
                         )
-                    },
-                    label = { Text(stringResource(R.string.nav_animation), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.WIDTH,
@@ -529,10 +528,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Straighten,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.nav_width)
                         )
-                    },
-                    label = { Text(stringResource(R.string.nav_width), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.BATTERY,
@@ -540,10 +538,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     icon = {
                         Icon(
                             imageVector = Icons.Default.BatterySaver,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.nav_battery)
                         )
-                    },
-                    label = { Text(stringResource(R.string.nav_battery), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.DEVELOPER,
@@ -551,10 +548,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     icon = {
                         Icon(
                             imageVector = Icons.Default.DeveloperMode,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.nav_developer)
                         )
-                    },
-                    label = { Text(stringResource(R.string.nav_developer), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    }
                 )
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.TERMINAL,
@@ -562,10 +558,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     icon = {
                         Icon(
                             imageVector = Icons.Default.Terminal,
-                            contentDescription = null
+                            contentDescription = stringResource(R.string.nav_terminal)
                         )
-                    },
-                    label = { Text(stringResource(R.string.nav_terminal), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+                    }
                 )
                 }
             }
