@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.CleaningServices
+import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.StopCircle
@@ -44,6 +45,7 @@ import com.arslan.customanimator.service.FpsOverlayService
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
+import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -72,6 +74,14 @@ fun DeveloperScreenContent(
     var dontKeepActivities by remember { mutableStateOf(DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)) }
     var limitBackgroundProcesses by remember { mutableStateOf(DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)) }
 
+    var canWriteSystemSettings by remember { mutableStateOf(ShizukuHelper.canWriteSystemSettings(context)) }
+    var showTouches by remember { mutableStateOf(DeveloperOptionsManager.isShowTouchesEnabled(contentResolver)) }
+    var pointerLocation by remember { mutableStateOf(DeveloperOptionsManager.isPointerLocationEnabled(contentResolver)) }
+    var forceRtl by remember { mutableStateOf(DeveloperOptionsManager.isForceRtlEnabled(contentResolver)) }
+    var layoutBounds by remember { mutableStateOf(false) }
+    var gpuProfiling by remember { mutableStateOf(false) }
+    var sensorsOff by remember { mutableStateOf(false) }
+
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
     var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
     var fpsMeterEnabled by remember {
@@ -98,6 +108,10 @@ fun DeveloperScreenContent(
                 adbWifiEnabled = DeveloperOptionsManager.isAdbWifiEnabled(contentResolver)
                 dontKeepActivities = DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)
                 limitBackgroundProcesses = DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
+                canWriteSystemSettings = ShizukuHelper.canWriteSystemSettings(context)
+                showTouches = DeveloperOptionsManager.isShowTouchesEnabled(contentResolver)
+                pointerLocation = DeveloperOptionsManager.isPointerLocationEnabled(contentResolver)
+                forceRtl = DeveloperOptionsManager.isForceRtlEnabled(contentResolver)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
                 clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
                 fpsMeterEnabled = FpsOverlayManager.isActive(context)
@@ -109,10 +123,20 @@ fun DeveloperScreenContent(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
+    LaunchedEffect(hasShizukuPermission) {
+        if (!hasShizukuPermission) return@LaunchedEffect
+        withContext(Dispatchers.IO) {
+            layoutBounds = DeveloperOptionsManager.isLayoutBoundsEnabled()
+            gpuProfiling = DeveloperOptionsManager.isGpuProfilingEnabled()
+            sensorsOff = DeveloperOptionsManager.isSensorsOffEnabled()
+        }
+    }
+
     val compileProgress by CompileBoosterProgressTracker.progress.collectAsState()
 
     val actionsEnabled = hasShizukuPermission && !isBusy
-    val toggleActionsEnabled = hasShizukuPermission || hasWriteSecureSettings
+    val secureToggleEnabled = hasShizukuPermission || hasWriteSecureSettings
+    val systemToggleEnabled = hasShizukuPermission || canWriteSystemSettings
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -126,6 +150,12 @@ fun DeveloperScreenContent(
         ) {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
+    }
+
+    val writeSettingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        canWriteSystemSettings = ShizukuHelper.canWriteSystemSettings(context)
     }
 
     val overlayPermissionLauncher = rememberLauncherForActivityResult(
@@ -216,6 +246,23 @@ fun DeveloperScreenContent(
                 }
             }
 
+            if (!hasShizukuPermission && !canWriteSystemSettings) {
+                item {
+                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                        ActionRow(
+                            icon = Icons.Filled.EditNote,
+                            title = stringResource(R.string.write_settings_permission),
+                            description = stringResource(R.string.write_settings_permission_desc),
+                            buttonLabel = stringResource(R.string.grant),
+                            enabled = true,
+                            onClick = {
+                                writeSettingsLauncher.launch(ShizukuHelper.writeSystemSettingsIntent(context))
+                            }
+                        )
+                    }
+                }
+            }
+
             item {
                 DevSectionTitle(stringResource(R.string.developer_toggles))
             }
@@ -227,7 +274,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.usb_debugging),
                             description = stringResource(R.string.usb_debugging_desc),
                             checked = adbEnabled,
-                            enabled = toggleActionsEnabled,
+                            enabled = secureToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -242,7 +289,7 @@ fun DeveloperScreenContent(
                                 title = stringResource(R.string.wireless_debugging),
                                 description = stringResource(R.string.wireless_debugging_desc),
                                 checked = adbWifiEnabled,
-                                enabled = toggleActionsEnabled,
+                                enabled = secureToggleEnabled,
                                 onCheckedChange = { newValue ->
                                     applyToggle(
                                         newValue,
@@ -257,7 +304,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.dont_keep_activities),
                             description = stringResource(R.string.dont_keep_activities_desc),
                             checked = dontKeepActivities,
-                            enabled = toggleActionsEnabled,
+                            enabled = secureToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -271,7 +318,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.limit_background_processes),
                             description = stringResource(R.string.limit_background_processes_desc),
                             checked = limitBackgroundProcesses,
-                            enabled = toggleActionsEnabled,
+                            enabled = secureToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -280,6 +327,91 @@ fun DeveloperScreenContent(
                                 )
                             }
                         )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.sensors_off),
+                            description = stringResource(R.string.sensors_off_desc),
+                            checked = sensorsOff,
+                            enabled = hasShizukuPermission,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { sensorsOff = it },
+                                    { DeveloperOptionsManager.setSensorsOff(newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.show_taps),
+                            description = stringResource(R.string.show_taps_desc),
+                            checked = showTouches,
+                            enabled = systemToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { showTouches = it },
+                                    { DeveloperOptionsManager.setShowTouches(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.pointer_location),
+                            description = stringResource(R.string.pointer_location_desc),
+                            checked = pointerLocation,
+                            enabled = systemToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { pointerLocation = it },
+                                    { DeveloperOptionsManager.setPointerLocation(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.show_layout_bounds),
+                            description = stringResource(R.string.show_layout_bounds_desc),
+                            checked = layoutBounds,
+                            enabled = hasShizukuPermission,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { layoutBounds = it },
+                                    { DeveloperOptionsManager.setLayoutBounds(newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.gpu_profiling),
+                            description = stringResource(R.string.gpu_profiling_desc),
+                            checked = gpuProfiling,
+                            enabled = hasShizukuPermission,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { gpuProfiling = it },
+                                    { DeveloperOptionsManager.setGpuProfiling(newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.force_rtl),
+                            description = stringResource(R.string.force_rtl_desc),
+                            checked = forceRtl,
+                            enabled = secureToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { forceRtl = it },
+                                    { DeveloperOptionsManager.setForceRtl(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                        InfoNote(text = stringResource(R.string.developer_tiles_restart_note))
                     }
                 }
             }
@@ -379,7 +511,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.disable_keyboard_animation),
                             description = stringResource(R.string.disable_keyboard_animation_desc),
                             checked = fancyImeDisabled,
-                            enabled = toggleActionsEnabled,
+                            enabled = secureToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -393,7 +525,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.show_clock_seconds),
                             description = stringResource(R.string.show_clock_seconds_desc),
                             checked = clockSecondsEnabled,
-                            enabled = toggleActionsEnabled,
+                            enabled = secureToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -475,7 +607,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.lock_screen_rotation),
                             description = stringResource(R.string.lock_screen_rotation_desc),
                             checked = isRotationLocked,
-                            enabled = toggleActionsEnabled,
+                            enabled = systemToggleEnabled,
                             onCheckedChange = { newValue ->
                                 applyToggle(
                                     newValue,
@@ -488,7 +620,7 @@ fun DeveloperScreenContent(
                             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                             RotationSelector(
                                 currentRotation = userRotation,
-                                enabled = toggleActionsEnabled,
+                                enabled = systemToggleEnabled,
                                 onRotationSelected = { rotation ->
                                     val previous = userRotation
                                     userRotation = rotation
@@ -512,7 +644,7 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.reset_rotation),
                             description = stringResource(R.string.reset_rotation_desc),
                             buttonLabel = stringResource(R.string.reset),
-                            enabled = toggleActionsEnabled,
+                            enabled = systemToggleEnabled,
                             onClick = {
                                 coroutineScope.launch {
                                     val success = withContext(Dispatchers.IO) {

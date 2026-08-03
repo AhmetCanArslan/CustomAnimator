@@ -1,8 +1,11 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
 import rikka.shizuku.Shizuku
@@ -96,6 +99,21 @@ object ShizukuHelper {
         } catch (e: Exception) {
             false
         }
+    }
+
+    fun canWriteSystemSettings(context: Context): Boolean {
+        return try {
+            Settings.System.canWrite(context)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun writeSystemSettingsIntent(context: Context): Intent {
+        return Intent(
+            Settings.ACTION_MANAGE_WRITE_SETTINGS,
+            Uri.parse("package:${context.packageName}")
+        )
     }
 
     fun executeShellCommand(command: Array<String>): Boolean {

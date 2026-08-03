@@ -115,6 +115,91 @@ object DeveloperOptionsManager {
         return putGlobalString(context, contentResolver, AM_CONSTANTS_KEY, value)
     }
 
+    private const val SHOW_TOUCHES_KEY = "show_touches"
+    private const val POINTER_LOCATION_KEY = "pointer_location"
+    private const val FORCE_RTL_KEY = "debug_force_rtl"
+    private const val LAYOUT_BOUNDS_PROP = "debug.layout"
+    private const val GPU_PROFILE_PROP = "debug.hwui.profile"
+    private const val GPU_PROFILE_ON = "visual_bars"
+
+    private fun getProp(name: String): String {
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("getprop", name))
+        return if (result.isSuccess) result.output.trim() else ""
+    }
+
+    private fun setProp(name: String, value: String): Boolean {
+        if (!ShizukuHelper.executeShellCommand(arrayOf("setprop", name, value))) return false
+        ShizukuHelper.executeShellCommand(arrayOf("service", "call", "activity", "1599295570"))
+        return true
+    }
+
+    fun isShowTouchesEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.System.getInt(contentResolver, SHOW_TOUCHES_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setShowTouches(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putSystemInt(context, contentResolver, SHOW_TOUCHES_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isPointerLocationEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.System.getInt(contentResolver, POINTER_LOCATION_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setPointerLocation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putSystemInt(context, contentResolver, POINTER_LOCATION_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isForceRtlEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Global.getInt(contentResolver, FORCE_RTL_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setForceRtl(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putGlobalInt(context, contentResolver, FORCE_RTL_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isLayoutBoundsEnabled(): Boolean = getProp(LAYOUT_BOUNDS_PROP) == "true"
+
+    fun setLayoutBounds(enabled: Boolean): Boolean {
+        return setProp(LAYOUT_BOUNDS_PROP, if (enabled) "true" else "false")
+    }
+
+    fun isGpuProfilingEnabled(): Boolean = getProp(GPU_PROFILE_PROP) == GPU_PROFILE_ON
+
+    fun setGpuProfiling(enabled: Boolean): Boolean {
+        return setProp(GPU_PROFILE_PROP, if (enabled) GPU_PROFILE_ON else "false")
+    }
+
+    private const val TXN_GET_SENSOR_PRIVACY = "6"
+    private const val TXN_SET_SENSOR_PRIVACY = "9"
+
+    private fun serviceCall(vararg args: String): Int? {
+        val result = ShizukuHelper.executeShellCommandWithOutput(
+            arrayOf("service", "call", "sensor_privacy", *args)
+        )
+        if (!result.isSuccess) return null
+        val words = Regex("[0-9a-f]{8}").findAll(result.output.substringAfter("Parcel(")).toList()
+        return if (words.size == 2) words.last().value.toLongOrNull(16)?.toInt() else null
+    }
+
+    fun isSensorsOffEnabled(): Boolean = serviceCall(TXN_GET_SENSOR_PRIVACY) == 1
+
+    fun setSensorsOff(enabled: Boolean): Boolean {
+        serviceCall(TXN_SET_SENSOR_PRIVACY, "i32", if (enabled) "1" else "0")
+        return isSensorsOffEnabled() == enabled
+    }
+
     // Quick actions
     fun clearAllAppCaches(): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "trim-caches", "999000000000"))
