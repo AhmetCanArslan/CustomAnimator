@@ -39,7 +39,9 @@ import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.service.CompileBoosterService
 import com.arslan.customanimator.utils.CloseAppsExclusionManager
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
+import com.arslan.customanimator.service.FpsOverlayService
 import com.arslan.customanimator.utils.DeveloperOptionsManager
+import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,6 +72,9 @@ fun DeveloperScreenContent(
 
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
     var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
+    var fpsMeterEnabled by remember {
+        mutableStateOf(FpsOverlayManager.isEnabled(context) && FpsOverlayManager.canDrawOverlay(context))
+    }
     var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
     var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
 
@@ -93,6 +98,7 @@ fun DeveloperScreenContent(
                 limitBackgroundProcesses = DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
                 clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
+                fpsMeterEnabled = FpsOverlayManager.isEnabled(context) && FpsOverlayManager.canDrawOverlay(context)
                 isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
                 userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
             }
@@ -109,6 +115,29 @@ fun DeveloperScreenContent(
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { /* proceed regardless; service still runs without a visible notification if denied */ }
+
+    val requestNotificationsIfNeeded: () -> Unit = {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            androidx.core.content.ContextCompat.checkSelfPermission(
+                context, Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    val overlayPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (FpsOverlayManager.canDrawOverlay(context)) {
+            FpsOverlayManager.setEnabled(context, true)
+            fpsMeterEnabled = true
+            requestNotificationsIfNeeded()
+            FpsOverlayService.start(context)
+        } else {
+            fpsMeterEnabled = false
+        }
+    }
 
     val startCompileAll: () -> Unit = {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -375,6 +404,38 @@ fun DeveloperScreenContent(
                             // One UI keeps its own clock-seconds flag and some builds ignore both
                             // keys entirely, so warn instead of letting the toggle look broken.
                             InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note))
+                        }
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            title = stringResource(R.string.fps_meter),
+                            description = stringResource(R.string.fps_meter_desc),
+                            checked = fpsMeterEnabled,
+                            onCheckedChange = { newValue ->
+                                if (newValue) {
+                                    if (FpsOverlayManager.canDrawOverlay(context)) {
+                                        FpsOverlayManager.setEnabled(context, true)
+                                        fpsMeterEnabled = true
+                                        requestNotificationsIfNeeded()
+                                        FpsOverlayService.start(context)
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.fps_overlay_permission_needed),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                        overlayPermissionLauncher.launch(
+                                            FpsOverlayManager.overlayPermissionIntent(context)
+                                        )
+                                    }
+                                } else {
+                                    FpsOverlayManager.setEnabled(context, false)
+                                    fpsMeterEnabled = false
+                                    FpsOverlayService.stop(context)
+                                }
+                            }
+                        )
+                        if (fpsMeterEnabled) {
+                            InfoNote(text = stringResource(R.string.fps_meter_hint))
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         // One UI (and some other skins) only pick up the clock-seconds flag when

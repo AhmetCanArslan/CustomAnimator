@@ -464,4 +464,14 @@ Duração do Animador: %3$.2f</string>
     <string name="remove_ads_prompt_body_price">Remova por %1$s, uma única vez</string>
     <string name="remove_ads_prompt_dismiss">Ocultar</string>
     <string name="ad_info_remove_ads_hint">Se preferir não ver anúncios, pode removê-los para sempre com uma compra única — a qualquer momento, em Configurações › Premium.</string>
+    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter_desc">Exibe um contador de FPS em tempo real sobre jogos e apps para analisar desempenho e travamentos.</string>
+    <string name="open">Abrir</string>
+    <string name="fps_meter_hint">Arraste o contador para movê-lo. Desative para remover a sobreposição.</string>
+    <string name="fps_overlay_value">%1$d FPS</string>
+    <string name="fps_overlay_permission_needed">Permita a exibição sobre outros apps para mostrar o contador de FPS.</string>
+    <string name="fps_overlay_channel_name">Contador de FPS</string>
+    <string name="fps_overlay_channel_desc">Aparece enquanto a sobreposição de FPS está ativa</string>
+    <string name="fps_overlay_notif_title">Contador de FPS ativo</string>
+    <string name="fps_overlay_notif_text">Toque para abrir o Custom Animator e desativá-lo</string>
 </resources>

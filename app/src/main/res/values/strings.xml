@@ -273,6 +273,13 @@ Animator Duration: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Turn off the fancy keyboard opening animation (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Show Clock Seconds</string>
     <string name="show_clock_seconds_desc">Display seconds in the status bar clock</string>
+    <string name="fps_meter_hint">Drag the counter to move it. Turn this off to remove the overlay.</string>
+    <string name="fps_overlay_value">%1$d FPS</string>
+    <string name="fps_overlay_permission_needed">Allow display over other apps to show the FPS meter.</string>
+    <string name="fps_overlay_channel_name">FPS Meter</string>
+    <string name="fps_overlay_channel_desc">Shows while the FPS overlay is running</string>
+    <string name="fps_overlay_notif_title">FPS Meter running</string>
+    <string name="fps_overlay_notif_text">Tap to open Custom Animator and turn it off</string>
     <string name="lock_screen_rotation">Lock Screen Rotation</string>
     <string name="lock_screen_rotation_desc">Fix screen rotation to a user-selected orientation</string>
     <string name="rotation_orientation">Orientation</string>
@@ -484,4 +491,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="remove_ads_prompt_body_price">Remove them for %1$s, once</string>
     <string name="remove_ads_prompt_dismiss">Hide this</string>
     <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase — anytime, from Settings › Premium.</string>
+    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter_desc">Displays a real-time FPS overlay over games and apps for performance and lag analysis.</string>
+    <string name="open">Open</string>
 </resources>

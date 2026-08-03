@@ -464,4 +464,14 @@ Tagal ng Animator: %3$.2f</string>
     <string name="remove_ads_prompt_body_price">Alisin sa halagang %1$s, isang beses lang</string>
     <string name="remove_ads_prompt_dismiss">Itago ito</string>
     <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili — anumang oras, sa Mga Setting › Premium.</string>
+    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter_desc">Nagpapakita ng real-time na FPS overlay sa ibabaw ng mga laro at app para sa pagsusuri ng performance at lag.</string>
+    <string name="open">Buksan</string>
+    <string name="fps_meter_hint">I-drag ang counter para ilipat ito. I-off ito para alisin ang overlay.</string>
+    <string name="fps_overlay_value">%1$d FPS</string>
+    <string name="fps_overlay_permission_needed">Payagan ang pagpapakita sa ibabaw ng ibang app para makita ang FPS meter.</string>
+    <string name="fps_overlay_channel_name">FPS Meter</string>
+    <string name="fps_overlay_channel_desc">Lumalabas habang tumatakbo ang FPS overlay</string>
+    <string name="fps_overlay_notif_title">Tumatakbo ang FPS Meter</string>
+    <string name="fps_overlay_notif_text">I-tap para buksan ang Custom Animator at i-off ito</string>
 </resources>

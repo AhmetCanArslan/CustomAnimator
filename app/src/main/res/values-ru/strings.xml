@@ -464,4 +464,14 @@
     <string name="remove_ads_prompt_body_price">Убрать за %1$s, один раз</string>
     <string name="remove_ads_prompt_dismiss">Скрыть</string>
     <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой — в любой момент, в разделе Настройки › Премиум.</string>
+    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter_desc">Показывает счётчик FPS поверх игр и приложений для анализа производительности и лагов.</string>
+    <string name="open">Открыть</string>
+    <string name="fps_meter_hint">Перетащите счётчик, чтобы переместить его. Выключите, чтобы убрать наложение.</string>
+    <string name="fps_overlay_value">%1$d FPS</string>
+    <string name="fps_overlay_permission_needed">Разрешите наложение поверх других приложений, чтобы показать счётчик FPS.</string>
+    <string name="fps_overlay_channel_name">Счётчик FPS</string>
+    <string name="fps_overlay_channel_desc">Отображается, пока работает наложение FPS</string>
+    <string name="fps_overlay_notif_title">Счётчик FPS работает</string>
+    <string name="fps_overlay_notif_text">Нажмите, чтобы открыть Custom Animator и выключить его</string>
 </resources>

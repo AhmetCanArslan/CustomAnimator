@@ -464,4 +464,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_prompt_body_price">%1$s ile tek seferde kaldır</string>
     <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
     <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin — istediğin zaman, Ayarlar › Premium bölümünden.</string>
+    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter_desc">Oyunların ve uygulamaların üzerinde gerçek zamanlı FPS göstergesi göstererek performans ve takılma analizi yapmanızı sağlar.</string>
+    <string name="open">Aç</string>
+    <string name="fps_meter_hint">Sayacı sürükleyerek taşıyabilirsiniz. Katmanı kaldırmak için bunu kapatın.</string>
+    <string name="fps_overlay_value">%1$d FPS</string>
+    <string name="fps_overlay_permission_needed">FPS göstergesini görmek için diğer uygulamaların üzerinde gösterime izin verin.</string>
+    <string name="fps_overlay_channel_name">FPS Göstergesi</string>
+    <string name="fps_overlay_channel_desc">FPS katmanı çalışırken görünür</string>
+    <string name="fps_overlay_notif_title">FPS Göstergesi çalışıyor</string>
+    <string name="fps_overlay_notif_text">Custom Animator\'ı açıp kapatmak için dokunun</string>
 </resources>
