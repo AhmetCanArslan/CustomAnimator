@@ -37,6 +37,17 @@
     <string name="dont_keep_activities_desc">Destroy every activity as soon as the user leaves it</string>
     <string name="limit_background_processes">Limit Background Processes</string>
     <string name="limit_background_processes_desc">Keep at most 1 cached app in the background</string>
+    <string name="alarm_revealer">Alarm Revealer</string>
+    <string name="alarm_revealer_desc">Find out which app is showing the alarm icon in the status bar</string>
+    <string name="alarm_icon_active">Alarm icon is active</string>
+    <string name="alarm_icon_inactive">No alarm is set</string>
+    <string name="alarm_rings_at">Rings at %1$s</string>
+    <string name="alarm_owner_unknown">Unknown app</string>
+    <string name="alarm_other_scheduled">Apps with scheduled alarms</string>
+    <string name="alarm_needs_shizuku_for_list">Grant Shizuku to also list every app with a scheduled alarm.</string>
+    <string name="app_info">App info</string>
+    <string name="force_stop">Force stop</string>
+    <string name="refresh">Refresh</string>
     <string name="write_settings_permission">Allow Modifying System Settings</string>
     <string name="write_settings_permission_desc">Needed for rotation, show taps and pointer location when Shizuku is not running</string>
     <string name="grant">Grant</string>

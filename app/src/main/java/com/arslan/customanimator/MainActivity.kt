@@ -160,7 +160,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -209,6 +209,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
@@ -380,10 +381,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     BackHandler(
-        enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP ||
-            currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER ||
-            currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE ||
-            currentScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS
+        enabled = currentScreen != HomeScreen.MAIN && currentScreen != HomeScreen.SETTINGS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
@@ -460,6 +458,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.MAIN },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = wifiPasswordsListState
+        )
+    } else if (targetScreen == HomeScreen.ALARM_REVEALER) {
+        AlarmRevealerScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = alarmRevealerListState
         )
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
         CloseAppsExclusionsScreen(
@@ -590,6 +594,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
+            onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
             listState = developerTabListState
         )
         } else if (targetTab == HomeTab.BATTERY) {

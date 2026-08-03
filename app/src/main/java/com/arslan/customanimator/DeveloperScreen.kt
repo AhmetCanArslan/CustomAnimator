@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
@@ -63,6 +64,7 @@ fun DeveloperScreenContent(
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToCloseAppsExclusions: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
+    onNavigateToAlarmRevealer: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -577,6 +579,13 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.wifi_password_manager),
                             description = stringResource(R.string.wifi_password_manager_desc),
                             onClick = onNavigateToWifiPasswords
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Alarm,
+                            title = stringResource(R.string.alarm_revealer),
+                            description = stringResource(R.string.alarm_revealer_desc),
+                            onClick = onNavigateToAlarmRevealer
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         // One UI (and some other skins) only pick up the clock-seconds flag when
