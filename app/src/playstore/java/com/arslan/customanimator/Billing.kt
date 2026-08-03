@@ -23,6 +23,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+private fun ProductDetails.oneTimeOffer(): ProductDetails.OneTimePurchaseOfferDetails? =
+    oneTimePurchaseOfferDetailsList?.minByOrNull { it.priceAmountMicros }
+        ?: oneTimePurchaseOfferDetails
+
 object Billing {
     const val REMOVE_ADS_PRODUCT_ID = "remove_ads"
 
@@ -149,7 +153,7 @@ object Billing {
             val product = details.productDetailsList
                 .firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
             productDetails = product
-            _price.value = product?.oneTimePurchaseOfferDetails?.formattedPrice
+            _price.value = product?.oneTimeOffer()?.formattedPrice
         }
     }
 
@@ -241,6 +245,9 @@ object Billing {
                 listOf(
                     BillingFlowParams.ProductDetailsParams.newBuilder()
                         .setProductDetails(product)
+                        .apply {
+                            product.oneTimeOffer()?.offerToken?.let { setOfferToken(it) }
+                        }
                         .build()
                 )
             )
