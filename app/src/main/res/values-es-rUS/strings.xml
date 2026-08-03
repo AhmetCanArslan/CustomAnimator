@@ -499,4 +499,7 @@ Duración del Animador: %3$.2f</string>
     <string name="wifi_export_done">Copia guardada</string>
     <string name="wifi_export_failed">No se pudo escribir la copia</string>
     <string name="wifi_backup_password">Contraseña de la copia</string>
+    <string name="caffeine_tile_label">Cafeína</string>
+    <string name="caffeine_tile_subtitle_on">La pantalla permanece encendida</string>
+    <string name="caffeine_tile_subtitle_off">La pantalla se apaga normalmente</string>
 </resources>

@@ -499,4 +499,7 @@ Duração do Animador: %3$.2f</string>
     <string name="wifi_export_done">Backup salvo</string>
     <string name="wifi_export_failed">Não foi possível gravar o backup</string>
     <string name="wifi_backup_password">Senha do backup</string>
+    <string name="caffeine_tile_label">Cafeína</string>
+    <string name="caffeine_tile_subtitle_on">A tela fica ligada</string>
+    <string name="caffeine_tile_subtitle_off">A tela apaga normalmente</string>
 </resources>

@@ -68,6 +68,17 @@
         </service>
 
         <service
+            android:name=".service.CaffeineTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_caffeine"
+            android:label="@string/caffeine_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".service.TerminalTileService1"
             android:exported="true"
             android:enabled="false"

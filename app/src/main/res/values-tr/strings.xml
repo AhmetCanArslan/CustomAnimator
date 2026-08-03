@@ -499,4 +499,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="wifi_export_done">Yedek kaydedildi</string>
     <string name="wifi_export_failed">Yedek yazılamadı</string>
     <string name="wifi_backup_password">Yedek parolası</string>
+    <string name="caffeine_tile_label">Kafein</string>
+    <string name="caffeine_tile_subtitle_on">Ekran açık kalıyor</string>
+    <string name="caffeine_tile_subtitle_off">Ekran normal kapanıyor</string>
 </resources>

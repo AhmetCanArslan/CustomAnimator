@@ -519,4 +519,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="wifi_export_done">Backup salvato</string>
     <string name="wifi_export_failed">Impossibile scrivere il backup</string>
     <string name="wifi_backup_password">Password del backup</string>
+    <string name="caffeine_tile_label">Caffeina</string>
+    <string name="caffeine_tile_subtitle_on">Lo schermo resta acceso</string>
+    <string name="caffeine_tile_subtitle_off">Lo schermo si spegne normalmente</string>
 </resources>

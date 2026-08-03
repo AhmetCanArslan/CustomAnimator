@@ -499,4 +499,7 @@ Durasi Animator: %3$.2f</string>
     <string name="wifi_export_done">Cadangan disimpan</string>
     <string name="wifi_export_failed">Gagal menulis cadangan</string>
     <string name="wifi_backup_password">Sandi cadangan</string>
+    <string name="caffeine_tile_label">Kafein</string>
+    <string name="caffeine_tile_subtitle_on">Layar tetap menyala</string>
+    <string name="caffeine_tile_subtitle_off">Layar mati seperti biasa</string>
 </resources>

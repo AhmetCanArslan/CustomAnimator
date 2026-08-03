@@ -519,4 +519,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Displays a real-time FPS overlay over games and apps for performance and lag analysis.</string>
     <string name="open">Open</string>
+    <string name="caffeine_tile_label">Caffeine</string>
+    <string name="caffeine_tile_subtitle_on">Screen stays on</string>
+    <string name="caffeine_tile_subtitle_off">Screen sleeps normally</string>
 </resources>

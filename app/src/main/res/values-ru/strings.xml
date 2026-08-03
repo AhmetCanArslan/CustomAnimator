@@ -499,4 +499,7 @@
     <string name="wifi_export_done">Копия сохранена</string>
     <string name="wifi_export_failed">Не удалось записать копию</string>
     <string name="wifi_backup_password">Пароль резервной копии</string>
+    <string name="caffeine_tile_label">Кофеин</string>
+    <string name="caffeine_tile_subtitle_on">Экран не гаснет</string>
+    <string name="caffeine_tile_subtitle_off">Экран гаснет как обычно</string>
 </resources>

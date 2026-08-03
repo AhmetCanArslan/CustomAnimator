@@ -499,4 +499,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="wifi_export_done">Na-save ang backup</string>
     <string name="wifi_export_failed">Hindi naisulat ang backup</string>
     <string name="wifi_backup_password">Password ng backup</string>
+    <string name="caffeine_tile_label">Caffeine</string>
+    <string name="caffeine_tile_subtitle_on">Nananatiling bukas ang screen</string>
+    <string name="caffeine_tile_subtitle_off">Normal na namamatay ang screen</string>
 </resources>
