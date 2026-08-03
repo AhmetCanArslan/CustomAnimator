@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.AlarmRevealer
 import com.arslan.customanimator.utils.AlarmSource
 import com.arslan.customanimator.utils.DeveloperOptionsManager
+import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -104,6 +105,16 @@ fun AlarmRevealerScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!hasShizukuPermission) {
+                item {
+                    WarningCard(
+                        message = stringResource(R.string.alarm_needs_shizuku_for_list),
+                        actionLabel = stringResource(R.string.grant_shizuku_permission),
+                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                    )
+                }
+            }
+
             item {
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -218,14 +229,6 @@ fun AlarmRevealerScreen(
                             }
                         }
                     }
-                }
-            } else if (!isLoading && !hasShizukuPermission) {
-                item {
-                    Text(
-                        text = stringResource(R.string.alarm_needs_shizuku_for_list),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
             }
         }

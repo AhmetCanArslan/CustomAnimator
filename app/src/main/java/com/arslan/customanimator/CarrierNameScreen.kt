@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.CarrierNameManager
+import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.SimSlot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -109,7 +110,13 @@ fun CarrierNameScreen(
             }
 
             if (!hasShizukuPermission) {
-                item { WarningCard(stringResource(R.string.developer_needs_shizuku)) }
+                item {
+                    WarningCard(
+                        message = stringResource(R.string.developer_needs_shizuku),
+                        actionLabel = stringResource(R.string.grant_shizuku_permission),
+                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                    )
+                }
             }
 
             if (!hasPhonePermission) {

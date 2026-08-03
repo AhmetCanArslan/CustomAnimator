@@ -37,12 +37,15 @@ object WifiConfigReader {
 
     sealed class Result {
         data class Success(val networks: List<WifiNetwork>) : Result()
-        data class Error(@StringRes val messageRes: Int) : Result()
+        data class Error(
+            @StringRes val messageRes: Int,
+            val needsShizukuPermission: Boolean = false
+        ) : Result()
     }
 
     suspend fun readSavedNetworks(context: Context): Result {
         if (!ShizukuHelper.hasShizukuPermission()) {
-            return Result.Error(R.string.developer_needs_shizuku)
+            return Result.Error(R.string.developer_needs_shizuku, needsShizukuPermission = true)
         }
         val networks = readThroughUserService(context)
         return if (networks != null) Result.Success(networks) else Result.Error(R.string.wifi_unreadable)

@@ -41,6 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.BackupManager
+import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.SystemResetManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,11 +56,13 @@ fun SettingsScreen(
     inputMode: String,
     onInputModeChange: (String) -> Unit,
     isShizukuAvailable: Boolean,
+    hasShizukuPermission: Boolean,
     hasWriteSecureSettings: Boolean,
     onShowPermissionDetails: () -> Unit
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val canRevert = hasShizukuPermission || hasWriteSecureSettings
     var showRevertConfirm by remember { mutableStateOf(false) }
     var isReverting by remember { mutableStateOf(false) }
 
@@ -178,9 +181,19 @@ fun SettingsScreen(
                 ActionSettingRow(
                     icon = Icons.Filled.SettingsBackupRestore,
                     title = stringResource(R.string.revert_everything),
-                    description = stringResource(R.string.revert_everything_desc),
+                    description = if (canRevert) {
+                        stringResource(R.string.revert_everything_desc)
+                    } else {
+                        stringResource(R.string.developer_needs_shizuku)
+                    },
                     descriptionColor = MaterialTheme.colorScheme.error,
-                    onClick = { showRevertConfirm = true }
+                    onClick = {
+                        if (canRevert) {
+                            showRevertConfirm = true
+                        } else {
+                            ShizukuHelper.requestShizukuPermission(context)
+                        }
+                    }
                 )
             }
 

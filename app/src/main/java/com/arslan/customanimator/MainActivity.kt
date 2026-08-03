@@ -181,6 +181,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
     val hasWriteSecureSettings = remember { mutableStateOf(ShizukuHelper.hasWriteSecureSettingsPermission(context)) }
     var showPermissionDetailsDialog by remember { mutableStateOf(false) }
+
+    val permissionLifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(permissionLifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                hasShizukuPermission.value = ShizukuHelper.hasShizukuPermission()
+                hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
+            }
+        }
+        permissionLifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { permissionLifecycleOwner.lifecycle.removeObserver(observer) }
+    }
     
     // Current values from system settings
     var windowAnimScale by remember {
@@ -430,6 +442,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             },
             isShizukuAvailable = isShizukuAvailable,
+            hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             onShowPermissionDetails = { showPermissionDetailsDialog = true }
         )

@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.WifiNetwork
 import com.arslan.customanimator.data.WifiSecurity
 import com.arslan.customanimator.utils.QrCodeRenderer
+import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.WifiBackupCodec
 import com.arslan.customanimator.utils.WifiConfigReader
 import kotlinx.coroutines.Dispatchers
@@ -205,11 +206,19 @@ fun WifiPasswordsScreen(
                 }
                 is WifiConfigReader.Result.Error -> {
                     Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                        WarningCard(
-                            message = stringResource(state.messageRes),
-                            actionLabel = stringResource(R.string.wifi_refresh),
-                            onAction = { coroutineScope.launch { reload() } }
-                        )
+                        if (state.needsShizukuPermission) {
+                            WarningCard(
+                                message = stringResource(state.messageRes),
+                                actionLabel = stringResource(R.string.grant_shizuku_permission),
+                                onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                            )
+                        } else {
+                            WarningCard(
+                                message = stringResource(state.messageRes),
+                                actionLabel = stringResource(R.string.wifi_refresh),
+                                onAction = { coroutineScope.launch { reload() } }
+                            )
+                        }
                     }
                 }
                 is WifiConfigReader.Result.Success -> {
