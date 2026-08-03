@@ -25,7 +25,9 @@ object BackupManager {
         "auto_force_stop",
         "auto_permission_disabler",
         "auto_permission_disabler_state",
-        "close_apps_exclusions"
+        "close_apps_exclusions",
+        "wifi_notes_prefs",
+        "fps_overlay_prefs"
     )
 
     fun exportToJson(context: Context): String {

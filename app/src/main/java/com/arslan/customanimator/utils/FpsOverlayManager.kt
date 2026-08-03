@@ -2,7 +2,6 @@ package com.arslan.customanimator.utils
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.provider.Settings
 
 object FpsOverlayManager {
@@ -30,13 +29,9 @@ object FpsOverlayManager {
         prefs(context).edit().putInt(KEY_POSITION_X, x).putInt(KEY_POSITION_Y, y).apply()
     }
 
-    fun canDrawOverlay(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Settings.canDrawOverlays(context)
-        } else {
-            true
-        }
-    }
+    fun canDrawOverlay(context: Context): Boolean = Settings.canDrawOverlays(context)
+
+    fun isActive(context: Context): Boolean = isEnabled(context) && canDrawOverlay(context)
 
     fun overlayPermissionIntent(context: Context) = android.content.Intent(
         Settings.ACTION_MANAGE_OVERLAY_PERMISSION,

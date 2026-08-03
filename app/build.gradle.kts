@@ -70,6 +70,7 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+        aidl = true
     }
 }
 
@@ -85,6 +86,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
+    implementation(libs.zxing.core)
     "playstoreImplementation"(libs.play.services.ads)
     "playstoreImplementation"(libs.user.messaging.platform)
     "playstoreImplementation"(libs.androidx.lifecycle.process)

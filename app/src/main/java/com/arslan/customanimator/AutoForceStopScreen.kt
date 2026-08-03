@@ -250,14 +250,15 @@ fun AppSearchBar(
     onSearchQueryChange: (String) -> Unit,
     showSelectedOnly: Boolean = false,
     onShowSelectedOnlyChange: (Boolean) -> Unit = {},
-    showFilterCheckbox: Boolean = true
+    showFilterCheckbox: Boolean = true,
+    placeholder: String? = null
 ) {
     Column {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = onSearchQueryChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(stringResource(R.string.search_apps)) },
+            placeholder = { Text(placeholder ?: stringResource(R.string.search_apps)) },
             singleLine = true,
             leadingIcon = {
                 Icon(imageVector = Icons.Filled.Search, contentDescription = null)

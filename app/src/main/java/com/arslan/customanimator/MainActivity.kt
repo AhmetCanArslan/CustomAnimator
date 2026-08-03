@@ -160,7 +160,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -208,6 +208,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
@@ -454,6 +455,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
+    } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
+        WifiPasswordsScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = wifiPasswordsListState
+        )
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
         CloseAppsExclusionsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
@@ -582,6 +589,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
+            onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             listState = developerTabListState
         )
         } else if (targetTab == HomeTab.BATTERY) {

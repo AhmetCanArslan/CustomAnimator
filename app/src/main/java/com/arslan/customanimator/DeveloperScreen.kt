@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.VideogameAsset
+import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -59,6 +60,7 @@ fun DeveloperScreenContent(
     onNavigateToAutoPermissionDisabler: () -> Unit,
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToCloseAppsExclusions: () -> Unit,
+    onNavigateToWifiPasswords: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -73,7 +75,7 @@ fun DeveloperScreenContent(
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
     var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
     var fpsMeterEnabled by remember {
-        mutableStateOf(FpsOverlayManager.isEnabled(context) && FpsOverlayManager.canDrawOverlay(context))
+        mutableStateOf(FpsOverlayManager.isActive(context))
     }
     var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
     var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
@@ -98,7 +100,7 @@ fun DeveloperScreenContent(
                 limitBackgroundProcesses = DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
                 clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
-                fpsMeterEnabled = FpsOverlayManager.isEnabled(context) && FpsOverlayManager.canDrawOverlay(context)
+                fpsMeterEnabled = FpsOverlayManager.isActive(context)
                 isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
                 userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
             }
@@ -437,6 +439,13 @@ fun DeveloperScreenContent(
                         if (fpsMeterEnabled) {
                             InfoNote(text = stringResource(R.string.fps_meter_hint))
                         }
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Wifi,
+                            title = stringResource(R.string.wifi_password_manager),
+                            description = stringResource(R.string.wifi_password_manager_desc),
+                            onClick = onNavigateToWifiPasswords
+                        )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         // One UI (and some other skins) only pick up the clock-seconds flag when
                         // SystemUI restarts.
