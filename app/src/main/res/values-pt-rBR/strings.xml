@@ -529,4 +529,13 @@ Duração do Animador: %3$.2f</string>
     <string name="force_rtl">Forçar layout RTL</string>
     <string name="force_rtl_desc">Organizar todas as telas da direita para a esquerda</string>
     <string name="developer_tiles_restart_note">Os limites de layout e o perfil de GPU só se aplicam a apps iniciados após a ativação; reinicie o app que deseja inspecionar.</string>
+    <string name="carrier_name">Nome da operadora</string>
+    <string name="carrier_name_desc">Mostrar um nome de operadora personalizado na barra de status e na tela de bloqueio</string>
+    <string name="carrier_name_current">Nome atual: %1$s</string>
+    <string name="carrier_name_new">Novo nome da operadora</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Nenhum chip ativo encontrado.</string>
+    <string name="carrier_name_unsupported">Este recurso precisa do Android 11 ou mais recente.</string>
+    <string name="carrier_name_needs_phone_permission">Ler os slots do chip exige a permissão de telefone.</string>
+    <string name="carrier_name_note">O nome é aplicado como substituição da configuração da operadora e continua após reiniciar. Use Redefinir para restaurar o nome original.</string>
 </resources>

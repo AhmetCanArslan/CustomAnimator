@@ -529,4 +529,13 @@ Durasi Animator: %3$.2f</string>
     <string name="force_rtl">Paksa Tata Letak RTL</string>
     <string name="force_rtl_desc">Susun semua layar dari kanan ke kiri</string>
     <string name="developer_tiles_restart_note">Batas tata letak dan profil GPU hanya berlaku untuk aplikasi yang dibuka setelah diaktifkan; mulai ulang aplikasi yang ingin diperiksa.</string>
+    <string name="carrier_name">Nama Operator</string>
+    <string name="carrier_name_desc">Tampilkan nama operator khusus di bilah status dan layar kunci</string>
+    <string name="carrier_name_current">Nama saat ini: %1$s</string>
+    <string name="carrier_name_new">Nama operator baru</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Tidak ada kartu SIM aktif yang ditemukan.</string>
+    <string name="carrier_name_unsupported">Fitur ini memerlukan Android 11 atau yang lebih baru.</string>
+    <string name="carrier_name_needs_phone_permission">Membaca slot SIM memerlukan izin telepon.</string>
+    <string name="carrier_name_note">Nama diterapkan sebagai penggantian konfigurasi operator dan bertahan setelah mulai ulang. Gunakan Setel Ulang untuk mengembalikan nama asli.</string>
 </resources>

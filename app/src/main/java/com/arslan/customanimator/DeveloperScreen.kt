@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.Wifi
@@ -65,6 +66,7 @@ fun DeveloperScreenContent(
     onNavigateToCloseAppsExclusions: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
+    onNavigateToCarrierName: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -586,6 +588,13 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.alarm_revealer),
                             description = stringResource(R.string.alarm_revealer_desc),
                             onClick = onNavigateToAlarmRevealer
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.SignalCellularAlt,
+                            title = stringResource(R.string.carrier_name),
+                            description = stringResource(R.string.carrier_name_desc),
+                            onClick = onNavigateToCarrierName
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         // One UI (and some other skins) only pick up the clock-seconds flag when

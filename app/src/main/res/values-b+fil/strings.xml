@@ -529,4 +529,13 @@ Tagal ng Animator: %3$.2f</string>
     <string name="force_rtl">Pilitin ang RTL Layout</string>
     <string name="force_rtl_desc">Ayusin ang lahat ng screen mula kanan pakaliwa</string>
     <string name="developer_tiles_restart_note">Ang mga hangganan ng layout at profile ng GPU ay nalalapat lang sa mga app na binuksan pagkatapos i-on; i-restart ang app na gusto mong suriin.</string>
+    <string name="carrier_name">Pangalan ng Carrier</string>
+    <string name="carrier_name_desc">Magpakita ng custom na pangalan ng carrier sa status bar at lock screen</string>
+    <string name="carrier_name_current">Kasalukuyang pangalan: %1$s</string>
+    <string name="carrier_name_new">Bagong pangalan ng carrier</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Walang aktibong SIM card na natagpuan.</string>
+    <string name="carrier_name_unsupported">Kailangan ng feature na ito ang Android 11 o mas bago.</string>
+    <string name="carrier_name_needs_phone_permission">Kailangan ng pahintulot sa telepono para mabasa ang mga SIM slot.</string>
+    <string name="carrier_name_note">Inilalapat ang pangalan bilang carrier config override at nananatili pagkatapos mag-restart. Gamitin ang I-reset para ibalik ang orihinal na pangalan.</string>
 </resources>

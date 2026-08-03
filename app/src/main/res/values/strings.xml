@@ -37,6 +37,15 @@
     <string name="dont_keep_activities_desc">Destroy every activity as soon as the user leaves it</string>
     <string name="limit_background_processes">Limit Background Processes</string>
     <string name="limit_background_processes_desc">Keep at most 1 cached app in the background</string>
+    <string name="carrier_name">Carrier Name</string>
+    <string name="carrier_name_desc">Show a custom carrier name in the status bar and lock screen</string>
+    <string name="carrier_name_current">Current name: %1$s</string>
+    <string name="carrier_name_new">New carrier name</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">No active SIM card found.</string>
+    <string name="carrier_name_unsupported">This feature needs Android 11 or newer.</string>
+    <string name="carrier_name_needs_phone_permission">Reading your SIM slots needs the phone permission.</string>
+    <string name="carrier_name_note">The name is applied as a carrier config override and survives reboots. Use Reset to restore the original name.</string>
     <string name="alarm_revealer">Alarm Revealer</string>
     <string name="alarm_revealer_desc">Find out which app is showing the alarm icon in the status bar</string>
     <string name="alarm_icon_active">Alarm icon is active</string>

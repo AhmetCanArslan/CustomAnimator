@@ -529,4 +529,13 @@
     <string name="force_rtl">Принудительный RTL</string>
     <string name="force_rtl_desc">Располагать все экраны справа налево</string>
     <string name="developer_tiles_restart_note">Границы макета и профилирование GPU действуют только для приложений, запущенных после включения; перезапустите нужное приложение.</string>
+    <string name="carrier_name">Название оператора</string>
+    <string name="carrier_name_desc">Показывать своё название оператора в строке состояния и на экране блокировки</string>
+    <string name="carrier_name_current">Текущее название: %1$s</string>
+    <string name="carrier_name_new">Новое название оператора</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Активная SIM-карта не найдена.</string>
+    <string name="carrier_name_unsupported">Для этой функции нужен Android 11 или новее.</string>
+    <string name="carrier_name_needs_phone_permission">Для чтения SIM-слотов требуется разрешение на телефон.</string>
+    <string name="carrier_name_note">Название применяется как переопределение конфигурации оператора и сохраняется после перезагрузки. Нажмите «Сброс», чтобы вернуть исходное название.</string>
 </resources>

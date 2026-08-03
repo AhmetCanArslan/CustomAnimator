@@ -549,4 +549,13 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="force_rtl">Forza layout RTL</string>
     <string name="force_rtl_desc">Disponi tutte le schermate da destra a sinistra</string>
     <string name="developer_tiles_restart_note">I limiti del layout e il profilo GPU si applicano solo alle app avviate dopo l\'attivazione; riavvia l\'app da esaminare.</string>
+    <string name="carrier_name">Nome operatore</string>
+    <string name="carrier_name_desc">Mostra un nome operatore personalizzato nella barra di stato e nella schermata di blocco</string>
+    <string name="carrier_name_current">Nome attuale: %1$s</string>
+    <string name="carrier_name_new">Nuovo nome operatore</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Nessuna SIM attiva trovata.</string>
+    <string name="carrier_name_unsupported">Questa funzione richiede Android 11 o versioni successive.</string>
+    <string name="carrier_name_needs_phone_permission">Per leggere gli slot SIM serve l\'autorizzazione telefono.</string>
+    <string name="carrier_name_note">Il nome viene applicato come override della configurazione operatore e resta dopo il riavvio. Usa Reimposta per ripristinare il nome originale.</string>
 </resources>

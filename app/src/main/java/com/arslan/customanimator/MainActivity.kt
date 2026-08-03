@@ -160,7 +160,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -210,6 +210,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
@@ -465,6 +466,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = alarmRevealerListState
         )
+    } else if (targetScreen == HomeScreen.CARRIER_NAME) {
+        CarrierNameScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = carrierNameListState
+        )
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
         CloseAppsExclusionsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
@@ -590,6 +597,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
+            onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
             listState = developerTabListState
         )
         } else if (targetTab == HomeTab.BATTERY) {

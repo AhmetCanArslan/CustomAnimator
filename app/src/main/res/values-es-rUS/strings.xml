@@ -529,4 +529,13 @@ Duración del Animador: %3$.2f</string>
     <string name="force_rtl">Forzar diseño RTL</string>
     <string name="force_rtl_desc">Organizar todas las pantallas de derecha a izquierda</string>
     <string name="developer_tiles_restart_note">Los límites de diseño y el perfil de GPU solo se aplican a las apps iniciadas después de activarlos; reinicia la app que quieras inspeccionar.</string>
+    <string name="carrier_name">Nombre del operador</string>
+    <string name="carrier_name_desc">Muestra un nombre de operador personalizado en la barra de estado y la pantalla de bloqueo</string>
+    <string name="carrier_name_current">Nombre actual: %1$s</string>
+    <string name="carrier_name_new">Nuevo nombre del operador</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">No se encontró ninguna SIM activa.</string>
+    <string name="carrier_name_unsupported">Esta función necesita Android 11 o una versión más reciente.</string>
+    <string name="carrier_name_needs_phone_permission">Leer las ranuras SIM requiere el permiso de teléfono.</string>
+    <string name="carrier_name_note">El nombre se aplica como un reemplazo de la configuración del operador y se mantiene tras reiniciar. Usa Restablecer para recuperar el nombre original.</string>
 </resources>

@@ -529,4 +529,13 @@ Animatör Süresi: %3$.2f</string>
     <string name="force_rtl">RTL Düzenini Zorla</string>
     <string name="force_rtl_desc">Tüm ekranları sağdan sola yerleştir</string>
     <string name="developer_tiles_restart_note">Düzen sınırları ve GPU profili yalnızca açıldıktan sonra başlatılan uygulamalarda geçerlidir; incelemek istediğiniz uygulamayı yeniden başlatın.</string>
+    <string name="carrier_name">Operatör Adı</string>
+    <string name="carrier_name_desc">Durum çubuğunda ve kilit ekranında özel bir operatör adı göster</string>
+    <string name="carrier_name_current">Mevcut ad: %1$s</string>
+    <string name="carrier_name_new">Yeni operatör adı</string>
+    <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
+    <string name="carrier_name_no_sim">Etkin SIM kart bulunamadı.</string>
+    <string name="carrier_name_unsupported">Bu özellik Android 11 veya daha yenisini gerektirir.</string>
+    <string name="carrier_name_needs_phone_permission">SIM yuvalarınızı okumak için telefon izni gerekir.</string>
+    <string name="carrier_name_note">Ad, operatör yapılandırma geçersiz kılması olarak uygulanır ve yeniden başlatmalarda korunur. Özgün adı geri getirmek için Sıfırla\'yı kullanın.</string>
 </resources>
