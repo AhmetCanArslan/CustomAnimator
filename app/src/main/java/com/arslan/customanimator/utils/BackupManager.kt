@@ -26,7 +26,6 @@ object BackupManager {
         "auto_permission_disabler",
         "auto_permission_disabler_state",
         "close_apps_exclusions",
-        "wifi_notes_prefs",
         "fps_overlay_prefs"
     )
 

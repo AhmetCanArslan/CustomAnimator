@@ -475,9 +475,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="fps_overlay_notif_title">Tumatakbo ang FPS Meter</string>
     <string name="fps_overlay_notif_text">I-tap para buksan ang Custom Animator at i-off ito</string>
     <string name="wifi_password_manager">Wi-Fi Password Manager</string>
-    <string name="wifi_password_manager_desc">Basahin ang mga naka-save na Wi-Fi password, ibahagi via QR, magdagdag ng notes at mag-export ng backup</string>
+    <string name="wifi_password_manager_desc">Basahin ang mga naka-save na Wi-Fi password, ibahagi via QR at mag-export ng backup</string>
     <string name="wifi_unreadable">Hindi mabasa ang mga naka-save na network. Kailangan ng Shizuku na tumatakbo sa Android 11 pataas (doon nakuha ng shell user ang kinakailangang pribilehiyo).</string>
-    <string name="wifi_search">Maghanap ng network o note</string>
+    <string name="wifi_search">Maghanap ng network</string>
     <string name="wifi_connected_to">Nakakonekta sa %1$s</string>
     <string name="wifi_connected">Nakakonekta</string>
     <string name="wifi_open">Bukas</string>
@@ -489,8 +489,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="wifi_show_qr">Ipakita ang QR code</string>
     <string name="wifi_qr_hint">I-scan gamit ang camera ng ibang telepono para sumali sa network na ito.</string>
     <string name="wifi_qr_failed">Hindi magawa ang QR code.</string>
-    <string name="wifi_note">Note</string>
-    <string name="wifi_note_for">Note para sa %1$s</string>
     <string name="wifi_refresh">I-refresh</string>
     <string name="wifi_more">Iba pang opsyon</string>
     <string name="wifi_export_plain">I-export bilang JSON</string>

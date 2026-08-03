@@ -274,9 +274,9 @@ Animator Duration: %3$.2f</string>
     <string name="show_clock_seconds">Show Clock Seconds</string>
     <string name="show_clock_seconds_desc">Display seconds in the status bar clock</string>
     <string name="wifi_password_manager">Wi-Fi Password Manager</string>
-    <string name="wifi_password_manager_desc">Read saved Wi-Fi passwords, share them as QR codes, add notes and export backups</string>
+    <string name="wifi_password_manager_desc">Read saved Wi-Fi passwords, share them as QR codes and export backups</string>
     <string name="wifi_unreadable">Could not read the saved networks. This needs Shizuku running on Android 11 or newer (the shell user gained the required privilege there).</string>
-    <string name="wifi_search">Search networks or notes</string>
+    <string name="wifi_search">Search networks</string>
     <string name="wifi_connected_to">Connected to %1$s</string>
     <string name="wifi_connected">Connected</string>
     <string name="wifi_open">Open</string>
@@ -288,8 +288,6 @@ Animator Duration: %3$.2f</string>
     <string name="wifi_show_qr">Show QR code</string>
     <string name="wifi_qr_hint">Scan with another phone\'s camera to join this network.</string>
     <string name="wifi_qr_failed">Could not generate the QR code.</string>
-    <string name="wifi_note">Note</string>
-    <string name="wifi_note_for">Note for %1$s</string>
     <string name="wifi_refresh">Refresh</string>
     <string name="wifi_more">More options</string>
     <string name="wifi_export_plain">Export as JSON</string>

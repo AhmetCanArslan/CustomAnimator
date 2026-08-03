@@ -475,9 +475,9 @@
     <string name="fps_overlay_notif_title">Счётчик FPS работает</string>
     <string name="fps_overlay_notif_text">Нажмите, чтобы открыть Custom Animator и выключить его</string>
     <string name="wifi_password_manager">Менеджер паролей Wi-Fi</string>
-    <string name="wifi_password_manager_desc">Читайте сохранённые пароли Wi-Fi, делитесь QR-кодом, добавляйте заметки и экспортируйте резервные копии</string>
+    <string name="wifi_password_manager_desc">Читайте сохранённые пароли Wi-Fi, делитесь QR-кодом и экспортируйте резервные копии</string>
     <string name="wifi_unreadable">Не удалось прочитать сохранённые сети. Нужен работающий Shizuku на Android 11 или новее (там shell получил нужную привилегию).</string>
-    <string name="wifi_search">Поиск сетей или заметок</string>
+    <string name="wifi_search">Поиск сетей</string>
     <string name="wifi_connected_to">Подключено к %1$s</string>
     <string name="wifi_connected">Подключено</string>
     <string name="wifi_open">Открытая</string>
@@ -489,8 +489,6 @@
     <string name="wifi_show_qr">Показать QR-код</string>
     <string name="wifi_qr_hint">Отсканируйте камерой другого телефона, чтобы подключиться к сети.</string>
     <string name="wifi_qr_failed">Не удалось создать QR-код.</string>
-    <string name="wifi_note">Заметка</string>
-    <string name="wifi_note_for">Заметка для %1$s</string>
     <string name="wifi_refresh">Обновить</string>
     <string name="wifi_more">Другие параметры</string>
     <string name="wifi_export_plain">Экспорт в JSON</string>

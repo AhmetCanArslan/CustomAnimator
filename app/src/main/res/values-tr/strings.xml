@@ -475,9 +475,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="fps_overlay_notif_title">FPS Göstergesi çalışıyor</string>
     <string name="fps_overlay_notif_text">Custom Animator\'ı açıp kapatmak için dokunun</string>
     <string name="wifi_password_manager">Wi-Fi Şifre Yöneticisi</string>
-    <string name="wifi_password_manager_desc">Kayıtlı Wi-Fi şifrelerini okuyun, QR kodla paylaşın, not ekleyin ve yedek alın</string>
+    <string name="wifi_password_manager_desc">Kayıtlı Wi-Fi şifrelerini okuyun, QR kodla paylaşın ve yedek alın</string>
     <string name="wifi_unreadable">Kayıtlı ağlar okunamadı. Bunun için Shizuku\'nun Android 11 veya üzerinde çalışması gerekir (gereken yetki shell kullanıcısına o sürümde verildi).</string>
-    <string name="wifi_search">Ağlarda veya notlarda ara</string>
+    <string name="wifi_search">Ağlarda ara</string>
     <string name="wifi_connected_to">%1$s ağına bağlı</string>
     <string name="wifi_connected">Bağlı</string>
     <string name="wifi_open">Açık</string>
@@ -489,8 +489,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="wifi_show_qr">QR kodu göster</string>
     <string name="wifi_qr_hint">Bu ağa katılmak için başka bir telefonun kamerasıyla tarayın.</string>
     <string name="wifi_qr_failed">QR kodu oluşturulamadı.</string>
-    <string name="wifi_note">Not</string>
-    <string name="wifi_note_for">%1$s için not</string>
     <string name="wifi_refresh">Yenile</string>
     <string name="wifi_more">Diğer seçenekler</string>
     <string name="wifi_export_plain">JSON olarak dışa aktar</string>

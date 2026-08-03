@@ -475,9 +475,9 @@ Duración del Animador: %3$.2f</string>
     <string name="fps_overlay_notif_title">Indicador de FPS activo</string>
     <string name="fps_overlay_notif_text">Toca para abrir Custom Animator y desactivarlo</string>
     <string name="wifi_password_manager">Gestor de contraseñas Wi-Fi</string>
-    <string name="wifi_password_manager_desc">Lee las contraseñas Wi-Fi guardadas, compártelas por QR, agrega notas y exporta copias</string>
+    <string name="wifi_password_manager_desc">Lee las contraseñas Wi-Fi guardadas, compártelas por QR y exporta copias</string>
     <string name="wifi_unreadable">No se pudieron leer las redes guardadas. Se necesita Shizuku en Android 11 o posterior (ahí el usuario shell obtuvo el privilegio necesario).</string>
-    <string name="wifi_search">Buscar redes o notas</string>
+    <string name="wifi_search">Buscar redes</string>
     <string name="wifi_connected_to">Conectado a %1$s</string>
     <string name="wifi_connected">Conectado</string>
     <string name="wifi_open">Abierta</string>
@@ -489,8 +489,6 @@ Duración del Animador: %3$.2f</string>
     <string name="wifi_show_qr">Mostrar código QR</string>
     <string name="wifi_qr_hint">Escanéalo con la cámara de otro teléfono para unirte a esta red.</string>
     <string name="wifi_qr_failed">No se pudo generar el código QR.</string>
-    <string name="wifi_note">Nota</string>
-    <string name="wifi_note_for">Nota para %1$s</string>
     <string name="wifi_refresh">Actualizar</string>
     <string name="wifi_more">Más opciones</string>
     <string name="wifi_export_plain">Exportar como JSON</string>

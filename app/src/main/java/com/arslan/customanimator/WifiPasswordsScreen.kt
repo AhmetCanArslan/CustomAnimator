@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Refresh
@@ -43,7 +42,6 @@ import com.arslan.customanimator.data.WifiSecurity
 import com.arslan.customanimator.utils.QrCodeRenderer
 import com.arslan.customanimator.utils.WifiBackupCodec
 import com.arslan.customanimator.utils.WifiConfigReader
-import com.arslan.customanimator.utils.WifiNotesStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,16 +59,13 @@ fun WifiPasswordsScreen(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val notesStore = remember { WifiNotesStore(context) }
 
     var result by remember { mutableStateOf<WifiConfigReader.Result?>(null) }
-    var notes by remember { mutableStateOf(emptyMap<String, String>()) }
     var searchQuery by remember { mutableStateOf("") }
     var revealedSsids by remember { mutableStateOf(setOf<String>()) }
     var connectedSsid by remember { mutableStateOf<String?>(null) }
 
     var qrNetwork by remember { mutableStateOf<WifiNetwork?>(null) }
-    var noteNetwork by remember { mutableStateOf<WifiNetwork?>(null) }
     var showExportMenu by remember { mutableStateOf(false) }
     var pendingExport by remember { mutableStateOf<Pair<WifiBackupCodec.Format, String>?>(null) }
     var showExportPasswordDialog by remember { mutableStateOf(false) }
@@ -80,10 +75,7 @@ fun WifiPasswordsScreen(
         result = withContext(Dispatchers.IO) { WifiConfigReader.readSavedNetworks(context) }
     }
 
-    LaunchedEffect(hasShizukuPermission) {
-        notes = withContext(Dispatchers.IO) { notesStore.getAllNotes() }
-        reload()
-    }
+    LaunchedEffect(hasShizukuPermission) { reload() }
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -94,18 +86,14 @@ fun WifiPasswordsScreen(
 
     val savedNetworks = (result as? WifiConfigReader.Result.Success)?.networks.orEmpty()
 
-    val allNetworks = remember(savedNetworks, notes, connectedSsid) {
-        savedNetworks
-            .map { it.copy(note = notes[it.ssid].orEmpty()) }
-            .sortedWith(compareByDescending<WifiNetwork> { it.ssid == connectedSsid }.thenBy { it.ssid.lowercase() })
+    val allNetworks = remember(savedNetworks, connectedSsid) {
+        savedNetworks.sortedWith(
+            compareByDescending<WifiNetwork> { it.ssid == connectedSsid }.thenBy { it.ssid.lowercase() }
+        )
     }
 
     val filteredNetworks = remember(allNetworks, searchQuery) {
-        allNetworks.filter {
-            searchQuery.isBlank() ||
-                it.ssid.contains(searchQuery, ignoreCase = true) ||
-                it.note.contains(searchQuery, ignoreCase = true)
-        }
+        allNetworks.filter { searchQuery.isBlank() || it.ssid.contains(searchQuery, ignoreCase = true) }
     }
 
     val exportLauncher = rememberLauncherForActivityResult(
@@ -260,8 +248,7 @@ fun WifiPasswordsScreen(
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 },
-                                onShowQr = { qrNetwork = network },
-                                onEditNote = { noteNetwork = network }
+                                onShowQr = { qrNetwork = network }
                             )
                         }
                         item { Spacer(modifier = Modifier.height(16.dp)) }
@@ -275,22 +262,6 @@ fun WifiPasswordsScreen(
         WifiQrDialog(network = network, onDismiss = { qrNetwork = null })
     }
 
-    noteNetwork?.let { network ->
-        WifiNoteDialog(
-            network = network,
-            initialNote = notes[network.ssid].orEmpty(),
-            onDismiss = { noteNetwork = null },
-            onSave = { newNote ->
-                notesStore.setNote(network.ssid, newNote)
-                notes = if (newNote.isBlank()) {
-                    notes - network.ssid
-                } else {
-                    notes + (network.ssid to newNote.trim())
-                }
-                noteNetwork = null
-            }
-        )
-    }
 
     if (showExportPasswordDialog) {
         WifiPasswordDialog(
@@ -329,8 +300,7 @@ private fun WifiNetworkCard(
     isRevealed: Boolean,
     onToggleReveal: () -> Unit,
     onCopy: () -> Unit,
-    onShowQr: () -> Unit,
-    onEditNote: () -> Unit
+    onShowQr: () -> Unit
 ) {
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
@@ -370,17 +340,6 @@ private fun WifiNetworkCard(
                 IconButton(onClick = onShowQr) {
                     Icon(Icons.Filled.QrCode2, contentDescription = stringResource(R.string.wifi_show_qr))
                 }
-                IconButton(onClick = onEditNote) {
-                    Icon(Icons.Filled.EditNote, contentDescription = stringResource(R.string.wifi_note))
-                }
-            }
-            if (network.note.isNotBlank()) {
-                Text(
-                    text = network.note,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
             }
         }
     }
@@ -461,38 +420,6 @@ private fun WifiQrDialog(network: WifiNetwork, onDismiss: () -> Unit) {
     )
 }
 
-@Composable
-private fun WifiNoteDialog(
-    network: WifiNetwork,
-    initialNote: String,
-    onDismiss: () -> Unit,
-    onSave: (String) -> Unit
-) {
-    var note by remember(network.ssid) { mutableStateOf(initialNote) }
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.wifi_note_for, network.ssid)) },
-        text = {
-            OutlinedTextField(
-                value = note,
-                onValueChange = { note = it },
-                label = { Text(stringResource(R.string.wifi_note)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-        },
-        confirmButton = {
-            Button(onClick = { onSave(note) }) { Text(stringResource(R.string.save)) }
-        },
-        dismissButton = {
-            Button(
-                onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-            ) {
-                Text(stringResource(R.string.cancel))
-            }
-        }
-    )
-}
 
 @Composable
 private fun WifiPasswordDialog(

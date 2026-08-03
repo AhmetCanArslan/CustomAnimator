@@ -475,9 +475,9 @@ Durasi Animator: %3$.2f</string>
     <string name="fps_overlay_notif_title">Meter FPS berjalan</string>
     <string name="fps_overlay_notif_text">Ketuk untuk membuka Custom Animator dan mematikannya</string>
     <string name="wifi_password_manager">Pengelola Sandi Wi-Fi</string>
-    <string name="wifi_password_manager_desc">Baca sandi Wi-Fi tersimpan, bagikan lewat QR, tambahkan catatan, dan ekspor cadangan</string>
+    <string name="wifi_password_manager_desc">Baca sandi Wi-Fi tersimpan, bagikan lewat QR, dan ekspor cadangan</string>
     <string name="wifi_unreadable">Tidak dapat membaca jaringan tersimpan. Diperlukan Shizuku yang berjalan di Android 11 atau lebih baru (pengguna shell mendapat hak istimewa yang dibutuhkan sejak versi itu).</string>
-    <string name="wifi_search">Cari jaringan atau catatan</string>
+    <string name="wifi_search">Cari jaringan</string>
     <string name="wifi_connected_to">Terhubung ke %1$s</string>
     <string name="wifi_connected">Terhubung</string>
     <string name="wifi_open">Terbuka</string>
@@ -489,8 +489,6 @@ Durasi Animator: %3$.2f</string>
     <string name="wifi_show_qr">Tampilkan kode QR</string>
     <string name="wifi_qr_hint">Pindai dengan kamera ponsel lain untuk bergabung ke jaringan ini.</string>
     <string name="wifi_qr_failed">Gagal membuat kode QR.</string>
-    <string name="wifi_note">Catatan</string>
-    <string name="wifi_note_for">Catatan untuk %1$s</string>
     <string name="wifi_refresh">Muat ulang</string>
     <string name="wifi_more">Opsi lainnya</string>
     <string name="wifi_export_plain">Ekspor sebagai JSON</string>

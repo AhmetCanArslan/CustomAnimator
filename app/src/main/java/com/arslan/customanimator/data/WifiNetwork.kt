@@ -6,8 +6,7 @@ data class WifiNetwork(
     val ssid: String,
     val password: String,
     val security: WifiSecurity,
-    val isHidden: Boolean = false,
-    val note: String = ""
+    val isHidden: Boolean = false
 )
 
 internal fun unquoteWifiValue(value: String): String {

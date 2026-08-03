@@ -53,7 +53,6 @@ object WifiBackupCodec {
                     put("password", network.password)
                     put("security", network.security.name)
                     put("hidden", network.isHidden)
-                    put("note", network.note)
                 }
             )
         }
