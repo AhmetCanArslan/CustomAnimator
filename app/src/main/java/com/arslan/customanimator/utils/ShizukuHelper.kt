@@ -38,7 +38,7 @@ object ShizukuHelper {
     
     fun hasShizukuPermission(): Boolean {
         return try {
-            Shizuku.checkSelfPermission() == 0
+            Shizuku.pingBinder() && Shizuku.checkSelfPermission() == 0
         } catch (e: Exception) {
             false
         }
