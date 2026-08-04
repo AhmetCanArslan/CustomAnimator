@@ -22,6 +22,8 @@ object SettingsManager {
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
     private const val KEY_REMOVE_ADS_PROMPT_DISMISSED = "remove_ads_prompt_dismissed"
+    private const val KEY_LAST_TAB = "last_tab"
+    private const val KEY_LAST_SCREEN = "last_screen"
     
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -43,6 +45,22 @@ object SettingsManager {
         getPrefs(context).edit().putBoolean(KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM, skip).apply()
     }
     
+    fun getLastTab(context: Context): String? {
+        return getPrefs(context).getString(KEY_LAST_TAB, null)
+    }
+
+    fun setLastTab(context: Context, tab: String) {
+        getPrefs(context).edit().putString(KEY_LAST_TAB, tab).apply()
+    }
+
+    fun getLastScreen(context: Context): String? {
+        return getPrefs(context).getString(KEY_LAST_SCREEN, null)
+    }
+
+    fun setLastScreen(context: Context, screen: String) {
+        getPrefs(context).edit().putString(KEY_LAST_SCREEN, screen).apply()
+    }
+
     fun getSimpleMode(context: Context): Boolean {
         // Simple mode is default as requested
         return getPrefs(context).getBoolean("simple_mode", true)

@@ -215,7 +215,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
-    var currentScreen by rememberSaveable { mutableStateOf(HomeScreen.MAIN) }
+    var currentScreen by rememberSaveable {
+        mutableStateOf(
+            SettingsManager.getLastScreen(context)?.let { saved ->
+                HomeScreen.entries.firstOrNull { it.name == saved }
+            } ?: HomeScreen.MAIN
+        )
+    }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -230,7 +236,21 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         mutableStateOf(TextFieldValue(""))
     }
     var terminalHistory by rememberSaveable { mutableStateOf(emptyList<String>()) }
-    var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
+    var selectedTab by rememberSaveable {
+        mutableStateOf(
+            SettingsManager.getLastTab(context)?.let { saved ->
+                HomeTab.entries.firstOrNull { it.name == saved }
+            } ?: HomeTab.ANIMATION
+        )
+    }
+
+    LaunchedEffect(currentScreen) {
+        SettingsManager.setLastScreen(context, currentScreen.name)
+    }
+
+    LaunchedEffect(selectedTab) {
+        SettingsManager.setLastTab(context, selectedTab.name)
+    }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
