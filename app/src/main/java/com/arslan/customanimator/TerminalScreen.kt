@@ -2,6 +2,8 @@ package com.arslan.customanimator
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -31,19 +33,31 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.arslan.customanimator.data.TerminalPreset
 import com.arslan.customanimator.data.TerminalTileConfig
+import com.arslan.customanimator.utils.CommandSuggestions
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TerminalPresetManager
 import com.arslan.customanimator.utils.TerminalTileIcons
@@ -55,13 +69,20 @@ import kotlinx.coroutines.withContext
 @Composable
 fun TerminalScreenContent(
     hasShizukuPermission: Boolean,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
+    command: TextFieldValue,
+    onCommandChange: (TextFieldValue) -> Unit,
+    isActive: Boolean = true
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
     val presetManager = remember { TerminalPresetManager(context) }
 
-    var command by rememberSaveable { mutableStateOf("") }
+    LaunchedEffect(isActive) {
+        if (!isActive) focusManager.clearFocus(force = true)
+    }
+
     var output by rememberSaveable { mutableStateOf("") }
     var exitCode by rememberSaveable { mutableStateOf<Int?>(null) }
     var isRunning by rememberSaveable { mutableStateOf(false) }
@@ -104,7 +125,10 @@ fun TerminalScreenContent(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            },
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
@@ -126,16 +150,16 @@ fun TerminalScreenContent(
         }
 
         item {
-            OutlinedTextField(
+            CommandField(
                 value = command,
-                onValueChange = { command = it },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = onCommandChange,
                 enabled = hasShizukuPermission,
-                label = { Text(stringResource(R.string.terminal_command_hint)) },
-                textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
-                maxLines = 4,
+                isScreenActive = isActive,
                 trailingIcon = {
-                    IconButton(onClick = { run(command) }, enabled = canRun && command.isNotBlank()) {
+                    IconButton(
+                        onClick = { run(command.text) },
+                        enabled = canRun && command.text.isNotBlank()
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = stringResource(R.string.terminal_run)
@@ -157,7 +181,7 @@ fun TerminalScreenContent(
                     fontWeight = FontWeight.Bold
                 )
                 TextButton(
-                    onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.trim()) }
+                    onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.text.trim()) }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -253,6 +277,7 @@ fun TerminalScreenContent(
     editingPreset?.let { preset ->
         PresetDialog(
             preset = preset,
+            isScreenActive = isActive,
             onDismiss = { editingPreset = null },
             onConfirm = { name, cmd ->
                 if (preset.id.isEmpty()) {
@@ -311,6 +336,134 @@ fun TerminalScreenContent(
                 tilePreset = null
             }
         )
+    }
+}
+
+@Composable
+private fun CommandField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    enabled: Boolean,
+    isScreenActive: Boolean = true,
+    trailingIcon: @Composable (() -> Unit)? = null
+) {
+    val density = LocalDensity.current
+    val context = LocalContext.current
+    val cursor = value.selection.end
+
+    var installedPackages by remember { mutableStateOf(emptyList<String>()) }
+    LaunchedEffect(Unit) {
+        installedPackages = withContext(Dispatchers.IO) {
+            runCatching {
+                context.packageManager.getInstalledPackages(0).map { it.packageName }.sorted()
+            }.getOrDefault(emptyList())
+        }
+    }
+
+    val suggestions = remember(value.text, cursor, installedPackages) {
+        CommandSuggestions.suggest(value.text, cursor, installedPackages).take(60)
+    }
+
+    var focused by remember { mutableStateOf(false) }
+    var fieldSize by remember { mutableStateOf(IntSize.Zero) }
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(suggestions.firstOrNull()?.token) {
+        if (listState.firstVisibleItemIndex > 0) listState.scrollToItem(0)
+    }
+
+    val mounted = enabled && focused && isScreenActive
+    val fieldWidth = with(density) { fieldSize.width.toDp() }
+
+    Box(modifier = Modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged { fieldSize = it }
+                .onFocusChanged { focused = it.isFocused },
+            enabled = enabled,
+            label = { Text(stringResource(R.string.terminal_command_hint)) },
+            textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
+            maxLines = 4,
+            trailingIcon = trailingIcon
+        )
+
+        if (mounted) {
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(0, fieldSize.height),
+                onDismissRequest = { },
+                properties = PopupProperties(
+                    focusable = false,
+                    dismissOnClickOutside = false
+                )
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .width(fieldWidth)
+                        .heightIn(max = 360.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    tonalElevation = 3.dp,
+                    shadowElevation = 6.dp
+                ) {
+                    LazyColumn(state = listState) {
+                        items(suggestions, key = { it.token }) { suggestion ->
+                            SuggestionRow(
+                                suggestion = suggestion,
+                                onClick = {
+                                    val (text, newCursor) = CommandSuggestions.apply(
+                                        value.text,
+                                        cursor,
+                                        suggestion.token
+                                    )
+                                    onValueChange(
+                                        TextFieldValue(
+                                            text = text,
+                                            selection = TextRange(newCursor)
+                                        )
+                                        )
+                                    }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SuggestionRow(
+    suggestion: CommandSuggestions.Suggestion,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text = suggestion.token,
+            fontFamily = FontFamily.Monospace,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        if (suggestion.description.isNotEmpty()) {
+            Text(
+                text = suggestion.description,
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
     }
 }
 
@@ -401,11 +554,16 @@ private fun PresetCard(
 @Composable
 private fun PresetDialog(
     preset: TerminalPreset,
+    isScreenActive: Boolean,
     onDismiss: () -> Unit,
     onConfirm: (String, String) -> Unit
 ) {
     var name by remember { mutableStateOf(preset.name) }
-    var command by remember { mutableStateOf(preset.command) }
+    var command by remember {
+        mutableStateOf(
+            TextFieldValue(preset.command, TextRange(preset.command.length))
+        )
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -425,20 +583,18 @@ private fun PresetDialog(
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
-                OutlinedTextField(
+                CommandField(
                     value = command,
                     onValueChange = { command = it },
-                    label = { Text(stringResource(R.string.terminal_command_hint)) },
-                    textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
-                    maxLines = 4,
-                    modifier = Modifier.fillMaxWidth()
+                    enabled = true,
+                    isScreenActive = isScreenActive
                 )
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { onConfirm(name.trim(), command.trim()) },
-                enabled = name.isNotBlank() && command.isNotBlank()
+                onClick = { onConfirm(name.trim(), command.text.trim()) },
+                enabled = name.isNotBlank() && command.text.isNotBlank()
             ) {
                 Text(stringResource(R.string.save))
             }

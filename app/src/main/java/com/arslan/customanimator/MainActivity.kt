@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.TextFieldValue
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
@@ -225,6 +226,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var terminalCommand by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
@@ -621,7 +625,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         } else if (targetTab == HomeTab.TERMINAL) {
         TerminalScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
-            listState = terminalTabListState
+            listState = terminalTabListState,
+            command = terminalCommand,
+            onCommandChange = { terminalCommand = it },
+            isActive = targetScreen == currentScreen && targetTab == selectedTab
         )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
