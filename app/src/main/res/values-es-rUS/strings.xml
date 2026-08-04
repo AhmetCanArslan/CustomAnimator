@@ -540,4 +540,13 @@ Duración del Animador: %3$.2f</string>
     <string name="carrier_name_unsupported">Esta función necesita Android 11 o una versión más reciente.</string>
     <string name="carrier_name_needs_phone_permission">Leer las ranuras SIM requiere el permiso de teléfono.</string>
     <string name="carrier_name_note">El nombre se aplica como un reemplazo de la configuración del operador y se mantiene tras reiniciar. Usa Restablecer para recuperar el nombre original.</string>
+
+    <string name="contact_developer">Contactar al desarrollador</string>
+    <string name="contact_developer_desc">Escríbenos con tus opiniones, sugerencias y quejas</string>
+    <string name="contact_developer_subject">Custom Animator — Comentarios</string>
+    <string name="contact_developer_no_app">No se encontró ninguna app de correo</string>
+    <string name="onboarding_disclaimer_title">Úsalo bajo tu propio riesgo</string>
+    <string name="onboarding_disclaimer_body">Esta app cambia ajustes del sistema. Según tu dispositivo y tu ROM, eso puede afectar la batería, las notificaciones, las alarmas, las apps en segundo plano y la estabilidad.</string>
+    <string name="onboarding_disclaimer_highlight">El desarrollador no acepta ninguna responsabilidad por pérdida de datos, fallos o daños que puedan derivarse del uso de esta app. Todo lo que cambies aquí, lo cambias bajo tu propio riesgo.</string>
+    <string name="onboarding_disclaimer_consent">He leído y acepto lo anterior; el desarrollador no acepta ninguna responsabilidad.</string>
 </resources>

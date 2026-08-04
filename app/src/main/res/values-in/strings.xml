@@ -540,4 +540,13 @@ Durasi Animator: %3$.2f</string>
     <string name="carrier_name_unsupported">Fitur ini memerlukan Android 11 atau yang lebih baru.</string>
     <string name="carrier_name_needs_phone_permission">Membaca slot SIM memerlukan izin telepon.</string>
     <string name="carrier_name_note">Nama diterapkan sebagai penggantian konfigurasi operator dan bertahan setelah mulai ulang. Gunakan Setel Ulang untuk mengembalikan nama asli.</string>
+
+    <string name="contact_developer">Hubungi Pengembang</string>
+    <string name="contact_developer_desc">Silakan hubungi kami untuk masukan, saran, dan keluhan</string>
+    <string name="contact_developer_subject">Custom Animator — Masukan</string>
+    <string name="contact_developer_no_app">Aplikasi email tidak ditemukan</string>
+    <string name="onboarding_disclaimer_title">Gunakan dengan Risiko Sendiri</string>
+    <string name="onboarding_disclaimer_body">Aplikasi ini mengubah pengaturan tingkat sistem. Tergantung perangkat dan ROM Anda, hal itu dapat memengaruhi daya tahan baterai, notifikasi, alarm, aplikasi latar belakang, dan stabilitas.</string>
+    <string name="onboarding_disclaimer_highlight">Pengembang tidak bertanggung jawab atas kehilangan data, kerusakan, atau gangguan apa pun yang mungkin timbul dari penggunaan aplikasi ini. Semua perubahan yang Anda lakukan di sini menjadi risiko Anda sendiri.</string>
+    <string name="onboarding_disclaimer_consent">Saya telah membaca dan menerima hal di atas; pengembang tidak bertanggung jawab.</string>
 </resources>

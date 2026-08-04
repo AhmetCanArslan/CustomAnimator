@@ -540,4 +540,13 @@
     <string name="carrier_name_unsupported">Для этой функции нужен Android 11 или новее.</string>
     <string name="carrier_name_needs_phone_permission">Для чтения SIM-слотов требуется разрешение на телефон.</string>
     <string name="carrier_name_note">Название применяется как переопределение конфигурации оператора и сохраняется после перезагрузки. Нажмите «Сброс», чтобы вернуть исходное название.</string>
+
+    <string name="contact_developer">Связаться с разработчиком</string>
+    <string name="contact_developer_desc">Пишите нам с отзывами, предложениями и жалобами</string>
+    <string name="contact_developer_subject">Custom Animator — Обратная связь</string>
+    <string name="contact_developer_no_app">Почтовое приложение не найдено</string>
+    <string name="onboarding_disclaimer_title">Используйте на свой риск</string>
+    <string name="onboarding_disclaimer_body">Приложение изменяет системные настройки. В зависимости от устройства и прошивки это может повлиять на время работы батареи, уведомления, будильники, фоновые приложения и стабильность.</string>
+    <string name="onboarding_disclaimer_highlight">Разработчик не несёт никакой ответственности за потерю данных, сбои или ущерб, которые могут возникнуть при использовании этого приложения. Все изменения вы вносите на свой страх и риск.</string>
+    <string name="onboarding_disclaimer_consent">Я прочитал(а) и принимаю изложенное выше; разработчик не несёт ответственности.</string>
 </resources>

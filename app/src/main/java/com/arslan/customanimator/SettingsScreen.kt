@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Block
@@ -46,6 +47,8 @@ import com.arslan.customanimator.utils.SystemResetManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+private const val DEVELOPER_EMAIL = "ahmetcanarslandev@gmail.com"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -239,6 +242,24 @@ fun SettingsScreen(
 
             // About section
             SettingsSection(title = stringResource(R.string.settings_about)) {
+                val contactSubject = stringResource(R.string.contact_developer_subject)
+                ActionSettingRow(
+                    icon = Icons.Filled.Email,
+                    title = stringResource(R.string.contact_developer),
+                    description = stringResource(R.string.contact_developer_desc),
+                    onClick = {
+                        val intent = Intent(Intent.ACTION_SENDTO).apply {
+                            data = Uri.parse("mailto:${DEVELOPER_EMAIL}")
+                            putExtra(Intent.EXTRA_SUBJECT, contactSubject)
+                        }
+                        try {
+                            context.startActivity(intent)
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            toast(R.string.contact_developer_no_app)
+                        }
+                    }
+                )
+                SettingDivider()
                 if (isShizukuAvailable) {
                     ActionSettingRow(
                         icon = Icons.Filled.Info,

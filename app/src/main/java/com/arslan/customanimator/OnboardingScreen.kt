@@ -5,20 +5,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,7 +33,8 @@ private data class OnboardingPage(
     val icon: ImageVector,
     val titleRes: Int,
     val bodyRes: Int,
-    val highlightRes: Int?
+    val highlightRes: Int?,
+    val requiresConsent: Boolean = false
 )
 
 private val onboardingPages = listOf(
@@ -56,6 +61,13 @@ private val onboardingPages = listOf(
         titleRes = R.string.onboarding_experimental_title,
         bodyRes = R.string.onboarding_experimental_body,
         highlightRes = R.string.onboarding_experimental_highlight
+    ),
+    OnboardingPage(
+        icon = Icons.Filled.Gavel,
+        titleRes = R.string.onboarding_disclaimer_title,
+        bodyRes = R.string.onboarding_disclaimer_body,
+        highlightRes = R.string.onboarding_disclaimer_highlight,
+        requiresConsent = true
     )
 )
 
@@ -64,6 +76,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
     val scope = rememberCoroutineScope()
     val isLastPage = pagerState.currentPage == onboardingPages.lastIndex
+    var consentAccepted by rememberSaveable { mutableStateOf(false) }
+    val canFinish = consentAccepted
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -81,7 +95,9 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
-                    onClick = onFinished,
+                    onClick = {
+                        scope.launch { pagerState.animateScrollToPage(onboardingPages.lastIndex) }
+                    },
                     enabled = !isLastPage
                 ) {
                     Text(
@@ -97,7 +113,11 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                     .weight(1f)
                     .fillMaxWidth()
             ) { page ->
-                OnboardingPageContent(onboardingPages[page])
+                OnboardingPageContent(
+                    page = onboardingPages[page],
+                    consentAccepted = consentAccepted,
+                    onConsentChange = { consentAccepted = it }
+                )
             }
 
             Row(
@@ -153,6 +173,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                             scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
                         }
                     },
+                    enabled = !isLastPage || canFinish,
                     modifier = Modifier
                         .weight(if (pagerState.currentPage > 0) 1f else 2f)
                         .heightIn(min = 52.dp)
@@ -172,7 +193,11 @@ fun OnboardingScreen(onFinished: () -> Unit) {
 }
 
 @Composable
-private fun OnboardingPageContent(page: OnboardingPage) {
+private fun OnboardingPageContent(
+    page: OnboardingPage,
+    consentAccepted: Boolean,
+    onConsentChange: (Boolean) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -230,6 +255,34 @@ private fun OnboardingPageContent(page: OnboardingPage) {
                     fontSize = 13.sp,
                     lineHeight = 19.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        if (page.requiresConsent) {
+            Spacer(Modifier.height(18.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .toggleable(
+                        value = consentAccepted,
+                        onValueChange = onConsentChange,
+                        role = Role.Checkbox
+                    )
+                    .padding(end = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = consentAccepted,
+                    onCheckedChange = null
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text = stringResource(R.string.onboarding_disclaimer_consent),
+                    fontSize = 13.sp,
+                    lineHeight = 19.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

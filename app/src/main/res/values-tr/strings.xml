@@ -540,4 +540,13 @@ Animatör Süresi: %3$.2f</string>
     <string name="carrier_name_unsupported">Bu özellik Android 11 veya daha yenisini gerektirir.</string>
     <string name="carrier_name_needs_phone_permission">SIM yuvalarınızı okumak için telefon izni gerekir.</string>
     <string name="carrier_name_note">Ad, operatör yapılandırma geçersiz kılması olarak uygulanır ve yeniden başlatmalarda korunur. Özgün adı geri getirmek için Sıfırla\'yı kullanın.</string>
+
+    <string name="contact_developer">Geliştiriciye Ulaşın</string>
+    <string name="contact_developer_desc">Görüş, öneri ve şikayetleriniz için lütfen bize ulaşın</string>
+    <string name="contact_developer_subject">Custom Animator — Geri Bildirim</string>
+    <string name="contact_developer_no_app">E-posta uygulaması bulunamadı</string>
+    <string name="onboarding_disclaimer_title">Sorumluluk Size Ait</string>
+    <string name="onboarding_disclaimer_body">Bu uygulama sistem düzeyinde ayarları değiştirir. Cihazınıza ve ROM\'unuza bağlı olarak bu; pil ömrünü, bildirimleri, alarmları, arka plan uygulamalarını ve kararlılığı etkileyebilir.</string>
+    <string name="onboarding_disclaimer_highlight">Geliştirici, bu uygulamanın kullanımından doğabilecek veri kaybı, arıza veya zarardan hiçbir sorumluluk kabul etmez. Burada yaptığınız tüm değişiklikler kendi sorumluluğunuzdadır.</string>
+    <string name="onboarding_disclaimer_consent">Yukarıdakileri okudum ve kabul ediyorum; geliştirici hiçbir sorumluluk kabul etmez.</string>
 </resources>

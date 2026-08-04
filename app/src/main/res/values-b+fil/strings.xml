@@ -540,4 +540,13 @@ Tagal ng Animator: %3$.2f</string>
     <string name="carrier_name_unsupported">Kailangan ng feature na ito ang Android 11 o mas bago.</string>
     <string name="carrier_name_needs_phone_permission">Kailangan ng pahintulot sa telepono para mabasa ang mga SIM slot.</string>
     <string name="carrier_name_note">Inilalapat ang pangalan bilang carrier config override at nananatili pagkatapos mag-restart. Gamitin ang I-reset para ibalik ang orihinal na pangalan.</string>
+
+    <string name="contact_developer">Makipag-ugnayan sa Developer</string>
+    <string name="contact_developer_desc">Mangyaring makipag-ugnayan para sa inyong puna, mungkahi, at reklamo</string>
+    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_no_app">Walang nakitang email app</string>
+    <string name="onboarding_disclaimer_title">Gamitin sa Sarili Mong Panganib</string>
+    <string name="onboarding_disclaimer_body">Binabago ng app na ito ang mga setting sa antas ng sistema. Depende sa iyong device at ROM, maaari nitong maapektuhan ang baterya, mga notification, alarma, background apps, at katatagan.</string>
+    <string name="onboarding_disclaimer_highlight">Walang anumang pananagutan ang developer sa pagkawala ng data, depekto, o pinsalang maaaring idulot ng paggamit ng app na ito. Lahat ng babaguhin mo rito ay nasa iyong sariling panganib.</string>
+    <string name="onboarding_disclaimer_consent">Nabasa at tinatanggap ko ang nasa itaas; walang pananagutan ang developer.</string>
 </resources>

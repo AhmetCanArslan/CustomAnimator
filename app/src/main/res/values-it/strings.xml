@@ -560,4 +560,13 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="carrier_name_unsupported">Questa funzione richiede Android 11 o versioni successive.</string>
     <string name="carrier_name_needs_phone_permission">Per leggere gli slot SIM serve l\'autorizzazione telefono.</string>
     <string name="carrier_name_note">Il nome viene applicato come override della configurazione operatore e resta dopo il riavvio. Usa Reimposta per ripristinare il nome originale.</string>
+
+    <string name="contact_developer">Contatta lo sviluppatore</string>
+    <string name="contact_developer_desc">Scrivici per opinioni, suggerimenti e reclami</string>
+    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_no_app">Nessuna app di posta trovata</string>
+    <string name="onboarding_disclaimer_title">Usa a tuo rischio</string>
+    <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
+    <string name="onboarding_disclaimer_highlight">Lo sviluppatore non si assume alcuna responsabilità per perdite di dati, malfunzionamenti o danni derivanti dall\'uso di questa app. Tutto ciò che modifichi qui lo fai a tuo rischio.</string>
+    <string name="onboarding_disclaimer_consent">Ho letto e accetto quanto sopra; lo sviluppatore non si assume alcuna responsabilità.</string>
 </resources>

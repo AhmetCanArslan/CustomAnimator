@@ -540,4 +540,13 @@ Duração do Animador: %3$.2f</string>
     <string name="carrier_name_unsupported">Este recurso precisa do Android 11 ou mais recente.</string>
     <string name="carrier_name_needs_phone_permission">Ler os slots do chip exige a permissão de telefone.</string>
     <string name="carrier_name_note">O nome é aplicado como substituição da configuração da operadora e continua após reiniciar. Use Redefinir para restaurar o nome original.</string>
+
+    <string name="contact_developer">Falar com o desenvolvedor</string>
+    <string name="contact_developer_desc">Fale conosco com suas opiniões, sugestões e reclamações</string>
+    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_no_app">Nenhum app de e-mail encontrado</string>
+    <string name="onboarding_disclaimer_title">Use por sua conta e risco</string>
+    <string name="onboarding_disclaimer_body">Este app altera configurações do sistema. Dependendo do seu aparelho e da sua ROM, isso pode afetar a bateria, as notificações, os alarmes, os apps em segundo plano e a estabilidade.</string>
+    <string name="onboarding_disclaimer_highlight">O desenvolvedor não assume nenhuma responsabilidade por perda de dados, mau funcionamento ou danos decorrentes do uso deste app. Tudo o que você alterar aqui é por sua conta e risco.</string>
+    <string name="onboarding_disclaimer_consent">Li e aceito o texto acima; o desenvolvedor não assume nenhuma responsabilidade.</string>
 </resources>
