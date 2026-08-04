@@ -15,12 +15,26 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.BorderAll
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.FormatTextdirectionRToL
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.LayersClear
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.RestartAlt
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
+import androidx.compose.material.icons.filled.SensorsOff
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.Usb
+import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.PlaylistRemove
@@ -275,6 +289,7 @@ fun DeveloperScreenContent(
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
                     Column {
                         ToggleRow(
+                            icon = Icons.Filled.Usb,
                             title = stringResource(R.string.usb_debugging),
                             description = stringResource(R.string.usb_debugging_desc),
                             checked = adbEnabled,
@@ -290,6 +305,7 @@ fun DeveloperScreenContent(
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                             ToggleRow(
+                                icon = Icons.Filled.WifiTethering,
                                 title = stringResource(R.string.wireless_debugging),
                                 description = stringResource(R.string.wireless_debugging_desc),
                                 checked = adbWifiEnabled,
@@ -305,6 +321,7 @@ fun DeveloperScreenContent(
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.LayersClear,
                             title = stringResource(R.string.dont_keep_activities),
                             description = stringResource(R.string.dont_keep_activities_desc),
                             checked = dontKeepActivities,
@@ -319,6 +336,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.Memory,
                             title = stringResource(R.string.limit_background_processes),
                             description = stringResource(R.string.limit_background_processes_desc),
                             checked = limitBackgroundProcesses,
@@ -333,6 +351,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.SensorsOff,
                             title = stringResource(R.string.sensors_off),
                             description = stringResource(R.string.sensors_off_desc),
                             checked = sensorsOff,
@@ -347,6 +366,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.TouchApp,
                             title = stringResource(R.string.show_taps),
                             description = stringResource(R.string.show_taps_desc),
                             checked = showTouches,
@@ -361,6 +381,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.MyLocation,
                             title = stringResource(R.string.pointer_location),
                             description = stringResource(R.string.pointer_location_desc),
                             checked = pointerLocation,
@@ -375,6 +396,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.BorderAll,
                             title = stringResource(R.string.show_layout_bounds),
                             description = stringResource(R.string.show_layout_bounds_desc),
                             checked = layoutBounds,
@@ -389,6 +411,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.BarChart,
                             title = stringResource(R.string.gpu_profiling),
                             description = stringResource(R.string.gpu_profiling_desc),
                             checked = gpuProfiling,
@@ -403,6 +426,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.FormatTextdirectionRToL,
                             title = stringResource(R.string.force_rtl),
                             description = stringResource(R.string.force_rtl_desc),
                             checked = forceRtl,
@@ -512,6 +536,7 @@ fun DeveloperScreenContent(
                 Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
                     Column {
                         ToggleRow(
+                            icon = Icons.Filled.Keyboard,
                             title = stringResource(R.string.disable_keyboard_animation),
                             description = stringResource(R.string.disable_keyboard_animation_desc),
                             checked = fancyImeDisabled,
@@ -526,6 +551,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.Schedule,
                             title = stringResource(R.string.show_clock_seconds),
                             description = stringResource(R.string.show_clock_seconds_desc),
                             checked = clockSecondsEnabled,
@@ -545,6 +571,7 @@ fun DeveloperScreenContent(
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.Speed,
                             title = stringResource(R.string.fps_meter),
                             description = stringResource(R.string.fps_meter_desc),
                             checked = fpsMeterEnabled,
@@ -622,6 +649,7 @@ fun DeveloperScreenContent(
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
+                            icon = Icons.Filled.ScreenLockRotation,
                             title = stringResource(R.string.lock_screen_rotation),
                             description = stringResource(R.string.lock_screen_rotation_desc),
                             checked = isRotationLocked,
@@ -794,6 +822,7 @@ private fun DevSectionTitle(title: String) {
 
 @Composable
 private fun ToggleRow(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
     description: String,
     checked: Boolean,
@@ -807,6 +836,20 @@ private fun ToggleRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Box(
+            modifier = Modifier
+                .size(36.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.primaryContainer),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.size(20.dp)
+            )
+        }
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
             Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
