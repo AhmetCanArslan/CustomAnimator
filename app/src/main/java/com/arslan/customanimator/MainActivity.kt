@@ -229,6 +229,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var terminalCommand by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(""))
     }
+    var terminalHistory by rememberSaveable { mutableStateOf(emptyList<String>()) }
     var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
@@ -628,6 +629,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             listState = terminalTabListState,
             command = terminalCommand,
             onCommandChange = { terminalCommand = it },
+            history = terminalHistory,
+            onHistoryChange = { terminalHistory = it },
             isActive = targetScreen == currentScreen && targetTab == selectedTab
         )
         } else if (targetTab == HomeTab.WIDTH) {

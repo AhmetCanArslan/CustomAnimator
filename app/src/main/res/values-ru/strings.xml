@@ -201,6 +201,8 @@
     <string name="terminal_needs_shizuku">Для терминала требуется подключение Shizuku.</string>
     <string name="terminal_command_hint">Команда</string>
     <string name="terminal_run">Выполнить</string>
+    <string name="terminal_clear_command">Очистить команду</string>
+    <string name="terminal_history">История команд</string>
     <string name="terminal_presets">Сохранённые команды</string>
     <string name="terminal_no_presets">Сохранённых команд пока нет. Введите команду и нажмите «Сохранить».</string>
     <string name="terminal_save_current">Сохранить</string>

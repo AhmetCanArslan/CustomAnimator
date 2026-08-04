@@ -201,6 +201,8 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_needs_shizuku">Terminal memerlukan Shizuku yang terhubung.</string>
     <string name="terminal_command_hint">Perintah</string>
     <string name="terminal_run">Jalankan</string>
+    <string name="terminal_clear_command">Hapus perintah</string>
+    <string name="terminal_history">Riwayat perintah</string>
     <string name="terminal_presets">Prasetel</string>
     <string name="terminal_no_presets">Belum ada prasetel tersimpan. Ketik perintah lalu ketuk Simpan.</string>
     <string name="terminal_save_current">Simpan</string>

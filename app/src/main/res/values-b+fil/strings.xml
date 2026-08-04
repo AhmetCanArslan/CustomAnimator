@@ -201,6 +201,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="terminal_needs_shizuku">Kailangan ng terminal na nakakonekta ang Shizuku.</string>
     <string name="terminal_command_hint">Utos</string>
     <string name="terminal_run">Patakbuhin</string>
+    <string name="terminal_clear_command">I-clear ang utos</string>
+    <string name="terminal_history">History ng mga utos</string>
     <string name="terminal_presets">Mga Preset</string>
     <string name="terminal_no_presets">Wala pang naka-save na preset. Mag-type ng command at i-tap ang I-save.</string>
     <string name="terminal_save_current">I-save</string>

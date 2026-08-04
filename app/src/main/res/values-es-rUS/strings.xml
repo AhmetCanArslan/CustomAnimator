@@ -201,6 +201,8 @@ Duración del Animador: %3$.2f</string>
     <string name="terminal_needs_shizuku">La terminal requiere que Shizuku esté conectado.</string>
     <string name="terminal_command_hint">Comando</string>
     <string name="terminal_run">Ejecutar</string>
+    <string name="terminal_clear_command">Borrar comando</string>
+    <string name="terminal_history">Historial de comandos</string>
     <string name="terminal_presets">Preajustes</string>
     <string name="terminal_no_presets">Aún no hay preajustes guardados. Escribe un comando y toca Guardar.</string>
     <string name="terminal_save_current">Guardar</string>

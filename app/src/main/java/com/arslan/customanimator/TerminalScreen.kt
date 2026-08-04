@@ -21,8 +21,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
@@ -33,6 +35,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -72,6 +76,8 @@ fun TerminalScreenContent(
     listState: LazyListState = rememberLazyListState(),
     command: TextFieldValue,
     onCommandChange: (TextFieldValue) -> Unit,
+    history: List<String>,
+    onHistoryChange: (List<String>) -> Unit,
     isActive: Boolean = true
 ) {
     val context = LocalContext.current
@@ -103,6 +109,7 @@ fun TerminalScreenContent(
     val run: (String) -> Unit = { raw ->
         val trimmed = raw.trim()
         if (trimmed.isNotEmpty() && canRun) {
+            onHistoryChange((listOf(trimmed) + history.filterNot { it == trimmed }).take(50))
             isRunning = true
             exitCode = null
             output = "$ $trimmed"
@@ -155,9 +162,23 @@ fun TerminalScreenContent(
                 onValueChange = onCommandChange,
                 enabled = hasShizukuPermission,
                 isScreenActive = isActive,
+                history = history,
+                onHistorySelected = { selected ->
+                    onCommandChange(
+                        TextFieldValue(
+                            text = selected,
+                            selection = TextRange(selected.length)
+                        )
+                    )
+                    focusManager.clearFocus()
+                    run(selected)
+                },
                 trailingIcon = {
                     IconButton(
-                        onClick = { run(command.text) },
+                        onClick = {
+                            focusManager.clearFocus()
+                            run(command.text)
+                        },
                         enabled = canRun && command.text.isNotBlank()
                     ) {
                         Icon(
@@ -345,6 +366,8 @@ private fun CommandField(
     onValueChange: (TextFieldValue) -> Unit,
     enabled: Boolean,
     isScreenActive: Boolean = true,
+    history: List<String> = emptyList(),
+    onHistorySelected: (String) -> Unit = {},
     trailingIcon: @Composable (() -> Unit)? = null
 ) {
     val density = LocalDensity.current
@@ -365,10 +388,15 @@ private fun CommandField(
     }
 
     var focused by remember { mutableStateOf(false) }
+    var showHistory by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
     var fieldSize by remember { mutableStateOf(IntSize.Zero) }
     val listState = rememberLazyListState()
 
-    LaunchedEffect(suggestions.firstOrNull()?.token) {
+    LaunchedEffect(value.text, cursor) {
+        showHistory = false
+    }
+    LaunchedEffect(showHistory, suggestions.firstOrNull()?.token, history.firstOrNull()) {
         if (listState.firstVisibleItemIndex > 0) listState.scrollToItem(0)
     }
 
@@ -382,12 +410,39 @@ private fun CommandField(
             modifier = Modifier
                 .fillMaxWidth()
                 .onSizeChanged { fieldSize = it }
-                .onFocusChanged { focused = it.isFocused },
+                .focusRequester(focusRequester)
+                .onFocusChanged {
+                    if (it.isFocused && !focused) showHistory = false
+                    focused = it.isFocused
+                },
             enabled = enabled,
             label = { Text(stringResource(R.string.terminal_command_hint)) },
             textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
             maxLines = 4,
-            trailingIcon = trailingIcon
+            trailingIcon = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (history.isNotEmpty()) {
+                        IconButton(onClick = {
+                            focusRequester.requestFocus()
+                            showHistory = !showHistory
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = stringResource(R.string.terminal_history)
+                            )
+                        }
+                    }
+                    if (value.text.isNotEmpty()) {
+                        IconButton(onClick = { onValueChange(TextFieldValue("")) }) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.terminal_clear_command)
+                            )
+                        }
+                    }
+                    trailingIcon?.invoke()
+                }
+            }
         )
 
         if (mounted) {
@@ -410,23 +465,32 @@ private fun CommandField(
                     shadowElevation = 6.dp
                 ) {
                     LazyColumn(state = listState) {
-                        items(suggestions, key = { it.token }) { suggestion ->
-                            SuggestionRow(
-                                suggestion = suggestion,
-                                onClick = {
-                                    val (text, newCursor) = CommandSuggestions.apply(
-                                        value.text,
-                                        cursor,
-                                        suggestion.token
-                                    )
-                                    onValueChange(
-                                        TextFieldValue(
-                                            text = text,
-                                            selection = TextRange(newCursor)
+                        if (showHistory && history.isNotEmpty()) {
+                            items(history, key = { it }) { command ->
+                                HistoryRow(
+                                    command = command,
+                                    onClick = { onHistorySelected(command) }
+                                )
+                            }
+                        } else {
+                            items(suggestions, key = { it.token }) { suggestion ->
+                                SuggestionRow(
+                                    suggestion = suggestion,
+                                    onClick = {
+                                        val (text, newCursor) = CommandSuggestions.apply(
+                                            value.text,
+                                            cursor,
+                                            suggestion.token
                                         )
+                                        onValueChange(
+                                            TextFieldValue(
+                                                text = text,
+                                                selection = TextRange(newCursor)
+                                            )
                                         )
                                     }
-                            )
+                                )
+                            }
                         }
                     }
                 }
@@ -465,6 +529,24 @@ private fun SuggestionRow(
             )
         }
     }
+}
+
+@Composable
+private fun HistoryRow(
+    command: String,
+    onClick: () -> Unit
+) {
+    Text(
+        text = command,
+        fontFamily = FontFamily.Monospace,
+        fontSize = 14.sp,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    )
 }
 
 @Composable

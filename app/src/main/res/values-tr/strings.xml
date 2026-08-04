@@ -201,6 +201,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="terminal_needs_shizuku">Terminal için Shizuku bağlantısı gerekir.</string>
     <string name="terminal_command_hint">Komut</string>
     <string name="terminal_run">Çalıştır</string>
+    <string name="terminal_clear_command">Komutu temizle</string>
+    <string name="terminal_history">Komut geçmişi</string>
     <string name="terminal_presets">Hazır Komutlar</string>
     <string name="terminal_no_presets">Henüz kayıtlı komut yok. Bir komut yazıp Kaydet düğmesine dokunun.</string>
     <string name="terminal_save_current">Kaydet</string>
