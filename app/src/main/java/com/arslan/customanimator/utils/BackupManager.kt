@@ -5,18 +5,10 @@ import android.net.Uri
 import org.json.JSONArray
 import org.json.JSONObject
 
-/**
- * Exports/imports every preference file the app owns as a single JSON document, so a user can
- * recover their presets and app lists after a reinstall or a bad experiment.
- *
- * Only app-local state is covered — system settings (animation scales, density, rotation) are not
- * part of a backup; those are reverted through [SystemResetManager].
- */
 object BackupManager {
 
     private const val FORMAT_VERSION = 1
 
-    // shizuku_prefs is deliberately excluded: it tracks per-install permission state.
     private val PREFS_FILES = listOf(
         "custom_animator_prefs",
         "animator_presets",

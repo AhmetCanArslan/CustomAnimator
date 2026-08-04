@@ -41,7 +41,6 @@ fun BatteryScreenContent(
 
     var refreshToken by remember { mutableIntStateOf(0) }
 
-    // Every field is re-read whenever something is written so the UI never drifts from the system.
     val lowPower = remember(refreshToken) { mgr.getGlobalInt(resolver, mgr.KEY_LOW_POWER, 0) == 1 }
     val triggerLevel = remember(refreshToken) { mgr.getGlobalInt(resolver, mgr.KEY_LOW_POWER_TRIGGER, 0) }
     val sticky = remember(refreshToken) { mgr.getGlobalInt(resolver, mgr.KEY_LOW_POWER_STICKY, 0) == 1 }
@@ -101,8 +100,6 @@ fun BatteryScreenContent(
 
     var advancedOpen by remember { mutableStateOf(false) }
 
-    // The battery-saver policy keys were renamed in Android 10; the older names this device would
-    // need are silently ignored by the current parser, so the section would do nothing.
     val policySupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     fun afterWrite(success: Boolean) {
@@ -217,8 +214,6 @@ fun BatteryScreenContent(
                         ),
                         enabled = canWrite
                     ) { mode ->
-                        // Keep the shell-side adaptive saver in step with the readable setting so
-                        // the two can never disagree.
                         if (hasShizukuPermission) mgr.setAdaptivePowerSaver(mode == 1)
                         writeGlobal(mgr.KEY_AUTOMATIC_POWER_SAVE_MODE, mode.toString())
                     }
@@ -284,7 +279,6 @@ fun BatteryScreenContent(
                 preset.constants.isNotEmpty() &&
                     preset.constants.all { policyValues[it.key] == it.value }
             } else {
-                // Nothing readable: either genuinely unset, or the key is not app-readable.
                 if (preset.constants.isEmpty()) appliedSaver == null || appliedSaver == preset.id
                 else appliedSaver == preset.id
             }

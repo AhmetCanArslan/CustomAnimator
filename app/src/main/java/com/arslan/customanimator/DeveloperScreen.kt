@@ -108,16 +108,12 @@ fun DeveloperScreenContent(
     var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
     var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
 
-    // Tracks which quick action is running so only that row shows its busy state.
     var runningAction by remember { mutableStateOf<QuickAction?>(null) }
     val isBusy = runningAction != null
     var showClearCachesConfirm by remember { mutableStateOf(false) }
     var showCloseAppsConfirm by remember { mutableStateOf(false) }
     var showCompileAllConfirm by remember { mutableStateOf(false) }
 
-    // Re-read the real system values on resume: they can change behind this screen's back
-    // (Revert Everything, system Settings, another app), and a stale switch would write the
-    // wrong value on the next tap.
     val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
@@ -158,7 +154,7 @@ fun DeveloperScreenContent(
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { /* proceed regardless; service still runs without a visible notification if denied */ }
+    ) { }
 
     val requestNotificationsIfNeeded: () -> Unit = {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
@@ -200,10 +196,6 @@ fun DeveloperScreenContent(
         CompileBoosterService.start(context)
     }
 
-    /**
-     * Flips a toggle optimistically and writes the setting off the main thread — every write goes
-     * through a blocking Shizuku binder call, which stalls the UI (and can ANR) if run inline.
-     */
     val applyToggle: (Boolean, (Boolean) -> Unit, () -> Boolean) -> Unit = { newValue, setState, action ->
         setState(newValue)
         coroutineScope.launch {
@@ -565,8 +557,6 @@ fun DeveloperScreenContent(
                             }
                         )
                         if (DeveloperOptionsManager.isOneUi()) {
-                            // One UI keeps its own clock-seconds flag and some builds ignore both
-                            // keys entirely, so warn instead of letting the toggle look broken.
                             InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note))
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
@@ -624,8 +614,6 @@ fun DeveloperScreenContent(
                             onClick = onNavigateToCarrierName
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        // One UI (and some other skins) only pick up the clock-seconds flag when
-                        // SystemUI restarts.
                         ActionRow(
                             icon = Icons.Filled.RestartAlt,
                             title = stringResource(R.string.restart_system_ui),
@@ -683,8 +671,6 @@ fun DeveloperScreenContent(
                             )
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        // Escape hatch: some devices keep honouring the rotation override after the
-                        // toggle is turned off, leaving the screen stuck in one orientation.
                         ActionRow(
                             icon = Icons.Filled.ScreenRotation,
                             title = stringResource(R.string.reset_rotation),
@@ -1059,7 +1045,6 @@ private fun CompileBoosterRow(
                 Text(stringResource(R.string.cancel), fontSize = 12.sp, maxLines = 1)
             }
         } else {
-            // maxLines keeps a long translated label from wrapping and stretching the whole row.
             Button(onClick = onClick, enabled = enabled) {
                 Text(stringResource(R.string.compile_all_apps_short), fontSize = 12.sp, maxLines = 1)
             }

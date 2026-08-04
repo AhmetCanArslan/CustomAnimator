@@ -4,10 +4,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
 
-/**
- * Keeps the screen awake by parking the display timeout at its maximum, remembering whatever the
- * user had configured so the exact previous value comes back when caffeine is switched off.
- */
 object CaffeineManager {
 
     private const val PREFS_NAME = "caffeine_prefs"
@@ -34,12 +30,9 @@ object CaffeineManager {
     fun canApply(context: Context): Boolean =
         ShizukuHelper.hasShizukuPermission() || ShizukuHelper.hasWriteSecureSettingsPermission(context)
 
-    /** Turns caffeine on or off, returning false when the write did not go through. */
     fun setActive(context: Context, contentResolver: ContentResolver, active: Boolean): Boolean {
         if (active) {
             val current = getScreenTimeout(contentResolver)
-            // Never record the infinite value as the "previous" one: that would strand the user
-            // with a screen that no longer sleeps after toggling caffeine off.
             if (current != INFINITE_TIMEOUT_MS) {
                 prefs(context).edit().putInt(KEY_PREVIOUS_TIMEOUT, current).apply()
             }

@@ -22,9 +22,6 @@ data class ShellResult(val exitCode: Int, val output: String) {
 object ShizukuHelper {
     private const val TAG = "ShizukuHelper"
 
-    // Keep the log bounded so commands like logcat or dumpsys can't OOM the UI. The screen keeps
-    // output in rememberSaveable, so this also has to stay well under the ~1 MB binder limit that
-    // savedInstanceState is parceled through on rotation.
     private const val MAX_OUTPUT_LINES = 2000
     private const val MAX_OUTPUT_CHARS = 64_000
     
@@ -149,11 +146,6 @@ object ShizukuHelper {
         }
     }
 
-    /**
-     * Runs a command and returns its exit code together with stdout + stderr merged.
-     *
-     * Blocking — always call from [kotlinx.coroutines.Dispatchers.IO].
-     */
     fun executeShellCommandWithOutput(command: Array<String>): ShellResult {
         return try {
             if (!hasShizukuPermission()) {
@@ -174,8 +166,6 @@ object ShizukuHelper {
             val stdout = readStreamMethod(process, "getInputStream")
             val stderr = readStreamMethod(process, "getErrorStream")
 
-            // Both pipes must be drained concurrently: draining stdout to EOF while stderr fills
-            // its buffer deadlocks the remote process on output-heavy commands like dumpsys.
             val lines = mutableListOf<String>()
             val stdoutThread = drainInto(stdout, lines)
             val stderrThread = drainInto(stderr, lines)
@@ -213,7 +203,6 @@ object ShizukuHelper {
                         val line = reader.readLine() ?: break
                         synchronized(sink) {
                             sink.add(line)
-                            // Drop from the top so a runaway command keeps only its tail.
                             if (sink.size > MAX_OUTPUT_LINES) sink.removeAt(0)
                         }
                     }

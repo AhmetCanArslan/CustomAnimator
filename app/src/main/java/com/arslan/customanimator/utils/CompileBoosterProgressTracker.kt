@@ -4,11 +4,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-/**
- * In-memory, process-wide progress state for the Compile Booster foreground service.
- * Lets the Developer screen show live percent/label while visible, independent of the
- * service's own notification (which is what keeps progress visible while navigating away).
- */
 object CompileBoosterProgressTracker {
 
     data class Progress(

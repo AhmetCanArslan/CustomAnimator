@@ -106,7 +106,6 @@ class PresetManager(context: Context) {
             }
             
             if (foundIndex >= 0) {
-                // JSONArray doesn't have a direct remove method for older API levels
                 val newPresets = JSONArray()
                 for (i in 0 until presets.length()) {
                     if (i != foundIndex) {

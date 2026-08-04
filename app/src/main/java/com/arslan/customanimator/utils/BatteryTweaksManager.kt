@@ -8,11 +8,6 @@ import com.arslan.customanimator.data.BatterySaverPreset
 import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.data.DozePreset
 
-/**
- * Reads and writes the battery / battery-saver knobs that Android exposes through
- * Settings.Global. Every key here was verified against a real device: writing it changes what
- * `dumpsys power` or `dumpsys deviceidle` reports.
- */
 object BatteryTweaksManager {
 
     const val KEY_LOW_POWER = "low_power"
@@ -37,11 +32,6 @@ object BatteryTweaksManager {
     const val KEY_CHARGING_SOUNDS = "charging_sounds_enabled"
     const val KEY_CHARGING_VIBRATION = "charging_vibration_enabled"
 
-    /**
-     * Keys inside [KEY_BATTERY_SAVER_CONSTANTS]. These names changed in Android 10 — the widely
-     * copied older names (vibration_disabled, gps_mode, soundtrigger_disabled, aod_disabled) are
-     * silently ignored by the current parser, so only the names below have any effect.
-     */
     val policyTweaks: List<BatteryTweak> = listOf(
         BatteryTweak.Toggle(
             "disable_vibration", R.string.bt_disable_vibration, R.string.bt_disable_vibration_desc, false
@@ -239,11 +229,6 @@ object BatteryTweaksManager {
             default
         }
 
-    /**
-     * Since Android 12 a Settings.Global key is only readable by a normal app when the platform
-     * marks it @Readable; device_idle_constants is not, so the direct read throws and we fall back
-     * to the shell. When neither works the caller has to rely on [getAppliedPreset].
-     */
     fun getGlobalString(resolver: ContentResolver, key: String): String {
         val direct = try {
             Settings.Global.getString(resolver, key) ?: ""
@@ -265,7 +250,6 @@ object BatteryTweaksManager {
     private fun prefs(context: Context) =
         context.getSharedPreferences("battery_tweaks", Context.MODE_PRIVATE)
 
-    /** Remembers which preset the user picked, for keys the app is not allowed to read back. */
     fun setAppliedPreset(context: Context, group: String, id: String) {
         prefs(context).edit().putString(group, id).apply()
     }
@@ -311,7 +295,6 @@ object BatteryTweaksManager {
         }
     }
 
-    /** Clearing a constants string restores the platform defaults for that policy. */
     fun clearGlobal(context: Context, resolver: ContentResolver, key: String): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             val ok = ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "global", key))
@@ -335,7 +318,6 @@ object BatteryTweaksManager {
     fun serialiseConstants(values: Map<String, String>): String =
         values.entries.joinToString(",") { "${it.key}=${it.value}" }
 
-    /** Only Shizuku can drive this one; it has no Settings.Global equivalent. */
     fun setAdaptivePowerSaver(enabled: Boolean): Boolean =
         ShizukuHelper.executeShellCommand(
             arrayOf("cmd", "power", "set-adaptive-power-saver-enabled", enabled.toString())

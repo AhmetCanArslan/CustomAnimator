@@ -20,13 +20,6 @@ import org.json.JSONObject
 import rikka.shizuku.Shizuku
 import kotlin.coroutines.resume
 
-/**
- * Reads the saved Wi-Fi networks through Shizuku. The passwords come from
- * `WifiManager.getPrivilegedConfiguredNetworks`, which needs NETWORK_SETTINGS — a permission the
- * shell user holds from Android 11 on, so no root is involved. The call itself is made from
- * [WifiUserService], a process Shizuku starts as shell, because the hidden `IWifiManager` interface
- * is not reflectable from a normal app process.
- */
 object WifiConfigReader {
 
     private const val TAG = "WifiConfigReader"

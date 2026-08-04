@@ -24,11 +24,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
-/**
- * Foreground service that force-compiles every launchable app one by one, surviving
- * navigation away from the app. Progress is published both to a notification (visible
- * across app switches) and to [CompileBoosterProgressTracker] (for live in-app UI).
- */
 class CompileBoosterService : Service() {
 
     companion object {

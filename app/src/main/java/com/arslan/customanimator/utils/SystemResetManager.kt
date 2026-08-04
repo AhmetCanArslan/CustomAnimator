@@ -5,12 +5,6 @@ import android.content.Context
 import com.arslan.customanimator.service.AutoForceStopService
 import com.arslan.customanimator.service.CompileBoosterService
 
-/**
- * Undoes every system-level change this app can make, so a device left in a bad state
- * (stuck rotation, forced density, zeroed animation scales) can be recovered from inside the app.
- *
- * App-local data (presets, app lists) is left alone — that is [BackupManager]'s territory.
- */
 object SystemResetManager {
 
     data class ResetResult(
@@ -25,9 +19,7 @@ object SystemResetManager {
             get() = animationScales && density && rotation && tweaks && angle && permissions
     }
 
-    /** Blocking — call from [kotlinx.coroutines.Dispatchers.IO]. */
     fun revertEverything(context: Context, contentResolver: ContentResolver): ResetResult {
-        // Stop background work first so nothing re-applies a setting we are about to reset.
         AutoForceStopService.stop(context)
         CompileBoosterService.stop(context)
 
@@ -53,7 +45,6 @@ object SystemResetManager {
         )
     }
 
-    /** Gives back every dangerous permission the auto permission disabler took away. */
     private fun regrantRevokedPermissions(context: Context): Boolean {
         val store = RevokedPermissionsStore(context)
         val revoked = store.getAllRevoked()

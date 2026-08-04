@@ -8,8 +8,6 @@ abstract class SelectedAppsManager(protected val context: Context, prefsName: St
     private val sharedPreferences = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
     private val selectedKey = "selected_packages"
 
-    // Resolved once per manager: it costs PackageManager and Settings lookups, and it is read on
-    // every list render and every toggle.
     private val unsafePackages: Set<String> by lazy {
         InstalledAppsProvider.getUnsafeToKillPackages(context)
     }

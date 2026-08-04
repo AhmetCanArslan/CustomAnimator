@@ -58,7 +58,6 @@ object DeveloperOptionsManager {
         }
     }
 
-    // USB debugging
     fun isAdbEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
@@ -71,7 +70,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, Settings.Global.ADB_ENABLED, if (enabled) 1 else 0)
     }
 
-    // Wireless (WiFi) debugging - Android 11+
     fun isAdbWifiEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, "adb_wifi_enabled", 0) == 1
@@ -84,7 +82,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, "adb_wifi_enabled", if (enabled) 1 else 0)
     }
 
-    // "Don't keep activities"
     fun isAlwaysFinishActivitiesEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, Settings.Global.ALWAYS_FINISH_ACTIVITIES, 0) == 1
@@ -97,7 +94,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, Settings.Global.ALWAYS_FINISH_ACTIVITIES, if (enabled) 1 else 0)
     }
 
-    // Limit background processes (max cached processes kept alive by the system)
     private const val AM_CONSTANTS_KEY = "activity_manager_constants"
     private const val MAX_CACHED_PROCESSES_LIMITED = 1
 
@@ -200,7 +196,6 @@ object DeveloperOptionsManager {
         return isSensorsOffEnabled() == enabled
     }
 
-    // Quick actions
     fun clearAllAppCaches(): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "trim-caches", "999000000000"))
     }
@@ -217,7 +212,6 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
     }
 
-    // Compile Booster
     fun compileApp(packageName: String): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-f", packageName))
     }
@@ -226,7 +220,6 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-a"))
     }
 
-    // Graphics API Override (per-app ANGLE driver selection)
     private const val FANCY_IME_ANIMATIONS_KEY = "fancy_ime_animations"
     private const val CLOCK_SECONDS_KEY = "clock_seconds"
     private const val ACCELEROMETER_ROTATION_KEY = "accelerometer_rotation"
@@ -244,7 +237,6 @@ object DeveloperOptionsManager {
         return putSecureInt(context, contentResolver, FANCY_IME_ANIMATIONS_KEY, if (disabled) 0 else 1)
     }
 
-    // One UI ignores the AOSP secure key and keeps its own flag in the System table instead.
     private const val ONEUI_CLOCK_SECONDS_KEY = "clockshow_second"
 
     fun isOneUi(): Boolean = android.os.Build.MANUFACTURER.equals("samsung", ignoreCase = true)
@@ -265,12 +257,10 @@ object DeveloperOptionsManager {
         val value = if (enabled) 1 else 0
         val secure = putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, value)
         if (!isOneUi()) return secure
-        // Write both keys on Samsung: which one SystemUI reads varies across One UI versions.
         val system = putSystemInt(context, contentResolver, ONEUI_CLOCK_SECONDS_KEY, value)
         return secure || system
     }
 
-    /** Restarts SystemUI so status-bar tweaks that are only read at boot take effect. */
     fun restartSystemUi(): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("killall", "com.android.systemui")) ||
             ShizukuHelper.executeShellCommand(arrayOf("am", "crash", "com.android.systemui"))
@@ -286,8 +276,6 @@ object DeveloperOptionsManager {
 
     fun setAutoRotation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
-            // This override has to be undone when unlocking. Leaving it enabled pins the display to
-            // user_rotation forever, which is what strands devices in landscape.
             ShizukuHelper.executeShellCommand(
                 arrayOf("wm", "set-fix-to-user-rotation", if (enabled) "disabled" else "enabled")
             )
@@ -295,10 +283,6 @@ object DeveloperOptionsManager {
         return putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, if (enabled) 1 else 0)
     }
 
-    /**
-     * Puts rotation back to stock: drops the fix-to-user-rotation override, restores auto-rotate
-     * and resets the locked orientation to portrait. Recovery path for devices stuck in landscape.
-     */
     fun resetRotation(context: Context, contentResolver: ContentResolver): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "disabled"))

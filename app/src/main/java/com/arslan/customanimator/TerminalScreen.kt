@@ -94,12 +94,10 @@ fun TerminalScreenContent(
     var isRunning by rememberSaveable { mutableStateOf(false) }
     var presets by remember { mutableStateOf(presetManager.getAllPresets()) }
 
-    // null = dialog closed, a preset with a blank id = "add new"
     var editingPreset by remember { mutableStateOf<TerminalPreset?>(null) }
 
     var tilePreset by remember { mutableStateOf<TerminalPreset?>(null) }
 
-    // Shown once; accepting is remembered so it never interrupts again.
     var showRiskDialog by remember {
         mutableStateOf(!com.arslan.customanimator.utils.SettingsManager.hasAcceptedTerminalRisk(context))
     }

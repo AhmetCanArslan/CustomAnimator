@@ -64,7 +64,6 @@ class TerminalPresetManager(context: Context) {
         }
     }
 
-    /** Rewrites the entry in place so editing keeps its id and its position in the list. */
     fun updatePreset(id: String, name: String, command: String): Boolean {
         return try {
             val presets = getAllPresetsJson()
