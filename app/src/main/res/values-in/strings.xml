@@ -549,4 +549,5 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Aplikasi ini mengubah pengaturan tingkat sistem. Tergantung perangkat dan ROM Anda, hal itu dapat memengaruhi daya tahan baterai, notifikasi, alarm, aplikasi latar belakang, dan stabilitas.</string>
     <string name="onboarding_disclaimer_highlight">Pengembang tidak bertanggung jawab atas kehilangan data, kerusakan, atau gangguan apa pun yang mungkin timbul dari penggunaan aplikasi ini. Semua perubahan yang Anda lakukan di sini menjadi risiko Anda sendiri.</string>
     <string name="onboarding_disclaimer_consent">Saya telah membaca dan menerima hal di atas; pengembang tidak bertanggung jawab.</string>
+    <string name="auto_force_stop_notif_text_waiting">Dijeda — menunggu Shizuku dan akses penggunaan</string>
 </resources>

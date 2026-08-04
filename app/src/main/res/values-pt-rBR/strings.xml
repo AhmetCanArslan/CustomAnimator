@@ -549,4 +549,5 @@ Duração do Animador: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Este app altera configurações do sistema. Dependendo do seu aparelho e da sua ROM, isso pode afetar a bateria, as notificações, os alarmes, os apps em segundo plano e a estabilidade.</string>
     <string name="onboarding_disclaimer_highlight">O desenvolvedor não assume nenhuma responsabilidade por perda de dados, mau funcionamento ou danos decorrentes do uso deste app. Tudo o que você alterar aqui é por sua conta e risco.</string>
     <string name="onboarding_disclaimer_consent">Li e aceito o texto acima; o desenvolvedor não assume nenhuma responsabilidade.</string>
+    <string name="auto_force_stop_notif_text_waiting">Pausado — aguardando o Shizuku e o acesso de uso</string>
 </resources>

@@ -549,4 +549,5 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Binabago ng app na ito ang mga setting sa antas ng sistema. Depende sa iyong device at ROM, maaari nitong maapektuhan ang baterya, mga notification, alarma, background apps, at katatagan.</string>
     <string name="onboarding_disclaimer_highlight">Walang anumang pananagutan ang developer sa pagkawala ng data, depekto, o pinsalang maaaring idulot ng paggamit ng app na ito. Lahat ng babaguhin mo rito ay nasa iyong sariling panganib.</string>
     <string name="onboarding_disclaimer_consent">Nabasa at tinatanggap ko ang nasa itaas; walang pananagutan ang developer.</string>
+    <string name="auto_force_stop_notif_text_waiting">Naka-pause — hinihintay ang Shizuku at usage access</string>
 </resources>

@@ -569,4 +569,5 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_disclaimer_body">This app changes system-level settings. Depending on your device and ROM, that can affect battery life, notifications, alarms, background apps and stability.</string>
     <string name="onboarding_disclaimer_highlight">The developer accepts no responsibility for any data loss, malfunction or damage that may result from using this app. Everything you change here, you change at your own risk.</string>
     <string name="onboarding_disclaimer_consent">I have read and accept the above; the developer accepts no responsibility.</string>
+    <string name="auto_force_stop_notif_text_waiting">Paused — waiting for Shizuku and usage access</string>
 </resources>

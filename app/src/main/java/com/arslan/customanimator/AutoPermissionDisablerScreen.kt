@@ -67,8 +67,6 @@ fun AutoPermissionDisablerScreen(
         isLoading = false
     }
 
-    // Re-check usage access whenever the screen resumes to the composition
-    // (e.g. after returning from the Usage Access settings screen).
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
@@ -84,10 +82,10 @@ fun AutoPermissionDisablerScreen(
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { /* proceed regardless; service still runs without a visible notification if denied */ }
+    ) { }
 
     val syncServiceState: () -> Unit = {
-        if (selectedPackages.isNotEmpty() && prerequisitesMet) {
+        if (selectedPackages.isNotEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 androidx.core.content.ContextCompat.checkSelfPermission(
                     context, Manifest.permission.POST_NOTIFICATIONS

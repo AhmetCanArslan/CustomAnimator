@@ -62,7 +62,6 @@ object SettingsManager {
     }
 
     fun getSimpleMode(context: Context): Boolean {
-        // Simple mode is default as requested
         return getPrefs(context).getBoolean("simple_mode", true)
     }
     
@@ -165,7 +164,6 @@ object SettingsManager {
     ): Boolean {
         val formattedValue = String.format(Locale.US, "%.2f", value)
 
-        // First try Shizuku path.
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = ShizukuHelper.executeShellCommand(
                 arrayOf("settings", "put", "global", key, formattedValue)
@@ -209,7 +207,6 @@ object SettingsManager {
                 setAnimatorDurationScale(context, contentResolver, animatorScale)
     }
     
-    // Smallest Width methods
     private const val DISPLAY_DENSITY_FORCED = "display_density_forced"
 
     fun getSmallestWidth(context: Context): Int {
@@ -219,7 +216,6 @@ object SettingsManager {
     fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): SmallestWidthResult {
         return try {
             if (width <= 0) {
-                // First try Shizuku command path.
                 if (ShizukuHelper.hasShizukuPermission()) {
                     val shizukuSuccess = ShizukuHelper.executeShellCommand(
                         arrayOf("wm", "density", "reset")
@@ -243,7 +239,6 @@ object SettingsManager {
                 .roundToInt()
                 .coerceIn(72, 1000)
 
-            // First try Shizuku command path.
             if (ShizukuHelper.hasShizukuPermission()) {
                 val shizukuSuccess = ShizukuHelper.executeShellCommand(
                     arrayOf("wm", "density", targetDensity.toString())

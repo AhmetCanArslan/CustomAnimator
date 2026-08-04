@@ -569,4 +569,5 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
     <string name="onboarding_disclaimer_highlight">Lo sviluppatore non si assume alcuna responsabilità per perdite di dati, malfunzionamenti o danni derivanti dall\'uso di questa app. Tutto ciò che modifichi qui lo fai a tuo rischio.</string>
     <string name="onboarding_disclaimer_consent">Ho letto e accetto quanto sopra; lo sviluppatore non si assume alcuna responsabilità.</string>
+    <string name="auto_force_stop_notif_text_waiting">In pausa — in attesa di Shizuku e accesso all\'utilizzo</string>
 </resources>

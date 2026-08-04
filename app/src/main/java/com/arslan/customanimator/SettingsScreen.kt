@@ -129,7 +129,6 @@ fun SettingsScreen(
         ) {
             Spacer(modifier = Modifier.height(4.dp))
 
-            // General section: Simple / Advanced mode
             SettingsSection(title = stringResource(R.string.settings_general)) {
                 SelectableSettingRow(
                     title = stringResource(R.string.simple_mode),
@@ -146,7 +145,6 @@ fun SettingsScreen(
                 )
             }
 
-            // Input method section
             SettingsSection(title = stringResource(R.string.settings_input_mode)) {
                 SelectableSettingRow(
                     title = stringResource(R.string.use_sliders),
@@ -163,7 +161,6 @@ fun SettingsScreen(
                 )
             }
 
-            // Backup / recovery section
             SettingsSection(title = stringResource(R.string.settings_backup)) {
                 ActionSettingRow(
                     icon = Icons.Filled.Save,
@@ -240,7 +237,6 @@ fun SettingsScreen(
                 }
             }
 
-            // About section
             SettingsSection(title = stringResource(R.string.settings_about)) {
                 val contactSubject = stringResource(R.string.contact_developer_subject)
                 ActionSettingRow(

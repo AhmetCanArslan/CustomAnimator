@@ -549,4 +549,5 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Bu uygulama sistem düzeyinde ayarları değiştirir. Cihazınıza ve ROM\'unuza bağlı olarak bu; pil ömrünü, bildirimleri, alarmları, arka plan uygulamalarını ve kararlılığı etkileyebilir.</string>
     <string name="onboarding_disclaimer_highlight">Geliştirici, bu uygulamanın kullanımından doğabilecek veri kaybı, arıza veya zarardan hiçbir sorumluluk kabul etmez. Burada yaptığınız tüm değişiklikler kendi sorumluluğunuzdadır.</string>
     <string name="onboarding_disclaimer_consent">Yukarıdakileri okudum ve kabul ediyorum; geliştirici hiçbir sorumluluk kabul etmez.</string>
+    <string name="auto_force_stop_notif_text_waiting">Duraklatıldı — Shizuku ve kullanım erişimi bekleniyor</string>
 </resources>

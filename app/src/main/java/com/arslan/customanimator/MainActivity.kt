@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
@@ -62,6 +63,7 @@ import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
+import com.arslan.customanimator.service.AutoForceStopService
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.SettingsManager
@@ -84,7 +86,6 @@ import com.arslan.customanimator.R
 class MainActivity : ComponentActivity() {
     private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
         if (grantResult == 0) {
-            // Permission granted
             ShizukuHelper.grantWriteSecureSettingsPermission(this)
         }
     }
@@ -95,14 +96,14 @@ class MainActivity : ComponentActivity() {
         initBilling(this)
         initAds(this)
 
+        AutoForceStopService.startIfSelectionExists(this)
+
         TerminalTileSlots.sync(this, TerminalPresetManager(this))
         WidthTileSlots.sync(this, WidthPresetManager(this))
         AnimationTileSlots.sync(this, PresetManager(this))
 
-        // Add Shizuku listener
         Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
         
-        // Request Shizuku permission on first launch if available and not yet requested
         if (ShizukuHelper.isShizukuAvailable() && !ShizukuHelper.hasShizukuBeenRequested(this) && !ShizukuHelper.hasShizukuPermission()) {
             ShizukuHelper.requestShizukuPermission(this)
             ShizukuHelper.markShizukuRequested(this)
@@ -134,7 +135,6 @@ class MainActivity : ComponentActivity() {
         initBilling(this)
         preloadInterstitial(this)
 
-        // Check if Shizuku permission was granted and try to grant WRITE_SECURE_SETTINGS
         if (ShizukuHelper.hasShizukuPermission()) {
             val hasSecureSettings = ContextCompat.checkSelfPermission(
                 this,
@@ -171,13 +171,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
     val coroutineScope = rememberCoroutineScope()
-    // Every settings write goes through a blocking Shizuku binder call, so it runs off the main
-    // thread; this flag keeps the user from stacking writes while one is in flight.
     var isApplyingSettings by remember { mutableStateOf(false) }
     val widthPresetManager = remember { WidthPresetManager(context) }
     val focusManager = LocalFocusManager.current
     
-    // Shizuku state and permission state
     val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
     val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
     val hasWriteSecureSettings = remember { mutableStateOf(ShizukuHelper.hasWriteSecureSettingsPermission(context)) }
@@ -195,7 +192,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         onDispose { permissionLifecycleOwner.lifecycle.removeObserver(observer) }
     }
     
-    // Current values from system settings
     var windowAnimScale by remember {
         mutableStateOf(SettingsManager.getWindowAnimationScale(contentResolver))
     }
@@ -206,7 +202,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         mutableStateOf(SettingsManager.getAnimatorDurationScale(contentResolver))
     }
     
-    // UI state
     var windowInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", windowAnimScale)) }
     var transitionInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", transitionAnimScale)) }
     var animatorInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", animatorDurScale)) }
@@ -255,7 +250,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
     var widthTilePreset by remember { mutableStateOf<WidthPreset?>(null) }
-    // A bad smallest-width can leave the screen unusable, so a change is reverted unless confirmed.
     var widthRevertTarget by rememberSaveable { mutableIntStateOf(-1) }
     var widthRevertDeadline by rememberSaveable { mutableLongStateOf(0L) }
     var widthRevertNow by remember { mutableLongStateOf(0L) }
@@ -265,7 +259,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
-    // Ad disclosure and Play Store rating prompts only ship in the playstore flavor.
     var showAdInfoDialog by remember {
         mutableStateOf(BuildConfig.HAS_ADS && !isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
     }
@@ -278,11 +271,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
-    // Smallest Width state
     var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
     var smallestWidthInputValue by remember { mutableStateOf(if (smallestWidth > 0) smallestWidth.toString() else "") }
     
-    // Animation state for fade in/out when mode changes
     var shouldShowContent by remember { mutableStateOf(true) }
     var pendingInputMode by remember { mutableStateOf<String?>(null) }
     val contentAlpha by animateFloatAsState(
@@ -379,7 +370,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    // Fade the home-screen cards on mode change (cosmetic only, doesn't gate state)
     var isFirstModeRender by remember { mutableStateOf(true) }
     LaunchedEffect(inputMode) {
         if (isFirstModeRender) {
@@ -391,7 +381,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    // Check permission status when Permission Details dialog is opened
     LaunchedEffect(showPermissionDetailsDialog) {
         if (showPermissionDetailsDialog) {
             hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
@@ -409,7 +398,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    // Double-back-to-exit on the home screen
     var backPressedOnce by remember { mutableStateOf(false) }
     LaunchedEffect(backPressedOnce) {
         if (backPressedOnce) {
@@ -668,7 +656,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // Smallest Width Card
             item {
                 Card(
                     modifier = Modifier
@@ -724,7 +711,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
-                        // Input + Apply row (70/30)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -801,7 +787,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
 
-            // Width Presets List Header
             if (allWidthPresets.isNotEmpty()) {
                 item {
                     Text(
@@ -814,7 +799,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
 
-            // Width Presets List
             if (allWidthPresets.isNotEmpty()) {
                 items(allWidthPresets) { widthPreset ->
                     Card(
@@ -854,6 +838,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     contentDescription = stringResource(R.string.terminal_tile_menu)
                                 )
                             }
+                            IconButton(
+                                onClick = {
+                                    widthPresetManager.deletePreset(widthPreset.id)
+                                    allWidthPresets = widthPresetManager.getAllPresets()
+                                    Toast.makeText(context, context.getString(R.string.width_preset_deleted), Toast.LENGTH_SHORT).show()
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = stringResource(R.string.delete),
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
                             Button(
                                 onClick = {
                                     isApplyingSettings = true
@@ -891,19 +888,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
                             }
-                            Button(
-                                onClick = {
-                                    widthPresetManager.deletePreset(widthPreset.id)
-                                    allWidthPresets = widthPresetManager.getAllPresets()
-                                    Toast.makeText(context, context.getString(R.string.width_preset_deleted), Toast.LENGTH_SHORT).show()
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.error
-                                ),
-                                modifier = Modifier.heightIn(min = 42.dp)
-                            ) {
-                                Text(stringResource(R.string.delete), fontSize = 12.sp, maxLines = 1)
-                            }
                         }
                     }
                 }
@@ -939,7 +923,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            // Animation Speed Preview
             item {
                 SyncedAnimationPreview(
                     currentScale = windowAnimScale,
@@ -947,7 +930,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 )
             }
             
-            // Animation Sliders
             if (inputMode == "slider") {
                 item {
                     Card(modifier = Modifier
@@ -979,7 +961,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
-                        // Window Animation Slider
                         val sliderLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation_scale)
                         Text(
                             stringResource(
@@ -1049,7 +1030,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         if (!isSimpleMode) {
                             Spacer(modifier = Modifier.height(16.dp))
                         
-                        // Transition Animation Slider
                         Text(
                             stringResource(
                                 R.string.labeled_value,
@@ -1099,7 +1079,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         
-                        // Animator Duration Slider
                         Text(
                             stringResource(
                                 R.string.labeled_value,
@@ -1182,7 +1161,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
             
-            // Manual Input Fields
             if (inputMode == "manual") {
                 item {
                     Card(modifier = Modifier
@@ -1310,7 +1288,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
             
-            // Presets List Header
             if (allPresets.isNotEmpty()) {
                 item {
                     Text(
@@ -1323,7 +1300,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
             
-            // Presets List
             if (allPresets.isNotEmpty()) {
                 items(allPresets) { preset ->
                     Card(
@@ -1387,6 +1363,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         contentDescription = stringResource(R.string.terminal_tile_menu)
                                     )
                                 }
+                                IconButton(
+                                    onClick = {
+                                        presetManager.deletePreset(preset.id)
+                                        allPresets = presetManager.getAllPresets()
+                                        Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.delete),
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
+                                }
                                 Column(
                                     modifier = Modifier.widthIn(min = 88.dp, max = 132.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -1444,21 +1433,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     ) {
                                         Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
                                     }
-                                    Button(
-                                        onClick = {
-                                            presetManager.deletePreset(preset.id)
-                                            allPresets = presetManager.getAllPresets()
-                                            Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
-                                        },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.error
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .heightIn(min = 42.dp)
-                                    ) {
-                                        Text(stringResource(R.string.delete), fontSize = 12.sp, maxLines = 1)
-                                    }
                                 }
                             }
                         }
@@ -1487,7 +1461,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     }
 
-    // Permission Error Dialog
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
@@ -1563,7 +1536,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                     
-                    // Only show permission granting instructions if permission is not granted
                     if (!hasWriteSecureSettings.value) {
                         Text(
                             stringResource(R.string.use_adb_command),
@@ -1758,7 +1730,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
     
-    // Permission Details Dialog
     if (showPermissionDetailsDialog && isShizukuAvailable) {
         AlertDialog(
             onDismissRequest = { showPermissionDetailsDialog = false },
@@ -1813,7 +1784,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                     
-                    // Only show permission granting instructions if permission is not granted
                     if (!hasWriteSecureSettings.value) {
                         Divider(modifier = Modifier.padding(vertical = 12.dp))
                         
@@ -1878,7 +1848,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
     
-    // Preset Creation Dialog
     if (showPresetDialog) {
         AlertDialog(
             onDismissRequest = { showPresetDialog = false },
@@ -1942,7 +1911,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
 
-    // Width Preset Creation Dialog
     LaunchedEffect(widthRevertDeadline) {
         if (widthRevertDeadline > 0L) {
             while (System.currentTimeMillis() < widthRevertDeadline) {
@@ -2122,24 +2090,16 @@ fun SyncedAnimationPreview(
     currentScale: Float,
     modifier: Modifier = Modifier
 ) {
-    // Base durations
     val baseSlideMs = 300f
     val pauseMs = 600f
     val restMs = 400f
 
-    // Slide-in durations per card (each at own speed, squared for clearer difference)
     val slideIn1x = baseSlideMs
     val slideInCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
 
-    // Slide-out durations per card (each at own speed, squared for clearer difference)
     val slideOut1x = baseSlideMs
     val slideOutCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
 
-    // Phase timeline (absolute ms):
-    // 0 → maxSlideIn             : slide in (each at own speed, faster waits)
-    // maxSlideIn → +pauseMs      : both paused at center
-    // slideOutStart → +maxSlideOut: slide out (each at own speed, faster waits)
-    // maxSlideOut end → +restMs  : rest before restart
     val maxSlideIn = maxOf(slideIn1x, slideInCurrent)
     val slideOutStart = maxSlideIn + pauseMs
     val maxSlideOut = maxOf(slideOut1x, slideOutCurrent)
@@ -2173,8 +2133,6 @@ fun SyncedAnimationPreview(
             withFrameNanos { now ->
                 val dt = (now - last) / 1_000_000f
                 last = now
-                // Cap dt at a reasonable amount to prevent large jumps 
-                // when returning to the app before lifecycle state updates
                 val step = if (dt > 500f) 0f else dt
                 elapsedMs += step
                 if (elapsedMs >= totalCycleMs) {
@@ -2232,28 +2190,24 @@ private fun AppOpenCloseCard(
     isPrimary: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val progress: Float  // 0 = scaled down/bottom, 1 = scaled up/centered
+    val progress: Float
 
     when {
         animOff -> {
             progress = 1f
         }
         elapsedMs < slideInMs -> {
-            // Popping in from bottom (at own speed)
             val frac = decelerateInterpolation(elapsedMs / slideInMs)
             progress = frac
         }
         elapsedMs < slideOutStartMs -> {
-            // Waiting at center (own slide-in done, waiting for slower + pause)
             progress = 1f
         }
         elapsedMs < slideOutStartMs + slideOutMs -> {
-            // Popping out to bottom (at own speed)
             val frac = accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
             progress = 1f - frac
         }
         else -> {
-            // Rest phase — scaled down
             progress = 0f
         }
     }
