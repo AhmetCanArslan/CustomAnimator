@@ -17,8 +17,7 @@ class ScreenFlashManager(private val context: Context) {
 
         val isScreenOff = !powerManager.isInteractive
         val isDeviceLocked = keyguardManager.isDeviceLocked || keyguardManager.isKeyguardLocked
-
-        if (!isScreenOff && !isDeviceLocked) return
+        val isScreenInUse = !isScreenOff && !isDeviceLocked
 
         if (isScreenOff) {
             @Suppress("DEPRECATION")
@@ -35,6 +34,7 @@ class ScreenFlashManager(private val context: Context) {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra(ScreenFlashActivity.EXTRA_COLOR_ARGB, color.colorArgb)
             putExtra(ScreenFlashActivity.EXTRA_DURATION_SEC, durationSeconds)
+            putExtra(ScreenFlashActivity.EXTRA_OVERLAY_MODE, isScreenInUse)
         }
         context.startActivity(intent)
     }

@@ -25,6 +25,7 @@ class ScreenFlashActivity : ComponentActivity() {
     companion object {
         const val EXTRA_COLOR_ARGB = "extra_color_argb"
         const val EXTRA_DURATION_SEC = "extra_duration_sec"
+        const val EXTRA_OVERLAY_MODE = "extra_overlay_mode"
         const val ACTION_STOP_FLASH = "com.arslan.customanimator.STOP_SCREEN_FLASH"
     }
 
@@ -51,6 +52,7 @@ class ScreenFlashActivity : ComponentActivity() {
 
         val colorArgb = intent.getLongExtra(EXTRA_COLOR_ARGB, 0xFFFF1744)
         val durationSec = intent.getIntExtra(EXTRA_DURATION_SEC, 5)
+        val overlayMode = intent.getBooleanExtra(EXTRA_OVERLAY_MODE, false)
         val flashColor = Color(colorArgb)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -64,6 +66,7 @@ class ScreenFlashActivity : ComponentActivity() {
             ScreenFlashContent(
                 flashColor = flashColor,
                 durationSeconds = durationSec,
+                overlayMode = overlayMode,
                 onFinish = { finish() }
             )
         }
@@ -79,13 +82,14 @@ class ScreenFlashActivity : ComponentActivity() {
 private fun ScreenFlashContent(
     flashColor: Color,
     durationSeconds: Int,
+    overlayMode: Boolean,
     onFinish: () -> Unit,
 ) {
     var showColor by remember { mutableStateOf(false) }
     val untilInteraction = durationSeconds == -1
-    val initialOverlayDelayMs = 500L
-    val visibleFlashColor = flashColor.copy(alpha = 0.72f)
-    val dimBackground = Color.Black.copy(alpha = 0.35f)
+    val initialOverlayDelayMs = if (overlayMode) 0L else 500L
+    val visibleFlashColor = flashColor.copy(alpha = if (overlayMode) 0.25f else 0.72f)
+    val dimBackground = if (overlayMode) Color.Transparent else Color.Black.copy(alpha = 0.35f)
 
     LaunchedEffect(Unit) {
         delay(initialOverlayDelayMs)
@@ -102,14 +106,23 @@ private fun ScreenFlashContent(
 
     val currentColor = if (showColor) visibleFlashColor else dimBackground
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(currentColor)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onFinish
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (!overlayMode) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black)
             )
-    )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(currentColor)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onFinish
+                )
+        )
+    }
 }
