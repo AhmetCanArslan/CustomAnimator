@@ -130,6 +130,9 @@ class MainActivity : ComponentActivity() {
                     var showOnboarding by rememberSaveable {
                         mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
                     }
+                    var changelog by remember {
+                        mutableStateOf(ChangelogManager.unseenReleases(this))
+                    }
                     if (showOnboarding) {
                         OnboardingScreen(
                             onFinished = {
@@ -140,7 +143,6 @@ class MainActivity : ComponentActivity() {
                     } else {
                         AnimatorSelectorScreen(this)
 
-                        var changelog by remember { mutableStateOf(ChangelogManager.unseenReleases(this)) }
                         if (changelog.isNotEmpty()) {
                             ChangelogDialog(
                                 releases = changelog,
