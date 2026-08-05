@@ -195,8 +195,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="terminal_output_empty">Henüz çıktı yok.</string>
     <string name="terminal_clear_output">Temizle</string>
     <string name="terminal_exit_code">çıkış %1$d</string>
-    <string name="source_code">Kaynak Kodu</string>
-    <string name="settings_source_code_desc">Projeyi GitHub\'da görüntüle</string>
     <string name="developer_tweaks">İnce Ayarlar</string>
     <string name="disable_keyboard_animation">Klavye Animasyonunu Kapat</string>
     <string name="disable_keyboard_animation_desc">Klavye açılış animasyonunu kapatır (fancy_ime_animations)</string>
@@ -414,6 +412,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_experimental_title">Doğası Gereği Deneysel</string>
     <string name="onboarding_experimental_body">Üreticiler Android\'i çokça değiştiriyor. Bazı ayarlar cihazınızda sessizce hiçbir şey yapmaz, bazıları sistem tarafından geri alınır, bazıları da etkili olmak için yeniden başlatma ister.</string>
     <string name="onboarding_experimental_highlight">Bir şey ters giderse ilgili bölümdeki ya da Ayarlar\'daki sıfırlama seçeneğiyle varsayılan değerlere dönün. Emin değilseniz, değiştirmeden önce neyi değiştirdiğinizi not alın.</string>
+    <string name="settings_privacy_policy">Gizlilik Politikası</string>
+    <string name="settings_privacy_policy_desc">Uygulamanın verilerinizi nasıl işlediğini okuyun</string>
     <string name="settings_privacy_options">Gizlilik Seçenekleri</string>
     <string name="settings_privacy_options_desc">Reklam kişiselleştirme onay tercihlerinizi değiştirin</string>
     <string name="settings_premium">Premium</string>

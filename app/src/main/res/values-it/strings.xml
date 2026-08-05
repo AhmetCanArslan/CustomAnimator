@@ -247,8 +247,6 @@ Durata animatore: %3$.2f</string>
     <string name="preset_tile_number_description">Il riquadro mostra questo valore al posto di un\'icona.</string>
     <string name="preset_tile_toast_description">Conferma sullo schermo quando il preset viene applicato.</string>
     <string name="preset_tile_collapse_description">Chiudi il pannello appena il preset viene applicato.</string>
-    <string name="source_code">Codice sorgente</string>
-    <string name="settings_source_code_desc">Vedi il progetto su GitHub</string>
     <string name="developer_tweaks">Modifiche</string>
     <string name="disable_keyboard_animation">Disattiva animazione tastiera</string>
     <string name="disable_keyboard_animation_desc">Disattiva l\'animazione di apertura della tastiera (fancy_ime_animations)</string>
@@ -434,6 +432,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_experimental_title">Sperimentale per natura</string>
     <string name="onboarding_experimental_body">I produttori modificano Android pesantemente. Alcune modifiche non fanno nulla sul tuo dispositivo, altre vengono annullate dal sistema e altre ancora richiedono un riavvio per avere effetto.</string>
     <string name="onboarding_experimental_highlight">Se qualcosa non funziona bene, usa l\'opzione di reset nella sezione corrispondente o nelle Impostazioni per tornare ai valori originali. Nel dubbio, annota cosa hai cambiato prima di cambiarlo.</string>
+    <string name="settings_privacy_policy">Informativa sulla Privacy</string>
+    <string name="settings_privacy_policy_desc">Leggi come l\'app tratta i tuoi dati</string>
     <string name="settings_privacy_options">Opzioni sulla privacy</string>
     <string name="settings_privacy_options_desc">Modifica le tue scelte di consenso sulla personalizzazione degli annunci</string>
     <string name="settings_premium">Premium</string>

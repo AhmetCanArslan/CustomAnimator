@@ -34,22 +34,11 @@ android {
         versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
 
-    flavorDimensions += "distribution"
-    productFlavors {
-        create("github") {
-            dimension = "distribution"
-            buildConfigField("boolean", "HAS_ADS", "false")
-        }
-        create("playstore") {
-            dimension = "distribution"
-            buildConfigField("boolean", "HAS_ADS", "true")
-            manifestPlaceholders["admobAppId"] = admobAppId
-            buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
-            buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
-            buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"$admobAppOpenId\"")
-        }
+        manifestPlaceholders["admobAppId"] = admobAppId
+        buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
+        buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
+        buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"$admobAppOpenId\"")
     }
 
     buildTypes {
@@ -90,10 +79,10 @@ dependencies {
     implementation(libs.zxing.core)
     implementation(libs.gson)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    "playstoreImplementation"(libs.play.services.ads)
-    "playstoreImplementation"(libs.user.messaging.platform)
-    "playstoreImplementation"(libs.androidx.lifecycle.process)
-    "playstoreImplementation"(libs.billing.ktx)
+    implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
+    implementation(libs.androidx.lifecycle.process)
+    implementation(libs.billing.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

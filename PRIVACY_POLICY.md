@@ -52,6 +52,7 @@ Each permission is used only for the feature named next to it. No permission is 
 | `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_DATA_SYNC`, `FOREGROUND_SERVICE_SPECIAL_USE` | Keep the notification listener and other background features alive. |
 | `RECEIVE_BOOT_COMPLETED` | Restart enabled services after a reboot. |
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | Ask you to exempt the app so battery saver does not kill the listener. |
+| `com.google.android.gms.permission.AD_ID` | Let Google AdMob read the device advertising identifier for ad serving. Not requested once the ad removal purchase is active. |
 
 ## Shizuku and Shell Access
 
@@ -59,20 +60,12 @@ Some features (secure settings, Wi-Fi passwords, the built-in terminal) run shel
 
 ## Third-Party Services
 
-The app uses no analytics, crash reporting, or tracking SDKs. The only third-party components are Google AdMob (advertising) and Google Play Billing (the optional ad-removal purchase). These Google SDKs connect to the network and may process an advertising identifier and standard ad-request data under Google's own privacy policy, which the developer does not control:
+The app uses no analytics, crash reporting, or tracking SDKs. The only third-party components are Google AdMob (advertising) and Google Play Billing (the optional ad-removal purchase). Every published build of CustomAnimator includes them. AdMob serves banner, interstitial and app-open ads, and the app declares the `AD_ID` permission so Google can read the device's advertising identifier. These Google SDKs connect to the network and may process that identifier and standard ad-request data under Google's own privacy policy, which the developer does not control:
 
 - Google Privacy Policy — https://policies.google.com/privacy
 - How Google uses data from apps that use its services — https://policies.google.com/technologies/partner-sites
 
-Where required by law, the app shows a consent form (Google UMP) before serving personalised ads, and you can change your choice later from the app's settings. Purchasing the ad removal option disables ad loading entirely. The developer receives no personal data from either SDK.
-
-## Android System Backup
-
-The app allows Android's standard backup/restore, so if you have Google backup enabled on your device, your device may include the app's settings in your personal Google account backup. This is a feature of the Android platform under your control, not a transfer to the developer, and you can disable it in your device's system backup settings.
-
-## Children
-
-CustomAnimator is not directed at children and collects no data from anyone.
+Where required by law, the app shows a consent form (Google UMP) before serving personalised ads, and you can change your choice later from **Settings → Privacy Options**, which appears whenever your region requires it. Purchasing the ad removal option disables all ad loading entirely, including the advertising identifier request. The developer receives no personal data from either SDK.
 
 ## Changes to This Policy
 

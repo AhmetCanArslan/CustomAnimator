@@ -283,8 +283,6 @@ Animator Duration: %3$.2f</string>
     <string name="preset_tile_number_description">The tile shows this value instead of an icon.</string>
     <string name="preset_tile_toast_description">Confirm on the screen when the preset is applied.</string>
     <string name="preset_tile_collapse_description">Close the panel as soon as the preset is applied.</string>
-    <string name="source_code">Source Code</string>
-    <string name="settings_source_code_desc">View the project on GitHub</string>
     <string name="developer_tweaks">Tweaks</string>
     <string name="disable_keyboard_animation">Disable Keyboard Animation</string>
     <string name="disable_keyboard_animation_desc">Turn off the fancy keyboard opening animation (fancy_ime_animations)</string>
@@ -502,6 +500,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_experimental_title">Experimental by Nature</string>
     <string name="onboarding_experimental_body">Manufacturers modify Android heavily. Some tweaks silently do nothing on your device, some are reverted by the system, and some need a reboot before they take effect.</string>
     <string name="onboarding_experimental_highlight">If something misbehaves, use the reset option in the relevant section or in Settings to return to stock values. When in doubt, note down what you changed before changing it.</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_privacy_policy_desc">Read how the app handles your data</string>
     <string name="settings_privacy_options">Privacy Options</string>
     <string name="settings_privacy_options_desc">Change your ad personalisation consent choices</string>
     <string name="settings_premium">Premium</string>

@@ -19,7 +19,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Block
@@ -51,6 +50,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val DEVELOPER_EMAIL = "ahmetcanarslandev@gmail.com"
+private const val PRIVACY_POLICY_URL =
+    "https://github.com/ahmetcanarslan/customanimator/blob/main/PRIVACY_POLICY.md"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -199,43 +200,41 @@ fun SettingsScreen(
                 )
             }
 
-            if (BuildConfig.HAS_ADS) {
-                SettingsSection(title = stringResource(R.string.settings_premium)) {
-                    if (isAdFree) {
-                        ActionSettingRow(
-                            icon = Icons.Filled.CheckCircle,
-                            title = stringResource(R.string.remove_ads),
-                            description = stringResource(R.string.remove_ads_owned),
-                            descriptionColor = Color(0xFF2E7D32),
-                            onClick = {}
-                        )
-                    } else {
-                        ActionSettingRow(
-                            icon = Icons.Filled.Block,
-                            title = stringResource(R.string.remove_ads),
-                            description = removeAdsPrice?.let {
-                                stringResource(R.string.remove_ads_desc_price, it)
-                            } ?: stringResource(R.string.remove_ads_desc),
-                            onClick = { startRemoveAdsPurchase(context) }
-                        )
-                        SettingDivider()
-                        ActionSettingRow(
-                            icon = Icons.Filled.ShoppingCart,
-                            title = stringResource(R.string.remove_ads_restore),
-                            description = stringResource(R.string.remove_ads_restore_desc),
-                            onClick = {
-                                if (isRestoring) return@ActionSettingRow
-                                isRestoring = true
-                                restorePurchases { owned ->
-                                    isRestoring = false
-                                    toast(
-                                        if (owned) R.string.remove_ads_restored
-                                        else R.string.remove_ads_nothing_to_restore
-                                    )
-                                }
+            SettingsSection(title = stringResource(R.string.settings_premium)) {
+                if (isAdFree) {
+                    ActionSettingRow(
+                        icon = Icons.Filled.CheckCircle,
+                        title = stringResource(R.string.remove_ads),
+                        description = stringResource(R.string.remove_ads_owned),
+                        descriptionColor = Color(0xFF2E7D32),
+                        onClick = {}
+                    )
+                } else {
+                    ActionSettingRow(
+                        icon = Icons.Filled.Block,
+                        title = stringResource(R.string.remove_ads),
+                        description = removeAdsPrice?.let {
+                            stringResource(R.string.remove_ads_desc_price, it)
+                        } ?: stringResource(R.string.remove_ads_desc),
+                        onClick = { startRemoveAdsPurchase(context) }
+                    )
+                    SettingDivider()
+                    ActionSettingRow(
+                        icon = Icons.Filled.ShoppingCart,
+                        title = stringResource(R.string.remove_ads_restore),
+                        description = stringResource(R.string.remove_ads_restore_desc),
+                        onClick = {
+                            if (isRestoring) return@ActionSettingRow
+                            isRestoring = true
+                            restorePurchases { owned ->
+                                isRestoring = false
+                                toast(
+                                    if (owned) R.string.remove_ads_restored
+                                    else R.string.remove_ads_nothing_to_restore
+                                )
                             }
-                        )
-                    }
+                        }
+                    )
                 }
             }
 
@@ -273,8 +272,7 @@ fun SettingsScreen(
                     onClick = onNavigateToPermissions
                 )
                 SettingDivider()
-                if (BuildConfig.HAS_ADS && !isAdFree && isPrivacyOptionsRequired()) {
-                    val context = LocalContext.current
+                if (isPrivacyOptionsRequired()) {
                     ActionSettingRow(
                         icon = Icons.Filled.PrivacyTip,
                         title = stringResource(R.string.settings_privacy_options),
@@ -285,22 +283,19 @@ fun SettingsScreen(
                     )
                     SettingDivider()
                 }
-                if (!BuildConfig.HAS_ADS) {
-                    val context = LocalContext.current
-                    ActionSettingRow(
-                        icon = Icons.Filled.Info,
-                        title = stringResource(R.string.source_code),
-                        description = stringResource(R.string.settings_source_code_desc),
-                        onClick = {
-                            context.startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.github.com/ahmetcanarslan/customanimator")
-                                )
+                ActionSettingRow(
+                    icon = Icons.Filled.PrivacyTip,
+                    title = stringResource(R.string.settings_privacy_policy),
+                    description = stringResource(R.string.settings_privacy_policy_desc),
+                    onClick = {
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(PRIVACY_POLICY_URL)
                             )
-                        }
-                    )
-                }
+                        )
+                    }
+                )
             }
 
             Spacer(modifier = Modifier.height(16.dp))

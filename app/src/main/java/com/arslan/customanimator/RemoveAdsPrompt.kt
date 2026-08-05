@@ -38,8 +38,6 @@ import com.arslan.customanimator.utils.SettingsManager
 
 @Composable
 fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
-    if (!BuildConfig.HAS_ADS) return
-
     val context = LocalContext.current
     val isAdFree by rememberIsAdFree()
     val price by rememberRemoveAdsPrice()

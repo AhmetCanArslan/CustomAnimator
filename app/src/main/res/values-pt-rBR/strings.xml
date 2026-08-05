@@ -195,8 +195,6 @@ Duração do Animador: %3$.2f</string>
     <string name="terminal_output_empty">Ainda sem saída.</string>
     <string name="terminal_clear_output">Limpar</string>
     <string name="terminal_exit_code">saída %1$d</string>
-    <string name="source_code">Código Fonte</string>
-    <string name="settings_source_code_desc">Ver o projeto no GitHub</string>
     <string name="developer_tweaks">Ajustes</string>
     <string name="disable_keyboard_animation">Desativar animação do teclado</string>
     <string name="disable_keyboard_animation_desc">Desliga a animação de abertura do teclado (fancy_ime_animations)</string>
@@ -414,6 +412,8 @@ Duração do Animador: %3$.2f</string>
     <string name="onboarding_experimental_title">Experimental por Natureza</string>
     <string name="onboarding_experimental_body">Os fabricantes modificam bastante o Android. Alguns ajustes simplesmente não fazem nada no seu aparelho, outros são revertidos pelo sistema e alguns só valem após reiniciar.</string>
     <string name="onboarding_experimental_highlight">Se algo se comportar mal, use a opção de redefinir na seção correspondente ou em Configurações para voltar aos valores de fábrica. Na dúvida, anote o que mudou antes de mudar.</string>
+    <string name="settings_privacy_policy">Política de Privacidade</string>
+    <string name="settings_privacy_policy_desc">Leia como o app trata seus dados</string>
     <string name="settings_privacy_options">Opções de Privacidade</string>
     <string name="settings_privacy_options_desc">Altere suas escolhas de consentimento para anúncios personalizados</string>
     <string name="settings_premium">Premium</string>

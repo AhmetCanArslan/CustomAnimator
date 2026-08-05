@@ -195,8 +195,6 @@
     <string name="terminal_output_empty">Вывода пока нет.</string>
     <string name="terminal_clear_output">Очистить</string>
     <string name="terminal_exit_code">код %1$d</string>
-    <string name="source_code">Исходный код</string>
-    <string name="settings_source_code_desc">Посмотреть проект на GitHub</string>
     <string name="developer_tweaks">Настройки</string>
     <string name="disable_keyboard_animation">Отключить анимацию клавиатуры</string>
     <string name="disable_keyboard_animation_desc">Выключает эффектную анимацию открытия клавиатуры (fancy_ime_animations)</string>
@@ -414,6 +412,8 @@
     <string name="onboarding_experimental_title">Экспериментально по своей природе</string>
     <string name="onboarding_experimental_body">Производители сильно изменяют Android. Некоторые твики на вашем устройстве просто ничего не делают, другие откатываются системой, третьим нужна перезагрузка.</string>
     <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь — запишите, что меняете, до изменения.</string>
+    <string name="settings_privacy_policy">Политика конфиденциальности</string>
+    <string name="settings_privacy_policy_desc">Узнайте, как приложение обрабатывает ваши данные</string>
     <string name="settings_privacy_options">Настройки конфиденциальности</string>
     <string name="settings_privacy_options_desc">Изменить согласие на персонализацию рекламы</string>
     <string name="settings_premium">Премиум</string>

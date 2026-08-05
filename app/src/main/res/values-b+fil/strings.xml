@@ -195,8 +195,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="terminal_output_empty">Wala pang output.</string>
     <string name="terminal_clear_output">I-clear</string>
     <string name="terminal_exit_code">exit %1$d</string>
-    <string name="source_code">Source Code</string>
-    <string name="settings_source_code_desc">Tingnan ang proyekto sa GitHub</string>
     <string name="developer_tweaks">Mga Tweak</string>
     <string name="disable_keyboard_animation">I-off ang Animation ng Keyboard</string>
     <string name="disable_keyboard_animation_desc">Ino-off ang animation sa pagbukas ng keyboard (fancy_ime_animations)</string>
@@ -414,6 +412,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_experimental_title">Likas na Eksperimental</string>
     <string name="onboarding_experimental_body">Malaki ang binabago ng mga manufacturer sa Android. May mga tweak na tahimik na walang epekto sa device mo, may ibinabalik ng sistema, at may nangangailangan ng reboot bago gumana.</string>
     <string name="onboarding_experimental_highlight">Kung may mali, gamitin ang reset sa kaukulang seksyon o sa Settings para bumalik sa orihinal na halaga. Kapag may pagdududa, itala kung ano ang binago mo bago mo baguhin.</string>
+    <string name="settings_privacy_policy">Patakaran sa Privacy</string>
+    <string name="settings_privacy_policy_desc">Basahin kung paano hinahawakan ng app ang iyong data</string>
     <string name="settings_privacy_options">Mga Opsyon sa Privacy</string>
     <string name="settings_privacy_options_desc">Baguhin ang iyong pahintulot sa personalisasyon ng ad</string>
     <string name="settings_premium">Premium</string>

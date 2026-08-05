@@ -195,8 +195,6 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_output_empty">Belum ada keluaran.</string>
     <string name="terminal_clear_output">Bersihkan</string>
     <string name="terminal_exit_code">keluar %1$d</string>
-    <string name="source_code">Kode Sumber</string>
-    <string name="settings_source_code_desc">Lihat proyek di GitHub</string>
     <string name="developer_tweaks">Penyesuaian</string>
     <string name="disable_keyboard_animation">Nonaktifkan Animasi Keyboard</string>
     <string name="disable_keyboard_animation_desc">Mematikan animasi pembukaan keyboard (fancy_ime_animations)</string>
@@ -414,6 +412,8 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_experimental_title">Bersifat Eksperimental</string>
     <string name="onboarding_experimental_body">Produsen banyak memodifikasi Android. Beberapa penyesuaian diam-diam tidak berpengaruh di perangkat Anda, sebagian dikembalikan oleh sistem, dan sebagian butuh mulai ulang agar berlaku.</string>
     <string name="onboarding_experimental_highlight">Jika ada yang bermasalah, gunakan opsi setel ulang di bagian terkait atau di Pengaturan untuk kembali ke nilai bawaan. Jika ragu, catat apa yang Anda ubah sebelum mengubahnya.</string>
+    <string name="settings_privacy_policy">Kebijakan Privasi</string>
+    <string name="settings_privacy_policy_desc">Baca cara aplikasi menangani data Anda</string>
     <string name="settings_privacy_options">Opsi Privasi</string>
     <string name="settings_privacy_options_desc">Ubah pilihan persetujuan personalisasi iklan Anda</string>
     <string name="settings_premium">Premium</string>

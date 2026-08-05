@@ -69,7 +69,7 @@ The background features ask for a few extra permissions only when you enable the
 
 ## Privacy
 
-Custom Animator does not collect personal data or usage analytics; presets and settings stay on your device. The Play Store build serves AdMob banner ads, which are subject to Google's own data handling. The GitHub build contains no ads or SDKs of that kind. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
+Custom Animator does not collect personal data or usage analytics; presets and settings stay on your device. The app serves AdMob banner and interstitial ads, which are subject to Google's own data handling; a one-time in-app purchase removes them. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
 
 ## License
 

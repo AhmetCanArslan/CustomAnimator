@@ -296,12 +296,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
     var showAdInfoDialog by remember {
-        mutableStateOf(BuildConfig.HAS_ADS && !isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
+        mutableStateOf(!isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
     }
     var showRateDialog by remember {
         mutableStateOf(
-            BuildConfig.HAS_ADS
-                && SettingsManager.hasShownAdInfoDialog(context)
+            SettingsManager.hasShownAdInfoDialog(context)
                 && SettingsManager.shouldShowRateDialog(context)
         )
     }
