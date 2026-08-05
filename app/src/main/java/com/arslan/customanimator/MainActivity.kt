@@ -30,6 +30,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
@@ -63,6 +65,14 @@ import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
+import com.arslan.customanimator.notify.data.AppListManager
+import com.arslan.customanimator.notify.data.RulesManager
+import com.arslan.customanimator.notify.ui.AddEditRuleSection
+import com.arslan.customanimator.notify.ui.CreatePatternSection
+import com.arslan.customanimator.notify.ui.IgnoredNotificationsSection
+import com.arslan.customanimator.notify.ui.LoggingSection
+import com.arslan.customanimator.notify.ui.NotifyHomeSection
+import com.arslan.customanimator.notify.ui.RulesSection
 import com.arslan.customanimator.service.AutoForceStopService
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
@@ -97,6 +107,9 @@ class MainActivity : ComponentActivity() {
         initAds(this)
 
         AutoForceStopService.startIfSelectionExists(this)
+
+        AppListManager.initialize(this)
+        RulesManager(this).hasProximitySensor()
 
         TerminalTileSlots.sync(this, TerminalPresetManager(this))
         WidthTileSlots.sync(this, WidthPresetManager(this))
@@ -156,13 +169,22 @@ class MainActivity : ComponentActivity() {
 private const val WIDTH_REVERT_MS = 15_000L
 
 enum class HomeTab {
-    ANIMATION, WIDTH, BATTERY, DEVELOPER, TERMINAL
+    ANIMATION, WIDTH, BATTERY, DEVELOPER, TERMINAL, NOTIFY
 }
 
 enum class HomeScreen {
     MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PERMISSIONS,
+    NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
+
+private val NOTIFY_SCREENS = setOf(
+    HomeScreen.NOTIFY_RULES,
+    HomeScreen.NOTIFY_LOGGING,
+    HomeScreen.NOTIFY_IGNORED,
+    HomeScreen.NOTIFY_ADD_EDIT_RULE,
+    HomeScreen.NOTIFY_CREATE_PATTERN
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -178,7 +200,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
     val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
     val hasWriteSecureSettings = remember { mutableStateOf(ShizukuHelper.hasWriteSecureSettingsPermission(context)) }
-    var showPermissionDetailsDialog by remember { mutableStateOf(false) }
 
     val permissionLifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(permissionLifecycleOwner) {
@@ -225,6 +246,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var editingRuleId by rememberSaveable { mutableStateOf<String?>(null) }
+    var notifyRuleReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_RULES) }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var terminalCommand by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -381,11 +405,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    LaunchedEffect(showPermissionDetailsDialog) {
-        if (showPermissionDetailsDialog) {
-            hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
-        }
-    }
     
     val toggleSimpleMode: (Boolean) -> Unit = { newSimpleMode ->
         isSimpleMode = newSimpleMode
@@ -406,8 +425,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
+    val notifyBack: () -> Unit = {
+        when (currentScreen) {
+            HomeScreen.NOTIFY_IGNORED -> currentScreen = HomeScreen.NOTIFY_LOGGING
+            HomeScreen.NOTIFY_ADD_EDIT_RULE -> currentScreen = notifyRuleReturnScreen
+            HomeScreen.NOTIFY_CREATE_PATTERN -> currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            else -> {
+                currentScreen = HomeScreen.MAIN
+                selectedTab = HomeTab.NOTIFY
+            }
+        }
+    }
+
     BackHandler(
-        enabled = currentScreen != HomeScreen.MAIN && currentScreen != HomeScreen.SETTINGS
+        enabled = currentScreen != HomeScreen.MAIN &&
+            currentScreen != HomeScreen.SETTINGS &&
+            currentScreen != HomeScreen.PERMISSIONS &&
+            currentScreen !in NOTIFY_SCREENS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
@@ -415,6 +449,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS) {
         currentScreen = HomeScreen.MAIN
     }
+    BackHandler(enabled = currentScreen == HomeScreen.PERMISSIONS) {
+        currentScreen = HomeScreen.SETTINGS
+    }
+    BackHandler(enabled = currentScreen in NOTIFY_SCREENS) { notifyBack() }
     BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
         if (backPressedOnce) {
             activity.finish()
@@ -457,7 +495,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
-            onShowPermissionDetails = { showPermissionDetailsDialog = true }
+            onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
@@ -498,6 +536,41 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
         )
+    } else if (targetScreen == HomeScreen.PERMISSIONS) {
+        PermissionsScreen(
+            onBack = { currentScreen = HomeScreen.SETTINGS },
+            isShizukuAvailable = isShizukuAvailable,
+            listState = permissionsListState
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_RULES) {
+        RulesSection(
+            onNavigateBack = notifyBack,
+            onNavigateToAddEditRule = { ruleId ->
+                editingRuleId = ruleId
+                notifyRuleReturnScreen = HomeScreen.NOTIFY_RULES
+                currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_LOGGING) {
+        LoggingSection(
+            onNavigateBack = notifyBack,
+            onNavigateToIgnored = { currentScreen = HomeScreen.NOTIFY_IGNORED },
+            onNavigateToAddEditRule = {
+                editingRuleId = null
+                notifyRuleReturnScreen = HomeScreen.NOTIFY_LOGGING
+                currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_IGNORED) {
+        IgnoredNotificationsSection(onNavigateBack = notifyBack)
+    } else if (targetScreen == HomeScreen.NOTIFY_ADD_EDIT_RULE) {
+        AddEditRuleSection(
+            ruleId = editingRuleId,
+            onNavigateBack = notifyBack,
+            onNavigateToCreatePattern = { currentScreen = HomeScreen.NOTIFY_CREATE_PATTERN }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_CREATE_PATTERN) {
+        CreatePatternSection(onNavigateBack = notifyBack)
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
         CloseAppsExclusionsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
@@ -528,6 +601,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Icon(
                                 imageVector = Icons.Default.Add,
                                 contentDescription = stringResource(R.string.new_preset)
+                            )
+                        }
+                    }
+                    if (selectedTab == HomeTab.NOTIFY) {
+                        IconButton(onClick = { currentScreen = HomeScreen.NOTIFY_LOGGING }) {
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = stringResource(R.string.pn_nav_logging)
                             )
                         }
                     }
@@ -595,6 +676,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                 )
+                NavigationBarItem(
+                    selected = selectedTab == HomeTab.NOTIFY,
+                    onClick = { selectedTab = HomeTab.NOTIFY },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = stringResource(R.string.pn_title)
+                        )
+                    }
+                )
                 }
             }
         }
@@ -613,7 +704,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             modifier = Modifier.padding(paddingValues),
             label = "tab transition"
         ) { targetTab ->
-        if (targetTab == HomeTab.DEVELOPER) {
+        if (targetTab == HomeTab.NOTIFY) {
+        NotifyHomeSection(
+            onNavigateToRules = { currentScreen = HomeScreen.NOTIFY_RULES },
+            onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
+        )
+        } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
@@ -1730,123 +1826,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
     
-    if (showPermissionDetailsDialog && isShizukuAvailable) {
-        AlertDialog(
-            onDismissRequest = { showPermissionDetailsDialog = false },
-            title = { Text(stringResource(R.string.permission_details_title)) },
-            text = {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    Text(
-                        stringResource(R.string.write_secure_settings_permission),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    
-                    if (hasWriteSecureSettings.value) {
-                        Text(
-                            stringResource(R.string.granted),
-                            fontSize = 13.sp,
-                            color = Color.Green,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        Text(
-                            stringResource(R.string.granted_description),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 16.dp),
-                            lineHeight = 16.sp
-                        )
-                    } else {
-                        Text(
-                            stringResource(R.string.not_granted),
-                            fontSize = 13.sp,
-                            color = Color(0xFFE74C3C),
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        Text(
-                            stringResource(R.string.permission_purpose),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 12.dp),
-                            lineHeight = 16.sp
-                        )
-                        Text(
-                            stringResource(R.string.note_one_time),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                    }
-                    
-                    if (!hasWriteSecureSettings.value) {
-                        Divider(modifier = Modifier.padding(vertical = 12.dp))
-                        
-                        Text(
-                            stringResource(R.string.how_to_grant),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.option_adb),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.adb_steps),
-                            fontSize = 12.sp,
-                            lineHeight = 16.sp
-                        )
-                        
-                        SelectionContainer {
-                            Text(
-                                stringResource(R.string.adb_command),
-                                fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                            )
-                        }
-                        
-                        Text(
-                            stringResource(R.string.option_shizuku),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.shizuku_steps),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 12.dp),
-                            lineHeight = 16.sp
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = { showPermissionDetailsDialog = false }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
     
     if (showPresetDialog) {
         AlertDialog(

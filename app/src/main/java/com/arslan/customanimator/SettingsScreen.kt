@@ -18,7 +18,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -61,7 +63,7 @@ fun SettingsScreen(
     isShizukuAvailable: Boolean,
     hasShizukuPermission: Boolean,
     hasWriteSecureSettings: Boolean,
-    onShowPermissionDetails: () -> Unit
+    onNavigateToPermissions: () -> Unit
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -256,22 +258,21 @@ fun SettingsScreen(
                     }
                 )
                 SettingDivider()
-                if (isShizukuAvailable) {
-                    ActionSettingRow(
-                        icon = Icons.Filled.Info,
-                        title = stringResource(R.string.permission_details),
-                        description = if (hasWriteSecureSettings)
-                            stringResource(R.string.settings_permission_status_granted)
-                        else
-                            stringResource(R.string.settings_permission_status_not_granted),
-                        descriptionColor = if (hasWriteSecureSettings)
-                            Color(0xFF2E7D32)
-                        else
-                            MaterialTheme.colorScheme.error,
-                        onClick = onShowPermissionDetails
-                    )
-                    SettingDivider()
-                }
+                ActionSettingRow(
+                    icon = Icons.Filled.Security,
+                    title = stringResource(R.string.permissions_title),
+                    description = if (hasWriteSecureSettings)
+                        stringResource(R.string.settings_permission_status_granted)
+                    else
+                        stringResource(R.string.settings_permission_status_not_granted),
+                    descriptionColor = if (hasWriteSecureSettings)
+                        Color(0xFF2E7D32)
+                    else
+                        MaterialTheme.colorScheme.error,
+                    trailingIcon = Icons.Filled.ChevronRight,
+                    onClick = onNavigateToPermissions
+                )
+                SettingDivider()
                 if (BuildConfig.HAS_ADS && !isAdFree && isPrivacyOptionsRequired()) {
                     val context = LocalContext.current
                     ActionSettingRow(

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 val localProps = rootProject.file("local.properties").takeIf { it.exists() }?.let {
@@ -87,6 +88,8 @@ dependencies {
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation(libs.zxing.core)
+    implementation(libs.gson)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     "playstoreImplementation"(libs.play.services.ads)
     "playstoreImplementation"(libs.user.messaging.platform)
     "playstoreImplementation"(libs.androidx.lifecycle.process)
