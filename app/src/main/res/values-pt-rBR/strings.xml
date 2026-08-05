@@ -595,7 +595,7 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Conceder configurações protegidas</string>
     <string name="pn_ignore_dialog_content_hint">Se nada for selecionado, TODAS as notificações de %1$s serão ignoradas.</string>
     <string name="pn_ignore_dialog_content_section">Filtros de conteúdo (opcional)</string>
-    <string name="pn_ignore_dialog_hint_exact">Correspondência exata &#8212; ative Regex para correspondência parcial</string>
+    <string name="pn_ignore_dialog_hint_exact">Corresponde se o texto contiver isto — ative Regex para padrões</string>
     <string name="pn_ignore_dialog_hint_regex">ex.: \\d+ novas mensagens de \\d+ conversas</string>
     <string name="pn_ignore_dialog_match_body">Corresponder ao corpo</string>
     <string name="pn_ignore_dialog_match_title">Corresponder ao título</string>

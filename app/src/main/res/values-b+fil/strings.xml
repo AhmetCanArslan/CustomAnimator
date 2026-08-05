@@ -595,7 +595,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Ibigay ang secure settings</string>
     <string name="pn_ignore_dialog_content_hint">Kung wala kang pipiliin, LAHAT ng notification mula sa %1$s ay babalewalain.</string>
     <string name="pn_ignore_dialog_content_section">Mga filter ng nilalaman (opsyonal)</string>
-    <string name="pn_ignore_dialog_hint_exact">Eksaktong tugma &#8212; i-on ang Regex para sa bahagyang tugma</string>
+    <string name="pn_ignore_dialog_hint_exact">Tumutugma kapag naglalaman nito ang teksto — i-on ang Regex para sa pattern</string>
     <string name="pn_ignore_dialog_hint_regex">hal. \\d+ bagong mensahe mula sa \\d+ chat</string>
     <string name="pn_ignore_dialog_match_body">Itugma ang body</string>
     <string name="pn_ignore_dialog_match_title">Itugma ang title</string>

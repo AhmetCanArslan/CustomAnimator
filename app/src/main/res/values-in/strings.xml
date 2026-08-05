@@ -595,7 +595,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Berikan setelan aman</string>
     <string name="pn_ignore_dialog_content_hint">Jika tidak ada yang dipilih, SEMUA notifikasi dari %1$s akan diabaikan.</string>
     <string name="pn_ignore_dialog_content_section">Filter konten (opsional)</string>
-    <string name="pn_ignore_dialog_hint_exact">Kecocokan persis &#8212; aktifkan Regex untuk kecocokan sebagian</string>
+    <string name="pn_ignore_dialog_hint_exact">Cocok jika teks memuat ini — aktifkan Regex untuk pola</string>
     <string name="pn_ignore_dialog_hint_regex">mis. \\d+ pesan baru dari \\d+ obrolan</string>
     <string name="pn_ignore_dialog_match_body">Cocokkan isi</string>
     <string name="pn_ignore_dialog_match_title">Cocokkan judul</string>

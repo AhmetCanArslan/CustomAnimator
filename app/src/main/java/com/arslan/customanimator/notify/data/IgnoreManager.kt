@@ -83,7 +83,7 @@ class IgnoreManager(context: Context) {
                 false
             }
         } else {
-            text.equals(pattern, ignoreCase = true)
+            text.contains(pattern.trim(), ignoreCase = true)
         }
     }
 }

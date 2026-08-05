@@ -821,9 +821,12 @@ private fun IgnoreDialog(
     val hasTitle = entry.title.isNotBlank()
     val hasBody = entry.body.isNotBlank()
 
-    var titleText by remember { mutableStateOf(entry.title) }
+    val initialTitle = if (hasTitle) entry.title else ""
+    val initialBody = if (hasTitle) "" else entry.body
+
+    var titleText by remember { mutableStateOf(initialTitle) }
     var titleIsRegex by remember { mutableStateOf(false) }
-    var bodyText by remember { mutableStateOf(entry.body) }
+    var bodyText by remember { mutableStateOf(initialBody) }
     var bodyIsRegex by remember { mutableStateOf(false) }
 
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -950,7 +953,7 @@ private fun IgnoreDialog(
                                 .fillMaxWidth()
                                 .clickable {
                                     titleIsRegex = !titleIsRegex
-                                    titleText = if (titleIsRegex) suggestRegex(entry.title) else entry.title
+                                    titleText = if (titleIsRegex) suggestRegex(entry.title) else initialTitle
                                     errorMessage = null
                                 }
                                 .padding(vertical = 8.dp)
@@ -964,7 +967,7 @@ private fun IgnoreDialog(
                                 checked = titleIsRegex,
                                 onCheckedChange = { checked ->
                                     titleIsRegex = checked
-                                    titleText = if (checked) suggestRegex(entry.title) else entry.title
+                                    titleText = if (checked) suggestRegex(entry.title) else initialTitle
                                     errorMessage = null
                                 }
                             )
@@ -998,7 +1001,7 @@ private fun IgnoreDialog(
                                 .fillMaxWidth()
                                 .clickable {
                                     bodyIsRegex = !bodyIsRegex
-                                    bodyText = if (bodyIsRegex) suggestRegex(entry.body) else entry.body
+                                    bodyText = if (bodyIsRegex) suggestRegex(entry.body) else initialBody
                                     errorMessage = null
                                 }
                                 .padding(vertical = 8.dp)
@@ -1012,7 +1015,7 @@ private fun IgnoreDialog(
                                 checked = bodyIsRegex,
                                 onCheckedChange = { checked ->
                                     bodyIsRegex = checked
-                                    bodyText = if (checked) suggestRegex(entry.body) else entry.body
+                                    bodyText = if (checked) suggestRegex(entry.body) else initialBody
                                     errorMessage = null
                                 }
                             )

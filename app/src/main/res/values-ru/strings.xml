@@ -595,7 +595,7 @@
     <string name="pn_grant_secure_settings_title">Выдать защищённые настройки</string>
     <string name="pn_ignore_dialog_content_hint">Если ничего не выбрано, будут игнорироваться ВСЕ уведомления от %1$s.</string>
     <string name="pn_ignore_dialog_content_section">Фильтры содержимого (необязательно)</string>
-    <string name="pn_ignore_dialog_hint_exact">Точное совпадение &#8212; включите Regex для частичного</string>
+    <string name="pn_ignore_dialog_hint_exact">Совпадает, если текст содержит это — включите Regex для шаблонов</string>
     <string name="pn_ignore_dialog_hint_regex">напр. \\d+ новых сообщений из \\d+ чатов</string>
     <string name="pn_ignore_dialog_match_body">Совпадение по тексту</string>
     <string name="pn_ignore_dialog_match_title">Совпадение по заголовку</string>

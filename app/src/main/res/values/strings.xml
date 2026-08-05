@@ -618,7 +618,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_grant_secure_settings_title">Grant Secure Settings</string>
     <string name="pn_ignore_dialog_content_hint">If none selected, ALL notifications from %1$s will be ignored.</string>
     <string name="pn_ignore_dialog_content_section">Content filters (optional)</string>
-    <string name="pn_ignore_dialog_hint_exact">Exact match &#8212; enable Regex for partial matching</string>
+    <string name="pn_ignore_dialog_hint_exact">Matches when the text contains this — turn on Regex for patterns</string>
     <string name="pn_ignore_dialog_hint_regex">e.g. \d+ new messages from \d+ chats</string>
     <string name="pn_ignore_dialog_match_body">Match body</string>
     <string name="pn_ignore_dialog_match_title">Match title</string>

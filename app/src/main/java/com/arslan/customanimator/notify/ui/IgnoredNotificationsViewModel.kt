@@ -49,7 +49,7 @@ class IgnoredNotificationsViewModel(application: Application) : AndroidViewModel
         }
     }
 
-    private fun refresh() {
+    fun refresh() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = ignoreManager.getRules()
             withContext(Dispatchers.Main) { _rules.value = result }
@@ -58,7 +58,10 @@ class IgnoredNotificationsViewModel(application: Application) : AndroidViewModel
     }
 
     private suspend fun rebuildIconCache(rules: List<IgnoreRule>) {
-        if (rules.isEmpty()) return
+        if (rules.isEmpty()) {
+            withContext(Dispatchers.Main) { _iconCache.value = emptyMap() }
+            return
+        }
         val icons = withContext(Dispatchers.IO) {
             rules.map { it.packageName }.toHashSet()
                 .associateWith { AppListManager.getIconForPackage(it) }

@@ -615,7 +615,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_grant_secure_settings_title">Concedi impostazioni protette</string>
     <string name="pn_ignore_dialog_content_hint">Se non selezioni nulla, verranno ignorate TUTTE le notifiche di %1$s.</string>
     <string name="pn_ignore_dialog_content_section">Filtri sul contenuto (facoltativi)</string>
-    <string name="pn_ignore_dialog_hint_exact">Corrispondenza esatta &#8212; attiva Regex per quella parziale</string>
+    <string name="pn_ignore_dialog_hint_exact">Corrisponde se il testo contiene questo — attiva Regex per i pattern</string>
     <string name="pn_ignore_dialog_hint_regex">es. \\d+ nuovi messaggi da \\d+ chat</string>
     <string name="pn_ignore_dialog_match_body">Corrispondenza nel corpo</string>
     <string name="pn_ignore_dialog_match_title">Corrispondenza nel titolo</string>
