@@ -36,6 +36,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.filled.Warning
+import com.arslan.customanimator.BannerAdView
+import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.*
 
@@ -330,6 +332,7 @@ fun AddEditRuleSection(
     }
 
     Scaffold(
+        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = {
@@ -404,6 +407,7 @@ fun AddEditRuleSection(
                                 }
                                 shouldDiscardDraft[0] = true
                                 AddEditRuleDraft.clear(context, draftKey)
+                                maybeShowInterstitial(context)
                                 onNavigateBack()
                             }
                         },

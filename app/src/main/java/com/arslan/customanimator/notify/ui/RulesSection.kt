@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.NotificationRule
 import com.arslan.customanimator.notify.data.RuleType
@@ -35,6 +36,7 @@ fun RulesSection(
     var ruleToDelete by remember { mutableStateOf<NotificationRule?>(null) }
 
     Scaffold(
+        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.pn_rules)) },

@@ -16,6 +16,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.BannerAdView
+import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.CustomPattern
 import com.arslan.customanimator.notify.data.RulesManager
@@ -65,6 +67,7 @@ fun CreatePatternSection(
     }
 
     Scaffold(
+        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.pn_create_pattern)) },
@@ -202,6 +205,7 @@ fun CreatePatternSection(
                             )
                             rulesManager.saveCustomPattern(customPattern)
                             showNameDialog = false
+                            maybeShowInterstitial(context)
                             onNavigateBack()
                         }
                     },

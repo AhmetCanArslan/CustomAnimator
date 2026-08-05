@@ -57,6 +57,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.IgnoreRule
 import com.arslan.customanimator.notify.data.IgnoreType
@@ -75,6 +76,7 @@ fun IgnoredNotificationsSection(
     LaunchedEffect(Unit) { viewModel.refresh() }
 
     Scaffold(
+        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.pn_ignored_notifications_title)) },

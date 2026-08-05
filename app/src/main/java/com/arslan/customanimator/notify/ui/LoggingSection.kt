@@ -81,6 +81,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.arslan.customanimator.BannerAdView
+import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.IgnoreType
 import com.arslan.customanimator.notify.data.LogEntry
@@ -101,6 +103,7 @@ fun LoggingSection(
     onNavigateToAddEditRule: () -> Unit = {},
     viewModel: LoggingViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val logs by viewModel.logs.collectAsState()
     val filter by viewModel.filter.collectAsState()
     val iconCache by viewModel.iconCache.collectAsState()
@@ -119,6 +122,7 @@ fun LoggingSection(
     var isSearchVisible by remember { mutableStateOf(false) }
 
     Scaffold(
+        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.pn_logs_title)) },
@@ -376,6 +380,7 @@ fun LoggingSection(
                     bodyPattern = bodyPattern,
                     bodyIsRegex = bodyIsRegex
                 )
+                maybeShowInterstitial(context)
                 ignoreTarget = null
             }
         )
