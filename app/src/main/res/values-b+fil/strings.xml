@@ -723,4 +723,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_title">Mga notification</string>
     <string name="pn_nav_logging">Kasaysayan</string>
     <string name="pn_logs_create_rule_title">Gumawa ng rule mula sa notification?</string>
+    <string name="changelog_title">Mga bago</string>
+    <string name="changelog_version">Bersyon %1$s</string>
 </resources>

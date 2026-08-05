@@ -723,4 +723,6 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_title">Notificações</string>
     <string name="pn_nav_logging">Histórico</string>
     <string name="pn_logs_create_rule_title">Criar regra a partir da notificação?</string>
+    <string name="changelog_title">Novidades</string>
+    <string name="changelog_version">Versão %1$s</string>
 </resources>

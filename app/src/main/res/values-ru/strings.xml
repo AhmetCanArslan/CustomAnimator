@@ -723,4 +723,6 @@
     <string name="pn_title">Уведомления</string>
     <string name="pn_nav_logging">История</string>
     <string name="pn_logs_create_rule_title">Создать правило из уведомления?</string>
+    <string name="changelog_title">Что нового</string>
+    <string name="changelog_version">Версия %1$s</string>
 </resources>

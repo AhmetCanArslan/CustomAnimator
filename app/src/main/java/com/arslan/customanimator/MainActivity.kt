@@ -76,6 +76,7 @@ import com.arslan.customanimator.notify.ui.RulesSection
 import com.arslan.customanimator.service.AutoForceStopService
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.PresetManager
+import com.arslan.customanimator.utils.ChangelogManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.data.AnimatorPreset
@@ -137,6 +138,17 @@ class MainActivity : ComponentActivity() {
                         )
                     } else {
                         AnimatorSelectorScreen(this)
+
+                        var changelog by remember { mutableStateOf(ChangelogManager.unseenReleases(this)) }
+                        if (changelog.isNotEmpty()) {
+                            ChangelogDialog(
+                                releases = changelog,
+                                onDismiss = {
+                                    ChangelogManager.markCurrentSeen(this)
+                                    changelog = emptyList()
+                                }
+                            )
+                        }
                     }
                 }
             }

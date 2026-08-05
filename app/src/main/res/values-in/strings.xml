@@ -723,4 +723,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_title">Notifikasi</string>
     <string name="pn_nav_logging">Riwayat</string>
     <string name="pn_logs_create_rule_title">Buat aturan dari notifikasi ini?</string>
+    <string name="changelog_title">Yang baru</string>
+    <string name="changelog_version">Versi %1$s</string>
 </resources>

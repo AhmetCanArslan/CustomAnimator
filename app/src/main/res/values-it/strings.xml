@@ -743,4 +743,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_title">Notifiche</string>
     <string name="pn_nav_logging">Cronologia</string>
     <string name="pn_logs_create_rule_title">Creare una regola dalla notifica?</string>
+    <string name="changelog_title">Novità</string>
+    <string name="changelog_version">Versione %1$s</string>
 </resources>

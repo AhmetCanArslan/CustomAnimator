@@ -89,6 +89,18 @@ object SettingsManager {
         getPrefs(context).edit().putBoolean(KEY_ONBOARDING_COMPLETED, true).apply()
     }
 
+    const val CHANGELOG_NEVER_SEEN = -1
+
+    private const val KEY_LAST_CHANGELOG_VERSION = "last_changelog_version"
+
+    fun getLastSeenChangelogVersion(context: Context): Int {
+        return getPrefs(context).getInt(KEY_LAST_CHANGELOG_VERSION, CHANGELOG_NEVER_SEEN)
+    }
+
+    fun setLastSeenChangelogVersion(context: Context, versionCode: Int) {
+        getPrefs(context).edit().putInt(KEY_LAST_CHANGELOG_VERSION, versionCode).apply()
+    }
+
     fun hasShownAdInfoDialog(context: Context): Boolean {
         return getPrefs(context).getBoolean(KEY_AD_INFO_DIALOG_SHOWN, false)
     }
