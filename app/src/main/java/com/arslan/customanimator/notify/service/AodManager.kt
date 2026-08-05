@@ -17,35 +17,46 @@ class AodManager(private val context: Context) {
     private var aodJob: Job? = null
     private var unlockReceiver: BroadcastReceiver? = null
     private var currentAodReason: Int = 0
+    private var ownsAod: Boolean = false
 
     fun triggerAod(durationSeconds: Int) {
         aodJob?.cancel()
-        currentAodReason = durationSeconds
-
         unregisterUnlockReceiver()
+        currentAodReason = durationSeconds
 
         aodJob = scope.launch {
             try {
-                val currentState = try {
-                    Settings.Secure.getInt(context.contentResolver, "doze_always_on")
-                } catch (e: Settings.SettingNotFoundException) {
-                    0
-                }
-
-                if (currentState == 0) {
+                if (!ownsAod) {
+                    val currentState = try {
+                        Settings.Secure.getInt(context.contentResolver, "doze_always_on")
+                    } catch (e: Settings.SettingNotFoundException) {
+                        0
+                    }
+                    if (currentState != 0) {
+                        Log.d("AodManager", "AOD already enabled by user, skipping")
+                        currentAodReason = 0
+                        return@launch
+                    }
                     try {
                         Settings.Secure.putInt(context.contentResolver, "doze_always_on", 1)
+                        ownsAod = true
                         Log.d("AodManager", "AOD turned ON")
-
-                        if (durationSeconds > 0) {
-                            delay(durationSeconds * 1000L)
-                            turnOffAod()
-                        } else if (durationSeconds == -2) {
-                            registerUnlockReceiver()
-                        }
                     } catch (e: SecurityException) {
                         Log.e("AodManager", "Failed to write secure settings. Need WRITE_SECURE_SETTINGS permission granted via ADB.", e)
+                        currentAodReason = 0
+                        return@launch
                     }
+                } else {
+                    Log.d("AodManager", "AOD already on, re-arming for $durationSeconds")
+                }
+
+                when {
+                    durationSeconds > 0 -> {
+                        delay(durationSeconds * 1000L)
+                        turnOffAod()
+                        currentAodReason = 0
+                    }
+                    durationSeconds == -2 -> registerUnlockReceiver()
                 }
             } catch (e: Exception) {
                 Log.e("AodManager", "Error executing AOD rule", e)
@@ -55,16 +66,18 @@ class AodManager(private val context: Context) {
 
     fun stopAodForReason(reason: Int) {
         if (currentAodReason == reason) {
-            turnOffAod()
-            currentAodReason = 0
             aodJob?.cancel()
             unregisterUnlockReceiver()
+            turnOffAod()
+            currentAodReason = 0
         }
     }
 
     private fun turnOffAod() {
+        if (!ownsAod) return
         try {
             Settings.Secure.putInt(context.contentResolver, "doze_always_on", 0)
+            ownsAod = false
             Log.d("AodManager", "AOD turned back OFF")
         } catch (e: SecurityException) {
             Log.e("AodManager", "Failed to turn off AOD", e)
@@ -96,5 +109,7 @@ class AodManager(private val context: Context) {
     fun stop() {
         aodJob?.cancel()
         unregisterUnlockReceiver()
+        turnOffAod()
+        currentAodReason = 0
     }
 }
