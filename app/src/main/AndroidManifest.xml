@@ -316,20 +316,12 @@
             android:name=".notify.ui.ScreenFlashActivity"
             android:exported="false"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:taskAffinity=""
             android:theme="@style/Theme.CustomAnimator.ScreenFlash"
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
 
-        <activity
-            android:name=".notify.ui.ScreenWakeActivity"
-            android:exported="false"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
-            android:theme="@style/Theme.CustomAnimator.ScreenFlash"
-            android:showOnLockScreen="true"
-            android:turnScreenOn="true" />
     </application>
 
 </manifest>

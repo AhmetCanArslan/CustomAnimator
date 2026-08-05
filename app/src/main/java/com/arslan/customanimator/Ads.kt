@@ -21,7 +21,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -258,7 +257,7 @@ object AppOpenAds {
         application.registerActivityLifecycleCallbacks(
             object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityStarted(activity: Activity) {
-                    if (activity !is AdActivity) currentActivity = activity
+                    if (activity is MainActivity) currentActivity = activity
                 }
 
                 override fun onActivityDestroyed(activity: Activity) {
@@ -268,7 +267,9 @@ object AppOpenAds {
                 override fun onActivityCreated(activity: Activity, bundle: android.os.Bundle?) = Unit
                 override fun onActivityResumed(activity: Activity) = Unit
                 override fun onActivityPaused(activity: Activity) = Unit
-                override fun onActivityStopped(activity: Activity) = Unit
+                override fun onActivityStopped(activity: Activity) {
+                    if (currentActivity === activity) currentActivity = null
+                }
                 override fun onActivitySaveInstanceState(activity: Activity, bundle: android.os.Bundle) = Unit
             }
         )
@@ -318,6 +319,7 @@ object AppOpenAds {
     private fun showIfEligible() {
         if (isAdFreeNow()) return
         val activity = currentActivity ?: return
+        if (activity !is MainActivity || activity.isFinishing || activity.isDestroyed) return
         if (FullScreenAdState.isShowing) return
 
         if (SystemClock.elapsedRealtime() - processStartElapsedMs < COLD_START_GRACE_MS) {

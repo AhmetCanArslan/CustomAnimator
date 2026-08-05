@@ -12,8 +12,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,6 +57,11 @@ class ScreenFlashActivity : ComponentActivity() {
         val overlayMode = intent.getBooleanExtra(EXTRA_OVERLAY_MODE, false)
         val flashColor = Color(colorArgb)
 
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+        )
+
         WindowInsetsControllerCompat(window, window.decorView).apply {
             isAppearanceLightStatusBars = overlayMode
             isAppearanceLightNavigationBars = overlayMode
@@ -85,6 +88,11 @@ class ScreenFlashActivity : ComponentActivity() {
         try { unregisterReceiver(stopReceiver) } catch (_: Exception) {}
         super.onDestroy()
     }
+
+    override fun onPause() {
+        super.onPause()
+        if (!isChangingConfigurations) finish()
+    }
 }
 
 @Composable
@@ -95,14 +103,15 @@ private fun ScreenFlashContent(
     onFinish: () -> Unit,
 ) {
     var showColor by remember { mutableStateOf(false) }
-    val untilInteraction = durationSeconds == -1
+    val effectiveDurationSeconds = if (durationSeconds == -1) 5 else durationSeconds
+    val untilInteraction = effectiveDurationSeconds == -1
     val initialOverlayDelayMs = if (overlayMode) 0L else 500L
     val visibleFlashColor = flashColor.copy(alpha = if (overlayMode) 0.25f else 0.72f)
     val dimBackground = if (overlayMode) Color.Transparent else Color.Black.copy(alpha = 0.35f)
 
     LaunchedEffect(Unit) {
         delay(initialOverlayDelayMs)
-        val totalMs = if (untilInteraction) Long.MAX_VALUE else durationSeconds * 1000L
+        val totalMs = if (untilInteraction) Long.MAX_VALUE else effectiveDurationSeconds.coerceAtLeast(1) * 1000L
         val startTime = System.currentTimeMillis()
         while (System.currentTimeMillis() - startTime < totalMs) {
             showColor = true
@@ -128,11 +137,6 @@ private fun ScreenFlashContent(
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.systemBars)
                 .background(currentColor)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = onFinish
-                )
         )
     }
 }

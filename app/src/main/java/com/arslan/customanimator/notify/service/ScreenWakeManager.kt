@@ -1,13 +1,11 @@
 package com.arslan.customanimator.notify.service
 
 import android.content.Context
-import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.PowerManager
-import com.arslan.customanimator.notify.ui.ScreenWakeActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -86,40 +84,30 @@ class ScreenWakeManager(private val context: Context) {
     }
 
     private fun performWake(durationSeconds: Int) {
-        val effectiveDuration = if (durationSeconds > 0) durationSeconds else 10
-
-        @Suppress("DEPRECATION")
-        val wakeLock = powerManager.newWakeLock(
-            PowerManager.FULL_WAKE_LOCK
-                    or PowerManager.ACQUIRE_CAUSES_WAKEUP
-                    or PowerManager.ON_AFTER_RELEASE,
-            "CustomAnimator:NotifyScreenWake"
-        )
-        try {
-            wakeLock.acquire(3_000L)
-        } catch (_: Exception) {}
-
-        val intent = Intent(context, ScreenWakeActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            putExtra(ScreenWakeActivity.EXTRA_DURATION_SEC, effectiveDuration)
-        }
-        try {
-            context.startActivity(intent)
-        } catch (_: Exception) {}
-
         wakeJob = scope.launch {
-            delay(3_000L)
+            @Suppress("DEPRECATION")
+            val wakeLock = powerManager.newWakeLock(
+                PowerManager.FULL_WAKE_LOCK
+                        or PowerManager.ACQUIRE_CAUSES_WAKEUP
+                        or PowerManager.ON_AFTER_RELEASE,
+                "CustomAnimator:NotifyScreenWake"
+            )
             try {
+                if (durationSeconds > 0) {
+                    wakeLock.acquire(durationSeconds * 1000L)
+                    delay(durationSeconds * 1000L)
+                } else {
+                    wakeLock.acquire(100L)
+                    delay(100L)
+                }
+            } finally {
                 if (wakeLock.isHeld) wakeLock.release()
-            } catch (_: Exception) {}
+            }
         }
     }
 
     fun stop() {
         wakeJob?.cancel()
         unregisterProximityListener()
-        context.sendBroadcast(
-            Intent(ScreenWakeActivity.ACTION_STOP_WAKE).setPackage(context.packageName)
-        )
     }
 }

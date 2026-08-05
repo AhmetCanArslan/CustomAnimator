@@ -176,7 +176,7 @@ fun AddEditRuleSection(
 
     val wakeUpDurationOptions = listOf(0, 5, 10, 15, 30, 60)
     val aodDurationOptions = listOf(-1, -2, 5, 10, 15, 30, 60, 120, 300)
-    val screenFlashDurationOptions = listOf(5, 10, 30, 60, -1)
+    val screenFlashDurationOptions = listOf(5, 10, 30, 60)
 
     val atLeastOneAction = flashEnabled || wakeUpEnabled || aodEnabled || screenFlashEnabled
 
@@ -1069,10 +1069,10 @@ fun AddEditRuleSection(
                                         onExpandedChange = { expandedScreenFlashDuration = it },
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
-                                        val durationLabel = when (screenFlashDurationSeconds) {
-                                            -1 -> stringResource(R.string.pn_flash_screen_until_interaction)
-                                            else -> stringResource(R.string.pn_duration_seconds, screenFlashDurationSeconds)
-                                        }
+                                        val durationLabel = stringResource(
+                                            R.string.pn_duration_seconds,
+                                            screenFlashDurationSeconds
+                                        )
                                         OutlinedTextField(
                                             value = durationLabel,
                                             onValueChange = {},
@@ -1090,10 +1090,7 @@ fun AddEditRuleSection(
                                             onDismissRequest = { expandedScreenFlashDuration = false }
                                         ) {
                                             screenFlashDurationOptions.forEach { sec ->
-                                                val label = when (sec) {
-                                                    -1 -> stringResource(R.string.pn_flash_screen_until_interaction)
-                                                    else -> stringResource(R.string.pn_duration_seconds, sec)
-                                                }
+                                                val label = stringResource(R.string.pn_duration_seconds, sec)
                                                 DropdownMenuItem(
                                                     text = { Text(label) },
                                                     onClick = {
