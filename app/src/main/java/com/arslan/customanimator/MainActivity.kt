@@ -48,6 +48,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.KeyboardType
@@ -636,7 +637,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             Column {
                 RemoveAdsPrompt()
                 BannerAdView()
-                NavigationBar {
+                val navBarSideInset = ((384 - LocalConfiguration.current.screenWidthDp) / 10)
+                    .coerceAtLeast(0).dp
+                NavigationBar(modifier = Modifier.padding(horizontal = navBarSideInset)) {
                 NavigationBarItem(
                     selected = selectedTab == HomeTab.ANIMATION,
                     onClick = { selectedTab = HomeTab.ANIMATION },
@@ -833,7 +836,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 label = { Text(stringResource(R.string.dp_short)) },
-                                modifier = Modifier.weight(0.7f),
+                                modifier = Modifier.weight(1f),
                                 singleLine = true,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                             )
@@ -878,15 +881,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 enabled = !isApplyingSettings,
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .heightIn(min = 56.dp)
+                                modifier = Modifier.heightIn(min = 56.dp)
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
                                     fontSize = 13.sp,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+                                    maxLines = 1
                                 )
                             }
                         }
@@ -1241,15 +1241,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Spacer(modifier = Modifier.weight(0.7f))
+                            Spacer(modifier = Modifier.weight(1f))
                             Button(
                                 onClick = {
                                     applySelectedAnimationScales()
                                 },
                                 enabled = !isApplyingSettings,
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .heightIn(min = 50.dp),
+                                modifier = Modifier.heightIn(min = 50.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 )
@@ -1330,7 +1328,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 label = { Text(inputLabel) },
-                                modifier = Modifier.weight(0.7f),
+                                modifier = Modifier.weight(1f),
                                 singleLine = true,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                             )
@@ -1340,9 +1338,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     applySelectedAnimationScales()
                                 },
                                 enabled = !isApplyingSettings,
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .heightIn(min = 56.dp),
+                                modifier = Modifier.heightIn(min = 56.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
                                 )

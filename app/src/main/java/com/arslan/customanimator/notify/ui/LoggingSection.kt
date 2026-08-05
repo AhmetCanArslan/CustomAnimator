@@ -125,7 +125,14 @@ fun LoggingSection(
         bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.pn_logs_title)) },
+                title = {
+                    Text(
+                        stringResource(R.string.pn_logs_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -143,14 +150,6 @@ fun LoggingSection(
                             imageVector = if (isSearchVisible) Icons.Default.Close else Icons.Default.Search,
                             contentDescription = stringResource(R.string.pn_logs_search_cd)
                         )
-                    }
-                    if (logs.isNotEmpty()) {
-                        IconButton(onClick = { showClearDialog = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(R.string.clear)
-                            )
-                        }
                     }
                     Box {
                         IconButton(onClick = { showOverflowMenu = true }) {
@@ -189,6 +188,21 @@ fun LoggingSection(
                                     )
                                 }
                             )
+                            if (logs.isNotEmpty()) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.clear)) },
+                                    onClick = {
+                                        showOverflowMenu = false
+                                        showClearDialog = true
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Delete,
+                                            contentDescription = null
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }

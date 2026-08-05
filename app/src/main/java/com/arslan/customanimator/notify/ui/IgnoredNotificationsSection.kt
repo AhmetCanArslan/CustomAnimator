@@ -79,7 +79,14 @@ fun IgnoredNotificationsSection(
         bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.pn_ignored_notifications_title)) },
+                title = {
+                    Text(
+                        stringResource(R.string.pn_ignored_notifications_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

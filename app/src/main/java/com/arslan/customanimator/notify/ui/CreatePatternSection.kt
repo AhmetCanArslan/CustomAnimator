@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.maybeShowInterstitial
@@ -70,7 +71,13 @@ fun CreatePatternSection(
         bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.pn_create_pattern)) },
+                title = {
+                    Text(
+                        stringResource(R.string.pn_create_pattern),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.pn_cd_back))

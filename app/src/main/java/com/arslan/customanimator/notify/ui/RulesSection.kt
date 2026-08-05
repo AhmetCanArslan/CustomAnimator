@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.R
@@ -39,7 +40,13 @@ fun RulesSection(
         bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.pn_rules)) },
+                title = {
+                    Text(
+                        stringResource(R.string.pn_rules),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(

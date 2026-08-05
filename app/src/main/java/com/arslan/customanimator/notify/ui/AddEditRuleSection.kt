@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.filled.Warning
@@ -41,7 +42,7 @@ import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.*
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AddEditRuleSection(
     ruleId: String?,
@@ -338,7 +339,9 @@ fun AddEditRuleSection(
                 title = {
                     Text(
                         if (initialRule != null) stringResource(R.string.pn_edit_rule_title)
-                        else stringResource(R.string.pn_create_rule_title)
+                        else stringResource(R.string.pn_create_rule_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
@@ -1124,9 +1127,9 @@ fun AddEditRuleSection(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
-                        Row(
+                        FlowRow(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             Row(
                                 modifier = Modifier.clickable { applyOnVibration = !applyOnVibration },
