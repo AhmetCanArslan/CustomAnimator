@@ -727,5 +727,5 @@ Duração do Animador: %3$.2f</string>
     <string name="changelog_title">Novidades</string>
     <string name="changelog_version">Versão %1$s</string>
     <string name="pn_service_channel_group">Serviço em segundo plano</string>
-    <string name="pn_notification_persistent_hide_hint">Toque nesta notificação para ocultá-la. O detector continua ativo.</string>
+    <string name="pn_notification_persistent_settings_hint">Toque nesta notificação para gerenciar sua categoria em Configurações.</string>
 </resources>

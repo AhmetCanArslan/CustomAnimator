@@ -5,13 +5,12 @@ import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.content.pm.PackageManager
 import android.media.AudioManager
+import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
@@ -43,7 +42,6 @@ class NotifyListenerService : NotificationListenerService() {
     private lateinit var loggingManager: LoggingManager
     private lateinit var loggingPreferences: LoggingPreferences
     private var lastPurgeTime = 0L
-    private var hideReceiver: BroadcastReceiver? = null
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {
@@ -56,13 +54,11 @@ class NotifyListenerService : NotificationListenerService() {
         screenFlashManager = ScreenFlashManager(this)
         loggingManager = LoggingManager.getInstance(this)
         loggingPreferences = LoggingPreferences(this)
-        registerHideReceiver()
         startPersistentNotification()
     }
 
     override fun onDestroy() {
         ioScope.cancel()
-        unregisterHideReceiver()
         flashManager.stop()
         screenWakeManager.stop()
         aodManager.stop()
@@ -249,10 +245,20 @@ class NotifyListenerService : NotificationListenerService() {
             nm.createNotificationChannel(channel)
         }
 
-        val hideIntent = PendingIntent.getBroadcast(
+        val settingsIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                putExtra(Settings.EXTRA_CHANNEL_ID, PERSISTENT_CHANNEL_ID)
+            }
+        } else {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            }
+        }
+        val settingsPendingIntent = PendingIntent.getActivity(
             this,
             0,
-            Intent(ACTION_HIDE_PERSISTENT_NOTIFICATION).setPackage(packageName),
+            settingsIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -263,7 +269,7 @@ class NotifyListenerService : NotificationListenerService() {
                 NotificationCompat.BigTextStyle()
                     .bigText(
                         getString(R.string.pn_notification_persistent_text) + "\n" +
-                            getString(R.string.pn_notification_persistent_hide_hint)
+                            getString(R.string.pn_notification_persistent_settings_hint)
                     )
             )
             .setSmallIcon(R.drawable.ic_notification_prime)
@@ -273,54 +279,15 @@ class NotifyListenerService : NotificationListenerService() {
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
             .setShowWhen(false)
             .setSilent(true)
-            .setContentIntent(hideIntent)
+            .setContentIntent(settingsPendingIntent)
             .build()
 
         startForeground(PERSISTENT_NOTIFICATION_ID, notification)
-
-        if (isPersistentNotificationHidden(this)) {
-            hidePersistentNotification()
-        }
-    }
-
-    private fun hidePersistentNotification() {
-        setPersistentNotificationHidden(this, true)
-        stopForeground(STOP_FOREGROUND_REMOVE)
-    }
-
-    private fun registerHideReceiver() {
-        if (hideReceiver != null) return
-        val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                if (intent?.action == ACTION_HIDE_PERSISTENT_NOTIFICATION) {
-                    hidePersistentNotification()
-                }
-            }
-        }
-        hideReceiver = receiver
-        val filter = IntentFilter(ACTION_HIDE_PERSISTENT_NOTIFICATION)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED)
-        } else {
-            @Suppress("UnspecifiedRegisterReceiverFlag")
-            registerReceiver(receiver, filter)
-        }
-    }
-
-    private fun unregisterHideReceiver() {
-        hideReceiver?.let {
-            try {
-                unregisterReceiver(it)
-            } catch (_: Exception) {}
-            hideReceiver = null
-        }
     }
 
     companion object {
         private const val PERSISTENT_CHANNEL_ID = "notify_listener_channel"
         private const val PERSISTENT_CHANNEL_GROUP_ID = "notify_listener_service_group"
         private const val PERSISTENT_NOTIFICATION_ID = 4501
-        const val ACTION_HIDE_PERSISTENT_NOTIFICATION =
-            "com.arslan.customanimator.HIDE_PERSISTENT_NOTIFICATION"
     }
 }
