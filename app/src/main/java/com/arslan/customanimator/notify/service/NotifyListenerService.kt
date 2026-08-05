@@ -85,9 +85,6 @@ class NotifyListenerService : NotificationListenerService() {
         val shouldProcess = NotificationGate.shouldProcess(
             isServiceEnabled = isPrimeNotifyServiceEnabled(this),
             isOwnServiceNotification = isOwnServiceNotification,
-            isGroupSummary = sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY != 0,
-            title = title,
-            body = bodyRaw,
         )
         if (!shouldProcess) {
             super.onNotificationPosted(sbn)
@@ -179,22 +176,16 @@ class NotifyListenerService : NotificationListenerService() {
         val shouldPurge = loggingPreferences.autoDeleteDays > 0 &&
             now - lastPurgeTime > 24 * 60 * 60 * 1000L
         if (shouldPurge) lastPurgeTime = now
-        val shouldLog = allLoggedRules.isNotEmpty() || !loggingPreferences.onlyRuleMatched
-
-        if (shouldPurge || shouldLog) {
-            val retentionDays = loggingPreferences.autoDeleteDays
-            ioScope.launch {
-                if (shouldPurge) loggingManager.purgeOlderThan(retentionDays)
-                if (shouldLog) {
-                    loggingManager.logNotification(
-                        packageName = packageName,
-                        appName = appName,
-                        title = title,
-                        body = bodyRaw,
-                        matchedRules = allLoggedRules,
-                    )
-                }
-            }
+        val retentionDays = loggingPreferences.autoDeleteDays
+        ioScope.launch {
+            if (shouldPurge) loggingManager.purgeOlderThan(retentionDays)
+            loggingManager.logNotification(
+                packageName = packageName,
+                appName = appName,
+                title = title,
+                body = bodyRaw,
+                matchedRules = allLoggedRules,
+            )
         }
 
         super.onNotificationPosted(sbn)

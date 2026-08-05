@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,9 +46,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -105,11 +101,8 @@ fun LoggingSection(
 ) {
     val context = LocalContext.current
     val logs by viewModel.logs.collectAsState()
-    val filter by viewModel.filter.collectAsState()
     val iconCache by viewModel.iconCache.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
-    val onlyRuleMatched by viewModel.onlyRuleMatched.collectAsState()
-    val showSystemApps by viewModel.showSystemApps.collectAsState()
     val autoDeleteDays by viewModel.autoDeleteDays.collectAsState()
     val focusManager = LocalFocusManager.current
 
@@ -243,49 +236,6 @@ fun LoggingSection(
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                     keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
                 )
-            }
-
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                item {
-                    FilterChip(
-                        selected = filter == null,
-                        onClick = { viewModel.setFilter(null) },
-                        label = { Text(stringResource(R.string.pn_logs_filter_all)) }
-                    )
-                }
-                item {
-                    FilterChip(
-                        selected = filter == RuleType.FLASH,
-                        onClick = { viewModel.setFilter(RuleType.FLASH) },
-                        label = { Text(stringResource(R.string.pn_logs_filter_flash)) }
-                    )
-                }
-                item {
-                    FilterChip(
-                        selected = filter == RuleType.WAKE_UP,
-                        onClick = { viewModel.setFilter(RuleType.WAKE_UP) },
-                        label = { Text(stringResource(R.string.pn_logs_filter_wake_up)) }
-                    )
-                }
-                item {
-                    FilterChip(
-                        selected = filter == RuleType.AOD,
-                        onClick = { viewModel.setFilter(RuleType.AOD) },
-                        label = { Text(stringResource(R.string.pn_logs_filter_aod)) }
-                    )
-                }
-                item {
-                    FilterChip(
-                        selected = filter == RuleType.FLASH_SCREEN,
-                        onClick = { viewModel.setFilter(RuleType.FLASH_SCREEN) },
-                        label = { Text(stringResource(R.string.pn_flash_screen_title)) }
-                    )
-                }
             }
 
             if (logs.isEmpty()) {
@@ -466,11 +416,7 @@ fun LoggingSection(
     if (showSettingsDialog) {
         LogSettingsDialog(
             autoDeleteDays = autoDeleteDays,
-            onlyRuleMatched = onlyRuleMatched,
-            showSystemApps = showSystemApps,
             onAutoDeleteDaysChanged = { viewModel.setAutoDeleteDays(it) },
-            onOnlyRuleMatchedChanged = { viewModel.setOnlyRuleMatched(it) },
-            onShowSystemAppsChanged = { viewModel.setShowSystemApps(it) },
             onDismiss = { showSettingsDialog = false }
         )
     }
@@ -479,11 +425,7 @@ fun LoggingSection(
 @Composable
 private fun LogSettingsDialog(
     autoDeleteDays: Int,
-    onlyRuleMatched: Boolean,
-    showSystemApps: Boolean,
     onAutoDeleteDaysChanged: (Int) -> Unit,
-    onOnlyRuleMatchedChanged: (Boolean) -> Unit,
-    onShowSystemAppsChanged: (Boolean) -> Unit,
     onDismiss: () -> Unit
 ) {
     val deleteOptions = listOf(
@@ -529,59 +471,6 @@ private fun LogSettingsDialog(
                     }
                 }
 
-                HorizontalDivider()
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.pn_logs_only_rule_matched),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            text = stringResource(R.string.pn_logs_only_rule_matched_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Switch(
-                        checked = onlyRuleMatched,
-                        onCheckedChange = onOnlyRuleMatchedChanged
-                    )
-                }
-
-                AnimatedVisibility(
-                    visible = !onlyRuleMatched,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.pn_logs_show_system_apps),
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                text = stringResource(R.string.pn_logs_show_system_apps_desc),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Switch(
-                            checked = showSystemApps,
-                            onCheckedChange = onShowSystemAppsChanged
-                        )
-                    }
-                }
             }
         },
         confirmButton = {

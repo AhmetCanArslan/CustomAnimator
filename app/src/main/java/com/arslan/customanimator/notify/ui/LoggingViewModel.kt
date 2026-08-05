@@ -11,7 +11,6 @@ import com.arslan.customanimator.notify.data.IgnoreType
 import com.arslan.customanimator.notify.data.LogEntry
 import com.arslan.customanimator.notify.data.LoggingManager
 import com.arslan.customanimator.notify.data.LoggingPreferences
-import com.arslan.customanimator.notify.data.RuleType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,9 +28,6 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
     private val ignoreManager = IgnoreManager(application)
     val loggingPreferences = LoggingPreferences(application)
 
-    private val _filter = MutableStateFlow<RuleType?>(null)
-    val filter: StateFlow<RuleType?> = _filter.asStateFlow()
-
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
@@ -42,14 +38,6 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
 
     private val _iconCache = MutableStateFlow<Map<String, ImageBitmap?>>(emptyMap())
     val iconCache: StateFlow<Map<String, ImageBitmap?>> = _iconCache.asStateFlow()
-
-    private val _filterTrigger = MutableStateFlow(0)
-
-    private val _onlyRuleMatched = MutableStateFlow(loggingPreferences.onlyRuleMatched)
-    val onlyRuleMatched: StateFlow<Boolean> = _onlyRuleMatched.asStateFlow()
-
-    private val _showSystemApps = MutableStateFlow(loggingPreferences.showSystemApps)
-    val showSystemApps: StateFlow<Boolean> = _showSystemApps.asStateFlow()
 
     private val _autoDeleteDays = MutableStateFlow(loggingPreferences.autoDeleteDays)
     val autoDeleteDays: StateFlow<Int> = _autoDeleteDays.asStateFlow()
@@ -68,20 +56,14 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
                 .collectLatest { loaded ->
                     if (loaded) {
                         rebuildIconCache()
-                        applyFilters()
                     }
                 }
         }
 
         viewModelScope.launch {
-            combine(_rawLogs, _searchQuery, _onlyRuleMatched, _showSystemApps, _filterTrigger) { args ->
+            combine(_rawLogs, _searchQuery) { raw, query ->
                 @Suppress("UNCHECKED_CAST")
-                filterLogs(
-                    args[0] as List<LogEntry>,
-                    args[1] as String,
-                    args[2] as Boolean,
-                    args[3] as Boolean,
-                )
+                filterLogs(raw, query)
             }.collectLatest { filtered ->
                 _logs.value = filtered
             }
@@ -92,22 +74,12 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         _searchQuery.value = query
     }
 
-    fun setOnlyRuleMatched(value: Boolean) {
-        loggingPreferences.onlyRuleMatched = value
-        _onlyRuleMatched.value = value
-    }
-
-    fun setShowSystemApps(value: Boolean) {
-        loggingPreferences.showSystemApps = value
-        _showSystemApps.value = value
-    }
-
     fun setAutoDeleteDays(days: Int) {
         loggingPreferences.autoDeleteDays = days
         _autoDeleteDays.value = days
         viewModelScope.launch(Dispatchers.IO) {
             loggingManager.purgeOlderThan(days)
-            val result = loggingManager.getLogs(_filter.value)
+            val result = loggingManager.getLogs()
             withContext(Dispatchers.Main) { _rawLogs.value = result }
         }
     }
@@ -219,11 +191,6 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun setFilter(type: RuleType?) {
-        _filter.value = type
-        refreshLogs()
-    }
-
     fun clearLogs() {
         viewModelScope.launch(Dispatchers.IO) {
             loggingManager.clearLogs()
@@ -237,52 +204,33 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
     fun deleteLog(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             loggingManager.deleteLog(id)
-            val result = loggingManager.getLogs(_filter.value)
+            val result = loggingManager.getLogs()
             withContext(Dispatchers.Main) { _rawLogs.value = result }
         }
     }
 
     private fun refreshLogs() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loggingManager.getLogs(_filter.value)
+            val result = loggingManager.getLogs()
             withContext(Dispatchers.Main) { _rawLogs.value = result }
             val icons = buildIconCache(result)
             withContext(Dispatchers.Main) { _iconCache.value = icons }
         }
     }
 
-    private fun applyFilters() {
-        _filterTrigger.value++
-    }
-
     private fun filterLogs(
         raw: List<LogEntry>,
-        query: String,
-        onlyRuleMatched: Boolean,
-        showSystemApps: Boolean
+        query: String
     ): List<LogEntry> {
-        var result = raw
-
-        if (onlyRuleMatched) {
-            result = result.filter { it.matchedRules.isNotEmpty() }
-        }
-
-        if (!onlyRuleMatched && !showSystemApps) {
-            val knownPackages = AppListManager.installedApps.value.map { it.packageName }.toHashSet()
-            if (knownPackages.isNotEmpty()) {
-                result = result.filter { it.packageName in knownPackages }
-            }
-        }
-
         if (query.isNotBlank()) {
             val q = query.lowercase()
-            result = result.filter { entry ->
+            return raw.filter { entry ->
                 entry.appName.lowercase().contains(q) ||
                     entry.title.lowercase().contains(q) ||
                     entry.body.lowercase().contains(q)
             }
         }
-        return result
+        return raw
     }
 
     private suspend fun rebuildIconCache() {
