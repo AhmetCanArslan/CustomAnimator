@@ -10,11 +10,15 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,6 +58,11 @@ class ScreenFlashActivity : ComponentActivity() {
         val durationSec = intent.getIntExtra(EXTRA_DURATION_SEC, 5)
         val overlayMode = intent.getBooleanExtra(EXTRA_OVERLAY_MODE, false)
         val flashColor = Color(colorArgb)
+
+        WindowInsetsControllerCompat(window, window.decorView).apply {
+            isAppearanceLightStatusBars = overlayMode
+            isAppearanceLightNavigationBars = overlayMode
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(stopReceiver, IntentFilter(ACTION_STOP_FLASH), RECEIVER_NOT_EXPORTED)
@@ -117,6 +126,7 @@ private fun ScreenFlashContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
                 .background(currentColor)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
