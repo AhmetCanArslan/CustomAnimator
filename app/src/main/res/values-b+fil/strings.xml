@@ -607,6 +607,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Kasalukuyang nakasilent ang lahat ng notification ng app na ito. Magdagdag ng title o body pattern sa ibaba para paliitin ang saklaw.</string>
     <string name="pn_ignored_edit_app_scope">Saklaw ng app: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Para lang sa mga notification ng app na ito ang rule na ito.</string>
+    <string name="pn_ignore_scope_note">Itinatago lang ng pagbalewala ang mga notification sa in-app na history. Hindi nito hinaharangan ang mismong notification o naaapektuhan ang ibang feature ng app.</string>
     <string name="pn_ignored_edit_cd">I-edit ang mute rule</string>
     <string name="pn_ignored_edit_dialog_title">I-edit ang mute rule</string>
     <string name="pn_ignored_edit_match_body">Pattern ng body</string>

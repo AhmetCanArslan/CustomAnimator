@@ -630,6 +630,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_ignored_edit_app_only_hint">Currently muting all notifications from this app. Add a header or body pattern below to narrow the rule to specific notifications.</string>
     <string name="pn_ignored_edit_app_scope">App scope: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">This rule applies only to notifications from this app.</string>
+    <string name="pn_ignore_scope_note">Ignoring only hides notifications from the in-app history. It does not block the notification itself or affect other app features.</string>
     <string name="pn_ignored_edit_cd">Edit mute rule</string>
     <string name="pn_ignored_edit_dialog_title">Edit Mute Rule</string>
     <string name="pn_ignored_edit_match_body">Body pattern</string>

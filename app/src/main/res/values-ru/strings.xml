@@ -607,6 +607,7 @@
     <string name="pn_ignored_edit_app_only_hint">Сейчас заглушаются все уведомления этого приложения. Добавьте ниже шаблон заголовка или текста, чтобы сузить правило.</string>
     <string name="pn_ignored_edit_app_scope">Область приложения: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Это правило применяется только к уведомлениям этого приложения.</string>
+    <string name="pn_ignore_scope_note">Игнорирование только скрывает уведомления из истории в приложении. Оно не блокирует само уведомление и не влияет на другие функции приложения.</string>
     <string name="pn_ignored_edit_cd">Изменить правило заглушения</string>
     <string name="pn_ignored_edit_dialog_title">Изменить правило заглушения</string>
     <string name="pn_ignored_edit_match_body">Шаблон текста</string>

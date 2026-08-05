@@ -916,6 +916,12 @@ private fun IgnoreDialog(
                 }
 
                 Text(
+                    text = stringResource(R.string.pn_ignore_scope_note),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Text(
                     text = stringResource(R.string.pn_ignore_dialog_content_section),
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.SemiBold

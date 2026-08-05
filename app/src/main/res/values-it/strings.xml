@@ -627,6 +627,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_ignored_edit_app_only_hint">Al momento vengono silenziate tutte le notifiche di questa app. Aggiungi sotto un pattern di titolo o corpo per restringere la regola.</string>
     <string name="pn_ignored_edit_app_scope">Ambito app: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Questa regola vale solo per le notifiche di questa app.</string>
+    <string name="pn_ignore_scope_note">Ignorare nasconde le notifiche solo dalla cronologia nell\'app. Non blocca la notifica stessa né influisce sulle altre funzioni dell\'app.</string>
     <string name="pn_ignored_edit_cd">Modifica regola di silenziamento</string>
     <string name="pn_ignored_edit_dialog_title">Modifica regola di silenziamento</string>
     <string name="pn_ignored_edit_match_body">Pattern del corpo</string>

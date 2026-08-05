@@ -607,6 +607,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Şu anda bu uygulamanın tüm bildirimleri susturuluyor. Kuralı belirli bildirimlerle sınırlamak için aşağıya bir başlık veya gövde deseni ekleyin.</string>
     <string name="pn_ignored_edit_app_scope">Uygulama kapsamı: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Bu kural yalnızca bu uygulamadan gelen bildirimler için geçerlidir.</string>
+    <string name="pn_ignore_scope_note">Yok sayma, bildirimleri yalnızca uygulama içi geçmişten gizler. Bildirimin kendisini engellemez ve diğer uygulama özelliklerini etkilemez.</string>
     <string name="pn_ignored_edit_cd">Susturma kuralını düzenle</string>
     <string name="pn_ignored_edit_dialog_title">Susturma Kuralını Düzenle</string>
     <string name="pn_ignored_edit_match_body">Gövde deseni</string>

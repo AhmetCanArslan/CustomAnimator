@@ -96,13 +96,24 @@ fun IgnoredNotificationsSection(
                     .padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.pn_ignored_notifications_empty),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 32.dp)
-                )
+                Column(
+                    modifier = Modifier.padding(horizontal = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.pn_ignored_notifications_empty),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                    Text(
+                        text = stringResource(R.string.pn_ignore_scope_note),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                }
             }
         } else {
             LazyColumn(
@@ -115,6 +126,20 @@ fun IgnoredNotificationsSection(
                     vertical = 8.dp
                 )
             ) {
+                item {
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.pn_ignore_scope_note),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp)
+                        )
+                    }
+                }
                 items(rules, key = { it.id }) { rule ->
                     IgnoredRuleItem(
                         rule = rule,

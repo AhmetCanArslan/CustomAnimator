@@ -607,6 +607,7 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Ahora se silencian todas las notificaciones de esta app. Agrega abajo un patrón de título o cuerpo para acotar la regla.</string>
     <string name="pn_ignored_edit_app_scope">Alcance de la app: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Esta regla solo se aplica a las notificaciones de esta app.</string>
+    <string name="pn_ignore_scope_note">Ignorar solo oculta las notificaciones del historial dentro de la app. No bloquea la notificación en sí ni afecta otras funciones de la app.</string>
     <string name="pn_ignored_edit_cd">Editar regla de silencio</string>
     <string name="pn_ignored_edit_dialog_title">Editar regla de silencio</string>
     <string name="pn_ignored_edit_match_body">Patrón del cuerpo</string>

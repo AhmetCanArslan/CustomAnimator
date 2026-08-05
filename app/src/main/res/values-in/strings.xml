@@ -607,6 +607,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Saat ini semua notifikasi dari aplikasi ini dibisukan. Tambahkan pola judul atau isi di bawah untuk mempersempit aturan.</string>
     <string name="pn_ignored_edit_app_scope">Cakupan aplikasi: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Aturan ini hanya berlaku untuk notifikasi dari aplikasi ini.</string>
+    <string name="pn_ignore_scope_note">Mengabaikan hanya menyembunyikan notifikasi dari riwayat dalam aplikasi. Ini tidak memblokir notifikasinya sendiri atau memengaruhi fitur aplikasi lainnya.</string>
     <string name="pn_ignored_edit_cd">Edit aturan bisu</string>
     <string name="pn_ignored_edit_dialog_title">Edit aturan bisu</string>
     <string name="pn_ignored_edit_match_body">Pola isi</string>
