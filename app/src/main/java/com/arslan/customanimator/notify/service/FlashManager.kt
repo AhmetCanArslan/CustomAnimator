@@ -22,12 +22,14 @@ class FlashManager(context: Context) {
     }
 
     private var flashJob: Job? = null
+    private var generation = 0
     private val scope = CoroutineScope(Dispatchers.Default)
 
     fun executePattern(pattern: FlashPattern) {
         if (cameraId == null) return
 
         flashJob?.cancel()
+        val myGeneration = ++generation
         flashJob = scope.launch {
             try {
                 when (pattern) {
@@ -36,7 +38,7 @@ class FlashManager(context: Context) {
                 }
             } catch (e: Exception) {
             } finally {
-                turnOffFlash()
+                if (myGeneration == generation) turnOffFlash()
             }
         }
     }
@@ -45,6 +47,7 @@ class FlashManager(context: Context) {
         if (cameraId == null || intervals.isEmpty()) return
 
         flashJob?.cancel()
+        val myGeneration = ++generation
         flashJob = scope.launch {
             try {
                 val startTime = System.currentTimeMillis()
@@ -64,7 +67,7 @@ class FlashManager(context: Context) {
                 }
             } catch (e: Exception) {
             } finally {
-                turnOffFlash()
+                if (myGeneration == generation) turnOffFlash()
             }
         }
     }
@@ -119,6 +122,7 @@ class FlashManager(context: Context) {
     }
 
     fun stop() {
+        generation++
         flashJob?.cancel()
         turnOffFlash()
     }

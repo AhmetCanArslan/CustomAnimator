@@ -3,6 +3,8 @@ package com.arslan.customanimator.notify.service
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.os.PowerManager
 import com.arslan.customanimator.notify.data.ScreenFlashColor
 import com.arslan.customanimator.notify.ui.ScreenFlashActivity
@@ -28,6 +30,11 @@ class ScreenFlashManager(private val context: Context) {
                 "CustomAnimator:NotifyScreenFlashWake"
             )
             wl.acquire(3_000L)
+            Handler(Looper.getMainLooper()).postDelayed({
+                try {
+                    if (wl.isHeld) wl.release()
+                } catch (_: Exception) {}
+            }, 3_000L)
         }
 
         val intent = Intent(context, ScreenFlashActivity::class.java).apply {

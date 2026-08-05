@@ -726,4 +726,6 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_logs_create_rule_title">¿Crear una regla desde la notificación?</string>
     <string name="changelog_title">Novedades</string>
     <string name="changelog_version">Versión %1$s</string>
+    <string name="pn_service_channel_group">Servicio en segundo plano</string>
+    <string name="pn_notification_persistent_hide_hint">Toca esta notificación para ocultarla. El detector sigue funcionando.</string>
 </resources>

@@ -2,8 +2,13 @@ package com.arslan.customanimator.notify.service
 
 import android.app.Notification
 import android.app.NotificationChannel
+import android.app.NotificationChannelGroup
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.content.pm.PackageManager
 import android.media.AudioManager
@@ -17,8 +22,15 @@ import com.arslan.customanimator.notify.data.LoggingManager
 import com.arslan.customanimator.notify.data.LoggingPreferences
 import com.arslan.customanimator.notify.data.MatchedRuleInfo
 import com.arslan.customanimator.notify.data.RuleType
+import com.arslan.customanimator.notify.data.NotificationGate
+import com.arslan.customanimator.notify.data.RuleMatcher
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.data.ScreenFlashColor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 class NotifyListenerService : NotificationListenerService() {
 
@@ -31,6 +43,8 @@ class NotifyListenerService : NotificationListenerService() {
     private lateinit var loggingManager: LoggingManager
     private lateinit var loggingPreferences: LoggingPreferences
     private var lastPurgeTime = 0L
+    private var hideReceiver: BroadcastReceiver? = null
+    private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     override fun onCreate() {
         super.onCreate()
@@ -42,10 +56,13 @@ class NotifyListenerService : NotificationListenerService() {
         screenFlashManager = ScreenFlashManager(this)
         loggingManager = LoggingManager.getInstance(this)
         loggingPreferences = LoggingPreferences(this)
+        registerHideReceiver()
         startPersistentNotification()
     }
 
     override fun onDestroy() {
+        ioScope.cancel()
+        unregisterHideReceiver()
         flashManager.stop()
         screenWakeManager.stop()
         aodManager.stop()
@@ -55,7 +72,7 @@ class NotifyListenerService : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
-        if (!isPrimeNotifyServiceEnabled(this) || sbn == null) return
+        if (sbn == null) return
 
         val packageName = sbn.packageName
         val extras = sbn.notification.extras
@@ -65,7 +82,18 @@ class NotifyListenerService : NotificationListenerService() {
         val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
         val bodyRaw = bigText.ifBlank { text }
 
-        if (title.isBlank() && bodyRaw.isBlank()) {
+        val isOwnServiceNotification = packageName == this.packageName &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            sbn.notification.channelId == PERSISTENT_CHANNEL_ID
+
+        val shouldProcess = NotificationGate.shouldProcess(
+            isServiceEnabled = isPrimeNotifyServiceEnabled(this),
+            isOwnServiceNotification = isOwnServiceNotification,
+            isGroupSummary = sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY != 0,
+            title = title,
+            body = bodyRaw,
+        )
+        if (!shouldProcess) {
             super.onNotificationPosted(sbn)
             return
         }
@@ -74,10 +102,6 @@ class NotifyListenerService : NotificationListenerService() {
             super.onNotificationPosted(sbn)
             return
         }
-
-        val searchBody = "$title $text $bigText".lowercase()
-        val titleLower = title.lowercase()
-        val bodyLower = "$text $bigText".lowercase()
 
         val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val ringerMode = am.ringerMode
@@ -99,19 +123,15 @@ class NotifyListenerService : NotificationListenerService() {
         }
 
         for (rule in rulesManager.getRules().filter { it.isEnabled }) {
-            val isMatch = rule.packageNames.contains(packageName) &&
-                (rule.keywords.isEmpty() || rule.keywords.any { kw -> searchBody.contains(kw.lowercase()) }) &&
-                (rule.titleKeywords.isEmpty() || rule.titleKeywords.any { kw -> titleLower.contains(kw.lowercase()) }) &&
-                (rule.bodyKeywords.isEmpty() || rule.bodyKeywords.any { kw -> bodyLower.contains(kw.lowercase()) })
-            if (!isMatch) continue
+            if (!RuleMatcher.matches(rule, packageName, title, text, bigText)) continue
 
-            var shouldExecute = true
-            if (rule.preventMultipleNotifications && rulesManager.shouldThrottleRule(rule.id)) {
-                shouldExecute = false
-            }
-            if (isVibration && !rule.applyOnVibration) shouldExecute = false
-            if (isSilent && !rule.applyOnSilent) shouldExecute = false
-            if (isDND && !rule.applyOnDND) shouldExecute = false
+            val shouldExecute = RuleMatcher.shouldExecute(
+                rule = rule,
+                isThrottled = rulesManager.shouldThrottleRule(rule.id),
+                isVibration = isVibration,
+                isSilent = isSilent,
+                isDND = isDND,
+            )
 
             if (shouldExecute) rulesManager.updateRuleExecutionTime(rule.id)
 
@@ -160,21 +180,25 @@ class NotifyListenerService : NotificationListenerService() {
         }
 
         val now = System.currentTimeMillis()
-        if (loggingPreferences.autoDeleteDays > 0 &&
+        val shouldPurge = loggingPreferences.autoDeleteDays > 0 &&
             now - lastPurgeTime > 24 * 60 * 60 * 1000L
-        ) {
-            loggingManager.purgeOlderThan(loggingPreferences.autoDeleteDays)
-            lastPurgeTime = now
-        }
+        if (shouldPurge) lastPurgeTime = now
+        val shouldLog = allLoggedRules.isNotEmpty() || !loggingPreferences.onlyRuleMatched
 
-        if (allLoggedRules.isNotEmpty() || !loggingPreferences.onlyRuleMatched) {
-            loggingManager.logNotification(
-                packageName = packageName,
-                appName = appName,
-                title = title,
-                body = bodyRaw,
-                matchedRules = allLoggedRules,
-            )
+        if (shouldPurge || shouldLog) {
+            val retentionDays = loggingPreferences.autoDeleteDays
+            ioScope.launch {
+                if (shouldPurge) loggingManager.purgeOlderThan(retentionDays)
+                if (shouldLog) {
+                    loggingManager.logNotification(
+                        packageName = packageName,
+                        appName = appName,
+                        title = title,
+                        body = bodyRaw,
+                        matchedRules = allLoggedRules,
+                    )
+                }
+            }
         }
 
         super.onNotificationPosted(sbn)
@@ -203,31 +227,100 @@ class NotifyListenerService : NotificationListenerService() {
     private fun startPersistentNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.createNotificationChannelGroup(
+                NotificationChannelGroup(
+                    PERSISTENT_CHANNEL_GROUP_ID,
+                    getString(R.string.pn_service_channel_group)
+                )
+            )
             val channel = NotificationChannel(
                 PERSISTENT_CHANNEL_ID,
                 getString(R.string.pn_service_title),
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_MIN
             ).apply {
                 description = getString(R.string.pn_notification_persistent_text)
+                group = PERSISTENT_CHANNEL_GROUP_ID
                 setShowBadge(false)
+                enableVibration(false)
+                enableLights(false)
+                setSound(null, null)
+                lockscreenVisibility = Notification.VISIBILITY_SECRET
             }
             nm.createNotificationChannel(channel)
         }
 
+        val hideIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            Intent(ACTION_HIDE_PERSISTENT_NOTIFICATION).setPackage(packageName),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(this, PERSISTENT_CHANNEL_ID)
             .setContentTitle(getString(R.string.pn_service_title))
             .setContentText(getString(R.string.pn_notification_persistent_text))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(
+                        getString(R.string.pn_notification_persistent_text) + "\n" +
+                            getString(R.string.pn_notification_persistent_hide_hint)
+                    )
+            )
             .setSmallIcon(R.drawable.ic_notification_prime)
             .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_MIN)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)
+            .setShowWhen(false)
             .setSilent(true)
+            .setContentIntent(hideIntent)
             .build()
 
         startForeground(PERSISTENT_NOTIFICATION_ID, notification)
+
+        if (isPersistentNotificationHidden(this)) {
+            hidePersistentNotification()
+        }
+    }
+
+    private fun hidePersistentNotification() {
+        setPersistentNotificationHidden(this, true)
+        stopForeground(STOP_FOREGROUND_REMOVE)
+    }
+
+    private fun registerHideReceiver() {
+        if (hideReceiver != null) return
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == ACTION_HIDE_PERSISTENT_NOTIFICATION) {
+                    hidePersistentNotification()
+                }
+            }
+        }
+        hideReceiver = receiver
+        val filter = IntentFilter(ACTION_HIDE_PERSISTENT_NOTIFICATION)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(receiver, filter, RECEIVER_NOT_EXPORTED)
+        } else {
+            @Suppress("UnspecifiedRegisterReceiverFlag")
+            registerReceiver(receiver, filter)
+        }
+    }
+
+    private fun unregisterHideReceiver() {
+        hideReceiver?.let {
+            try {
+                unregisterReceiver(it)
+            } catch (_: Exception) {}
+            hideReceiver = null
+        }
     }
 
     companion object {
         private const val PERSISTENT_CHANNEL_ID = "notify_listener_channel"
+        private const val PERSISTENT_CHANNEL_GROUP_ID = "notify_listener_service_group"
         private const val PERSISTENT_NOTIFICATION_ID = 4501
+        const val ACTION_HIDE_PERSISTENT_NOTIFICATION =
+            "com.arslan.customanimator.HIDE_PERSISTENT_NOTIFICATION"
     }
 }

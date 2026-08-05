@@ -56,6 +56,7 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.hasAllNotifyPermissions
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.service.isPrimeNotifyServiceEnabled
+import com.arslan.customanimator.notify.service.setPersistentNotificationHidden
 import com.arslan.customanimator.notify.service.setPrimeNotifyServiceEnabled
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 
@@ -132,6 +133,7 @@ fun NotifyHomeSection(
                             } else {
                                 isServiceActive = it
                                 setPrimeNotifyServiceEnabled(context, it)
+                                if (it) setPersistentNotificationHidden(context, false)
                             }
                         }
                     )

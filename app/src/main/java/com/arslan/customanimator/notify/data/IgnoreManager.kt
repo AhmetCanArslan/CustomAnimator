@@ -54,36 +54,5 @@ class IgnoreManager(context: Context) {
     }
 
     fun isIgnored(packageName: String, title: String, body: String): Boolean =
-        getRules().any { rule ->
-            when (rule.type) {
-                IgnoreType.APP ->
-                    rule.packageName == packageName
-                IgnoreType.TITLE ->
-                    rule.packageName == packageName &&
-                        !rule.matchValue.isNullOrBlank() &&
-                        matchText(title, rule.matchValue, rule.isRegex)
-                IgnoreType.BODY ->
-                    rule.packageName == packageName &&
-                        !rule.matchValue.isNullOrBlank() &&
-                        matchText(body, rule.matchValue, rule.isRegex)
-                IgnoreType.TITLE_AND_BODY ->
-                    rule.packageName == packageName &&
-                        !rule.matchValue.isNullOrBlank() &&
-                        !rule.matchValue2.isNullOrBlank() &&
-                        matchText(title, rule.matchValue, rule.isRegex) &&
-                        matchText(body, rule.matchValue2, rule.isRegex2)
-            }
-        }
-
-    private fun matchText(text: String, pattern: String, isRegex: Boolean): Boolean {
-        return if (isRegex) {
-            try {
-                Regex(pattern, RegexOption.IGNORE_CASE).containsMatchIn(text)
-            } catch (_: Exception) {
-                false
-            }
-        } else {
-            text.contains(pattern.trim(), ignoreCase = true)
-        }
-    }
+        IgnoreMatcher.isIgnored(getRules(), packageName, title, body)
 }

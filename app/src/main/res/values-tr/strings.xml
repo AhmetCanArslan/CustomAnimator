@@ -726,4 +726,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Bildirimden kural oluşturulsun mu?</string>
     <string name="changelog_title">Yenilikler</string>
     <string name="changelog_version">Sürüm %1$s</string>
+    <string name="pn_service_channel_group">Arka plan servisi</string>
+    <string name="pn_notification_persistent_hide_hint">Bu bildirimi gizlemek için dokunun. Dinleyici çalışmaya devam eder.</string>
 </resources>

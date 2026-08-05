@@ -750,4 +750,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_nav_logging">History</string>
     <string name="changelog_title">What’s New</string>
     <string name="changelog_version">Version %1$s</string>
+    <string name="pn_service_channel_group">Background service</string>
+    <string name="pn_notification_persistent_hide_hint">Tap this notification to hide it. The listener keeps running.</string>
 </resources>

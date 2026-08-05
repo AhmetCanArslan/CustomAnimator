@@ -726,4 +726,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Buat aturan dari notifikasi ini?</string>
     <string name="changelog_title">Yang baru</string>
     <string name="changelog_version">Versi %1$s</string>
+    <string name="pn_service_channel_group">Layanan latar belakang</string>
+    <string name="pn_notification_persistent_hide_hint">Ketuk notifikasi ini untuk menyembunyikannya. Pendengar tetap berjalan.</string>
 </resources>
