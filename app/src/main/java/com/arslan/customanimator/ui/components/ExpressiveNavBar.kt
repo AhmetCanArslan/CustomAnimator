@@ -41,7 +41,8 @@ data class NavBarItem(
     val icon: ImageVector,
     val label: String,
     val selected: Boolean,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val contentDescription: String = label
 )
 
 @Composable
@@ -111,7 +112,7 @@ private fun NavBarCell(
     ) {
         Icon(
             imageVector = item.icon,
-            contentDescription = item.label,
+            contentDescription = item.contentDescription,
             tint = content,
             modifier = Modifier
                 .size(22.dp)

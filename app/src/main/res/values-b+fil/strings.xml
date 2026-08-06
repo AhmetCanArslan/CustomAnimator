@@ -18,9 +18,10 @@
     <string name="settings_about">Tungkol Dito</string>
     <string name="settings_permission_status_granted">Ipinagkaloob na ang pahintulot</string>
     <string name="settings_permission_status_not_granted">Hindi pa ipinagkaloob ang pahintulot</string>
-    <string name="nav_animation">Animasyon</string>
+    <string name="nav_animation">Anim</string>
     <string name="nav_width">Lapad</string>
-    <string name="nav_developer">Developer</string>
+    <string name="nav_developer">Dev</string>
+    <string name="nav_notify">Notif.</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Mga System Toggle</string>
     <string name="developer_quick_actions">Mabilisang mga Aksyon</string>

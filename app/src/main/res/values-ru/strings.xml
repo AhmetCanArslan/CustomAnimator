@@ -18,9 +18,10 @@
     <string name="settings_about">О приложении</string>
     <string name="settings_permission_status_granted">Разрешение предоставлено</string>
     <string name="settings_permission_status_not_granted">Разрешение не предоставлено</string>
-    <string name="nav_animation">Анимация</string>
+    <string name="nav_animation">Аним.</string>
     <string name="nav_width">Ширина</string>
     <string name="nav_developer">Разраб.</string>
+    <string name="nav_notify">Увед.</string>
     <string name="nav_terminal">Терминал</string>
     <string name="developer_toggles">Системные переключатели</string>
     <string name="developer_quick_actions">Быстрые действия</string>

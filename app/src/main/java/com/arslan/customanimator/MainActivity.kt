@@ -656,7 +656,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             icon = Icons.Default.PlayArrow,
                             label = stringResource(R.string.nav_animation),
                             selected = selectedTab == HomeTab.ANIMATION,
-                            onClick = { selectedTab = HomeTab.ANIMATION }
+                            onClick = { selectedTab = HomeTab.ANIMATION },
+                            contentDescription = stringResource(R.string.animation_scale_slider)
                         ),
                         NavBarItem(
                             icon = Icons.Default.Straighten,
@@ -684,9 +685,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         ),
                         NavBarItem(
                             icon = Icons.Default.Notifications,
-                            label = stringResource(R.string.pn_title),
+                            label = stringResource(R.string.nav_notify),
                             selected = selectedTab == HomeTab.NOTIFY,
-                            onClick = { selectedTab = HomeTab.NOTIFY }
+                            onClick = { selectedTab = HomeTab.NOTIFY },
+                            contentDescription = stringResource(R.string.pn_title)
                         )
                     )
                 )

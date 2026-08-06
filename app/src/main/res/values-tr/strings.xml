@@ -18,9 +18,10 @@
     <string name="settings_about">Hakkında</string>
     <string name="settings_permission_status_granted">İzin verildi</string>
     <string name="settings_permission_status_not_granted">İzin verilmedi</string>
-    <string name="nav_animation">Animasyon</string>
+    <string name="nav_animation">Anim</string>
     <string name="nav_width">Genişlik</string>
-    <string name="nav_developer">Geliştirici</string>
+    <string name="nav_developer">Gelişt.</string>
+    <string name="nav_notify">Bildirim</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Sistem Anahtarları</string>
     <string name="developer_quick_actions">Hızlı İşlemler</string>

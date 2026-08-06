@@ -18,9 +18,10 @@
     <string name="settings_about">Informazioni</string>
     <string name="settings_permission_status_granted">Autorizzazione concessa</string>
     <string name="settings_permission_status_not_granted">Autorizzazione non concessa</string>
-    <string name="nav_animation">Animazione</string>
+    <string name="nav_animation">Anim</string>
     <string name="nav_width">Larghezza</string>
-    <string name="nav_developer">Sviluppatore</string>
+    <string name="nav_developer">Svil.</string>
+    <string name="nav_notify">Notif.</string>
     <string name="nav_terminal">Terminale</string>
     <string name="developer_toggles">Interruttori di sistema</string>
     <string name="developer_quick_actions">Azioni rapide</string>

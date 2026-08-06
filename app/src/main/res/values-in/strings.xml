@@ -18,9 +18,10 @@
     <string name="settings_about">Tentang</string>
     <string name="settings_permission_status_granted">Izin telah diberikan</string>
     <string name="settings_permission_status_not_granted">Izin belum diberikan</string>
-    <string name="nav_animation">Animasi</string>
+    <string name="nav_animation">Anim</string>
     <string name="nav_width">Lebar</string>
-    <string name="nav_developer">Developer</string>
+    <string name="nav_developer">Dev</string>
+    <string name="nav_notify">Notif.</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Pengalih Sistem</string>
     <string name="developer_quick_actions">Aksi Cepat</string>
