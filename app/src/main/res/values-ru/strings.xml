@@ -470,6 +470,10 @@
     <string name="caffeine_tile_label">Кофеин</string>
     <string name="caffeine_tile_subtitle_on">Экран не гаснет</string>
     <string name="caffeine_tile_subtitle_off">Экран гаснет как обычно</string>
+    <string name="aod_tile_label">Всегда включённый экран</string>
+    <string name="aod_tile_subtitle_on">Включено</string>
+    <string name="aod_tile_subtitle_off">Выключено</string>
+    <string name="aod_tile_unsupported">Не поддерживается на этом устройстве</string>
     <string name="alarm_revealer">Определитель будильника</string>
     <string name="alarm_revealer_desc">Узнайте, какое приложение показывает значок будильника в строке состояния</string>
     <string name="alarm_icon_active">Значок будильника активен</string>

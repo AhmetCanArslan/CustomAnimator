@@ -470,6 +470,10 @@ Durasi Animator: %3$.2f</string>
     <string name="caffeine_tile_label">Kafein</string>
     <string name="caffeine_tile_subtitle_on">Layar tetap menyala</string>
     <string name="caffeine_tile_subtitle_off">Layar mati seperti biasa</string>
+    <string name="aod_tile_label">Always On Display</string>
+    <string name="aod_tile_subtitle_on">Aktif</string>
+    <string name="aod_tile_subtitle_off">Nonaktif</string>
+    <string name="aod_tile_unsupported">Tidak didukung di perangkat ini</string>
     <string name="alarm_revealer">Pengungkap Alarm</string>
     <string name="alarm_revealer_desc">Cari tahu aplikasi mana yang menampilkan ikon alarm di bilah status</string>
     <string name="alarm_icon_active">Ikon alarm aktif</string>

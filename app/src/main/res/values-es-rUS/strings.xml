@@ -470,6 +470,10 @@ Duración del Animador: %3$.2f</string>
     <string name="caffeine_tile_label">Cafeína</string>
     <string name="caffeine_tile_subtitle_on">La pantalla permanece encendida</string>
     <string name="caffeine_tile_subtitle_off">La pantalla se apaga normalmente</string>
+    <string name="aod_tile_label">Pantalla siempre activa</string>
+    <string name="aod_tile_subtitle_on">Activada</string>
+    <string name="aod_tile_subtitle_off">Desactivada</string>
+    <string name="aod_tile_unsupported">No compatible con este dispositivo</string>
     <string name="alarm_revealer">Revelador de alarma</string>
     <string name="alarm_revealer_desc">Descubre qué app muestra el ícono de alarma en la barra de estado</string>
     <string name="alarm_icon_active">El ícono de alarma está activo</string>

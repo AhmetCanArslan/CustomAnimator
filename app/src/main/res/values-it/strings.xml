@@ -490,6 +490,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="caffeine_tile_label">Caffeina</string>
     <string name="caffeine_tile_subtitle_on">Lo schermo resta acceso</string>
     <string name="caffeine_tile_subtitle_off">Lo schermo si spegne normalmente</string>
+    <string name="aod_tile_label">Display sempre attivo</string>
+    <string name="aod_tile_subtitle_on">Attivo</string>
+    <string name="aod_tile_subtitle_off">Disattivato</string>
+    <string name="aod_tile_unsupported">Non supportato su questo dispositivo</string>
     <string name="alarm_revealer">Rivelatore sveglia</string>
     <string name="alarm_revealer_desc">Scopri quale app mostra l\'icona della sveglia nella barra di stato</string>
     <string name="alarm_icon_active">Icona della sveglia attiva</string>

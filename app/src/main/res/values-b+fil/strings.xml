@@ -470,6 +470,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="caffeine_tile_label">Caffeine</string>
     <string name="caffeine_tile_subtitle_on">Nananatiling bukas ang screen</string>
     <string name="caffeine_tile_subtitle_off">Normal na namamatay ang screen</string>
+    <string name="aod_tile_label">Always On Display</string>
+    <string name="aod_tile_subtitle_on">Naka-on</string>
+    <string name="aod_tile_subtitle_off">Naka-off</string>
+    <string name="aod_tile_unsupported">Hindi suportado sa device na ito</string>
     <string name="alarm_revealer">Alarm Revealer</string>
     <string name="alarm_revealer_desc">Alamin kung aling app ang nagpapakita ng icon ng alarm sa status bar</string>
     <string name="alarm_icon_active">Aktibo ang icon ng alarm</string>

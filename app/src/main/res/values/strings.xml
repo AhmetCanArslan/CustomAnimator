@@ -526,6 +526,10 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="caffeine_tile_label">Caffeine</string>
     <string name="caffeine_tile_subtitle_on">Screen stays on</string>
     <string name="caffeine_tile_subtitle_off">Screen sleeps normally</string>
+    <string name="aod_tile_label">Always On Display</string>
+    <string name="aod_tile_subtitle_on">On</string>
+    <string name="aod_tile_subtitle_off">Off</string>
+    <string name="aod_tile_unsupported">Not supported on this device</string>
 
     <string name="contact_developer">Contact Developer</string>
     <string name="contact_developer_desc">Please reach out with your feedback, suggestions and complaints</string>

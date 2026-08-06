@@ -470,6 +470,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="caffeine_tile_label">Kafein</string>
     <string name="caffeine_tile_subtitle_on">Ekran açık kalıyor</string>
     <string name="caffeine_tile_subtitle_off">Ekran normal kapanıyor</string>
+    <string name="aod_tile_label">Her Zaman Açık Ekran</string>
+    <string name="aod_tile_subtitle_on">Açık</string>
+    <string name="aod_tile_subtitle_off">Kapalı</string>
+    <string name="aod_tile_unsupported">Bu cihazda desteklenmiyor</string>
     <string name="alarm_revealer">Alarm Bulucu</string>
     <string name="alarm_revealer_desc">Durum çubuğundaki alarm simgesini hangi uygulamanın gösterdiğini bulun</string>
     <string name="alarm_icon_active">Alarm simgesi etkin</string>
