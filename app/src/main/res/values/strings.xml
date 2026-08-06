@@ -769,4 +769,5 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="anim_hero_fast">Faster than default</string>
     <string name="anim_hero_normal">Default speed</string>
     <string name="anim_hero_slow">Slower than default</string>
+    <string name="permissions_secure_settings_setup_desc">Custom Animator needs the WRITE_SECURE_SETTINGS permission to change animation scales, screen density and other system settings.</string>
 </resources>

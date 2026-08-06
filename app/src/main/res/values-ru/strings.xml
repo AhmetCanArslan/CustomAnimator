@@ -745,4 +745,5 @@
     <string name="anim_hero_fast">Быстрее обычного</string>
     <string name="anim_hero_normal">Обычная скорость</string>
     <string name="anim_hero_slow">Медленнее обычного</string>
+    <string name="permissions_secure_settings_setup_desc">Custom Animator требуется разрешение WRITE_SECURE_SETTINGS, чтобы менять масштаб анимаций, плотность экрана и другие системные настройки.</string>
 </resources>

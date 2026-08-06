@@ -745,4 +745,5 @@ Durasi Animator: %3$.2f</string>
     <string name="anim_hero_fast">Lebih cepat dari bawaan</string>
     <string name="anim_hero_normal">Kecepatan bawaan</string>
     <string name="anim_hero_slow">Lebih lambat dari bawaan</string>
+    <string name="permissions_secure_settings_setup_desc">Custom Animator memerlukan izin WRITE_SECURE_SETTINGS untuk mengubah skala animasi, kepadatan layar, dan setelan sistem lainnya.</string>
 </resources>

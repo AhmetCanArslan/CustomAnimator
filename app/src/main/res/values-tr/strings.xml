@@ -745,4 +745,5 @@ Animatör Süresi: %3$.2f</string>
     <string name="anim_hero_fast">Varsayılandan hızlı</string>
     <string name="anim_hero_normal">Varsayılan hız</string>
     <string name="anim_hero_slow">Varsayılandan yavaş</string>
+    <string name="permissions_secure_settings_setup_desc">Custom Animator; animasyon ölçekleri, ekran yoğunluğu ve diğer sistem ayarlarını değiştirmek için WRITE_SECURE_SETTINGS iznine ihtiyaç duyar.</string>
 </resources>

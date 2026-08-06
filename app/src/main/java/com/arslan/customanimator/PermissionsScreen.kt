@@ -38,6 +38,10 @@ import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.icons.filled.ContentCopy
+import com.arslan.customanimator.ui.components.IconBadge
+import com.arslan.customanimator.ui.theme.MonoBody
 import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -319,6 +323,17 @@ fun PermissionsScreen(
             item {
                 PermissionsSummary(granted = grantedCount, total = allEntries.size)
             }
+            val secureSettingsGranted = systemEntries
+                .firstOrNull { it.permission == AppPermission.SECURE_SETTINGS }
+                ?.granted == true
+            if (!secureSettingsGranted) {
+                item {
+                    SecureSettingsSetupCard(
+                        isShizukuAvailable = isShizukuAvailable,
+                        onGrantViaShizuku = { onGrant(AppPermission.SECURE_SETTINGS) }
+                    )
+                }
+            }
             item {
                 PermissionSection(
                     title = stringResource(R.string.permissions_section_system),
@@ -506,9 +521,6 @@ private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
 
 @Composable
 private fun AdbGrantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
-    val context = LocalContext.current
-    val adbCommand =
-        "adb shell pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS"
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
@@ -529,45 +541,7 @@ private fun AdbGrantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Surface(
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    shape = MaterialTheme.shapes.medium,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = adbCommand,
-                            style = TextStyle(
-                                fontFamily = FontFamily.Monospace,
-                                fontSize = MaterialTheme.typography.labelMedium.fontSize,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            ),
-                            modifier = Modifier.weight(1f)
-                        )
-                        TextButton(
-                            onClick = {
-                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                                    as ClipboardManager
-                                clipboard.setPrimaryClip(
-                                    ClipData.newPlainText("ADB Command", adbCommand)
-                                )
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.pn_command_copied),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        ) {
-                            Text(stringResource(R.string.pn_copy))
-                        }
-                    }
-                }
+                AdbCommandBox()
             }
         },
         confirmButton = {
@@ -577,4 +551,114 @@ private fun AdbGrantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
         }
     )
+}
+
+@Composable
+private fun SecureSettingsSetupCard(
+    isShizukuAvailable: Boolean,
+    onGrantViaShizuku: () -> Unit
+) {
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconBadge(
+                    icon = Icons.Filled.Security,
+                    size = 40.dp,
+                    containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.14f),
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                Text(
+                    text = stringResource(R.string.pn_grant_secure_settings_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+            Text(
+                text = stringResource(R.string.permissions_secure_settings_setup_desc),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            if (isShizukuAvailable) {
+                Button(
+                    onClick = onGrantViaShizuku,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.grant))
+                }
+            }
+            Text(
+                text = stringResource(R.string.pn_grant_secure_settings_adb_info),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+            )
+            AdbCommandBox(
+                containerColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.1f),
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+    }
+}
+
+@Composable
+private fun AdbCommandBox(
+    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
+) {
+    val context = LocalContext.current
+    val adbCommand =
+        "adb shell pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS"
+    Surface(
+        color = containerColor,
+        contentColor = contentColor,
+        shape = AppShapes.field,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            SelectionContainer {
+                Text(
+                    text = adbCommand,
+                    style = MonoBody,
+                    color = contentColor
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            TextButton(
+                onClick = {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                        as ClipboardManager
+                    clipboard.setPrimaryClip(
+                        ClipData.newPlainText("ADB Command", adbCommand)
+                    )
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.pn_command_copied),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ContentCopy,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(stringResource(R.string.pn_copy))
+            }
+        }
+    }
 }

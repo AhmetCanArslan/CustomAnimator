@@ -745,4 +745,5 @@ Tagal ng Animator: %3$.2f</string>
     <string name="anim_hero_fast">Mas mabilis sa default</string>
     <string name="anim_hero_normal">Default na bilis</string>
     <string name="anim_hero_slow">Mas mabagal sa default</string>
+    <string name="permissions_secure_settings_setup_desc">Kailangan ng Custom Animator ang pahintulot na WRITE_SECURE_SETTINGS para baguhin ang mga scale ng animation, densidad ng screen at iba pang setting ng system.</string>
 </resources>

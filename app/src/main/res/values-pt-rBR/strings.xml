@@ -745,4 +745,5 @@ Duração do Animador: %3$.2f</string>
     <string name="anim_hero_fast">Mais rápido que o padrão</string>
     <string name="anim_hero_normal">Velocidade padrão</string>
     <string name="anim_hero_slow">Mais lento que o padrão</string>
+    <string name="permissions_secure_settings_setup_desc">O Custom Animator precisa da permissão WRITE_SECURE_SETTINGS para alterar as escalas de animação, a densidade da tela e outras configurações do sistema.</string>
 </resources>

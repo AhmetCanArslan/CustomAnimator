@@ -765,4 +765,5 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="anim_hero_fast">Più veloce del normale</string>
     <string name="anim_hero_normal">Velocità predefinita</string>
     <string name="anim_hero_slow">Più lento del normale</string>
+    <string name="permissions_secure_settings_setup_desc">Custom Animator ha bisogno dell\'autorizzazione WRITE_SECURE_SETTINGS per modificare le scale delle animazioni, la densità dello schermo e altre impostazioni di sistema.</string>
 </resources>
