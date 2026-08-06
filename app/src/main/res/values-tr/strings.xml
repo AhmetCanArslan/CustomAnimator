@@ -74,7 +74,7 @@
     <string name="compile_booster_notif_text_app">Derleniyor: %1$s… %2$d%%</string>
     <string name="graphics_api_override">Grafik API Geçersiz Kılma</string>
     <string name="graphics_api_override_desc">Uygulamaları ANGLE (Vulkan çevirisi) veya yerel GLES/Vulkan sürücüsünü kullanmaya zorlar</string>
-    <string name="graphics_api_override_disclaimer">Bu, Android\'in yerleşik uygulama başına ANGLE sürücü ayarını kullanır (Android 10+). Gerçekten etkili olup olmayacağı cihazınıza ve Android sürümünüze bağlıdır — en güvenilir şekilde Pixel cihazlarda çalışır ve bazı diğer üreticilerin sürümlerinde tamamen yok sayılabilir.</string>
+    <string name="graphics_api_override_disclaimer">Bu, Android\'in yerleşik uygulama başına ANGLE sürücü ayarını kullanır (Android 10+). Gerçekten etkili olup olmayacağı cihazınıza ve Android sürümünüze bağlıdır. En güvenilir şekilde Pixel cihazlarda çalışır ve bazı diğer üreticilerin sürümlerinde tamamen yok sayılabilir.</string>
     <string name="driver_default">Varsayılan</string>
     <string name="driver_native">Yerel</string>
     <string name="driver_angle">ANGLE</string>
@@ -161,7 +161,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="smallest_width_current">Mevcut: %1$d dp</string>
     <string name="smallest_width_applied">En küçük genişlik uygulandı: %1$d dp</string>
     <string name="smallest_width_reset">Varsayılana sıfırla</string>
-    <string name="smallest_width_range">Aralık: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Aralık: 320 ila 1024 dp</string>
     <string name="shizuku_use_recommended">İşlem başarısız. Lütfen Shizuku kullanın ve Shizuku iznini doğrulayın.</string>
     <string name="write_secure_applied_title">Bilgilendirme</string>
     <string name="write_secure_applied_question">Fallback yöntem kullanıldı. Ayar cihazınızda uygulandı mı?</string>
@@ -226,7 +226,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="backup_saved">Yedek kaydedildi</string>
     <string name="restore_app_data">Uygulama Verilerini Geri Yükle</string>
     <string name="restore_app_data_desc">Ayar setlerini ve uygulama listelerini bir yedek dosyasından yükler</string>
-    <string name="restore_done">Yedek geri yüklendi — görmek için uygulamayı yeniden açın</string>
+    <string name="restore_done">Yedek geri yüklendi. Görmek için uygulamayı yeniden açın</string>
     <string name="restore_failed">Bu yedek dosyası okunamadı</string>
     <string name="revert_everything">Her Şeyi Geri Al</string>
     <string name="revert_everything_desc">Bu uygulamanın yaptığı tüm sistem değişikliklerini geri alır</string>
@@ -275,7 +275,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="preset_tile_needs_permission">Önce Shizuku veya WRITE_SECURE_SETTINGS izni verin.</string>
     <string name="preset_tile_subtitle_no_permission">İzin yok</string>
     <string name="preset_tile_toast_applied">%1$s uygulandı</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s uygulandı — bir şey değişmediyse Shizuku bağlayın</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s uygulandı. Bir şey değişmediyse Shizuku bağlayın</string>
     <string name="preset_tile_toast_failed">%1$s uygulanamadı</string>
     <string name="preset_tile_enable_description">Bu ön ayarı Hızlı Ayarlar panelinden uygulayın.</string>
     <string name="preset_tile_number_description">Kutucuk simge yerine bu değeri gösterir.</string>
@@ -383,7 +383,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="bt_charging_vibration_desc">Şarj cihazı bağlandığında titret</string>
     <string name="bt_info_title">Bir şeyi değiştirmeden önce</string>
     <string name="bt_info_body">Bunlar sistem düzeyinde ayarlardır. Gerçekte ne yaptıkları Android sürümünüze ve üreticinize bağlıdır; bazı telefonlar bunları yok sayar veya geri alır. Değişiklikler siz geri alana veya sıfırlayana kadar kalır.</string>
-    <string name="bt_info_shizuku_active">Shizuku bağlı — ayarlar güvenilir yöntemle uygulanıyor.</string>
+    <string name="bt_info_shizuku_active">Shizuku bağlı, ayarlar güvenilir yöntemle uygulanıyor.</string>
     <string name="bt_info_shizuku_missing">Shizuku bağlı değil. Bazı ayarlar sessizce başarısız olabilir. Shizuku bağlamanız kesinlikle önerilir.</string>
     <string name="bt_requires_android10">Güç Tasarrufu Modu ayarları Android 10 veya daha yenisini gerektirir. Cihazınız Android %1$s çalıştırıyor; bu sürümde bu ayarlar sistemin artık kabul etmediği eski adları kullanıyor.</string>
     <string name="bt_doze_warning">Agresif Doze; alarmları, bildirimleri, mesajları ve arka plan eşitlemesini geciktirebilir. Bir şey zamanında gelmemeye başlarsa bunu Sistem varsayılanına geri alın.</string>
@@ -402,12 +402,12 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_back">Geri</string>
     <string name="onboarding_start">Başla</string>
     <string name="onboarding_welcome_title">Custom Animator\'a Hoş Geldiniz</string>
-    <string name="onboarding_welcome_body">Animasyon hızlarını, ekran yoğunluğunu, batarya davranışını ve gizli geliştirici ayarlarını tek yerden düzenleyerek cihazınızı hızlandırın — root gerekmez.</string>
+    <string name="onboarding_welcome_body">Animasyon hızlarını, ekran yoğunluğunu, batarya davranışını ve gizli geliştirici ayarlarını tek yerden düzenleyerek cihazınızı hızlandırın, root gerekmez.</string>
     <string name="onboarding_permission_title">Tek Seferlik Kurulum</string>
     <string name="onboarding_permission_body">Bu ayarlar sisteme ait olduğu için uygulamanın bir şeyi değiştirebilmesi için özel bir izne ihtiyacı var. İzni Shizuku ile veya bilgisayardan tek bir ADB komutu çalıştırarak verebilirsiniz.</string>
     <string name="onboarding_permission_highlight">Bu izin olmadan uygulama ayarlarınızı okuyabilir ama değiştiremez. İzne ihtiyaç duyan her ekranın üstünde bir uyarı görürsünüz.</string>
     <string name="onboarding_battery_title">Bataryayı Kendiniz Ölçün</string>
-    <string name="onboarding_battery_body">Batarya ayarları Android\'in uygulamaları ne kadar sert uyuttuğunu, kıstığını ve dondurduğunu değiştirir. Tek bir en iyi değer yoktur — cihazınıza, ROM\'unuza ve kullandığınız uygulamalara göre değişir.</string>
+    <string name="onboarding_battery_body">Batarya ayarları Android\'in uygulamaları ne kadar sert uyuttuğunu, kıstığını ve dondurduğunu değiştirir. Tek bir en iyi değer yoktur. Cihazınıza, ROM\'unuza ve kullandığınız uygulamalara göre değişir.</string>
     <string name="onboarding_battery_highlight">Tek seferde tek bir şeyi değiştirin, sonra cihazınızı bir gün normal kullanıp karşılaştırın. Agresif ayarlar bataryanızın daha hızlı tükenmesine, bildirimlerin gecikmesine ya da arka plan uygulamalarının ve alarmların çalışmamasına yol açabilir.</string>
     <string name="onboarding_experimental_title">Doğası Gereği Deneysel</string>
     <string name="onboarding_experimental_body">Üreticiler Android\'i çokça değiştiriyor. Bazı ayarlar cihazınızda sessizce hiçbir şey yapmaz, bazıları sistem tarafından geri alınır, bazıları da etkili olmak için yeniden başlatma ister.</string>
@@ -419,8 +419,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Reklamları Kaldır</string>
     <string name="remove_ads_desc">Tüm reklamları kaldıran tek seferlik satın alma</string>
-    <string name="remove_ads_desc_price">Tek seferlik satın alma — %1$s</string>
-    <string name="remove_ads_owned">Satın alındı — desteğiniz için teşekkürler!</string>
+    <string name="remove_ads_desc_price">Tek seferlik satın alma: %1$s</string>
+    <string name="remove_ads_owned">Satın alındı. Desteğiniz için teşekkürler!</string>
     <string name="remove_ads_thanks">Reklamlar kaldırıldı. Teşekkürler!</string>
     <string name="remove_ads_pending">Satın alma beklemede. Tamamlandığında reklamlar kaldırılacak.</string>
     <string name="remove_ads_unavailable">Satın alma şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.</string>
@@ -432,7 +432,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_prompt_body">Tek seferlik satın alma ile kaldır</string>
     <string name="remove_ads_prompt_body_price">%1$s ile tek seferde kaldır</string>
     <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
-    <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin — istediğin zaman, Ayarlar › Premium bölümünden.</string>
+    <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin. Bunu istediğin zaman Ayarlar › Premium bölümünden yapabilirsin.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Oyunların ve uygulamaların üzerinde gerçek zamanlı FPS göstergesi göstererek performans ve takılma analizi yapmanızı sağlar.</string>
     <string name="fps_meter_hint">Sayacı sürükleyerek taşıyabilirsiniz. Katmanı kaldırmak için bunu kapatın.</string>
@@ -513,13 +513,13 @@ Animatör Süresi: %3$.2f</string>
 
     <string name="contact_developer">Geliştiriciye Ulaşın</string>
     <string name="contact_developer_desc">Görüş, öneri ve şikayetleriniz için lütfen bize ulaşın</string>
-    <string name="contact_developer_subject">Custom Animator — Geri Bildirim</string>
+    <string name="contact_developer_subject">Custom Animator Geri Bildirim</string>
     <string name="contact_developer_no_app">E-posta uygulaması bulunamadı</string>
     <string name="onboarding_disclaimer_title">Sorumluluk Size Ait</string>
     <string name="onboarding_disclaimer_body">Bu uygulama sistem düzeyinde ayarları değiştirir. Cihazınıza ve ROM\'unuza bağlı olarak bu; pil ömrünü, bildirimleri, alarmları, arka plan uygulamalarını ve kararlılığı etkileyebilir.</string>
     <string name="onboarding_disclaimer_highlight">Geliştirici, bu uygulamanın kullanımından doğabilecek veri kaybı, arıza veya zarardan hiçbir sorumluluk kabul etmez. Burada yaptığınız tüm değişiklikler kendi sorumluluğunuzdadır.</string>
     <string name="onboarding_disclaimer_consent">Yukarıdakileri okudum ve kabul ediyorum; geliştirici hiçbir sorumluluk kabul etmez.</string>
-    <string name="auto_force_stop_notif_text_waiting">Duraklatıldı — Shizuku ve kullanım erişimi bekleniyor</string>
+    <string name="auto_force_stop_notif_text_waiting">Duraklatıldı, Shizuku ve kullanım erişimi bekleniyor</string>
 
 <string name="permissions_title">İzinler</string>
     <string name="permissions_summary">%2$d izinden %1$d tanesi verildi</string>
@@ -599,7 +599,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Güvenli Ayarlara İzin Ver</string>
     <string name="pn_ignore_dialog_content_hint">Hiçbiri seçilmezse %1$s uygulamasından gelen TÜM bildirimler yok sayılır.</string>
     <string name="pn_ignore_dialog_content_section">İçerik filtreleri (isteğe bağlı)</string>
-    <string name="pn_ignore_dialog_hint_exact">Metin bunu içeriyorsa eşleşir — desenler için Regex\'i açın</string>
+    <string name="pn_ignore_dialog_hint_exact">Metin bunu içeriyorsa eşleşir. Desenler için Regex\'i açın</string>
     <string name="pn_ignore_dialog_hint_regex">örn. \\d+ sohbetten \\d+ mesaj</string>
     <string name="pn_ignore_dialog_match_body">Gövdeyle eşleştir</string>
     <string name="pn_ignore_dialog_match_title">Başlıkla eşleştir</string>
@@ -693,7 +693,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_recording_format">Kaydediliyor... %1$d.%2$d sn</string>
     <string name="pn_rule_conflict_warning_body">Aşağıdaki eşleşmeler yok sayma listeniz tarafından engelleniyor. Bu kural hiç tetiklenmeyebilir:</string>
     <string name="pn_rule_conflict_warning_title">Yok sayılan bildirimlerle çakışma</string>
-    <string name="pn_rule_trigger_conflict_body">Bu tetikleyici mevcut etkin kurallarla çakışıyor — aynı bildirim için ikisi de çalışabilir:</string>
+    <string name="pn_rule_trigger_conflict_body">Bu tetikleyici mevcut etkin kurallarla çakışıyor. Aynı bildirim için ikisi de çalışabilir:</string>
     <string name="pn_rule_trigger_conflict_title">Çakışan Kural</string>
     <string name="pn_rules">Kurallar</string>
     <string name="pn_rules_count">%1$d kural</string>

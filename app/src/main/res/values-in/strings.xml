@@ -74,7 +74,7 @@
     <string name="compile_booster_notif_text_app">Mengompilasi %1$s… %2$d%%</string>
     <string name="graphics_api_override">Penggantian API Grafis</string>
     <string name="graphics_api_override_desc">Paksa aplikasi menggunakan ANGLE (terjemahan Vulkan) atau driver GLES/Vulkan bawaan</string>
-    <string name="graphics_api_override_disclaimer">Ini menggunakan pengaturan driver ANGLE per aplikasi bawaan Android (Android 10+). Apakah benar-benar berpengaruh tergantung pada perangkat dan versi Android Anda — paling andal di perangkat Pixel dan bisa saja diabaikan sepenuhnya pada build dari beberapa produsen lain.</string>
+    <string name="graphics_api_override_disclaimer">Ini menggunakan pengaturan driver ANGLE per aplikasi bawaan Android (Android 10+). Apakah benar-benar berpengaruh tergantung pada perangkat dan versi Android Anda. Paling andal di perangkat Pixel dan bisa saja diabaikan sepenuhnya pada build dari beberapa produsen lain.</string>
     <string name="driver_default">Bawaan</string>
     <string name="driver_native">Native</string>
     <string name="driver_angle">ANGLE</string>
@@ -161,7 +161,7 @@ Durasi Animator: %3$.2f</string>
     <string name="smallest_width_current">Saat ini: %1$d dp</string>
     <string name="smallest_width_applied">Lebar terkecil diterapkan: %1$d dp</string>
     <string name="smallest_width_reset">Kembalikan ke default</string>
-    <string name="smallest_width_range">Rentang: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Rentang: 320 sampai 1024 dp</string>
     <string name="shizuku_use_recommended">Operasi gagal. Gunakan Shizuku dan pastikan izin Shizuku telah diberikan.</string>
     <string name="write_secure_applied_title">Informasi</string>
     <string name="write_secure_applied_question">Metode cadangan telah digunakan. Apakah pengaturan diterapkan di perangkat Anda?</string>
@@ -226,7 +226,7 @@ Durasi Animator: %3$.2f</string>
     <string name="backup_saved">Cadangan disimpan</string>
     <string name="restore_app_data">Pulihkan Data Aplikasi</string>
     <string name="restore_app_data_desc">Memuat preset dan daftar aplikasi dari berkas cadangan</string>
-    <string name="restore_done">Cadangan dipulihkan — buka ulang aplikasi untuk melihatnya</string>
+    <string name="restore_done">Cadangan dipulihkan. Buka ulang aplikasi untuk melihatnya</string>
     <string name="restore_failed">Berkas cadangan itu tidak dapat dibaca</string>
     <string name="revert_everything">Kembalikan Semua</string>
     <string name="revert_everything_desc">Membatalkan semua perubahan sistem yang dibuat aplikasi ini</string>
@@ -275,7 +275,7 @@ Durasi Animator: %3$.2f</string>
     <string name="preset_tile_needs_permission">Berikan Shizuku atau WRITE_SECURE_SETTINGS terlebih dahulu.</string>
     <string name="preset_tile_subtitle_no_permission">Tanpa izin</string>
     <string name="preset_tile_toast_applied">%1$s diterapkan</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s diterapkan — jika tidak ada perubahan, hubungkan Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s diterapkan. Jika tidak ada perubahan, hubungkan Shizuku</string>
     <string name="preset_tile_toast_failed">%1$s tidak dapat diterapkan</string>
     <string name="preset_tile_enable_description">Terapkan preset ini dari panel Setelan Cepat.</string>
     <string name="preset_tile_number_description">Ubin menampilkan nilai ini alih-alih ikon.</string>
@@ -383,7 +383,7 @@ Durasi Animator: %3$.2f</string>
     <string name="bt_charging_vibration_desc">Bergetar saat pengisi daya terhubung</string>
     <string name="bt_info_title">Sebelum Anda mengubah apa pun</string>
     <string name="bt_info_body">Ini adalah setelan tingkat sistem. Efek sebenarnya bergantung pada versi Android dan produsen Anda, dan sebagian ponsel mengabaikan atau memulihkannya. Perubahan bertahan sampai Anda membatalkan atau menyetel ulang.</string>
-    <string name="bt_info_shizuku_active">Shizuku terhubung — penyesuaian diterapkan dengan cara yang andal.</string>
+    <string name="bt_info_shizuku_active">Shizuku terhubung, penyesuaian diterapkan dengan cara yang andal.</string>
     <string name="bt_info_shizuku_missing">Shizuku tidak terhubung. Sebagian penyesuaian bisa gagal tanpa pemberitahuan. Sangat disarankan menghubungkan Shizuku.</string>
     <string name="bt_requires_android10">Penyesuaian Mode Hemat Daya memerlukan Android 10 atau lebih baru. Perangkat Anda menjalankan Android %1$s, di mana setelan ini memakai nama lama yang tidak lagi diterima sistem.</string>
     <string name="bt_doze_warning">Doze Agresif dapat menunda alarm, notifikasi, pesan, dan sinkronisasi latar belakang. Jika ada yang tidak lagi datang tepat waktu, kembalikan ke Bawaan sistem.</string>
@@ -402,12 +402,12 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_back">Kembali</string>
     <string name="onboarding_start">Mulai</string>
     <string name="onboarding_welcome_title">Selamat Datang di Custom Animator</string>
-    <string name="onboarding_welcome_body">Percepat perangkat Anda dengan mengatur skala animasi, kepadatan layar, perilaku baterai, dan pengaturan pengembang tersembunyi — semuanya dari satu tempat, tanpa root.</string>
+    <string name="onboarding_welcome_body">Percepat perangkat Anda dengan mengatur skala animasi, kepadatan layar, perilaku baterai, dan pengaturan pengembang tersembunyi, semuanya dari satu tempat dan tanpa root.</string>
     <string name="onboarding_permission_title">Penyiapan Sekali Saja</string>
     <string name="onboarding_permission_body">Pengaturan ini milik sistem, jadi aplikasi memerlukan izin khusus sebelum dapat mengubah apa pun. Berikan izin melalui Shizuku, atau dengan menjalankan satu perintah ADB dari komputer.</string>
     <string name="onboarding_permission_highlight">Tanpa izin ini aplikasi hanya bisa membaca pengaturan, tidak bisa mengubahnya. Anda akan melihat peringatan di bagian atas layar yang membutuhkannya.</string>
     <string name="onboarding_battery_title">Ukur Baterai Sendiri</string>
-    <string name="onboarding_battery_body">Penyesuaian baterai mengubah seberapa agresif Android menidurkan, membatasi, dan membekukan aplikasi. Tidak ada satu nilai terbaik — tergantung perangkat, ROM, dan aplikasi yang Anda pakai.</string>
+    <string name="onboarding_battery_body">Penyesuaian baterai mengubah seberapa agresif Android menidurkan, membatasi, dan membekukan aplikasi. Tidak ada satu nilai terbaik. Semuanya tergantung perangkat, ROM, dan aplikasi yang Anda pakai.</string>
     <string name="onboarding_battery_highlight">Ubah satu hal dalam satu waktu, lalu gunakan perangkat secara normal selama sehari dan bandingkan. Pengaturan agresif dapat membuat baterai lebih cepat habis, menunda notifikasi, atau menghentikan aplikasi latar belakang dan alarm.</string>
     <string name="onboarding_experimental_title">Bersifat Eksperimental</string>
     <string name="onboarding_experimental_body">Produsen banyak memodifikasi Android. Beberapa penyesuaian diam-diam tidak berpengaruh di perangkat Anda, sebagian dikembalikan oleh sistem, dan sebagian butuh mulai ulang agar berlaku.</string>
@@ -419,8 +419,8 @@ Durasi Animator: %3$.2f</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Hapus Iklan</string>
     <string name="remove_ads_desc">Pembelian sekali bayar yang menghapus semua iklan</string>
-    <string name="remove_ads_desc_price">Pembelian sekali bayar — %1$s</string>
-    <string name="remove_ads_owned">Sudah dibeli — terima kasih atas dukungannya!</string>
+    <string name="remove_ads_desc_price">Pembelian sekali bayar: %1$s</string>
+    <string name="remove_ads_owned">Sudah dibeli. Terima kasih atas dukungannya!</string>
     <string name="remove_ads_thanks">Iklan dihapus. Terima kasih!</string>
     <string name="remove_ads_pending">Pembelian tertunda. Iklan akan dihapus setelah selesai.</string>
     <string name="remove_ads_unavailable">Pembelian tidak tersedia saat ini. Coba lagi nanti.</string>
@@ -432,7 +432,7 @@ Durasi Animator: %3$.2f</string>
     <string name="remove_ads_prompt_body">Hapus dengan pembelian sekali bayar</string>
     <string name="remove_ads_prompt_body_price">Hapus seharga %1$s, sekali bayar</string>
     <string name="remove_ads_prompt_dismiss">Sembunyikan</string>
-    <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar — kapan saja, lewat Setelan › Premium.</string>
+    <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar, kapan saja, lewat Setelan › Premium.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Menampilkan overlay FPS real-time di atas game dan aplikasi untuk analisis performa dan lag.</string>
     <string name="fps_meter_hint">Seret penghitung untuk memindahkannya. Matikan ini untuk menghapus overlay.</string>
@@ -513,13 +513,13 @@ Durasi Animator: %3$.2f</string>
 
     <string name="contact_developer">Hubungi Pengembang</string>
     <string name="contact_developer_desc">Silakan hubungi kami untuk masukan, saran, dan keluhan</string>
-    <string name="contact_developer_subject">Custom Animator — Masukan</string>
+    <string name="contact_developer_subject">Custom Animator Masukan</string>
     <string name="contact_developer_no_app">Aplikasi email tidak ditemukan</string>
     <string name="onboarding_disclaimer_title">Gunakan dengan Risiko Sendiri</string>
     <string name="onboarding_disclaimer_body">Aplikasi ini mengubah pengaturan tingkat sistem. Tergantung perangkat dan ROM Anda, hal itu dapat memengaruhi daya tahan baterai, notifikasi, alarm, aplikasi latar belakang, dan stabilitas.</string>
     <string name="onboarding_disclaimer_highlight">Pengembang tidak bertanggung jawab atas kehilangan data, kerusakan, atau gangguan apa pun yang mungkin timbul dari penggunaan aplikasi ini. Semua perubahan yang Anda lakukan di sini menjadi risiko Anda sendiri.</string>
     <string name="onboarding_disclaimer_consent">Saya telah membaca dan menerima hal di atas; pengembang tidak bertanggung jawab.</string>
-    <string name="auto_force_stop_notif_text_waiting">Dijeda — menunggu Shizuku dan akses penggunaan</string>
+    <string name="auto_force_stop_notif_text_waiting">Dijeda, menunggu Shizuku dan akses penggunaan</string>
 
 <string name="permissions_title">Izin</string>
     <string name="permissions_summary">%1$d dari %2$d diberikan</string>
@@ -599,7 +599,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Berikan setelan aman</string>
     <string name="pn_ignore_dialog_content_hint">Jika tidak ada yang dipilih, SEMUA notifikasi dari %1$s akan diabaikan.</string>
     <string name="pn_ignore_dialog_content_section">Filter konten (opsional)</string>
-    <string name="pn_ignore_dialog_hint_exact">Cocok jika teks memuat ini — aktifkan Regex untuk pola</string>
+    <string name="pn_ignore_dialog_hint_exact">Cocok jika teks memuat ini. Aktifkan Regex untuk pola</string>
     <string name="pn_ignore_dialog_hint_regex">mis. \\d+ pesan baru dari \\d+ obrolan</string>
     <string name="pn_ignore_dialog_match_body">Cocokkan isi</string>
     <string name="pn_ignore_dialog_match_title">Cocokkan judul</string>
@@ -693,7 +693,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_recording_format">Merekam... %1$d.%2$d dtk</string>
     <string name="pn_rule_conflict_warning_body">Kecocokan berikut diblokir oleh daftar abaikan Anda. Aturan ini mungkin tidak pernah aktif:</string>
     <string name="pn_rule_conflict_warning_title">Konflik dengan notifikasi yang diabaikan</string>
-    <string name="pn_rule_trigger_conflict_body">Pemicu ini tumpang tindih dengan aturan aktif — keduanya bisa berjalan untuk notifikasi yang sama:</string>
+    <string name="pn_rule_trigger_conflict_body">Pemicu ini tumpang tindih dengan aturan aktif. Keduanya bisa berjalan untuk notifikasi yang sama:</string>
     <string name="pn_rule_trigger_conflict_title">Aturan tumpang tindih</string>
     <string name="pn_rules">Aturan</string>
     <string name="pn_rules_count">%1$d aturan</string>

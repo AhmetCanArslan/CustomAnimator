@@ -74,7 +74,7 @@
     <string name="compile_booster_notif_text_app">Kinokompile ang %1$s… %2$d%%</string>
     <string name="graphics_api_override">Graphics API Override</string>
     <string name="graphics_api_override_desc">Puwersahin ang mga app na gamitin ang ANGLE (Vulkan translation) o ang native na GLES/Vulkan driver</string>
-    <string name="graphics_api_override_disclaimer">Ginagamit nito ang built-in na setting ng Android para sa per-app na ANGLE driver (Android 10+). Ang aktwal na epekto ay depende sa iyong device at bersyon ng Android — pinakamaaasahan ito sa mga Pixel device at maaaring balewalain nang buo sa ilang build ng ibang manufacturer.</string>
+    <string name="graphics_api_override_disclaimer">Ginagamit nito ang built-in na setting ng Android para sa per-app na ANGLE driver (Android 10+). Ang aktwal na epekto ay depende sa iyong device at bersyon ng Android. Pinakamaaasahan ito sa mga Pixel device at maaaring balewalain nang buo sa ilang build ng ibang manufacturer.</string>
     <string name="driver_default">Default</string>
     <string name="driver_native">Native</string>
     <string name="driver_angle">ANGLE</string>
@@ -161,7 +161,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="smallest_width_current">Kasalukuyan: %1$d dp</string>
     <string name="smallest_width_applied">Na-apply ang pinakamaliit na lapad: %1$d dp</string>
     <string name="smallest_width_reset">Ibalik sa default</string>
-    <string name="smallest_width_range">Saklaw: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Saklaw: 320 hanggang 1024 dp</string>
     <string name="shizuku_use_recommended">Nabigo ang operasyon. Gamitin ang Shizuku at tiyaking naibigay na ang pahintulot ng Shizuku.</string>
     <string name="write_secure_applied_title">Impormasyon</string>
     <string name="write_secure_applied_question">May ginamit na fallback na paraan. Na-apply ba ang setting sa device mo?</string>
@@ -226,7 +226,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="backup_saved">Na-save ang backup</string>
     <string name="restore_app_data">Ibalik ang Data ng App</string>
     <string name="restore_app_data_desc">Naglo-load ng mga preset at listahan ng app mula sa isang backup file</string>
-    <string name="restore_done">Naibalik ang backup — buksan muli ang app para makita ito</string>
+    <string name="restore_done">Naibalik ang backup. Buksan muli ang app para makita ito</string>
     <string name="restore_failed">Hindi mabasa ang backup file na iyon</string>
     <string name="revert_everything">Ibalik ang Lahat</string>
     <string name="revert_everything_desc">Binabawi ang lahat ng pagbabago sa system na ginawa ng app na ito</string>
@@ -275,7 +275,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="preset_tile_needs_permission">Magbigay muna ng Shizuku o WRITE_SECURE_SETTINGS.</string>
     <string name="preset_tile_subtitle_no_permission">Walang pahintulot</string>
     <string name="preset_tile_toast_applied">Nailapat ang %1$s</string>
-    <string name="preset_tile_toast_applied_unverified">Nailapat ang %1$s — kung walang nagbago, ikonekta ang Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">Nailapat ang %1$s. Kung walang nagbago, ikonekta ang Shizuku</string>
     <string name="preset_tile_toast_failed">Hindi mailapat ang %1$s</string>
     <string name="preset_tile_enable_description">Ilapat ang preset na ito mula sa panel ng Quick Settings.</string>
     <string name="preset_tile_number_description">Ipinapakita ng tile ang halagang ito sa halip na icon.</string>
@@ -383,7 +383,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="bt_charging_vibration_desc">Mag-vibrate kapag nakakonekta ang charger</string>
     <string name="bt_info_title">Bago ka magbago ng kahit ano</string>
     <string name="bt_info_body">Mga setting ito sa antas ng system. Ang aktwal na epekto ay depende sa iyong bersyon ng Android at tagagawa, at binabalewala o ibinabalik ito ng ilang telepono. Nananatili ang mga pagbabago hanggang bawiin mo o i-reset.</string>
-    <string name="bt_info_shizuku_active">Nakakonekta ang Shizuku — inilalapat ang mga tweak sa maaasahang paraan.</string>
+    <string name="bt_info_shizuku_active">Nakakonekta ang Shizuku, kaya inilalapat ang mga tweak sa maaasahang paraan.</string>
     <string name="bt_info_shizuku_missing">Hindi nakakonekta ang Shizuku. Maaaring tahimik na mabigo ang ilang tweak. Lubos na inirerekomendang ikonekta ang Shizuku.</string>
     <string name="bt_requires_android10">Kailangan ng Android 10 o mas bago para sa mga tweak ng Power Save Mode. Android %1$s ang tumatakbo sa device mo, kung saan gumagamit ang mga setting na ito ng lumang pangalan na hindi na tinatanggap ng system.</string>
     <string name="bt_doze_warning">Maaaring maantala ng Agresibong Doze ang mga alarma, notification, mensahe at background sync. Kung may hindi na dumarating sa tamang oras, ibalik ito sa Default ng system.</string>
@@ -402,12 +402,12 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_back">Bumalik</string>
     <string name="onboarding_start">Magsimula</string>
     <string name="onboarding_welcome_title">Maligayang Pagdating sa Custom Animator</string>
-    <string name="onboarding_welcome_body">Pabilisin ang iyong device sa pamamagitan ng pag-aayos ng animation scales, screen density, pag-uugali ng baterya at mga nakatagong developer setting — lahat sa isang lugar, walang root.</string>
+    <string name="onboarding_welcome_body">Pabilisin ang iyong device sa pamamagitan ng pag-aayos ng animation scales, screen density, pag-uugali ng baterya at mga nakatagong developer setting, lahat sa isang lugar at walang root.</string>
     <string name="onboarding_permission_title">Isang Beses na Setup</string>
     <string name="onboarding_permission_body">Pag-aari ng sistema ang mga setting na ito, kaya kailangan ng app ng espesyal na pahintulot bago ito makapagbago ng kahit ano. Ibigay ito gamit ang Shizuku, o sa pamamagitan ng isang ADB command mula sa computer.</string>
     <string name="onboarding_permission_highlight">Kung wala ang pahintulot na ito, mababasa lang ng app ang iyong mga setting ngunit hindi ito mababago. Makakakita ka ng babala sa itaas ng bawat screen na nangangailangan nito.</string>
     <string name="onboarding_battery_title">Sukatin Mismo ang Baterya</string>
-    <string name="onboarding_battery_body">Binabago ng battery tweaks kung gaano kaagresibo natutulog, hinihigpitan at nifi-freeze ng Android ang mga app. Walang iisang pinakamahusay na halaga — depende ito sa device, ROM at mga app mo.</string>
+    <string name="onboarding_battery_body">Binabago ng battery tweaks kung gaano kaagresibo natutulog, hinihigpitan at nifi-freeze ng Android ang mga app. Walang iisang pinakamahusay na halaga. Depende ito sa device, ROM at mga app mo.</string>
     <string name="onboarding_battery_highlight">Isa-isang baguhin, gamitin nang normal ang device sa loob ng isang araw, at ihambing. Ang agresibong setting ay maaaring magpabilis ng pagkaubos ng baterya, magpaantala ng notification, o pumigil sa background apps at alarm.</string>
     <string name="onboarding_experimental_title">Likas na Eksperimental</string>
     <string name="onboarding_experimental_body">Malaki ang binabago ng mga manufacturer sa Android. May mga tweak na tahimik na walang epekto sa device mo, may ibinabalik ng sistema, at may nangangailangan ng reboot bago gumana.</string>
@@ -419,8 +419,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Alisin ang mga Ad</string>
     <string name="remove_ads_desc">Isang beses na pagbili na nag-aalis ng lahat ng ad</string>
-    <string name="remove_ads_desc_price">Isang beses na pagbili — %1$s</string>
-    <string name="remove_ads_owned">Nabili na — salamat sa suporta!</string>
+    <string name="remove_ads_desc_price">Isang beses na pagbili: %1$s</string>
+    <string name="remove_ads_owned">Nabili na. Salamat sa suporta!</string>
     <string name="remove_ads_thanks">Naalis na ang mga ad. Salamat!</string>
     <string name="remove_ads_pending">Nakabinbin ang pagbili. Maaalis ang mga ad kapag natapos na.</string>
     <string name="remove_ads_unavailable">Hindi available ang pagbili ngayon. Subukan ulit mamaya.</string>
@@ -432,7 +432,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="remove_ads_prompt_body">Alisin ang mga ito sa isang beses na pagbili</string>
     <string name="remove_ads_prompt_body_price">Alisin sa halagang %1$s, isang beses lang</string>
     <string name="remove_ads_prompt_dismiss">Itago ito</string>
-    <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili — anumang oras, sa Mga Setting › Premium.</string>
+    <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili, anumang oras, sa Mga Setting › Premium.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Nagpapakita ng real-time na FPS overlay sa ibabaw ng mga laro at app para sa pagsusuri ng performance at lag.</string>
     <string name="fps_meter_hint">I-drag ang counter para ilipat ito. I-off ito para alisin ang overlay.</string>
@@ -513,13 +513,13 @@ Tagal ng Animator: %3$.2f</string>
 
     <string name="contact_developer">Makipag-ugnayan sa Developer</string>
     <string name="contact_developer_desc">Mangyaring makipag-ugnayan para sa inyong puna, mungkahi, at reklamo</string>
-    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_subject">Custom Animator Feedback</string>
     <string name="contact_developer_no_app">Walang nakitang email app</string>
     <string name="onboarding_disclaimer_title">Gamitin sa Sarili Mong Panganib</string>
     <string name="onboarding_disclaimer_body">Binabago ng app na ito ang mga setting sa antas ng sistema. Depende sa iyong device at ROM, maaari nitong maapektuhan ang baterya, mga notification, alarma, background apps, at katatagan.</string>
     <string name="onboarding_disclaimer_highlight">Walang anumang pananagutan ang developer sa pagkawala ng data, depekto, o pinsalang maaaring idulot ng paggamit ng app na ito. Lahat ng babaguhin mo rito ay nasa iyong sariling panganib.</string>
     <string name="onboarding_disclaimer_consent">Nabasa at tinatanggap ko ang nasa itaas; walang pananagutan ang developer.</string>
-    <string name="auto_force_stop_notif_text_waiting">Naka-pause — hinihintay ang Shizuku at usage access</string>
+    <string name="auto_force_stop_notif_text_waiting">Naka-pause, hinihintay ang Shizuku at usage access</string>
 
 <string name="permissions_title">Mga pahintulot</string>
     <string name="permissions_summary">%1$d sa %2$d ang naibigay</string>
@@ -599,7 +599,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_grant_secure_settings_title">Ibigay ang secure settings</string>
     <string name="pn_ignore_dialog_content_hint">Kung wala kang pipiliin, LAHAT ng notification mula sa %1$s ay babalewalain.</string>
     <string name="pn_ignore_dialog_content_section">Mga filter ng nilalaman (opsyonal)</string>
-    <string name="pn_ignore_dialog_hint_exact">Tumutugma kapag naglalaman nito ang teksto — i-on ang Regex para sa pattern</string>
+    <string name="pn_ignore_dialog_hint_exact">Tumutugma kapag naglalaman nito ang teksto. I-on ang Regex para sa pattern</string>
     <string name="pn_ignore_dialog_hint_regex">hal. \\d+ bagong mensahe mula sa \\d+ chat</string>
     <string name="pn_ignore_dialog_match_body">Itugma ang body</string>
     <string name="pn_ignore_dialog_match_title">Itugma ang title</string>
@@ -693,7 +693,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_recording_format">Nagre-record... %1$d.%2$ds</string>
     <string name="pn_rule_conflict_warning_body">Naka-block ang mga sumusunod na tugma ng iyong ignore list. Baka hindi kailanman tumakbo ang rule na ito:</string>
     <string name="pn_rule_conflict_warning_title">Salungat sa mga binabalewalang notification</string>
-    <string name="pn_rule_trigger_conflict_body">Nag-o-overlap ang trigger na ito sa mga aktibong rule — pareho silang maaaring tumakbo sa iisang notification:</string>
+    <string name="pn_rule_trigger_conflict_body">Nag-o-overlap ang trigger na ito sa mga aktibong rule. Pareho silang maaaring tumakbo sa iisang notification:</string>
     <string name="pn_rule_trigger_conflict_title">Nag-o-overlap na rule</string>
     <string name="pn_rules">Mga rule</string>
     <string name="pn_rules_count">%1$d na rule</string>

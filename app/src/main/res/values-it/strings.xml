@@ -160,7 +160,7 @@ Durata animatore: %3$.2f</string>
     <string name="smallest_width_current">Attuale: %1$d dp</string>
     <string name="smallest_width_applied">Larghezza minima applicata: %1$d dp</string>
     <string name="smallest_width_reset">Ripristina predefinito</string>
-    <string name="smallest_width_range">Intervallo: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Intervallo: da 320 a 1024 dp</string>
     <string name="shizuku_use_recommended">Operazione non riuscita. Usa Shizuku e verifica la sua autorizzazione.</string>
     <string name="write_secure_applied_title">Informazione</string>
     <string name="write_secure_applied_question">È stato usato un metodo alternativo. L\'impostazione è stata applicata sul tuo dispositivo?</string>
@@ -241,7 +241,7 @@ Durata animatore: %3$.2f</string>
     <string name="preset_tile_needs_permission">Concedi prima Shizuku o WRITE_SECURE_SETTINGS.</string>
     <string name="preset_tile_subtitle_no_permission">Nessuna autorizzazione</string>
     <string name="preset_tile_toast_applied">%1$s applicato</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s applicato — se non è cambiato nulla, connetti Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s applicato. Se non è cambiato nulla, connetti Shizuku</string>
     <string name="preset_tile_toast_failed">Impossibile applicare %1$s</string>
     <string name="preset_tile_enable_description">Applica questo preset dal pannello Impostazioni rapide.</string>
     <string name="preset_tile_number_description">Il riquadro mostra questo valore al posto di un\'icona.</string>
@@ -278,7 +278,7 @@ Durata animatore: %3$.2f</string>
     <string name="backup_saved">Backup salvato</string>
     <string name="restore_app_data">Ripristina i dati</string>
     <string name="restore_app_data_desc">Carica preset ed elenchi di app da un file di backup</string>
-    <string name="restore_done">Backup ripristinato — riapri l\'app per vederlo</string>
+    <string name="restore_done">Backup ripristinato. Riapri l\'app per vederlo</string>
     <string name="restore_failed">Impossibile leggere quel file di backup</string>
     <string name="revert_everything">Annulla tutto</string>
     <string name="revert_everything_desc">Annulla ogni modifica di sistema fatta da questa app</string>
@@ -422,7 +422,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_back">Indietro</string>
     <string name="onboarding_start">Inizia</string>
     <string name="onboarding_welcome_title">Benvenuto in Custom Animator</string>
-    <string name="onboarding_welcome_body">Velocizza il tuo dispositivo regolando scale delle animazioni, densità dello schermo, comportamento della batteria e impostazioni sviluppatore nascoste — tutto da un unico posto, senza root.</string>
+    <string name="onboarding_welcome_body">Velocizza il tuo dispositivo regolando scale delle animazioni, densità dello schermo, comportamento della batteria e impostazioni sviluppatore nascoste, tutto da un unico posto e senza root.</string>
     <string name="onboarding_permission_title">Configurazione una tantum</string>
     <string name="onboarding_permission_body">Queste impostazioni appartengono al sistema, quindi l\'app ha bisogno di un\'autorizzazione speciale prima di poter modificare qualcosa. Concedila con Shizuku oppure eseguendo un singolo comando ADB da un computer.</string>
     <string name="onboarding_permission_highlight">Senza questa autorizzazione l\'app può leggere le impostazioni ma non modificarle. Vedrai un avviso in cima a ogni schermata che la richiede.</string>
@@ -439,8 +439,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Rimuovi gli annunci</string>
     <string name="remove_ads_desc">Acquisto singolo che rimuove tutti gli annunci</string>
-    <string name="remove_ads_desc_price">Acquisto singolo — %1$s</string>
-    <string name="remove_ads_owned">Acquistato — grazie per il supporto!</string>
+    <string name="remove_ads_desc_price">Acquisto singolo: %1$s</string>
+    <string name="remove_ads_owned">Acquistato. Grazie per il supporto!</string>
     <string name="remove_ads_thanks">Annunci rimossi. Grazie!</string>
     <string name="remove_ads_pending">Acquisto in sospeso. Gli annunci verranno rimossi al completamento.</string>
     <string name="remove_ads_unavailable">L\'acquisto non è disponibile al momento. Riprova più tardi.</string>
@@ -452,7 +452,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="remove_ads_prompt_body">Rimuovili con un acquisto singolo</string>
     <string name="remove_ads_prompt_body_price">Rimuovili per %1$s, una volta sola</string>
     <string name="remove_ads_prompt_dismiss">Nascondi</string>
-    <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo — quando vuoi, da Impostazioni › Premium.</string>
+    <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo, quando vuoi, da Impostazioni › Premium.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Mostra un overlay FPS in tempo reale su giochi e app per analizzare prestazioni e rallentamenti.</string>
     <string name="fps_meter_hint">Trascina il contatore per spostarlo. Disattiva per rimuovere l\'overlay.</string>
@@ -533,13 +533,13 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
 
     <string name="contact_developer">Contatta lo sviluppatore</string>
     <string name="contact_developer_desc">Scrivici per opinioni, suggerimenti e reclami</string>
-    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_subject">Custom Animator Feedback</string>
     <string name="contact_developer_no_app">Nessuna app di posta trovata</string>
     <string name="onboarding_disclaimer_title">Usa a tuo rischio</string>
     <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
     <string name="onboarding_disclaimer_highlight">Lo sviluppatore non si assume alcuna responsabilità per perdite di dati, malfunzionamenti o danni derivanti dall\'uso di questa app. Tutto ciò che modifichi qui lo fai a tuo rischio.</string>
     <string name="onboarding_disclaimer_consent">Ho letto e accetto quanto sopra; lo sviluppatore non si assume alcuna responsabilità.</string>
-    <string name="auto_force_stop_notif_text_waiting">In pausa — in attesa di Shizuku e accesso all\'utilizzo</string>
+    <string name="auto_force_stop_notif_text_waiting">In pausa, in attesa di Shizuku e accesso all\'utilizzo</string>
 
 <string name="permissions_title">Autorizzazioni</string>
     <string name="permissions_summary">%1$d di %2$d concesse</string>
@@ -619,7 +619,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_grant_secure_settings_title">Concedi impostazioni protette</string>
     <string name="pn_ignore_dialog_content_hint">Se non selezioni nulla, verranno ignorate TUTTE le notifiche di %1$s.</string>
     <string name="pn_ignore_dialog_content_section">Filtri sul contenuto (facoltativi)</string>
-    <string name="pn_ignore_dialog_hint_exact">Corrisponde se il testo contiene questo — attiva Regex per i pattern</string>
+    <string name="pn_ignore_dialog_hint_exact">Corrisponde se il testo contiene questo. Attiva Regex per i pattern</string>
     <string name="pn_ignore_dialog_hint_regex">es. \\d+ nuovi messaggi da \\d+ chat</string>
     <string name="pn_ignore_dialog_match_body">Corrispondenza nel corpo</string>
     <string name="pn_ignore_dialog_match_title">Corrispondenza nel titolo</string>

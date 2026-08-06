@@ -109,7 +109,7 @@
     <string name="compile_booster_notif_text_app">Compiling %1$s… %2$d%%</string>
     <string name="graphics_api_override">Graphics API Override</string>
     <string name="graphics_api_override_desc">Force apps to use ANGLE (Vulkan translation) or the native GLES/Vulkan driver</string>
-    <string name="graphics_api_override_disclaimer">This uses Android\'s built-in per-app ANGLE driver setting (Android 10+). Whether it actually takes effect depends on your device and Android version — it\'s most reliable on Pixel devices and may be ignored entirely on some other manufacturers\' builds.</string>
+    <string name="graphics_api_override_disclaimer">This uses Android\'s built-in per-app ANGLE driver setting (Android 10+). Whether it actually takes effect depends on your device and Android version. It is most reliable on Pixel devices and may be ignored entirely on some other manufacturers\' builds.</string>
     <string name="driver_default">Default</string>
     <string name="driver_native">Native</string>
     <string name="driver_angle">ANGLE</string>
@@ -196,7 +196,7 @@ Animator Duration: %3$.2f</string>
     <string name="smallest_width_current">Current: %1$d dp</string>
     <string name="smallest_width_applied">Smallest width applied: %1$d dp</string>
     <string name="smallest_width_reset">Reset to default</string>
-    <string name="smallest_width_range">Range: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Range: 320 to 1024 dp</string>
     <string name="shizuku_use_recommended">Operation failed. Please use Shizuku and verify Shizuku permission.</string>
     <string name="write_secure_applied_title">Information</string>
     <string name="write_secure_applied_question">A fallback method was used. Was the setting applied on your device?</string>
@@ -277,7 +277,7 @@ Animator Duration: %3$.2f</string>
     <string name="preset_tile_needs_permission">Grant Shizuku or WRITE_SECURE_SETTINGS first.</string>
     <string name="preset_tile_subtitle_no_permission">No permission</string>
     <string name="preset_tile_toast_applied">%1$s applied</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s applied — if nothing changed, connect Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s applied. If nothing changed, connect Shizuku</string>
     <string name="preset_tile_toast_failed">%1$s could not be applied</string>
     <string name="preset_tile_enable_description">Apply this preset from the Quick Settings panel.</string>
     <string name="preset_tile_number_description">The tile shows this value instead of an icon.</string>
@@ -346,7 +346,7 @@ Animator Duration: %3$.2f</string>
     <string name="backup_saved">Backup saved</string>
     <string name="restore_app_data">Restore App Data</string>
     <string name="restore_app_data_desc">Loads presets and app lists from a backup file</string>
-    <string name="restore_done">Backup restored — reopen the app to see it</string>
+    <string name="restore_done">Backup restored. Reopen the app to see it</string>
     <string name="restore_failed">Could not read that backup file</string>
     <string name="revert_everything">Revert Everything</string>
     <string name="revert_everything_desc">Undoes every system change made by this app</string>
@@ -466,7 +466,7 @@ Animator Duration: %3$.2f</string>
     <!-- Safety / risk notices -->
     <string name="bt_info_title">Before you change anything</string>
     <string name="bt_info_body">These are system-level settings. What they actually do depends on your Android version and manufacturer, and some phones ignore or restore them. Changes stay until you undo them or reset.</string>
-    <string name="bt_info_shizuku_active">Shizuku is connected — tweaks are applied the reliable way.</string>
+    <string name="bt_info_shizuku_active">Shizuku is connected, so tweaks are applied the reliable way.</string>
     <string name="bt_info_shizuku_missing">Shizuku is not connected. Some tweaks may silently fail. Connecting Shizuku is strongly recommended.</string>
     <string name="bt_requires_android10">Power Save Mode tweaks need Android 10 or newer. Your device runs Android %1$s, where these settings use older names the system no longer accepts.</string>
     <string name="bt_doze_warning">Aggressive Doze can delay alarms, notifications, messages and background sync. If something stops arriving on time, set this back to System default.</string>
@@ -490,12 +490,12 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_back">Back</string>
     <string name="onboarding_start">Get Started</string>
     <string name="onboarding_welcome_title">Welcome to Custom Animator</string>
-    <string name="onboarding_welcome_body">Speed up your device by tuning animation scales, screen density, battery behaviour and hidden developer settings — all from one place, without root.</string>
+    <string name="onboarding_welcome_body">Speed up your device by tuning animation scales, screen density, battery behaviour and hidden developer settings, all from one place and without root.</string>
     <string name="onboarding_permission_title">One-Time Setup</string>
     <string name="onboarding_permission_body">These settings belong to the system, so the app needs a special permission before it can change anything. Grant it with Shizuku, or by running a single ADB command from a computer.</string>
     <string name="onboarding_permission_highlight">Without this permission the app can read your settings but cannot change them. You will see a warning at the top of any screen that needs it.</string>
     <string name="onboarding_battery_title">Measure Battery Yourself</string>
-    <string name="onboarding_battery_body">Battery tweaks change how aggressively Android sleeps, throttles and freezes apps. There is no single best value — it depends on your device, your ROM and the apps you use.</string>
+    <string name="onboarding_battery_body">Battery tweaks change how aggressively Android sleeps, throttles and freezes apps. There is no single best value. It depends on your device, your ROM and the apps you use.</string>
     <string name="onboarding_battery_highlight">Change one thing at a time, then use your device normally for a day and compare. Aggressive settings can drain your battery faster, delay notifications, or stop background apps and alarms from working.</string>
     <string name="onboarding_experimental_title">Experimental by Nature</string>
     <string name="onboarding_experimental_body">Manufacturers modify Android heavily. Some tweaks silently do nothing on your device, some are reverted by the system, and some need a reboot before they take effect.</string>
@@ -507,8 +507,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Remove Ads</string>
     <string name="remove_ads_desc">One-time purchase that removes all ads</string>
-    <string name="remove_ads_desc_price">One-time purchase — %1$s</string>
-    <string name="remove_ads_owned">Purchased — thank you for the support!</string>
+    <string name="remove_ads_desc_price">One-time purchase: %1$s</string>
+    <string name="remove_ads_owned">Purchased. Thank you for the support!</string>
     <string name="remove_ads_thanks">Ads removed. Thank you!</string>
     <string name="remove_ads_pending">Purchase pending. Ads will be removed once it completes.</string>
     <string name="remove_ads_unavailable">Purchase is not available right now. Please try again later.</string>
@@ -520,7 +520,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="remove_ads_prompt_body">Remove them with a one-time purchase</string>
     <string name="remove_ads_prompt_body_price">Remove them for %1$s, once</string>
     <string name="remove_ads_prompt_dismiss">Hide this</string>
-    <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase — anytime, from Settings › Premium.</string>
+    <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase, anytime, from Settings › Premium.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Displays a real-time FPS overlay over games and apps for performance and lag analysis.</string>
     <string name="caffeine_tile_label">Caffeine</string>
@@ -533,13 +533,13 @@ What you run is entirely your responsibility. The developer of this app cannot b
 
     <string name="contact_developer">Contact Developer</string>
     <string name="contact_developer_desc">Please reach out with your feedback, suggestions and complaints</string>
-    <string name="contact_developer_subject">Custom Animator — Feedback</string>
+    <string name="contact_developer_subject">Custom Animator Feedback</string>
     <string name="contact_developer_no_app">No email app found</string>
     <string name="onboarding_disclaimer_title">Use at Your Own Risk</string>
     <string name="onboarding_disclaimer_body">This app changes system-level settings. Depending on your device and ROM, that can affect battery life, notifications, alarms, background apps and stability.</string>
     <string name="onboarding_disclaimer_highlight">The developer accepts no responsibility for any data loss, malfunction or damage that may result from using this app. Everything you change here, you change at your own risk.</string>
     <string name="onboarding_disclaimer_consent">I have read and accept the above; the developer accepts no responsibility.</string>
-    <string name="auto_force_stop_notif_text_waiting">Paused — waiting for Shizuku and usage access</string>
+    <string name="auto_force_stop_notif_text_waiting">Paused, waiting for Shizuku and usage access</string>
 
     <!-- Permissions -->
     <string name="permissions_title">Permissions</string>
@@ -622,7 +622,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_grant_secure_settings_title">Grant Secure Settings</string>
     <string name="pn_ignore_dialog_content_hint">If none selected, ALL notifications from %1$s will be ignored.</string>
     <string name="pn_ignore_dialog_content_section">Content filters (optional)</string>
-    <string name="pn_ignore_dialog_hint_exact">Matches when the text contains this — turn on Regex for patterns</string>
+    <string name="pn_ignore_dialog_hint_exact">Matches when the text contains this. Turn on Regex for patterns</string>
     <string name="pn_ignore_dialog_hint_regex">e.g. \d+ new messages from \d+ chats</string>
     <string name="pn_ignore_dialog_match_body">Match body</string>
     <string name="pn_ignore_dialog_match_title">Match title</string>
@@ -718,7 +718,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_recording_format">Recording... %1$d.%2$ds</string>
     <string name="pn_rule_conflict_warning_body">The following matches are blocked by your ignore list. This rule may never trigger:</string>
     <string name="pn_rule_conflict_warning_title">Conflict with ignored notifications</string>
-    <string name="pn_rule_trigger_conflict_body">This trigger overlaps with existing active rules — both may fire for the same notification:</string>
+    <string name="pn_rule_trigger_conflict_body">This trigger overlaps with existing active rules. Both may fire for the same notification:</string>
     <string name="pn_rule_trigger_conflict_title">Overlapping Rule</string>
     <string name="pn_rules">Rules</string>
     <string name="pn_rules_count">%1$d rules</string>

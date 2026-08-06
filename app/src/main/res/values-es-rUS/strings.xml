@@ -74,7 +74,7 @@
     <string name="compile_booster_notif_text_app">Compilando %1$s… %2$d%%</string>
     <string name="graphics_api_override">Anulación de API Gráfica</string>
     <string name="graphics_api_override_desc">Fuerza a las apps a usar ANGLE (traducción a Vulkan) o el controlador nativo GLES/Vulkan</string>
-    <string name="graphics_api_override_disclaimer">Esto usa la configuración integrada de Android para el controlador ANGLE por app (Android 10+). Que realmente surta efecto depende de tu dispositivo y versión de Android — es más confiable en dispositivos Pixel y puede ser ignorado por completo en compilaciones de otros fabricantes.</string>
+    <string name="graphics_api_override_disclaimer">Esto usa la configuración integrada de Android para el controlador ANGLE por app (Android 10+). Que realmente surta efecto depende de tu dispositivo y versión de Android. Es más confiable en dispositivos Pixel y puede ser ignorado por completo en compilaciones de otros fabricantes.</string>
     <string name="driver_default">Predeterminado</string>
     <string name="driver_native">Nativo</string>
     <string name="driver_angle">ANGLE</string>
@@ -161,7 +161,7 @@ Duración del Animador: %3$.2f</string>
     <string name="smallest_width_current">Actual: %1$d dp</string>
     <string name="smallest_width_applied">Ancho mínimo aplicado: %1$d dp</string>
     <string name="smallest_width_reset">Restablecer valor predeterminado</string>
-    <string name="smallest_width_range">Rango: 320 - 1024 dp</string>
+    <string name="smallest_width_range">Rango: de 320 a 1024 dp</string>
     <string name="shizuku_use_recommended">La operación falló. Usa Shizuku y verifica el permiso de Shizuku.</string>
     <string name="write_secure_applied_title">Información</string>
     <string name="write_secure_applied_question">Se usó un método alternativo. ¿Se aplicó la configuración en tu dispositivo?</string>
@@ -275,7 +275,7 @@ Duración del Animador: %3$.2f</string>
     <string name="preset_tile_needs_permission">Concede primero Shizuku o WRITE_SECURE_SETTINGS.</string>
     <string name="preset_tile_subtitle_no_permission">Sin permiso</string>
     <string name="preset_tile_toast_applied">%1$s aplicado</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s aplicado — si nada cambió, conecta Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s aplicado. Si nada cambió, conecta Shizuku</string>
     <string name="preset_tile_toast_failed">No se pudo aplicar %1$s</string>
     <string name="preset_tile_enable_description">Aplica este preajuste desde el panel de Ajustes rápidos.</string>
     <string name="preset_tile_number_description">El mosaico muestra este valor en lugar de un icono.</string>
@@ -402,12 +402,12 @@ Duración del Animador: %3$.2f</string>
     <string name="onboarding_back">Atrás</string>
     <string name="onboarding_start">Comenzar</string>
     <string name="onboarding_welcome_title">Bienvenido a Custom Animator</string>
-    <string name="onboarding_welcome_body">Acelera tu dispositivo ajustando las escalas de animación, la densidad de pantalla, el comportamiento de la batería y opciones ocultas de desarrollador — todo en un solo lugar, sin root.</string>
+    <string name="onboarding_welcome_body">Acelera tu dispositivo ajustando las escalas de animación, la densidad de pantalla, el comportamiento de la batería y opciones ocultas de desarrollador, todo en un solo lugar y sin root.</string>
     <string name="onboarding_permission_title">Configuración Única</string>
     <string name="onboarding_permission_body">Estos ajustes pertenecen al sistema, así que la app necesita un permiso especial antes de poder cambiar algo. Concédelo con Shizuku o ejecutando un solo comando ADB desde una computadora.</string>
     <string name="onboarding_permission_highlight">Sin este permiso la app puede leer tus ajustes pero no cambiarlos. Verás una advertencia en la parte superior de cada pantalla que lo necesite.</string>
     <string name="onboarding_battery_title">Mide la Batería Tú Mismo</string>
-    <string name="onboarding_battery_body">Los ajustes de batería cambian qué tan agresivamente Android duerme, limita y congela las apps. No hay un único valor ideal — depende de tu dispositivo, tu ROM y las apps que uses.</string>
+    <string name="onboarding_battery_body">Los ajustes de batería cambian qué tan agresivamente Android duerme, limita y congela las apps. No hay un único valor ideal. Depende de tu dispositivo, tu ROM y las apps que uses.</string>
     <string name="onboarding_battery_highlight">Cambia una cosa a la vez, luego usa el dispositivo con normalidad durante un día y compara. Los ajustes agresivos pueden agotar la batería más rápido, retrasar notificaciones o impedir que funcionen las apps en segundo plano y las alarmas.</string>
     <string name="onboarding_experimental_title">Experimental por Naturaleza</string>
     <string name="onboarding_experimental_body">Los fabricantes modifican mucho Android. Algunos ajustes simplemente no hacen nada en tu dispositivo, otros los revierte el sistema y algunos requieren reiniciar para aplicarse.</string>
@@ -419,7 +419,7 @@ Duración del Animador: %3$.2f</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Quitar anuncios</string>
     <string name="remove_ads_desc">Compra única que elimina todos los anuncios</string>
-    <string name="remove_ads_desc_price">Compra única — %1$s</string>
+    <string name="remove_ads_desc_price">Compra única: %1$s</string>
     <string name="remove_ads_owned">Comprado: ¡gracias por tu apoyo!</string>
     <string name="remove_ads_thanks">Anuncios eliminados. ¡Gracias!</string>
     <string name="remove_ads_pending">Compra pendiente. Los anuncios se quitarán al completarse.</string>
@@ -513,13 +513,13 @@ Duración del Animador: %3$.2f</string>
 
     <string name="contact_developer">Contactar al desarrollador</string>
     <string name="contact_developer_desc">Escríbenos con tus opiniones, sugerencias y quejas</string>
-    <string name="contact_developer_subject">Custom Animator — Comentarios</string>
+    <string name="contact_developer_subject">Custom Animator Comentarios</string>
     <string name="contact_developer_no_app">No se encontró ninguna app de correo</string>
     <string name="onboarding_disclaimer_title">Úsalo bajo tu propio riesgo</string>
     <string name="onboarding_disclaimer_body">Esta app cambia ajustes del sistema. Según tu dispositivo y tu ROM, eso puede afectar la batería, las notificaciones, las alarmas, las apps en segundo plano y la estabilidad.</string>
     <string name="onboarding_disclaimer_highlight">El desarrollador no acepta ninguna responsabilidad por pérdida de datos, fallos o daños que puedan derivarse del uso de esta app. Todo lo que cambies aquí, lo cambias bajo tu propio riesgo.</string>
     <string name="onboarding_disclaimer_consent">He leído y acepto lo anterior; el desarrollador no acepta ninguna responsabilidad.</string>
-    <string name="auto_force_stop_notif_text_waiting">En pausa — esperando Shizuku y acceso de uso</string>
+    <string name="auto_force_stop_notif_text_waiting">En pausa, esperando Shizuku y acceso de uso</string>
 
 <string name="permissions_title">Permisos</string>
     <string name="permissions_summary">%1$d de %2$d concedidos</string>

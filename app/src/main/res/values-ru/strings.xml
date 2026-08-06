@@ -74,7 +74,7 @@
     <string name="compile_booster_notif_text_app">Компиляция %1$s… %2$d%%</string>
     <string name="graphics_api_override">Замена графического API</string>
     <string name="graphics_api_override_desc">Заставляет приложения использовать ANGLE (трансляцию в Vulkan) или нативный драйвер GLES/Vulkan</string>
-    <string name="graphics_api_override_disclaimer">Используется встроенная настройка Android для выбора драйвера ANGLE для каждого приложения (Android 10+). Будет ли она реально работать, зависит от вашего устройства и версии Android — наиболее надёжно на устройствах Pixel и может полностью игнорироваться в прошивках других производителей.</string>
+    <string name="graphics_api_override_disclaimer">Используется встроенная настройка Android для выбора драйвера ANGLE для каждого приложения (Android 10+). Будет ли она реально работать, зависит от вашего устройства и версии Android. Наиболее надёжно это работает на устройствах Pixel и может полностью игнорироваться в прошивках других производителей.</string>
     <string name="driver_default">По умолчанию</string>
     <string name="driver_native">Нативный</string>
     <string name="driver_angle">ANGLE</string>
@@ -161,7 +161,7 @@
     <string name="smallest_width_current">Текущая: %1$d dp</string>
     <string name="smallest_width_applied">Наименьшая ширина применена: %1$d dp</string>
     <string name="smallest_width_reset">Сбросить по умолчанию</string>
-    <string name="smallest_width_range">Диапазон: 320–1024 dp</string>
+    <string name="smallest_width_range">Диапазон: от 320 до 1024 dp</string>
     <string name="shizuku_use_recommended">Операция не удалась. Используйте Shizuku и проверьте разрешение Shizuku.</string>
     <string name="write_secure_applied_title">Информация</string>
     <string name="write_secure_applied_question">Был использован резервный метод. Настройка применилась на вашем устройстве?</string>
@@ -226,7 +226,7 @@
     <string name="backup_saved">Резервная копия сохранена</string>
     <string name="restore_app_data">Восстановить данные</string>
     <string name="restore_app_data_desc">Загружает пресеты и списки приложений из резервной копии</string>
-    <string name="restore_done">Копия восстановлена — откройте приложение заново</string>
+    <string name="restore_done">Копия восстановлена. Откройте приложение заново</string>
     <string name="restore_failed">Не удалось прочитать этот файл резервной копии</string>
     <string name="revert_everything">Вернуть всё</string>
     <string name="revert_everything_desc">Отменяет все системные изменения, сделанные приложением</string>
@@ -275,7 +275,7 @@
     <string name="preset_tile_needs_permission">Сначала выдайте Shizuku или WRITE_SECURE_SETTINGS.</string>
     <string name="preset_tile_subtitle_no_permission">Нет разрешения</string>
     <string name="preset_tile_toast_applied">%1$s применено</string>
-    <string name="preset_tile_toast_applied_unverified">%1$s применено — если ничего не изменилось, подключите Shizuku</string>
+    <string name="preset_tile_toast_applied_unverified">%1$s применено. Если ничего не изменилось, подключите Shizuku</string>
     <string name="preset_tile_toast_failed">Не удалось применить %1$s</string>
     <string name="preset_tile_enable_description">Применяйте этот пресет из панели быстрых настроек.</string>
     <string name="preset_tile_number_description">Плитка показывает это значение вместо значка.</string>
@@ -383,7 +383,7 @@
     <string name="bt_charging_vibration_desc">Вибрировать при подключении зарядного устройства</string>
     <string name="bt_info_title">Прежде чем что-то менять</string>
     <string name="bt_info_body">Это системные настройки. Их реальное действие зависит от версии Android и производителя; некоторые телефоны игнорируют или восстанавливают их. Изменения сохраняются, пока вы их не отмените или не сбросите.</string>
-    <string name="bt_info_shizuku_active">Shizuku подключён — настройки применяются надёжным способом.</string>
+    <string name="bt_info_shizuku_active">Shizuku подключён, настройки применяются надёжным способом.</string>
     <string name="bt_info_shizuku_missing">Shizuku не подключён. Некоторые настройки могут молча не сработать. Настоятельно рекомендуется подключить Shizuku.</string>
     <string name="bt_requires_android10">Настройки режима энергосбережения требуют Android 10 или новее. На вашем устройстве Android %1$s, где эти параметры используют старые имена, которые система больше не принимает.</string>
     <string name="bt_doze_warning">Агрессивный Doze может задерживать будильники, уведомления, сообщения и фоновую синхронизацию. Если что-то перестанет приходить вовремя, верните значение «Системные значения».</string>
@@ -402,16 +402,16 @@
     <string name="onboarding_back">Назад</string>
     <string name="onboarding_start">Начать</string>
     <string name="onboarding_welcome_title">Добро пожаловать в Custom Animator</string>
-    <string name="onboarding_welcome_body">Ускорьте устройство, настроив скорость анимаций, плотность экрана, поведение батареи и скрытые параметры разработчика — всё в одном месте, без root.</string>
+    <string name="onboarding_welcome_body">Ускорьте устройство, настроив скорость анимаций, плотность экрана, поведение батареи и скрытые параметры разработчика. Всё в одном месте, без root.</string>
     <string name="onboarding_permission_title">Разовая настройка</string>
     <string name="onboarding_permission_body">Эти параметры принадлежат системе, поэтому приложению нужно особое разрешение, чтобы что-то менять. Выдайте его через Shizuku или одной командой ADB с компьютера.</string>
     <string name="onboarding_permission_highlight">Без этого разрешения приложение может читать настройки, но не изменять их. На каждом экране, которому оно нужно, вы увидите предупреждение сверху.</string>
     <string name="onboarding_battery_title">Измеряйте батарею сами</string>
-    <string name="onboarding_battery_body">Настройки батареи меняют, насколько агрессивно Android усыпляет и ограничивает приложения. Лучшего значения нет — всё зависит от устройства, прошивки и ваших приложений.</string>
+    <string name="onboarding_battery_body">Настройки батареи меняют, насколько агрессивно Android усыпляет и ограничивает приложения. Лучшего значения нет. Всё зависит от устройства, прошивки и ваших приложений.</string>
     <string name="onboarding_battery_highlight">Меняйте по одному параметру, день пользуйтесь как обычно и сравните. Агрессивные настройки ускоряют разряд и мешают уведомлениям, фоновым приложениям и будильникам.</string>
     <string name="onboarding_experimental_title">Экспериментально по своей природе</string>
     <string name="onboarding_experimental_body">Производители сильно изменяют Android. Некоторые твики на вашем устройстве просто ничего не делают, другие откатываются системой, третьим нужна перезагрузка.</string>
-    <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь — запишите, что меняете, до изменения.</string>
+    <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь, запишите, что меняете, до изменения.</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_privacy_policy_desc">Узнайте, как приложение обрабатывает ваши данные</string>
     <string name="settings_privacy_options">Настройки конфиденциальности</string>
@@ -419,8 +419,8 @@
     <string name="settings_premium">Премиум</string>
     <string name="remove_ads">Убрать рекламу</string>
     <string name="remove_ads_desc">Разовая покупка, убирающая всю рекламу</string>
-    <string name="remove_ads_desc_price">Разовая покупка — %1$s</string>
-    <string name="remove_ads_owned">Куплено — спасибо за поддержку!</string>
+    <string name="remove_ads_desc_price">Разовая покупка: %1$s</string>
+    <string name="remove_ads_owned">Куплено. Спасибо за поддержку!</string>
     <string name="remove_ads_thanks">Реклама убрана. Спасибо!</string>
     <string name="remove_ads_pending">Покупка обрабатывается. Реклама исчезнет после завершения.</string>
     <string name="remove_ads_unavailable">Покупка сейчас недоступна. Попробуйте позже.</string>
@@ -432,7 +432,7 @@
     <string name="remove_ads_prompt_body">Уберите её разовой покупкой</string>
     <string name="remove_ads_prompt_body_price">Убрать за %1$s, один раз</string>
     <string name="remove_ads_prompt_dismiss">Скрыть</string>
-    <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой — в любой момент, в разделе Настройки › Премиум.</string>
+    <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой в любой момент, в разделе Настройки › Премиум.</string>
     <string name="fps_meter">Shizuku FPS Meter</string>
     <string name="fps_meter_desc">Показывает счётчик FPS поверх игр и приложений для анализа производительности и лагов.</string>
     <string name="fps_meter_hint">Перетащите счётчик, чтобы переместить его. Выключите, чтобы убрать наложение.</string>
@@ -513,13 +513,13 @@
 
     <string name="contact_developer">Связаться с разработчиком</string>
     <string name="contact_developer_desc">Пишите нам с отзывами, предложениями и жалобами</string>
-    <string name="contact_developer_subject">Custom Animator — Обратная связь</string>
+    <string name="contact_developer_subject">Custom Animator Обратная связь</string>
     <string name="contact_developer_no_app">Почтовое приложение не найдено</string>
     <string name="onboarding_disclaimer_title">Используйте на свой риск</string>
     <string name="onboarding_disclaimer_body">Приложение изменяет системные настройки. В зависимости от устройства и прошивки это может повлиять на время работы батареи, уведомления, будильники, фоновые приложения и стабильность.</string>
     <string name="onboarding_disclaimer_highlight">Разработчик не несёт никакой ответственности за потерю данных, сбои или ущерб, которые могут возникнуть при использовании этого приложения. Все изменения вы вносите на свой страх и риск.</string>
     <string name="onboarding_disclaimer_consent">Я прочитал(а) и принимаю изложенное выше; разработчик не несёт ответственности.</string>
-    <string name="auto_force_stop_notif_text_waiting">Приостановлено — ожидание Shizuku и доступа к статистике</string>
+    <string name="auto_force_stop_notif_text_waiting">Приостановлено, ожидание Shizuku и доступа к статистике</string>
 
 <string name="permissions_title">Разрешения</string>
     <string name="permissions_summary">Предоставлено %1$d из %2$d</string>
@@ -599,7 +599,7 @@
     <string name="pn_grant_secure_settings_title">Выдать защищённые настройки</string>
     <string name="pn_ignore_dialog_content_hint">Если ничего не выбрано, будут игнорироваться ВСЕ уведомления от %1$s.</string>
     <string name="pn_ignore_dialog_content_section">Фильтры содержимого (необязательно)</string>
-    <string name="pn_ignore_dialog_hint_exact">Совпадает, если текст содержит это — включите Regex для шаблонов</string>
+    <string name="pn_ignore_dialog_hint_exact">Совпадает, если текст содержит это. Включите Regex для шаблонов</string>
     <string name="pn_ignore_dialog_hint_regex">напр. \\d+ новых сообщений из \\d+ чатов</string>
     <string name="pn_ignore_dialog_match_body">Совпадение по тексту</string>
     <string name="pn_ignore_dialog_match_title">Совпадение по заголовку</string>
@@ -693,7 +693,7 @@
     <string name="pn_recording_format">Запись... %1$d.%2$d с</string>
     <string name="pn_rule_conflict_warning_body">Следующие совпадения блокируются вашим списком игнорирования. Правило может никогда не сработать:</string>
     <string name="pn_rule_conflict_warning_title">Конфликт с игнорируемыми уведомлениями</string>
-    <string name="pn_rule_trigger_conflict_body">Этот триггер пересекается с активными правилами — оба могут сработать для одного уведомления:</string>
+    <string name="pn_rule_trigger_conflict_body">Этот триггер пересекается с активными правилами. Оба могут сработать для одного уведомления:</string>
     <string name="pn_rule_trigger_conflict_title">Пересекающееся правило</string>
     <string name="pn_rules">Правила</string>
     <string name="pn_rules_count">Правил: %1$d</string>
