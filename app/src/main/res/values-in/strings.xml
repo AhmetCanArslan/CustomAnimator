@@ -731,5 +731,5 @@ Durasi Animator: %3$.2f</string>
     <string name="changelog_title">Yang baru</string>
     <string name="changelog_version">Versi %1$s</string>
     <string name="pn_service_channel_group">Layanan latar belakang</string>
-    <string name="pn_notification_persistent_settings_hint">Ketuk notifikasi ini untuk mengelola kategorinya di Setelan.</string>
+    <string name="pn_notification_persistent_settings_hint">Ketuk di sini untuk menonaktifkan notifikasi ini.</string>
 </resources>

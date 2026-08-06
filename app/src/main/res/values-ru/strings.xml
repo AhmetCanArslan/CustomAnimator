@@ -731,5 +731,5 @@
     <string name="changelog_title">Что нового</string>
     <string name="changelog_version">Версия %1$s</string>
     <string name="pn_service_channel_group">Фоновая служба</string>
-    <string name="pn_notification_persistent_settings_hint">Нажмите это уведомление, чтобы управлять его категорией в настройках.</string>
+    <string name="pn_notification_persistent_settings_hint">Нажмите здесь, чтобы отключить это уведомление.</string>
 </resources>

@@ -731,5 +731,5 @@ Tagal ng Animator: %3$.2f</string>
     <string name="changelog_title">Mga bago</string>
     <string name="changelog_version">Bersyon %1$s</string>
     <string name="pn_service_channel_group">Background service</string>
-    <string name="pn_notification_persistent_settings_hint">I-tap ang notification na ito para pamahalaan ang kategorya nito sa Mga Setting.</string>
+    <string name="pn_notification_persistent_settings_hint">I-tap dito para i-off ang notification na ito.</string>
 </resources>
