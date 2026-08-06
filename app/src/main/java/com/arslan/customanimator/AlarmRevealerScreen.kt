@@ -19,6 +19,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,8 +74,7 @@ fun AlarmRevealerScreen(
                 title = {
                     Text(
                         stringResource(R.string.alarm_revealer),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -116,7 +116,11 @@ fun AlarmRevealerScreen(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -131,17 +135,16 @@ fun AlarmRevealerScreen(
                                 text = stringResource(
                                     if (nextAlarm != null) R.string.alarm_icon_active else R.string.alarm_icon_inactive
                                 ),
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
+                                style = MaterialTheme.typography.titleMedium,
                             )
                         }
                         nextAlarm?.let { alarm ->
                             Spacer(modifier = Modifier.height(12.dp))
-                            Text(text = alarm.label, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                            Text(text = alarm.label, style = MaterialTheme.typography.titleSmall,)
                             if (alarm.packageName.isNotEmpty()) {
                                 Text(
                                     text = alarm.packageName,
-                                    fontSize = 12.sp,
+                                    style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
@@ -151,14 +154,14 @@ fun AlarmRevealerScreen(
                                     DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
                                         .format(Date(alarm.triggerTime))
                                 ),
-                                fontSize = 13.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             if (alarm.packageName.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     Button(onClick = { openAppInfo(alarm.packageName) }) {
-                                        Text(stringResource(R.string.app_info), fontSize = 12.sp, maxLines = 1)
+                                        Text(stringResource(R.string.app_info), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
                                     Button(
                                         onClick = {
@@ -181,7 +184,7 @@ fun AlarmRevealerScreen(
                                             containerColor = MaterialTheme.colorScheme.secondary
                                         )
                                     ) {
-                                        Text(stringResource(R.string.force_stop), fontSize = 12.sp, maxLines = 1)
+                                        Text(stringResource(R.string.force_stop), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
                                 }
                             }
@@ -202,30 +205,33 @@ fun AlarmRevealerScreen(
                 item {
                     Text(
                         text = stringResource(R.string.alarm_other_scheduled).uppercase(),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.labelMedium,
                         letterSpacing = 0.5.sp,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(start = 4.dp)
                     )
                 }
                 items(others, key = { it.packageName }) { alarm ->
-                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = AppShapes.card
+                    ) {
                         Row(
                             modifier = Modifier.padding(16.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(text = alarm.label, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                                Text(text = alarm.label, style = MaterialTheme.typography.titleSmall,)
                                 Text(
                                     text = alarm.packageName,
-                                    fontSize = 12.sp,
+                                    style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                             Button(onClick = { openAppInfo(alarm.packageName) }) {
-                                Text(stringResource(R.string.app_info), fontSize = 12.sp, maxLines = 1)
+                                Text(stringResource(R.string.app_info), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
                     }

@@ -752,4 +752,17 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="changelog_version">Versione %1$s</string>
     <string name="pn_service_channel_group">Servizio in background</string>
     <string name="pn_notification_persistent_settings_hint">Tocca qui per disattivare questa notifica.</string>
+    <string name="settings_appearance">Aspetto</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Chiaro</string>
+    <string name="theme_dark">Scuro</string>
+    <string name="settings_dynamic_color">Colori Material You</string>
+    <string name="settings_dynamic_color_desc">Usa i colori dello sfondo</string>
+    <string name="settings_dynamic_color_unsupported">Richiede Android 12 o versioni successive</string>
+    <string name="anim_hero_current">Scala attuale</string>
+    <string name="anim_hero_off">Animazioni disattivate</string>
+    <string name="anim_hero_fast">Più veloce del normale</string>
+    <string name="anim_hero_normal">Velocità predefinita</string>
+    <string name="anim_hero_slow">Più lento del normale</string>
 </resources>

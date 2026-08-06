@@ -15,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -78,8 +79,7 @@ fun CarrierNameScreen(
                 title = {
                     Text(
                         stringResource(R.string.carrier_name),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -121,17 +121,21 @@ fun CarrierNameScreen(
 
             if (!hasPhonePermission) {
                 item {
-                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = AppShapes.card
+                    ) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
                                 text = stringResource(R.string.carrier_name_needs_phone_permission),
-                                fontSize = 13.sp
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                             Spacer(modifier = Modifier.height(12.dp))
                             Button(onClick = {
                                 permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
                             }) {
-                                Text(stringResource(R.string.grant), fontSize = 12.sp, maxLines = 1)
+                                Text(stringResource(R.string.grant), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
                     }
@@ -146,7 +150,11 @@ fun CarrierNameScreen(
 
             if (slots.size > 1) {
                 item {
-                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = AppShapes.card
+                    ) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
                             slots.forEach { slot ->
                                 Row(
@@ -165,7 +173,7 @@ fun CarrierNameScreen(
                                             slot.slotIndex + 1,
                                             slot.carrierName
                                         ),
-                                        fontSize = 14.sp,
+                                        style = MaterialTheme.typography.bodyMedium,
                                         modifier = Modifier.padding(start = 4.dp)
                                     )
                                 }
@@ -176,12 +184,16 @@ fun CarrierNameScreen(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         slots.firstOrNull { it.subId == selectedSubId }?.let { slot ->
                             Text(
                                 text = stringResource(R.string.carrier_name_current, slot.carrierName),
-                                fontSize = 13.sp,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(12.dp))
@@ -201,7 +213,7 @@ fun CarrierNameScreen(
                                 },
                                 enabled = hasShizukuPermission && !isBusy && newName.isNotBlank()
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 12.sp, maxLines = 1)
+                                Text(stringResource(R.string.apply_settings), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                             Button(
                                 onClick = {
@@ -213,7 +225,7 @@ fun CarrierNameScreen(
                                     containerColor = MaterialTheme.colorScheme.secondary
                                 )
                             ) {
-                                Text(stringResource(R.string.reset), fontSize = 12.sp, maxLines = 1)
+                                Text(stringResource(R.string.reset), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
                     }
@@ -223,7 +235,7 @@ fun CarrierNameScreen(
             item {
                 Text(
                     text = stringResource(R.string.carrier_name_note),
-                    fontSize = 11.sp,
+                    style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -239,7 +251,7 @@ private fun WarningCard(text: String) {
     ) {
         Text(
             text = text,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onErrorContainer,
             modifier = Modifier.padding(12.dp)
         )

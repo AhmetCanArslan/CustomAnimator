@@ -46,6 +46,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -75,7 +76,13 @@ import com.arslan.customanimator.notify.ui.LoggingSection
 import com.arslan.customanimator.notify.ui.NotifyHomeSection
 import com.arslan.customanimator.notify.ui.RulesSection
 import com.arslan.customanimator.service.AutoForceStopService
+import com.arslan.customanimator.ui.components.ExpressiveNavBar
+import com.arslan.customanimator.ui.components.StatusPill
+import com.arslan.customanimator.ui.components.StatusTone
+import com.arslan.customanimator.ui.theme.MonoNumeralLarge
+import com.arslan.customanimator.ui.components.NavBarItem
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.ChangelogManager
 import com.arslan.customanimator.utils.SettingsManager
@@ -597,10 +604,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 title = {
                     Text(
                         stringResource(R.string.app_name),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineMedium
                     )
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
                 actions = {
                     if (selectedTab == HomeTab.ANIMATION || selectedTab == HomeTab.WIDTH) {
                         IconButton(
@@ -636,86 +647,56 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             )
         },
         bottomBar = {
-            Column {
+            Column(modifier = Modifier.navigationBarsPadding()) {
                 RemoveAdsPrompt()
                 BannerAdView()
-                val navBarSideInset = ((384 - LocalConfiguration.current.screenWidthDp) / 10)
-                    .coerceAtLeast(0).dp
-                NavigationBar(modifier = Modifier.padding(horizontal = navBarSideInset)) {
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.ANIMATION,
-                    onClick = { selectedTab = HomeTab.ANIMATION },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = stringResource(R.string.nav_animation)
+                ExpressiveNavBar(
+                    items = listOf(
+                        NavBarItem(
+                            icon = Icons.Default.PlayArrow,
+                            label = stringResource(R.string.nav_animation),
+                            selected = selectedTab == HomeTab.ANIMATION,
+                            onClick = { selectedTab = HomeTab.ANIMATION }
+                        ),
+                        NavBarItem(
+                            icon = Icons.Default.Straighten,
+                            label = stringResource(R.string.nav_width),
+                            selected = selectedTab == HomeTab.WIDTH,
+                            onClick = { selectedTab = HomeTab.WIDTH }
+                        ),
+                        NavBarItem(
+                            icon = Icons.Default.BatterySaver,
+                            label = stringResource(R.string.nav_battery),
+                            selected = selectedTab == HomeTab.BATTERY,
+                            onClick = { selectedTab = HomeTab.BATTERY }
+                        ),
+                        NavBarItem(
+                            icon = Icons.Default.DeveloperMode,
+                            label = stringResource(R.string.nav_developer),
+                            selected = selectedTab == HomeTab.DEVELOPER,
+                            onClick = { selectedTab = HomeTab.DEVELOPER }
+                        ),
+                        NavBarItem(
+                            icon = Icons.Default.Terminal,
+                            label = stringResource(R.string.nav_terminal),
+                            selected = selectedTab == HomeTab.TERMINAL,
+                            onClick = { selectedTab = HomeTab.TERMINAL }
+                        ),
+                        NavBarItem(
+                            icon = Icons.Default.Notifications,
+                            label = stringResource(R.string.pn_title),
+                            selected = selectedTab == HomeTab.NOTIFY,
+                            onClick = { selectedTab = HomeTab.NOTIFY }
                         )
-                    }
+                    )
                 )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.WIDTH,
-                    onClick = { selectedTab = HomeTab.WIDTH },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Straighten,
-                            contentDescription = stringResource(R.string.nav_width)
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.BATTERY,
-                    onClick = { selectedTab = HomeTab.BATTERY },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.BatterySaver,
-                            contentDescription = stringResource(R.string.nav_battery)
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.DEVELOPER,
-                    onClick = { selectedTab = HomeTab.DEVELOPER },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.DeveloperMode,
-                            contentDescription = stringResource(R.string.nav_developer)
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.TERMINAL,
-                    onClick = { selectedTab = HomeTab.TERMINAL },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Terminal,
-                            contentDescription = stringResource(R.string.nav_terminal)
-                        )
-                    }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.NOTIFY,
-                    onClick = { selectedTab = HomeTab.NOTIFY },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = stringResource(R.string.pn_title)
-                        )
-                    }
-                )
-                }
             }
         }
     ) { paddingValues ->
         AnimatedContent(
             targetState = selectedTab,
             transitionSpec = {
-                if (targetState.ordinal > initialState.ordinal) {
-                    (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
-                        (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
-                } else {
-                    (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
-                        (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
-                }
+                horizontalPagerTransition(targetState.ordinal > initialState.ordinal)
             },
             modifier = Modifier.padding(paddingValues),
             label = "tab transition"
@@ -770,6 +751,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
 
             item {
                 Card(
+                    shape = AppShapes.card,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    
                     modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer(alpha = contentAlpha)
@@ -783,16 +767,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Column {
                                 Text(
                                     text = stringResource(R.string.smallest_width),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.SemiBold
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                                 Text(
                                     text = stringResource(
                                         R.string.smallest_width_current,
                                         SettingsManager.getSmallestWidth(context)
                                     ),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                             IconButton(
@@ -887,7 +870,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
-                                    fontSize = 13.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     maxLines = 1
                                 )
                             }
@@ -901,8 +884,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Text(
                         text = stringResource(R.string.width_presets),
                         modifier = Modifier.graphicsLayer(alpha = contentAlpha),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -911,6 +893,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             if (allWidthPresets.isNotEmpty()) {
                 items(allWidthPresets) { widthPreset ->
                     Card(
+                        shape = AppShapes.card,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer(alpha = contentAlpha)
@@ -926,8 +911,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Text(
                                         widthPreset.name,
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold,
+                                        style = MaterialTheme.typography.labelLarge,
                                         modifier = Modifier.weight(1f, fill = false)
                                     )
                                     widthPreset.tile?.let {
@@ -937,8 +921,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 }
                                 Text(
                                     stringResource(R.string.preset_width_value, widthPreset.widthDp),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                             IconButton(onClick = { widthTilePreset = widthPreset }) {
@@ -995,7 +979,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 enabled = !isApplyingSettings,
                                 modifier = Modifier.heightIn(min = 42.dp)
                             ) {
-                                Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
+                                Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
                     }
@@ -1004,8 +988,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         stringResource(R.string.no_width_presets_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
                             .graphicsLayer(alpha = contentAlpha)
@@ -1041,7 +1025,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             
             if (inputMode == "slider") {
                 item {
-                    Card(modifier = Modifier
+                    Card(
+                        shape = AppShapes.card,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer(alpha = contentAlpha)) {
                         Column(modifier = Modifier.padding(16.dp)) {
@@ -1052,8 +1039,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     text = stringResource(R.string.animation_scale_slider),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 IconButton(
@@ -1077,7 +1063,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 sliderLabel,
                                 String.format(java.util.Locale.US, "%.2f", windowAnimScale)
                             ),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall,
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -1100,7 +1086,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                             Slider(
                                 value = windowAnimScale,
@@ -1133,7 +1119,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                         }
                         if (!isSimpleMode) {
@@ -1145,7 +1131,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 stringResource(R.string.transition_animation_scale),
                                 String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
                             ),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall,
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -1162,7 +1148,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                             Slider(
                                 value = transitionAnimScale,
@@ -1183,7 +1169,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
@@ -1194,7 +1180,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 stringResource(R.string.animator_duration_scale),
                                 String.format(java.util.Locale.US, "%.2f", animatorDurScale)
                             ),
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.bodySmall,
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -1211,7 +1197,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                             Slider(
                                 value = animatorDurScale,
@@ -1232,7 +1218,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     .padding(0.dp),
                                 contentPadding = PaddingValues(0.dp)
                             ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
                             }
                         }
                         }
@@ -1256,8 +1242,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleSmall,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -1270,7 +1255,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             
             if (inputMode == "manual") {
                 item {
-                    Card(modifier = Modifier
+                    Card(
+                        shape = AppShapes.card,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer(alpha = contentAlpha)
                         .pointerInput(Unit) {
@@ -1288,8 +1276,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     text = stringResource(R.string.animation_header),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 IconButton(
@@ -1347,8 +1334,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
-                                    fontSize = 13.sp,
-                                    fontWeight = FontWeight.Bold,
+                                    style = MaterialTheme.typography.titleSmall,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -1398,8 +1384,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Text(
                         text = stringResource(R.string.saved_presets),
                         modifier = Modifier.graphicsLayer(alpha = contentAlpha),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -1408,6 +1393,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             if (allPresets.isNotEmpty()) {
                 items(allPresets) { preset ->
                     Card(
+                        shape = AppShapes.card,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        
                         modifier = Modifier
                             .fillMaxWidth()
                             .graphicsLayer(alpha = contentAlpha)
@@ -1431,8 +1419,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
                                             preset.name,
-                                            fontSize = 14.sp,
-                                            fontWeight = FontWeight.Bold,
+                                            style = MaterialTheme.typography.labelLarge,
                                             modifier = Modifier.weight(1f, fill = false)
                                         )
                                         preset.tile?.let {
@@ -1448,18 +1435,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                     Text(
                                         stringResource(R.string.preset_window_animation_value, preset.windowAnimationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         stringResource(R.string.preset_transition_animation_value, preset.transitionAnimationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         stringResource(R.string.preset_animator_duration_value, preset.animatorDurationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                                 IconButton(onClick = { animationTilePreset = preset }) {
@@ -1536,7 +1523,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             .fillMaxWidth()
                                             .heightIn(min = 42.dp)
                                     ) {
-                                        Text(stringResource(R.string.load), fontSize = 12.sp, maxLines = 1)
+                                        Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
                                 }
                             }
@@ -1547,8 +1534,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         stringResource(R.string.no_presets_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
                             .graphicsLayer(alpha = contentAlpha)
@@ -1578,56 +1565,54 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 ) {
                     Text(
                         stringResource(R.string.write_secure_settings_permission),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier.padding(bottom = 6.dp)
                     )
                     Text(
                         stringResource(R.string.permission_description),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
                     Text(
                         stringResource(R.string.one_time_only),
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(R.string.one_time_description),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
                     if (isShizukuAvailable && hasShizukuPermission.value) {
                         Text(
                             stringResource(R.string.shizuku_ready),
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = Color.Green,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
                             stringResource(R.string.shizuku_ready_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     } else if (isShizukuAvailable && !hasShizukuPermission.value) {
                         Text(
                             stringResource(R.string.shizuku_available),
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
                             stringResource(R.string.shizuku_available_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -1635,8 +1620,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     if (permissionErrorMessage.isNotEmpty()) {
                         Text(
                             stringResource(R.string.error, permissionErrorMessage),
-                            fontSize = 11.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -1644,20 +1629,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     if (!hasWriteSecureSettings.value) {
                         Text(
                             stringResource(R.string.use_adb_command),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         Text(
                             stringResource(R.string.adb_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
                         SelectionContainer {
                             Text(
                                 stringResource(R.string.adb_command),
-                                fontSize = 10.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
                                 modifier = Modifier
@@ -1669,7 +1653,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         Text(
                             stringResource(R.string.see_permission_details),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
                             modifier = Modifier.padding(top = 12.dp)
@@ -1852,12 +1836,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(R.string.current_values_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         stringResource(R.string.preset_values, windowAnimScale, transitionAnimScale, animatorDurScale),
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             },
@@ -2030,12 +2014,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(R.string.current_width_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         stringResource(R.string.preset_width_value, smallestWidth),
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             },
@@ -2130,8 +2114,41 @@ fun SyncedAnimationPreview(
         }
     }
 
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.anim_hero_current),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = String.format(java.util.Locale.US, "%.2fx", currentScale),
+                        style = MonoNumeralLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                val tone = when {
+                    currentScale <= 0f -> StatusTone.WARNING
+                    currentScale < 0.95f -> StatusTone.ACTIVE
+                    currentScale <= 1.05f -> StatusTone.NEUTRAL
+                    else -> StatusTone.WARNING
+                }
+                val toneLabel = when {
+                    currentScale <= 0f -> R.string.anim_hero_off
+                    currentScale < 0.95f -> R.string.anim_hero_fast
+                    currentScale <= 1.05f -> R.string.anim_hero_normal
+                    else -> R.string.anim_hero_slow
+                }
+                StatusPill(text = stringResource(toneLabel), tone = tone)
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -2206,8 +2223,7 @@ private fun AppOpenCloseCard(
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelSmall,
             color = accentColor,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -2236,8 +2252,7 @@ private fun AppOpenCloseCard(
                 Text(
                     text = if (progress > 0.3f) stringResource(R.string.preview_app_text) else "",
                     color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         }

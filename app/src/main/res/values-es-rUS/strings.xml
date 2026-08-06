@@ -732,4 +732,17 @@ Duración del Animador: %3$.2f</string>
     <string name="changelog_version">Versión %1$s</string>
     <string name="pn_service_channel_group">Servicio en segundo plano</string>
     <string name="pn_notification_persistent_settings_hint">Toca aquí para desactivar esta notificación.</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_dark">Oscuro</string>
+    <string name="settings_dynamic_color">Colores de Material You</string>
+    <string name="settings_dynamic_color_desc">Usar los colores del fondo de pantalla</string>
+    <string name="settings_dynamic_color_unsupported">Requiere Android 12 o posterior</string>
+    <string name="anim_hero_current">Escala actual</string>
+    <string name="anim_hero_off">Animaciones desactivadas</string>
+    <string name="anim_hero_fast">Más rápido que lo normal</string>
+    <string name="anim_hero_normal">Velocidad predeterminada</string>
+    <string name="anim_hero_slow">Más lento que lo normal</string>
 </resources>

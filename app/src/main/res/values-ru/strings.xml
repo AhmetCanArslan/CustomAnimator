@@ -732,4 +732,17 @@
     <string name="changelog_version">Версия %1$s</string>
     <string name="pn_service_channel_group">Фоновая служба</string>
     <string name="pn_notification_persistent_settings_hint">Нажмите здесь, чтобы отключить это уведомление.</string>
+    <string name="settings_appearance">Оформление</string>
+    <string name="settings_theme">Тема</string>
+    <string name="theme_system">Системная</string>
+    <string name="theme_light">Светлая</string>
+    <string name="theme_dark">Тёмная</string>
+    <string name="settings_dynamic_color">Цвета Material You</string>
+    <string name="settings_dynamic_color_desc">Использовать цвета из обоев</string>
+    <string name="settings_dynamic_color_unsupported">Требуется Android 12 или новее</string>
+    <string name="anim_hero_current">Текущий масштаб</string>
+    <string name="anim_hero_off">Анимации отключены</string>
+    <string name="anim_hero_fast">Быстрее обычного</string>
+    <string name="anim_hero_normal">Обычная скорость</string>
+    <string name="anim_hero_slow">Медленнее обычного</string>
 </resources>

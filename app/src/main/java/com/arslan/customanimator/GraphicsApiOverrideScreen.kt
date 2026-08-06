@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,8 +86,7 @@ fun GraphicsApiOverrideScreen(
                 title = {
                     Text(
                         stringResource(R.string.graphics_api_override),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -126,7 +126,7 @@ fun GraphicsApiOverrideScreen(
                         )
                         Text(
                             text = stringResource(R.string.graphics_api_override_disclaimer),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
@@ -146,7 +146,7 @@ fun GraphicsApiOverrideScreen(
             item {
                 Text(
                     text = stringResource(R.string.graphics_api_override_desc),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -171,7 +171,7 @@ fun GraphicsApiOverrideScreen(
                 item {
                     Text(
                         stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -202,7 +202,11 @@ private fun DriverSelectionRow(
     enabled: Boolean,
     onDriverSelected: (String?) -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.fillMaxWidth(),
+        shape = AppShapes.card
+    ) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -211,8 +215,7 @@ private fun DriverSelectionRow(
                 AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
                 Text(
                     text = app.label,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -224,7 +227,7 @@ private fun DriverSelectionRow(
                     enabled = enabled,
                     shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
                 ) {
-                    Text(stringResource(R.string.driver_default), fontSize = 11.sp)
+                    Text(stringResource(R.string.driver_default), style = MaterialTheme.typography.labelSmall,)
                 }
                 SegmentedButton(
                     selected = selectedDriver == DRIVER_NATIVE,
@@ -232,7 +235,7 @@ private fun DriverSelectionRow(
                     enabled = enabled,
                     shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3)
                 ) {
-                    Text(stringResource(R.string.driver_native), fontSize = 11.sp)
+                    Text(stringResource(R.string.driver_native), style = MaterialTheme.typography.labelSmall,)
                 }
                 SegmentedButton(
                     selected = selectedDriver == DRIVER_ANGLE,
@@ -240,7 +243,7 @@ private fun DriverSelectionRow(
                     enabled = enabled,
                     shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
                 ) {
-                    Text(stringResource(R.string.driver_angle), fontSize = 11.sp)
+                    Text(stringResource(R.string.driver_angle), style = MaterialTheme.typography.labelSmall,)
                 }
             }
         }

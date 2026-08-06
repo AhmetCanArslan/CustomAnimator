@@ -23,6 +23,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -113,8 +114,7 @@ fun AutoForceStopScreen(
                 title = {
                     Text(
                         stringResource(R.string.auto_force_stop),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -146,7 +146,7 @@ fun AutoForceStopScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.close_apps_info),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -182,7 +182,7 @@ fun AutoForceStopScreen(
                     } else {
                         stringResource(R.string.auto_force_stop_desc)
                     },
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -208,7 +208,7 @@ fun AutoForceStopScreen(
                 item {
                     Text(
                         stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -217,7 +217,7 @@ fun AutoForceStopScreen(
                 item {
                     Text(
                         stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -284,7 +284,7 @@ fun AppSearchBar(
                 )
                 Text(
                     text = stringResource(R.string.show_selected_only),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -310,14 +310,14 @@ fun WarningCard(message: String, actionLabel: String, onAction: () -> Unit) {
                 )
                 Text(
                     text = message,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.weight(1f)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Button(onClick = onAction, modifier = Modifier.align(Alignment.End)) {
-                Text(actionLabel, fontSize = 12.sp)
+                Text(actionLabel, style = MaterialTheme.typography.bodySmall,)
             }
         }
     }
@@ -329,7 +329,11 @@ fun AppRow(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.fillMaxWidth(),
+        shape = AppShapes.card
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -340,8 +344,7 @@ fun AppRow(
             AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
             Text(
                 text = app.label,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.weight(1f)
             )
             Checkbox(checked = checked, onCheckedChange = onCheckedChange)

@@ -732,4 +732,17 @@ Animatör Süresi: %3$.2f</string>
     <string name="changelog_version">Sürüm %1$s</string>
     <string name="pn_service_channel_group">Arka plan servisi</string>
     <string name="pn_notification_persistent_settings_hint">Bu bildirimi kapatmak için buraya dokunun.</string>
+    <string name="settings_appearance">Görünüm</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_system">Sistem</string>
+    <string name="theme_light">Açık</string>
+    <string name="theme_dark">Koyu</string>
+    <string name="settings_dynamic_color">Material You renkleri</string>
+    <string name="settings_dynamic_color_desc">Duvar kağıdından alınan renkleri kullan</string>
+    <string name="settings_dynamic_color_unsupported">Android 12 veya üstü gerekir</string>
+    <string name="anim_hero_current">Geçerli ölçek</string>
+    <string name="anim_hero_off">Animasyonlar kapalı</string>
+    <string name="anim_hero_fast">Varsayılandan hızlı</string>
+    <string name="anim_hero_normal">Varsayılan hız</string>
+    <string name="anim_hero_slow">Varsayılandan yavaş</string>
 </resources>

@@ -34,6 +34,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -139,7 +140,7 @@ fun TerminalScreenContent(
         item {
             Text(
                 text = stringResource(R.string.terminal_disclaimer),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error
             )
         }
@@ -196,8 +197,7 @@ fun TerminalScreenContent(
             ) {
                 Text(
                     text = stringResource(R.string.terminal_presets),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 TextButton(
                     onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.text.trim()) }
@@ -217,7 +217,7 @@ fun TerminalScreenContent(
             item {
                 Text(
                     text = stringResource(R.string.terminal_no_presets),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -246,8 +246,7 @@ fun TerminalScreenContent(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.terminal_output),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleMedium,
                     )
                     if (isRunning) {
                         Spacer(Modifier.width(8.dp))
@@ -257,7 +256,7 @@ fun TerminalScreenContent(
                             Spacer(Modifier.width(8.dp))
                             Text(
                                 text = stringResource(R.string.terminal_exit_code, it),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = if (it == 0) {
                                     MaterialTheme.colorScheme.onSurfaceVariant
                                 } else {
@@ -285,7 +284,7 @@ fun TerminalScreenContent(
                         text = output.ifEmpty { stringResource(R.string.terminal_output_empty) },
                         modifier = Modifier.padding(12.dp),
                         fontFamily = FontFamily.Monospace,
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -317,7 +316,7 @@ fun TerminalScreenContent(
             text = {
                 Text(
                     text = stringResource(R.string.risk_dialog_terminal),
-                    fontSize = 13.sp
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             },
             confirmButton = {
@@ -512,15 +511,14 @@ private fun SuggestionRow(
         Text(
             text = suggestion.token,
             fontFamily = FontFamily.Monospace,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.labelLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
         if (suggestion.description.isNotEmpty()) {
             Text(
                 text = suggestion.description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -537,7 +535,7 @@ private fun HistoryRow(
     Text(
         text = command,
         fontFamily = FontFamily.Monospace,
-        fontSize = 14.sp,
+        style = MaterialTheme.typography.bodyMedium,
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier
@@ -558,7 +556,10 @@ private fun PresetCard(
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -567,8 +568,7 @@ private fun PresetCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = preset.name,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.titleSmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f, fill = false)
@@ -581,7 +581,7 @@ private fun PresetCard(
                 Text(
                     text = preset.command,
                     fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -705,8 +705,7 @@ private fun TileBadge(iconKey: String) {
         Spacer(Modifier.width(4.dp))
         Text(
             text = stringResource(R.string.terminal_tile_badge),
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
@@ -769,7 +768,7 @@ private fun TileConfigDialog(
                             R.string.terminal_tile_slots_full,
                             TerminalPresetManager.MAX_TILE_SLOTS
                         ),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
                 }
@@ -829,7 +828,7 @@ private fun TileConfigDialog(
                     if (!TerminalTileSlots.canRequestAdd()) {
                         Text(
                             text = stringResource(R.string.terminal_tile_add_manual_hint),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     } else {
@@ -882,8 +881,7 @@ private fun TilePreview(iconKey: String, label: String) {
     Column {
         Text(
             text = stringResource(R.string.terminal_tile_preview),
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(6.dp))
@@ -904,8 +902,7 @@ private fun TilePreview(iconKey: String, label: String) {
             Spacer(Modifier.width(14.dp))
             Text(
                 text = label,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -948,7 +945,7 @@ private fun TileIconPickerDialog(
                 if (normalisedQuery.isNotEmpty() && matches.isEmpty()) {
                     Text(
                         text = stringResource(R.string.terminal_tile_icon_none),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 } else {
@@ -966,8 +963,7 @@ private fun TileIconPickerDialog(
                                 ) {
                                     Text(
                                         text = stringResource(category.titleRes),
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.SemiBold,
+                                        style = MaterialTheme.typography.labelMedium,
                                         letterSpacing = 0.5.sp,
                                         color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.padding(top = 4.dp)
@@ -1061,10 +1057,10 @@ private fun TileToggleRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(
                 text = description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

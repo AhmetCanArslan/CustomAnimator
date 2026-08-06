@@ -28,6 +28,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -126,8 +127,7 @@ fun WifiPasswordsScreen(
                 title = {
                     Text(
                         stringResource(R.string.wifi_password_manager),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -191,7 +191,7 @@ fun WifiPasswordsScreen(
                         )
                         Text(
                             text = stringResource(R.string.wifi_connected_to, ssid),
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
@@ -231,7 +231,7 @@ fun WifiPasswordsScreen(
                             item {
                                 Text(
                                     text = stringResource(R.string.wifi_no_networks),
-                                    fontSize = 13.sp,
+                                    style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     modifier = Modifier.padding(vertical = 24.dp)
                                 )
@@ -311,13 +311,16 @@ private fun WifiNetworkCard(
     onCopy: () -> Unit,
     onShowQr: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.fillMaxWidth(),
+        shape = AppShapes.card
+    ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = network.ssid,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.weight(1f)
                 )
                 SecurityChip(network.security, isConnected)
@@ -330,7 +333,7 @@ private fun WifiNetworkCard(
                         isRevealed -> network.password
                         else -> "•".repeat(network.password.length.coerceIn(6, 16))
                     },
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f)
@@ -378,8 +381,7 @@ private fun SecurityChip(security: WifiSecurity, isConnected: Boolean) {
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelSmall,
             color = if (isConnected) {
                 MaterialTheme.colorScheme.onPrimaryContainer
             } else {
@@ -413,12 +415,12 @@ private fun WifiQrDialog(network: WifiNetwork, onDismiss: () -> Unit) {
                         modifier = Modifier.size(240.dp)
                     )
                 } else {
-                    Text(stringResource(R.string.wifi_qr_failed), fontSize = 13.sp)
+                    Text(stringResource(R.string.wifi_qr_failed), style = MaterialTheme.typography.bodyMedium,)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.wifi_qr_hint),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -444,7 +446,7 @@ private fun WifiPasswordDialog(
         title = { Text(title) },
         text = {
             Column {
-                Text(message, fontSize = 13.sp)
+                Text(message, style = MaterialTheme.typography.bodyMedium,)
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = password,

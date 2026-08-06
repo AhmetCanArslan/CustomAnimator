@@ -94,7 +94,7 @@ fun PresetTileDialog(
                             R.string.terminal_tile_slots_full,
                             PresetTileJson.MAX_TILE_SLOTS
                         ),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error
                     )
                 }
@@ -120,7 +120,7 @@ fun PresetTileDialog(
                     Spacer(Modifier.height(8.dp))
                     Text(
                         text = stringResource(R.string.preset_tile_number_description),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
@@ -142,7 +142,7 @@ fun PresetTileDialog(
                     if (!canRequestAdd) {
                         Text(
                             text = stringResource(R.string.terminal_tile_add_manual_hint),
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     } else {
@@ -184,8 +184,7 @@ private fun PresetTilePreview(numberText: String, label: String) {
     Column {
         Text(
             text = stringResource(R.string.terminal_tile_preview),
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(6.dp))
@@ -197,12 +196,11 @@ private fun PresetTilePreview(numberText: String, label: String) {
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PresetTileNumber(numberText = numberText, size = 26.dp, fontSize = 14.sp)
+            PresetTileNumber(numberText = numberText, size = 26.dp)
             Spacer(Modifier.width(14.dp))
             Text(
                 text = label,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -239,15 +237,13 @@ fun PresetTileBadge(numberText: String) {
     ) {
         Text(
             text = stringResource(R.string.terminal_tile_badge),
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer
         )
         Spacer(Modifier.width(4.dp))
         Text(
             text = numberText,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer
         )
     }
@@ -270,10 +266,10 @@ private fun PresetTileToggleRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(
                 text = description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

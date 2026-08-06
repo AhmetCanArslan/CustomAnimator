@@ -48,6 +48,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -248,7 +249,7 @@ fun DeveloperScreenContent(
                             )
                             Text(
                                 text = stringResource(R.string.developer_needs_shizuku),
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onErrorContainer
                             )
                         }
@@ -258,7 +259,11 @@ fun DeveloperScreenContent(
 
             if (!hasShizukuPermission && !canWriteSystemSettings) {
                 item {
-                    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = AppShapes.card
+                    ) {
                         ActionRow(
                             icon = Icons.Filled.EditNote,
                             title = stringResource(R.string.write_settings_permission),
@@ -278,7 +283,11 @@ fun DeveloperScreenContent(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column {
                         ToggleRow(
                             icon = Icons.Filled.Usb,
@@ -441,7 +450,11 @@ fun DeveloperScreenContent(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column {
                         QuickActionRow(
                             icon = Icons.Filled.CleaningServices,
@@ -476,7 +489,11 @@ fun DeveloperScreenContent(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column {
                         NavigationRow(
                             icon = Icons.Filled.PlaylistRemove,
@@ -500,7 +517,11 @@ fun DeveloperScreenContent(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column {
                         CompileBoosterRow(
                             isRunning = compileProgress.isRunning,
@@ -525,7 +546,11 @@ fun DeveloperScreenContent(
             }
 
             item {
-                Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = AppShapes.card
+                ) {
                     Column {
                         ToggleRow(
                             icon = Icons.Filled.Keyboard,
@@ -798,8 +823,7 @@ fun DeveloperScreenContent(
 private fun DevSectionTitle(title: String) {
     Text(
         text = title.uppercase(),
-        fontSize = 12.sp,
-        fontWeight = FontWeight.SemiBold,
+        style = MaterialTheme.typography.labelMedium,
         letterSpacing = 0.5.sp,
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 4.dp)
@@ -837,8 +861,8 @@ private fun ToggleRow(
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
+            Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
@@ -875,8 +899,8 @@ private fun NavigationRow(
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
+            Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Icon(
             imageVector = Icons.Filled.ChevronRight,
@@ -915,13 +939,13 @@ private fun QuickActionRow(
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
+            Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Button(onClick = onClick, enabled = enabled) {
             Text(
                 text = if (isRunning) stringResource(R.string.working) else stringResource(R.string.apply_settings),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 maxLines = 1
             )
         }
@@ -945,7 +969,7 @@ private fun InfoNote(text: String) {
         )
         Text(
             text = text,
-            fontSize = 11.sp,
+            style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
         )
@@ -981,11 +1005,11 @@ private fun ActionRow(
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            Text(text = description, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
+            Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Button(onClick = onClick, enabled = enabled) {
-            Text(text = buttonLabel, fontSize = 12.sp, maxLines = 1)
+            Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
         }
     }
 }
@@ -1026,14 +1050,14 @@ private fun CompileBoosterRow(
             }
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = stringResource(R.string.compile_booster), fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = stringResource(R.string.compile_booster), style = MaterialTheme.typography.titleSmall,)
             Text(
                 text = if (isRunning) {
                     stringResource(R.string.compile_booster_progress, percent)
                 } else {
                     stringResource(R.string.compile_booster_desc)
                 },
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -1042,11 +1066,11 @@ private fun CompileBoosterRow(
                 onClick = onCancel,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
             ) {
-                Text(stringResource(R.string.cancel), fontSize = 12.sp, maxLines = 1)
+                Text(stringResource(R.string.cancel), style = MaterialTheme.typography.bodySmall, maxLines = 1)
             }
         } else {
             Button(onClick = onClick, enabled = enabled) {
-                Text(stringResource(R.string.compile_all_apps_short), fontSize = 12.sp, maxLines = 1)
+                Text(stringResource(R.string.compile_all_apps_short), style = MaterialTheme.typography.bodySmall, maxLines = 1)
             }
         }
     }
@@ -1068,8 +1092,7 @@ private fun RotationSelector(
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(
             text = stringResource(R.string.rotation_orientation).uppercase(),
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelSmall,
             letterSpacing = 0.5.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -1090,7 +1113,7 @@ private fun RotationSelector(
                 )
                 Text(
                     text = label,
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp)
                 )
             }

@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -152,13 +153,12 @@ fun BatteryScreenContent(
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(R.string.bt_info_title),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.labelLarge,
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
                         text = stringResource(R.string.bt_info_body),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(Modifier.height(10.dp))
@@ -168,8 +168,7 @@ fun BatteryScreenContent(
                         } else {
                             stringResource(R.string.bt_info_shizuku_missing)
                         },
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.labelMedium,
                         color = if (hasShizukuPermission) {
                             MaterialTheme.colorScheme.primary
                         } else {
@@ -182,7 +181,10 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_saver)) }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                shape = AppShapes.card,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth()) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_low_power),
@@ -265,7 +267,7 @@ fun BatteryScreenContent(
                 ) {
                     Text(
                         text = stringResource(R.string.bt_requires_android10, Build.VERSION.RELEASE),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -306,7 +308,7 @@ fun BatteryScreenContent(
         if (policySupported) item {
             Text(
                 text = stringResource(R.string.bt_policy_note),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -322,7 +324,10 @@ fun BatteryScreenContent(
             items(mgr.policyTweaks.size) { index ->
                 val tweak = mgr.policyTweaks[index]
                 val raw = policyValues[tweak.key] ?: ""
-                Card(modifier = Modifier.fillMaxWidth()) {
+                Card(
+                    shape = AppShapes.card,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    modifier = Modifier.fillMaxWidth()) {
                     when (tweak) {
                         is BatteryTweak.Toggle -> BatteryToggleRow(
                             title = stringResource(tweak.titleRes),
@@ -399,14 +404,17 @@ fun BatteryScreenContent(
         item {
             Text(
                 text = stringResource(R.string.bt_doze_warning),
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error
             )
         }
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_background)) }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                shape = AppShapes.card,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth()) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_app_standby),
@@ -452,7 +460,10 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_charging)) }
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
+            Card(
+                shape = AppShapes.card,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth()) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_adaptive_charging),
@@ -513,8 +524,7 @@ fun BatteryScreenContent(
 private fun BatterySectionTitle(title: String) {
     Text(
         text = title.uppercase(),
-        fontSize = 12.sp,
-        fontWeight = FontWeight.SemiBold,
+        style = MaterialTheme.typography.labelMedium,
         letterSpacing = 0.5.sp,
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 4.dp, top = 8.dp)
@@ -538,10 +548,10 @@ private fun BatteryToggleRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+            Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(
                 text = description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -566,15 +576,14 @@ private fun BatterySliderRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = title,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier.weight(1f)
             )
-            Text(text = display(local), fontSize = 14.sp, fontWeight = FontWeight.Bold)
+            Text(text = display(local), style = MaterialTheme.typography.labelLarge,)
         }
         Text(
             text = description,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Slider(
@@ -609,17 +618,16 @@ private fun BatteryChoiceRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                Text(text = title, style = MaterialTheme.typography.titleSmall,)
                 Text(
                     text = description,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Text(
                 text = options.getOrElse(selected) { options.firstOrNull() ?: "" },
-                fontSize = 13.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary
             )
         }
@@ -685,12 +693,12 @@ private fun PresetRow(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    fontSize = 15.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
                 )
                 Text(
                     text = description,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -710,8 +718,7 @@ private fun ExpandHeader(title: String, expanded: Boolean, onToggle: () -> Unit)
     ) {
         Text(
             text = title,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.labelLarge,
             modifier = Modifier.weight(1f)
         )
         Icon(

@@ -35,8 +35,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -53,7 +55,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.UsageAccessHelper
 
-private val GrantedGreen = Color(0xFF2E7D32)
+private val GrantedGreen: Color
+    @Composable
+    get() = LocalExtendedColors.current.success
 
 enum class AppPermission {
     SHIZUKU,
@@ -339,7 +343,7 @@ fun PermissionsScreen(
             item {
                 Text(
                     text = stringResource(R.string.permissions_footer_note),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 )
@@ -388,8 +392,7 @@ private fun PermissionsSummary(granted: Int, total: Int) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.permissions_summary, granted, total),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
                     text = if (allGranted) {
@@ -397,7 +400,7 @@ private fun PermissionsSummary(granted: Int, total: Int) {
                     } else {
                         stringResource(R.string.permissions_summary_partial_desc)
                     },
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -414,13 +417,13 @@ private fun PermissionSection(
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
             text = title.uppercase(),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelMedium,
             letterSpacing = 0.5.sp,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(start = 4.dp)
         )
         Card(
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp)
         ) {
@@ -471,18 +474,18 @@ private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = entry.title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
+                Text(text = entry.title, style = MaterialTheme.typography.titleSmall,)
                 if (entry.optional) {
                     Text(
                         text = stringResource(R.string.permission_optional),
-                        fontSize = 10.sp,
+                        style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
             Text(
                 text = entry.description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

@@ -732,4 +732,17 @@ Tagal ng Animator: %3$.2f</string>
     <string name="changelog_version">Bersyon %1$s</string>
     <string name="pn_service_channel_group">Background service</string>
     <string name="pn_notification_persistent_settings_hint">I-tap dito para i-off ang notification na ito.</string>
+    <string name="settings_appearance">Hitsura</string>
+    <string name="settings_theme">Tema</string>
+    <string name="theme_system">Sistema</string>
+    <string name="theme_light">Maliwanag</string>
+    <string name="theme_dark">Madilim</string>
+    <string name="settings_dynamic_color">Mga kulay ng Material You</string>
+    <string name="settings_dynamic_color_desc">Gamitin ang mga kulay mula sa wallpaper</string>
+    <string name="settings_dynamic_color_unsupported">Kailangan ng Android 12 o mas bago</string>
+    <string name="anim_hero_current">Kasalukuyang scale</string>
+    <string name="anim_hero_off">Naka-off ang mga animation</string>
+    <string name="anim_hero_fast">Mas mabilis sa default</string>
+    <string name="anim_hero_normal">Default na bilis</string>
+    <string name="anim_hero_slow">Mas mabagal sa default</string>
 </resources>

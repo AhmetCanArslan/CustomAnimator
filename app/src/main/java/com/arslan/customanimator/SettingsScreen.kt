@@ -5,11 +5,15 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.border
@@ -26,7 +30,12 @@ import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SettingsBackupRestore
+import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.*
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,12 +45,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arslan.customanimator.ui.components.IconBadge
+import com.arslan.customanimator.ui.theme.AppShapes
+import com.arslan.customanimator.ui.theme.LocalExtendedColors
+import com.arslan.customanimator.ui.theme.LocalThemeController
+import com.arslan.customanimator.ui.theme.Motion
+import com.arslan.customanimator.ui.theme.ThemeMode
+import com.arslan.customanimator.ui.theme.pressScale
 import com.arslan.customanimator.utils.BackupManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.SystemResetManager
@@ -106,8 +123,7 @@ fun SettingsScreen(
                 title = {
                     Text(
                         stringResource(R.string.settings),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall
                     )
                 },
                 navigationIcon = {
@@ -131,6 +147,12 @@ fun SettingsScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             Spacer(modifier = Modifier.height(4.dp))
+
+            SettingsSection(title = stringResource(R.string.settings_appearance)) {
+                ThemeModeSelector()
+                SettingDivider()
+                DynamicColorRow()
+            }
 
             SettingsSection(title = stringResource(R.string.settings_general)) {
                 SelectableSettingRow(
@@ -206,7 +228,7 @@ fun SettingsScreen(
                         icon = Icons.Filled.CheckCircle,
                         title = stringResource(R.string.remove_ads),
                         description = stringResource(R.string.remove_ads_owned),
-                        descriptionColor = Color(0xFF2E7D32),
+                        descriptionColor = LocalExtendedColors.current.success,
                         onClick = {}
                     )
                 } else {
@@ -265,7 +287,7 @@ fun SettingsScreen(
                     else
                         stringResource(R.string.settings_permission_status_not_granted),
                     descriptionColor = if (hasWriteSecureSettings)
-                        Color(0xFF2E7D32)
+                        LocalExtendedColors.current.success
                     else
                         MaterialTheme.colorScheme.error,
                     trailingIcon = Icons.Filled.ChevronRight,
@@ -351,28 +373,40 @@ private fun SettingsSection(
     content: @Composable () -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-            text = title.uppercase(),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 0.5.sp,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(start = 4.dp)
-        )
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp)
+        Row(
+            modifier = Modifier.padding(start = 4.dp, bottom = 2.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                content()
-            }
+            Box(
+                modifier = Modifier
+                    .size(width = 4.dp, height = 14.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = title.uppercase(),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(AppShapes.card)
+                .background(MaterialTheme.colorScheme.surfaceContainer)
+        ) {
+            content()
         }
     }
 }
 
 @Composable
 private fun SettingDivider() {
-    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+    HorizontalDivider(
+        modifier = Modifier.padding(start = 16.dp),
+        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+    )
 }
 
 @Composable
@@ -382,6 +416,20 @@ private fun SelectableSettingRow(
     selected: Boolean,
     onClick: () -> Unit
 ) {
+    val background by animateColorAsState(
+        targetValue = if (selected) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
+        } else {
+            Color.Transparent
+        },
+        animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
+        label = "rowSelection"
+    )
+    val indicatorScale by animateFloatAsState(
+        targetValue = if (selected) 1f else 0.7f,
+        animationSpec = Motion.bouncy(),
+        label = "rowIndicator"
+    )
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -390,33 +438,45 @@ private fun SelectableSettingRow(
                 onClick = onClick,
                 role = androidx.compose.ui.semantics.Role.RadioButton
             )
+            .background(background)
             .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (selected) {
-            Icon(
-                imageVector = Icons.Filled.CheckCircle,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(22.dp)
-            )
-        } else {
-            Box(
-                modifier = Modifier
-                    .size(22.dp)
-                    .border(1.5.dp, MaterialTheme.colorScheme.outline, CircleShape)
-            )
+        Box(
+            modifier = Modifier.size(22.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            if (selected) {
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(22.dp)
+                        .scale(indicatorScale)
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(22.dp)
+                        .border(1.5.dp, MaterialTheme.colorScheme.outline, CircleShape)
+                )
+            }
         }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                fontSize = 15.sp,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal
+                style = MaterialTheme.typography.titleSmall,
+                color = if (selected) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
+                }
             )
             Text(
                 text = description,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
@@ -432,31 +492,28 @@ private fun ActionSettingRow(
     trailingIcon: androidx.compose.ui.graphics.vector.ImageVector? = null,
     onClick: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .pressScale(interactionSource, 0.985f)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                onClick = onClick
+            )
             .padding(horizontal = 16.dp, vertical = 14.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 36.dp)
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontSize = 15.sp, fontWeight = FontWeight.Medium)
-            Text(text = description, fontSize = 12.sp, color = descriptionColor)
+            Text(text = title, style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = descriptionColor
+            )
         }
         if (trailingIcon != null) {
             Icon(
@@ -466,5 +523,123 @@ private fun ActionSettingRow(
                 modifier = Modifier.size(18.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun ThemeModeSelector() {
+    val controller = LocalThemeController.current
+    val options = listOf(
+        Triple(ThemeMode.SYSTEM, Icons.Filled.BrightnessAuto, R.string.theme_system),
+        Triple(ThemeMode.LIGHT, Icons.Filled.LightMode, R.string.theme_light),
+        Triple(ThemeMode.DARK, Icons.Filled.DarkMode, R.string.theme_dark)
+    )
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
+        Text(
+            text = stringResource(R.string.settings_theme),
+            style = MaterialTheme.typography.titleSmall
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(AppShapes.chip)
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            options.forEach { (mode, icon, labelRes) ->
+                val selected = controller.mode == mode
+                val container by animateColorAsState(
+                    targetValue = if (selected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        Color.Transparent
+                    },
+                    animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
+                    label = "themeSegment"
+                )
+                val content by animateColorAsState(
+                    targetValue = if (selected) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    animationSpec = tween(Motion.durationMedium),
+                    label = "themeSegmentContent"
+                )
+                val interactionSource = remember { MutableInteractionSource() }
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .pressScale(interactionSource, 0.94f)
+                        .clip(AppShapes.chip)
+                        .background(container)
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = LocalIndication.current
+                        ) { controller.updateMode(mode) }
+                        .padding(vertical = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = content,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.size(6.dp))
+                    Text(
+                        text = stringResource(labelRes),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = content,
+                        maxLines = 1
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DynamicColorRow() {
+    val controller = LocalThemeController.current
+    val supported = controller.dynamicColorSupported
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = supported) {
+                controller.updateDynamicColor(!controller.dynamicColor)
+            }
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconBadge(
+            icon = Icons.Filled.Palette,
+            size = 36.dp,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_dynamic_color),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = stringResource(
+                    if (supported) R.string.settings_dynamic_color_desc
+                    else R.string.settings_dynamic_color_unsupported
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Switch(
+            checked = controller.dynamicColor && supported,
+            onCheckedChange = { controller.updateDynamicColor(it) },
+            enabled = supported
+        )
     }
 }

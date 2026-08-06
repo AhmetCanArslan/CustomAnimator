@@ -105,8 +105,7 @@ fun AutoPermissionDisablerScreen(
                 title = {
                     Text(
                         stringResource(R.string.auto_permission_disabler),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                 },
                 navigationIcon = {
@@ -138,7 +137,7 @@ fun AutoPermissionDisablerScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.close_apps_info),
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(16.dp)
                     )
@@ -174,7 +173,7 @@ fun AutoPermissionDisablerScreen(
                     } else {
                         stringResource(R.string.auto_permission_disabler_desc)
                     },
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -200,7 +199,7 @@ fun AutoPermissionDisablerScreen(
                 item {
                     Text(
                         stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(16.dp)
                     )

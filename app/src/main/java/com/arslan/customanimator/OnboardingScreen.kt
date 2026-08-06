@@ -102,7 +102,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 ) {
                     Text(
                         text = if (isLastPage) "" else stringResource(R.string.onboarding_skip),
-                        fontSize = 14.sp
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }
@@ -225,8 +225,7 @@ private fun OnboardingPageContent(
 
         Text(
             text = stringResource(page.titleRes),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onBackground
         )
@@ -235,7 +234,7 @@ private fun OnboardingPageContent(
 
         Text(
             text = stringResource(page.bodyRes),
-            fontSize = 15.sp,
+            style = MaterialTheme.typography.bodyLarge,
             lineHeight = 22.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -252,7 +251,7 @@ private fun OnboardingPageContent(
                 Text(
                     text = stringResource(page.highlightRes),
                     modifier = Modifier.padding(14.dp),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     lineHeight = 19.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -280,7 +279,7 @@ private fun OnboardingPageContent(
                 Spacer(Modifier.width(4.dp))
                 Text(
                     text = stringResource(R.string.onboarding_disclaimer_consent),
-                    fontSize = 13.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     lineHeight = 19.sp,
                     color = MaterialTheme.colorScheme.onBackground
                 )

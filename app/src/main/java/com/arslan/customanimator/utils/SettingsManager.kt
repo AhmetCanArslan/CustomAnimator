@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import android.provider.Settings
+import com.arslan.customanimator.ui.theme.ThemeMode
 import android.util.DisplayMetrics
 import java.util.Locale
 import kotlin.math.min
@@ -24,11 +25,30 @@ object SettingsManager {
     private const val KEY_REMOVE_ADS_PROMPT_DISMISSED = "remove_ads_prompt_dismissed"
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
-    
+    private const val KEY_THEME_MODE = "theme_mode"
+    private const val KEY_DYNAMIC_COLOR = "dynamic_color"
+
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
     
+    fun getThemeMode(context: Context): ThemeMode {
+        val stored = getPrefs(context).getString(KEY_THEME_MODE, null)
+        return ThemeMode.entries.firstOrNull { it.name == stored } ?: ThemeMode.SYSTEM
+    }
+
+    fun setThemeMode(context: Context, mode: ThemeMode) {
+        getPrefs(context).edit().putString(KEY_THEME_MODE, mode.name).apply()
+    }
+
+    fun getDynamicColor(context: Context): Boolean {
+        return getPrefs(context).getBoolean(KEY_DYNAMIC_COLOR, false)
+    }
+
+    fun setDynamicColor(context: Context, enabled: Boolean) {
+        getPrefs(context).edit().putBoolean(KEY_DYNAMIC_COLOR, enabled).apply()
+    }
+
     fun getInputMode(context: Context): String {
         return getPrefs(context).getString(KEY_INPUT_MODE, "slider") ?: "slider"
     }
