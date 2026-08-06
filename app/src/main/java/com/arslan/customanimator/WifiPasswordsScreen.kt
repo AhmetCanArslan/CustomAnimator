@@ -161,7 +161,8 @@ fun WifiPasswordsScreen(
                     }
                 }
             )
-        }
+        },
+        bottomBar = { BannerAdView() }
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {

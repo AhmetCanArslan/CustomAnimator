@@ -14,7 +14,9 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -184,9 +186,14 @@ object FullScreenAdState {
 }
 
 @Composable
-fun BannerAdView() {
+fun BannerAdView(applyNavigationBarPadding: Boolean = true) {
     val isAdFree by rememberIsAdFree()
-    if (isAdFree) return
+    if (isAdFree) {
+        if (applyNavigationBarPadding) {
+            Spacer(modifier = Modifier.fillMaxWidth().navigationBarsPadding())
+        }
+        return
+    }
 
     val screenWidthDp = LocalConfiguration.current.screenWidthDp
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -211,7 +218,11 @@ fun BannerAdView() {
         }
 
         AndroidView(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (applyNavigationBarPadding) Modifier.navigationBarsPadding() else Modifier
+                ),
             factory = { context ->
                 val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
                 AdView(context).apply {

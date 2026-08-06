@@ -649,7 +649,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         bottomBar = {
             Column(modifier = Modifier.navigationBarsPadding()) {
                 RemoveAdsPrompt()
-                BannerAdView()
+                BannerAdView(applyNavigationBarPadding = false)
                 ExpressiveNavBar(
                     items = listOf(
                         NavBarItem(
