@@ -1,5 +1,6 @@
 package com.arslan.customanimator
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -375,7 +376,11 @@ private fun CommandField(
     LaunchedEffect(Unit) {
         installedPackages = withContext(Dispatchers.IO) {
             runCatching {
-                context.packageManager.getInstalledPackages(0).map { it.packageName }.sorted()
+                val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                context.packageManager.queryIntentActivities(launcherIntent, 0)
+                    .mapNotNull { it.activityInfo?.packageName }
+                    .distinct()
+                    .sorted()
             }.getOrDefault(emptyList())
         }
     }

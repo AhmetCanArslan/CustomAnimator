@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -95,12 +94,18 @@ object AppListManager {
             val pm = ctx.packageManager
             val iconDir = File(ctx.cacheDir, ICON_CACHE_DIR).also { it.mkdirs() }
 
-            val updateTimes: Map<String, Long> = try {
-                pm.getInstalledPackages(0).associate { it.packageName to it.lastUpdateTime }
-            } catch (_: Exception) { emptyMap() }
+            val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+            val packages = try {
+                pm.queryIntentActivities(launcherIntent, 0)
+                    .mapNotNull { it.activityInfo?.applicationInfo }
+                    .distinctBy { it.packageName }
+            } catch (_: Exception) { emptyList() }
 
-            val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-                .filter { pm.getLaunchIntentForPackage(it.packageName) != null }
+            val updateTimes: Map<String, Long> = packages.mapNotNull { appInfo ->
+                try {
+                    appInfo.packageName to pm.getPackageInfo(appInfo.packageName, 0).lastUpdateTime
+                } catch (_: Exception) { null }
+            }.toMap()
 
             val phase1Apps = packages.map { appInfo ->
                 val icon = loadIconFromDisk(iconDir, appInfo.packageName)
