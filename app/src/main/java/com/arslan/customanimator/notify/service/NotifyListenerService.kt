@@ -25,6 +25,8 @@ import com.arslan.customanimator.notify.data.NotificationGate
 import com.arslan.customanimator.notify.data.RuleMatcher
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.data.ScreenFlashColor
+import com.arslan.customanimator.notify.data.WidgetNotification
+import com.arslan.customanimator.notify.data.WidgetNotificationStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -158,6 +160,19 @@ class NotifyListenerService : NotificationListenerService() {
                                 color = color,
                                 durationSeconds = action.screenFlashDurationSeconds ?: 5,
                             )
+                        }
+                        RuleType.WIDGET -> {
+                            WidgetNotificationStore.add(
+                                this,
+                                WidgetNotification(
+                                    packageName = packageName,
+                                    appName = appName,
+                                    title = title,
+                                    body = if (action.widgetKeepBody != false) bodyRaw else "",
+                                    ruleId = rule.id,
+                                )
+                            )
+                            WidgetNotificationStore.notifyWidgets(this)
                         }
                     }
                 }

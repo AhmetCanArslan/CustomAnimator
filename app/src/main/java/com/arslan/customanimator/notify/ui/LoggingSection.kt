@@ -625,6 +625,7 @@ private fun RuleBadge(rule: MatchedRuleInfo) {
         RuleType.WAKE_UP -> Pair(stringResource(R.string.pn_logs_filter_wake_up), MaterialTheme.colorScheme.secondary)
         RuleType.AOD -> Pair(stringResource(R.string.pn_logs_filter_aod), MaterialTheme.colorScheme.primary)
         RuleType.FLASH_SCREEN -> Pair(stringResource(R.string.pn_flash_screen_title), MaterialTheme.colorScheme.error)
+        RuleType.WIDGET -> Pair(stringResource(R.string.pn_widget_action_title), MaterialTheme.colorScheme.primary)
     }
 
     Surface(

@@ -332,6 +332,32 @@
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
 
+        <receiver
+            android:name=".notify.widget.NotificationWidgetProvider"
+            android:exported="false"
+            android:label="@string/pn_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/notification_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".notify.widget.NotificationWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".notify.widget.NotificationWidgetConfigureActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CustomAnimator">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

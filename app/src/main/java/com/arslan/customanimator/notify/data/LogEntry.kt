@@ -10,7 +10,8 @@ enum class RuleType {
     FLASH,
     WAKE_UP,
     AOD,
-    FLASH_SCREEN
+    FLASH_SCREEN,
+    WIDGET
 }
 
 @Keep

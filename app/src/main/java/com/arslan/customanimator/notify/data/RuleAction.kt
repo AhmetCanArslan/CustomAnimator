@@ -31,6 +31,9 @@ data class RuleAction(
 
     @SerializedName("screenFlashDurationSeconds")
     val screenFlashDurationSeconds: Int? = null,
+
+    @SerializedName("widgetKeepBody")
+    val widgetKeepBody: Boolean? = null,
 ) : Parcelable {
 
     companion object {
@@ -64,6 +67,11 @@ data class RuleAction(
             type = RuleType.FLASH_SCREEN,
             screenFlashColor = color.name,
             screenFlashDurationSeconds = durationSeconds,
+        )
+
+        fun widget(keepBody: Boolean = true) = RuleAction(
+            type = RuleType.WIDGET,
+            widgetKeepBody = keepBody,
         )
     }
 }

@@ -80,6 +80,9 @@ fun AddEditRuleSection(
     val initialScreenFlashAction = remember(initialRule) {
         initialRule?.actions?.firstOrNull { it.type == RuleType.FLASH_SCREEN }
     }
+    val initialWidgetAction = remember(initialRule) {
+        initialRule?.actions?.firstOrNull { it.type == RuleType.WIDGET }
+    }
 
     LaunchedEffect(Unit) {
         AppListManager.refresh(context)
@@ -161,6 +164,11 @@ fun AddEditRuleSection(
     }
     var expandedScreenFlashDuration by remember { mutableStateOf(false) }
 
+    var widgetEnabled by remember { mutableStateOf(draft?.widgetEnabled ?: (initialWidgetAction != null)) }
+    var widgetKeepBody by remember {
+        mutableStateOf(draft?.widgetKeepBody ?: initialWidgetAction?.widgetKeepBody ?: true)
+    }
+
     var applyOnVibration by remember {
         mutableStateOf(draft?.applyOnVibration ?: initialRule?.applyOnVibration ?: true)
     }
@@ -178,7 +186,7 @@ fun AddEditRuleSection(
     val aodDurationOptions = listOf(-1, -2, 5, 10, 15, 30, 60, 120, 300)
     val screenFlashDurationOptions = listOf(5, 10, 30, 60)
 
-    val atLeastOneAction = flashEnabled || wakeUpEnabled || aodEnabled || screenFlashEnabled
+    val atLeastOneAction = flashEnabled || wakeUpEnabled || aodEnabled || screenFlashEnabled || widgetEnabled
 
     val ignoreConflicts by remember(selectedApps, titleKeywords, bodyKeywords) {
         derivedStateOf {
@@ -291,6 +299,8 @@ fun AddEditRuleSection(
             screenFlashEnabled = screenFlashEnabled,
             screenFlashColor = screenFlashColor.name,
             screenFlashDurationSeconds = screenFlashDurationSeconds,
+            widgetEnabled = widgetEnabled,
+            widgetKeepBody = widgetKeepBody,
             applyOnVibration = applyOnVibration,
             applyOnSilent = applyOnSilent,
             applyOnDND = applyOnDND,
@@ -379,6 +389,8 @@ fun AddEditRuleSection(
                                         add(RuleAction.aod(aodDurationSeconds))
                                     if (screenFlashEnabled)
                                         add(RuleAction.flashScreen(screenFlashColor, screenFlashDurationSeconds))
+                                    if (widgetEnabled)
+                                        add(RuleAction.widget(widgetKeepBody))
                                 }
                                 val newRule = initialRule?.copy(
                                     packageNames = selectedApps.map { it.packageName },
@@ -1100,6 +1112,60 @@ fun AddEditRuleSection(
                                                 )
                                             }
                                         }
+                                    }
+                                }
+                            }
+                        }
+
+                        HorizontalDivider()
+
+                        Column {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { widgetEnabled = !widgetEnabled },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    stringResource(R.string.pn_widget_action_title),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                Switch(
+                                    checked = widgetEnabled,
+                                    onCheckedChange = { widgetEnabled = it }
+                                )
+                            }
+                            AnimatedVisibility(
+                                visible = widgetEnabled,
+                                enter = fadeIn() + expandVertically(),
+                                exit = fadeOut() + shrinkVertically()
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(start = 8.dp, top = 8.dp),
+                                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    Text(
+                                        stringResource(R.string.pn_widget_action_hint),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable { widgetKeepBody = !widgetKeepBody },
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            stringResource(R.string.pn_widget_action_keep_body),
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                        Switch(
+                                            checked = widgetKeepBody,
+                                            onCheckedChange = { widgetKeepBody = it }
+                                        )
                                     }
                                 }
                             }
