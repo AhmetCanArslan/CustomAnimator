@@ -162,17 +162,17 @@ class NotifyListenerService : NotificationListenerService() {
                             )
                         }
                         RuleType.WIDGET -> {
-                            WidgetNotificationStore.add(
-                                this,
-                                WidgetNotification(
-                                    packageName = packageName,
-                                    appName = appName,
-                                    title = title,
-                                    body = if (action.widgetKeepBody != false) bodyRaw else "",
-                                    ruleId = rule.id,
-                                )
+                            val item = WidgetNotification(
+                                packageName = packageName,
+                                appName = appName,
+                                title = title,
+                                body = if (action.widgetKeepBody != false) bodyRaw else "",
+                                ruleId = rule.id,
                             )
-                            WidgetNotificationStore.notifyWidgets(this)
+                            ioScope.launch {
+                                WidgetNotificationStore.add(applicationContext, item)
+                                WidgetNotificationStore.notifyWidgets(applicationContext)
+                            }
                         }
                     }
                 }

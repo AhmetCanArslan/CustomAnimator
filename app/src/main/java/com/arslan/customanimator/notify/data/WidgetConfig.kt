@@ -32,11 +32,20 @@ object WidgetConfigStore {
     fun load(context: Context, appWidgetId: Int): WidgetConfig {
         val json = prefs(context).getString(key(appWidgetId), null) ?: return WidgetConfig()
         return try {
-            gson.fromJson(json, WidgetConfig::class.java) ?: WidgetConfig()
+            gson.fromJson(json, WidgetConfig::class.java)?.sanitized() ?: WidgetConfig()
         } catch (_: Exception) {
             WidgetConfig()
         }
     }
+
+    @Suppress("USELESS_ELVIS")
+    private fun WidgetConfig.sanitized() = copy(
+        ruleIds = ruleIds ?: emptyList(),
+        headerText = headerText ?: "",
+        maxItems = maxItems.coerceIn(1, 50),
+        backgroundAlphaPercent = backgroundAlphaPercent.coerceIn(0, 100),
+        textSizeSp = textSizeSp.coerceIn(10, 22),
+    )
 
     fun save(context: Context, appWidgetId: Int, config: WidgetConfig) {
         prefs(context).edit().putString(key(appWidgetId), gson.toJson(config)).apply()

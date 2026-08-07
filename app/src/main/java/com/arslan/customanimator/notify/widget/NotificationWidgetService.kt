@@ -36,6 +36,7 @@ private class NotificationWidgetFactory(
 
     private var items: List<WidgetNotification> = emptyList()
     private var config: WidgetConfig = WidgetConfig()
+    private val iconCache = mutableMapOf<String, Bitmap?>()
 
     override fun onCreate() = Unit
 
@@ -48,6 +49,7 @@ private class NotificationWidgetFactory(
 
     override fun onDestroy() {
         items = emptyList()
+        iconCache.clear()
     }
 
     override fun getCount() = items.size
@@ -116,10 +118,12 @@ private class NotificationWidgetFactory(
 
     override fun hasStableIds() = true
 
-    private fun loadIcon(packageName: String): Bitmap? = try {
-        drawableToBitmap(context.packageManager.getApplicationIcon(packageName))
-    } catch (_: Exception) {
-        null
+    private fun loadIcon(packageName: String): Bitmap? = iconCache.getOrPut(packageName) {
+        try {
+            drawableToBitmap(context.packageManager.getApplicationIcon(packageName))
+        } catch (_: Exception) {
+            null
+        }
     }
 
     private fun drawableToBitmap(drawable: Drawable): Bitmap {

@@ -37,11 +37,24 @@ object WidgetNotificationStore {
         val json = prefs(context).getString(ITEMS_KEY, null) ?: return emptyList()
         return try {
             val type = object : TypeToken<List<WidgetNotification>>() {}.type
-            gson.fromJson<List<WidgetNotification>>(json, type) ?: emptyList()
+            gson.fromJson<List<WidgetNotification>>(json, type)
+                ?.filterNotNull()
+                ?.map { it.sanitized() }
+                ?: emptyList()
         } catch (_: Exception) {
             emptyList()
         }
     }
+
+    @Suppress("USELESS_ELVIS")
+    private fun WidgetNotification.sanitized() = copy(
+        id = id ?: UUID.randomUUID().toString(),
+        packageName = packageName ?: "",
+        appName = appName ?: "",
+        title = title ?: "",
+        body = body ?: "",
+        ruleId = ruleId ?: "",
+    )
 
     @Synchronized
     fun add(context: Context, item: WidgetNotification) {
