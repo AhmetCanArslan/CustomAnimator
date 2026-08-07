@@ -758,9 +758,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Chiaro</string>
     <string name="theme_dark">Scuro</string>
-    <string name="settings_dynamic_color">Colori Material You</string>
-    <string name="settings_dynamic_color_desc">Usa i colori dello sfondo</string>
-    <string name="settings_dynamic_color_unsupported">Richiede Android 12 o versioni successive</string>
     <string name="anim_hero_current">Scala attuale</string>
     <string name="anim_hero_off">Animazioni disattivate</string>
     <string name="anim_hero_fast">Più veloce del normale</string>
@@ -797,10 +794,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_widget_no_rules">Nessuna regola con l\'azione \"Mostra nel widget\". Creane una dalla scheda Regole.</string>
     <string name="pn_widget_rules_hint">Seleziona quali regole mostra questo widget.</string>
     <string name="pn_widget_all_rules">Tutte le regole</string>
-    <string name="pn_widget_background_color">Colore di sfondo</string>
     <string name="pn_widget_opacity">Opacità: %1$d%%</string>
-    <string name="pn_widget_text_color">Colore del testo</string>
-    <string name="pn_widget_accent_color">Colore di accento</string>
     <string name="pn_widget_corner_radius">Raggio degli angoli</string>
     <string name="pn_widget_text_size">Dimensione del testo: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">Il widget segue la palette dello sfondo di sistema e la modalità chiara/scura.</string>
 </resources>

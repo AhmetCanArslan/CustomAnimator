@@ -26,7 +26,6 @@ object SettingsManager {
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
     private const val KEY_THEME_MODE = "theme_mode"
-    private const val KEY_DYNAMIC_COLOR = "dynamic_color"
 
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -39,14 +38,6 @@ object SettingsManager {
 
     fun setThemeMode(context: Context, mode: ThemeMode) {
         getPrefs(context).edit().putString(KEY_THEME_MODE, mode.name).apply()
-    }
-
-    fun getDynamicColor(context: Context): Boolean {
-        return getPrefs(context).getBoolean(KEY_DYNAMIC_COLOR, false)
-    }
-
-    fun setDynamicColor(context: Context, enabled: Boolean) {
-        getPrefs(context).edit().putBoolean(KEY_DYNAMIC_COLOR, enabled).apply()
     }
 
     fun getInputMode(context: Context): String {

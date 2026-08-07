@@ -150,8 +150,6 @@ fun SettingsScreen(
 
             SettingsSection(title = stringResource(R.string.settings_appearance)) {
                 ThemeModeSelector()
-                SettingDivider()
-                DynamicColorRow()
             }
 
             SettingsSection(title = stringResource(R.string.settings_general)) {
@@ -599,47 +597,5 @@ private fun ThemeModeSelector() {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun DynamicColorRow() {
-    val controller = LocalThemeController.current
-    val supported = controller.dynamicColorSupported
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = supported) {
-                controller.updateDynamicColor(!controller.dynamicColor)
-            }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconBadge(
-            icon = Icons.Filled.Palette,
-            size = 36.dp,
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = stringResource(R.string.settings_dynamic_color),
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = stringResource(
-                    if (supported) R.string.settings_dynamic_color_desc
-                    else R.string.settings_dynamic_color_unsupported
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        Switch(
-            checked = controller.dynamicColor && supported,
-            onCheckedChange = { controller.updateDynamicColor(it) },
-            enabled = supported
-        )
     }
 }

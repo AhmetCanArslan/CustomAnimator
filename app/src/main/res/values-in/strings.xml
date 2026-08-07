@@ -738,9 +738,6 @@ Durasi Animator: %3$.2f</string>
     <string name="theme_system">Sistem</string>
     <string name="theme_light">Terang</string>
     <string name="theme_dark">Gelap</string>
-    <string name="settings_dynamic_color">Warna Material You</string>
-    <string name="settings_dynamic_color_desc">Gunakan warna dari wallpaper</string>
-    <string name="settings_dynamic_color_unsupported">Membutuhkan Android 12 atau lebih baru</string>
     <string name="anim_hero_current">Skala saat ini</string>
     <string name="anim_hero_off">Animasi nonaktif</string>
     <string name="anim_hero_fast">Lebih cepat dari bawaan</string>
@@ -777,10 +774,8 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_widget_no_rules">Belum ada aturan dengan tindakan \"Tampilkan di widget\". Buat satu dari tab Aturan.</string>
     <string name="pn_widget_rules_hint">Pilih aturan mana yang ditampilkan widget ini.</string>
     <string name="pn_widget_all_rules">Semua aturan</string>
-    <string name="pn_widget_background_color">Warna latar</string>
     <string name="pn_widget_opacity">Opasitas: %1$d%%</string>
-    <string name="pn_widget_text_color">Warna teks</string>
-    <string name="pn_widget_accent_color">Warna aksen</string>
     <string name="pn_widget_corner_radius">Radius sudut</string>
     <string name="pn_widget_text_size">Ukuran teks: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">Widget mengikuti palet wallpaper sistem dan mode terang/gelap.</string>
 </resources>

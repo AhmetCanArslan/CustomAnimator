@@ -56,7 +56,8 @@ private class NotificationWidgetFactory(
         val views = RemoteViews(context.packageName, R.layout.widget_notification_item)
         val item = items.getOrNull(position) ?: return views
 
-        val textColor = config.textColor.toInt()
+        val colors = WidgetMaterialColors.resolve(context)
+        val textColor = colors.text.toInt()
         val secondaryColor = (textColor and 0x00FFFFFF) or (0xB0 shl 24)
 
         views.setTextViewText(R.id.item_title, item.title.ifBlank { item.appName })
@@ -84,7 +85,7 @@ private class NotificationWidgetFactory(
         }
         views.setViewVisibility(R.id.item_meta, if (metaParts.isEmpty()) View.GONE else View.VISIBLE)
         views.setTextViewText(R.id.item_meta, metaParts.joinToString(" · "))
-        views.setTextColor(R.id.item_meta, config.accentColor.toInt())
+        views.setTextColor(R.id.item_meta, colors.accent.toInt())
         views.setTextViewTextSize(R.id.item_meta, TypedValue.COMPLEX_UNIT_SP, (config.textSizeSp - 3).toFloat())
 
         if (config.showAppIcon) {

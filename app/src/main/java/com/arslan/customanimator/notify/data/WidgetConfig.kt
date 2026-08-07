@@ -14,19 +14,10 @@ data class WidgetConfig(
     val showAppName: Boolean = true,
     val showBody: Boolean = true,
     val showTime: Boolean = true,
-    val backgroundColor: Long = 0xFF1C1B1F,
     val backgroundAlphaPercent: Int = 85,
-    val textColor: Long = 0xFFFFFFFF,
-    val accentColor: Long = 0xFF9C27B0,
-    val cornerRadiusDp: Int = 20,
+    val cornerRadiusDp: Int = 16,
     val textSizeSp: Int = 14,
-) {
-    val backgroundColorWithAlpha: Int
-        get() {
-            val alpha = (backgroundAlphaPercent.coerceIn(0, 100) * 255 / 100)
-            return (alpha shl 24) or (backgroundColor.toInt() and 0x00FFFFFF)
-        }
-}
+)
 
 object WidgetConfigStore {
 

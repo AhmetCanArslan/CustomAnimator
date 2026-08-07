@@ -762,9 +762,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
-    <string name="settings_dynamic_color">Material You colors</string>
-    <string name="settings_dynamic_color_desc">Use colors taken from your wallpaper</string>
-    <string name="settings_dynamic_color_unsupported">Requires Android 12 or newer</string>
     <string name="anim_hero_current">Current scale</string>
     <string name="anim_hero_off">Animations off</string>
     <string name="anim_hero_fast">Faster than default</string>
@@ -801,10 +798,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_widget_no_rules">No rule with the "Show on Widget" action yet. Create one from the Rules tab.</string>
     <string name="pn_widget_rules_hint">Select which rules this widget shows.</string>
     <string name="pn_widget_all_rules">All rules</string>
-    <string name="pn_widget_background_color">Background color</string>
     <string name="pn_widget_opacity">Opacity: %1$d%%</string>
-    <string name="pn_widget_text_color">Text color</string>
-    <string name="pn_widget_accent_color">Accent color</string>
     <string name="pn_widget_corner_radius">Corner radius</string>
     <string name="pn_widget_text_size">Text size: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">The widget follows your system wallpaper palette and light/dark mode.</string>
 </resources>

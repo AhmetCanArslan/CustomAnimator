@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -35,6 +34,7 @@ import com.arslan.customanimator.notify.data.WidgetConfig
 import com.arslan.customanimator.notify.data.WidgetConfigStore
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 
+@Suppress("DEPRECATION")
 class NotificationWidgetConfigureActivity : ComponentActivity() {
 
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -70,7 +70,7 @@ class NotificationWidgetConfigureActivity : ComponentActivity() {
                                 NotificationWidgetProvider.buildRemoteViews(this, appWidgetId)
                             )
                             AppWidgetManager.getInstance(this)
-                                .notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_list)
+                                .notifyAppWidgetViewDataChanged(intArrayOf(appWidgetId), R.id.widget_list)
                             setResult(Activity.RESULT_OK, resultIntent())
                             finish()
                         }
@@ -82,20 +82,6 @@ class NotificationWidgetConfigureActivity : ComponentActivity() {
 
     private fun resultIntent() = Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
 }
-
-private val backgroundPalette = listOf(
-    0xFF1C1B1F, 0xFF000000, 0xFFFFFFFF, 0xFF263238,
-    0xFF1A237E, 0xFF004D40, 0xFF3E2723, 0xFF4A148C,
-)
-
-private val textPalette = listOf(
-    0xFFFFFFFF, 0xFF000000, 0xFFE0E0E0, 0xFFFFF176,
-)
-
-private val accentPalette = listOf(
-    0xFF9C27B0, 0xFF03A9F4, 0xFF4CAF50, 0xFFFF9800,
-    0xFFF44336, 0xFFE91E63, 0xFF00BCD4, 0xFF9E9E9E,
-)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -240,11 +226,11 @@ private fun WidgetConfigureScreen(
             }
 
             ConfigCard(stringResource(R.string.pn_widget_section_appearance)) {
-                ColorPicker(
-                    label = stringResource(R.string.pn_widget_background_color),
-                    colors = backgroundPalette,
-                    selected = config.backgroundColor
-                ) { config = config.copy(backgroundColor = it) }
+                Text(
+                    stringResource(R.string.pn_widget_material_colors_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
                 Text(
                     stringResource(R.string.pn_widget_opacity, config.backgroundAlphaPercent),
@@ -255,18 +241,6 @@ private fun WidgetConfigureScreen(
                     onValueChange = { config = config.copy(backgroundAlphaPercent = it.toInt()) },
                     valueRange = 0f..100f
                 )
-
-                ColorPicker(
-                    label = stringResource(R.string.pn_widget_text_color),
-                    colors = textPalette,
-                    selected = config.textColor
-                ) { config = config.copy(textColor = it) }
-
-                ColorPicker(
-                    label = stringResource(R.string.pn_widget_accent_color),
-                    colors = accentPalette,
-                    selected = config.accentColor
-                ) { config = config.copy(accentColor = it) }
 
                 Text(
                     stringResource(R.string.pn_widget_corner_radius),
@@ -330,40 +304,16 @@ private fun SwitchRow(label: String, checked: Boolean, onChange: (Boolean) -> Un
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun ColorPicker(
-    label: String,
-    colors: List<Long>,
-    selected: Long,
-    onSelect: (Long) -> Unit,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            colors.forEach { color ->
-                Surface(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable { onSelect(color) },
-                    shape = MaterialTheme.shapes.small,
-                    color = Color(color),
-                    border = if (selected == color) {
-                        BorderStroke(3.dp, MaterialTheme.colorScheme.primary)
-                    } else {
-                        BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-                    }
-                ) {}
-            }
-        }
-    }
-}
-
 @Composable
 private fun WidgetPreview(config: WidgetConfig) {
-    val background = Color(config.backgroundColorWithAlpha.toLong() and 0xFFFFFFFFL)
-    val textColor = Color(config.textColor)
-    val accentColor = Color(config.accentColor)
+    val context = LocalContext.current
+    val colors = remember { WidgetMaterialColors.resolve(context) }
+    val background = Color(
+        WidgetMaterialColors.withAlpha(colors.background, config.backgroundAlphaPercent)
+            .toLong() and 0xFFFFFFFFL
+    )
+    val textColor = Color(colors.text)
+    val accentColor = Color(colors.accent)
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(

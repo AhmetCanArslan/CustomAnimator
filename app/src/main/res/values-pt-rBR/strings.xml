@@ -738,9 +738,6 @@ Duração do Animador: %3$.2f</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Escuro</string>
-    <string name="settings_dynamic_color">Cores do Material You</string>
-    <string name="settings_dynamic_color_desc">Usar as cores do papel de parede</string>
-    <string name="settings_dynamic_color_unsupported">Requer Android 12 ou mais recente</string>
     <string name="anim_hero_current">Escala atual</string>
     <string name="anim_hero_off">Animações desativadas</string>
     <string name="anim_hero_fast">Mais rápido que o padrão</string>
@@ -777,10 +774,8 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_widget_no_rules">Ainda não há regra com a ação \"Mostrar no widget\". Crie uma na aba Regras.</string>
     <string name="pn_widget_rules_hint">Selecione quais regras este widget mostra.</string>
     <string name="pn_widget_all_rules">Todas as regras</string>
-    <string name="pn_widget_background_color">Cor de fundo</string>
     <string name="pn_widget_opacity">Opacidade: %1$d%%</string>
-    <string name="pn_widget_text_color">Cor do texto</string>
-    <string name="pn_widget_accent_color">Cor de destaque</string>
     <string name="pn_widget_corner_radius">Raio dos cantos</string>
     <string name="pn_widget_text_size">Tamanho do texto: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">O widget segue a paleta do papel de parede do sistema e o modo claro/escuro.</string>
 </resources>

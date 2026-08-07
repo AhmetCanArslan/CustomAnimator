@@ -738,9 +738,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Maliwanag</string>
     <string name="theme_dark">Madilim</string>
-    <string name="settings_dynamic_color">Mga kulay ng Material You</string>
-    <string name="settings_dynamic_color_desc">Gamitin ang mga kulay mula sa wallpaper</string>
-    <string name="settings_dynamic_color_unsupported">Kailangan ng Android 12 o mas bago</string>
     <string name="anim_hero_current">Kasalukuyang scale</string>
     <string name="anim_hero_off">Naka-off ang mga animation</string>
     <string name="anim_hero_fast">Mas mabilis sa default</string>
@@ -777,10 +774,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_widget_no_rules">Wala pang panuntunang may aksyong \"Ipakita sa widget\". Gumawa ng isa mula sa tab na Mga panuntunan.</string>
     <string name="pn_widget_rules_hint">Piliin kung aling mga panuntunan ang ipapakita ng widget na ito.</string>
     <string name="pn_widget_all_rules">Lahat ng panuntunan</string>
-    <string name="pn_widget_background_color">Kulay ng background</string>
     <string name="pn_widget_opacity">Opacity: %1$d%%</string>
-    <string name="pn_widget_text_color">Kulay ng teksto</string>
-    <string name="pn_widget_accent_color">Accent na kulay</string>
     <string name="pn_widget_corner_radius">Radius ng sulok</string>
     <string name="pn_widget_text_size">Laki ng teksto: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">Sinusunod ng widget ang palette ng wallpaper ng system at ang light/dark mode.</string>
 </resources>

@@ -71,6 +71,7 @@ object WidgetNotificationStore {
         prefs(context).edit().putString(ITEMS_KEY, gson.toJson(items)).apply()
     }
 
+    @Suppress("DEPRECATION")
     fun notifyWidgets(context: Context) {
         val appContext = context.applicationContext
         val manager = AppWidgetManager.getInstance(appContext)

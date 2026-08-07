@@ -29,25 +29,14 @@ enum class ThemeMode {
 
 class ThemeController(
     initialMode: ThemeMode,
-    initialDynamicColor: Boolean,
-    private val onModeChange: (ThemeMode) -> Unit,
-    private val onDynamicColorChange: (Boolean) -> Unit
+    private val onModeChange: (ThemeMode) -> Unit
 ) {
     var mode by mutableStateOf(initialMode)
         private set
-    var dynamicColor by mutableStateOf(initialDynamicColor)
-        private set
-
-    val dynamicColorSupported: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     fun updateMode(value: ThemeMode) {
         mode = value
         onModeChange(value)
-    }
-
-    fun updateDynamicColor(value: Boolean) {
-        dynamicColor = value
-        onDynamicColorChange(value)
     }
 }
 
@@ -124,9 +113,7 @@ fun CustomAnimatorTheme(
     val controller = remember {
         ThemeController(
             initialMode = SettingsManager.getThemeMode(context),
-            initialDynamicColor = SettingsManager.getDynamicColor(context),
-            onModeChange = { SettingsManager.setThemeMode(context, it) },
-            onDynamicColorChange = { SettingsManager.setDynamicColor(context, it) }
+            onModeChange = { SettingsManager.setThemeMode(context, it) }
         )
     }
 
@@ -136,13 +123,13 @@ fun CustomAnimatorTheme(
         ThemeMode.DARK -> true
     }
 
-    val useDynamic = controller.dynamicColor && controller.dynamicColorSupported
+    val useDynamic = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     val targetScheme = when {
         useDynamic && darkTheme -> dynamicDarkColorScheme(context)
         useDynamic -> dynamicLightColorScheme(context)
-        darkTheme -> BrandDarkColorScheme
-        else -> BrandLightColorScheme
+        darkTheme -> MaterialDarkColorScheme
+        else -> MaterialLightColorScheme
     }
 
     val colorScheme = if (LocalInspectionMode.current) targetScheme else animateScheme(targetScheme)

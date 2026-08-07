@@ -738,9 +738,6 @@
     <string name="theme_system">Системная</string>
     <string name="theme_light">Светлая</string>
     <string name="theme_dark">Тёмная</string>
-    <string name="settings_dynamic_color">Цвета Material You</string>
-    <string name="settings_dynamic_color_desc">Использовать цвета из обоев</string>
-    <string name="settings_dynamic_color_unsupported">Требуется Android 12 или новее</string>
     <string name="anim_hero_current">Текущий масштаб</string>
     <string name="anim_hero_off">Анимации отключены</string>
     <string name="anim_hero_fast">Быстрее обычного</string>
@@ -777,10 +774,8 @@
     <string name="pn_widget_no_rules">Пока нет правила с действием \"Показывать в виджете\". Создайте его на вкладке «Правила».</string>
     <string name="pn_widget_rules_hint">Выберите, какие правила показывает этот виджет.</string>
     <string name="pn_widget_all_rules">Все правила</string>
-    <string name="pn_widget_background_color">Цвет фона</string>
     <string name="pn_widget_opacity">Непрозрачность: %1$d%%</string>
-    <string name="pn_widget_text_color">Цвет текста</string>
-    <string name="pn_widget_accent_color">Акцентный цвет</string>
     <string name="pn_widget_corner_radius">Скругление углов</string>
     <string name="pn_widget_text_size">Размер текста: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">Виджет следует палитре системных обоев и светлой/тёмной теме.</string>
 </resources>

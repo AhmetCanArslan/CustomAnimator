@@ -64,15 +64,20 @@ class NotificationWidgetProvider : AppWidgetProvider() {
             val config = WidgetConfigStore.load(context, appWidgetId)
             val views = RemoteViews(context.packageName, R.layout.widget_notifications)
 
-            applyBackground(views, config.cornerRadiusDp, config.backgroundColorWithAlpha)
+            val colors = WidgetMaterialColors.resolve(context)
+            applyBackground(
+                views,
+                config.cornerRadiusDp,
+                WidgetMaterialColors.withAlpha(colors.background, config.backgroundAlphaPercent)
+            )
 
             val headerText = config.headerText.ifBlank { context.getString(R.string.pn_widget_default_header) }
             views.setViewVisibility(R.id.widget_header, if (config.showHeader) View.VISIBLE else View.GONE)
             views.setTextViewText(R.id.widget_title, headerText)
-            views.setTextColor(R.id.widget_title, config.textColor.toInt())
-            views.setTextColor(R.id.widget_empty, config.textColor.toInt())
-            views.setInt(R.id.widget_clear, "setColorFilter", config.accentColor.toInt())
-            views.setInt(R.id.widget_refresh, "setColorFilter", config.accentColor.toInt())
+            views.setTextColor(R.id.widget_title, colors.text.toInt())
+            views.setTextColor(R.id.widget_empty, colors.text.toInt())
+            views.setInt(R.id.widget_clear, "setColorFilter", colors.accent.toInt())
+            views.setInt(R.id.widget_refresh, "setColorFilter", colors.accent.toInt())
 
             val serviceIntent = Intent(context, NotificationWidgetService::class.java).apply {
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)

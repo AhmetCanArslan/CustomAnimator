@@ -738,9 +738,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="theme_system">Sistem</string>
     <string name="theme_light">Açık</string>
     <string name="theme_dark">Koyu</string>
-    <string name="settings_dynamic_color">Material You renkleri</string>
-    <string name="settings_dynamic_color_desc">Duvar kağıdından alınan renkleri kullan</string>
-    <string name="settings_dynamic_color_unsupported">Android 12 veya üstü gerekir</string>
     <string name="anim_hero_current">Geçerli ölçek</string>
     <string name="anim_hero_off">Animasyonlar kapalı</string>
     <string name="anim_hero_fast">Varsayılandan hızlı</string>
@@ -777,10 +774,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_widget_no_rules">Henüz \"Widget\'ta Göster\" aksiyonuna sahip kural yok. Kurallar sekmesinden oluşturabilirsiniz.</string>
     <string name="pn_widget_rules_hint">Bu widget\'ın hangi kuralları göstereceğini seçin.</string>
     <string name="pn_widget_all_rules">Tüm kurallar</string>
-    <string name="pn_widget_background_color">Arka plan rengi</string>
     <string name="pn_widget_opacity">Saydamlık: %%%1$d</string>
-    <string name="pn_widget_text_color">Yazı rengi</string>
-    <string name="pn_widget_accent_color">Vurgu rengi</string>
     <string name="pn_widget_corner_radius">Köşe yuvarlaklığı</string>
     <string name="pn_widget_text_size">Yazı boyutu: %1$d sp</string>
+    <string name="pn_widget_material_colors_hint">Widget, sistem duvar kağıdı paletinizi ve açık/koyu modu takip eder.</string>
 </resources>
