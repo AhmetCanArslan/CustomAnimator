@@ -46,6 +46,7 @@ import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -298,7 +299,13 @@ fun PermissionsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.permissions_title)) },
+                title = {
+                    Text(
+                        stringResource(R.string.permissions_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -454,13 +461,20 @@ private fun PermissionSection(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
-    Row(
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+    val stacked = maxWidth < 340.dp
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(enabled = !entry.granted, onClick = onGrant)
             .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -485,11 +499,11 @@ private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Row(
+            FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
-                Text(text = entry.title, style = MaterialTheme.typography.titleSmall,)
+                Text(text = entry.title, style = MaterialTheme.typography.titleSmall)
                 if (entry.optional) {
                     Text(
                         text = stringResource(R.string.permission_optional),
@@ -511,11 +525,18 @@ private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
                 tint = GrantedGreen,
                 modifier = Modifier.size(22.dp)
             )
-        } else {
+        } else if (!stacked) {
             TextButton(onClick = onGrant) {
                 Text(stringResource(R.string.grant))
             }
         }
+    }
+    if (stacked && !entry.granted) {
+        TextButton(onClick = onGrant, modifier = Modifier.align(Alignment.End)) {
+            Text(stringResource(R.string.grant))
+        }
+    }
+    }
     }
 }
 

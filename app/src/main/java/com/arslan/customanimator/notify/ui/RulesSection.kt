@@ -210,7 +210,7 @@ private fun NotificationRuleCard(
                                 RuleType.WAKE_UP -> MaterialTheme.colorScheme.secondary
                                 RuleType.AOD -> MaterialTheme.colorScheme.primary
                                 RuleType.FLASH_SCREEN -> MaterialTheme.colorScheme.error
-                                RuleType.WIDGET -> MaterialTheme.colorScheme.primaryContainer
+                                RuleType.WIDGET -> MaterialTheme.colorScheme.onTertiaryContainer
                             }
                             Surface(
                                 shape = MaterialTheme.shapes.small,

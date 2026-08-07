@@ -604,7 +604,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 title = {
                     Text(
                         stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.headlineMedium
+                        style = MaterialTheme.typography.headlineMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

@@ -102,7 +102,13 @@ private fun WidgetConfigureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.pn_widget_configure_title)) },
+                title = {
+                    Text(
+                        stringResource(R.string.pn_widget_configure_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCancel) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
@@ -299,7 +305,11 @@ private fun SwitchRow(label: String, checked: Boolean, onChange: (Boolean) -> Un
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(label, style = MaterialTheme.typography.bodyLarge)
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.weight(1f).padding(end = 12.dp)
+        )
         Switch(checked = checked, onCheckedChange = onChange)
     }
 }

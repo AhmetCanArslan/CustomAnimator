@@ -49,6 +49,9 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -123,7 +126,9 @@ fun SettingsScreen(
                 title = {
                     Text(
                         stringResource(R.string.settings),
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
@@ -538,6 +543,19 @@ private fun ThemeModeSelector() {
             style = MaterialTheme.typography.titleSmall
         )
         Spacer(modifier = Modifier.height(12.dp))
+        val labels = options.map { stringResource(it.third) }
+        val labelStyle = MaterialTheme.typography.labelMedium
+        val textMeasurer = rememberTextMeasurer()
+        val density = LocalDensity.current
+        BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val stackedSegments = remember(maxWidth, labels, labelStyle, density) {
+            val widestLabelPx = labels.maxOf { textMeasurer.measure(it, labelStyle).size.width }
+            val segmentPx = with(density) {
+                ((maxWidth - 8.dp - 8.dp) / options.size).toPx()
+            }
+            val iconAreaPx = with(density) { (18.dp + 6.dp + 8.dp).toPx() }
+            widestLabelPx + iconAreaPx > segmentPx
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -567,35 +585,63 @@ private fun ThemeModeSelector() {
                     label = "themeSegmentContent"
                 )
                 val interactionSource = remember { MutableInteractionSource() }
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .pressScale(interactionSource, 0.94f)
-                        .clip(AppShapes.chip)
-                        .background(container)
-                        .clickable(
-                            interactionSource = interactionSource,
-                            indication = LocalIndication.current
-                        ) { controller.updateMode(mode) }
-                        .padding(vertical = 10.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = content,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.size(6.dp))
-                    Text(
-                        text = stringResource(labelRes),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = content,
-                        maxLines = 1
-                    )
+                val segmentModifier = Modifier
+                    .weight(1f)
+                    .pressScale(interactionSource, 0.94f)
+                    .clip(AppShapes.chip)
+                    .background(container)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = LocalIndication.current
+                    ) { controller.updateMode(mode) }
+                    .padding(vertical = 10.dp, horizontal = 4.dp)
+
+                if (stackedSegments) {
+                    Column(
+                        modifier = segmentModifier,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = content,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = stringResource(labelRes),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = content,
+                            maxLines = 1,
+                            softWrap = false,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                } else {
+                    Row(
+                        modifier = segmentModifier,
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = content,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.size(6.dp))
+                        Text(
+                            text = stringResource(labelRes),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = content,
+                            maxLines = 1,
+                            softWrap = false,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
+        }
         }
     }
 }

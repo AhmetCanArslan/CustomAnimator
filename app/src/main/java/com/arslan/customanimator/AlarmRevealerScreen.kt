@@ -23,6 +23,7 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.AlarmRevealer
@@ -75,6 +76,8 @@ fun AlarmRevealerScreen(
                     Text(
                         stringResource(R.string.alarm_revealer),
                         style = MaterialTheme.typography.headlineSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 navigationIcon = {

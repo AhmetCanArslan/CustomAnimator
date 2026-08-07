@@ -3,6 +3,7 @@ package com.arslan.customanimator.notify.widget
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -58,6 +59,14 @@ class NotificationWidgetProvider : AppWidgetProvider() {
         const val ACTION_CLEAR = "com.arslan.customanimator.widget.CLEAR"
         const val ACTION_REFRESH = "com.arslan.customanimator.widget.REFRESH"
         const val EXTRA_PACKAGE_NAME = "extra_package_name"
+
+        fun updateAll(context: Context) {
+            val manager = AppWidgetManager.getInstance(context)
+            val ids = manager.getAppWidgetIds(
+                ComponentName(context, NotificationWidgetProvider::class.java)
+            )
+            for (id in ids) manager.updateAppWidget(id, buildRemoteViews(context, id))
+        }
 
         @Suppress("DEPRECATION")
         fun buildRemoteViews(context: Context, appWidgetId: Int): RemoteViews {

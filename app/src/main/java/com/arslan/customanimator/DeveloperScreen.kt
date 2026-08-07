@@ -985,31 +985,54 @@ private fun ActionRow(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        val stacked = maxWidth < 340.dp
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, style = MaterialTheme.typography.titleSmall,)
-            Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Button(onClick = onClick, enabled = enabled) {
-            Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(text = title, style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        text = description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (!stacked) {
+                    Button(onClick = onClick, enabled = enabled) {
+                        Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
+                    }
+                }
+            }
+            if (stacked) {
+                Button(
+                    onClick = onClick,
+                    enabled = enabled,
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
+                }
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.data.ScreenFlashColor
 import com.arslan.customanimator.notify.data.WidgetNotification
 import com.arslan.customanimator.notify.data.WidgetNotificationStore
+import com.arslan.customanimator.notify.widget.NotificationWidgetProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -57,6 +58,12 @@ class NotifyListenerService : NotificationListenerService() {
         loggingManager = LoggingManager.getInstance(this)
         loggingPreferences = LoggingPreferences(this)
         startPersistentNotification()
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        NotificationWidgetProvider.updateAll(this)
+        WidgetNotificationStore.notifyWidgets(this)
     }
 
     override fun onDestroy() {
