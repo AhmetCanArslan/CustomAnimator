@@ -83,6 +83,7 @@ fun TerminalScreenContent(
     isActive: Boolean = true
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
     val presetManager = remember { TerminalPresetManager(context) }
@@ -148,10 +149,9 @@ fun TerminalScreenContent(
 
         if (!hasShizukuPermission) {
             item {
-                WarningCard(
+                SetupNudgeCard(
                     message = stringResource(R.string.terminal_needs_shizuku),
-                    actionLabel = stringResource(R.string.grant_shizuku_permission),
-                    onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                    onOpenSetup = openSetup
                 )
             }
         }

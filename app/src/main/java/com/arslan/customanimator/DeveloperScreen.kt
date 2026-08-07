@@ -85,6 +85,7 @@ fun DeveloperScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
 
@@ -233,27 +234,10 @@ fun DeveloperScreenContent(
         ) {
             if (!hasShizukuPermission) {
                 item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(12.dp),
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Warning,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onErrorContainer
-                            )
-                            Text(
-                                text = stringResource(R.string.developer_needs_shizuku),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onErrorContainer
-                            )
-                        }
-                    }
+                    SetupNudgeCard(
+                        message = stringResource(R.string.developer_needs_shizuku),
+                        onOpenSetup = openSetup
+                    )
                 }
             }
 

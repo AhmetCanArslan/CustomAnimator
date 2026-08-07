@@ -493,8 +493,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_welcome_title">Welcome to Custom Animator</string>
     <string name="onboarding_welcome_body">Speed up your device by tuning animation scales, screen density, battery behaviour and hidden developer settings, all from one place and without root.</string>
     <string name="onboarding_permission_title">One-Time Setup</string>
-    <string name="onboarding_permission_body">These settings belong to the system, so the app needs a special permission before it can change anything. Grant it with Shizuku, or by running a single ADB command from a computer.</string>
-    <string name="onboarding_permission_highlight">Without this permission the app can read your settings but cannot change them. You will see a warning at the top of any screen that needs it.</string>
+    <string name="onboarding_permission_body">Animation speed, screen density and battery behaviour are protected by Android, so the app needs one special permission before it can change them. You grant it once, in about two minutes, using a free helper app called Shizuku or a single command from a computer. We will walk you through every step.</string>
+    <string name="onboarding_permission_highlight">Until then the app can show your current settings but not change them. You can start the guided setup any time from the home screen or from Settings.</string>
     <string name="onboarding_battery_title">Measure Battery Yourself</string>
     <string name="onboarding_battery_body">Battery tweaks change how aggressively Android sleeps, throttles and freezes apps. There is no single best value. It depends on your device, your ROM and the apps you use.</string>
     <string name="onboarding_battery_highlight">Change one thing at a time, then use your device normally for a day and compare. Aggressive settings can drain your battery faster, delay notifications, or stop background apps and alarms from working.</string>
@@ -802,4 +802,80 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_widget_corner_radius">Corner radius</string>
     <string name="pn_widget_text_size">Text size: %1$d sp</string>
     <string name="pn_widget_material_colors_hint">The widget follows your system wallpaper palette and light/dark mode.</string>
+
+    <string name="setup_title">Setup Guide</string>
+    <string name="setup_status_ready">You are all set</string>
+    <string name="setup_status_not_ready">Setup not finished yet</string>
+    <string name="setup_status_ready_desc">The app has the access it needs. Every feature is unlocked.</string>
+    <string name="setup_status_authorized_desc">Almost there. One last tap on step 6 finishes the setup.</string>
+    <string name="setup_status_not_authorized_desc">Shizuku is running. Now allow this app to use it (step 5).</string>
+    <string name="setup_status_not_running_desc">Shizuku is installed but not started yet. Continue from step 2.</string>
+    <string name="setup_status_not_installed_desc">Follow the steps below. It takes about two minutes and you only do it once.</string>
+
+    <string name="setup_explainer_title">What is this and why do I need it?</string>
+    <string name="setup_explainer_q1">Why can\'t the app just change my settings?</string>
+    <string name="setup_explainer_a1">The settings this app tunes (animation speed, screen density, battery behaviour) are protected by Android. No normal app is allowed to change them, no matter who made it. Your phone needs to hand out one special permission first.</string>
+    <string name="setup_explainer_q2">What is Shizuku?</string>
+    <string name="setup_explainer_a2">Shizuku is a small, free, open-source helper app. It is the standard way to hand that permission to apps like this one without rooting your phone. Millions of people use it, and it is not made by us.</string>
+    <string name="setup_explainer_q3">Is it safe? Does it root my phone?</string>
+    <string name="setup_explainer_a3">It does not root your phone and it does not modify Android. Shizuku only stays active until you restart your phone, and you can revoke this app\'s access from inside Shizuku at any time.</string>
+    <string name="setup_explainer_q4">Do I need a computer?</string>
+    <string name="setup_explainer_a4">On Android 11 and newer, no. Your phone can start Shizuku by itself using wireless debugging. On older versions you need to plug into a computer once.</string>
+
+    <string name="setup_choose_route">How do you want to set it up?</string>
+    <string name="setup_choose_route_sub">Pick one. Both give the same result.</string>
+    <string name="setup_recommended">Recommended</string>
+    <string name="setup_route_phone">Phone only</string>
+    <string name="setup_route_phone_sub">No computer needed. Uses Shizuku and wireless debugging.</string>
+    <string name="setup_route_phone_sub_unsupported">Your Android version is older than 11, so this route needs a computer once to start Shizuku.</string>
+    <string name="setup_route_computer">With a computer</string>
+    <string name="setup_route_computer_sub">One copy-paste command over USB. No extra app to install.</string>
+
+    <string name="setup_step_install_title">Install Shizuku</string>
+    <string name="setup_step_install_body">A free helper app from the Play Store. You will only open it during setup.</string>
+    <string name="setup_step_install_action">Get Shizuku</string>
+    <string name="setup_step_install_alt">Download from GitHub</string>
+    <string name="setup_step_devopts_title">Turn on Developer options</string>
+    <string name="setup_step_devopts_body">Open About phone, find Build number and tap it seven times. Your phone will say you are now a developer. If it is already on, skip this.</string>
+    <string name="setup_step_devopts_action">Open About phone</string>
+    <string name="setup_step_wireless_title">Turn on Wireless debugging</string>
+    <string name="setup_step_wireless_body">In Developer options, switch Wireless debugging on and keep Wi-Fi connected. Accept the warning your phone shows.</string>
+    <string name="setup_step_wireless_action">Open Wireless debugging</string>
+    <string name="setup_step_start_title">Start Shizuku</string>
+    <string name="setup_step_start_body">Open Shizuku and tap Start under the wireless debugging section, then pair when it asks. It is running once Shizuku shows a green message at the top.</string>
+    <string name="setup_step_start_action">Open Shizuku</string>
+    <string name="setup_step_allow_title">Allow this app</string>
+    <string name="setup_step_allow_body">Shizuku will ask whether Custom Animator may use it. Tap Allow.</string>
+    <string name="setup_step_allow_action">Ask for access</string>
+    <string name="setup_step_finish_title">Finish setup</string>
+    <string name="setup_step_finish_body">Hand the permission over. This is the last step, and it usually happens by itself.</string>
+    <string name="setup_step_finish_action">Finish</string>
+    <string name="setup_finish_success">Setup complete. Everything is unlocked.</string>
+    <string name="setup_finish_failed">Could not finish. Make sure Shizuku is still running, then try again.</string>
+    <string name="setup_shizuku_missing">Shizuku is not installed yet. Start from step 1.</string>
+
+    <string name="setup_pc_step1_title">Turn on Developer options</string>
+    <string name="setup_pc_step1_body">Open About phone, find Build number and tap it seven times.</string>
+    <string name="setup_pc_step2_title">Turn on USB debugging</string>
+    <string name="setup_pc_step2_body">In Developer options, switch USB debugging on and plug your phone into your computer. Accept the pairing prompt on your phone.</string>
+    <string name="setup_pc_step2_action">Open Developer options</string>
+    <string name="setup_pc_step3_title">Run one command</string>
+    <string name="setup_pc_step3_body">Install Android platform-tools on your computer, then paste this into its terminal. Nothing appears if it worked.</string>
+
+    <string name="setup_reboot_note">Note: if you restart your phone, Shizuku stops and needs to be started again. The permission this app already received stays, so most features keep working.</string>
+    <string name="setup_open_official_guide">Read the official Shizuku guide</string>
+
+    <string name="setup_ready_next_title">What now?</string>
+    <string name="setup_ready_next_body">Nothing else to do. Head back and start with animation speed, it is the change you will notice first.</string>
+    <string name="setup_ready_next_action">Back to the app</string>
+
+    <string name="setup_nudge_title">One-time setup needed</string>
+    <string name="setup_nudge_action">Show me how</string>
+    <string name="setup_nudge_generic">This feature changes protected system settings, so the app needs a one-time permission first.</string>
+    <string name="setup_open">Setup guide</string>
+    <string name="setup_open_desc">Step-by-step help to unlock every feature</string>
+    <string name="onboarding_setup_now">Set it up now</string>
+    <string name="onboarding_setup_later">Maybe later</string>
+    <string name="setup_not_running_yet">Shizuku is not running yet. Finish the earlier steps first.</string>
+    <string name="setup_nudge_home">Animation speed, screen density and battery tweaks need one permission that Android only hands out during a short setup.</string>
 </resources>

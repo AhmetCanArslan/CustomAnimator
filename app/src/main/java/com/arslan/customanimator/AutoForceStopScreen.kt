@@ -51,6 +51,7 @@ fun AutoForceStopScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val manager = remember { AutoForceStopManager(context) }
     val otherManager = remember { PermissionDisablerManager(context) }
 
@@ -158,10 +159,9 @@ fun AutoForceStopScreen(
 
             if (!hasShizukuPermission) {
                 item {
-                    WarningCard(
+                    SetupNudgeCard(
                         message = stringResource(R.string.developer_needs_shizuku),
-                        actionLabel = stringResource(R.string.grant_shizuku_permission),
-                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                        onOpenSetup = openSetup
                     )
                 }
             }

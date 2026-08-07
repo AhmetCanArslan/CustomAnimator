@@ -20,6 +20,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ChevronRight
@@ -87,6 +88,7 @@ fun SettingsScreen(
     onNavigateToPermissions: () -> Unit
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
     val canRevert = hasShizukuPermission || hasWriteSecureSettings
     var showRevertConfirm by remember { mutableStateOf(false) }
@@ -219,7 +221,7 @@ fun SettingsScreen(
                         if (canRevert) {
                             showRevertConfirm = true
                         } else {
-                            ShizukuHelper.requestShizukuPermission(context)
+                            openSetup()
                         }
                     }
                 )
@@ -295,6 +297,14 @@ fun SettingsScreen(
                         MaterialTheme.colorScheme.error,
                     trailingIcon = Icons.Filled.ChevronRight,
                     onClick = onNavigateToPermissions
+                )
+                SettingDivider()
+                ActionSettingRow(
+                    icon = Icons.AutoMirrored.Filled.HelpOutline,
+                    title = stringResource(R.string.setup_open),
+                    description = stringResource(R.string.setup_open_desc),
+                    trailingIcon = Icons.Filled.ChevronRight,
+                    onClick = openSetup
                 )
                 SettingDivider()
                 if (isPrivacyOptionsRequired()) {

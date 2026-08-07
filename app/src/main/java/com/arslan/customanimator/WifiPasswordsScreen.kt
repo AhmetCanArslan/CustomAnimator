@@ -61,6 +61,7 @@ fun WifiPasswordsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
 
     var result by remember { mutableStateOf<WifiConfigReader.Result?>(null) }
@@ -211,10 +212,9 @@ fun WifiPasswordsScreen(
                 is WifiConfigReader.Result.Error -> {
                     Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
                         if (state.needsShizukuPermission) {
-                            WarningCard(
+                            SetupNudgeCard(
                                 message = stringResource(state.messageRes),
-                                actionLabel = stringResource(R.string.grant_shizuku_permission),
-                                onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                                onOpenSetup = openSetup
                             )
                         } else {
                             WarningCard(

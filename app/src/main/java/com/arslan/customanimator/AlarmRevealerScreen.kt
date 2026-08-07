@@ -44,6 +44,7 @@ fun AlarmRevealerScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
 
     var nextAlarm by remember { mutableStateOf<AlarmSource?>(null) }
@@ -110,10 +111,9 @@ fun AlarmRevealerScreen(
         ) {
             if (!hasShizukuPermission) {
                 item {
-                    WarningCard(
+                    SetupNudgeCard(
                         message = stringResource(R.string.alarm_needs_shizuku_for_list),
-                        actionLabel = stringResource(R.string.grant_shizuku_permission),
-                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                        onOpenSetup = openSetup
                     )
                 }
             }

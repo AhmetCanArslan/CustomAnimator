@@ -9,7 +9,9 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Shield
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -34,10 +37,19 @@ private data class OnboardingPage(
     val titleRes: Int,
     val bodyRes: Int,
     val highlightRes: Int?,
-    val requiresConsent: Boolean = false
+    val requiresConsent: Boolean = false,
+    val offersRemoveAds: Boolean = false
 )
 
-private val onboardingPages = listOf(
+private val supportPage = OnboardingPage(
+    icon = Icons.Filled.Favorite,
+    titleRes = R.string.ad_info_title,
+    bodyRes = R.string.ad_info_message,
+    highlightRes = R.string.ad_info_remove_ads_hint,
+    offersRemoveAds = true
+)
+
+private val basePages = listOf(
     OnboardingPage(
         icon = Icons.Filled.Speed,
         titleRes = R.string.onboarding_welcome_title,
@@ -73,10 +85,31 @@ private val onboardingPages = listOf(
 
 @Composable
 fun OnboardingScreen(onFinished: () -> Unit) {
-    val pagerState = rememberPagerState(pageCount = { onboardingPages.size })
+    val context = LocalContext.current
+    val onboardingPages = remember(isAdFreeNow()) {
+        if (isAdFreeNow()) {
+            basePages
+        } else {
+            basePages.dropLast(1) + supportPage + basePages.last()
+        }
+    }
+    var showSetupGuide by rememberSaveable { mutableStateOf(false) }
+    var consentAccepted by rememberSaveable { mutableStateOf(false) }
+    var lastVisitedPage by rememberSaveable { mutableIntStateOf(0) }
+
+    if (showSetupGuide) {
+        BackHandler { showSetupGuide = false }
+        SetupGuideScreen(onBack = onFinished)
+        return
+    }
+
+    val pagerState = rememberPagerState(
+        initialPage = lastVisitedPage.coerceIn(0, onboardingPages.lastIndex),
+        pageCount = { onboardingPages.size }
+    )
+    LaunchedEffect(pagerState.currentPage) { lastVisitedPage = pagerState.currentPage }
     val scope = rememberCoroutineScope()
     val isLastPage = pagerState.currentPage == onboardingPages.lastIndex
-    var consentAccepted by rememberSaveable { mutableStateOf(false) }
     val canFinish = consentAccepted
 
     Surface(
@@ -116,7 +149,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 OnboardingPageContent(
                     page = onboardingPages[page],
                     consentAccepted = consentAccepted,
-                    onConsentChange = { consentAccepted = it }
+                    onConsentChange = { consentAccepted = it },
+                    onRemoveAds = { startRemoveAdsPurchase(context) }
                 )
             }
 
@@ -145,47 +179,59 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 }
             }
 
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp)
                     .padding(bottom = 24.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                if (pagerState.currentPage > 0) {
-                    OutlinedButton(
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    if (pagerState.currentPage > 0) {
+                        OutlinedButton(
+                            onClick = {
+                                scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+                            },
+                            modifier = Modifier
+                                .weight(1f)
+                                .heightIn(min = 52.dp)
+                        ) {
+                            Text(stringResource(R.string.onboarding_back))
+                        }
+                    }
+
+                    Button(
                         onClick = {
-                            scope.launch { pagerState.animateScrollToPage(pagerState.currentPage - 1) }
+                            if (isLastPage) {
+                                showSetupGuide = true
+                            } else {
+                                scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
+                            }
                         },
+                        enabled = !isLastPage || canFinish,
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(if (pagerState.currentPage > 0) 1f else 2f)
                             .heightIn(min = 52.dp)
                     ) {
-                        Text(stringResource(R.string.onboarding_back))
+                        Text(
+                            text = if (isLastPage) {
+                                stringResource(R.string.onboarding_setup_now)
+                            } else {
+                                stringResource(R.string.onboarding_next)
+                            },
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                 }
 
-                Button(
-                    onClick = {
-                        if (isLastPage) {
-                            onFinished()
-                        } else {
-                            scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                        }
-                    },
-                    enabled = !isLastPage || canFinish,
-                    modifier = Modifier
-                        .weight(if (pagerState.currentPage > 0) 1f else 2f)
-                        .heightIn(min = 52.dp)
-                ) {
-                    Text(
-                        text = if (isLastPage) {
-                            stringResource(R.string.onboarding_start)
-                        } else {
-                            stringResource(R.string.onboarding_next)
-                        },
-                        fontWeight = FontWeight.SemiBold
-                    )
+                if (isLastPage) {
+                    TextButton(
+                        onClick = onFinished,
+                        enabled = canFinish,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(stringResource(R.string.onboarding_setup_later))
+                    }
                 }
             }
         }
@@ -196,7 +242,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
 private fun OnboardingPageContent(
     page: OnboardingPage,
     consentAccepted: Boolean,
-    onConsentChange: (Boolean) -> Unit
+    onConsentChange: (Boolean) -> Unit,
+    onRemoveAds: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -255,6 +302,13 @@ private fun OnboardingPageContent(
                     lineHeight = 19.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        }
+
+        if (page.offersRemoveAds) {
+            Spacer(Modifier.height(10.dp))
+            OutlinedButton(onClick = onRemoveAds) {
+                Text(stringResource(R.string.remove_ads))
             }
         }
 

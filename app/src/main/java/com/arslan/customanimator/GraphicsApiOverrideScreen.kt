@@ -41,6 +41,7 @@ fun GraphicsApiOverrideScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
     val actionsEnabled = hasShizukuPermission || hasWriteSecureSettings
@@ -138,10 +139,9 @@ fun GraphicsApiOverrideScreen(
 
             if (!actionsEnabled) {
                 item {
-                    WarningCard(
+                    SetupNudgeCard(
                         message = stringResource(R.string.developer_needs_shizuku),
-                        actionLabel = stringResource(R.string.grant_shizuku_permission),
-                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                        onOpenSetup = openSetup
                     )
                 }
             }

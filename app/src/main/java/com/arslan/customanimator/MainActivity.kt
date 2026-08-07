@@ -144,6 +144,10 @@ class MainActivity : ComponentActivity() {
                         OnboardingScreen(
                             onFinished = {
                                 SettingsManager.markOnboardingCompleted(this)
+                                SettingsManager.markAdInfoDialogShown(this)
+                                SettingsManager.markRateDialogLater(this)
+                                ChangelogManager.markCurrentSeen(this)
+                                changelog = emptyList()
                                 showOnboarding = false
                             }
                         )
@@ -196,7 +200,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PERMISSIONS,
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
 
@@ -260,6 +264,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             } ?: HomeScreen.MAIN
         )
     }
+    val setupGuideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val openSetupGuide: () -> Unit = { currentScreen = HomeScreen.SETUP_GUIDE }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -286,7 +292,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     LaunchedEffect(currentScreen) {
-        SettingsManager.setLastScreen(context, currentScreen.name)
+        hasShizukuPermission.value = ShizukuHelper.hasShizukuPermission()
+        hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
+        if (currentScreen != HomeScreen.SETUP_GUIDE) {
+            SettingsManager.setLastScreen(context, currentScreen.name)
+        }
     }
 
     LaunchedEffect(selectedTab) {
@@ -462,10 +472,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         enabled = currentScreen != HomeScreen.MAIN &&
             currentScreen != HomeScreen.SETTINGS &&
             currentScreen != HomeScreen.PERMISSIONS &&
+            currentScreen != HomeScreen.SETUP_GUIDE &&
             currentScreen !in NOTIFY_SCREENS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
+    }
+    BackHandler(enabled = currentScreen == HomeScreen.SETUP_GUIDE) {
+        currentScreen = HomeScreen.MAIN
     }
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS) {
         currentScreen = HomeScreen.MAIN
@@ -483,6 +497,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
+    CompositionLocalProvider(LocalOpenSetupGuide provides openSetupGuide) {
     AnimatedContent(
         targetState = currentScreen,
         transitionSpec = {
@@ -556,6 +571,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.MAIN },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
+        )
+    } else if (targetScreen == HomeScreen.SETUP_GUIDE) {
+        SetupGuideScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            listState = setupGuideListState
         )
     } else if (targetScreen == HomeScreen.PERMISSIONS) {
         PermissionsScreen(
@@ -752,6 +772,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!hasWriteSecureSettings.value) {
+                item {
+                    SetupNudgeCard(
+                        message = stringResource(R.string.setup_nudge_home),
+                        onOpenSetup = openSetupGuide
+                    )
+                }
+            }
 
             item {
                 Card(
@@ -1019,6 +1047,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!hasWriteSecureSettings.value) {
+                item {
+                    SetupNudgeCard(
+                        message = stringResource(R.string.setup_nudge_home),
+                        onOpenSetup = openSetupGuide
+                    )
+                }
+            }
 
             item {
                 SyncedAnimationPreview(
@@ -1552,6 +1588,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
         }
         }
+    }
     }
     }
     }

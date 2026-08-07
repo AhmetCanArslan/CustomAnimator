@@ -34,6 +34,7 @@ fun BatteryScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val resolver = context.contentResolver
     val mgr = BatteryTweaksManager
 
@@ -135,10 +136,9 @@ fun BatteryScreenContent(
     ) {
         if (!canWrite) {
             item {
-                WarningCard(
+                SetupNudgeCard(
                     message = stringResource(R.string.bt_needs_permission),
-                    actionLabel = stringResource(R.string.grant_shizuku_permission),
-                    onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                    onOpenSetup = openSetup
                 )
             }
         }
