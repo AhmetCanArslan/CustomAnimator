@@ -201,6 +201,9 @@ Duração do Animador: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Desliga a animação de abertura do teclado (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Mostrar segundos no relógio</string>
     <string name="show_clock_seconds_desc">Exibe os segundos no relógio da barra de status</string>
+    <string name="remove_high_volume_warning">Remover aviso de volume alto</string>
+    <string name="remove_high_volume_warning_desc">Desativa o alerta de volume seguro ao aumentar o volume com fones de ouvido</string>
+    <string name="remove_high_volume_warning_note">Entra em vigor após reiniciar</string>
     <string name="lock_screen_rotation">Bloquear rotação da tela</string>
     <string name="lock_screen_rotation_desc">Fixa a tela na orientação que você escolher</string>
     <string name="rotation_orientation">Orientação</string>

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.arslan.customanimator.utils.DeveloperOptionsManager
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -16,6 +17,11 @@ class BootReceiver : BroadcastReceiver() {
                     AutoForceStopService.startIfSelectionExists(context.applicationContext)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to restore watcher", e)
+                }
+                try {
+                    DeveloperOptionsManager.reapplyHighVolumeWarning(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to reapply high volume warning", e)
                 }
             }
         }

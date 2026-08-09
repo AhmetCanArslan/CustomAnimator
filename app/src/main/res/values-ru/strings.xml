@@ -201,6 +201,9 @@
     <string name="disable_keyboard_animation_desc">Выключает эффектную анимацию открытия клавиатуры (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Секунды на часах</string>
     <string name="show_clock_seconds_desc">Показывать секунды в часах строки состояния</string>
+    <string name="remove_high_volume_warning">Убрать предупреждение о громкости</string>
+    <string name="remove_high_volume_warning_desc">Отключает предупреждение о безопасной громкости при повышении громкости в наушниках</string>
+    <string name="remove_high_volume_warning_note">Вступает в силу после перезагрузки</string>
     <string name="lock_screen_rotation">Заблокировать поворот экрана</string>
     <string name="lock_screen_rotation_desc">Фиксирует экран в выбранной ориентации</string>
     <string name="rotation_orientation">Ориентация</string>

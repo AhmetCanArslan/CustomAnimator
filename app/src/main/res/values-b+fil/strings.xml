@@ -201,6 +201,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Ino-off ang animation sa pagbukas ng keyboard (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Ipakita ang Segundo sa Orasan</string>
     <string name="show_clock_seconds_desc">Nagpapakita ng segundo sa orasan ng status bar</string>
+    <string name="remove_high_volume_warning">Alisin ang babala sa malakas na volume</string>
+    <string name="remove_high_volume_warning_desc">I-disable ang safe volume alert kapag nilalakasan ang media volume gamit ang headphones</string>
+    <string name="remove_high_volume_warning_note">Magkakabisa pagkatapos mag-restart</string>
     <string name="lock_screen_rotation">I-lock ang Pag-ikot ng Screen</string>
     <string name="lock_screen_rotation_desc">Ini-lock ang screen sa oryentasyong pipiliin mo</string>
     <string name="rotation_orientation">Oryentasyon</string>

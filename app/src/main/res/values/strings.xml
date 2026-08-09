@@ -289,6 +289,9 @@ Animator Duration: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Turn off the fancy keyboard opening animation (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Show Clock Seconds</string>
     <string name="show_clock_seconds_desc">Display seconds in the status bar clock</string>
+    <string name="remove_high_volume_warning">Remove high volume warning</string>
+    <string name="remove_high_volume_warning_desc">Disable the safe volume alert when raising media volume with headphones</string>
+    <string name="remove_high_volume_warning_note">Takes effect after a restart</string>
     <string name="wifi_password_manager">Wi-Fi Password Manager</string>
     <string name="wifi_password_manager_desc">Read saved Wi-Fi passwords, share them as QR codes and export backups</string>
     <string name="wifi_unreadable">Could not read the saved networks. This needs Shizuku running on Android 11 or newer (the shell user gained the required privilege there).</string>

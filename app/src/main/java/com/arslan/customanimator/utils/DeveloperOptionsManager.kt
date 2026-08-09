@@ -261,6 +261,57 @@ object DeveloperOptionsManager {
         return secure || system
     }
 
+    private const val SAFE_VOLUME_STATE_KEY = "audio_safe_volume_state"
+    private const val SAFE_VOLUME_DISABLED = 1
+    private const val SAFE_VOLUME_ACTIVE = 3
+
+    private const val SAFE_VOLUME_PREFS = "high_volume_warning"
+    private const val SAFE_VOLUME_PREF_KEY = "disabled"
+    private const val SAFE_VOLUME_BOOT_KEY = "changed_at_boot"
+
+    private fun safeVolumePrefs(context: Context) =
+        context.getSharedPreferences(SAFE_VOLUME_PREFS, Context.MODE_PRIVATE)
+
+    private fun bootCount(contentResolver: ContentResolver): Int {
+        return try {
+            Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+        } catch (e: Exception) {
+            -1
+        }
+    }
+
+    fun isHighVolumeWarningDisabled(context: Context): Boolean {
+        return safeVolumePrefs(context).getBoolean(SAFE_VOLUME_PREF_KEY, false)
+    }
+
+    fun isHighVolumeWarningPendingRestart(context: Context): Boolean {
+        val changedAt = safeVolumePrefs(context).getInt(SAFE_VOLUME_BOOT_KEY, -1)
+        if (changedAt < 0) return false
+        val current = bootCount(context.contentResolver)
+        return current < 0 || current == changedAt
+    }
+
+    fun setHighVolumeWarningDisabled(context: Context, contentResolver: ContentResolver, disabled: Boolean): Boolean {
+        val applied = putGlobalInt(
+            context,
+            contentResolver,
+            SAFE_VOLUME_STATE_KEY,
+            if (disabled) SAFE_VOLUME_DISABLED else SAFE_VOLUME_ACTIVE
+        )
+        if (applied) {
+            safeVolumePrefs(context).edit()
+                .putBoolean(SAFE_VOLUME_PREF_KEY, disabled)
+                .putInt(SAFE_VOLUME_BOOT_KEY, bootCount(contentResolver))
+                .apply()
+        }
+        return applied
+    }
+
+    fun reapplyHighVolumeWarning(context: Context) {
+        if (!isHighVolumeWarningDisabled(context)) return
+        putGlobalInt(context, context.contentResolver, SAFE_VOLUME_STATE_KEY, SAFE_VOLUME_DISABLED)
+    }
+
     fun restartSystemUi(): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("killall", "com.android.systemui")) ||
             ShizukuHelper.executeShellCommand(arrayOf("am", "crash", "com.android.systemui"))

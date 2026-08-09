@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material.icons.filled.VideogameAsset
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -104,6 +105,8 @@ fun DeveloperScreenContent(
 
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
     var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
+    var highVolumeWarningDisabled by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningDisabled(context)) }
+    var highVolumeWarningPending by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)) }
     var fpsMeterEnabled by remember {
         mutableStateOf(FpsOverlayManager.isActive(context))
     }
@@ -130,6 +133,9 @@ fun DeveloperScreenContent(
                 forceRtl = DeveloperOptionsManager.isForceRtlEnabled(contentResolver)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
                 clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
+                DeveloperOptionsManager.reapplyHighVolumeWarning(context)
+                highVolumeWarningDisabled = DeveloperOptionsManager.isHighVolumeWarningDisabled(context)
+                highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)
                 fpsMeterEnabled = FpsOverlayManager.isActive(context)
                 isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
                 userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
@@ -567,6 +573,27 @@ fun DeveloperScreenContent(
                         )
                         if (DeveloperOptionsManager.isOneUi()) {
                             InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note))
+                        }
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            icon = Icons.Filled.VolumeUp,
+                            title = stringResource(R.string.remove_high_volume_warning),
+                            description = stringResource(R.string.remove_high_volume_warning_desc),
+                            checked = highVolumeWarningDisabled,
+                            enabled = secureToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { highVolumeWarningDisabled = it },
+                                    {
+                                        DeveloperOptionsManager.setHighVolumeWarningDisabled(context, contentResolver, newValue)
+                                            .also { highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context) }
+                                    }
+                                )
+                            }
+                        )
+                        if (highVolumeWarningPending) {
+                            InfoNote(text = stringResource(R.string.remove_high_volume_warning_note))
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(

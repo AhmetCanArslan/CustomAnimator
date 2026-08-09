@@ -201,6 +201,9 @@ Durasi Animator: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Mematikan animasi pembukaan keyboard (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Tampilkan Detik pada Jam</string>
     <string name="show_clock_seconds_desc">Menampilkan detik pada jam di bilah status</string>
+    <string name="remove_high_volume_warning">Hapus peringatan volume tinggi</string>
+    <string name="remove_high_volume_warning_desc">Menonaktifkan peringatan volume aman saat menaikkan volume media dengan headphone</string>
+    <string name="remove_high_volume_warning_note">Berlaku setelah perangkat dimulai ulang</string>
     <string name="lock_screen_rotation">Kunci Rotasi Layar</string>
     <string name="lock_screen_rotation_desc">Mengunci layar pada orientasi yang Anda pilih</string>
     <string name="rotation_orientation">Orientasi</string>

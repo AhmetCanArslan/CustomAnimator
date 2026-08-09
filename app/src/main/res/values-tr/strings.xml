@@ -201,6 +201,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="disable_keyboard_animation_desc">Klavye açılış animasyonunu kapatır (fancy_ime_animations)</string>
     <string name="show_clock_seconds">Saatte Saniye Göster</string>
     <string name="show_clock_seconds_desc">Durum çubuğu saatinde saniyeyi gösterir</string>
+    <string name="remove_high_volume_warning">Yüksek ses uyarısını kaldır</string>
+    <string name="remove_high_volume_warning_desc">Kulaklıkla medya sesini yükseltirken güvenli ses uyarısını devre dışı bırakır</string>
+    <string name="remove_high_volume_warning_note">Yeniden başlatmadan sonra etkili olur</string>
     <string name="lock_screen_rotation">Ekran Döndürmeyi Kilitle</string>
     <string name="lock_screen_rotation_desc">Ekran döndürmeyi kullanıcı tercihine kilitler</string>
     <string name="rotation_orientation">Yön</string>
