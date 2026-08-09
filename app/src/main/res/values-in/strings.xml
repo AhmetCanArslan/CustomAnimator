@@ -437,7 +437,7 @@ Durasi Animator: %3$.2f</string>
     <string name="remove_ads_prompt_body_price">Hapus seharga %1$s, sekali bayar</string>
     <string name="remove_ads_prompt_dismiss">Sembunyikan</string>
     <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar, kapan saja, lewat Setelan › Premium.</string>
-    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Menampilkan overlay FPS real-time di atas game dan aplikasi untuk analisis performa dan lag.</string>
     <string name="fps_meter_hint">Seret penghitung untuk memindahkannya. Matikan ini untuk menghapus overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>

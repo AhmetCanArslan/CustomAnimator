@@ -437,7 +437,7 @@ Duración del Animador: %3$.2f</string>
     <string name="remove_ads_prompt_body_price">Quítalos por %1$s, una sola vez</string>
     <string name="remove_ads_prompt_dismiss">Ocultar</string>
     <string name="ad_info_remove_ads_hint">Si prefieres no ver anuncios, puedes quitarlos para siempre con una compra única, cuando quieras, desde Ajustes › Premium.</string>
-    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Muestra un indicador de FPS en tiempo real sobre juegos y apps para analizar el rendimiento y los tirones.</string>
     <string name="fps_meter_hint">Arrastra el contador para moverlo. Desactiva esto para quitar el indicador.</string>
     <string name="fps_overlay_value">%1$d FPS</string>

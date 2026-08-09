@@ -457,7 +457,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="remove_ads_prompt_body_price">Rimuovili per %1$s, una volta sola</string>
     <string name="remove_ads_prompt_dismiss">Nascondi</string>
     <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo, quando vuoi, da Impostazioni › Premium.</string>
-    <string name="fps_meter">Shizuku FPS Meter</string>
+    <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Mostra un overlay FPS in tempo reale su giochi e app per analizzare prestazioni e rallentamenti.</string>
     <string name="fps_meter_hint">Trascina il contatore per spostarlo. Disattiva per rimuovere l\'overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
