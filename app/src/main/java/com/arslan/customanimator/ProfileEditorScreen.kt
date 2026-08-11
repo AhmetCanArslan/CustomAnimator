@@ -26,7 +26,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
@@ -73,9 +72,7 @@ import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.utils.BatteryTweaksManager
 import com.arslan.customanimator.utils.ProfileActions
 import com.arslan.customanimator.utils.ProfileManager
-import com.arslan.customanimator.utils.ProfileTileSlots
 import com.arslan.customanimator.utils.TerminalTileIcons
-import android.graphics.drawable.Icon as PlatformIcon
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -128,7 +125,6 @@ fun ProfileEditorScreen(
         }
     }
 
-    var tileEnabled by remember { mutableStateOf(existing?.tile != null) }
     var tileLabel by remember { mutableStateOf(existing?.tile?.label ?: "") }
     var tileToast by remember { mutableStateOf(existing?.tile?.showToast ?: true) }
     var tileCollapse by remember { mutableStateOf(existing?.tile?.collapsePanel ?: true) }
@@ -166,15 +162,13 @@ fun ProfileEditorScreen(
             },
             battery = battery,
             developer = if (developerEnabled) devToggles.toMap() else emptyMap(),
-            tile = if (tileEnabled && tileSlot != null) {
+            tile = tileSlot?.let { slot ->
                 ProfileTileConfig(
-                    slot = tileSlot,
+                    slot = slot,
                     label = tileLabel.trim().ifBlank { trimmedName },
                     showToast = tileToast,
                     collapsePanel = tileCollapse
                 )
-            } else {
-                null
             }
         )
     }
@@ -428,13 +422,7 @@ fun ProfileEditorScreen(
 
             item { SectionHeader(title = stringResource(R.string.profile_section_tile)) }
             item {
-                SectionCard(
-                    title = stringResource(R.string.terminal_tile_enable),
-                    description = stringResource(R.string.profile_tile_enable_desc),
-                    enabled = tileEnabled,
-                    enabledToggleAllowed = tileSlot != null,
-                    onEnabledChange = { tileEnabled = it }
-                ) {
+                AppCard {
                     OutlinedTextField(
                         value = tileLabel,
                         onValueChange = { tileLabel = it },
@@ -455,38 +443,6 @@ fun ProfileEditorScreen(
                         checked = tileCollapse,
                         onCheckedChange = { tileCollapse = it }
                     )
-                    if (ProfileTileSlots.canRequestAdd()) {
-                        OutlinedButton(
-                            onClick = {
-                                if (trimmedName.isEmpty() || tileSlot == null) return@OutlinedButton
-                                manager.saveProfile(buildProfile())
-                                ProfileTileSlots.requestAddTile(
-                                    context,
-                                    tileSlot,
-                                    tileLabel.trim().ifBlank { trimmedName },
-                                    PlatformIcon.createWithResource(
-                                        context,
-                                        TerminalTileIcons.resFor(iconKey)
-                                    )
-                                )
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(Modifier.width(6.dp))
-                            Text(stringResource(R.string.terminal_tile_add))
-                        }
-                    } else {
-                        Text(
-                            text = stringResource(R.string.terminal_tile_add_manual_hint),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
                 }
 
                 if (tileSlot == null) {
