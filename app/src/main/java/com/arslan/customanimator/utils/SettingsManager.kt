@@ -22,7 +22,7 @@ object SettingsManager {
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
-    private const val KEY_REMOVE_ADS_PROMPT_DISMISSED = "remove_ads_prompt_dismissed"
+    private const val KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL = "remove_ads_prompt_dismissed_until"
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
     private const val KEY_THEME_MODE = "theme_mode"
@@ -121,11 +121,19 @@ object SettingsManager {
     }
 
     fun isRemoveAdsPromptDismissed(context: Context): Boolean {
-        return getPrefs(context).getBoolean(KEY_REMOVE_ADS_PROMPT_DISMISSED, false)
+        return getPrefs(context).getLong(KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL, 0L) > System.currentTimeMillis()
     }
 
+    fun getRemoveAdsPromptDismissedUntil(context: Context): Long =
+        getPrefs(context).getLong(KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL, 0L)
+
     fun dismissRemoveAdsPrompt(context: Context) {
-        getPrefs(context).edit().putBoolean(KEY_REMOVE_ADS_PROMPT_DISMISSED, true).apply()
+        getPrefs(context).edit()
+            .putLong(
+                KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL,
+                System.currentTimeMillis() + 24L * 60 * 60 * 1000
+            )
+            .apply()
     }
 
     fun shouldShowRateDialog(context: Context): Boolean {

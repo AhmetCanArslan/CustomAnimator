@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.SettingsManager
+import kotlinx.coroutines.delay
 
 @Composable
 fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
@@ -42,6 +44,13 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
     val isAdFree by rememberIsAdFree()
     val price by rememberRemoveAdsPrice()
     var dismissed by remember { mutableStateOf(SettingsManager.isRemoveAdsPromptDismissed(context)) }
+
+    LaunchedEffect(dismissed) {
+        if (!dismissed) return@LaunchedEffect
+        val remaining = SettingsManager.getRemoveAdsPromptDismissedUntil(context) - System.currentTimeMillis()
+        if (remaining > 0) delay(remaining)
+        dismissed = false
+    }
 
     AnimatedVisibility(
         visible = !isAdFree && !dismissed,
