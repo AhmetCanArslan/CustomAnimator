@@ -67,6 +67,7 @@ import com.arslan.customanimator.data.Profile
 import com.arslan.customanimator.data.ProfileAnimation
 import com.arslan.customanimator.data.ProfileBattery
 import com.arslan.customanimator.data.ProfileTileConfig
+import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.utils.BatteryTweaksManager
@@ -112,6 +113,55 @@ fun ProfileEditorScreen(
     var saverStateOn by remember { mutableStateOf(existing?.battery?.batterySaverOn ?: false) }
     var triggerIncluded by remember { mutableStateOf(existing?.battery?.triggerLevel != null) }
     var triggerLevel by remember { mutableStateOf((existing?.battery?.triggerLevel ?: 15).toFloat()) }
+    var automaticPowerSaveModeIncluded by remember { mutableStateOf(existing?.battery?.automaticPowerSaveMode != null) }
+    var automaticPowerSaveMode by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.automaticPowerSaveMode
+                ?: BatteryTweaksManager.getGlobalInt(context.contentResolver, BatteryTweaksManager.KEY_AUTOMATIC_POWER_SAVE_MODE, 0)
+        )
+    }
+    var stickyIncluded by remember { mutableStateOf(existing?.battery?.sticky != null) }
+    var sticky by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.sticky
+                ?: BatteryTweaksManager.getGlobalInt(context.contentResolver, BatteryTweaksManager.KEY_LOW_POWER_STICKY, 0) == 1
+        )
+    }
+    var stickyAutoDisableIncluded by remember { mutableStateOf(existing?.battery?.stickyAutoDisable != null) }
+    var stickyAutoDisable by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.stickyAutoDisable
+                ?: BatteryTweaksManager.getGlobalInt(
+                    context.contentResolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_ENABLED,
+                    1
+                ) == 1
+        )
+    }
+    var stickyLevelIncluded by remember { mutableStateOf(existing?.battery?.stickyAutoDisableLevel != null) }
+    var stickyLevel by remember(profileId) {
+        mutableStateOf(
+            (existing?.battery?.stickyAutoDisableLevel
+                ?: BatteryTweaksManager.getGlobalInt(
+                    context.contentResolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_LEVEL,
+                    90
+                )).toFloat()
+        )
+    }
+    val currentPolicyValues = remember(profileId) {
+        BatteryTweaksManager.parseConstants(
+            BatteryTweaksManager.getGlobalString(
+                context.contentResolver,
+                BatteryTweaksManager.KEY_BATTERY_SAVER_CONSTANTS
+            )
+        )
+    }
+    val policyValues = remember {
+        mutableStateMapOf<String, String>().apply {
+            existing?.battery?.policy?.forEach { (key, value) -> put(key, value) }
+        }
+    }
     val batteryToggles = remember {
         mutableStateMapOf<String, Boolean>().apply {
             existing?.battery?.toggles?.forEach { (key, value) -> put(key, value) }
@@ -133,6 +183,16 @@ fun ProfileEditorScreen(
     val tileSlot = existing?.tile?.slot ?: freeSlot
 
     val trimmedName = name.trim()
+    fun policyDefault(tweak: BatteryTweak): String = when (tweak) {
+        is BatteryTweak.Toggle -> tweak.default.toString()
+        is BatteryTweak.FloatRange -> tweak.default.toString()
+        is BatteryTweak.Choice -> tweak.default.toString()
+        is BatteryTweak.IntRange -> tweak.default.toString()
+    }
+
+    fun currentPolicyValue(tweak: BatteryTweak): String =
+        currentPolicyValues[tweak.key] ?: policyDefault(tweak)
+
     val buildProfile: () -> Profile = {
         val battery = if (batteryEnabled) {
             ProfileBattery(
@@ -140,6 +200,11 @@ fun ProfileEditorScreen(
                 dozePresetId = dozePresetId,
                 batterySaverOn = if (saverStateIncluded) saverStateOn else null,
                 triggerLevel = if (triggerIncluded) triggerLevel.roundToInt() else null,
+                automaticPowerSaveMode = if (automaticPowerSaveModeIncluded) automaticPowerSaveMode else null,
+                sticky = if (stickyIncluded) sticky else null,
+                stickyAutoDisable = if (stickyAutoDisableIncluded) stickyAutoDisable else null,
+                stickyAutoDisableLevel = if (stickyLevelIncluded) stickyLevel.roundToInt() else null,
+                policy = policyValues.toMap(),
                 toggles = batteryToggles.toMap()
             ).takeIf { !it.isEmpty }
         } else {
@@ -364,6 +429,187 @@ fun ProfileEditorScreen(
                                 valueRange = 0f..75f,
                                 steps = 14
                             )
+                        }
+                    }
+                    IncludeRow(
+                        title = stringResource(R.string.bt_auto_mode),
+                        description = stringResource(R.string.bt_auto_mode_desc),
+                        included = automaticPowerSaveModeIncluded,
+                        onIncludedChange = { included ->
+                            automaticPowerSaveModeIncluded = included
+                            if (included) {
+                                automaticPowerSaveMode = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_AUTOMATIC_POWER_SAVE_MODE,
+                                    automaticPowerSaveMode
+                                )
+                            }
+                        }
+                    ) {
+                        InlineChoiceDropdown(
+                            selected = automaticPowerSaveMode,
+                            options = listOf(
+                                stringResource(R.string.bt_auto_mode_percentage),
+                                stringResource(R.string.bt_auto_mode_routine)
+                            ),
+                            onSelected = { automaticPowerSaveMode = it }
+                        )
+                    }
+                    IncludeSwitchRow(
+                        title = stringResource(R.string.bt_sticky),
+                        description = stringResource(R.string.bt_sticky_desc),
+                        included = stickyIncluded,
+                        value = sticky,
+                        onIncludedChange = { included ->
+                            stickyIncluded = included
+                            if (included) {
+                                sticky = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_LOW_POWER_STICKY,
+                                    if (sticky) 1 else 0
+                                ) == 1
+                            }
+                        },
+                        onValueChange = { sticky = it }
+                    )
+                    IncludeSwitchRow(
+                        title = stringResource(R.string.bt_sticky_auto_disable),
+                        description = stringResource(R.string.bt_sticky_auto_disable_desc),
+                        included = stickyAutoDisableIncluded,
+                        value = stickyAutoDisable,
+                        onIncludedChange = { included ->
+                            stickyAutoDisableIncluded = included
+                            if (included) {
+                                stickyAutoDisable = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_ENABLED,
+                                    if (stickyAutoDisable) 1 else 0
+                                ) == 1
+                            }
+                        },
+                        onValueChange = { stickyAutoDisable = it }
+                    )
+                    IncludeRow(
+                        title = stringResource(R.string.bt_sticky_level),
+                        description = stringResource(R.string.bt_sticky_level_desc),
+                        included = stickyLevelIncluded,
+                        onIncludedChange = { included ->
+                            stickyLevelIncluded = included
+                            if (included) {
+                                stickyLevel = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_LEVEL,
+                                    stickyLevel.roundToInt()
+                                ).toFloat()
+                            }
+                        }
+                    ) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "${stickyLevel.roundToInt()}%",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Slider(
+                                value = stickyLevel,
+                                onValueChange = { stickyLevel = it },
+                                valueRange = 10f..100f,
+                                steps = 0
+                            )
+                        }
+                    }
+                    HorizontalDivider()
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(R.string.bt_show_advanced),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    BatteryTweaksManager.policyTweaks.forEach { tweak ->
+                        when (tweak) {
+                            is BatteryTweak.Toggle -> IncludeSwitchRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                value = policyValues[tweak.key]?.toBooleanStrictOrNull() ?: tweak.default,
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                },
+                                onValueChange = { policyValues[tweak.key] = it.toString() }
+                            )
+
+                            is BatteryTweak.FloatRange -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                var value = policyValues[tweak.key]?.toFloatOrNull() ?: tweak.default
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = String.format(Locale.US, "%.2f", value),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Slider(
+                                        value = value,
+                                        onValueChange = {
+                                            value = it
+                                            policyValues[tweak.key] = it.toString()
+                                        },
+                                        valueRange = tweak.min..tweak.max,
+                                        steps = 8
+                                    )
+                                }
+                            }
+
+                            is BatteryTweak.Choice -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                InlineChoiceDropdown(
+                                    selected = policyValues[tweak.key]?.toIntOrNull() ?: tweak.default,
+                                    options = tweak.optionLabels.map { stringResource(it) },
+                                    onSelected = { policyValues[tweak.key] = it.toString() }
+                                )
+                            }
+
+                            is BatteryTweak.IntRange -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                var value = policyValues[tweak.key]?.toIntOrNull() ?: tweak.default
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = value.toString(),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Slider(
+                                        value = value.toFloat(),
+                                        onValueChange = {
+                                            value = it.roundToInt()
+                                            policyValues[tweak.key] = value.toString()
+                                        },
+                                        valueRange = tweak.min.toFloat()..tweak.max.toFloat(),
+                                        steps = ((tweak.max - tweak.min) / tweak.step - 1).coerceAtLeast(0)
+                                    )
+                                }
+                            }
                         }
                     }
                     HorizontalDivider()
@@ -719,6 +965,40 @@ private fun PresetDropdown(
                         }
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun InlineChoiceDropdown(
+    selected: Int,
+    options: List<String>,
+    onSelected: (Int) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box(modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(
+            onClick = { expanded = true },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = options.getOrElse(selected) { options.firstOrNull().orEmpty() },
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    text = { Text(option) },
+                    onClick = {
+                        onSelected(index)
+                        expanded = false
+                    }
+                )
             }
         }
     }

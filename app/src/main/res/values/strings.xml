@@ -101,6 +101,7 @@
     <string name="compile_booster_desc">Force full AOT compilation of every installed app for faster startup and smoother performance</string>
     <string name="compile_booster_progress">Compiling… %1$d%%</string>
     <string name="compile_all_apps">Compile All Apps</string>
+    <string name="compile_all_apps_desc">Compile every installed app when this profile is applied</string>
     <string name="compile_all_apps_confirm_title">Compile All Apps?</string>
     <string name="compile_all_apps_confirm_message">This forces every installed app to fully compile, one by one. It may take a while and use extra battery/storage temporarily, but keeps running in the background even if you leave this app.</string>
     <string name="compile_booster_channel_name">Compile Booster</string>
@@ -883,6 +884,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="setup_nudge_home">Animation speed, screen density and battery tweaks need one permission that Android only hands out during a short setup.</string>
 
     <string name="profiles_title">Profiles</string>
+    <string name="profiles_beta">BETA</string>
     <string name="profiles_subtitle">Bundle animation, width, battery and developer settings into one tap.</string>
     <string name="profiles_empty_title">No profiles yet</string>
     <string name="profiles_empty_body">Create a profile to store a set of tweaks and apply them all at once, from the app or from a Quick Settings tile.</string>

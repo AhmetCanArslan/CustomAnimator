@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CustomAnimator</string>
+    <string name="profiles_beta">БЕТА</string>
 
     <!-- Main Activity Strings -->
     <string name="advanced_mode">Расширенный режим</string>
@@ -66,6 +67,7 @@
     <string name="compile_booster_desc">Принудительно выполняет полную AOT-компиляцию всех установленных приложений для более быстрого запуска и плавной работы</string>
     <string name="compile_booster_progress">Компиляция… %1$d%%</string>
     <string name="compile_all_apps">Скомпилировать все приложения</string>
+    <string name="compile_all_apps_desc">Скомпилировать все установленные приложения при применении этого профиля</string>
     <string name="compile_all_apps_confirm_title">Скомпилировать все приложения?</string>
     <string name="compile_all_apps_confirm_message">Это принудительно скомпилирует каждое установленное приложение по очереди. Может занять некоторое время и временно расходовать больше батареи/памяти, но продолжит работу в фоне, даже если вы выйдете из этого приложения.</string>
     <string name="compile_booster_channel_name">Ускоритель компиляции</string>
@@ -849,4 +851,61 @@
     <string name="onboarding_setup_now">Настроить сейчас</string>
     <string name="onboarding_setup_later">Может быть, позже</string>
     <string name="setup_nudge_home">Для скорости анимации, плотности экрана и настроек батареи нужно разрешение, которое Android выдаёт только после короткой настройки.</string>
+    <string name="profiles_title">Профили</string>
+    <string name="profiles_subtitle">Объединяйте настройки анимации, ширины, батареи и разработчика в одно действие.</string>
+    <string name="profiles_empty_title">Профилей пока нет</string>
+    <string name="profiles_empty_body">Создайте профиль, чтобы сохранить набор настроек и применить их одним нажатием из приложения или через плитку быстрых настроек.</string>
+    <string name="profiles_needs_permission">Сначала предоставьте Shizuku или WRITE_SECURE_SETTINGS.</string>
+    <string name="profile_new">Новый профиль</string>
+    <string name="profile_edit">Изменить</string>
+    <string name="profile_delete">Удалить профиль</string>
+    <string name="profile_delete_confirm">Удалить «%1$s»? Это действие нельзя отменить.</string>
+    <string name="profile_apply">Применить</string>
+    <string name="profile_make_tile">Создать плитку быстрых настроек</string>
+    <string name="profile_applied">Применён: %1$s</string>
+    <string name="profile_apply_partial">%1$s применён частично (%2$d из %3$d)</string>
+    <string name="profile_apply_failed">Не удалось применить %1$s</string>
+    <string name="profile_apply_nothing">В этом профиле пока нет выбранных настроек</string>
+    <string name="profile_editor_new">Новый профиль</string>
+    <string name="profile_editor_edit">Изменить профиль</string>
+    <string name="profile_name">Название профиля</string>
+    <string name="profile_icon">Значок профиля</string>
+    <string name="profile_icon_change">Изменить значок</string>
+    <string name="profile_icon_search">Поиск значков</string>
+    <string name="profile_no_change">Без изменений</string>
+    <string name="profile_section_animation">Анимация</string>
+    <string name="profile_section_width">Ширина экрана</string>
+    <string name="profile_section_battery">Батарея</string>
+    <string name="profile_section_developer">Для разработчиков</string>
+    <string name="profile_section_tile">Плитка быстрых настроек</string>
+    <string name="profile_include_animation">Включить масштабы анимации</string>
+    <string name="profile_include_animation_desc">Установить масштабы окна, переходов и аниматора при запуске профиля.</string>
+    <string name="profile_include_width">Включить ширину экрана</string>
+    <string name="profile_include_width_desc">Изменить минимальную ширину (плотность) при запуске профиля.</string>
+    <string name="profile_include_battery">Включить настройки батареи</string>
+    <string name="profile_include_battery_desc">Применить пресеты энергосбережения и Doze, а также фоновые ограничения.</string>
+    <string name="profile_include_developer">Включить настройки разработчика</string>
+    <string name="profile_include_developer_desc">Выберите переключатели разработчика, которые профиль должен включать или отключать.</string>
+    <string name="profile_width_reset">Вернуть стандартную ширину</string>
+    <string name="profile_width_reset_desc">Восстановить плотность устройства вместо фиксированного значения.</string>
+    <string name="profile_width_dp">Минимальная ширина (dp)</string>
+    <string name="profile_width_dp_helper">Большие значения делают всё меньше.</string>
+    <string name="profile_tile_enable_desc">Добавить плитку быстрых настроек для применения этого профиля.</string>
+    <string name="profile_tile_default_label">Профиль</string>
+    <string name="profile_tile_toast_applied">Применён: %1$s</string>
+    <string name="profile_tile_toast_partial">%1$s: применено %2$d из %3$d</string>
+    <string name="profile_chip_animation">Анимация</string>
+    <string name="profile_chip_width">Ширина %1$d dp</string>
+    <string name="profile_chip_width_reset">Ширина сброшена</string>
+    <string name="profile_chip_battery">Батарея</string>
+    <string name="profile_chip_developer">Разработчик ×%1$d</string>
+    <string name="profile_chip_tile">Плитка</string>
+    <string name="profile_dev_auto_rotation">Автоповорот экрана</string>
+    <string name="profile_dev_auto_rotation_desc">Включить или отключить автоматический поворот экрана.</string>
+    <plurals name="profile_action_count">
+        <item quantity="one">%1$d настройка</item>
+        <item quantity="few">%1$d настройки</item>
+        <item quantity="many">%1$d настроек</item>
+        <item quantity="other">%1$d настройки</item>
+    </plurals>
 </resources>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CustomAnimator</string>
+    <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
     <string name="advanced_mode">Modalità avanzata</string>
@@ -65,6 +66,7 @@
     <string name="compile_booster_desc">Forza la compilazione AOT completa di ogni app installata per avvii più rapidi e prestazioni più fluide</string>
     <string name="compile_booster_progress">Compilazione… %1$d%%</string>
     <string name="compile_all_apps">Compila tutte le app</string>
+    <string name="compile_all_apps_desc">Compila tutte le app installate quando viene applicato questo profilo</string>
     <string name="compile_all_apps_confirm_title">Compilare tutte le app?</string>
     <string name="compile_all_apps_confirm_message">Questo forza la compilazione completa di ogni app installata, una alla volta. Può richiedere del tempo e consumare temporaneamente più batteria e spazio, ma continua in background anche se esci da questa app.</string>
     <string name="compile_booster_channel_name">Compile Booster</string>
@@ -869,4 +871,59 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_setup_now">Configura ora</string>
     <string name="onboarding_setup_later">Forse più tardi</string>
     <string name="setup_nudge_home">La velocità delle animazioni, la densità dello schermo e le regolazioni della batteria richiedono un permesso che Android concede solo con una breve configurazione.</string>
+    <string name="profiles_title">Profili</string>
+    <string name="profiles_subtitle">Raggruppa impostazioni di animazione, larghezza, batteria e sviluppatore in un solo tocco.</string>
+    <string name="profiles_empty_title">Nessun profilo</string>
+    <string name="profiles_empty_body">Crea un profilo per salvare un insieme di modifiche e applicarle tutte insieme dall’app o da un riquadro delle Impostazioni rapide.</string>
+    <string name="profiles_needs_permission">Concedi prima Shizuku o WRITE_SECURE_SETTINGS.</string>
+    <string name="profile_new">Nuovo profilo</string>
+    <string name="profile_edit">Modifica</string>
+    <string name="profile_delete">Elimina profilo</string>
+    <string name="profile_delete_confirm">Eliminare «%1$s»? L’operazione non può essere annullata.</string>
+    <string name="profile_apply">Applica</string>
+    <string name="profile_make_tile">Crea riquadro Impostazioni rapide</string>
+    <string name="profile_applied">%1$s applicato</string>
+    <string name="profile_apply_partial">%1$s applicato parzialmente (%2$d di %3$d)</string>
+    <string name="profile_apply_failed">Impossibile applicare %1$s</string>
+    <string name="profile_apply_nothing">Questo profilo non contiene ancora impostazioni selezionate</string>
+    <string name="profile_editor_new">Nuovo profilo</string>
+    <string name="profile_editor_edit">Modifica profilo</string>
+    <string name="profile_name">Nome profilo</string>
+    <string name="profile_icon">Icona profilo</string>
+    <string name="profile_icon_change">Cambia icona</string>
+    <string name="profile_icon_search">Cerca icone</string>
+    <string name="profile_no_change">Nessuna modifica</string>
+    <string name="profile_section_animation">Animazione</string>
+    <string name="profile_section_width">Larghezza schermo</string>
+    <string name="profile_section_battery">Batteria</string>
+    <string name="profile_section_developer">Sviluppatore</string>
+    <string name="profile_section_tile">Riquadro Impostazioni rapide</string>
+    <string name="profile_include_animation">Includi scale animazione</string>
+    <string name="profile_include_animation_desc">Imposta le scale di finestra, transizione e animatore quando il profilo viene eseguito.</string>
+    <string name="profile_include_width">Includi larghezza schermo</string>
+    <string name="profile_include_width_desc">Modifica la larghezza minima (densità) quando il profilo viene eseguito.</string>
+    <string name="profile_include_battery">Includi impostazioni batteria</string>
+    <string name="profile_include_battery_desc">Applica preset di risparmio e Doze, oltre ai limiti in background.</string>
+    <string name="profile_include_developer">Includi impostazioni sviluppatore</string>
+    <string name="profile_include_developer_desc">Scegli quali opzioni sviluppatore questo profilo deve attivare o disattivare.</string>
+    <string name="profile_width_reset">Ripristina larghezza standard</string>
+    <string name="profile_width_reset_desc">Ripristina la densità predefinita del dispositivo invece di un valore fisso.</string>
+    <string name="profile_width_dp">Larghezza minima (dp)</string>
+    <string name="profile_width_dp_helper">Valori più alti rendono tutto più piccolo.</string>
+    <string name="profile_tile_enable_desc">Aggiungi un riquadro delle Impostazioni rapide per applicare questo profilo.</string>
+    <string name="profile_tile_default_label">Profilo</string>
+    <string name="profile_tile_toast_applied">%1$s applicato</string>
+    <string name="profile_tile_toast_partial">%1$s: applicati %2$d su %3$d</string>
+    <string name="profile_chip_animation">Animazione</string>
+    <string name="profile_chip_width">Larghezza %1$d dp</string>
+    <string name="profile_chip_width_reset">Larghezza ripristinata</string>
+    <string name="profile_chip_battery">Batteria</string>
+    <string name="profile_chip_developer">Sviluppatore ×%1$d</string>
+    <string name="profile_chip_tile">Riquadro</string>
+    <string name="profile_dev_auto_rotation">Rotazione automatica schermo</string>
+    <string name="profile_dev_auto_rotation_desc">Attiva o disattiva la rotazione automatica dello schermo.</string>
+    <plurals name="profile_action_count">
+        <item quantity="one">%1$d impostazione</item>
+        <item quantity="other">%1$d impostazioni</item>
+    </plurals>
 </resources>

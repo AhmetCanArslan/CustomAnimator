@@ -113,6 +113,15 @@ class ProfileManager(context: Context) {
                 battery.dozePresetId?.let { put("dozePreset", it) }
                 battery.batterySaverOn?.let { put("batterySaverOn", it) }
                 battery.triggerLevel?.let { put("triggerLevel", it) }
+                battery.automaticPowerSaveMode?.let { put("automaticPowerSaveMode", it) }
+                battery.sticky?.let { put("sticky", it) }
+                battery.stickyAutoDisable?.let { put("stickyAutoDisable", it) }
+                battery.stickyAutoDisableLevel?.let { put("stickyAutoDisableLevel", it) }
+                if (battery.policy.isNotEmpty()) {
+                    put("policy", JSONObject().apply {
+                        battery.policy.forEach { (key, value) -> put(key, value) }
+                    })
+                }
                 if (battery.toggles.isNotEmpty()) {
                     put("toggles", JSONObject().apply {
                         battery.toggles.forEach { (key, value) -> put(key, value) }
@@ -150,6 +159,23 @@ class ProfileManager(context: Context) {
                 dozePresetId = obj.optString("dozePreset").takeIf { it.isNotBlank() },
                 batterySaverOn = if (obj.has("batterySaverOn")) obj.optBoolean("batterySaverOn") else null,
                 triggerLevel = if (obj.has("triggerLevel")) obj.optInt("triggerLevel") else null,
+                automaticPowerSaveMode = if (obj.has("automaticPowerSaveMode")) {
+                    obj.optInt("automaticPowerSaveMode")
+                } else {
+                    null
+                },
+                sticky = if (obj.has("sticky")) obj.optBoolean("sticky") else null,
+                stickyAutoDisable = if (obj.has("stickyAutoDisable")) {
+                    obj.optBoolean("stickyAutoDisable")
+                } else {
+                    null
+                },
+                stickyAutoDisableLevel = if (obj.has("stickyAutoDisableLevel")) {
+                    obj.optInt("stickyAutoDisableLevel")
+                } else {
+                    null
+                },
+                policy = obj.optJSONObject("policy")?.let { readStringMap(it) } ?: emptyMap(),
                 toggles = obj.optJSONObject("toggles")?.let { readBooleanMap(it) } ?: emptyMap()
             )
         }?.takeIf { !it.isEmpty }
@@ -183,6 +209,16 @@ class ProfileManager(context: Context) {
         while (keys.hasNext()) {
             val key = keys.next()
             map[key] = json.optBoolean(key)
+        }
+        return map
+    }
+
+    private fun readStringMap(json: JSONObject): Map<String, String> {
+        val map = mutableMapOf<String, String>()
+        val keys = json.keys()
+        while (keys.hasNext()) {
+            val key = keys.next()
+            map[key] = json.optString(key)
         }
         return map
     }

@@ -99,6 +99,33 @@ object ProfileActions {
             R.string.remove_high_volume_warning_desc, false,
             read = { DeveloperOptionsManager.isHighVolumeWarningDisabled(it) },
             write = { ctx, v -> DeveloperOptionsManager.setHighVolumeWarningDisabled(ctx, ctx.contentResolver, v) }
+        ),
+        DevAction(
+            "clear_all_app_caches", R.string.clear_all_app_caches, R.string.clear_all_app_caches_desc, true,
+            read = { true },
+            write = { _, _ -> DeveloperOptionsManager.clearAllAppCaches() }
+        ),
+        DevAction(
+            "close_background_apps", R.string.close_background_apps, R.string.close_background_apps_desc, true,
+            read = { true },
+            write = { context, _ -> DeveloperOptionsManager.forceStopBackgroundApps(context) }
+        ),
+        DevAction(
+            "compile_all_apps", R.string.compile_all_apps, R.string.compile_all_apps_desc, true,
+            read = { true },
+            write = { _, _ -> DeveloperOptionsManager.compileAllApps() }
+        ),
+        DevAction(
+            "restart_system_ui", R.string.restart_system_ui, R.string.restart_system_ui_desc, true,
+            read = { true },
+            write = { _, _ -> DeveloperOptionsManager.restartSystemUi() }
+        ),
+        DevAction(
+            "reset_rotation", R.string.reset_rotation, R.string.reset_rotation_desc, true,
+            read = { true },
+            write = { context, _ ->
+                DeveloperOptionsManager.resetRotation(context, context.contentResolver)
+            }
         )
     )
 

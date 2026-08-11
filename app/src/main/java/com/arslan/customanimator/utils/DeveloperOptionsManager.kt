@@ -200,6 +200,13 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "trim-caches", "999000000000"))
     }
 
+    fun forceStopBackgroundApps(context: Context): Boolean {
+        val skip = CloseAppsExclusionManager(context).getSelectedPackages() +
+            InstalledAppsProvider.getUnsafeToKillPackages(context)
+        val apps = InstalledAppsProvider.getLaunchableApps(context).filterNot { skip.contains(it.packageName) }
+        return apps.all { forceStopApp(it.packageName) }
+    }
+
     fun forceStopApp(packageName: String): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("am", "force-stop", packageName))
     }

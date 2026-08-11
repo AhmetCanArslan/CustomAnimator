@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CustomAnimator</string>
+    <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
     <string name="advanced_mode">Gelişmiş Mod</string>
@@ -66,6 +67,7 @@
     <string name="compile_booster_desc">Daha hızlı açılış ve daha akıcı performans için yüklü tüm uygulamaların tam AOT derlemesini zorlar</string>
     <string name="compile_booster_progress">Derleniyor… %1$d%%</string>
     <string name="compile_all_apps">Tüm Uygulamaları Derle</string>
+    <string name="compile_all_apps_desc">Bu profil uygulandığında yüklü tüm uygulamaları derle</string>
     <string name="compile_all_apps_confirm_title">Tüm Uygulamalar Derlensin mi?</string>
     <string name="compile_all_apps_confirm_message">Bu, yüklü her uygulamayı tek tek tam olarak derlemeye zorlar. Biraz zaman alabilir ve geçici olarak ekstra pil/depolama kullanabilir, ancak bu uygulamadan çıksanız bile arka planda çalışmaya devam eder.</string>
     <string name="compile_booster_channel_name">Derleme Hızlandırıcı</string>
@@ -857,4 +859,59 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_setup_later">Daha sonra</string>
     <string name="setup_not_running_yet">Shizuku henüz çalışmıyor. Önce önceki adımları tamamlayın.</string>
     <string name="setup_nudge_home">Animasyon hızı, ekran yoğunluğu ve pil ayarları için Android’in yalnızca kısa bir kurulumla verdiği tek bir izin gerekiyor.</string>
+    <string name="profiles_title">Profiller</string>
+    <string name="profiles_subtitle">Animasyon, genişlik, pil ve geliştirici ayarlarını tek dokunuşta birleştir.</string>
+    <string name="profiles_empty_title">Henüz profil yok</string>
+    <string name="profiles_empty_body">Ayarları kaydetmek ve hepsini uygulamadan veya Hızlı Ayarlar kutusundan tek seferde uygulamak için profil oluştur.</string>
+    <string name="profiles_needs_permission">Önce Shizuku veya WRITE_SECURE_SETTINGS izni verin.</string>
+    <string name="profile_new">Yeni profil</string>
+    <string name="profile_edit">Düzenle</string>
+    <string name="profile_delete">Profili sil</string>
+    <string name="profile_delete_confirm">"%1$s" silinsin mi? Bu işlem geri alınamaz.</string>
+    <string name="profile_apply">Uygula</string>
+    <string name="profile_make_tile">Hızlı Ayarlar kutusu oluştur</string>
+    <string name="profile_applied">%1$s uygulandı</string>
+    <string name="profile_apply_partial">%1$s kısmen uygulandı (%2$d/%3$d)</string>
+    <string name="profile_apply_failed">%1$s uygulanamadı</string>
+    <string name="profile_apply_nothing">Bu profilde henüz seçilmiş ayar yok</string>
+    <string name="profile_editor_new">Yeni profil</string>
+    <string name="profile_editor_edit">Profili düzenle</string>
+    <string name="profile_name">Profil adı</string>
+    <string name="profile_icon">Profil simgesi</string>
+    <string name="profile_icon_change">Simgeyi değiştir</string>
+    <string name="profile_icon_search">Simge ara</string>
+    <string name="profile_no_change">Değişiklik yok</string>
+    <string name="profile_section_animation">Animasyon</string>
+    <string name="profile_section_width">Ekran genişliği</string>
+    <string name="profile_section_battery">Pil</string>
+    <string name="profile_section_developer">Geliştirici</string>
+    <string name="profile_section_tile">Hızlı Ayarlar kutusu</string>
+    <string name="profile_include_animation">Animasyon ölçeklerini dahil et</string>
+    <string name="profile_include_animation_desc">Profil çalıştığında pencere, geçiş ve animatör ölçeklerini ayarla.</string>
+    <string name="profile_include_width">Ekran genişliğini dahil et</string>
+    <string name="profile_include_width_desc">Profil çalıştığında smallest width (yoğunluk) değerini değiştir.</string>
+    <string name="profile_include_battery">Pil ayarlarını dahil et</string>
+    <string name="profile_include_battery_desc">Pil tasarrufu ve Doze ön ayarlarını, ayrıca arka plan kısıtlamalarını uygula.</string>
+    <string name="profile_include_developer">Geliştirici ayarlarını dahil et</string>
+    <string name="profile_include_developer_desc">Profilin açıp kapatacağı geliştirici seçeneklerini seç.</string>
+    <string name="profile_width_reset">Standart genişliğe dön</string>
+    <string name="profile_width_reset_desc">Sabit bir değer yerine cihazın varsayılan yoğunluğunu geri yükle.</string>
+    <string name="profile_width_dp">Smallest width (dp)</string>
+    <string name="profile_width_dp_helper">Daha yüksek değerler her şeyi küçültür.</string>
+    <string name="profile_tile_enable_desc">Bu profili uygulayan bir Hızlı Ayarlar kutusu ekle.</string>
+    <string name="profile_tile_default_label">Profil</string>
+    <string name="profile_tile_toast_applied">%1$s uygulandı</string>
+    <string name="profile_tile_toast_partial">%1$s: %3$d ayardan %2$d tanesi uygulandı</string>
+    <string name="profile_chip_animation">Animasyon</string>
+    <string name="profile_chip_width">Genişlik %1$d dp</string>
+    <string name="profile_chip_width_reset">Genişlik sıfırlandı</string>
+    <string name="profile_chip_battery">Pil</string>
+    <string name="profile_chip_developer">Geliştirici ×%1$d</string>
+    <string name="profile_chip_tile">Kutu</string>
+    <string name="profile_dev_auto_rotation">Ekranı otomatik döndür</string>
+    <string name="profile_dev_auto_rotation_desc">Ekranın otomatik döndürülmesini aç veya kapat.</string>
+    <plurals name="profile_action_count">
+        <item quantity="one">%1$d ayar</item>
+        <item quantity="other">%1$d ayar</item>
+    </plurals>
 </resources>

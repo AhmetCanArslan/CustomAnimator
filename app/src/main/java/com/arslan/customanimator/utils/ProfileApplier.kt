@@ -112,6 +112,63 @@ object ProfileApplier {
             )
         }
 
+        battery.automaticPowerSaveMode?.let { mode ->
+            record(
+                BatteryTweaksManager.putGlobal(
+                    context, resolver, BatteryTweaksManager.KEY_AUTOMATIC_POWER_SAVE_MODE, mode.toString()
+                )
+            )
+            if (ShizukuHelper.hasShizukuPermission()) {
+                record(BatteryTweaksManager.setAdaptivePowerSaver(mode == 1))
+            }
+        }
+
+        battery.sticky?.let { enabled ->
+            record(
+                BatteryTweaksManager.putGlobal(
+                    context, resolver, BatteryTweaksManager.KEY_LOW_POWER_STICKY, if (enabled) "1" else "0"
+                )
+            )
+        }
+
+        battery.stickyAutoDisable?.let { enabled ->
+            record(
+                BatteryTweaksManager.putGlobal(
+                    context,
+                    resolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_ENABLED,
+                    if (enabled) "1" else "0"
+                )
+            )
+        }
+
+        battery.stickyAutoDisableLevel?.let { level ->
+            record(
+                BatteryTweaksManager.putGlobal(
+                    context,
+                    resolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_LEVEL,
+                    level.toString()
+                )
+            )
+        }
+
+        if (battery.policy.isNotEmpty()) {
+            val policy = BatteryTweaksManager.parseConstants(
+                BatteryTweaksManager.getGlobalString(resolver, BatteryTweaksManager.KEY_BATTERY_SAVER_CONSTANTS)
+            ).toMutableMap()
+            policy.putAll(battery.policy)
+            record(
+                BatteryTweaksManager.putGlobal(
+                    context,
+                    resolver,
+                    BatteryTweaksManager.KEY_BATTERY_SAVER_CONSTANTS,
+                    BatteryTweaksManager.serialiseConstants(policy)
+                )
+            )
+            BatteryTweaksManager.setAppliedPreset(context, BatteryTweaksManager.GROUP_SAVER, "")
+        }
+
         battery.toggles.forEach { (key, value) ->
             val toggle = ProfileActions.batteryToggle(key) ?: return@forEach
             record(runCatching { toggle.write(context, value) }.getOrDefault(false))
