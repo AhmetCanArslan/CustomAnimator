@@ -38,6 +38,7 @@ class AutoForceStopService : Service() {
         private const val POLL_INTERVAL_MS = 1500L
         private const val IDLE_POLL_INTERVAL_MS = 5000L
         private const val RECENTLY_KILLED_TTL_MS = 3000L
+        private const val ACTIVITY_STOPPED = 23
 
         fun start(context: Context) {
             val intent = Intent(context, AutoForceStopService::class.java)
@@ -109,7 +110,7 @@ class AutoForceStopService : Service() {
     private suspend fun pollLoop() {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val recentlyKilled = mutableMapOf<String, Long>()
-        var previousForegroundPackage: String? = null
+        val visiblePackages = mutableSetOf<String>()
         var lastEventTime = System.currentTimeMillis() - POLL_INTERVAL_MS
 
         while (true) {
@@ -131,7 +132,7 @@ class AutoForceStopService : Service() {
                     isIdle = true
                     refreshNotification()
                 }
-                previousForegroundPackage = null
+                visiblePackages.clear()
                 lastEventTime = System.currentTimeMillis()
                 continue
             }
@@ -145,48 +146,45 @@ class AutoForceStopService : Service() {
             val now = System.currentTimeMillis()
             recentlyKilled.entries.removeAll { now - it.value > RECENTLY_KILLED_TTL_MS }
 
-            val currentForegroundPackage = try {
-                queryLatestForegroundPackage(usageStatsManager, lastEventTime, now)
+            val transitions = try {
+                queryVisibilityTransitions(usageStatsManager, lastEventTime, now)
             } catch (e: SecurityException) {
                 Log.d(TAG, "Usage access revoked, idling until it is granted again")
                 isIdle = true
                 refreshNotification()
-                previousForegroundPackage = null
+                visiblePackages.clear()
                 lastEventTime = System.currentTimeMillis()
                 continue
             } catch (e: Exception) {
-                null
+                emptyList()
             }
             lastEventTime = now
 
-            if (currentForegroundPackage != null && currentForegroundPackage != previousForegroundPackage) {
-                val leftPackage = previousForegroundPackage
+            for (transition in transitions) {
+                val packageName = transition.packageName
+                if (packageName == applicationContext.packageName) continue
 
-                if (leftPackage != null && leftPackage != applicationContext.packageName) {
-                    if (leftPackage in forceStopSelected && !recentlyKilled.containsKey(leftPackage)) {
-                        recentlyKilled[leftPackage] = now
-                        scope.launch(Dispatchers.IO) {
-                            val success = DeveloperOptionsManager.forceStopApp(leftPackage)
-                            Log.d(TAG, "Force-stopped $leftPackage success=$success")
-                        }
+                if (transition.visible) {
+                    visiblePackages.add(packageName)
+                    if (packageName in permissionSelected) {
+                        scope.launch(Dispatchers.IO) { regrantPermissionsForPackage(packageName) }
                     }
-
-                    if (leftPackage in permissionSelected) {
-                        scope.launch(Dispatchers.IO) {
-                            revokePermissionsForPackage(leftPackage)
-                        }
-                    }
+                    continue
                 }
 
-                if (currentForegroundPackage != applicationContext.packageName &&
-                    currentForegroundPackage in permissionSelected
-                ) {
+                visiblePackages.remove(packageName)
+
+                if (packageName in forceStopSelected && !recentlyKilled.containsKey(packageName)) {
+                    recentlyKilled[packageName] = now
                     scope.launch(Dispatchers.IO) {
-                        regrantPermissionsForPackage(currentForegroundPackage)
+                        val success = DeveloperOptionsManager.forceStopApp(packageName)
+                        Log.d(TAG, "Force-stopped $packageName success=$success")
                     }
                 }
 
-                previousForegroundPackage = currentForegroundPackage
+                if (packageName in permissionSelected) {
+                    scope.launch(Dispatchers.IO) { revokePermissionsForPackage(packageName) }
+                }
             }
         }
     }
@@ -209,25 +207,32 @@ class AutoForceStopService : Service() {
         Log.d(TAG, "Regranted permissions for $packageName allSucceeded=$allSucceeded")
     }
 
-    private fun queryLatestForegroundPackage(
+    private data class VisibilityTransition(val packageName: String, val visible: Boolean)
+
+    private fun queryVisibilityTransitions(
         usageStatsManager: UsageStatsManager,
         beginTime: Long,
         endTime: Long
-    ): String? {
+    ): List<VisibilityTransition> {
         val events = usageStatsManager.queryEvents(beginTime, endTime)
-        var latestPackage: String? = null
-        var latestTimestamp = -1L
+        val transitions = mutableListOf<VisibilityTransition>()
         val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND &&
-                event.timeStamp >= latestTimestamp
-            ) {
-                latestTimestamp = event.timeStamp
-                latestPackage = event.packageName
+            when (event.eventType) {
+                UsageEvents.Event.MOVE_TO_FOREGROUND ->
+                    transitions.add(VisibilityTransition(event.packageName, true))
+
+                ACTIVITY_STOPPED ->
+                    transitions.add(VisibilityTransition(event.packageName, false))
+
+                UsageEvents.Event.MOVE_TO_BACKGROUND ->
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                        transitions.add(VisibilityTransition(event.packageName, false))
+                    }
             }
         }
-        return latestPackage
+        return transitions
     }
 
     private fun createNotificationChannel() {

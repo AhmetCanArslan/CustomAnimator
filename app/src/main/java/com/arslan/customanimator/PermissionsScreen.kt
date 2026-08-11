@@ -57,6 +57,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.arslan.customanimator.notify.data.RuleType
+import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.UsageAccessHelper
 
@@ -115,17 +117,30 @@ fun isPermissionGranted(context: Context, permission: AppPermission): Boolean = 
             ?.isIgnoringBatteryOptimizations(context.packageName) == true
 }
 
-private val NOTIFY_REQUIRED = listOf(
+private val NOTIFY_BASE_REQUIRED = listOf(
     AppPermission.NOTIFICATION_ACCESS,
     AppPermission.POST_NOTIFICATIONS,
-    AppPermission.CAMERA_FLASH,
-    AppPermission.BATTERY_UNRESTRICTED,
-    AppPermission.SECURE_SETTINGS,
-    AppPermission.OVERLAY
+    AppPermission.BATTERY_UNRESTRICTED
 )
 
+fun notifyRequiredPermissions(context: Context): List<AppPermission> {
+    val actionTypes = RulesManager(context).getRules()
+        .filter { it.isEnabled }
+        .flatMap { it.actions }
+        .map { it.type }
+        .toSet()
+
+    val extras = buildList {
+        if (RuleType.FLASH in actionTypes) add(AppPermission.CAMERA_FLASH)
+        if (RuleType.FLASH_SCREEN in actionTypes) add(AppPermission.OVERLAY)
+        if (RuleType.AOD in actionTypes) add(AppPermission.SECURE_SETTINGS)
+    }
+
+    return NOTIFY_BASE_REQUIRED + extras
+}
+
 fun hasAllNotifyPermissions(context: Context): Boolean =
-    NOTIFY_REQUIRED.all { isPermissionGranted(context, it) }
+    notifyRequiredPermissions(context).all { isPermissionGranted(context, it) }
 
 @Composable
 private fun systemAccessEntries(context: Context, isShizukuAvailable: Boolean): List<PermissionEntry> {
@@ -179,29 +194,34 @@ private fun notificationEntries(context: Context): List<PermissionEntry> = listO
 )
 
 @Composable
-private fun hardwareEntries(context: Context): List<PermissionEntry> = listOf(
-    PermissionEntry(
-        permission = AppPermission.CAMERA_FLASH,
-        icon = Icons.Filled.CameraAlt,
-        title = stringResource(R.string.pn_permission_camera_flash),
-        description = stringResource(R.string.pn_permission_camera_flash_desc),
-        granted = isPermissionGranted(context, AppPermission.CAMERA_FLASH)
-    ),
-    PermissionEntry(
-        permission = AppPermission.OVERLAY,
-        icon = Icons.Filled.Layers,
-        title = stringResource(R.string.pn_permission_overlay_title),
-        description = stringResource(R.string.permission_overlay_desc),
-        granted = isPermissionGranted(context, AppPermission.OVERLAY)
-    ),
-    PermissionEntry(
-        permission = AppPermission.BATTERY_UNRESTRICTED,
-        icon = Icons.Filled.BatteryFull,
-        title = stringResource(R.string.pn_permission_run_background),
-        description = stringResource(R.string.pn_permission_run_background_desc),
-        granted = isPermissionGranted(context, AppPermission.BATTERY_UNRESTRICTED)
+private fun hardwareEntries(context: Context): List<PermissionEntry> {
+    val required = notifyRequiredPermissions(context)
+    return listOf(
+        PermissionEntry(
+            permission = AppPermission.CAMERA_FLASH,
+            icon = Icons.Filled.CameraAlt,
+            title = stringResource(R.string.pn_permission_camera_flash),
+            description = stringResource(R.string.pn_permission_camera_flash_desc),
+            granted = isPermissionGranted(context, AppPermission.CAMERA_FLASH),
+            optional = AppPermission.CAMERA_FLASH !in required
+        ),
+        PermissionEntry(
+            permission = AppPermission.OVERLAY,
+            icon = Icons.Filled.Layers,
+            title = stringResource(R.string.pn_permission_overlay_title),
+            description = stringResource(R.string.permission_overlay_desc),
+            granted = isPermissionGranted(context, AppPermission.OVERLAY),
+            optional = AppPermission.OVERLAY !in required
+        ),
+        PermissionEntry(
+            permission = AppPermission.BATTERY_UNRESTRICTED,
+            icon = Icons.Filled.BatteryFull,
+            title = stringResource(R.string.pn_permission_run_background),
+            description = stringResource(R.string.pn_permission_run_background_desc),
+            granted = isPermissionGranted(context, AppPermission.BATTERY_UNRESTRICTED)
+        )
     )
-)
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -34,6 +34,7 @@ class PerAppDpiService : Service() {
         private const val NOTIF_ID = 4203
         private const val POLL_INTERVAL_MS = 1000L
         private const val IDLE_POLL_INTERVAL_MS = 5000L
+        private const val ACTIVITY_STOPPED = 23
 
         fun start(context: Context) {
             ContextCompat.startForegroundService(context, Intent(context, PerAppDpiService::class.java))
@@ -99,7 +100,7 @@ class PerAppDpiService : Service() {
 
     private suspend fun pollLoop() {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        var previousForegroundPackage: String? = null
+        val visiblePackages = mutableSetOf<String>()
         var lastEventTime = System.currentTimeMillis() - POLL_INTERVAL_MS
 
         while (true) {
@@ -120,6 +121,7 @@ class PerAppDpiService : Service() {
                     isIdle = true
                     refreshNotification()
                 }
+                visiblePackages.clear()
                 lastEventTime = System.currentTimeMillis()
                 continue
             }
@@ -128,32 +130,35 @@ class PerAppDpiService : Service() {
                 isIdle = false
                 refreshNotification()
                 lastEventTime = System.currentTimeMillis()
+                visiblePackages.clear()
             }
 
             val now = System.currentTimeMillis()
-            val currentForegroundPackage =
-                queryLatestForegroundPackage(usageStatsManager, lastEventTime, now)
+            val transitions = queryVisibilityTransitions(usageStatsManager, lastEventTime, now)
             lastEventTime = now
 
-            if (currentForegroundPackage == null || currentForegroundPackage == previousForegroundPackage) {
-                continue
-            }
-            previousForegroundPackage = currentForegroundPackage
+            for (transition in transitions) {
+                val packageName = transition.packageName
 
-            val targetDensity = overrides[currentForegroundPackage]
-            if (targetDensity != null) {
-                if (appliedPackage != currentForegroundPackage) {
+                if (transition.visible) {
+                    visiblePackages.add(packageName)
+                    val targetDensity = overrides[packageName] ?: continue
+                    if (appliedPackage == packageName) continue
                     if (appliedPackage == null) {
                         baselineDensity = SettingsManager.getForcedDensity(contentResolver)
                     }
                     val success = SettingsManager.applyDensity(contentResolver, targetDensity)
                     if (success) {
-                        appliedPackage = currentForegroundPackage
+                        appliedPackage = packageName
                     }
-                    Log.d(TAG, "Applied dpi=$targetDensity for $currentForegroundPackage success=$success")
+                    Log.d(TAG, "Applied dpi=$targetDensity for $packageName success=$success")
+                    continue
                 }
-            } else {
-                restoreBaseline()
+
+                visiblePackages.remove(packageName)
+                if (packageName == appliedPackage) {
+                    restoreBaseline()
+                }
             }
         }
     }
@@ -166,25 +171,32 @@ class PerAppDpiService : Service() {
         baselineDensity = null
     }
 
-    private fun queryLatestForegroundPackage(
+    private data class VisibilityTransition(val packageName: String, val visible: Boolean)
+
+    private fun queryVisibilityTransitions(
         usageStatsManager: UsageStatsManager,
         beginTime: Long,
         endTime: Long
-    ): String? {
+    ): List<VisibilityTransition> {
         val events = usageStatsManager.queryEvents(beginTime, endTime)
-        var latestPackage: String? = null
-        var latestTimestamp = -1L
+        val transitions = mutableListOf<VisibilityTransition>()
         val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
             events.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND &&
-                event.timeStamp >= latestTimestamp
-            ) {
-                latestTimestamp = event.timeStamp
-                latestPackage = event.packageName
+            when (event.eventType) {
+                UsageEvents.Event.MOVE_TO_FOREGROUND ->
+                    transitions.add(VisibilityTransition(event.packageName, true))
+
+                ACTIVITY_STOPPED ->
+                    transitions.add(VisibilityTransition(event.packageName, false))
+
+                UsageEvents.Event.MOVE_TO_BACKGROUND ->
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                        transitions.add(VisibilityTransition(event.packageName, false))
+                    }
             }
         }
-        return latestPackage
+        return transitions
     }
 
     private fun createNotificationChannel() {
