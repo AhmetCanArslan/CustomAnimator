@@ -105,6 +105,7 @@ fun DeveloperScreenContent(
 
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
     var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
+    var rotationSuggestionsDisabled by remember { mutableStateOf(DeveloperOptionsManager.isRotationSuggestionsDisabled(contentResolver)) }
     var highVolumeWarningDisabled by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningDisabled(context)) }
     var highVolumeWarningPending by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)) }
     var fpsMeterEnabled by remember {
@@ -133,6 +134,7 @@ fun DeveloperScreenContent(
                 forceRtl = DeveloperOptionsManager.isForceRtlEnabled(contentResolver)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
                 clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
+                rotationSuggestionsDisabled = DeveloperOptionsManager.isRotationSuggestionsDisabled(contentResolver)
                 DeveloperOptionsManager.reapplyHighVolumeWarning(context)
                 highVolumeWarningDisabled = DeveloperOptionsManager.isHighVolumeWarningDisabled(context)
                 highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)
@@ -553,6 +555,21 @@ fun DeveloperScreenContent(
                                     newValue,
                                     { fancyImeDisabled = it },
                                     { DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            icon = Icons.Filled.ScreenRotation,
+                            title = stringResource(R.string.disable_rotation_suggestions),
+                            description = stringResource(R.string.disable_rotation_suggestions_desc),
+                            checked = rotationSuggestionsDisabled,
+                            enabled = secureToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { rotationSuggestionsDisabled = it },
+                                    { DeveloperOptionsManager.setRotationSuggestions(context, contentResolver, newValue) }
                                 )
                             }
                         )

@@ -435,7 +435,7 @@ Durasi Animator: %3$.2f</string>
     <string name="remove_ads_restored">Pembelian dipulihkan</string>
     <string name="remove_ads_nothing_to_restore">Tidak ada pembelian sebelumnya</string>
     <string name="remove_ads_prompt_title">Lebih suka tanpa iklan?</string>
-    <string name="remove_ads_prompt_body">Hapus dengan pembelian sekali bayar</string>
+    <string name="remove_ads_prompt_body">Hapus dengan pembelian sekali bayar dan dukung pengembangan!</string>
     <string name="remove_ads_prompt_body_price">Hapus seharga %1$s, sekali bayar</string>
     <string name="remove_ads_prompt_dismiss">Sembunyikan</string>
     <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar, kapan saja, lewat Setelan › Premium.</string>
@@ -906,4 +906,34 @@ Durasi Animator: %3$.2f</string>
         <item quantity="one">%1$d pengaturan</item>
         <item quantity="other">%1$d pengaturan</item>
     </plurals>
+    <string name="per_app_dpi">DPI per Aplikasi</string>
+    <string name="per_app_dpi_button">Atur DPI per aplikasi</string>
+    <string name="per_app_dpi_desc">Pilih DPI untuk tiap aplikasi. Otomatis diterapkan saat aplikasi dibuka dan dikembalikan saat kamu keluar.</string>
+    <string name="per_app_dpi_disclaimer">Android tidak punya kepadatan per aplikasi secara bawaan. Ini bekerja dengan mengganti kepadatan layar selama aplikasi terpilih berada di depan, jadi bisa muncul kedipan singkat atau aplikasi memulai ulang saat berpindah.</string>
+    <string name="per_app_dpi_needs_usage_access">Fitur ini butuh Akses Penggunaan untuk mendeteksi aplikasi yang sedang di depan.</string>
+    <string name="per_app_dpi_status_active">DPI per aplikasi aktif untuk %1$d aplikasi</string>
+    <string name="per_app_dpi_status_paused">Pengaturan tersimpan, tetapi layanan dijeda sampai izin diberikan</string>
+    <string name="per_app_dpi_value">DPI: %1$d</string>
+    <string name="per_app_dpi_none">DPI bawaan</string>
+    <string name="per_app_dpi_reset">Setel ulang</string>
+    <string name="per_app_dpi_clear_all">Hapus semua</string>
+    <string name="per_app_dpi_label">DPI</string>
+    <string name="per_app_dpi_dialog_desc">DPI perangkat saat ini: %1$d</string>
+    <string name="per_app_dpi_range">Rentang yang diizinkan: %1$d - %2$d</string>
+    <string name="per_app_dpi_channel_name">DPI per Aplikasi</string>
+    <string name="per_app_dpi_channel_desc">Muncul selama DPI per aplikasi diterapkan</string>
+    <string name="per_app_dpi_notif_title">DPI per Aplikasi aktif</string>
+    <string name="per_app_dpi_notif_text">Kepadatan layar berganti otomatis untuk aplikasi yang kamu atur</string>
+    <string name="per_app_dpi_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
+    <string name="boost_widget_label">Boost</string>
+    <string name="boost_widget_title">Boost</string>
+    <string name="boost_widget_description">Bersihkan cache aplikasi dan tutup aplikasi latar belakang dengan sekali ketuk.</string>
+    <string name="boost_widget_button">Boost sekarang</string>
+    <string name="boost_widget_idle">Ketuk untuk bersihkan cache dan tutup aplikasi</string>
+    <string name="boost_widget_running">Memboost…</string>
+    <string name="boost_widget_result">%1$s penyimpanan · %2$s RAM dibebaskan</string>
+    <string name="boost_widget_toast">Boost selesai · %1$s</string>
+    <string name="boost_widget_needs_shizuku">Perlu izin Shizuku</string>
+    <string name="disable_rotation_suggestions">Matikan saran rotasi</string>
+    <string name="disable_rotation_suggestions_desc">Sembunyikan tombol putar yang muncul saat perangkat diputar (show_rotation_suggestions)</string>
 </resources>

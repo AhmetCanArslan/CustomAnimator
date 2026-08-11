@@ -435,7 +435,7 @@
     <string name="remove_ads_restored">Покупка восстановлена</string>
     <string name="remove_ads_nothing_to_restore">Предыдущих покупок не найдено</string>
     <string name="remove_ads_prompt_title">Не хотите рекламу?</string>
-    <string name="remove_ads_prompt_body">Уберите её разовой покупкой</string>
+    <string name="remove_ads_prompt_body">Уберите её разовой покупкой и поддержите разработку!</string>
     <string name="remove_ads_prompt_body_price">Убрать за %1$s, один раз</string>
     <string name="remove_ads_prompt_dismiss">Скрыть</string>
     <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой в любой момент, в разделе Настройки › Премиум.</string>
@@ -908,4 +908,34 @@
         <item quantity="many">%1$d настроек</item>
         <item quantity="other">%1$d настройки</item>
     </plurals>
+    <string name="per_app_dpi">DPI для приложений</string>
+    <string name="per_app_dpi_button">Задать DPI для приложения</string>
+    <string name="per_app_dpi_desc">Выберите DPI для отдельных приложений. Он применяется автоматически при открытии приложения и возвращается обратно при выходе.</string>
+    <string name="per_app_dpi_disclaimer">В Android нет встроенной плотности для отдельных приложений. Функция переключает плотность экрана, пока выбранное приложение на переднем плане, поэтому при переключении возможны короткое мерцание или перезапуск приложения.</string>
+    <string name="per_app_dpi_needs_usage_access">Функции нужен доступ к статистике использования, чтобы определять активное приложение.</string>
+    <string name="per_app_dpi_status_active">DPI задан для %1$d приложений</string>
+    <string name="per_app_dpi_status_paused">Настройки сохранены, но служба приостановлена до выдачи разрешений</string>
+    <string name="per_app_dpi_value">DPI: %1$d</string>
+    <string name="per_app_dpi_none">DPI по умолчанию</string>
+    <string name="per_app_dpi_reset">Сбросить</string>
+    <string name="per_app_dpi_clear_all">Очистить всё</string>
+    <string name="per_app_dpi_label">DPI</string>
+    <string name="per_app_dpi_dialog_desc">Текущий DPI устройства: %1$d</string>
+    <string name="per_app_dpi_range">Допустимый диапазон: %1$d - %2$d</string>
+    <string name="per_app_dpi_channel_name">DPI для приложений</string>
+    <string name="per_app_dpi_channel_desc">Показывается, пока применяются значения DPI для приложений</string>
+    <string name="per_app_dpi_notif_title">DPI для приложений активен</string>
+    <string name="per_app_dpi_notif_text">Плотность экрана переключается автоматически для настроенных приложений</string>
+    <string name="per_app_dpi_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
+    <string name="boost_widget_label">Boost</string>
+    <string name="boost_widget_title">Boost</string>
+    <string name="boost_widget_description">Очищает кэш приложений и закрывает фоновые приложения одним нажатием.</string>
+    <string name="boost_widget_button">Ускорить</string>
+    <string name="boost_widget_idle">Нажмите, чтобы очистить кэш и закрыть приложения</string>
+    <string name="boost_widget_running">Ускорение…</string>
+    <string name="boost_widget_result">Освобождено: %1$s памяти · %2$s ОЗУ</string>
+    <string name="boost_widget_toast">Ускорение завершено · %1$s</string>
+    <string name="boost_widget_needs_shizuku">Требуется разрешение Shizuku</string>
+    <string name="disable_rotation_suggestions">Отключить подсказки поворота</string>
+    <string name="disable_rotation_suggestions_desc">Скрывает кнопку поворота, которая появляется при повороте устройства (show_rotation_suggestions)</string>
 </resources>

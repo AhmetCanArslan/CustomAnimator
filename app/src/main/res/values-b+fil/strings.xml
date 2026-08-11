@@ -435,7 +435,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="remove_ads_restored">Naibalik ang pagbili</string>
     <string name="remove_ads_nothing_to_restore">Walang nakitang naunang pagbili</string>
     <string name="remove_ads_prompt_title">Ayaw mo ba ng mga ad?</string>
-    <string name="remove_ads_prompt_body">Alisin ang mga ito sa isang beses na pagbili</string>
+    <string name="remove_ads_prompt_body">Alisin ang mga ito sa isang beses na pagbili at tumulong sa pag-develop!</string>
     <string name="remove_ads_prompt_body_price">Alisin sa halagang %1$s, isang beses lang</string>
     <string name="remove_ads_prompt_dismiss">Itago ito</string>
     <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili, anumang oras, sa Mga Setting › Premium.</string>
@@ -906,4 +906,34 @@ Tagal ng Animator: %3$.2f</string>
         <item quantity="one">%1$d setting</item>
         <item quantity="other">%1$d setting</item>
     </plurals>
+    <string name="per_app_dpi">DPI Kada App</string>
+    <string name="per_app_dpi_button">Itakda ang DPI kada app</string>
+    <string name="per_app_dpi_desc">Pumili ng DPI para sa bawat app. Awtomatiko itong ilalapat kapag binuksan ang app at ibabalik kapag umalis ka.</string>
+    <string name="per_app_dpi_disclaimer">Walang katutubong per-app density ang Android. Gumagana ito sa pamamagitan ng pagpapalit ng density ng screen habang nasa harapan ang napiling app, kaya posibleng may maikling pagkurap o pag-restart ng app sa paglipat.</string>
+    <string name="per_app_dpi_needs_usage_access">Kailangan ng feature na ito ang Usage Access upang matukoy kung aling app ang nasa harapan.</string>
+    <string name="per_app_dpi_status_active">Aktibo ang per-app DPI para sa %1$d app</string>
+    <string name="per_app_dpi_status_paused">Naka-save ang mga override, pero naka-pause ang serbisyo hangga\'t hindi ibinibigay ang mga pahintulot</string>
+    <string name="per_app_dpi_value">DPI: %1$d</string>
+    <string name="per_app_dpi_none">Default na DPI</string>
+    <string name="per_app_dpi_reset">I-reset</string>
+    <string name="per_app_dpi_clear_all">Burahin lahat</string>
+    <string name="per_app_dpi_label">DPI</string>
+    <string name="per_app_dpi_dialog_desc">Kasalukuyang DPI ng device: %1$d</string>
+    <string name="per_app_dpi_range">Pinapayagang saklaw: %1$d - %2$d</string>
+    <string name="per_app_dpi_channel_name">DPI Kada App</string>
+    <string name="per_app_dpi_channel_desc">Lumalabas habang inilalapat ang mga per-app DPI override</string>
+    <string name="per_app_dpi_notif_title">Aktibo ang DPI Kada App</string>
+    <string name="per_app_dpi_notif_text">Awtomatikong nagpapalit ang density ng screen para sa mga app na na-configure mo</string>
+    <string name="per_app_dpi_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
+    <string name="boost_widget_label">Boost</string>
+    <string name="boost_widget_title">Boost</string>
+    <string name="boost_widget_description">Nililinis ang cache ng mga app at isinasara ang mga app sa background sa isang tap.</string>
+    <string name="boost_widget_button">Mag-boost</string>
+    <string name="boost_widget_idle">I-tap para linisin ang cache at isara ang mga app</string>
+    <string name="boost_widget_running">Nagbo-boost…</string>
+    <string name="boost_widget_result">%1$s storage · %2$s RAM ang na-libre</string>
+    <string name="boost_widget_toast">Tapos ang boost · %1$s</string>
+    <string name="boost_widget_needs_shizuku">Kailangan ng pahintulot ng Shizuku</string>
+    <string name="disable_rotation_suggestions">I-off ang mga mungkahi sa pag-rotate</string>
+    <string name="disable_rotation_suggestions_desc">Itago ang rotate button na lumalabas kapag iniikot ang device (show_rotation_suggestions)</string>
 </resources>

@@ -435,7 +435,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_restored">Satın alma geri yüklendi</string>
     <string name="remove_ads_nothing_to_restore">Önceki bir satın alma bulunamadı</string>
     <string name="remove_ads_prompt_title">Reklam istemiyor musun?</string>
-    <string name="remove_ads_prompt_body">Tek seferlik satın alma ile kaldır</string>
+    <string name="remove_ads_prompt_body">Tek seferlik satın alma ile kaldır ve geliştirmeye destek ol!</string>
     <string name="remove_ads_prompt_body_price">%1$s ile tek seferde kaldır</string>
     <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
     <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin. Bunu istediğin zaman Ayarlar › Premium bölümünden yapabilirsin.</string>
@@ -933,4 +933,15 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_dpi_notif_title">Uygulama Başına DPI etkin</string>
     <string name="per_app_dpi_notif_text">Ayarladığınız uygulamalar için ekran yoğunluğu otomatik değişir</string>
     <string name="per_app_dpi_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
+    <string name="disable_rotation_suggestions">Döndürme önerilerini kapat</string>
+    <string name="disable_rotation_suggestions_desc">Cihaz döndüğünde çıkan döndürme düğmesini gizler (show_rotation_suggestions)</string>
+    <string name="boost_widget_label">Boost</string>
+    <string name="boost_widget_title">Boost</string>
+    <string name="boost_widget_description">Uygulama önbelleklerini temizler ve arka plan uygulamalarını tek dokunuşla kapatır.</string>
+    <string name="boost_widget_button">Hızlandır</string>
+    <string name="boost_widget_idle">Önbelleği temizlemek ve uygulamaları kapatmak için dokun</string>
+    <string name="boost_widget_running">Hızlandırılıyor…</string>
+    <string name="boost_widget_result">%1$s depolama · %2$s RAM boşaltıldı</string>
+    <string name="boost_widget_toast">Hızlandırma tamam · %1$s</string>
+    <string name="boost_widget_needs_shizuku">Shizuku izni gerekli</string>
 </resources>

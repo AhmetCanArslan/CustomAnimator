@@ -244,6 +244,20 @@ object DeveloperOptionsManager {
         return putSecureInt(context, contentResolver, FANCY_IME_ANIMATIONS_KEY, if (disabled) 0 else 1)
     }
 
+    private const val ROTATION_SUGGESTIONS_KEY = "show_rotation_suggestions"
+
+    fun isRotationSuggestionsDisabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Secure.getInt(contentResolver, ROTATION_SUGGESTIONS_KEY, 1) == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setRotationSuggestions(context: Context, contentResolver: ContentResolver, disabled: Boolean): Boolean {
+        return putSecureInt(context, contentResolver, ROTATION_SUGGESTIONS_KEY, if (disabled) 0 else 1)
+    }
+
     private const val ONEUI_CLOCK_SECONDS_KEY = "clockshow_second"
 
     fun isOneUi(): Boolean = android.os.Build.MANUFACTURER.equals("samsung", ignoreCase = true)
