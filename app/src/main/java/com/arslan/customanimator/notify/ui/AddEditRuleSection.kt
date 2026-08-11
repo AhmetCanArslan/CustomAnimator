@@ -10,6 +10,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,12 +31,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.activity.compose.BackHandler
+import androidx.activity.compose.PredictiveBackHandler
+import kotlin.coroutines.cancellation.CancellationException
 import androidx.compose.material.icons.filled.Warning
 import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.maybeShowInterstitial
@@ -51,6 +54,7 @@ fun AddEditRuleSection(
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val rulesManager = remember { RulesManager(context) }
     val ignoreManager = remember { IgnoreManager(context) }
     val ignoreRules = remember { ignoreManager.getRules() }
@@ -299,10 +303,17 @@ fun AddEditRuleSection(
     }
     val shouldDiscardDraft = remember { booleanArrayOf(false) }
 
-    BackHandler {
-        shouldDiscardDraft[0] = true
-        AddEditRuleDraft.clear(context, draftKey)
-        onNavigateBack()
+    PredictiveBackHandler { progress ->
+        keyboardController?.hide()
+        focusManager.clearFocus(force = true)
+        try {
+            progress.collect {}
+            shouldDiscardDraft[0] = true
+            AddEditRuleDraft.clear(context, draftKey)
+            onNavigateBack()
+        } catch (e: CancellationException) {
+            // gesture cancelled, stay on screen
+        }
     }
 
     DisposableEffect(Unit) {
@@ -326,11 +337,6 @@ fun AddEditRuleSection(
     }
 
     val scrollState = rememberScrollState()
-    val density = androidx.compose.ui.platform.LocalDensity.current
-    val imeBottom = WindowInsets.ime.getBottom(density)
-    LaunchedEffect(imeBottom) {
-        scrollState.animateScrollTo(scrollState.value + imeBottom)
-    }
 
     Scaffold(
         bottomBar = { BannerAdView() },
@@ -426,9 +432,9 @@ fun AddEditRuleSection(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .padding(innerPadding)
                 .imePadding()
+                .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp)
                 .padding(top = 8.dp, bottom = 16.dp)
                 .pointerInput(Unit) {
