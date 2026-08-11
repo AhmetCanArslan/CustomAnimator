@@ -401,11 +401,10 @@ fun ProfileEditorScreen(
                     onEnabledChange = { developerEnabled = it }
                 ) {
                     ProfileActions.devActions.filter { it.available() }.forEach { action ->
-                        IncludeSwitchRow(
+                        IncludeCheckboxRow(
                             title = stringResource(action.titleRes),
                             description = stringResource(action.descriptionRes),
                             included = devToggles.containsKey(action.key),
-                            value = devToggles[action.key] ?: false,
                             onIncludedChange = { included ->
                                 if (included) {
                                     devToggles[action.key] = runCatching { action.read(context) }
@@ -413,8 +412,7 @@ fun ProfileEditorScreen(
                                 } else {
                                     devToggles.remove(action.key)
                                 }
-                            },
-                            onValueChange = { devToggles[action.key] = it }
+                            }
                         )
                     }
                 }
@@ -597,6 +595,43 @@ private fun IncludeSwitchRow(
         }
         Spacer(Modifier.width(8.dp))
         Switch(checked = value, onCheckedChange = onValueChange, enabled = included)
+    }
+}
+
+@Composable
+private fun IncludeCheckboxRow(
+    title: String,
+    description: String,
+    included: Boolean,
+    onIncludedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (included) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(Modifier.width(8.dp))
+        Checkbox(checked = included, onCheckedChange = onIncludedChange)
     }
 }
 
