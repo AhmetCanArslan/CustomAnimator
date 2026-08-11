@@ -48,12 +48,28 @@ class RulesManager(private val context: Context) {
 
     fun getRules(): List<NotificationRule> {
         val json = prefs.getString(NOTIFICATION_RULES_KEY, null) ?: return emptyList()
-        return try {
+        val stored = try {
             val type = object : com.google.gson.reflect.TypeToken<List<NotificationRule>>() {}.type
             gson.fromJson<List<NotificationRule>>(json, type) ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }
+
+        val sanitized = sanitize(stored)
+        if (sanitized != stored) {
+            prefs.edit().putString(NOTIFICATION_RULES_KEY, gson.toJson(sanitized)).apply()
+        }
+        return sanitized
+    }
+
+    private fun sanitize(rules: List<NotificationRule?>?): List<NotificationRule> {
+        if (rules == null) return emptyList()
+        return rules.filterNotNull()
+            .map { rule ->
+                val actions = rule.actions.filterNotNull().filter { it.type != null }
+                if (actions.size == rule.actions.size) rule else rule.copy(actions = actions)
+            }
+            .filter { it.actions.isNotEmpty() }
     }
 
     fun saveRules(rules: List<NotificationRule>) {
