@@ -79,6 +79,15 @@
         </service>
 
         <service
+            android:name=".service.PerAppDpiService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Switches screen density while user-selected apps are in the foreground (dev tool)" />
+        </service>
+
+        <service
             android:name=".service.CompileBoosterService"
             android:exported="false"
             android:foregroundServiceType="specialUse">

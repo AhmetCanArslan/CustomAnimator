@@ -940,4 +940,23 @@ Ignore a notification from the logs to suppress it in the future.</string>
         <item quantity="one">%1$d setting</item>
         <item quantity="other">%1$d settings</item>
     </plurals>
+    <string name="per_app_dpi">Per-App DPI</string>
+    <string name="per_app_dpi_button">Set per-app DPI</string>
+    <string name="per_app_dpi_desc">Pick a DPI for individual apps. It is applied automatically when the app opens and reverted when you leave it.</string>
+    <string name="per_app_dpi_disclaimer">Android has no native per-app density. This works by switching the screen density while the selected app is in the foreground, so a short flicker or app restart can happen on switch.</string>
+    <string name="per_app_dpi_needs_usage_access">This feature needs Usage Access to detect which app is in the foreground.</string>
+    <string name="per_app_dpi_status_active">Per-app DPI active for %1$d app(s)</string>
+    <string name="per_app_dpi_status_paused">Overrides saved, but the service is paused until permissions are granted</string>
+    <string name="per_app_dpi_value">DPI: %1$d</string>
+    <string name="per_app_dpi_none">Default DPI</string>
+    <string name="per_app_dpi_reset">Reset</string>
+    <string name="per_app_dpi_clear_all">Clear all</string>
+    <string name="per_app_dpi_label">DPI</string>
+    <string name="per_app_dpi_dialog_desc">Current device DPI: %1$d</string>
+    <string name="per_app_dpi_range">Allowed range: %1$d - %2$d</string>
+    <string name="per_app_dpi_channel_name">Per-App DPI</string>
+    <string name="per_app_dpi_channel_desc">Shows while per-app DPI overrides are being applied</string>
+    <string name="per_app_dpi_notif_title">Per-App DPI active</string>
+    <string name="per_app_dpi_notif_text">Screen density switches automatically for the apps you configured</string>
+    <string name="per_app_dpi_notif_text_waiting">Waiting for Shizuku and Usage Access</string>
 </resources>

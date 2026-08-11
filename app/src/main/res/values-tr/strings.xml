@@ -914,4 +914,23 @@ Animatör Süresi: %3$.2f</string>
         <item quantity="one">%1$d ayar</item>
         <item quantity="other">%1$d ayar</item>
     </plurals>
+    <string name="per_app_dpi">Uygulama Başına DPI</string>
+    <string name="per_app_dpi_button">Uygulama başına DPI ayarla</string>
+    <string name="per_app_dpi_desc">Uygulamalar için ayrı ayrı DPI seçin. Uygulama açıldığında otomatik uygulanır, çıkınca eski değere döner.</string>
+    <string name="per_app_dpi_disclaimer">Android\'de uygulama başına yoğunluk desteği yoktur. Bu özellik, seçtiğiniz uygulama ön plandayken ekran yoğunluğunu değiştirerek çalışır; geçişlerde kısa bir titreme veya uygulama yeniden başlatması olabilir.</string>
+    <string name="per_app_dpi_needs_usage_access">Bu özellik, ön plandaki uygulamayı algılamak için Kullanım Erişimi gerektirir.</string>
+    <string name="per_app_dpi_status_active">Uygulama başına DPI %1$d uygulama için etkin</string>
+    <string name="per_app_dpi_status_paused">Ayarlar kaydedildi, ancak izinler verilene kadar servis duraklatıldı</string>
+    <string name="per_app_dpi_value">DPI: %1$d</string>
+    <string name="per_app_dpi_none">Varsayılan DPI</string>
+    <string name="per_app_dpi_reset">Sıfırla</string>
+    <string name="per_app_dpi_clear_all">Tümünü temizle</string>
+    <string name="per_app_dpi_label">DPI</string>
+    <string name="per_app_dpi_dialog_desc">Cihazın mevcut DPI değeri: %1$d</string>
+    <string name="per_app_dpi_range">İzin verilen aralık: %1$d - %2$d</string>
+    <string name="per_app_dpi_channel_name">Uygulama Başına DPI</string>
+    <string name="per_app_dpi_channel_desc">Uygulama başına DPI ayarları uygulanırken görünür</string>
+    <string name="per_app_dpi_notif_title">Uygulama Başına DPI etkin</string>
+    <string name="per_app_dpi_notif_text">Ayarladığınız uygulamalar için ekran yoğunluğu otomatik değişir</string>
+    <string name="per_app_dpi_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
 </resources>

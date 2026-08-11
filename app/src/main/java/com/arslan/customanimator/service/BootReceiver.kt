@@ -19,6 +19,11 @@ class BootReceiver : BroadcastReceiver() {
                     Log.e(TAG, "Failed to restore watcher", e)
                 }
                 try {
+                    PerAppDpiService.startIfOverridesExist(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore per-app dpi watcher", e)
+                }
+                try {
                     DeveloperOptionsManager.reapplyHighVolumeWarning(context.applicationContext)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to reapply high volume warning", e)

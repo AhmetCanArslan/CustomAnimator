@@ -290,4 +290,38 @@ object SettingsManager {
             SmallestWidthResult(success = false, usedWriteSecureFallback = false)
         }
     }
+
+    fun getForcedDensity(contentResolver: ContentResolver): Int? {
+        return try {
+            Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED)?.trim()?.toIntOrNull()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun applyDensity(contentResolver: ContentResolver, density: Int?): Boolean {
+        return try {
+            if (density == null) {
+                if (ShizukuHelper.hasShizukuPermission() &&
+                    ShizukuHelper.executeShellCommand(arrayOf("wm", "density", "reset"))
+                ) {
+                    return true
+                }
+                Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null) &&
+                    Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED) == null
+            } else {
+                val target = density.coerceIn(72, 1000)
+                if (ShizukuHelper.hasShizukuPermission() &&
+                    ShizukuHelper.executeShellCommand(arrayOf("wm", "density", target.toString()))
+                ) {
+                    return true
+                }
+                val targetString = target.toString()
+                Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, targetString) &&
+                    Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED) == targetString
+            }
+        } catch (e: Exception) {
+            false
+        }
+    }
 }

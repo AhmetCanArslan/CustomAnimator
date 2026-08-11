@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -201,7 +202,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
 
@@ -271,6 +272,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val perAppDpiListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -479,10 +481,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             currentScreen != HomeScreen.SETUP_GUIDE &&
             currentScreen != HomeScreen.PROFILES &&
             currentScreen != HomeScreen.PROFILE_EDITOR &&
+            currentScreen != HomeScreen.PER_APP_DPI &&
             currentScreen !in NOTIFY_SCREENS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
+    }
+    BackHandler(enabled = currentScreen == HomeScreen.PER_APP_DPI) {
+        currentScreen = HomeScreen.MAIN
+        selectedTab = HomeTab.WIDTH
     }
     BackHandler(enabled = currentScreen == HomeScreen.PROFILES) {
         currentScreen = HomeScreen.MAIN
@@ -588,6 +595,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
+        )
+    } else if (targetScreen == HomeScreen.PER_APP_DPI) {
+        PerAppDpiScreen(
+            onBack = {
+                currentScreen = HomeScreen.MAIN
+                selectedTab = HomeTab.WIDTH
+            },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = perAppDpiListState
         )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
@@ -950,6 +966,43 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     maxLines = 1
                                 )
                             }
+                        }
+                    }
+                }
+            }
+
+            item {
+                Card(
+                    shape = AppShapes.card,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    onClick = { currentScreen = HomeScreen.PER_APP_DPI },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .graphicsLayer(alpha = contentAlpha)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.per_app_dpi),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = stringResource(R.string.per_app_dpi_desc),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_DPI }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = stringResource(R.string.per_app_dpi_button)
+                            )
                         }
                     }
                 }
