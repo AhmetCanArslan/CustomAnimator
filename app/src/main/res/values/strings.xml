@@ -959,4 +959,13 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="per_app_dpi_notif_title">Per-App DPI active</string>
     <string name="per_app_dpi_notif_text">Screen density switches automatically for the apps you configured</string>
     <string name="per_app_dpi_notif_text_waiting">Waiting for Shizuku and Usage Access</string>
+    <string name="boost_widget_label">Boost</string>
+    <string name="boost_widget_title">Boost</string>
+    <string name="boost_widget_description">Clears app caches and closes background apps in one tap.</string>
+    <string name="boost_widget_button">Boost now</string>
+    <string name="boost_widget_idle">Tap to clear caches and close apps</string>
+    <string name="boost_widget_running">Boosting…</string>
+    <string name="boost_widget_result">%1$s storage · %2$s RAM freed</string>
+    <string name="boost_widget_toast">Boost done · %1$s</string>
+    <string name="boost_widget_needs_shizuku">Shizuku permission required</string>
 </resources>

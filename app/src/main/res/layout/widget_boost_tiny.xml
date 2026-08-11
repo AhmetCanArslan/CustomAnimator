@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/boost_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_bg_preview"
+    android:padding="6dp">
+
+    <ImageView
+        android:id="@+id/boost_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:background="@drawable/widget_boost_button_round"
+        android:src="@drawable/ic_tile_rocket_launch"
+        android:contentDescription="@string/boost_widget_button" />
+
+    <ProgressBar
+        android:id="@+id/boost_progress"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleSmall" />
+</FrameLayout>

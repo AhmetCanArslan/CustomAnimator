@@ -427,6 +427,27 @@
             </intent-filter>
         </activity>
 
+        <receiver
+            android:name=".widget.BoostWidgetProvider"
+            android:exported="false"
+            android:label="@string/boost_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/boost_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".service.BoostService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Clears app caches and force-stops background apps from a home screen widget (dev tool)" />
+        </service>
+
     </application>
 
 </manifest>
