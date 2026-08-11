@@ -1,6 +1,7 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.graphics.drawable.Icon
 import com.arslan.customanimator.service.ProfileTileService1
 import com.arslan.customanimator.service.ProfileTileService2
 import com.arslan.customanimator.service.ProfileTileService3
@@ -19,5 +20,14 @@ object ProfileTileSlots : TileSlotPool(
 
     fun sync(context: Context, profileManager: ProfileManager) {
         sync(context, profileManager.getAllProfiles().mapNotNull { it.tile?.slot }.toSet())
+    }
+
+    fun requestAddTile(context: Context, slot: Int, label: String, iconKey: String) {
+        requestAddTile(
+            context,
+            slot,
+            label,
+            Icon.createWithResource(context.applicationContext, TerminalTileIcons.resFor(iconKey))
+        )
     }
 }

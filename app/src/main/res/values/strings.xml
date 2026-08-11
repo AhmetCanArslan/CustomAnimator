@@ -892,6 +892,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="profile_delete">Delete profile</string>
     <string name="profile_delete_confirm">Delete \"%1$s\"? This cannot be undone.</string>
     <string name="profile_apply">Apply</string>
+    <string name="profile_make_tile">Make QS Tile</string>
     <string name="profile_applied">%1$s applied</string>
     <string name="profile_apply_partial">%1$s applied partially (%2$d of %3$d)</string>
     <string name="profile_apply_failed">%1$s could not be applied</string>

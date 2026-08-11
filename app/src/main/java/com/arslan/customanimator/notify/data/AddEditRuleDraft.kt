@@ -26,8 +26,6 @@ object AddEditRuleDraft {
         val screenFlashEnabled: Boolean = false,
         val screenFlashColor: String = "RED",
         val screenFlashDurationSeconds: Int = 5,
-        val widgetEnabled: Boolean = false,
-        val widgetKeepBody: Boolean = true,
         val applyOnVibration: Boolean = true,
         val applyOnSilent: Boolean = true,
         val applyOnDND: Boolean = true,

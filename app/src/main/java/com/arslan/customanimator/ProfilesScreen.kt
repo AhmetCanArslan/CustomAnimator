@@ -62,16 +62,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.Profile
 import com.arslan.customanimator.ui.components.AppCard
-import com.arslan.customanimator.ui.components.StatusPill
-import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.utils.ProfileApplier
 import com.arslan.customanimator.utils.ProfileManager
+import com.arslan.customanimator.utils.ProfileTileSlots
 import com.arslan.customanimator.utils.TerminalTileIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class, androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilesScreen(
     onBack: () -> Unit,
@@ -98,6 +97,8 @@ fun ProfilesScreen(
     val failedMessage = stringResource(R.string.profile_apply_failed)
     val emptyMessage = stringResource(R.string.profile_apply_nothing)
     val permissionMessage = stringResource(R.string.profiles_needs_permission)
+    val slotsFullMessage = stringResource(R.string.terminal_tile_slots_full, ProfileManager.MAX_TILE_SLOTS)
+    val addTileManualHint = stringResource(R.string.terminal_tile_add_manual_hint)
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -198,7 +199,30 @@ fun ProfilesScreen(
                         }
                     },
                     onEdit = { onEdit(profile.id) },
-                    onDelete = { deleteTarget = profile }
+                    onDelete = { deleteTarget = profile },
+                    onMakeTile = {
+                        val slot = manager.firstFreeSlot(excludingProfileId = profile.id)
+                        if (slot == null) {
+                            scope.launch { snackbarHostState.showSnackbar(slotsFullMessage) }
+                            return@ProfileCard
+                        }
+                        manager.saveProfile(
+                            profile.copy(
+                                tile = com.arslan.customanimator.data.ProfileTileConfig(
+                                    slot = slot,
+                                    label = profile.name,
+                                    showToast = true,
+                                    collapsePanel = true
+                                )
+                            )
+                        )
+                        profiles = manager.getAllProfiles()
+                        if (ProfileTileSlots.canRequestAdd()) {
+                            ProfileTileSlots.requestAddTile(context, slot, profile.name, profile.iconKey)
+                        } else {
+                            scope.launch { snackbarHostState.showSnackbar(addTileManualHint) }
+                        }
+                    }
                 )
             }
         }
@@ -229,14 +253,14 @@ fun ProfilesScreen(
     }
 }
 
-@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
 @Composable
 private fun ProfileCard(
     profile: Profile,
     applying: Boolean,
     onApply: () -> Unit,
     onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onMakeTile: () -> Unit
 ) {
     AppCard(onClick = onEdit) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -277,25 +301,11 @@ private fun ProfileCard(
             }
         }
 
-        val chips = profileChips(profile)
-        if (chips.isNotEmpty()) {
-            Spacer(Modifier.height(12.dp))
-            androidx.compose.foundation.layout.FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                chips.forEach { chip ->
-                    StatusPill(text = chip, tone = StatusTone.NEUTRAL)
-                }
-            }
-        }
-
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             FilledTonalButton(
                 onClick = onApply,
-                enabled = !applying,
-                modifier = Modifier.weight(1f)
+                enabled = !applying
             ) {
                 AnimatedVisibility(
                     visible = applying,
@@ -320,6 +330,15 @@ private fun ProfileCard(
                 }
                 Text(stringResource(R.string.profile_apply))
             }
+            FilledTonalButton(onClick = onMakeTile) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(Modifier.width(6.dp))
+                Text(stringResource(R.string.profile_make_tile))
+            }
             FilledTonalButton(onClick = onEdit) {
                 Icon(
                     imageVector = Icons.Default.Edit,
@@ -336,24 +355,3 @@ private fun ProfileCard(
 @Composable
 private fun pluralStringResource(count: Int): String =
     androidx.compose.ui.res.pluralStringResource(R.plurals.profile_action_count, count, count)
-
-@Composable
-private fun profileChips(profile: Profile): List<String> {
-    val chips = mutableListOf<String>()
-    if (profile.animation != null) chips.add(stringResource(R.string.profile_chip_animation))
-    profile.smallestWidthDp?.let { width ->
-        chips.add(
-            if (width <= 0) {
-                stringResource(R.string.profile_chip_width_reset)
-            } else {
-                stringResource(R.string.profile_chip_width, width)
-            }
-        )
-    }
-    if (profile.battery != null) chips.add(stringResource(R.string.profile_chip_battery))
-    if (profile.developer.isNotEmpty()) {
-        chips.add(stringResource(R.string.profile_chip_developer, profile.developer.size))
-    }
-    if (profile.tile != null) chips.add(stringResource(R.string.profile_chip_tile))
-    return chips
-}
