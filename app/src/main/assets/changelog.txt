@@ -1,3 +1,11 @@
+## 174 - 3.1
+- [Profiles] New Profiles screen: bundle animation scales, screen width, battery presets and developer toggles into one profile and apply with a tap.
+- [Notification widget] Home screen widget listing notifications matched by the new "Show on Widget" rule action.
+- [Boost widget] One-tap widget that clears app caches and closes background apps, reporting freed storage and RAM; tiny, normal and wide layouts.
+- [Per-app DPI] Set a DPI per app, applied automatically when the app comes to the foreground and reverted on exit; range limits, reset, clear all and a foreground service with Usage Access and Shizuku checks.
+- [Always On Display] AOD Quick Settings tile.
+- [Developer] Added "Disable rotation suggestions" and "Remove high volume warning" (applied again on boot).
+- [Rules] Notification permissions are now requested based on the actions your rules actually use.
 ## 170 - 3.0
 - [Notifications] New listener, tab, test notification and permission flow.
 - [Rules] Per-app rules, title/body keywords, multiple actions, conditions, cooldowns and conflicts.
