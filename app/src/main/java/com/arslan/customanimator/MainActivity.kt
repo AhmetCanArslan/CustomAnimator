@@ -35,7 +35,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
@@ -699,7 +699,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         currentScreen = HomeScreen.PROFILES
                     }) {
                         Icon(
-                            imageVector = Icons.Default.Tune,
+                            imageVector = Icons.Default.AccountCircle,
                             contentDescription = stringResource(R.string.profiles_title)
                         )
                     }
