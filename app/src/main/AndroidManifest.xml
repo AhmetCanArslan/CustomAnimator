@@ -298,6 +298,66 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.ProfileTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ProfileTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ProfileTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ProfileTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ProfileTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

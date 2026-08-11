@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
@@ -199,7 +200,7 @@ enum class HomeTab {
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
+    MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
@@ -275,6 +276,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val profilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var editingProfileId by rememberSaveable { mutableStateOf<String?>(null) }
+    var profilesRefreshToken by rememberSaveable { mutableIntStateOf(0) }
     var editingRuleId by rememberSaveable { mutableStateOf<String?>(null) }
     var notifyRuleReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_RULES) }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -473,10 +477,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             currentScreen != HomeScreen.SETTINGS &&
             currentScreen != HomeScreen.PERMISSIONS &&
             currentScreen != HomeScreen.SETUP_GUIDE &&
+            currentScreen != HomeScreen.PROFILES &&
+            currentScreen != HomeScreen.PROFILE_EDITOR &&
             currentScreen !in NOTIFY_SCREENS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
+    }
+    BackHandler(enabled = currentScreen == HomeScreen.PROFILES) {
+        currentScreen = HomeScreen.MAIN
+    }
+    BackHandler(enabled = currentScreen == HomeScreen.PROFILE_EDITOR) {
+        currentScreen = HomeScreen.PROFILES
     }
     BackHandler(enabled = currentScreen == HomeScreen.SETUP_GUIDE) {
         currentScreen = HomeScreen.MAIN
@@ -532,6 +544,29 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
+        )
+    } else if (targetScreen == HomeScreen.PROFILES) {
+        ProfilesScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            onCreate = {
+                editingProfileId = null
+                currentScreen = HomeScreen.PROFILE_EDITOR
+            },
+            onEdit = { id ->
+                editingProfileId = id
+                currentScreen = HomeScreen.PROFILE_EDITOR
+            },
+            refreshToken = profilesRefreshToken,
+            listState = profilesListState
+        )
+    } else if (targetScreen == HomeScreen.PROFILE_EDITOR) {
+        ProfileEditorScreen(
+            profileId = editingProfileId,
+            onBack = { currentScreen = HomeScreen.PROFILES },
+            onSaved = {
+                profilesRefreshToken++
+                currentScreen = HomeScreen.PROFILES
+            }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
@@ -658,6 +693,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 contentDescription = stringResource(R.string.pn_nav_logging)
                             )
                         }
+                    }
+                    IconButton(onClick = {
+                        profilesRefreshToken++
+                        currentScreen = HomeScreen.PROFILES
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Tune,
+                            contentDescription = stringResource(R.string.profiles_title)
+                        )
                     }
                     IconButton(onClick = { currentScreen = HomeScreen.SETTINGS }) {
                         Icon(
