@@ -86,6 +86,7 @@ fun DeveloperScreenContent(
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
+    onNavigateToSoundTile: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -481,6 +482,13 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.screenshot_actions),
                             description = stringResource(R.string.screenshot_actions_desc),
                             onClick = onNavigateToScreenshotActions
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.VolumeUp,
+                            title = stringResource(R.string.sound_tile),
+                            description = stringResource(R.string.sound_tile_desc),
+                            onClick = onNavigateToSoundTile
                         )
                     }
                 }
