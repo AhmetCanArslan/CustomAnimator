@@ -202,7 +202,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
 
@@ -277,6 +277,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val profilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var editingProfileId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -623,6 +624,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
         )
+    } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
+        ScreenshotActionsScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            listState = screenshotActionsListState
+        )
     } else if (targetScreen == HomeScreen.SETUP_GUIDE) {
         SetupGuideScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
@@ -801,6 +807,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
+            onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             listState = developerTabListState
         )
         } else if (targetTab == HomeTab.BATTERY) {

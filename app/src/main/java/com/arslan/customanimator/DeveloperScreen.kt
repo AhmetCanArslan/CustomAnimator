@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
+import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SensorsOff
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.TouchApp
@@ -83,6 +84,7 @@ fun DeveloperScreenContent(
     onNavigateToWifiPasswords: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
+    onNavigateToScreenshotActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -471,6 +473,13 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.close_apps_exclusions),
                             description = stringResource(R.string.close_apps_exclusions_desc),
                             onClick = onNavigateToCloseAppsExclusions
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Screenshot,
+                            title = stringResource(R.string.screenshot_actions),
+                            description = stringResource(R.string.screenshot_actions_desc),
+                            onClick = onNavigateToScreenshotActions
                         )
                     }
                 }

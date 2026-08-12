@@ -24,6 +24,11 @@ class BootReceiver : BroadcastReceiver() {
                     Log.e(TAG, "Failed to restore per-app dpi watcher", e)
                 }
                 try {
+                    ScreenshotWatcherService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore screenshot watcher", e)
+                }
+                try {
                     DeveloperOptionsManager.reapplyHighVolumeWarning(context.applicationContext)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to reapply high volume warning", e)
