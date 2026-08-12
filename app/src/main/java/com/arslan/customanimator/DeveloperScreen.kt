@@ -82,6 +82,7 @@ fun DeveloperScreenContent(
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToCloseAppsExclusions: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
+    onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
@@ -660,6 +661,13 @@ fun DeveloperScreenContent(
                             title = stringResource(R.string.wifi_password_manager),
                             description = stringResource(R.string.wifi_password_manager_desc),
                             onClick = onNavigateToWifiPasswords
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.WifiTethering,
+                            title = stringResource(R.string.hotspot_manager),
+                            description = stringResource(R.string.hotspot_manager_desc),
+                            onClick = onNavigateToHotspotManager
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

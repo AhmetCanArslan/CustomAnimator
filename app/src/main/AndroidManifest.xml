@@ -151,6 +151,17 @@
         </provider>
 
         <service
+            android:name=".service.HotspotTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_hotspot"
+            android:label="@string/hotspot_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".service.CaffeineTileService"
             android:exported="true"
             android:icon="@drawable/ic_tile_caffeine"
