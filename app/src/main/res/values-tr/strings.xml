@@ -1069,4 +1069,24 @@ Animatör Süresi: %3$.2f</string>
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Şifreyi kopyala</string>
     <string name="hotspot_show_qr">QR kodunu göster</string>
+    <string name="sound_tile_label">Ses</string>
+    <string name="sound_tile">Ses kutucuğu</string>
+    <string name="sound_tile_desc">Ses paneli veya medya çıkış seçicisi için Hızlı Ayarlar düğmesi</string>
+    <string name="sound_tile_action_volume_panel">Ses paneli</string>
+    <string name="sound_tile_action_media_output">Medya çıkış seçicisi</string>
+    <string name="sound_tile_action_none">Hiçbir şey yapma</string>
+    <string name="sound_tile_section_actions">Kutucuk işlemleri</string>
+    <string name="sound_tile_section_collapse">Kapat, sonra işlem yap</string>
+    <string name="sound_tile_click_action">Basın</string>
+    <string name="sound_tile_long_press_action">Uzun basın</string>
+    <string name="sound_tile_collapse_label">Hızlı Ayarlar’ı kapat, ardından işlemi çalıştır</string>
+    <string name="sound_tile_collapse_never">Kapatma</string>
+    <string name="sound_tile_collapse_immediate">Hemen</string>
+    <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Özel gecikme (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">Kapattıktan sonra 0 ila %1$d ms</string>
+    <string name="sound_tile_needs_shizuku">Medya çıkış seçicisi için Shizuku gerekir</string>
+    <string name="sound_tile_hint">Ses kutucuğunu Hızlı Ayarlar’a ekleyin, ardından basın veya uzun basın.</string>
+    <string name="sound_tile_shizuku_note">Medya çıkış seçicisi ve Hızlı Ayarlar’ı kapatma işlemi Shizuku kullanır. Ses paneli olmadan da çalışır.</string>
+    <string name="sound_tile_test">Test et</string>
 </resources>

@@ -1061,4 +1061,24 @@ Duração do Animador: %3$.2f</string>
     <string name="hotspot_tile_label">Roteador</string>
     <string name="hotspot_copy_password">Copiar senha</string>
     <string name="hotspot_show_qr">Mostrar QR code</string>
+    <string name="sound_tile_label">Som</string>
+    <string name="sound_tile">Bloco de Som</string>
+    <string name="sound_tile_desc">Botão das Configurações rápidas para o painel de volume ou seletor de saída de mídia</string>
+    <string name="sound_tile_action_volume_panel">Painel de volume</string>
+    <string name="sound_tile_action_media_output">Seletor de saída de mídia</string>
+    <string name="sound_tile_action_none">Não fazer nada</string>
+    <string name="sound_tile_section_actions">Ações do bloco</string>
+    <string name="sound_tile_section_collapse">Recolher e agir</string>
+    <string name="sound_tile_click_action">Pressionar</string>
+    <string name="sound_tile_long_press_action">Pressionar e segurar</string>
+    <string name="sound_tile_collapse_label">Recolher as Configurações rápidas e executar a ação depois</string>
+    <string name="sound_tile_collapse_never">Não recolher</string>
+    <string name="sound_tile_collapse_immediate">Imediatamente</string>
+    <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Atraso personalizado (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">De 0 a %1$d ms após recolher</string>
+    <string name="sound_tile_needs_shizuku">O seletor de saída de mídia precisa do Shizuku</string>
+    <string name="sound_tile_hint">Adicione o bloco Som às Configurações rápidas e pressione ou pressione e segure.</string>
+    <string name="sound_tile_shizuku_note">O seletor de saída de mídia e o recolhimento das Configurações rápidas usam o Shizuku. O painel de volume funciona sem ele.</string>
+    <string name="sound_tile_test">Testar</string>
 </resources>

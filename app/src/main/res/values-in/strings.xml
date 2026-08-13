@@ -1061,4 +1061,24 @@ Durasi Animator: %3$.2f</string>
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Salin sandi</string>
     <string name="hotspot_show_qr">Tampilkan kode QR</string>
+    <string name="sound_tile_label">Suara</string>
+    <string name="sound_tile">Tile Suara</string>
+    <string name="sound_tile_desc">Tombol Setelan Cepat untuk panel volume atau pemilih output media</string>
+    <string name="sound_tile_action_volume_panel">Panel volume</string>
+    <string name="sound_tile_action_media_output">Pemilih output media</string>
+    <string name="sound_tile_action_none">Jangan lakukan apa pun</string>
+    <string name="sound_tile_section_actions">Tindakan tile</string>
+    <string name="sound_tile_section_collapse">Tutup lalu lakukan</string>
+    <string name="sound_tile_click_action">Tekan</string>
+    <string name="sound_tile_long_press_action">Tekan lama</string>
+    <string name="sound_tile_collapse_label">Tutup Setelan Cepat, lalu jalankan tindakan</string>
+    <string name="sound_tile_collapse_never">Jangan tutup</string>
+    <string name="sound_tile_collapse_immediate">Segera</string>
+    <string name="sound_tile_collapse_delay">%1$d md</string>
+    <string name="sound_tile_collapse_custom">Jeda khusus (md)</string>
+    <string name="sound_tile_collapse_custom_hint">0 hingga %1$d md setelah ditutup</string>
+    <string name="sound_tile_needs_shizuku">Pemilih output media memerlukan Shizuku</string>
+    <string name="sound_tile_hint">Tambahkan tile Suara ke Setelan Cepat, lalu tekan atau tekan lama.</string>
+    <string name="sound_tile_shizuku_note">Pemilih output media dan penutupan Setelan Cepat menggunakan Shizuku. Panel volume dapat digunakan tanpa Shizuku.</string>
+    <string name="sound_tile_test">Uji</string>
 </resources>

@@ -1081,4 +1081,24 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Copia password</string>
     <string name="hotspot_show_qr">Mostra codice QR</string>
+    <string name="sound_tile_label">Suono</string>
+    <string name="sound_tile">Riquadro Suono</string>
+    <string name="sound_tile_desc">Pulsante delle Impostazioni rapide per il pannello del volume o il selettore dell’uscita multimediale</string>
+    <string name="sound_tile_action_volume_panel">Pannello del volume</string>
+    <string name="sound_tile_action_media_output">Selettore uscita multimediale</string>
+    <string name="sound_tile_action_none">Nessuna azione</string>
+    <string name="sound_tile_section_actions">Azioni del riquadro</string>
+    <string name="sound_tile_section_collapse">Chiudi prima di agire</string>
+    <string name="sound_tile_click_action">Pressione</string>
+    <string name="sound_tile_long_press_action">Pressione prolungata</string>
+    <string name="sound_tile_collapse_label">Chiudi Impostazioni rapide, poi esegui l’azione</string>
+    <string name="sound_tile_collapse_never">Non chiudere</string>
+    <string name="sound_tile_collapse_immediate">Subito</string>
+    <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Ritardo personalizzato (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">Da 0 a %1$d ms dopo la chiusura</string>
+    <string name="sound_tile_needs_shizuku">Il selettore dell’uscita multimediale richiede Shizuku</string>
+    <string name="sound_tile_hint">Aggiungi il riquadro Suono alle Impostazioni rapide, poi premilo o tienilo premuto.</string>
+    <string name="sound_tile_shizuku_note">Il selettore dell’uscita multimediale e la chiusura delle Impostazioni rapide usano Shizuku. Il pannello del volume funziona senza.</string>
+    <string name="sound_tile_test">Prova</string>
 </resources>

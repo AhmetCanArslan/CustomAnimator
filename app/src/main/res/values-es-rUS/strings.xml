@@ -1061,4 +1061,24 @@ Duración del Animador: %3$.2f</string>
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Copiar contraseña</string>
     <string name="hotspot_show_qr">Mostrar código QR</string>
+    <string name="sound_tile_label">Sonido</string>
+    <string name="sound_tile">Mosaico de sonido</string>
+    <string name="sound_tile_desc">Botón de Ajustes rápidos para el panel de volumen o el selector de salida multimedia</string>
+    <string name="sound_tile_action_volume_panel">Panel de volumen</string>
+    <string name="sound_tile_action_media_output">Selector de salida multimedia</string>
+    <string name="sound_tile_action_none">No hacer nada</string>
+    <string name="sound_tile_section_actions">Acciones del mosaico</string>
+    <string name="sound_tile_section_collapse">Cerrar antes de actuar</string>
+    <string name="sound_tile_click_action">Pulsación</string>
+    <string name="sound_tile_long_press_action">Pulsación larga</string>
+    <string name="sound_tile_collapse_label">Cerrar Ajustes rápidos y ejecutar la acción después</string>
+    <string name="sound_tile_collapse_never">No cerrar</string>
+    <string name="sound_tile_collapse_immediate">Inmediatamente</string>
+    <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Retraso personalizado (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">De 0 a %1$d ms después de cerrar</string>
+    <string name="sound_tile_needs_shizuku">El selector de salida multimedia necesita Shizuku</string>
+    <string name="sound_tile_hint">Añade el mosaico Sonido a Ajustes rápidos y púlsalo o mantenlo pulsado.</string>
+    <string name="sound_tile_shizuku_note">El selector de salida multimedia y el cierre de Ajustes rápidos usan Shizuku. El panel de volumen funciona sin él.</string>
+    <string name="sound_tile_test">Probar</string>
 </resources>

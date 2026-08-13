@@ -23,7 +23,10 @@ class SoundTilePrefs(context: Context) {
 
     var collapseDelayMs: Int
         get() = sp.getInt(KEY_COLLAPSE_DELAY, DEFAULT_COLLAPSE_DELAY)
-        set(value) = sp.edit().putInt(KEY_COLLAPSE_DELAY, value).apply()
+        set(value) = sp.edit().putInt(
+            KEY_COLLAPSE_DELAY,
+            if (value < 0) COLLAPSE_NEVER else value.coerceAtMost(COLLAPSE_DELAY_MAX)
+        ).apply()
 
     private fun read(key: String, fallback: SoundTileAction): SoundTileAction {
         val raw = sp.getString(key, null) ?: return fallback
@@ -38,6 +41,7 @@ class SoundTilePrefs(context: Context) {
 
         const val COLLAPSE_NEVER = -1
         const val DEFAULT_COLLAPSE_DELAY = 500
+        const val COLLAPSE_DELAY_MAX = 10000
 
         val COLLAPSE_DELAY_OPTIONS = listOf(COLLAPSE_NEVER, 0, 300, 500, 1000)
     }

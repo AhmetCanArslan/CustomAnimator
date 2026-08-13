@@ -1061,4 +1061,24 @@ Tagal ng Animator: %3$.2f</string>
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Kopyahin ang password</string>
     <string name="hotspot_show_qr">Ipakita ang QR code</string>
+    <string name="sound_tile_label">Tunog</string>
+    <string name="sound_tile">Sound tile</string>
+    <string name="sound_tile_desc">Button sa Quick Settings para sa volume panel o media output picker</string>
+    <string name="sound_tile_action_volume_panel">Volume panel</string>
+    <string name="sound_tile_action_media_output">Media output picker</string>
+    <string name="sound_tile_action_none">Walang gawin</string>
+    <string name="sound_tile_section_actions">Mga aksyon ng tile</string>
+    <string name="sound_tile_section_collapse">I-collapse bago kumilos</string>
+    <string name="sound_tile_click_action">Pindot</string>
+    <string name="sound_tile_long_press_action">Long press</string>
+    <string name="sound_tile_collapse_label">I-collapse ang Quick Settings, saka patakbuhin ang aksyon</string>
+    <string name="sound_tile_collapse_never">Huwag i-collapse</string>
+    <string name="sound_tile_collapse_immediate">Agad</string>
+    <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Custom na delay (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">0 hanggang %1$d ms pagkatapos i-collapse</string>
+    <string name="sound_tile_needs_shizuku">Kailangan ng Shizuku ang media output picker</string>
+    <string name="sound_tile_hint">Idagdag ang Sound tile sa Quick Settings, pagkatapos ay pindutin o i-long press ito.</string>
+    <string name="sound_tile_shizuku_note">Gumagamit ng Shizuku ang media output picker at pag-collapse ng Quick Settings. Gumagana ang volume panel nang wala nito.</string>
+    <string name="sound_tile_test">Subukan</string>
 </resources>

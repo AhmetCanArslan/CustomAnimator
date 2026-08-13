@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.FlowRowScope
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -22,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -219,6 +221,9 @@ private fun SoundActionRow(
 
 @Composable
 private fun SoundCollapseRow(selected: Int, onSelect: (Int) -> Unit) {
+    var input by remember(selected) {
+        mutableStateOf(if (selected >= 0) selected.toString() else "")
+    }
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)) {
         Text(
             text = stringResource(R.string.sound_tile_collapse_label),
@@ -245,6 +250,31 @@ private fun SoundCollapseRow(selected: Int, onSelect: (Int) -> Unit) {
                 )
             }
         }
+        Spacer(modifier = Modifier.height(12.dp))
+        OutlinedTextField(
+            value = input,
+            onValueChange = { raw ->
+                val digits = raw.filter { it.isDigit() }.take(5)
+                input = digits
+                val parsed = digits.toIntOrNull()
+                if (parsed != null) {
+                    onSelect(parsed.coerceAtMost(SoundTilePrefs.COLLAPSE_DELAY_MAX))
+                }
+            },
+            label = { Text(stringResource(R.string.sound_tile_collapse_custom)) },
+            supportingText = {
+                Text(
+                    stringResource(
+                        R.string.sound_tile_collapse_custom_hint,
+                        SoundTilePrefs.COLLAPSE_DELAY_MAX
+                    )
+                )
+            },
+            singleLine = true,
+            enabled = selected != SoundTilePrefs.COLLAPSE_NEVER,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 

@@ -542,6 +542,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="sound_tile_collapse_never">Don’t collapse</string>
     <string name="sound_tile_collapse_immediate">Right away</string>
     <string name="sound_tile_collapse_delay">%1$d ms</string>
+    <string name="sound_tile_collapse_custom">Custom delay (ms)</string>
+    <string name="sound_tile_collapse_custom_hint">0 to %1$d ms after collapsing</string>
     <string name="sound_tile_needs_shizuku">Media output picker needs Shizuku</string>
     <string name="sound_tile_hint">Add the Sound tile to Quick Settings, then press or long press it.</string>
     <string name="sound_tile_shizuku_note">The media output picker and collapsing Quick Settings both use Shizuku. The volume panel works without it.</string>

@@ -1063,4 +1063,24 @@
     <string name="hotspot_tile_label">Точка доступа</string>
     <string name="hotspot_copy_password">Копировать пароль</string>
     <string name="hotspot_show_qr">Показать QR-код</string>
+    <string name="sound_tile_label">Звук</string>
+    <string name="sound_tile">Плитка звука</string>
+    <string name="sound_tile_desc">Кнопка быстрых настроек для панели громкости или выбора вывода мультимедиа</string>
+    <string name="sound_tile_action_volume_panel">Панель громкости</string>
+    <string name="sound_tile_action_media_output">Выбор вывода мультимедиа</string>
+    <string name="sound_tile_action_none">Ничего не делать</string>
+    <string name="sound_tile_section_actions">Действия плитки</string>
+    <string name="sound_tile_section_collapse">Свернуть перед действием</string>
+    <string name="sound_tile_click_action">Нажатие</string>
+    <string name="sound_tile_long_press_action">Долгое нажатие</string>
+    <string name="sound_tile_collapse_label">Свернуть быстрые настройки, затем выполнить действие</string>
+    <string name="sound_tile_collapse_never">Не сворачивать</string>
+    <string name="sound_tile_collapse_immediate">Сразу</string>
+    <string name="sound_tile_collapse_delay">%1$d мс</string>
+    <string name="sound_tile_collapse_custom">Своя задержка (мс)</string>
+    <string name="sound_tile_collapse_custom_hint">От 0 до %1$d мс после сворачивания</string>
+    <string name="sound_tile_needs_shizuku">Для выбора вывода мультимедиа нужен Shizuku</string>
+    <string name="sound_tile_hint">Добавьте плитку звука в быстрые настройки, затем нажмите или удерживайте её.</string>
+    <string name="sound_tile_shizuku_note">Выбор вывода мультимедиа и сворачивание быстрых настроек используют Shizuku. Панель громкости работает без него.</string>
+    <string name="sound_tile_test">Проверить</string>
 </resources>
