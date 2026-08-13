@@ -23,6 +23,7 @@ object SettingsManager {
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
     private const val KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL = "remove_ads_prompt_dismissed_until"
+    private const val KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW = "remove_ads_support_next_show"
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
     private const val KEY_THEME_MODE = "theme_mode"
@@ -131,6 +132,20 @@ object SettingsManager {
         getPrefs(context).edit()
             .putLong(
                 KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL,
+                System.currentTimeMillis() + 24L * 60 * 60 * 1000
+            )
+            .apply()
+    }
+
+    fun shouldShowRemoveAdsSupportDialog(context: Context): Boolean {
+        val nextShow = getPrefs(context).getLong(KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW, 0L)
+        return nextShow == 0L || System.currentTimeMillis() >= nextShow
+    }
+
+    fun markRemoveAdsSupportDialogLater(context: Context) {
+        getPrefs(context).edit()
+            .putLong(
+                KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW,
                 System.currentTimeMillis() + 24L * 60 * 60 * 1000
             )
             .apply()

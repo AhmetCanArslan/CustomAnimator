@@ -438,6 +438,9 @@ Duración del Animador: %3$.2f</string>
     <string name="remove_ads_prompt_body">¡Quítalos con una compra única y apoya el desarrollo!</string>
     <string name="remove_ads_prompt_body_price">Quítalos por %1$s, una sola vez</string>
     <string name="remove_ads_prompt_dismiss">Ocultar</string>
+    <string name="remove_ads_support_title">Por favor, apoya el desarrollo</string>
+    <string name="remove_ads_support_message">Esta app es gratis y se mejora constantemente. Apoya el desarrollo con una compra única: también elimina todos los anuncios.</string>
+    <string name="remove_ads_support_buy_price">Quitar anuncios por %1$s</string>
     <string name="ad_info_remove_ads_hint">Si prefieres no ver anuncios, puedes quitarlos para siempre con una compra única, cuando quieras, desde Ajustes › Premium.</string>
     <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Muestra un indicador de FPS en tiempo real sobre juegos y apps para analizar el rendimiento y los tirones.</string>

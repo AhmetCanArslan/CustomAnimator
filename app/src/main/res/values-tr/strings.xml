@@ -438,6 +438,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_prompt_body">Tek seferlik satın alma ile kaldır ve geliştirmeye destek ol!</string>
     <string name="remove_ads_prompt_body_price">%1$s ile tek seferde kaldır</string>
     <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
+    <string name="remove_ads_support_title">Lütfen Geliştirmeyi Destekleyin</string>
+    <string name="remove_ads_support_message">Bu uygulama ücretsiz ve sürekli geliştiriliyor. Tek seferlik bir satın alma ile geliştirmeyi destekleyin — aynı zamanda tüm reklamları da kaldırır.</string>
+    <string name="remove_ads_support_buy_price">Reklamları %1$s karşılığında kaldır</string>
     <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin. Bunu istediğin zaman Ayarlar › Premium bölümünden yapabilirsin.</string>
     <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Oyunların ve uygulamaların üzerinde gerçek zamanlı FPS göstergesi göstererek performans ve takılma analizi yapmanızı sağlar.</string>

@@ -458,6 +458,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="remove_ads_prompt_body">Rimuovili con un acquisto singolo e sostieni lo sviluppo!</string>
     <string name="remove_ads_prompt_body_price">Rimuovili per %1$s, una volta sola</string>
     <string name="remove_ads_prompt_dismiss">Nascondi</string>
+    <string name="remove_ads_support_title">Sostieni lo sviluppo</string>
+    <string name="remove_ads_support_message">Questa app è gratuita e in costante miglioramento. Sostieni lo sviluppo con un acquisto singolo: rimuove anche tutti gli annunci.</string>
+    <string name="remove_ads_support_buy_price">Rimuovi gli annunci per %1$s</string>
     <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo, quando vuoi, da Impostazioni › Premium.</string>
     <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Mostra un overlay FPS in tempo reale su giochi e app per analizzare prestazioni e rallentamenti.</string>

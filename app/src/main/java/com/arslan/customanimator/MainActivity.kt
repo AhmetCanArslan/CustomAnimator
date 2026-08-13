@@ -333,6 +333,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 && SettingsManager.shouldShowRateDialog(context)
         )
     }
+    var showRemoveAdsSupportDialog by remember {
+        mutableStateOf(
+            !isAdFreeNow()
+                && SettingsManager.hasCompletedOnboarding(context)
+                && SettingsManager.hasShownAdInfoDialog(context)
+                && SettingsManager.shouldShowRemoveAdsSupportDialog(context)
+        )
+    }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
     var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
@@ -1918,6 +1926,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 ) {
                     Text(stringResource(R.string.remove_ads))
                 }
+            }
+        )
+    }
+
+    if (showRemoveAdsSupportDialog) {
+        RemoveAdsSupportDialog(
+            onBuy = {
+                showRemoveAdsSupportDialog = false
+                startRemoveAdsPurchase(context)
+            },
+            onDismiss = {
+                SettingsManager.markRemoveAdsSupportDialogLater(context)
+                showRemoveAdsSupportDialog = false
             }
         )
     }

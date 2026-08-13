@@ -525,6 +525,9 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="remove_ads_prompt_body">Remove them with a one-time purchase and help development!</string>
     <string name="remove_ads_prompt_body_price">Remove them for %1$s, once</string>
     <string name="remove_ads_prompt_dismiss">Hide this</string>
+    <string name="remove_ads_support_title">Please Support Development</string>
+    <string name="remove_ads_support_message">This app is free and constantly improved. Please support development with a one-time purchase — it also removes all ads.</string>
+    <string name="remove_ads_support_buy_price">Remove Ads for %1$s</string>
     <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase, anytime, from Settings › Premium.</string>
     <string name="fps_meter">FPS Meter</string>
     <string name="fps_meter_desc">Displays a real-time FPS overlay over games and apps for performance and lag analysis.</string>

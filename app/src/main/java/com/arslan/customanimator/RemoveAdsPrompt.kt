@@ -18,11 +18,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -107,6 +110,33 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Composable
+fun RemoveAdsSupportDialog(
+    onBuy: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val price by rememberRemoveAdsPrice()
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.remove_ads_support_title)) },
+        text = { Text(stringResource(R.string.remove_ads_support_message)) },
+        confirmButton = {
+            Button(onClick = onBuy) {
+                Text(
+                    text = price?.let { stringResource(R.string.remove_ads_support_buy_price, it) }
+                        ?: stringResource(R.string.remove_ads)
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.rate_dialog_later))
+            }
+        }
+    )
 }
 
 fun startRemoveAdsPurchase(context: android.content.Context) {
