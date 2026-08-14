@@ -219,12 +219,12 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
     }
 
-    fun compileApp(packageName: String): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-f", packageName))
+    fun compileApp(packageName: String, filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", filter.value, "-f", packageName))
     }
 
-    fun compileAllApps(): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-a"))
+    fun compileAllApps(filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", filter.value, "-f", "-a"))
     }
 
     private const val FANCY_IME_ANIMATIONS_KEY = "fancy_ime_animations"

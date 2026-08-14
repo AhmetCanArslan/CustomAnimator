@@ -75,6 +75,16 @@
     <string name="compile_booster_notif_title">Compile Booster berjalan</string>
     <string name="compile_booster_notif_text">Mempersiapkan kompilasi aplikasi…</string>
     <string name="compile_booster_notif_text_app">Mengompilasi %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Mode kompilasi</string>
+    <string name="compile_filter_current">Mode: %1$s</string>
+    <string name="compile_filter_everything">Semuanya</string>
+    <string name="compile_filter_everything_desc">Paling kuat. Mengompilasi semua kode di awal, termasuk jalur yang jarang dipakai. Paling lambat dan paling banyak memakai penyimpanan.</string>
+    <string name="compile_filter_speed">Kecepatan</string>
+    <string name="compile_filter_speed_desc">Kompilasi AOT penuh untuk kode aplikasi. Keseimbangan bagus antara kecepatan pembukaan dan waktu kompilasi.</string>
+    <string name="compile_filter_speed_profile">Kecepatan (profil)</string>
+    <string name="compile_filter_speed_profile_desc">Hanya mengompilasi kode yang ditandai sering dipakai oleh profil penggunaan. Paling cepat dijalankan dan paling hemat penyimpanan.</string>
+    <string name="compile_filter_verify">Verifikasi</string>
+    <string name="compile_filter_verify_desc">Hanya memverifikasi bytecode tanpa kompilasi AOT. Opsi paling ringan dengan peningkatan paling kecil.</string>
     <string name="graphics_api_override">Penggantian API Grafis</string>
     <string name="graphics_api_override_desc">Paksa aplikasi menggunakan ANGLE (terjemahan Vulkan) atau driver GLES/Vulkan bawaan</string>
     <string name="graphics_api_override_disclaimer">Ini menggunakan pengaturan driver ANGLE per aplikasi bawaan Android (Android 10+). Apakah benar-benar berpengaruh tergantung pada perangkat dan versi Android Anda. Paling andal di perangkat Pixel dan bisa saja diabaikan sepenuhnya pada build dari beberapa produsen lain.</string>

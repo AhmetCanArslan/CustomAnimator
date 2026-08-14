@@ -75,6 +75,16 @@
     <string name="compile_booster_notif_title">Tumatakbo ang Compile Booster</string>
     <string name="compile_booster_notif_text">Naghahanda para i-compile ang mga app…</string>
     <string name="compile_booster_notif_text_app">Kinokompile ang %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Mode ng compilation</string>
+    <string name="compile_filter_current">Mode: %1$s</string>
+    <string name="compile_filter_everything">Lahat</string>
+    <string name="compile_filter_everything_desc">Pinakamalakas. Ino-compile nang maaga ang lahat ng code, pati ang bihirang gamitin. Pinakamabagal at pinakamalaki ang gamit sa storage.</string>
+    <string name="compile_filter_speed">Bilis</string>
+    <string name="compile_filter_speed_desc">Buong AOT compilation ng code ng app. Magandang balanse ng bilis ng pagbukas at oras ng pag-compile.</string>
+    <string name="compile_filter_speed_profile">Bilis (profile)</string>
+    <string name="compile_filter_speed_profile_desc">Ino-compile lang ang code na minarkahang madalas gamitin ng iyong usage profile. Pinakamabilis patakbuhin at pinakamagaan sa storage.</string>
+    <string name="compile_filter_verify">Verify</string>
+    <string name="compile_filter_verify_desc">Vine-verify lang ang bytecode nang walang AOT compilation. Pinakamagaan na opsyon, pinakamaliit ang bentahe.</string>
     <string name="graphics_api_override">Graphics API Override</string>
     <string name="graphics_api_override_desc">Puwersahin ang mga app na gamitin ang ANGLE (Vulkan translation) o ang native na GLES/Vulkan driver</string>
     <string name="graphics_api_override_disclaimer">Ginagamit nito ang built-in na setting ng Android para sa per-app na ANGLE driver (Android 10+). Ang aktwal na epekto ay depende sa iyong device at bersyon ng Android. Pinakamaaasahan ito sa mga Pixel device at maaaring balewalain nang buo sa ilang build ng ibang manufacturer.</string>

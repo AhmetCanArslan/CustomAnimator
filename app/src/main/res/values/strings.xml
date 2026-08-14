@@ -109,6 +109,16 @@
     <string name="compile_booster_notif_title">Compile Booster running</string>
     <string name="compile_booster_notif_text">Preparing to compile apps…</string>
     <string name="compile_booster_notif_text_app">Compiling %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Compilation mode</string>
+    <string name="compile_filter_current">Mode: %1$s</string>
+    <string name="compile_filter_everything">Everything</string>
+    <string name="compile_filter_everything_desc">Strongest. Compiles all code ahead of time, including rarely used paths. Slowest and uses the most storage.</string>
+    <string name="compile_filter_speed">Speed</string>
+    <string name="compile_filter_speed_desc">Full AOT compilation of the app code. Great balance of startup speed and compile time.</string>
+    <string name="compile_filter_speed_profile">Speed (profile)</string>
+    <string name="compile_filter_speed_profile_desc">Compiles only the code your usage profile marks as hot. Fastest to run and lightest on storage.</string>
+    <string name="compile_filter_verify">Verify</string>
+    <string name="compile_filter_verify_desc">Only verifies bytecode without AOT compiling. Lightest option, smallest gain.</string>
     <string name="graphics_api_override">Graphics API Override</string>
     <string name="graphics_api_override_desc">Force apps to use ANGLE (Vulkan translation) or the native GLES/Vulkan driver</string>
     <string name="graphics_api_override_disclaimer">This uses Android\'s built-in per-app ANGLE driver setting (Android 10+). Whether it actually takes effect depends on your device and Android version. It is most reliable on Pixel devices and may be ignored entirely on some other manufacturers\' builds.</string>

@@ -75,6 +75,16 @@
     <string name="compile_booster_notif_title">Derleme Hızlandırıcı çalışıyor</string>
     <string name="compile_booster_notif_text">Uygulamalar derlenmeye hazırlanıyor…</string>
     <string name="compile_booster_notif_text_app">Derleniyor: %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Derleme modu</string>
+    <string name="compile_filter_current">Mod: %1$s</string>
+    <string name="compile_filter_everything">Her şey</string>
+    <string name="compile_filter_everything_desc">En güçlü seçenek. Nadiren kullanılan yollar dahil tüm kodu önceden derler. En yavaş olan ve en çok depolama kullanan seçenek.</string>
+    <string name="compile_filter_speed">Hız</string>
+    <string name="compile_filter_speed_desc">Uygulama kodunun tam AOT derlemesi. Açılış hızı ile derleme süresi arasında iyi bir denge.</string>
+    <string name="compile_filter_speed_profile">Hız (profil)</string>
+    <string name="compile_filter_speed_profile_desc">Yalnızca kullanım profilinizin sık kullanılan olarak işaretlediği kodu derler. En hızlı çalışan ve depolamayı en az kullanan seçenek.</string>
+    <string name="compile_filter_verify">Doğrula</string>
+    <string name="compile_filter_verify_desc">AOT derlemesi yapmadan yalnızca bayt kodunu doğrular. En hafif seçenek, en az kazanç.</string>
     <string name="graphics_api_override">Grafik API Geçersiz Kılma</string>
     <string name="graphics_api_override_desc">Uygulamaları ANGLE (Vulkan çevirisi) veya yerel GLES/Vulkan sürücüsünü kullanmaya zorlar</string>
     <string name="graphics_api_override_disclaimer">Bu, Android\'in yerleşik uygulama başına ANGLE sürücü ayarını kullanır (Android 10+). Gerçekten etkili olup olmayacağı cihazınıza ve Android sürümünüze bağlıdır. En güvenilir şekilde Pixel cihazlarda çalışır ve bazı diğer üreticilerin sürümlerinde tamamen yok sayılabilir.</string>

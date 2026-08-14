@@ -75,6 +75,16 @@
     <string name="compile_booster_notif_title">Ускоритель компиляции работает</string>
     <string name="compile_booster_notif_text">Подготовка к компиляции приложений…</string>
     <string name="compile_booster_notif_text_app">Компиляция %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Режим компиляции</string>
+    <string name="compile_filter_current">Режим: %1$s</string>
+    <string name="compile_filter_everything">Всё</string>
+    <string name="compile_filter_everything_desc">Самый мощный режим. Заранее компилирует весь код, включая редко используемый. Самый медленный и занимает больше всего места.</string>
+    <string name="compile_filter_speed">Скорость</string>
+    <string name="compile_filter_speed_desc">Полная AOT-компиляция кода приложения. Хороший баланс между скоростью запуска и временем компиляции.</string>
+    <string name="compile_filter_speed_profile">Скорость (профиль)</string>
+    <string name="compile_filter_speed_profile_desc">Компилирует только код, отмеченный в профиле использования как активный. Работает быстрее всего и меньше нагружает память.</string>
+    <string name="compile_filter_verify">Проверка</string>
+    <string name="compile_filter_verify_desc">Только проверяет байт-код без AOT-компиляции. Самый лёгкий вариант с наименьшим эффектом.</string>
     <string name="graphics_api_override">Замена графического API</string>
     <string name="graphics_api_override_desc">Заставляет приложения использовать ANGLE (трансляцию в Vulkan) или нативный драйвер GLES/Vulkan</string>
     <string name="graphics_api_override_disclaimer">Используется встроенная настройка Android для выбора драйвера ANGLE для каждого приложения (Android 10+). Будет ли она реально работать, зависит от вашего устройства и версии Android. Наиболее надёжно это работает на устройствах Pixel и может полностью игнорироваться в прошивках других производителей.</string>

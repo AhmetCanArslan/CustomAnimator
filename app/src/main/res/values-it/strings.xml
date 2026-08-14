@@ -74,6 +74,16 @@
     <string name="compile_booster_notif_title">Compile Booster in esecuzione</string>
     <string name="compile_booster_notif_text">Preparazione alla compilazione…</string>
     <string name="compile_booster_notif_text_app">Compilazione di %1$s… %2$d%%</string>
+    <string name="compile_filter_title">Modalità di compilazione</string>
+    <string name="compile_filter_current">Modalità: %1$s</string>
+    <string name="compile_filter_everything">Tutto</string>
+    <string name="compile_filter_everything_desc">La più potente. Compila in anticipo tutto il codice, anche i percorsi usati raramente. È la più lenta e occupa più spazio.</string>
+    <string name="compile_filter_speed">Velocità</string>
+    <string name="compile_filter_speed_desc">Compilazione AOT completa del codice dell\'app. Ottimo equilibrio tra velocità di avvio e tempo di compilazione.</string>
+    <string name="compile_filter_speed_profile">Velocità (profilo)</string>
+    <string name="compile_filter_speed_profile_desc">Compila solo il codice che il profilo d\'uso segna come frequente. La più rapida da eseguire e la più leggera per lo spazio.</string>
+    <string name="compile_filter_verify">Verifica</string>
+    <string name="compile_filter_verify_desc">Verifica solo il bytecode senza compilazione AOT. Opzione più leggera, con il guadagno minore.</string>
     <string name="graphics_api_override">Override API grafiche</string>
     <string name="graphics_api_override_desc">Forza le app a usare ANGLE (traduzione Vulkan) o il driver GLES/Vulkan nativo</string>
     <string name="graphics_api_override_disclaimer">Questo usa l\'impostazione ANGLE per singola app integrata in Android (Android 10+). Che abbia effetto o meno dipende dal dispositivo e dalla versione di Android: è più affidabile sui dispositivi Pixel e può essere ignorata del tutto su alcune build di altri produttori.</string>

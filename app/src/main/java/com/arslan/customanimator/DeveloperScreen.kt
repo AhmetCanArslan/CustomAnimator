@@ -8,6 +8,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -60,6 +62,7 @@ import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.service.CompileBoosterService
 import com.arslan.customanimator.utils.CloseAppsExclusionManager
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
+import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.service.FpsOverlayService
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.FpsOverlayManager
@@ -124,6 +127,7 @@ fun DeveloperScreenContent(
     var showClearCachesConfirm by remember { mutableStateOf(false) }
     var showCloseAppsConfirm by remember { mutableStateOf(false) }
     var showCompileAllConfirm by remember { mutableStateOf(false) }
+    var compileFilter by remember { mutableStateOf(CompileFilterManager.getFilter(context)) }
 
     val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -545,6 +549,7 @@ fun DeveloperScreenContent(
                             isRunning = compileProgress.isRunning,
                             percent = compileProgress.percent,
                             enabled = hasShizukuPermission,
+                            filterLabel = stringResource(compileFilter.labelRes),
                             onClick = { showCompileAllConfirm = true },
                             onCancel = { CompileBoosterService.stop(context) }
                         )
@@ -859,10 +864,30 @@ fun DeveloperScreenContent(
         AlertDialog(
             onDismissRequest = { showCompileAllConfirm = false },
             title = { Text(stringResource(R.string.compile_all_apps_confirm_title)) },
-            text = { Text(stringResource(R.string.compile_all_apps_confirm_message)) },
+            text = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(stringResource(R.string.compile_all_apps_confirm_message))
+                    Text(
+                        text = stringResource(R.string.compile_filter_title),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    CompileFilterManager.CompileFilter.entries.forEach { filter ->
+                        CompileFilterOption(
+                            selected = filter == compileFilter,
+                            label = stringResource(filter.labelRes),
+                            description = stringResource(filter.descriptionRes),
+                            onClick = { compileFilter = filter }
+                        )
+                    }
+                }
+            },
             confirmButton = {
                 Button(onClick = {
                     showCompileAllConfirm = false
+                    CompileFilterManager.setFilter(context, compileFilter)
                     startCompileAll()
                 }) {
                     Text(stringResource(R.string.compile_all_apps))
@@ -981,7 +1006,10 @@ private fun QuickActionRow(
     onClick: () -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(enabled = enabled && !isRunning, onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -1103,6 +1131,7 @@ private fun CompileBoosterRow(
     isRunning: Boolean,
     percent: Int,
     enabled: Boolean,
+    filterLabel: String,
     onClick: () -> Unit,
     onCancel: () -> Unit
 ) {
@@ -1144,6 +1173,11 @@ private fun CompileBoosterRow(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+            Text(
+                text = stringResource(R.string.compile_filter_current, filterLabel),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
         if (isRunning) {
             Button(
@@ -1156,6 +1190,34 @@ private fun CompileBoosterRow(
             Button(onClick = onClick, enabled = enabled) {
                 Text(stringResource(R.string.compile_all_apps_short), style = MaterialTheme.typography.bodySmall, maxLines = 1)
             }
+        }
+    }
+}
+
+@Composable
+private fun CompileFilterOption(
+    selected: Boolean,
+    label: String,
+    description: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(AppShapes.card)
+            .clickable(onClick = onClick)
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = selected, onClick = onClick)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

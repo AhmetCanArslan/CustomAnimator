@@ -113,7 +113,7 @@ object ProfileActions {
         DevAction(
             "compile_all_apps", R.string.compile_all_apps, R.string.compile_all_apps_desc, true,
             read = { true },
-            write = { _, _ -> DeveloperOptionsManager.compileAllApps() }
+            write = { ctx, _ -> DeveloperOptionsManager.compileAllApps(CompileFilterManager.getFilter(ctx)) }
         ),
         DevAction(
             "restart_system_ui", R.string.restart_system_ui, R.string.restart_system_ui_desc, true,

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
+import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ShizukuHelper
@@ -73,6 +74,7 @@ class CompileBoosterService : Service() {
             return
         }
 
+        val filter = CompileFilterManager.getFilter(applicationContext)
         CompileBoosterProgressTracker.update(isRunning = true, current = 0, total = total, currentLabel = "")
         var successCount = 0
 
@@ -88,11 +90,11 @@ class CompileBoosterService : Service() {
             CompileBoosterProgressTracker.update(isRunning = true, current = index, total = total, currentLabel = app.label)
             updateNotification(index, total, app.label)
 
-            val success = DeveloperOptionsManager.compileApp(app.packageName)
+            val success = DeveloperOptionsManager.compileApp(app.packageName, filter)
             if (success) successCount++
         }
 
-        Log.d(TAG, "Compiled $successCount/$total apps")
+        Log.d(TAG, "Compiled $successCount/$total apps with ${filter.value}")
         finish()
     }
 

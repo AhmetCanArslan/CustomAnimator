@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.BatteryTweak
@@ -627,8 +628,10 @@ private fun BatteryChoiceRow(
             }
             Text(
                 text = options.getOrElse(selected) { options.firstOrNull() ?: "" },
+                modifier = Modifier.widthIn(max = 120.dp),
                 style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.End
             )
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
