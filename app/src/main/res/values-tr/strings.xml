@@ -1112,6 +1112,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_games_count">%1$d oyun seçildi</string>
     <string name="game_mode_turn_on">Oyun Modunu aç</string>
     <string name="game_mode_turn_off">Oyun Modunu kapat</string>
+    <string name="game_mode_widget_turn_on">Aç</string>
+    <string name="game_mode_widget_turn_off">Kapat</string>
     <string name="game_mode_info">Açıkken: seçilen oyunlar performans modunda çalışır, diğer tüm kullanıcı uygulamaları kısıtlı bekleme grubuna alınır ve arka planda çalışamaz, arka plan işlem sınırı açılır, otomatik eşitleme kapanır, ekran açık kalır ve yenileme hızı en yükseğe sabitlenir. Uygulamalar hiçbir zaman zorla durdurulmaz. Sistem uygulamaları, başlatıcı, klavye, telefon, SMS, asistan, erişilebilirlik servisleri ve bildirim dinleyicilerine dokunulmaz. Kapattığında her şey geri alınır.</string>
     <string name="game_mode_tile_label">Oyun Modu</string>
     <string name="game_mode_tile_subtitle_on">Açık</string>

@@ -20,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:minWidth="0dp"
         android:orientation="vertical">
 
         <TextView
@@ -47,15 +48,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:background="@drawable/widget_boost_button"
+        android:gravity="center"
+        android:maxWidth="120dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="13sp"
         android:textStyle="bold"
         android:textColor="#FFFFFFFF"
-        android:text="@string/game_mode_turn_on" />
+        android:text="@string/game_mode_widget_turn_on" />
 
     <ProgressBar
         android:id="@+id/game_mode_progress"

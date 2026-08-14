@@ -1104,6 +1104,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_games_count">%1$d na laro ang napili</string>
     <string name="game_mode_turn_on">I-on ang Game Mode</string>
     <string name="game_mode_turn_off">I-off ang Game Mode</string>
+    <string name="game_mode_widget_turn_on">I-on</string>
+    <string name="game_mode_widget_turn_off">I-off</string>
     <string name="game_mode_info">Habang naka-on: tumatakbo sa performance mode ang mga piniling laro, inilalagay sa restricted standby bucket ang lahat ng ibang user app at hinaharangan sa background, iniaktibo ang background process limit, pinapatay ang auto-sync, nananatiling gising ang screen, at nakapirmi sa pinakamataas ang refresh rate. Hindi kailanman pinipilit na ihinto ang mga app. Hindi ginagalaw ang mga system app, launcher, keyboard, dialer, SMS, assistant, accessibility service at notification listener. Naibabalik ang lahat kapag na-off.</string>
     <string name="game_mode_tile_label">Game Mode</string>
     <string name="game_mode_tile_subtitle_on">Naka-on</string>

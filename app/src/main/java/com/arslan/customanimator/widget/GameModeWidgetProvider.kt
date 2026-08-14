@@ -62,7 +62,7 @@ class GameModeWidgetProvider : AppWidgetProvider() {
                 return RemoteViews(
                     mapOf(
                         SizeF(60f, 60f) to viewsFor(context, R.layout.widget_game_mode_tiny, false),
-                        SizeF(140f, 60f) to viewsFor(context, R.layout.widget_game_mode_wide, true),
+                        SizeF(140f, 60f) to viewsFor(context, R.layout.widget_game_mode_wide, true, true),
                         SizeF(140f, 120f) to viewsFor(context, R.layout.widget_game_mode, true)
                     )
                 )
@@ -74,12 +74,17 @@ class GameModeWidgetProvider : AppWidgetProvider() {
 
             return when {
                 width < WIDE_MIN_WIDTH_DP -> viewsFor(context, R.layout.widget_game_mode_tiny, false)
-                height < FULL_MIN_HEIGHT_DP -> viewsFor(context, R.layout.widget_game_mode_wide, true)
+                height < FULL_MIN_HEIGHT_DP -> viewsFor(context, R.layout.widget_game_mode_wide, true, true)
                 else -> viewsFor(context, R.layout.widget_game_mode, true)
             }
         }
 
-        private fun viewsFor(context: Context, layoutId: Int, hasText: Boolean): RemoteViews {
+        private fun viewsFor(
+            context: Context,
+            layoutId: Int,
+            hasText: Boolean,
+            compactButton: Boolean = false
+        ): RemoteViews {
             val views = RemoteViews(context.packageName, layoutId)
             val colors = WidgetMaterialColors.resolve(context)
             val running = GameModeWidgetState.isRunning(context)
@@ -100,12 +105,13 @@ class GameModeWidgetProvider : AppWidgetProvider() {
                         if (active) R.string.game_mode_status_active else R.string.game_mode_status_inactive
                     )
                 )
-                views.setTextViewText(
-                    R.id.game_mode_button,
-                    context.getString(
-                        if (active) R.string.game_mode_turn_off else R.string.game_mode_turn_on
-                    )
-                )
+                val buttonLabel = when {
+                    compactButton && active -> R.string.game_mode_widget_turn_off
+                    compactButton -> R.string.game_mode_widget_turn_on
+                    active -> R.string.game_mode_turn_off
+                    else -> R.string.game_mode_turn_on
+                }
+                views.setTextViewText(R.id.game_mode_button, context.getString(buttonLabel))
             }
 
             views.setViewVisibility(R.id.game_mode_progress, if (running) View.VISIBLE else View.GONE)

@@ -1124,6 +1124,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_games_count">%1$d giochi selezionati</string>
     <string name="game_mode_turn_on">Attiva Modalità gioco</string>
     <string name="game_mode_turn_off">Disattiva Modalità gioco</string>
+    <string name="game_mode_widget_turn_on">Attiva</string>
+    <string name="game_mode_widget_turn_off">Disattiva</string>
     <string name="game_mode_info">Quando è attiva: i giochi selezionati girano in modalità prestazioni, tutte le altre app utente passano al bucket standby limitato e non possono lavorare in background, il limite dei processi in background viene attivato, la sincronizzazione automatica viene disattivata, lo schermo resta acceso e la frequenza di aggiornamento viene fissata al massimo. Le app non vengono mai chiuse forzatamente. App di sistema, launcher, tastiera, telefono, SMS, assistente, servizi di accessibilità e listener delle notifiche non vengono toccati. Tutto viene ripristinato alla disattivazione.</string>
     <string name="game_mode_tile_label">Modalità gioco</string>
     <string name="game_mode_tile_subtitle_on">Attiva</string>

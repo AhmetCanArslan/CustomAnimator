@@ -1104,6 +1104,8 @@ Duración del Animador: %3$.2f</string>
     <string name="game_mode_games_count">%1$d juegos seleccionados</string>
     <string name="game_mode_turn_on">Activar Modo juego</string>
     <string name="game_mode_turn_off">Desactivar Modo juego</string>
+    <string name="game_mode_widget_turn_on">Activar</string>
+    <string name="game_mode_widget_turn_off">Desactivar</string>
     <string name="game_mode_info">Mientras está activo: los juegos elegidos se ejecutan en modo rendimiento, el resto de apps del usuario pasan al grupo de espera restringido y no pueden trabajar en segundo plano, se activa el límite de procesos en segundo plano, se desactiva la sincronización automática, la pantalla permanece encendida y la tasa de refresco se fija al máximo. Las apps nunca se fuerzan a detenerse. No se tocan las apps del sistema, el launcher, el teclado, el teléfono, los SMS, el asistente, los servicios de accesibilidad ni los lectores de notificaciones. Todo se restaura al desactivarlo.</string>
     <string name="game_mode_tile_label">Modo juego</string>
     <string name="game_mode_tile_subtitle_on">Activado</string>

@@ -1104,6 +1104,8 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_games_count">%1$d gim dipilih</string>
     <string name="game_mode_turn_on">Aktifkan Mode Game</string>
     <string name="game_mode_turn_off">Nonaktifkan Mode Game</string>
+    <string name="game_mode_widget_turn_on">Aktifkan</string>
+    <string name="game_mode_widget_turn_off">Nonaktifkan</string>
     <string name="game_mode_info">Saat aktif: gim yang dipilih berjalan dalam mode performa, semua aplikasi pengguna lain dipindahkan ke bucket standby terbatas dan diblokir dari kerja latar belakang, batas proses latar belakang diaktifkan, sinkronisasi otomatis dimatikan, layar tetap menyala, dan refresh rate dikunci di nilai maksimum. Aplikasi tidak pernah dihentikan paksa. Aplikasi sistem, peluncur, papan ketik, telepon, SMS, asisten, layanan aksesibilitas, dan pendengar notifikasi tidak disentuh. Semuanya dipulihkan saat dimatikan.</string>
     <string name="game_mode_tile_label">Mode Game</string>
     <string name="game_mode_tile_subtitle_on">Aktif</string>
