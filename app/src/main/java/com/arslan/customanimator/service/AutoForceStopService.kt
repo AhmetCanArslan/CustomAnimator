@@ -38,6 +38,7 @@ class AutoForceStopService : Service() {
         private const val POLL_INTERVAL_MS = 1500L
         private const val IDLE_POLL_INTERVAL_MS = 5000L
         private const val RECENTLY_KILLED_TTL_MS = 3000L
+        private const val BACKGROUND_GRACE_MS = 1200L
         private const val ACTIVITY_STOPPED = 23
 
         fun start(context: Context) {
@@ -110,7 +111,8 @@ class AutoForceStopService : Service() {
     private suspend fun pollLoop() {
         val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         val recentlyKilled = mutableMapOf<String, Long>()
-        val visiblePackages = mutableSetOf<String>()
+        val visibleActivities = mutableMapOf<String, MutableSet<String>>()
+        val pendingBackground = mutableMapOf<String, Long>()
         var lastEventTime = System.currentTimeMillis() - POLL_INTERVAL_MS
 
         while (true) {
@@ -132,7 +134,8 @@ class AutoForceStopService : Service() {
                     isIdle = true
                     refreshNotification()
                 }
-                visiblePackages.clear()
+                visibleActivities.clear()
+                pendingBackground.clear()
                 lastEventTime = System.currentTimeMillis()
                 continue
             }
@@ -152,7 +155,8 @@ class AutoForceStopService : Service() {
                 Log.d(TAG, "Usage access revoked, idling until it is granted again")
                 isIdle = true
                 refreshNotification()
-                visiblePackages.clear()
+                visibleActivities.clear()
+                pendingBackground.clear()
                 lastEventTime = System.currentTimeMillis()
                 continue
             } catch (e: Exception) {
@@ -165,17 +169,34 @@ class AutoForceStopService : Service() {
                 if (packageName == applicationContext.packageName) continue
 
                 if (transition.visible) {
-                    visiblePackages.add(packageName)
-                    if (packageName in permissionSelected) {
+                    val wasVisible = visibleActivities[packageName]?.isNotEmpty() == true
+                    visibleActivities.getOrPut(packageName) { mutableSetOf() }.add(transition.className)
+                    pendingBackground.remove(packageName)
+                    if (!wasVisible && packageName in permissionSelected) {
                         scope.launch(Dispatchers.IO) { regrantPermissionsForPackage(packageName) }
                     }
                     continue
                 }
 
-                visiblePackages.remove(packageName)
+                val activities = visibleActivities[packageName] ?: continue
+                activities.remove(transition.className)
+                if (activities.isEmpty()) {
+                    visibleActivities.remove(packageName)
+                    if (packageName !in pendingBackground) {
+                        pendingBackground[packageName] = System.currentTimeMillis()
+                    }
+                }
+            }
+
+            val backgroundCheckTime = System.currentTimeMillis()
+            val backgrounded = pendingBackground.filter { backgroundCheckTime - it.value >= BACKGROUND_GRACE_MS }
+            for ((packageName, _) in backgrounded) {
+                pendingBackground.remove(packageName)
+                if (visibleActivities[packageName]?.isNotEmpty() == true) continue
+                visibleActivities.remove(packageName)
 
                 if (packageName in forceStopSelected && !recentlyKilled.containsKey(packageName)) {
-                    recentlyKilled[packageName] = now
+                    recentlyKilled[packageName] = backgroundCheckTime
                     scope.launch(Dispatchers.IO) {
                         val success = DeveloperOptionsManager.forceStopApp(packageName)
                         Log.d(TAG, "Force-stopped $packageName success=$success")
@@ -207,7 +228,11 @@ class AutoForceStopService : Service() {
         Log.d(TAG, "Regranted permissions for $packageName allSucceeded=$allSucceeded")
     }
 
-    private data class VisibilityTransition(val packageName: String, val visible: Boolean)
+    private data class VisibilityTransition(
+        val packageName: String,
+        val className: String,
+        val visible: Boolean
+    )
 
     private fun queryVisibilityTransitions(
         usageStatsManager: UsageStatsManager,
@@ -221,19 +246,28 @@ class AutoForceStopService : Service() {
             events.getNextEvent(event)
             when (event.eventType) {
                 UsageEvents.Event.MOVE_TO_FOREGROUND ->
-                    transitions.add(VisibilityTransition(event.packageName, true))
+                    transitions.add(
+                        VisibilityTransition(event.packageName, activityKey(event), true)
+                    )
 
                 ACTIVITY_STOPPED ->
-                    transitions.add(VisibilityTransition(event.packageName, false))
+                    transitions.add(
+                        VisibilityTransition(event.packageName, activityKey(event), false)
+                    )
 
                 UsageEvents.Event.MOVE_TO_BACKGROUND ->
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                        transitions.add(VisibilityTransition(event.packageName, false))
+                        transitions.add(
+                            VisibilityTransition(event.packageName, activityKey(event), false)
+                        )
                     }
             }
         }
         return transitions
     }
+
+    private fun activityKey(event: UsageEvents.Event): String =
+        event.className ?: event.packageName
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
