@@ -2,6 +2,7 @@ package com.arslan.customanimator.utils
 
 import android.content.Context
 import com.arslan.customanimator.BuildConfig
+import com.arslan.customanimator.R
 
 data class ChangelogRelease(
     val versionCode: Int,
@@ -11,11 +12,9 @@ data class ChangelogRelease(
 
 object ChangelogManager {
 
-    private const val ASSET_NAME = "changelog.txt"
-
     fun readAll(context: Context): List<ChangelogRelease> {
         val lines = runCatching {
-            context.assets.open(ASSET_NAME).bufferedReader().use { it.readLines() }
+            context.resources.openRawResource(R.raw.changelog).bufferedReader().use { it.readLines() }
         }.getOrElse { return emptyList() }
 
         val releases = mutableListOf<ChangelogRelease>()

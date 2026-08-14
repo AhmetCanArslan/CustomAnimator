@@ -1,0 +1,6 @@
+## 175 - 3.2
+- Acciones de captura de pantalla: copia o elimina una captura nueva desde una notificación o un botón flotante, más una baldosa de Ajustes rápidos "Copiar captura".
+- Administrador de Hotspot: enciende o apaga el hotspot, mira y bloquea los dispositivos conectados, edita nombre, contraseña, seguridad, banda y límites, comparte por QR, con baldosa de Ajustes rápidos.
+- Baldosa de sonido: una baldosa de Ajustes rápidos que abre el panel de volumen o el selector de salida de medios al tocarla o mantenerla presionada.
+- Modo Juego: restringe las apps en segundo plano mientras juegas, con baldosa de Ajustes rápidos y widget de pantalla de inicio.
+- Modo de compilación: elige cómo se compilan las apps (Everything, Speed, Speed profile, Verify).

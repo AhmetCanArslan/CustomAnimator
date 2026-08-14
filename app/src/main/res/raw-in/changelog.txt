@@ -1,0 +1,6 @@
+## 175 - 3.2
+- Aksi tangkapan layar: salin atau hapus tangkapan layar baru dari notifikasi atau tombol mengambang, plus ubin Setelan Cepat "Salin tangkapan layar".
+- Pengelola Hotspot: nyalakan atau matikan hotspot, lihat dan blokir perangkat yang terhubung, ubah nama, sandi, keamanan, pita, dan batas, bagikan lewat QR, dengan ubin Setelan Cepat.
+- Ubin suara: ubin Setelan Cepat yang membuka panel volume atau pemilih output media saat ditekan atau ditekan lama.
+- Mode Game: membatasi aplikasi latar belakang saat game berjalan, dengan ubin Setelan Cepat dan widget layar utama.
+- Mode kompilasi: pilih cara aplikasi dikompilasi (Everything, Speed, Speed profile, Verify).
