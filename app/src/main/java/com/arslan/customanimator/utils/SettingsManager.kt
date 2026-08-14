@@ -153,9 +153,10 @@ object SettingsManager {
         transitionScale: Float,
         animatorScale: Float
     ): Boolean {
-        return setWindowAnimationScale(context, contentResolver, windowScale) &&
-                setTransitionAnimationScale(context, contentResolver, transitionScale) &&
-                setAnimatorDurationScale(context, contentResolver, animatorScale)
+        val windowSuccess = setWindowAnimationScale(context, contentResolver, windowScale)
+        val transitionSuccess = setTransitionAnimationScale(context, contentResolver, transitionScale)
+        val animatorSuccess = setAnimatorDurationScale(context, contentResolver, animatorScale)
+        return windowSuccess and transitionSuccess and animatorSuccess
     }
     
     // Smallest Width methods
