@@ -202,7 +202,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
 
@@ -274,6 +274,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val perAppDpiListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val hotspotManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -696,6 +697,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.MAIN },
             listState = closeAppsExclusionsListState
         )
+    } else if (targetScreen == HomeScreen.GAME_MODE) {
+        GameModeScreen(
+            onBack = { currentScreen = HomeScreen.MAIN },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = gameModeListState
+        )
     } else {
     Scaffold(
         topBar = {
@@ -826,6 +833,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
+            onNavigateToGameMode = { currentScreen = HomeScreen.GAME_MODE },
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },

@@ -1119,4 +1119,23 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="hotspot_tile_label">Hotspot</string>
     <string name="hotspot_copy_password">Copy password</string>
     <string name="hotspot_show_qr">Show QR code</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="game_mode_desc">Restrict background apps while your games run</string>
+    <string name="game_mode_needs_shizuku">Game Mode needs Shizuku to change app and system settings.</string>
+    <string name="game_mode_status_active">Game Mode is on</string>
+    <string name="game_mode_status_inactive">Game Mode is off</string>
+    <string name="game_mode_target_count">%1$d apps will be restricted</string>
+    <string name="game_mode_select_games">Pick your games below</string>
+    <string name="game_mode_games_count">%1$d games selected</string>
+    <string name="game_mode_turn_on">Turn on Game Mode</string>
+    <string name="game_mode_turn_off">Turn off Game Mode</string>
+    <string name="game_mode_info">While on: selected games run in performance mode, every other user app is moved to the restricted standby bucket and blocked from background work, the background process limit is enabled, auto-sync is turned off, the screen stays awake and the refresh rate is pinned to its maximum. Apps are never force stopped. System apps, launcher, keyboard, dialer, SMS, assistant, accessibility services and notification listeners are left untouched. Everything is restored when you turn it off.</string>
+    <string name="game_mode_tile_label">Game Mode</string>
+    <string name="game_mode_tile_subtitle_on">On</string>
+    <string name="game_mode_tile_subtitle_off">Off</string>
+    <string name="game_mode_enabled_toast">Game Mode on — background apps are out of the way, expect higher and steadier FPS.</string>
+    <string name="game_mode_disabled_toast">Game Mode off — every app is back to normal.</string>
+    <string name="game_mode_failed_toast">Game Mode could not be applied. Check Shizuku and try again.</string>
+    <string name="game_mode_widget_label">Game Mode</string>
+    <string name="game_mode_widget_description">Turns Game Mode on or off in one tap.</string>
 </resources>

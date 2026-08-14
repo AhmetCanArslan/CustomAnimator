@@ -81,6 +81,7 @@ fun DeveloperScreenContent(
     onNavigateToAutoPermissionDisabler: () -> Unit,
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToCloseAppsExclusions: () -> Unit,
+    onNavigateToGameMode: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
     onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
@@ -468,6 +469,13 @@ fun DeveloperScreenContent(
                             enabled = actionsEnabled,
                             isRunning = runningAction == QuickAction.CLOSE_APPS,
                             onClick = { showCloseAppsConfirm = true }
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.VideogameAsset,
+                            title = stringResource(R.string.game_mode),
+                            description = stringResource(R.string.game_mode_desc),
+                            onClick = onNavigateToGameMode
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

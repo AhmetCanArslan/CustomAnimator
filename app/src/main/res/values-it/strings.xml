@@ -1104,4 +1104,23 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="sound_tile_hint">Aggiungi il riquadro Suono alle Impostazioni rapide, poi premilo o tienilo premuto.</string>
     <string name="sound_tile_shizuku_note">Il selettore dell’uscita multimediale e la chiusura delle Impostazioni rapide usano Shizuku. Il pannello del volume funziona senza.</string>
     <string name="sound_tile_test">Prova</string>
+    <string name="game_mode">Modalità gioco</string>
+    <string name="game_mode_desc">Limita le app in background mentre giochi</string>
+    <string name="game_mode_needs_shizuku">La Modalità gioco richiede Shizuku per modificare le impostazioni di app e sistema.</string>
+    <string name="game_mode_status_active">Modalità gioco attiva</string>
+    <string name="game_mode_status_inactive">Modalità gioco disattivata</string>
+    <string name="game_mode_target_count">%1$d app verranno limitate</string>
+    <string name="game_mode_select_games">Scegli i tuoi giochi qui sotto</string>
+    <string name="game_mode_games_count">%1$d giochi selezionati</string>
+    <string name="game_mode_turn_on">Attiva Modalità gioco</string>
+    <string name="game_mode_turn_off">Disattiva Modalità gioco</string>
+    <string name="game_mode_info">Quando è attiva: i giochi selezionati girano in modalità prestazioni, tutte le altre app utente passano al bucket standby limitato e non possono lavorare in background, il limite dei processi in background viene attivato, la sincronizzazione automatica viene disattivata, lo schermo resta acceso e la frequenza di aggiornamento viene fissata al massimo. Le app non vengono mai chiuse forzatamente. App di sistema, launcher, tastiera, telefono, SMS, assistente, servizi di accessibilità e listener delle notifiche non vengono toccati. Tutto viene ripristinato alla disattivazione.</string>
+    <string name="game_mode_tile_label">Modalità gioco</string>
+    <string name="game_mode_tile_subtitle_on">Attiva</string>
+    <string name="game_mode_tile_subtitle_off">Disattivata</string>
+    <string name="game_mode_enabled_toast">Modalità gioco attiva — le app in background sono fuori dai piedi, aspettati FPS più alti e più stabili.</string>
+    <string name="game_mode_disabled_toast">Modalità gioco disattivata — tutte le app sono tornate alla normalità.</string>
+    <string name="game_mode_failed_toast">Impossibile applicare la Modalità gioco. Controlla Shizuku e riprova.</string>
+    <string name="game_mode_widget_label">Modalità gioco</string>
+    <string name="game_mode_widget_description">Attiva o disattiva la Modalità gioco con un tocco.</string>
 </resources>

@@ -1084,4 +1084,23 @@ Tagal ng Animator: %3$.2f</string>
     <string name="sound_tile_hint">Idagdag ang Sound tile sa Quick Settings, pagkatapos ay pindutin o i-long press ito.</string>
     <string name="sound_tile_shizuku_note">Gumagamit ng Shizuku ang media output picker at pag-collapse ng Quick Settings. Gumagana ang volume panel nang wala nito.</string>
     <string name="sound_tile_test">Subukan</string>
+    <string name="game_mode">Game Mode</string>
+    <string name="game_mode_desc">Limitahan ang mga background app habang naglalaro</string>
+    <string name="game_mode_needs_shizuku">Kailangan ng Game Mode ang Shizuku para baguhin ang mga setting ng app at sistema.</string>
+    <string name="game_mode_status_active">Naka-on ang Game Mode</string>
+    <string name="game_mode_status_inactive">Naka-off ang Game Mode</string>
+    <string name="game_mode_target_count">%1$d na app ang lilimitahan</string>
+    <string name="game_mode_select_games">Piliin ang iyong mga laro sa ibaba</string>
+    <string name="game_mode_games_count">%1$d na laro ang napili</string>
+    <string name="game_mode_turn_on">I-on ang Game Mode</string>
+    <string name="game_mode_turn_off">I-off ang Game Mode</string>
+    <string name="game_mode_info">Habang naka-on: tumatakbo sa performance mode ang mga piniling laro, inilalagay sa restricted standby bucket ang lahat ng ibang user app at hinaharangan sa background, iniaktibo ang background process limit, pinapatay ang auto-sync, nananatiling gising ang screen, at nakapirmi sa pinakamataas ang refresh rate. Hindi kailanman pinipilit na ihinto ang mga app. Hindi ginagalaw ang mga system app, launcher, keyboard, dialer, SMS, assistant, accessibility service at notification listener. Naibabalik ang lahat kapag na-off.</string>
+    <string name="game_mode_tile_label">Game Mode</string>
+    <string name="game_mode_tile_subtitle_on">Naka-on</string>
+    <string name="game_mode_tile_subtitle_off">Naka-off</string>
+    <string name="game_mode_enabled_toast">Naka-on ang Game Mode — wala nang humaharang na background app, mas mataas at mas steady ang FPS.</string>
+    <string name="game_mode_disabled_toast">Naka-off ang Game Mode — bumalik na sa normal ang lahat ng app.</string>
+    <string name="game_mode_failed_toast">Hindi na-apply ang Game Mode. Tingnan ang Shizuku at subukan ulit.</string>
+    <string name="game_mode_widget_label">Game Mode</string>
+    <string name="game_mode_widget_description">I-on o i-off ang Game Mode sa isang tap.</string>
 </resources>

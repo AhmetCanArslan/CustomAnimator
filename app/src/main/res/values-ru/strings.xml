@@ -1086,4 +1086,23 @@
     <string name="sound_tile_hint">Добавьте плитку звука в быстрые настройки, затем нажмите или удерживайте её.</string>
     <string name="sound_tile_shizuku_note">Выбор вывода мультимедиа и сворачивание быстрых настроек используют Shizuku. Панель громкости работает без него.</string>
     <string name="sound_tile_test">Проверить</string>
+    <string name="game_mode">Игровой режим</string>
+    <string name="game_mode_desc">Ограничивает фоновые приложения во время игры</string>
+    <string name="game_mode_needs_shizuku">Игровому режиму нужен Shizuku для изменения настроек приложений и системы.</string>
+    <string name="game_mode_status_active">Игровой режим включён</string>
+    <string name="game_mode_status_inactive">Игровой режим выключен</string>
+    <string name="game_mode_target_count">Будет ограничено приложений: %1$d</string>
+    <string name="game_mode_select_games">Выберите свои игры ниже</string>
+    <string name="game_mode_games_count">Выбрано игр: %1$d</string>
+    <string name="game_mode_turn_on">Включить игровой режим</string>
+    <string name="game_mode_turn_off">Выключить игровой режим</string>
+    <string name="game_mode_info">Пока включён: выбранные игры работают в режиме производительности, все остальные пользовательские приложения переводятся в ограниченную группу ожидания и не могут работать в фоне, включается лимит фоновых процессов, автосинхронизация выключается, экран остаётся включённым, а частота обновления фиксируется на максимуме. Приложения никогда не останавливаются принудительно. Системные приложения, лаунчер, клавиатура, телефон, SMS, ассистент, службы специальных возможностей и слушатели уведомлений не затрагиваются. При выключении всё восстанавливается.</string>
+    <string name="game_mode_tile_label">Игровой режим</string>
+    <string name="game_mode_tile_subtitle_on">Вкл</string>
+    <string name="game_mode_tile_subtitle_off">Выкл</string>
+    <string name="game_mode_enabled_toast">Игровой режим включён — фоновые приложения больше не мешают, FPS будет выше и стабильнее.</string>
+    <string name="game_mode_disabled_toast">Игровой режим выключен — все приложения вернулись к обычной работе.</string>
+    <string name="game_mode_failed_toast">Не удалось включить игровой режим. Проверьте Shizuku и попробуйте снова.</string>
+    <string name="game_mode_widget_label">Игровой режим</string>
+    <string name="game_mode_widget_description">Включает или выключает игровой режим одним нажатием.</string>
 </resources>

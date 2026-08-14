@@ -1084,4 +1084,23 @@ Duración del Animador: %3$.2f</string>
     <string name="sound_tile_hint">Añade el mosaico Sonido a Ajustes rápidos y púlsalo o mantenlo pulsado.</string>
     <string name="sound_tile_shizuku_note">El selector de salida multimedia y el cierre de Ajustes rápidos usan Shizuku. El panel de volumen funciona sin él.</string>
     <string name="sound_tile_test">Probar</string>
+    <string name="game_mode">Modo juego</string>
+    <string name="game_mode_desc">Restringe las apps en segundo plano mientras juegas</string>
+    <string name="game_mode_needs_shizuku">El Modo juego necesita Shizuku para cambiar los ajustes de apps y del sistema.</string>
+    <string name="game_mode_status_active">Modo juego activado</string>
+    <string name="game_mode_status_inactive">Modo juego desactivado</string>
+    <string name="game_mode_target_count">Se restringirán %1$d apps</string>
+    <string name="game_mode_select_games">Elige tus juegos abajo</string>
+    <string name="game_mode_games_count">%1$d juegos seleccionados</string>
+    <string name="game_mode_turn_on">Activar Modo juego</string>
+    <string name="game_mode_turn_off">Desactivar Modo juego</string>
+    <string name="game_mode_info">Mientras está activo: los juegos elegidos se ejecutan en modo rendimiento, el resto de apps del usuario pasan al grupo de espera restringido y no pueden trabajar en segundo plano, se activa el límite de procesos en segundo plano, se desactiva la sincronización automática, la pantalla permanece encendida y la tasa de refresco se fija al máximo. Las apps nunca se fuerzan a detenerse. No se tocan las apps del sistema, el launcher, el teclado, el teléfono, los SMS, el asistente, los servicios de accesibilidad ni los lectores de notificaciones. Todo se restaura al desactivarlo.</string>
+    <string name="game_mode_tile_label">Modo juego</string>
+    <string name="game_mode_tile_subtitle_on">Activado</string>
+    <string name="game_mode_tile_subtitle_off">Desactivado</string>
+    <string name="game_mode_enabled_toast">Modo juego activado: las apps en segundo plano ya no estorban, espera FPS más altos y estables.</string>
+    <string name="game_mode_disabled_toast">Modo juego desactivado: todas las apps volvieron a la normalidad.</string>
+    <string name="game_mode_failed_toast">No se pudo aplicar el Modo juego. Revisa Shizuku e inténtalo de nuevo.</string>
+    <string name="game_mode_widget_label">Modo juego</string>
+    <string name="game_mode_widget_description">Activa o desactiva el Modo juego con un toque.</string>
 </resources>

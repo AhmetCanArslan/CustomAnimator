@@ -1084,4 +1084,23 @@ Durasi Animator: %3$.2f</string>
     <string name="sound_tile_hint">Tambahkan tile Suara ke Setelan Cepat, lalu tekan atau tekan lama.</string>
     <string name="sound_tile_shizuku_note">Pemilih output media dan penutupan Setelan Cepat menggunakan Shizuku. Panel volume dapat digunakan tanpa Shizuku.</string>
     <string name="sound_tile_test">Uji</string>
+    <string name="game_mode">Mode Game</string>
+    <string name="game_mode_desc">Batasi aplikasi latar belakang saat gim berjalan</string>
+    <string name="game_mode_needs_shizuku">Mode Game memerlukan Shizuku untuk mengubah pengaturan aplikasi dan sistem.</string>
+    <string name="game_mode_status_active">Mode Game aktif</string>
+    <string name="game_mode_status_inactive">Mode Game nonaktif</string>
+    <string name="game_mode_target_count">%1$d aplikasi akan dibatasi</string>
+    <string name="game_mode_select_games">Pilih gim kamu di bawah</string>
+    <string name="game_mode_games_count">%1$d gim dipilih</string>
+    <string name="game_mode_turn_on">Aktifkan Mode Game</string>
+    <string name="game_mode_turn_off">Nonaktifkan Mode Game</string>
+    <string name="game_mode_info">Saat aktif: gim yang dipilih berjalan dalam mode performa, semua aplikasi pengguna lain dipindahkan ke bucket standby terbatas dan diblokir dari kerja latar belakang, batas proses latar belakang diaktifkan, sinkronisasi otomatis dimatikan, layar tetap menyala, dan refresh rate dikunci di nilai maksimum. Aplikasi tidak pernah dihentikan paksa. Aplikasi sistem, peluncur, papan ketik, telepon, SMS, asisten, layanan aksesibilitas, dan pendengar notifikasi tidak disentuh. Semuanya dipulihkan saat dimatikan.</string>
+    <string name="game_mode_tile_label">Mode Game</string>
+    <string name="game_mode_tile_subtitle_on">Aktif</string>
+    <string name="game_mode_tile_subtitle_off">Nonaktif</string>
+    <string name="game_mode_enabled_toast">Mode Game aktif — aplikasi latar belakang sudah disingkirkan, FPS bakal lebih tinggi dan stabil.</string>
+    <string name="game_mode_disabled_toast">Mode Game nonaktif — semua aplikasi kembali normal.</string>
+    <string name="game_mode_failed_toast">Mode Game gagal diterapkan. Periksa Shizuku lalu coba lagi.</string>
+    <string name="game_mode_widget_label">Mode Game</string>
+    <string name="game_mode_widget_description">Mengaktifkan atau menonaktifkan Mode Game dengan sekali ketuk.</string>
 </resources>

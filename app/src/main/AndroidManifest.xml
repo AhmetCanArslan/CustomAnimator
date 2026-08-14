@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
 
     <uses-permission
         android:name="android.permission.SET_ANIMATION_SCALE"
@@ -155,6 +156,17 @@
             android:exported="true"
             android:icon="@drawable/ic_tile_hotspot"
             android:label="@string/hotspot_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.GameModeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_videogame_asset"
+            android:label="@string/game_mode_tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
@@ -517,6 +529,27 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/boost_widget_info" />
         </receiver>
+
+        <receiver
+            android:name=".widget.GameModeWidgetProvider"
+            android:exported="false"
+            android:label="@string/game_mode_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/game_mode_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".service.GameModeToggleService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Applies and reverts Game Mode restrictions from a home screen widget (dev tool)" />
+        </service>
 
         <service
             android:name=".service.BoostService"

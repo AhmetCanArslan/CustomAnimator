@@ -1092,4 +1092,23 @@ Animatör Süresi: %3$.2f</string>
     <string name="sound_tile_hint">Ses kutucuğunu Hızlı Ayarlar’a ekleyin, ardından basın veya uzun basın.</string>
     <string name="sound_tile_shizuku_note">Medya çıkış seçicisi ve Hızlı Ayarlar’ı kapatma işlemi Shizuku kullanır. Ses paneli olmadan da çalışır.</string>
     <string name="sound_tile_test">Test et</string>
+    <string name="game_mode">Oyun Modu</string>
+    <string name="game_mode_desc">Oyunların çalışırken arka plan uygulamalarını kısıtla</string>
+    <string name="game_mode_needs_shizuku">Oyun Modu, uygulama ve sistem ayarlarını değiştirmek için Shizuku gerektirir.</string>
+    <string name="game_mode_status_active">Oyun Modu açık</string>
+    <string name="game_mode_status_inactive">Oyun Modu kapalı</string>
+    <string name="game_mode_target_count">%1$d uygulama kısıtlanacak</string>
+    <string name="game_mode_select_games">Oyunlarını aşağıdan seç</string>
+    <string name="game_mode_games_count">%1$d oyun seçildi</string>
+    <string name="game_mode_turn_on">Oyun Modunu aç</string>
+    <string name="game_mode_turn_off">Oyun Modunu kapat</string>
+    <string name="game_mode_info">Açıkken: seçilen oyunlar performans modunda çalışır, diğer tüm kullanıcı uygulamaları kısıtlı bekleme grubuna alınır ve arka planda çalışamaz, arka plan işlem sınırı açılır, otomatik eşitleme kapanır, ekran açık kalır ve yenileme hızı en yükseğe sabitlenir. Uygulamalar hiçbir zaman zorla durdurulmaz. Sistem uygulamaları, başlatıcı, klavye, telefon, SMS, asistan, erişilebilirlik servisleri ve bildirim dinleyicilerine dokunulmaz. Kapattığında her şey geri alınır.</string>
+    <string name="game_mode_tile_label">Oyun Modu</string>
+    <string name="game_mode_tile_subtitle_on">Açık</string>
+    <string name="game_mode_tile_subtitle_off">Kapalı</string>
+    <string name="game_mode_enabled_toast">Oyun Modu açık — arka plan uygulamaları yolundan çekildi, FPS daha yüksek ve daha stabil olacak.</string>
+    <string name="game_mode_disabled_toast">Oyun Modu kapalı — tüm uygulamalar normale döndü.</string>
+    <string name="game_mode_failed_toast">Oyun Modu uygulanamadı. Shizuku\'yu kontrol edip tekrar dene.</string>
+    <string name="game_mode_widget_label">Oyun Modu</string>
+    <string name="game_mode_widget_description">Oyun Modunu tek dokunuşla açar veya kapatır.</string>
 </resources>
