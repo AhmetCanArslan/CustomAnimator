@@ -27,24 +27,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
-import com.arslan.customanimator.service.PerAppDpiService
+import com.arslan.customanimator.service.PerAppWidthService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InstalledAppsProvider
-import com.arslan.customanimator.utils.PerAppDpiManager
+import com.arslan.customanimator.utils.PerAppWidthManager
+import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerAppDpiScreen(
+fun PerAppWidthScreen(
     onBack: () -> Unit,
     hasShizukuPermission: Boolean,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
     val openSetup = LocalOpenSetupGuide.current
-    val manager = remember { PerAppDpiManager(context) }
+    val manager = remember { PerAppWidthManager(context) }
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var overrides by remember { mutableStateOf(manager.getOverrides()) }
@@ -95,19 +96,19 @@ fun PerAppDpiScreen(
             ) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
-            PerAppDpiService.start(context)
+            PerAppWidthService.start(context)
         } else {
-            PerAppDpiService.stop(context)
+            PerAppWidthService.stop(context)
         }
     }
 
     editingApp?.let { app ->
-        PerAppDpiDialog(
+        PerAppWidthDialog(
             app = app,
-            currentDpi = overrides[app.packageName],
+            currentWidth = overrides[app.packageName],
             onDismiss = { editingApp = null },
-            onConfirm = { dpi ->
-                manager.setDpi(app.packageName, dpi)
+            onConfirm = { widthDp ->
+                manager.setWidth(app.packageName, widthDp)
                 overrides = manager.getOverrides()
                 editingApp = null
                 syncServiceState()
@@ -120,7 +121,7 @@ fun PerAppDpiScreen(
             TopAppBar(
                 title = {
                     Text(
-                        stringResource(R.string.per_app_dpi),
+                        stringResource(R.string.per_app_width),
                         style = MaterialTheme.typography.headlineSmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -141,7 +142,7 @@ fun PerAppDpiScreen(
                             overrides = manager.getOverrides()
                             syncServiceState()
                         }) {
-                            Text(stringResource(R.string.per_app_dpi_clear_all))
+                            Text(stringResource(R.string.per_app_width_clear_all))
                         }
                     }
                 }
@@ -175,7 +176,7 @@ fun PerAppDpiScreen(
                             tint = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                         Text(
-                            text = stringResource(R.string.per_app_dpi_disclaimer),
+                            text = stringResource(R.string.per_app_width_disclaimer),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
@@ -195,7 +196,7 @@ fun PerAppDpiScreen(
             if (!hasUsageAccess) {
                 item {
                     WarningCard(
-                        message = stringResource(R.string.per_app_dpi_needs_usage_access),
+                        message = stringResource(R.string.per_app_width_needs_usage_access),
                         actionLabel = stringResource(R.string.open_usage_access_settings),
                         onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
                     )
@@ -205,11 +206,11 @@ fun PerAppDpiScreen(
             item {
                 Text(
                     text = if (overrides.isNotEmpty() && hasShizukuPermission && hasUsageAccess) {
-                        stringResource(R.string.per_app_dpi_status_active, overrides.size)
+                        stringResource(R.string.per_app_width_status_active, overrides.size)
                     } else if (overrides.isNotEmpty()) {
-                        stringResource(R.string.per_app_dpi_status_paused)
+                        stringResource(R.string.per_app_width_status_paused)
                     } else {
-                        stringResource(R.string.per_app_dpi_desc)
+                        stringResource(R.string.per_app_width_desc)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -244,12 +245,12 @@ fun PerAppDpiScreen(
                 }
             } else {
                 items(filteredApps, key = { it.packageName }) { app ->
-                    PerAppDpiRow(
+                    PerAppWidthRow(
                         app = app,
-                        dpi = overrides[app.packageName],
+                        widthDp = overrides[app.packageName],
                         onClick = { editingApp = app },
                         onClear = {
-                            manager.setDpi(app.packageName, null)
+                            manager.setWidth(app.packageName, null)
                             overrides = manager.getOverrides()
                             syncServiceState()
                         }
@@ -265,9 +266,9 @@ fun PerAppDpiScreen(
 }
 
 @Composable
-private fun PerAppDpiRow(
+private fun PerAppWidthRow(
     app: InstalledAppInfo,
-    dpi: Int?,
+    widthDp: Int?,
     onClick: () -> Unit,
     onClear: () -> Unit
 ) {
@@ -294,24 +295,24 @@ private fun PerAppDpiRow(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = if (dpi != null) {
-                        stringResource(R.string.per_app_dpi_value, dpi)
+                    text = if (widthDp != null) {
+                        stringResource(R.string.per_app_width_value, widthDp)
                     } else {
-                        stringResource(R.string.per_app_dpi_none)
+                        stringResource(R.string.per_app_width_none)
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (dpi != null) {
+                    color = if (widthDp != null) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     }
                 )
             }
-            if (dpi != null) {
+            if (widthDp != null) {
                 IconButton(onClick = onClear, modifier = Modifier.size(36.dp)) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
-                        contentDescription = stringResource(R.string.per_app_dpi_reset)
+                        contentDescription = stringResource(R.string.per_app_width_reset)
                     )
                 }
             } else {
@@ -322,17 +323,18 @@ private fun PerAppDpiRow(
 }
 
 @Composable
-private fun PerAppDpiDialog(
+private fun PerAppWidthDialog(
     app: InstalledAppInfo,
-    currentDpi: Int?,
+    currentWidth: Int?,
     onDismiss: () -> Unit,
     onConfirm: (Int?) -> Unit
 ) {
     val context = LocalContext.current
-    val deviceDpi = context.resources.displayMetrics.densityDpi
-    var value by remember { mutableStateOf(currentDpi?.toString() ?: deviceDpi.toString()) }
+    val deviceWidth = SettingsManager.getSmallestWidth(context)
+    var value by remember { mutableStateOf(currentWidth?.toString() ?: deviceWidth.toString()) }
     val parsed = value.toIntOrNull()
-    val isValid = parsed != null && parsed in PerAppDpiManager.MIN_DPI..PerAppDpiManager.MAX_DPI
+    val isValid = parsed != null && parsed in PerAppWidthManager.MIN_WIDTH..PerAppWidthManager.MAX_WIDTH
+    val previewDensity = if (isValid) SettingsManager.densityForSmallestWidth(context, parsed!!) else null
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -340,14 +342,14 @@ private fun PerAppDpiDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    text = stringResource(R.string.per_app_dpi_dialog_desc, deviceDpi),
+                    text = stringResource(R.string.per_app_width_dialog_desc, deviceWidth),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 OutlinedTextField(
                     value = value,
                     onValueChange = { value = it },
-                    label = { Text(stringResource(R.string.per_app_dpi_label)) },
+                    label = { Text(stringResource(R.string.per_app_width_label)) },
                     singleLine = true,
                     isError = value.isNotEmpty() && !isValid,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -355,13 +357,20 @@ private fun PerAppDpiDialog(
                 )
                 Text(
                     text = stringResource(
-                        R.string.per_app_dpi_range,
-                        PerAppDpiManager.MIN_DPI,
-                        PerAppDpiManager.MAX_DPI
+                        R.string.per_app_width_range,
+                        PerAppWidthManager.MIN_WIDTH,
+                        PerAppWidthManager.MAX_WIDTH
                     ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                previewDensity?.let { density ->
+                    Text(
+                        text = stringResource(R.string.per_app_width_density_preview, density),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         },
         confirmButton = {
@@ -371,9 +380,9 @@ private fun PerAppDpiDialog(
         },
         dismissButton = {
             Row {
-                if (currentDpi != null) {
+                if (currentWidth != null) {
                     TextButton(onClick = { onConfirm(null) }) {
-                        Text(stringResource(R.string.per_app_dpi_reset))
+                        Text(stringResource(R.string.per_app_width_reset))
                     }
                 }
                 TextButton(onClick = onDismiss) {

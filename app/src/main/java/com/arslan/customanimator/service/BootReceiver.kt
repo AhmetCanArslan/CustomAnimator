@@ -19,9 +19,9 @@ class BootReceiver : BroadcastReceiver() {
                     Log.e(TAG, "Failed to restore watcher", e)
                 }
                 try {
-                    PerAppDpiService.startIfOverridesExist(context.applicationContext)
+                    PerAppWidthService.startIfOverridesExist(context.applicationContext)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to restore per-app dpi watcher", e)
+                    Log.e(TAG, "Failed to restore per-app width watcher", e)
                 }
                 try {
                     ScreenshotWatcherService.sync(context.applicationContext)

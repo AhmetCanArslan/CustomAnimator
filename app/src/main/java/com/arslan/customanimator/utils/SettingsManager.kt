@@ -3,7 +3,9 @@ package com.arslan.customanimator.utils
 import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.provider.Settings
+import android.view.WindowManager
 import com.arslan.customanimator.ui.theme.ThemeMode
 import android.util.DisplayMetrics
 import java.util.Locale
@@ -255,8 +257,38 @@ object SettingsManager {
     
     private const val DISPLAY_DENSITY_FORCED = "display_density_forced"
 
+    const val MIN_DENSITY = 72
+    const val MAX_DENSITY = 1000
+    const val MIN_SMALLEST_WIDTH = 320
+    const val MAX_SMALLEST_WIDTH = 1024
+
+    fun getSmallestWidthPx(context: Context): Int {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bounds = windowManager.maximumWindowMetrics.bounds
+            min(bounds.width(), bounds.height())
+        } else {
+            val metrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getRealMetrics(metrics)
+            min(metrics.widthPixels, metrics.heightPixels)
+        }
+    }
+
+    fun densityForSmallestWidth(context: Context, widthDp: Int): Int {
+        val smallestPx = getSmallestWidthPx(context).toFloat()
+        return (smallestPx * DisplayMetrics.DENSITY_DEFAULT / widthDp)
+            .roundToInt()
+            .coerceIn(MIN_DENSITY, MAX_DENSITY)
+    }
+
+    fun smallestWidthForDensity(context: Context, density: Int): Int {
+        val smallestPx = getSmallestWidthPx(context).toFloat()
+        return (smallestPx * DisplayMetrics.DENSITY_DEFAULT / density).roundToInt()
+    }
+
     fun getSmallestWidth(context: Context): Int {
-        return context.resources.configuration.smallestScreenWidthDp
+        return smallestWidthForDensity(context, context.resources.configuration.densityDpi)
     }
 
     fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): SmallestWidthResult {
@@ -279,11 +311,7 @@ object SettingsManager {
                 )
             }
 
-            val metrics = context.resources.displayMetrics
-            val smallestPx = min(metrics.widthPixels, metrics.heightPixels).toFloat()
-            val targetDensity = (smallestPx * DisplayMetrics.DENSITY_DEFAULT / width)
-                .roundToInt()
-                .coerceIn(72, 1000)
+            val targetDensity = densityForSmallestWidth(context, width)
 
             if (ShizukuHelper.hasShizukuPermission()) {
                 val shizukuSuccess = ShizukuHelper.executeShellCommand(
@@ -325,7 +353,7 @@ object SettingsManager {
                 Settings.Secure.putString(contentResolver, DISPLAY_DENSITY_FORCED, null) &&
                     Settings.Secure.getString(contentResolver, DISPLAY_DENSITY_FORCED) == null
             } else {
-                val target = density.coerceIn(72, 1000)
+                val target = density.coerceIn(MIN_DENSITY, MAX_DENSITY)
                 if (ShizukuHelper.hasShizukuPermission() &&
                     ShizukuHelper.executeShellCommand(arrayOf("wm", "density", target.toString()))
                 ) {

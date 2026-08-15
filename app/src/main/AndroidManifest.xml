@@ -87,7 +87,7 @@
         </service>
 
         <service
-            android:name=".service.PerAppDpiService"
+            android:name=".service.PerAppWidthService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property

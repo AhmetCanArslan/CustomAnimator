@@ -15,7 +15,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
-import com.arslan.customanimator.utils.PerAppDpiManager
+import com.arslan.customanimator.utils.PerAppWidthManager
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.UsageAccessHelper
@@ -26,26 +26,26 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PerAppDpiService : Service() {
+class PerAppWidthService : Service() {
 
     companion object {
-        private const val TAG = "PerAppDpiService"
-        private const val CHANNEL_ID = "per_app_dpi_channel"
+        private const val TAG = "PerAppWidthService"
+        private const val CHANNEL_ID = "per_app_width_channel"
         private const val NOTIF_ID = 4203
         private const val POLL_INTERVAL_MS = 1000L
         private const val IDLE_POLL_INTERVAL_MS = 5000L
         private const val ACTIVITY_STOPPED = 23
 
         fun start(context: Context) {
-            ContextCompat.startForegroundService(context, Intent(context, PerAppDpiService::class.java))
+            ContextCompat.startForegroundService(context, Intent(context, PerAppWidthService::class.java))
         }
 
         fun stop(context: Context) {
-            context.stopService(Intent(context, PerAppDpiService::class.java))
+            context.stopService(Intent(context, PerAppWidthService::class.java))
         }
 
         fun startIfOverridesExist(context: Context) {
-            if (PerAppDpiManager(context).getOverrides().isNotEmpty()) {
+            if (PerAppWidthManager(context).getOverrides().isNotEmpty()) {
                 start(context)
             }
         }
@@ -64,19 +64,19 @@ class PerAppDpiService : Service() {
     @Volatile
     private var baselineDensity: Int? = null
 
-    private lateinit var dpiManager: PerAppDpiManager
+    private lateinit var widthManager: PerAppWidthManager
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
         super.onCreate()
-        dpiManager = PerAppDpiManager(applicationContext)
+        widthManager = PerAppWidthManager(applicationContext)
         createNotificationChannel()
         startForeground(NOTIF_ID, buildNotification())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (dpiManager.getOverrides().isEmpty()) {
+        if (widthManager.getOverrides().isEmpty()) {
             stopSelf()
             return START_NOT_STICKY
         }
@@ -106,7 +106,7 @@ class PerAppDpiService : Service() {
         while (true) {
             delay(if (isIdle) IDLE_POLL_INTERVAL_MS else POLL_INTERVAL_MS)
 
-            val overrides = dpiManager.getOverrides()
+            val overrides = widthManager.getOverrides()
             if (overrides.isEmpty()) {
                 Log.d(TAG, "No overrides left, stopping service")
                 restoreBaseline()
@@ -142,16 +142,17 @@ class PerAppDpiService : Service() {
 
                 if (transition.visible) {
                     visiblePackages.add(packageName)
-                    val targetDensity = overrides[packageName] ?: continue
+                    val targetWidthDp = overrides[packageName] ?: continue
                     if (appliedPackage == packageName) continue
                     if (appliedPackage == null) {
                         baselineDensity = SettingsManager.getForcedDensity(contentResolver)
                     }
+                    val targetDensity = SettingsManager.densityForSmallestWidth(this, targetWidthDp)
                     val success = SettingsManager.applyDensity(contentResolver, targetDensity)
                     if (success) {
                         appliedPackage = packageName
                     }
-                    Log.d(TAG, "Applied dpi=$targetDensity for $packageName success=$success")
+                    Log.d(TAG, "Applied width=${targetWidthDp}dp density=$targetDensity for $packageName success=$success")
                     continue
                 }
 
@@ -166,7 +167,7 @@ class PerAppDpiService : Service() {
     private fun restoreBaseline() {
         if (appliedPackage == null) return
         val success = SettingsManager.applyDensity(contentResolver, baselineDensity)
-        Log.d(TAG, "Restored baseline dpi=$baselineDensity success=$success")
+        Log.d(TAG, "Restored baseline density=$baselineDensity success=$success")
         appliedPackage = null
         baselineDensity = null
     }
@@ -205,11 +206,11 @@ class PerAppDpiService : Service() {
             if (manager.getNotificationChannel(CHANNEL_ID) == null) {
                 val channel = NotificationChannel(
                     CHANNEL_ID,
-                    getString(R.string.per_app_dpi_channel_name),
+                    getString(R.string.per_app_width_channel_name),
                     NotificationManager.IMPORTANCE_LOW
                 ).apply {
                     setSound(null, null)
-                    description = getString(R.string.per_app_dpi_channel_desc)
+                    description = getString(R.string.per_app_width_channel_desc)
                 }
                 manager.createNotificationChannel(channel)
             }
@@ -225,12 +226,12 @@ class PerAppDpiService : Service() {
             android.app.PendingIntent.FLAG_IMMUTABLE
         )
         val text = if (isIdle) {
-            getString(R.string.per_app_dpi_notif_text_waiting)
+            getString(R.string.per_app_width_notif_text_waiting)
         } else {
-            getString(R.string.per_app_dpi_notif_text)
+            getString(R.string.per_app_width_notif_text)
         }
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.per_app_dpi_notif_title))
+            .setContentTitle(getString(R.string.per_app_width_notif_title))
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_notification_auto_force_stop)
             .setOngoing(true)

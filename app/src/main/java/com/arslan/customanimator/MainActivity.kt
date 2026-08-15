@@ -202,7 +202,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_DPI, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN
 }
 
@@ -272,7 +272,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val perAppDpiListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -493,13 +493,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             currentScreen != HomeScreen.SETUP_GUIDE &&
             currentScreen != HomeScreen.PROFILES &&
             currentScreen != HomeScreen.PROFILE_EDITOR &&
-            currentScreen != HomeScreen.PER_APP_DPI &&
+            currentScreen != HomeScreen.PER_APP_WIDTH &&
             currentScreen !in NOTIFY_SCREENS
     ) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.DEVELOPER
     }
-    BackHandler(enabled = currentScreen == HomeScreen.PER_APP_DPI) {
+    BackHandler(enabled = currentScreen == HomeScreen.PER_APP_WIDTH) {
         currentScreen = HomeScreen.MAIN
         selectedTab = HomeTab.WIDTH
     }
@@ -608,14 +608,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
-    } else if (targetScreen == HomeScreen.PER_APP_DPI) {
-        PerAppDpiScreen(
+    } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
+        PerAppWidthScreen(
             onBack = {
                 currentScreen = HomeScreen.MAIN
                 selectedTab = HomeTab.WIDTH
             },
             hasShizukuPermission = hasShizukuPermission.value,
-            listState = perAppDpiListState
+            listState = perAppWidthListState
         )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
@@ -1014,7 +1014,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 Card(
                     shape = AppShapes.card,
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    onClick = { currentScreen = HomeScreen.PER_APP_DPI },
+                    onClick = { currentScreen = HomeScreen.PER_APP_WIDTH },
                     modifier = Modifier
                         .fillMaxWidth()
                         .graphicsLayer(alpha = contentAlpha)
@@ -1028,19 +1028,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text = stringResource(R.string.per_app_dpi),
+                                text = stringResource(R.string.per_app_width),
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Text(
-                                text = stringResource(R.string.per_app_dpi_desc),
+                                text = stringResource(R.string.per_app_width_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_DPI }) {
+                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_WIDTH }) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                                contentDescription = stringResource(R.string.per_app_dpi_button)
+                                contentDescription = stringResource(R.string.per_app_width_button)
                             )
                         }
                     }
