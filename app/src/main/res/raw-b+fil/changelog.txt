@@ -1,6 +1,9 @@
-## 175 - 3.2
+## 176 - 3.2
 - Mga aksyon sa screenshot: kopyahin o burahin ang bagong screenshot mula sa notification o lumulutang na button, kasama ang "Kopyahin ang screenshot" na Quick Settings tile.
 - Hotspot Manager: buksan o isara ang hotspot, tingnan at i-block ang mga nakakonektang device, baguhin ang pangalan, password, seguridad, band at mga limitasyon, ibahagi sa QR, may Quick Settings tile.
 - Sound tile: Quick Settings tile na nagbubukas ng volume panel o media output picker kapag pinindot o pinindot nang matagal.
 - Game Mode: nililimitahan ang mga app sa background habang naglalaro ka, may Quick Settings tile at home screen widget.
 - Compilation mode: piliin kung paano kino-compile ang mga app (Everything, Speed, Speed profile, Verify).
+- Lapad bawat app: magtakda ng magkakaibang minimum na lapad para sa bawat app at awtomatikong ilapat ito kapag nasa foreground ang app.
+- Mga pagpapahusay sa Game Mode: mas maaasahang pagsubaybay sa mga background app at pinahusay na notification.
+- Mas maraming mungkahi ng terminal command at suporta sa wikang Arabic.
