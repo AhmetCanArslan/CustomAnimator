@@ -193,6 +193,7 @@ private fun soundActionLabel(action: SoundTileAction): String = when (action) {
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 private fun SoundActionRow(
     label: String,
     selected: SoundTileAction,
@@ -220,6 +221,7 @@ private fun SoundActionRow(
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 private fun SoundCollapseRow(selected: Int, onSelect: (Int) -> Unit) {
     var input by remember(selected) {
         mutableStateOf(if (selected >= 0) selected.toString() else "")
