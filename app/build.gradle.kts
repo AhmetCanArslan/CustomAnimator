@@ -31,7 +31,7 @@ android {
         applicationId = "com.arslan.customanimator"
         minSdk = 24
         targetSdk = 36
-        versionCode = 176
+        versionCode = 177
         versionName = "3.2"
 
         manifestPlaceholders["admobAppId"] = admobAppId
