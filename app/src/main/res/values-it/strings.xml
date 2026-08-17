@@ -1136,4 +1136,16 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_failed_toast">Impossibile applicare la Modalità gioco. Controlla Shizuku e riprova.</string>
     <string name="game_mode_widget_label">Modalità gioco</string>
     <string name="game_mode_widget_description">Attiva o disattiva la Modalità gioco con un tocco.</string>
+    <string name="boost_screen_title">Ottimizzazione del sistema</string>
+    <string name="boost_start">Avvia ottimizzazione</string>
+    <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
+    <string name="boost_running_label">Ottimizzazione…</string>
+    <string name="boost_ad_title">Con annunci</string>
+    <string name="boost_ad_desc">Guarda un breve annuncio per eseguire l’ottimizzazione</string>
+    <string name="boost_premium_title">Premium sbloccato</string>
+    <string name="boost_premium_desc">Ottimizzazioni illimitate, senza annunci</string>
+    <string name="boost_ad_reward_denied">Completa l’annuncio per sbloccare l’ottimizzazione</string>
+    <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
+    <string name="boost_ad_loading">Caricamento annuncio…</string>
+    <string name="boost_terminal_empty">Tocca il pulsante qui sotto per avviare l’ottimizzazione.</string>
 </resources>

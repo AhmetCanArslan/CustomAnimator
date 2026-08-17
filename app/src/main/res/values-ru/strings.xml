@@ -1118,4 +1118,16 @@
     <string name="game_mode_failed_toast">Не удалось включить игровой режим. Проверьте Shizuku и попробуйте снова.</string>
     <string name="game_mode_widget_label">Игровой режим</string>
     <string name="game_mode_widget_description">Включает или выключает игровой режим одним нажатием.</string>
+    <string name="boost_screen_title">Оптимизация системы</string>
+    <string name="boost_start">Запустить оптимизацию</string>
+    <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
+    <string name="boost_running_label">Оптимизация…</string>
+    <string name="boost_ad_title">С рекламой</string>
+    <string name="boost_ad_desc">Посмотрите короткую рекламу, чтобы запустить оптимизацию</string>
+    <string name="boost_premium_title">Premium активирован</string>
+    <string name="boost_premium_desc">Неограниченные оптимизации, без рекламы</string>
+    <string name="boost_ad_reward_denied">Досмотрите рекламу, чтобы разблокировать оптимизацию</string>
+    <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
+    <string name="boost_ad_loading">Загрузка рекламы…</string>
+    <string name="boost_terminal_empty">Нажмите кнопку ниже, чтобы начать оптимизацию.</string>
 </resources>

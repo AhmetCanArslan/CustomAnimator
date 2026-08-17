@@ -1156,4 +1156,16 @@
     <string name="game_mode_failed_toast">تعذر تطبيق وضع الألعاب. تحقق من شيزوكو وحاول مرة أخرى.</string>
     <string name="game_mode_widget_label">وضع الألعاب</string>
     <string name="game_mode_widget_description">يشغّل وضع الألعاب أو يوقفه بلمسة واحدة.</string>
+    <string name="boost_screen_title">تحسين النظام</string>
+    <string name="boost_start">بدء التحسين</string>
+    <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
+    <string name="boost_running_label">جارٍ التحسين…</string>
+    <string name="boost_ad_title">مدعوم بالإعلانات</string>
+    <string name="boost_ad_desc">شاهد إعلانًا قصيرًا لتشغيل التحسين</string>
+    <string name="boost_premium_title">النسخة المميزة مفعّلة</string>
+    <string name="boost_premium_desc">تحسينات غير محدودة وبدون إعلانات</string>
+    <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
+    <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
+    <string name="boost_ad_loading">جارٍ تحميل الإعلان…</string>
+    <string name="boost_terminal_empty">اضغط الزر أدناه لبدء التحسين.</string>
 </resources>

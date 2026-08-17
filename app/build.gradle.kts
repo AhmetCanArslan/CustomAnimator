@@ -19,6 +19,7 @@ val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~33475117
 val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
 val admobInterstitialId = propOrEnv("admob.interstitial.id", "ca-app-pub-3940256099942544/1033173712")
 val admobAppOpenId = propOrEnv("admob.appopen.id", "ca-app-pub-3940256099942544/9257395921")
+val admobRewardedId = propOrEnv("admob.rewarded.id", "ca-app-pub-3940256099942544/5224354917")
 
 android {
     namespace = "com.arslan.customanimator"
@@ -37,11 +38,13 @@ android {
         buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
         buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
         buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"$admobAppOpenId\"")
+        buildConfigField("String", "REWARDED_AD_UNIT_ID", "\"$admobRewardedId\"")
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
         }
         release {
             isMinifyEnabled = false

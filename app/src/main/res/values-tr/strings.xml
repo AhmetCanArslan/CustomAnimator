@@ -1124,4 +1124,16 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_failed_toast">Oyun Modu uygulanamadı. Shizuku\'yu kontrol edip tekrar dene.</string>
     <string name="game_mode_widget_label">Oyun Modu</string>
     <string name="game_mode_widget_description">Oyun Modunu tek dokunuşla açar veya kapatır.</string>
+    <string name="boost_screen_title">Sistem optimizasyonu</string>
+    <string name="boost_start">Optimizasyonu başlat</string>
+    <string name="boost_watch_ad">Reklam izle ve optimize et</string>
+    <string name="boost_running_label">Optimize ediliyor…</string>
+    <string name="boost_ad_title">Reklam destekli</string>
+    <string name="boost_ad_desc">Optimizasyonu çalıştırmak için kısa bir reklam izle</string>
+    <string name="boost_premium_title">Premium açık</string>
+    <string name="boost_premium_desc">Sınırsız optimizasyon, reklam yok</string>
+    <string name="boost_ad_reward_denied">Optimizasyonu açmak için reklamı bitir</string>
+    <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantını kontrol edip tekrar dene.</string>
+    <string name="boost_ad_loading">Reklam yükleniyor…</string>
+    <string name="boost_terminal_empty">Optimizasyonu başlatmak için aşağıdaki düğmeye dokun.</string>
 </resources>

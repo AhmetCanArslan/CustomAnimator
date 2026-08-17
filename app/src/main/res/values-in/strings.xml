@@ -1116,4 +1116,16 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_failed_toast">Mode Game gagal diterapkan. Periksa Shizuku lalu coba lagi.</string>
     <string name="game_mode_widget_label">Mode Game</string>
     <string name="game_mode_widget_description">Mengaktifkan atau menonaktifkan Mode Game dengan sekali ketuk.</string>
+    <string name="boost_screen_title">Optimalisasi sistem</string>
+    <string name="boost_start">Mulai optimalisasi</string>
+    <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
+    <string name="boost_running_label">Mengoptimalkan…</string>
+    <string name="boost_ad_title">Didukung iklan</string>
+    <string name="boost_ad_desc">Tonton iklan singkat untuk menjalankan optimalisasi</string>
+    <string name="boost_premium_title">Premium aktif</string>
+    <string name="boost_premium_desc">Optimalisasi tanpa batas, tanpa iklan</string>
+    <string name="boost_ad_reward_denied">Selesaikan iklan untuk membuka optimalisasi</string>
+    <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
+    <string name="boost_ad_loading">Memuat iklan…</string>
+    <string name="boost_terminal_empty">Ketuk tombol di bawah untuk memulai optimalisasi.</string>
 </resources>

@@ -6,12 +6,17 @@ import android.os.Environment
 import android.os.StatFs
 import android.text.format.Formatter
 
-data class BoostSnapshot(val availableRamBytes: Long, val availableStorageBytes: Long)
+data class BoostSnapshot(
+    val availableRamBytes: Long,
+    val availableStorageBytes: Long,
+    val totalRamBytes: Long = 0L,
+    val totalStorageBytes: Long = 0L
+)
 
 object BoostStats {
 
     fun snapshot(context: Context): BoostSnapshot =
-        BoostSnapshot(availableRam(context), availableStorage())
+        BoostSnapshot(availableRam(context), availableStorage(), totalRam(context), totalStorage())
 
     fun formatSize(context: Context, bytes: Long): String =
         Formatter.formatShortFileSize(context, if (bytes < 0) 0 else bytes)
@@ -22,6 +27,25 @@ object BoostStats {
             val info = ActivityManager.MemoryInfo()
             manager.getMemoryInfo(info)
             info.availMem
+        } catch (e: Exception) {
+            0L
+        }
+    }
+
+    private fun totalRam(context: Context): Long {
+        return try {
+            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val info = ActivityManager.MemoryInfo()
+            manager.getMemoryInfo(info)
+            info.totalMem
+        } catch (e: Exception) {
+            0L
+        }
+    }
+
+    private fun totalStorage(): Long {
+        return try {
+            StatFs(Environment.getDataDirectory().absolutePath).totalBytes
         } catch (e: Exception) {
             0L
         }

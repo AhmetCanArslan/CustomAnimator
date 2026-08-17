@@ -1116,4 +1116,16 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_failed_toast">Hindi na-apply ang Game Mode. Tingnan ang Shizuku at subukan ulit.</string>
     <string name="game_mode_widget_label">Game Mode</string>
     <string name="game_mode_widget_description">I-on o i-off ang Game Mode sa isang tap.</string>
+    <string name="boost_screen_title">Pag-optimize ng system</string>
+    <string name="boost_start">Simulan ang pag-optimize</string>
+    <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
+    <string name="boost_running_label">Ino-optimize…</string>
+    <string name="boost_ad_title">May suporta ng ad</string>
+    <string name="boost_ad_desc">Manood ng maikling ad para patakbuhin ang pag-optimize</string>
+    <string name="boost_premium_title">Naka-unlock ang Premium</string>
+    <string name="boost_premium_desc">Walang limitasyong pag-optimize, walang ad</string>
+    <string name="boost_ad_reward_denied">Tapusin ang ad para ma-unlock ang pag-optimize</string>
+    <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
+    <string name="boost_ad_loading">Nilo-load ang ad…</string>
+    <string name="boost_terminal_empty">I-tap ang button sa ibaba para simulan ang pag-optimize.</string>
 </resources>

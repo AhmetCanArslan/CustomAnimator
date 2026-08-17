@@ -24,6 +24,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -33,7 +34,8 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.ump.ConsentDebugSettings
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
@@ -60,6 +62,13 @@ private val APP_OPEN_AD_UNIT_ID: String
         "ca-app-pub-3940256099942544/9257395921"
     } else {
         BuildConfig.APP_OPEN_AD_UNIT_ID
+    }
+
+private val REWARDED_AD_UNIT_ID: String
+    get() = if (BuildConfig.DEBUG) {
+        "ca-app-pub-3940256099942544/5224354917"
+    } else {
+        BuildConfig.REWARDED_AD_UNIT_ID
     }
 
 private const val ADS_PREFS = "custom_animator_ads"
@@ -97,39 +106,45 @@ object AdsConsent {
     private const val TAG = "AdsConsent"
 
     private var consentInformation: ConsentInformation? = null
+    private var isUpdating = false
+    private val waiters = mutableListOf<(Boolean) -> Unit>()
 
     fun gather(activity: Activity, onReady: () -> Unit) {
-        val params = ConsentRequestParameters.Builder()
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    setConsentDebugSettings(
-                        ConsentDebugSettings.Builder(activity)
-                            .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
-                            .build()
-                    )
-                }
-            }
-            .build()
+        refresh(activity) { onReady() }
+    }
+
+    fun refresh(activity: Activity, onDone: (Boolean) -> Unit) {
+        waiters.add(onDone)
+        if (isUpdating) return
+        isUpdating = true
 
         val info = UserMessagingPlatform.getConsentInformation(activity)
         consentInformation = info
 
         info.requestConsentInfoUpdate(
             activity,
-            params,
+            ConsentRequestParameters.Builder().build(),
             {
                 UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) { formError ->
                     if (formError != null) {
                         Log.w(TAG, "Consent form error: ${formError.errorCode} ${formError.message}")
                     }
-                    onReady()
+                    isUpdating = false
+                    notifyWaiters(info.canRequestAds())
                 }
             },
             { requestError ->
                 Log.w(TAG, "Consent info update failed: ${requestError.errorCode} ${requestError.message}")
-                onReady()
+                isUpdating = false
+                notifyWaiters(info.canRequestAds())
             }
         )
+    }
+
+    private fun notifyWaiters(canRequestAds: Boolean) {
+        val pending = waiters.toList()
+        waiters.clear()
+        pending.forEach { it(canRequestAds) }
     }
 
     fun canRequestAds(context: Context): Boolean {
@@ -511,6 +526,142 @@ object InterstitialAds {
         prefs.edit().putLong(KEY_LAST_SHOWN, now).apply()
         AdBudget.record(activity)
         loaded.show(activity)
+    }
+}
+
+object RewardedAds {
+    private const val TAG = "RewardedAd"
+
+    private var ad: RewardedAd? = null
+    private var isLoading = false
+    private val waiters = mutableListOf<(Boolean) -> Unit>()
+
+    enum class Result { REWARDED, CANCELLED, NOT_READY, ERROR }
+
+    fun preload(context: Context) {
+        load(context, null)
+    }
+
+    private fun load(context: Context, onReady: ((Boolean) -> Unit)?) {
+        if (isAdFreeNow()) {
+            onReady?.invoke(false)
+            return
+        }
+        if (ad != null) {
+            onReady?.invoke(true)
+            return
+        }
+        if (!AdsConsent.canRequestAds(context)) {
+            Log.d(TAG, "Consent not granted, skipping load")
+            onReady?.invoke(false)
+            return
+        }
+        if (onReady != null) waiters.add(onReady)
+        if (isLoading) return
+        isLoading = true
+        RewardedAd.load(
+            context.applicationContext,
+            REWARDED_AD_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : RewardedAdLoadCallback() {
+                override fun onAdLoaded(loaded: RewardedAd) {
+                    isLoading = false
+                    ad = loaded
+                    Log.d(TAG, "Loaded and ready")
+                    notifyWaiters(true)
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    isLoading = false
+                    ad = null
+                    Log.e(TAG, "Failed to load: ${error.code} ${error.message}")
+                    notifyWaiters(false)
+                }
+            }
+        )
+    }
+
+    private fun notifyWaiters(ready: Boolean) {
+        val pending = waiters.toList()
+        waiters.clear()
+        pending.forEach { it(ready) }
+    }
+
+    fun show(context: Context, onResult: (Result) -> Unit) {
+        show(context, true, onResult)
+    }
+
+    private fun show(context: Context, allowConsentRetry: Boolean, onResult: (Result) -> Unit) {
+        if (isAdFreeNow()) {
+            onResult(Result.REWARDED)
+            return
+        }
+        val activity = context.findActivity()
+        if (activity == null) {
+            onResult(Result.ERROR)
+            return
+        }
+        if (FullScreenAdState.isShowing) {
+            onResult(Result.ERROR)
+            return
+        }
+        if (allowConsentRetry && !AdsConsent.canRequestAds(activity)) {
+            Log.d(TAG, "Consent unresolved, retrying before show")
+            AdsConsent.refresh(activity) { canRequestAds ->
+                if (canRequestAds) {
+                    initializeMobileAds(activity)
+                    show(activity, false, onResult)
+                } else {
+                    onResult(Result.NOT_READY)
+                }
+            }
+            return
+        }
+        val loaded = ad
+        if (loaded == null) {
+            load(context) { ready ->
+                if (ready) show(context, false, onResult) else onResult(Result.NOT_READY)
+            }
+            return
+        }
+        ad = null
+        var rewarded = false
+        loaded.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdShowedFullScreenContent() {
+                FullScreenAdState.isShowing = true
+            }
+
+            override fun onAdDismissedFullScreenContent() {
+                FullScreenAdState.isShowing = false
+                preload(activity)
+                onResult(if (rewarded) Result.REWARDED else Result.CANCELLED)
+            }
+
+            override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                FullScreenAdState.isShowing = false
+                Log.e(TAG, "Failed to show: ${error.code} ${error.message}")
+                preload(activity)
+                onResult(Result.ERROR)
+            }
+        }
+        loaded.show(activity) {
+            rewarded = true
+        }
+    }
+
+    fun prepare(context: Context) {
+        if (isAdFreeNow()) return
+        val activity = context.findActivity() ?: return
+        if (AdsConsent.canRequestAds(activity)) {
+            preload(activity)
+            return
+        }
+        AdsConsent.refresh(activity) { canRequestAds ->
+            if (canRequestAds) {
+                initializeMobileAds(activity)
+                preload(activity)
+            }
+        }
     }
 }
 

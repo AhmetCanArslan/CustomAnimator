@@ -1116,4 +1116,16 @@ Duração do Animador: %3$.2f</string>
     <string name="game_mode_failed_toast">Não foi possível aplicar o Modo jogo. Verifique o Shizuku e tente de novo.</string>
     <string name="game_mode_widget_label">Modo jogo</string>
     <string name="game_mode_widget_description">Ativa ou desativa o Modo jogo com um toque.</string>
+    <string name="boost_screen_title">Otimização do sistema</string>
+    <string name="boost_start">Iniciar otimização</string>
+    <string name="boost_watch_ad">Assistir anúncio e otimizar</string>
+    <string name="boost_running_label">Otimizando…</string>
+    <string name="boost_ad_title">Com anúncios</string>
+    <string name="boost_ad_desc">Assista a um anúncio curto para executar a otimização</string>
+    <string name="boost_premium_title">Premium desbloqueado</string>
+    <string name="boost_premium_desc">Otimizações ilimitadas, sem anúncios</string>
+    <string name="boost_ad_reward_denied">Conclua o anúncio para desbloquear a otimização</string>
+    <string name="boost_ad_unavailable">Não foi possível carregar o anúncio. Verifique sua conexão e tente novamente.</string>
+    <string name="boost_ad_loading">Carregando anúncio…</string>
+    <string name="boost_terminal_empty">Toque no botão abaixo para iniciar a otimização.</string>
 </resources>

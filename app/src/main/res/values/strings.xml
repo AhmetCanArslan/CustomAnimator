@@ -1009,11 +1009,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_widget_result">%1$s storage · %2$s RAM freed</string>
     <string name="boost_widget_toast">Boost done · %1$s</string>
     <string name="boost_widget_needs_shizuku">Shizuku permission required</string>
-    <string name="boost_status_title">Current status</string>
-    <string name="boost_available_ram">Available RAM: %1$s</string>
-    <string name="boost_available_storage">Available storage: %1$s</string>
-    <string name="boost_section_quick">Quick Boost</string>
-    <string name="boost_section_compile">Compile Booster</string>
     <string name="disable_rotation_suggestions">Disable rotation suggestions</string>
     <string name="disable_rotation_suggestions_desc">Hide the rotate button that appears when the device turns (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Screenshot actions</string>
@@ -1164,4 +1159,16 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_failed_toast">Game Mode could not be applied. Check Shizuku and try again.</string>
     <string name="game_mode_widget_label">Game Mode</string>
     <string name="game_mode_widget_description">Turns Game Mode on or off in one tap.</string>
+    <string name="boost_screen_title">System optimization</string>
+    <string name="boost_start">Start optimization</string>
+    <string name="boost_watch_ad">Watch ad &amp; optimize</string>
+    <string name="boost_running_label">Optimizing…</string>
+    <string name="boost_ad_title">Ad-supported</string>
+    <string name="boost_ad_desc">Watch a short ad to run the optimization</string>
+    <string name="boost_premium_title">Premium unlocked</string>
+    <string name="boost_premium_desc">Unlimited optimizations, no ads</string>
+    <string name="boost_ad_reward_denied">Finish the ad to unlock the optimization</string>
+    <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
+    <string name="boost_ad_loading">Loading ad…</string>
+    <string name="boost_terminal_empty">Tap the button below to start the optimization.</string>
 </resources>
