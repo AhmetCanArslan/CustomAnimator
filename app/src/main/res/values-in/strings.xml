@@ -1118,6 +1118,8 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_widget_description">Mengaktifkan atau menonaktifkan Mode Game dengan sekali ketuk.</string>
     <string name="boost_screen_title">Optimalisasi sistem</string>
     <string name="boost_start">Mulai optimalisasi</string>
+    <string name="boost_cancel">Batal</string>
+    <string name="boost_cancelled">Optimalisasi dibatalkan</string>
     <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
     <string name="boost_running_label">Mengoptimalkan…</string>
     <string name="boost_ad_title">Didukung iklan</string>
@@ -1128,4 +1130,5 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
     <string name="boost_ad_loading">Memuat iklan…</string>
     <string name="boost_terminal_empty">Ketuk tombol di bawah untuk memulai optimalisasi.</string>
+    <string name="more_boost_desc">Tingkatkan performa ponsel Anda</string>
 </resources>

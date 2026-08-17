@@ -1138,6 +1138,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_widget_description">Attiva o disattiva la Modalità gioco con un tocco.</string>
     <string name="boost_screen_title">Ottimizzazione del sistema</string>
     <string name="boost_start">Avvia ottimizzazione</string>
+    <string name="boost_cancel">Annulla</string>
+    <string name="boost_cancelled">Ottimizzazione annullata</string>
     <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
     <string name="boost_running_label">Ottimizzazione…</string>
     <string name="boost_ad_title">Con annunci</string>
@@ -1148,4 +1150,5 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
     <string name="boost_ad_loading">Caricamento annuncio…</string>
     <string name="boost_terminal_empty">Tocca il pulsante qui sotto per avviare l’ottimizzazione.</string>
+    <string name="more_boost_desc">Migliora le prestazioni del telefono</string>
 </resources>

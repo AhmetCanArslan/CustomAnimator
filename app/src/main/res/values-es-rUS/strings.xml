@@ -1118,6 +1118,8 @@ Duración del Animador: %3$.2f</string>
     <string name="game_mode_widget_description">Activa o desactiva el Modo juego con un toque.</string>
     <string name="boost_screen_title">Optimización del sistema</string>
     <string name="boost_start">Iniciar optimización</string>
+    <string name="boost_cancel">Cancelar</string>
+    <string name="boost_cancelled">Optimización cancelada</string>
     <string name="boost_watch_ad">Ver anuncio y optimizar</string>
     <string name="boost_running_label">Optimizando…</string>
     <string name="boost_ad_title">Con anuncios</string>
@@ -1128,4 +1130,5 @@ Duración del Animador: %3$.2f</string>
     <string name="boost_ad_unavailable">No se pudo cargar el anuncio. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="boost_ad_loading">Cargando anuncio…</string>
     <string name="boost_terminal_empty">Toca el botón de abajo para iniciar la optimización.</string>
+    <string name="more_boost_desc">Mejora el rendimiento de tu teléfono</string>
 </resources>

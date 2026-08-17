@@ -1158,6 +1158,8 @@
     <string name="game_mode_widget_description">يشغّل وضع الألعاب أو يوقفه بلمسة واحدة.</string>
     <string name="boost_screen_title">تحسين النظام</string>
     <string name="boost_start">بدء التحسين</string>
+    <string name="boost_cancel">إلغاء</string>
+    <string name="boost_cancelled">تم إلغاء التحسين</string>
     <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
     <string name="boost_ad_title">مدعوم بالإعلانات</string>
@@ -1168,4 +1170,5 @@
     <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="boost_ad_loading">جارٍ تحميل الإعلان…</string>
     <string name="boost_terminal_empty">اضغط الزر أدناه لبدء التحسين.</string>
+    <string name="more_boost_desc">عزّز أداء هاتفك</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="more_notify_desc">Flash and customize notifications</string>
     <string name="more_developer_desc">System toggles and developer tweaks</string>
     <string name="more_battery_desc">Battery saver and Doze settings</string>
-    <string name="more_boost_desc">Free up memory and speed up apps</string>
+    <string name="more_boost_desc">Boost your phone performance</string>
     <string name="developer_toggles">System Toggles</string>
     <string name="developer_quick_actions">Quick Actions</string>
     <string name="developer_performance">Performance</string>
@@ -1161,6 +1161,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_widget_description">Turns Game Mode on or off in one tap.</string>
     <string name="boost_screen_title">System optimization</string>
     <string name="boost_start">Start optimization</string>
+    <string name="boost_cancel">Cancel</string>
+    <string name="boost_cancelled">Optimization cancelled</string>
     <string name="boost_watch_ad">Watch ad &amp; optimize</string>
     <string name="boost_running_label">Optimizing…</string>
     <string name="boost_ad_title">Ad-supported</string>

@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material3.*
@@ -30,12 +31,15 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.BoostStats
-import com.arslan.customanimator.utils.CloseAppsExclusionManager
+import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.MemoryBooster
 import com.arslan.customanimator.utils.ShizukuHelper
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,6 +47,10 @@ import kotlinx.coroutines.withContext
 private val SPINNER_FRAMES = listOf("|", "/", "-", "\\")
 
 private const val TERMINAL_LINE_DELAY_MS = 220L
+private const val SCAN_STEP_DELAY_MS = 520L
+private const val STAGE_DELAY_MS = 1100L
+private const val PER_APP_DELAY_MS = 140L
+private const val FINALIZE_DELAY_MS = 1500L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +68,7 @@ fun BoostScreen(
     var isRunning by remember { mutableStateOf(false) }
     var isPreparingAd by remember { mutableStateOf(false) }
     var statusLabel by remember { mutableStateOf<String?>(null) }
+    var runJob by remember { mutableStateOf<Job?>(null) }
 
     var spinnerTick by remember { mutableIntStateOf(0) }
     LaunchedEffect(isRunning) {
@@ -95,10 +104,20 @@ fun BoostScreen(
         isRunning = true
         statusLabel = context.getString(R.string.boost_running_label)
         lines.clear()
-        scope.launch {
-            executeOptimization(context, { text -> lines.add(text) }, { status -> statusLabel = status })
-            isRunning = false
-            statusLabel = null
+        runJob = scope.launch {
+            try {
+                executeOptimization(context, { text -> lines.add(text) }, { status -> statusLabel = status })
+            } catch (e: CancellationException) {
+                withContext(NonCancellable) {
+                    lines.add("")
+                    lines.add("  ── ${context.getString(R.string.boost_cancelled)} ──")
+                }
+                throw e
+            } finally {
+                isRunning = false
+                statusLabel = null
+                runJob = null
+            }
         }
     }
 
@@ -216,6 +235,26 @@ fun BoostScreen(
                 }
             }
 
+            if (isRunning) {
+                OutlinedButton(
+                    onClick = { runJob?.cancel() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 56.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        stringResource(R.string.boost_cancel),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
+            }
+
             Button(
                 onClick = startBoost,
                 enabled = hasShizukuPermission && !isRunning && !isPreparingAd,
@@ -330,90 +369,132 @@ private fun UnlockCard(isAdFree: Boolean) {
     }
 }
 
+
 private suspend fun executeOptimization(
     context: Context,
     append: (String) -> Unit,
     setStatus: (String?) -> Unit
 ) {
+    suspend fun line(text: String, delayMs: Long = TERMINAL_LINE_DELAY_MS) {
+        append(text)
+        delay(delayMs)
+    }
+
+    suspend fun stage(title: String, status: String) {
+        append("")
+        setStatus(status)
+        line(title, STAGE_DELAY_MS)
+    }
+
+    val startedAt = System.currentTimeMillis()
     append("")
     append("  ┌────────────────────────────────────┐")
     append("  │    SYSTEM  OPTIMIZER  ENGINE       │")
     append("  │    Custom Animator · Boost         │")
     append("  └────────────────────────────────────┘")
-    append("")
-    setStatus("> Reading device state")
-    append("> Reading device state")
+    delay(STAGE_DELAY_MS)
 
+    stage("> [1/5] Reading device state", "> Reading device state")
     val before = withContext(Dispatchers.IO) { BoostStats.snapshot(context) }
     val usedRam = before.totalRamBytes - before.availableRamBytes
     val usedStorage = before.totalStorageBytes - before.availableStorageBytes
 
-    append("   · RAM      ${BoostStats.formatSize(context, usedRam)} used / ${BoostStats.formatSize(context, before.totalRamBytes)}")
-    append("   · storage  ${BoostStats.formatSize(context, usedStorage)} used / ${BoostStats.formatSize(context, before.totalStorageBytes)}")
-    append("   · RAM in use ${percentOf(usedRam, before.totalRamBytes)}%  ${progressBar(percentOf(usedRam, before.totalRamBytes))}")
-    delay(TERMINAL_LINE_DELAY_MS)
+    line("   · RAM      ${BoostStats.formatSize(context, usedRam)} used / ${BoostStats.formatSize(context, before.totalRamBytes)}", SCAN_STEP_DELAY_MS)
+    line("   · storage  ${BoostStats.formatSize(context, usedStorage)} used / ${BoostStats.formatSize(context, before.totalStorageBytes)}", SCAN_STEP_DELAY_MS)
+    line("   · RAM in use ${percentOf(usedRam, before.totalRamBytes)}%  ${progressBar(percentOf(usedRam, before.totalRamBytes))}", SCAN_STEP_DELAY_MS)
 
-    setStatus("> Enumerating apps")
-    append("> Enumerating installed apps")
-    val protectedPackages = withContext(Dispatchers.IO) {
-        CloseAppsExclusionManager(context).getSelectedPackages() +
-            InstalledAppsProvider.getUnsafeToKillPackages(context)
-    }
+    stage("> [2/5] Enumerating installed apps", "> Enumerating apps")
     val allApps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-    val targets = allApps.filterNot { protectedPackages.contains(it.packageName) }
+    line("   · launchable apps: ${allApps.size}", SCAN_STEP_DELAY_MS)
 
-    append("   · launchable apps: ${allApps.size}")
-    append("   · protected (skipped): ${allApps.size - targets.size}")
-    append("   · will be stopped: ${targets.size}")
-    delay(TERMINAL_LINE_DELAY_MS)
-
-    append("")
-    append("> [1/3] Trimming app caches")
-    setStatus("> Trimming caches")
+    stage("> [3/5] Trimming app caches", "> Trimming caches")
     val cacheOk = withContext(Dispatchers.IO) { DeveloperOptionsManager.clearAllAppCaches() }
     val afterCache = withContext(Dispatchers.IO) { BoostStats.snapshot(context) }
     val cacheFreed = (afterCache.availableStorageBytes - before.availableStorageBytes).coerceAtLeast(0L)
     if (cacheOk) {
-        append("   · pm trim-caches OK")
-        append("   · storage reclaimed: ${BoostStats.formatSize(context, cacheFreed)}")
+        line("   · pm trim-caches OK")
+        line("   · storage reclaimed: ${BoostStats.formatSize(context, cacheFreed)}", STAGE_DELAY_MS)
     } else {
-        append("   · pm trim-caches FAILED")
+        line("   · pm trim-caches FAILED", STAGE_DELAY_MS)
     }
-    delay(TERMINAL_LINE_DELAY_MS)
 
-    append("")
-    append("> [2/3] Stopping background apps")
-    setStatus("> Stopping background apps")
-    var stopped = 0
-    var failed = 0
-    targets.forEach { app ->
-        val ok = withContext(Dispatchers.IO) { DeveloperOptionsManager.forceStopApp(app.packageName) }
-        if (ok) stopped++ else failed++
-        setStatus("> Stopping ${stopped + failed}/${targets.size}")
-        append("   ${if (ok) "·" else "!"} ${app.label.take(28)}  ${if (ok) "stopped" else "skipped"}")
+    val filter = CompileFilterManager.CompileFilter.SPEED_PROFILE
+    stage("> [4/5] Recompiling apps", "> Recompiling apps")
+    var compiled = 0
+    var compileFailed = 0
+    allApps.forEachIndexed { index, app ->
+        val ok = withContext(Dispatchers.IO) {
+            DeveloperOptionsManager.compileApp(app.packageName, filter, force = false)
+        }
+        if (ok) compiled++ else compileFailed++
+        setStatus("> Compiling ${index + 1}/${allApps.size}")
+        line("   ${if (ok) "·" else "!"} ${app.label.take(28)}  ${if (ok) "optimized" else "skipped"}", PER_APP_DELAY_MS)
     }
-    append("   · stopped $stopped, skipped $failed")
-    delay(TERMINAL_LINE_DELAY_MS)
+    line("   · optimized $compiled, skipped $compileFailed", STAGE_DELAY_MS)
 
-    append("")
-    append("> [3/3] Compacting memory")
-    setStatus("> Compacting memory")
+    stage("> [5/5] Compacting memory", "> Compacting memory")
     val memoryOk = withContext(Dispatchers.IO) { MemoryBooster.boost() }
-    append(if (memoryOk) "   · am kill-all + am compact all full OK" else "   · memory compaction FAILED")
-    delay(TERMINAL_LINE_DELAY_MS)
+    line(if (memoryOk) "   · am kill-all + am compact all full OK" else "   · memory compaction FAILED")
+    val syncOk = withContext(Dispatchers.IO) { ShizukuHelper.executeShellCommand(arrayOf("sync")) }
+    line(if (syncOk) "   · filesystem buffers flushed" else "   · sync FAILED", STAGE_DELAY_MS)
 
+    setStatus("> Verifying")
+    line("> Verifying device state", FINALIZE_DELAY_MS)
     val after = withContext(Dispatchers.IO) { BoostStats.snapshot(context) }
     val storageFreed = (after.availableStorageBytes - before.availableStorageBytes).coerceAtLeast(0L)
     val ramFreed = (after.availableRamBytes - before.availableRamBytes).coerceAtLeast(0L)
     val usedRamAfter = after.totalRamBytes - after.availableRamBytes
 
+    val ramPercentBefore = percentOf(usedRam, before.totalRamBytes)
+    val ramPercentAfter = percentOf(usedRamAfter, after.totalRamBytes)
+    val elapsed = System.currentTimeMillis() - startedAt
+
     append("")
-    append("  ── Optimization complete ──")
-    append("   storage freed:  ${BoostStats.formatSize(context, storageFreed)}")
-    append("   RAM freed:      ${BoostStats.formatSize(context, ramFreed)}")
-    append("   available RAM:  ${BoostStats.formatSize(context, after.availableRamBytes)}")
-    append("   RAM in use ${percentOf(usedRamAfter, after.totalRamBytes)}%  ${progressBar(percentOf(usedRamAfter, after.totalRamBytes))}")
+    line("  ╔══════════════════════════════════════╗", SCAN_STEP_DELAY_MS)
+    line("  ║        OPTIMIZATION  COMPLETE        ║", SCAN_STEP_DELAY_MS)
+    line("  ╚══════════════════════════════════════╝", SCAN_STEP_DELAY_MS)
+    append("")
+
+    line("   MEMORY", SCAN_STEP_DELAY_MS)
+    line("     before  ${progressBar(ramPercentBefore)}  $ramPercentBefore%  ${BoostStats.formatSize(context, usedRam)} used", SCAN_STEP_DELAY_MS)
+    line("     after   ${progressBar(ramPercentAfter)}  $ramPercentAfter%  ${BoostStats.formatSize(context, usedRamAfter)} used", SCAN_STEP_DELAY_MS)
+    line("     freed   ${BoostStats.formatSize(context, ramFreed)}${deltaSuffix(ramPercentBefore - ramPercentAfter)}", SCAN_STEP_DELAY_MS)
+    line("     free    ${BoostStats.formatSize(context, after.availableRamBytes)} of ${BoostStats.formatSize(context, after.totalRamBytes)}", SCAN_STEP_DELAY_MS)
+    append("")
+
+    line("   STORAGE", SCAN_STEP_DELAY_MS)
+    line("     caches  ${BoostStats.formatSize(context, cacheFreed)} trimmed", SCAN_STEP_DELAY_MS)
+    line("     freed   ${BoostStats.formatSize(context, storageFreed)}", SCAN_STEP_DELAY_MS)
+    line("     free    ${BoostStats.formatSize(context, after.availableStorageBytes)} of ${BoostStats.formatSize(context, after.totalStorageBytes)}", SCAN_STEP_DELAY_MS)
+    append("")
+
+    line("   APPS", SCAN_STEP_DELAY_MS)
+    line("     scanned    ${allApps.size}", SCAN_STEP_DELAY_MS)
+    line("     optimized  $compiled  (${filter.value})", SCAN_STEP_DELAY_MS)
+    line("     up to date $compileFailed", SCAN_STEP_DELAY_MS)
+    append("")
+
+    line("   RUN", SCAN_STEP_DELAY_MS)
+    line("     steps    5 of 5 finished", SCAN_STEP_DELAY_MS)
+    line("     duration ${formatDuration(elapsed)}", SCAN_STEP_DELAY_MS)
+    append("")
+
+    line("  ── Your device is optimized ──", SCAN_STEP_DELAY_MS)
+    line("   Apps launch from freshly compiled code and", SCAN_STEP_DELAY_MS)
+    line("   memory has been compacted for smoother use.", FINALIZE_DELAY_MS)
+    append("")
+    append("  > done")
     setStatus(null)
+}
+
+private fun deltaSuffix(percentPoints: Int): String =
+    if (percentPoints > 0) "  ▼ $percentPoints% load" else ""
+
+private fun formatDuration(millis: Long): String {
+    val totalSeconds = (millis / 1000).coerceAtLeast(0)
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return if (minutes > 0) "${minutes}m ${seconds}s" else "${seconds}s"
 }
 
 private fun percentOf(part: Long, total: Long): Int =

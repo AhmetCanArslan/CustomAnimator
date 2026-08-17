@@ -1118,6 +1118,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_widget_description">I-on o i-off ang Game Mode sa isang tap.</string>
     <string name="boost_screen_title">Pag-optimize ng system</string>
     <string name="boost_start">Simulan ang pag-optimize</string>
+    <string name="boost_cancel">Kanselahin</string>
+    <string name="boost_cancelled">Kinansela ang optimization</string>
     <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
     <string name="boost_running_label">Ino-optimize…</string>
     <string name="boost_ad_title">May suporta ng ad</string>
@@ -1128,4 +1130,5 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
     <string name="boost_ad_loading">Nilo-load ang ad…</string>
     <string name="boost_terminal_empty">I-tap ang button sa ibaba para simulan ang pag-optimize.</string>
+    <string name="more_boost_desc">Pabilisin ang performance ng iyong telepono</string>
 </resources>

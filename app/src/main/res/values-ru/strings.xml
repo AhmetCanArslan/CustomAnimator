@@ -1120,6 +1120,8 @@
     <string name="game_mode_widget_description">Включает или выключает игровой режим одним нажатием.</string>
     <string name="boost_screen_title">Оптимизация системы</string>
     <string name="boost_start">Запустить оптимизацию</string>
+    <string name="boost_cancel">Отмена</string>
+    <string name="boost_cancelled">Оптимизация отменена</string>
     <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
     <string name="boost_running_label">Оптимизация…</string>
     <string name="boost_ad_title">С рекламой</string>
@@ -1130,4 +1132,5 @@
     <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
     <string name="boost_ad_loading">Загрузка рекламы…</string>
     <string name="boost_terminal_empty">Нажмите кнопку ниже, чтобы начать оптимизацию.</string>
+    <string name="more_boost_desc">Повысьте производительность телефона</string>
 </resources>

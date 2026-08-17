@@ -219,8 +219,15 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
     }
 
-    fun compileApp(packageName: String, filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", filter.value, "-f", packageName))
+    fun compileApp(
+        packageName: String,
+        filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT,
+        force: Boolean = true
+    ): Boolean {
+        val args = mutableListOf("cmd", "package", "compile", "-m", filter.value)
+        if (force) args.add("-f")
+        args.add(packageName)
+        return ShizukuHelper.executeShellCommand(args.toTypedArray())
     }
 
     fun compileAllApps(filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT): Boolean {
