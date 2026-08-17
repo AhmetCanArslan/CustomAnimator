@@ -73,8 +73,9 @@ object GameModeController {
 
         DeveloperOptionsManager.clearAllAppCaches()
         ShizukuHelper.executeShellCommand(arrayOf("am", "compact", "all", "full"))
+        val fixedPerformanceEnabled = setFixedPerformanceMode(true)
 
-        return Result(targets.isEmpty() || restricted > 0)
+        return Result((targets.isEmpty() || restricted > 0) && fixedPerformanceEnabled)
     }
 
     private fun disable(context: Context): Result {
@@ -111,6 +112,8 @@ object GameModeController {
             writeMinRefreshRate(previousRate.toString())
         }
 
+        val fixedPerformanceDisabled = setFixedPerformanceMode(false)
+
         prefs.edit()
             .remove(KEY_TOUCHED_APPS)
             .remove(KEY_TOUCHED_GAMES)
@@ -120,7 +123,7 @@ object GameModeController {
             .putBoolean(KEY_ACTIVE, false)
             .apply()
 
-        return Result(targets.isEmpty() || restored > 0)
+        return Result((targets.isEmpty() || restored > 0) && fixedPerformanceDisabled)
     }
 
     private fun setStandbyBucket(packageName: String, bucket: String): Boolean =
@@ -135,6 +138,11 @@ object GameModeController {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         return ShizukuHelper.executeShellCommand(arrayOf("cmd", "game", "mode", mode, packageName))
     }
+
+    private fun setFixedPerformanceMode(enabled: Boolean): Boolean =
+        ShizukuHelper.executeShellCommand(
+            arrayOf("cmd", "power", "set-fixed-performance-mode-enabled", enabled.toString())
+        )
 
     private fun isMasterSyncEnabled(): Boolean = try {
         ContentResolver.getMasterSyncAutomatically()

@@ -1143,6 +1143,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_widget_turn_on">Turn on</string>
     <string name="game_mode_widget_turn_off">Turn off</string>
     <string name="game_mode_info">While on: selected games run in performance mode, every other user app is moved to the restricted standby bucket and blocked from background work, the background process limit is enabled, auto-sync is turned off, the screen stays awake and the refresh rate is pinned to its maximum. Apps are never force stopped. System apps, launcher, keyboard, dialer, SMS, assistant, accessibility services and notification listeners are left untouched. Everything is restored when you turn it off.</string>
+    <string name="game_mode_fixed_performance">Fixed performance mode is enabled while Game Mode is active.</string>
     <string name="game_mode_tile_label">Game Mode</string>
     <string name="game_mode_tile_subtitle_on">On</string>
     <string name="game_mode_tile_subtitle_off">Off</string>
