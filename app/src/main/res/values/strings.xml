@@ -23,6 +23,13 @@
     <string name="nav_developer">Dev</string>
     <string name="nav_notify">Notify</string>
     <string name="nav_terminal">Terminal</string>
+    <string name="nav_more">More</string>
+    <string name="nav_boost">Boost</string>
+    <string name="developer_title">Developer</string>
+    <string name="more_notify_desc">Flash and customize notifications</string>
+    <string name="more_developer_desc">System toggles and developer tweaks</string>
+    <string name="more_battery_desc">Battery saver and Doze settings</string>
+    <string name="more_boost_desc">Free up memory and speed up apps</string>
     <string name="developer_toggles">System Toggles</string>
     <string name="developer_quick_actions">Quick Actions</string>
     <string name="developer_performance">Performance</string>
@@ -1002,6 +1009,11 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_widget_result">%1$s storage · %2$s RAM freed</string>
     <string name="boost_widget_toast">Boost done · %1$s</string>
     <string name="boost_widget_needs_shizuku">Shizuku permission required</string>
+    <string name="boost_status_title">Current status</string>
+    <string name="boost_available_ram">Available RAM: %1$s</string>
+    <string name="boost_available_storage">Available storage: %1$s</string>
+    <string name="boost_section_quick">Quick Boost</string>
+    <string name="boost_section_compile">Compile Booster</string>
     <string name="disable_rotation_suggestions">Disable rotation suggestions</string>
     <string name="disable_rotation_suggestions_desc">Hide the rotate button that appears when the device turns (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Screenshot actions</string>
