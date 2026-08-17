@@ -1,4 +1,4 @@
-## 176 - 3.2
+## 177 - 3.2
 - Aksi tangkapan layar: salin atau hapus tangkapan layar baru dari notifikasi atau tombol mengambang, plus ubin Setelan Cepat "Salin tangkapan layar".
 - Pengelola Hotspot: nyalakan atau matikan hotspot, lihat dan blokir perangkat yang terhubung, ubah nama, sandi, keamanan, pita, dan batas, bagikan lewat QR, dengan ubin Setelan Cepat.
 - Ubin suara: ubin Setelan Cepat yang membuka panel volume atau pemilih output media saat ditekan atau ditekan lama.
@@ -7,3 +7,4 @@
 - Lebar per aplikasi: atur lebar minimum yang berbeda untuk setiap aplikasi dan terapkan otomatis saat aplikasi berada di latar depan.
 - Peningkatan Mode Game: pelacakan aplikasi latar belakang yang lebih andal dan notifikasi yang lebih baik.
 - Saran perintah terminal yang diperluas dan dukungan bahasa Arab.
+- Boost: halaman peningkatan performa sistem baru untuk memaksimalkan performa ponsel Anda.

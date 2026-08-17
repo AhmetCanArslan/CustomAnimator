@@ -1,4 +1,4 @@
-## 176 - 3.2
+## 177 - 3.2
 - Ações de captura de tela: copie ou exclua uma nova captura por uma notificação ou botão flutuante, além do bloco das Configurações rápidas "Copiar captura".
 - Gerenciador de Hotspot: ligue ou desligue o hotspot, veja e bloqueie dispositivos conectados, edite nome, senha, segurança, banda e limites, compartilhe por QR, com bloco das Configurações rápidas.
 - Bloco de som: um bloco das Configurações rápidas que abre o painel de volume ou o seletor de saída de mídia ao tocar ou manter pressionado.
@@ -7,3 +7,4 @@
 - Largura por app: defina uma menor largura diferente para cada app e aplique-a automaticamente enquanto o app estiver em primeiro plano.
 - Melhorias no Modo Jogo: rastreamento mais confiável de apps em segundo plano e notificações aprimoradas.
 - Sugestões de comandos ampliadas no terminal e suporte ao árabe.
+- Boost: nova página de melhoria de desempenho do sistema para maximizar o desempenho do seu celular.

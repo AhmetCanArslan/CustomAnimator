@@ -1,4 +1,4 @@
-## 176 - 3.2
+## 177 - 3.2
 - Screenshot actions: copy or delete a new screenshot from a notification or a floating button, plus a "Copy screenshot" Quick Settings tile.
 - Hotspot Manager: start or stop the hotspot, see and block connected devices, edit name, password, security, band and limits, share by QR, with a Quick Settings tile.
 - Sound tile: a Quick Settings tile that opens the volume panel or the media output picker on press or long press.
@@ -7,3 +7,4 @@
 - Per-app width: set a different smallest width for each app and apply it automatically while the app is in the foreground.
 - Game Mode improvements: more reliable background-app tracking and improved notifications.
 - Expanded terminal command suggestions and Arabic language support.
+- Boost: a new System performance boost page to maximize your mobile performance.
