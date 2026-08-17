@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
@@ -195,6 +197,17 @@ private object AdBudget {
     }
 }
 
+private val hasUsedCollapsibleBanner = AtomicBoolean(false)
+
+private fun bannerAdRequest(): AdRequest {
+    val builder = AdRequest.Builder()
+    if (hasUsedCollapsibleBanner.compareAndSet(false, true)) {
+        val extras = Bundle().apply { putString("collapsible", "bottom") }
+        builder.addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+    }
+    return builder.build()
+}
+
 object FullScreenAdState {
     @Volatile
     var isShowing: Boolean = false
@@ -252,7 +265,7 @@ fun BannerAdView(applyNavigationBarPadding: Boolean = true) {
                             Log.e("BannerAd", "Ad failed to load: ${error.code} ${error.message}")
                         }
                     }
-                    loadAd(AdRequest.Builder().build())
+                    loadAd(bannerAdRequest())
                     adViewHolder[0] = this
                 }
             }
@@ -404,6 +417,7 @@ object AppOpenAds {
 object InterstitialAds {
     private const val KEY_LAST_SHOWN = "interstitial_last_shown"
     private const val KEY_ACTION_COUNT = "interstitial_action_count"
+    private const val KEY_PENDING = "interstitial_pending"
 
     private const val MIN_INTERVAL_MS = 3L * 60 * 1000
     private const val FREE_ACTIONS = 5
@@ -471,7 +485,13 @@ object InterstitialAds {
             return
         }
 
-        if ((actionCount - FREE_ACTIONS) % ACTIONS_PER_AD != 0) {
+        var isPending = prefs.getBoolean(KEY_PENDING, false)
+        if ((actionCount - FREE_ACTIONS) % ACTIONS_PER_AD == 0 && !isPending) {
+            isPending = true
+            prefs.edit().putBoolean(KEY_PENDING, true).apply()
+        }
+
+        if (!isPending) {
             Log.d(TAG, "Skipped: action $actionCount, waiting for every ${ACTIONS_PER_AD}th")
             preload(activity)
             return
@@ -498,7 +518,7 @@ object InterstitialAds {
 
         val loaded = ad
         if (loaded == null) {
-            Log.d(TAG, "Skipped: no ad ready, warming one up for the next trigger")
+            Log.d(TAG, "Deferred: no ad ready, will show at the next trigger")
             preload(activity)
             return
         }
@@ -523,7 +543,10 @@ object InterstitialAds {
                 preload(activity)
             }
         }
-        prefs.edit().putLong(KEY_LAST_SHOWN, now).apply()
+        prefs.edit()
+            .putLong(KEY_LAST_SHOWN, now)
+            .putBoolean(KEY_PENDING, false)
+            .apply()
         AdBudget.record(activity)
         loaded.show(activity)
     }
