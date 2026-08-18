@@ -12,6 +12,7 @@ object CaffeineManager {
 
     const val INFINITE_TIMEOUT_MS = Int.MAX_VALUE
     private const val DEFAULT_TIMEOUT_MS = 30_000
+    private const val MAX_REAL_TIMEOUT_MS = 1_800_000
 
     private fun prefs(context: Context) =
         context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -25,7 +26,7 @@ object CaffeineManager {
     }
 
     fun isActive(contentResolver: ContentResolver): Boolean =
-        getScreenTimeout(contentResolver) == INFINITE_TIMEOUT_MS
+        getScreenTimeout(contentResolver) > MAX_REAL_TIMEOUT_MS
 
     fun canApply(context: Context): Boolean =
         ShizukuHelper.hasShizukuPermission() || ShizukuHelper.hasWriteSecureSettingsPermission(context)
@@ -33,17 +34,22 @@ object CaffeineManager {
     fun setActive(context: Context, contentResolver: ContentResolver, active: Boolean): Boolean {
         if (active) {
             val current = getScreenTimeout(contentResolver)
-            if (current != INFINITE_TIMEOUT_MS) {
-                prefs(context).edit().putInt(KEY_PREVIOUS_TIMEOUT, current).apply()
+            if (current in 1..MAX_REAL_TIMEOUT_MS) {
+                prefs(context).edit().putInt(KEY_PREVIOUS_TIMEOUT, current).commit()
             }
             return writeTimeout(context, contentResolver, INFINITE_TIMEOUT_MS)
         }
 
         val previous = prefs(context).getInt(KEY_PREVIOUS_TIMEOUT, NO_SAVED_TIMEOUT)
-        val restored = if (previous == NO_SAVED_TIMEOUT) DEFAULT_TIMEOUT_MS else previous
+        val restored = if (previous in 1..MAX_REAL_TIMEOUT_MS) previous else DEFAULT_TIMEOUT_MS
         val success = writeTimeout(context, contentResolver, restored)
-        if (success) prefs(context).edit().remove(KEY_PREVIOUS_TIMEOUT).apply()
+        if (success) prefs(context).edit().remove(KEY_PREVIOUS_TIMEOUT).commit()
         return success
+    }
+
+    private fun isApplied(contentResolver: ContentResolver, value: Int): Boolean {
+        val current = getScreenTimeout(contentResolver)
+        return if (value > MAX_REAL_TIMEOUT_MS) current > MAX_REAL_TIMEOUT_MS else current == value
     }
 
     private fun writeTimeout(context: Context, contentResolver: ContentResolver, value: Int): Boolean {
@@ -51,7 +57,7 @@ object CaffeineManager {
             val applied = ShizukuHelper.executeShellCommand(
                 arrayOf("settings", "put", "system", Settings.System.SCREEN_OFF_TIMEOUT, value.toString())
             )
-            if (applied) return true
+            if (applied && isApplied(contentResolver, value)) return true
         }
         return try {
             Settings.System.putInt(contentResolver, Settings.System.SCREEN_OFF_TIMEOUT, value)
