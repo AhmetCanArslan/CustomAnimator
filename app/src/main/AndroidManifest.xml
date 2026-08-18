@@ -123,6 +123,15 @@
         </service>
 
         <service
+            android:name=".service.BatteryAlertService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Watches the battery level to alert the user at their chosen percentage" />
+        </service>
+
+        <service
             android:name=".service.ScreenshotTileService"
             android:exported="true"
             android:icon="@drawable/ic_tile_screenshot"

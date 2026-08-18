@@ -29,6 +29,11 @@ class BootReceiver : BroadcastReceiver() {
                     Log.e(TAG, "Failed to restore screenshot watcher", e)
                 }
                 try {
+                    BatteryAlertService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore battery alert service", e)
+                }
+                try {
                     DeveloperOptionsManager.reapplyHighVolumeWarning(context.applicationContext)
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to reapply high volume warning", e)

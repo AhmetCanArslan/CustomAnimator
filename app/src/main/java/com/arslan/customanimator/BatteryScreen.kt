@@ -1,7 +1,11 @@
 package com.arslan.customanimator
 
 import androidx.compose.foundation.BorderStroke
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.layout.*
@@ -24,7 +28,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.arslan.customanimator.data.BatteryTweak
+import com.arslan.customanimator.service.BatteryAlertService
+import com.arslan.customanimator.utils.BatteryAlertPrefs
 import com.arslan.customanimator.utils.BatteryTweaksManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import kotlin.math.roundToInt
@@ -102,6 +109,27 @@ fun BatteryScreenContent(
     }
 
     var advancedOpen by remember { mutableStateOf(false) }
+
+    val alertPrefs = remember { BatteryAlertPrefs(context) }
+    var alertLowEnabled by remember { mutableStateOf(alertPrefs.lowEnabled) }
+    var alertLowLevel by remember { mutableIntStateOf(alertPrefs.lowLevel) }
+    var alertHighEnabled by remember { mutableStateOf(alertPrefs.highEnabled) }
+    var alertHighLevel by remember { mutableIntStateOf(alertPrefs.highLevel) }
+    var alertRepeat by remember { mutableStateOf(alertPrefs.repeatAlerts) }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+
+    fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
+                context, Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     val policySupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
@@ -493,6 +521,101 @@ fun BatteryScreenContent(
                         enabled = canWrite
                     ) {
                         writeSecure(mgr.KEY_CHARGING_VIBRATION, if (it) "1" else "0")
+                    }
+                }
+            }
+        }
+
+        item { BatterySectionTitle(stringResource(R.string.bt_section_alerts)) }
+        item {
+            Card(
+                shape = AppShapes.card,
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth()) {
+                Column {
+                    Text(
+                        text = stringResource(R.string.bt_alert_info),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp)
+                    )
+
+                    BatteryToggleRow(
+                        title = stringResource(R.string.bt_alert_low),
+                        description = stringResource(R.string.bt_alert_low_desc),
+                        checked = alertLowEnabled,
+                        enabled = true
+                    ) {
+                        alertLowEnabled = it
+                        alertPrefs.lowEnabled = it
+                        alertPrefs.lowNotified = false
+                        if (it) requestNotificationPermission()
+                        BatteryAlertService.sync(context)
+                    }
+
+                    if (alertLowEnabled) {
+                        HorizontalDivider()
+                        BatterySliderRow(
+                            title = stringResource(R.string.bt_alert_low_level),
+                            description = stringResource(R.string.bt_alert_low_level_desc),
+                            value = alertLowLevel.toFloat(),
+                            min = 5f,
+                            max = 50f,
+                            steps = 0,
+                            enabled = true,
+                            display = { "${it.roundToInt()}%" }
+                        ) {
+                            alertLowLevel = it.roundToInt()
+                            alertPrefs.lowLevel = alertLowLevel
+                            alertPrefs.lowNotified = false
+                            BatteryAlertService.sync(context)
+                        }
+                    }
+
+                    HorizontalDivider()
+                    BatteryToggleRow(
+                        title = stringResource(R.string.bt_alert_high),
+                        description = stringResource(R.string.bt_alert_high_desc),
+                        checked = alertHighEnabled,
+                        enabled = true
+                    ) {
+                        alertHighEnabled = it
+                        alertPrefs.highEnabled = it
+                        alertPrefs.highNotified = false
+                        if (it) requestNotificationPermission()
+                        BatteryAlertService.sync(context)
+                    }
+
+                    if (alertHighEnabled) {
+                        HorizontalDivider()
+                        BatterySliderRow(
+                            title = stringResource(R.string.bt_alert_high_level),
+                            description = stringResource(R.string.bt_alert_high_level_desc),
+                            value = alertHighLevel.toFloat(),
+                            min = 50f,
+                            max = 100f,
+                            steps = 0,
+                            enabled = true,
+                            display = { "${it.roundToInt()}%" }
+                        ) {
+                            alertHighLevel = it.roundToInt()
+                            alertPrefs.highLevel = alertHighLevel
+                            alertPrefs.highNotified = false
+                            BatteryAlertService.sync(context)
+                        }
+                    }
+
+                    if (alertLowEnabled || alertHighEnabled) {
+                        HorizontalDivider()
+                        BatteryToggleRow(
+                            title = stringResource(R.string.bt_alert_repeat),
+                            description = stringResource(R.string.bt_alert_repeat_desc),
+                            checked = alertRepeat,
+                            enabled = true
+                        ) {
+                            alertRepeat = it
+                            alertPrefs.repeatAlerts = it
+                        }
                     }
                 }
             }
