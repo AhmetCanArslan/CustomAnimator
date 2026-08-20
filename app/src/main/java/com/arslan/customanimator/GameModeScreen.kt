@@ -1,5 +1,6 @@
 package com.arslan.customanimator
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -44,6 +45,11 @@ fun GameModeScreen(
     var isActive by remember { mutableStateOf(GameModeController.isActive(context)) }
     var targetCount by remember { mutableStateOf(0) }
     var searchQuery by remember { mutableStateOf("") }
+    val isAdFree by rememberIsAdFree()
+
+    LaunchedEffect(Unit) { RewardedAds.prepare(context) }
+
+
     var showSelectedOnly by remember { mutableStateOf(false) }
 
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, selectedGames) {
@@ -154,16 +160,40 @@ fun GameModeScreen(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                        if (!isActive && !isAdFree) {
+                            Text(
+                                text = stringResource(R.string.game_mode_ad_desc),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                         Button(
-                            onClick = { toggle(!isActive) },
-                            enabled = hasShizukuPermission && !isBusy && (isActive || selectedGames.isNotEmpty()),
+                            onClick = {
+                                when {
+                                    !hasShizukuPermission -> Toast.makeText(
+                                        context,
+                                        context.getString(R.string.game_mode_needs_shizuku),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    isActive -> toggle(false)
+                                    selectedGames.isEmpty() -> Toast.makeText(
+                                        context,
+                                        context.getString(R.string.game_mode_select_games_first),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    isAdFree -> toggle(true)
+                                    else -> requestReward(context) { toggle(true) }
+                                }
+                            },
+                            enabled = !isBusy,
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(
                                 text = when {
                                     isBusy -> stringResource(R.string.working)
                                     isActive -> stringResource(R.string.game_mode_turn_off)
-                                    else -> stringResource(R.string.game_mode_turn_on)
+                                    isAdFree -> stringResource(R.string.game_mode_turn_on)
+                                    else -> stringResource(R.string.game_mode_turn_on_with_ad)
                                 }
                             )
                         }

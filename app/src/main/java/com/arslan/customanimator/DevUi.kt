@@ -8,10 +8,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -74,13 +77,15 @@ internal fun NavigationRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
     description: String,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick)
+            .alpha(if (enabled) 1f else 0.5f)
+            .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -377,6 +382,119 @@ internal fun RotationSelector(
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(start = 4.dp)
                 )
+            }
+        }
+    }
+}
+
+class RewardGate(
+    val unlocked: Boolean,
+    val remainingSeconds: Int,
+    val request: () -> Unit
+)
+
+@Composable
+fun rememberRewardGate(key: String): RewardGate {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val isAdFree by rememberIsAdFree()
+    var remaining by remember(key) { mutableIntStateOf(RewardUnlock.remainingSeconds(key)) }
+
+    LaunchedEffect(key) {
+        RewardedAds.prepare(context)
+        while (true) {
+            remaining = RewardUnlock.remainingSeconds(key)
+            kotlinx.coroutines.delay(1000)
+        }
+    }
+
+    return RewardGate(
+        unlocked = isAdFree || remaining > 0,
+        remainingSeconds = remaining,
+        request = {
+            requestRewardUnlock(context, key) { remaining = RewardUnlock.remainingSeconds(key) }
+        }
+    )
+}
+
+@Composable
+fun RewardGateCard(gate: RewardGate, description: String) {
+    val isAdFree by rememberIsAdFree()
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(
+            containerColor = if (gate.unlocked) {
+                MaterialTheme.colorScheme.secondaryContainer
+            } else {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            }
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(
+                        if (gate.unlocked) {
+                            MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.12f)
+                        } else {
+                            MaterialTheme.colorScheme.primaryContainer
+                        }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = if (gate.unlocked) {
+                        Icons.Filled.LockOpen
+                    } else {
+                        Icons.Filled.Lock
+                    },
+                    contentDescription = null,
+                    tint = if (gate.unlocked) {
+                        MaterialTheme.colorScheme.onSecondaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onPrimaryContainer
+                    },
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(
+                        when {
+                            isAdFree -> R.string.boost_premium_title
+                            gate.unlocked -> R.string.reward_gate_unlocked_title
+                            else -> R.string.boost_ad_title
+                        }
+                    ),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = when {
+                        isAdFree -> stringResource(R.string.boost_premium_desc)
+                        gate.unlocked -> stringResource(
+                            R.string.reward_gate_unlocked_desc,
+                            gate.remainingSeconds / 60,
+                            gate.remainingSeconds % 60
+                        )
+                        else -> description
+                    },
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            if (!gate.unlocked) {
+                Button(onClick = gate.request) {
+                    Text(stringResource(R.string.reward_gate_watch))
+                }
             }
         }
     }

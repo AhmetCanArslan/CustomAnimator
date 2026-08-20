@@ -40,7 +40,8 @@ fun CleanerScreenContent(
     var showClearCachesConfirm by remember { mutableStateOf(false) }
     var showCloseAppsConfirm by remember { mutableStateOf(false) }
 
-    val actionsEnabled = hasShizukuPermission && runningAction == null
+    val gate = rememberRewardGate("cleaner")
+    val actionsEnabled = hasShizukuPermission && runningAction == null && gate.unlocked
 
     Box(modifier = modifier.fillMaxSize()) {
         LazyColumn(
@@ -57,6 +58,13 @@ fun CleanerScreenContent(
                         onOpenSetup = openSetup
                     )
                 }
+            }
+
+            item {
+                RewardGateCard(
+                    gate = gate,
+                    description = stringResource(R.string.reward_gate_cleaner_desc)
+                )
             }
 
             item {
@@ -88,6 +96,7 @@ fun CleanerScreenContent(
                             icon = Icons.Filled.Block,
                             title = stringResource(R.string.close_apps_exclusions),
                             description = stringResource(R.string.close_apps_exclusions_desc),
+                            enabled = gate.unlocked,
                             onClick = onNavigateToCloseAppsExclusions
                         )
                     }

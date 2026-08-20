@@ -34,6 +34,9 @@ fun CompileBoosterScreenContent(
     var showCompileAllConfirm by remember { mutableStateOf(false) }
     var compileFilter by remember { mutableStateOf(CompileFilterManager.getFilter(context)) }
     val compileProgress by CompileBoosterProgressTracker.progress.collectAsState()
+    val isAdFree by rememberIsAdFree()
+
+    LaunchedEffect(Unit) { RewardedAds.prepare(context) }
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -73,6 +76,7 @@ fun CompileBoosterScreenContent(
                     modifier = Modifier.fillMaxWidth(),
                     shape = AppShapes.card
                 ) {
+                    Column {
                     CompileBoosterRow(
                         isRunning = compileProgress.isRunning,
                         percent = compileProgress.percent,
@@ -81,6 +85,10 @@ fun CompileBoosterScreenContent(
                         onClick = { showCompileAllConfirm = true },
                         onCancel = { CompileBoosterService.stop(context) }
                     )
+                    if (!isAdFree) {
+                        InfoNote(text = stringResource(R.string.compile_booster_ad_desc))
+                    }
+                    }
                 }
             }
 
@@ -118,9 +126,13 @@ fun CompileBoosterScreenContent(
                 Button(onClick = {
                     showCompileAllConfirm = false
                     CompileFilterManager.setFilter(context, compileFilter)
-                    startCompileAll()
+                    if (isAdFree) startCompileAll() else requestReward(context) { startCompileAll() }
                 }) {
-                    Text(stringResource(R.string.compile_all_apps))
+                    Text(
+                        stringResource(
+                            if (isAdFree) R.string.compile_all_apps else R.string.compile_all_apps_with_ad
+                        )
+                    )
                 }
             },
             dismissButton = {

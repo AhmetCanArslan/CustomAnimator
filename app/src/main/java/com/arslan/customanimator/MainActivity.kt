@@ -237,6 +237,15 @@ private val SUB_SCREEN_PARENTS = mapOf(
     HomeScreen.SOUND_TILE to HomeScreen.TOOLS
 )
 
+private fun HomeScreen.navDepth(): Int = when (this) {
+    HomeScreen.MAIN -> 0
+    HomeScreen.SETTINGS, HomeScreen.SETUP_GUIDE, HomeScreen.PROFILES, HomeScreen.PER_APP_WIDTH -> 1
+    HomeScreen.PERMISSIONS, HomeScreen.PROFILE_EDITOR, HomeScreen.NOTIFY_RULES, HomeScreen.NOTIFY_LOGGING -> 2
+    HomeScreen.NOTIFY_IGNORED, HomeScreen.NOTIFY_ADD_EDIT_RULE -> 3
+    HomeScreen.NOTIFY_CREATE_PATTERN -> 4
+    else -> if (this in SUB_SCREEN_PARENTS) 2 else 1
+}
+
 private val MORE_SCREENS = setOf(
     HomeScreen.NOTIFY_HOME,
     HomeScreen.DEVELOPER,
@@ -563,7 +572,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     AnimatedContent(
         targetState = currentScreen,
         transitionSpec = {
-            if (targetState.ordinal > initialState.ordinal) {
+            val forward = if (targetState.navDepth() != initialState.navDepth()) {
+                targetState.navDepth() > initialState.navDepth()
+            } else {
+                targetState.ordinal > initialState.ordinal
+            }
+            if (forward) {
                 (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
                     (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
             } else {

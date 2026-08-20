@@ -1202,5 +1202,15 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_ad_reward_denied">Finish the ad to unlock the optimization</string>
     <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
     <string name="boost_ad_loading">Loading ad…</string>
+    <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
+    <string name="reward_gate_watch">Watch ad</string>
+    <string name="reward_gate_unlocked_title">Unlocked</string>
+    <string name="reward_gate_unlocked_desc">Available for %1$d:%2$02d more</string>
+    <string name="reward_gate_cleaner_desc">Watch a short ad to unlock the cleaner for 3 minutes</string>
+    <string name="game_mode_ad_desc">Watch a short ad to turn on game mode</string>
+    <string name="game_mode_select_games_first">Select at least one game first</string>
+    <string name="compile_booster_ad_desc">Watch a short ad to start compiling</string>
+    <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
+    <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="boost_terminal_empty">Tap the button below to start the optimization.</string>
 </resources>
