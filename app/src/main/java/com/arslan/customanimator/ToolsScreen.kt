@@ -1,11 +1,6 @@
 package com.arslan.customanimator
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -19,7 +14,6 @@ import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SignalCellularAlt
-import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
@@ -30,10 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.service.FpsOverlayService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.DeveloperOptionsManager
-import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,7 +56,6 @@ fun ToolsScreenContent(
     var rotationSuggestionsDisabled by remember { mutableStateOf(DeveloperOptionsManager.isRotationSuggestionsDisabled(contentResolver)) }
     var highVolumeWarningDisabled by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningDisabled(context)) }
     var highVolumeWarningPending by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)) }
-    var fpsMeterEnabled by remember { mutableStateOf(FpsOverlayManager.isActive(context)) }
     var isRotationLocked by remember { mutableStateOf(!DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)) }
     var userRotation by remember { mutableStateOf(DeveloperOptionsManager.getUserRotation(contentResolver)) }
 
@@ -79,7 +70,6 @@ fun ToolsScreenContent(
                 DeveloperOptionsManager.reapplyHighVolumeWarning(context)
                 highVolumeWarningDisabled = DeveloperOptionsManager.isHighVolumeWarningDisabled(context)
                 highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)
-                fpsMeterEnabled = FpsOverlayManager.isActive(context)
                 isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
                 userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
             }
@@ -90,33 +80,6 @@ fun ToolsScreenContent(
 
     val secureToggleEnabled = hasShizukuPermission || hasWriteSecureSettings
     val systemToggleEnabled = hasShizukuPermission || canWriteSystemSettings
-
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { }
-
-    val requestNotificationsIfNeeded: () -> Unit = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            androidx.core.content.ContextCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
-
-    val overlayPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (FpsOverlayManager.canDrawOverlay(context)) {
-            FpsOverlayManager.setEnabled(context, true)
-            fpsMeterEnabled = true
-            requestNotificationsIfNeeded()
-            FpsOverlayService.start(context)
-        } else {
-            fpsMeterEnabled = false
-        }
-    }
 
     val applyToggle: (Boolean, (Boolean) -> Unit, () -> Boolean) -> Unit = { newValue, setState, action ->
         setState(newValue)
@@ -261,39 +224,6 @@ fun ToolsScreenContent(
                         )
                         if (highVolumeWarningPending) {
                             InfoNote(text = stringResource(R.string.remove_high_volume_warning_note))
-                        }
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.Speed,
-                            title = stringResource(R.string.fps_meter),
-                            description = stringResource(R.string.fps_meter_desc),
-                            checked = fpsMeterEnabled,
-                            onCheckedChange = { newValue ->
-                                if (newValue) {
-                                    if (FpsOverlayManager.canDrawOverlay(context)) {
-                                        FpsOverlayManager.setEnabled(context, true)
-                                        fpsMeterEnabled = true
-                                        requestNotificationsIfNeeded()
-                                        FpsOverlayService.start(context)
-                                    } else {
-                                        Toast.makeText(
-                                            context,
-                                            context.getString(R.string.fps_overlay_permission_needed),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                        overlayPermissionLauncher.launch(
-                                            FpsOverlayManager.overlayPermissionIntent(context)
-                                        )
-                                    }
-                                } else {
-                                    FpsOverlayManager.setEnabled(context, false)
-                                    fpsMeterEnabled = false
-                                    FpsOverlayService.stop(context)
-                                }
-                            }
-                        )
-                        if (fpsMeterEnabled) {
-                            InfoNote(text = stringResource(R.string.fps_meter_hint))
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

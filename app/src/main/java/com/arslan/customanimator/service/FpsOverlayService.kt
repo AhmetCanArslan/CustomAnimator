@@ -9,7 +9,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.Choreographer
 import android.view.Gravity
 import android.view.MotionEvent
@@ -21,6 +23,8 @@ import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.FpsOverlayManager
+import com.arslan.customanimator.utils.SystemMeterMetric
+import com.arslan.customanimator.utils.SystemMetricsReader
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -30,6 +34,7 @@ class FpsOverlayService : Service() {
         private const val CHANNEL_ID = "fps_overlay_channel"
         private const val NOTIF_ID = 4202
         private const val UPDATE_INTERVAL_NS = 500_000_000L
+        private const val METRICS_INTERVAL_MS = 1000L
 
         fun start(context: Context) {
             ContextCompat.startForegroundService(context, Intent(context, FpsOverlayService::class.java))
@@ -48,6 +53,16 @@ class FpsOverlayService : Service() {
     private var windowStartNs = 0L
     private var frameCallback: Choreographer.FrameCallback? = null
 
+    private var currentFps = 0
+    private var metrics: List<SystemMeterMetric> = emptyList()
+    private val handler = Handler(Looper.getMainLooper())
+    private val metricsRunnable = object : Runnable {
+        override fun run() {
+            renderOverlay()
+            handler.postDelayed(this, METRICS_INTERVAL_MS)
+        }
+    }
+
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onCreate() {
@@ -63,10 +78,16 @@ class FpsOverlayService : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
+        metrics = FpsOverlayManager.enabledMetrics(this)
+        if (metrics.isEmpty()) {
+            FpsOverlayManager.setEnabled(this, false)
+            stopSelf()
+            return START_NOT_STICKY
+        }
         if (overlayView == null) {
             addOverlay()
-            startMeasuring()
         }
+        restartMeasuring()
         return START_STICKY
     }
 
@@ -75,6 +96,7 @@ class FpsOverlayService : Service() {
         val density = resources.displayMetrics.density
         val view = TextView(this).apply {
             text = getString(R.string.fps_overlay_value, 0)
+            setLineSpacing(0f, 1.1f)
             setTextColor(Color.WHITE)
             textSize = 12f
             setPadding(
@@ -162,7 +184,16 @@ class FpsOverlayService : Service() {
         layoutParams = params
     }
 
-    private fun startMeasuring() {
+    private fun restartMeasuring() {
+        frameCallback?.let { Choreographer.getInstance().removeFrameCallback(it) }
+        frameCallback = null
+        handler.removeCallbacks(metricsRunnable)
+        currentFps = 0
+        if (metrics.contains(SystemMeterMetric.FPS)) startFpsMeasuring()
+        handler.post(metricsRunnable)
+    }
+
+    private fun startFpsMeasuring() {
         val choreographer = Choreographer.getInstance()
         windowStartNs = 0L
         frameCount = 0
@@ -174,8 +205,8 @@ class FpsOverlayService : Service() {
                     frameCount++
                     val elapsed = frameTimeNanos - windowStartNs
                     if (elapsed >= UPDATE_INTERVAL_NS) {
-                        val fps = (frameCount * 1_000_000_000.0 / elapsed).roundToInt()
-                        overlayView?.text = getString(R.string.fps_overlay_value, fps)
+                        currentFps = (frameCount * 1_000_000_000.0 / elapsed).roundToInt()
+                        renderOverlay()
                         windowStartNs = frameTimeNanos
                         frameCount = 0
                     }
@@ -185,6 +216,32 @@ class FpsOverlayService : Service() {
         }
         frameCallback = callback
         choreographer.postFrameCallback(callback)
+    }
+
+    private fun renderOverlay() {
+        val view = overlayView ?: return
+        val lines = metrics.mapNotNull { metricLine(it) }
+        view.text = lines.joinToString("\n")
+    }
+
+    private fun metricLine(metric: SystemMeterMetric): String? = when (metric) {
+        SystemMeterMetric.FPS -> getString(R.string.fps_overlay_value, currentFps)
+        SystemMeterMetric.CPU_FREQ ->
+            SystemMetricsReader.cpuFreqMhz()?.let { getString(R.string.meter_value_cpu_freq, it) }
+        SystemMeterMetric.CPU_TEMP ->
+            SystemMetricsReader.cpuTempC()?.let { getString(R.string.meter_value_cpu_temp, it) }
+        SystemMeterMetric.GPU_FREQ ->
+            SystemMetricsReader.gpuFreqMhz()?.let { getString(R.string.meter_value_gpu_freq, it) }
+        SystemMeterMetric.RAM ->
+            SystemMetricsReader.ramUsedMb(this)?.let { (used, total) ->
+                getString(R.string.meter_value_ram, used, total)
+            }
+        SystemMeterMetric.BATTERY_LEVEL ->
+            SystemMetricsReader.batteryLevel(this)?.let { getString(R.string.meter_value_battery_level, it) }
+        SystemMeterMetric.BATTERY_TEMP ->
+            SystemMetricsReader.batteryTempC(this)?.let { getString(R.string.meter_value_battery_temp, it) }
+        SystemMeterMetric.BATTERY_CURRENT ->
+            SystemMetricsReader.batteryCurrentMa(this)?.let { getString(R.string.meter_value_battery_current, it) }
     }
 
     private fun createNotificationChannel() {
@@ -223,6 +280,7 @@ class FpsOverlayService : Service() {
     override fun onDestroy() {
         frameCallback?.let { Choreographer.getInstance().removeFrameCallback(it) }
         frameCallback = null
+        handler.removeCallbacks(metricsRunnable)
         overlayView?.let { view -> runCatching { windowManager.removeView(view) } }
         overlayView = null
         layoutParams = null

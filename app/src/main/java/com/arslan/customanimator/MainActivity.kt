@@ -213,7 +213,7 @@ enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    DEVELOPER, TOOLS, CLEANER, COMPILE_BOOSTER, AUTO_ACTIONS, BATTERY, BOOST
+    DEVELOPER, TOOLS, SYSTEM_METER, CLEANER, COMPILE_BOOSTER, AUTO_ACTIONS, BATTERY, BOOST
 }
 
 private val NOTIFY_SCREENS = setOf(
@@ -250,6 +250,7 @@ private val MORE_SCREENS = setOf(
     HomeScreen.NOTIFY_HOME,
     HomeScreen.DEVELOPER,
     HomeScreen.TOOLS,
+    HomeScreen.SYSTEM_METER,
     HomeScreen.GAME_MODE,
     HomeScreen.CLEANER,
     HomeScreen.COMPILE_BOOSTER,
@@ -316,6 +317,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val moreTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val cleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -795,6 +797,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 listState = toolsListState
             )
         }
+    } else if (targetScreen == HomeScreen.SYSTEM_METER) {
+        MoreSubScreen(
+            title = stringResource(R.string.system_meter_title),
+            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
+        ) {
+            SystemMeterScreenContent(listState = systemMeterListState)
+        }
     } else if (targetScreen == HomeScreen.CLEANER) {
         MoreSubScreen(
             title = stringResource(R.string.cleaner_title),
@@ -941,6 +950,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
             onNavigateToDeveloper = { currentScreen = HomeScreen.DEVELOPER },
             onNavigateToTools = { currentScreen = HomeScreen.TOOLS },
+            onNavigateToSystemMeter = { currentScreen = HomeScreen.SYSTEM_METER },
             onNavigateToGameMode = { currentScreen = HomeScreen.GAME_MODE },
             onNavigateToCleaner = { currentScreen = HomeScreen.CLEANER },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
@@ -2354,6 +2364,7 @@ private fun MoreTabContent(
     onNavigateToNotify: () -> Unit,
     onNavigateToDeveloper: () -> Unit,
     onNavigateToTools: () -> Unit,
+    onNavigateToSystemMeter: () -> Unit,
     onNavigateToGameMode: () -> Unit,
     onNavigateToCleaner: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
@@ -2399,6 +2410,14 @@ private fun MoreTabContent(
                 title = stringResource(R.string.tools_title),
                 description = stringResource(R.string.more_tools_desc),
                 onClick = onNavigateToTools
+            )
+        }
+        item {
+            MoreNavCard(
+                icon = Icons.Default.Speed,
+                title = stringResource(R.string.system_meter_title),
+                description = stringResource(R.string.more_system_meter_desc),
+                onClick = onNavigateToSystemMeter
             )
         }
         item {
