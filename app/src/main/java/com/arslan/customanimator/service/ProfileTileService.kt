@@ -51,8 +51,6 @@ abstract class ProfileTileService : TileService() {
         }
 
         val label = config.label.ifBlank { profile.name }
-        setTileState(Tile.STATE_ACTIVE)
-
         backgroundScope.launch {
             if (config.collapsePanel) {
                 collapseQuickSettings()

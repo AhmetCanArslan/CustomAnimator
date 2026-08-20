@@ -50,8 +50,6 @@ abstract class TerminalTileService : TileService() {
         }
 
         val label = config.label.ifBlank { preset.name }
-        setTileState(Tile.STATE_ACTIVE)
-
         backgroundScope.launch {
             if (config.collapsePanel) {
                 collapseQuickSettings()

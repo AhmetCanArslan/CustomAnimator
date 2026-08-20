@@ -50,8 +50,6 @@ abstract class WidthTileService : TileService() {
         }
 
         val label = config.label.ifBlank { preset.name }
-        setTileState(Tile.STATE_ACTIVE)
-
         backgroundScope.launch {
             if (config.collapsePanel) {
                 collapseQuickSettings()
@@ -88,11 +86,7 @@ abstract class WidthTileService : TileService() {
             tile.label = config.label.ifBlank { preset.name }
             tile.icon = TileNumberIcon.create(TileNumberIcon.widthText(preset.widthDp))
             val ready = canApply()
-            tile.state = when {
-                !ready -> Tile.STATE_UNAVAILABLE
-                SettingsManager.getSmallestWidth(this) == preset.widthDp -> Tile.STATE_ACTIVE
-                else -> Tile.STATE_INACTIVE
-            }
+            tile.state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 tile.subtitle = if (ready) {
                     null
@@ -109,15 +103,6 @@ abstract class WidthTileService : TileService() {
 
     private fun refreshTileAsync() {
         mainHandler.post { refreshTile() }
-    }
-
-    private fun setTileState(state: Int) {
-        mainHandler.post {
-            qsTile?.let {
-                it.state = state
-                it.updateTile()
-            }
-        }
     }
 
     private fun collapseQuickSettings() {

@@ -237,7 +237,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.TerminalTileService2"
@@ -249,7 +252,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.TerminalTileService3"
@@ -261,7 +267,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.TerminalTileService4"
@@ -273,7 +282,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.TerminalTileService5"
@@ -285,7 +297,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.WidthTileService1"
@@ -297,7 +312,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.WidthTileService2"
@@ -309,7 +327,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.WidthTileService3"
@@ -321,7 +342,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.WidthTileService4"
@@ -333,7 +357,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.WidthTileService5"
@@ -345,7 +372,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.AnimationTileService1"
@@ -357,7 +387,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.AnimationTileService2"
@@ -369,7 +402,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.AnimationTileService3"
@@ -381,7 +417,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.AnimationTileService4"
@@ -393,7 +432,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.AnimationTileService5"
@@ -405,7 +447,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.ProfileTileService1"
@@ -417,7 +462,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.ProfileTileService2"
@@ -429,7 +477,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.ProfileTileService3"
@@ -441,7 +492,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.ProfileTileService4"
@@ -453,7 +507,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <service
             android:name=".service.ProfileTileService5"
@@ -465,7 +522,10 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </service>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
 
         <activity
             android:name=".MainActivity"

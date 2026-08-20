@@ -50,8 +50,6 @@ abstract class AnimationTileService : TileService() {
         }
 
         val label = config.label.ifBlank { preset.name }
-        setTileState(Tile.STATE_ACTIVE)
-
         backgroundScope.launch {
             if (config.collapsePanel) {
                 collapseQuickSettings()
@@ -99,12 +97,7 @@ abstract class AnimationTileService : TileService() {
                 )
             )
             val ready = canApply()
-            tile.state = when {
-                !ready -> Tile.STATE_UNAVAILABLE
-                isCurrentlyApplied(preset.windowAnimationScale, preset.transitionAnimationScale, preset.animatorDurationScale) ->
-                    Tile.STATE_ACTIVE
-                else -> Tile.STATE_INACTIVE
-            }
+            tile.state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 tile.subtitle = if (ready) {
                     TileNumberIcon.animationSubtitle(
@@ -120,25 +113,11 @@ abstract class AnimationTileService : TileService() {
         tile.updateTile()
     }
 
-    private fun isCurrentlyApplied(window: Float, transition: Float, animator: Float): Boolean =
-        TileNumberIcon.nearlyEqual(SettingsManager.getWindowAnimationScale(contentResolver), window) &&
-            TileNumberIcon.nearlyEqual(SettingsManager.getTransitionAnimationScale(contentResolver), transition) &&
-            TileNumberIcon.nearlyEqual(SettingsManager.getAnimatorDurationScale(contentResolver), animator)
-
     private fun canApply(): Boolean =
         ShizukuHelper.hasShizukuPermission() || ShizukuHelper.hasWriteSecureSettingsPermission(this)
 
     private fun refreshTileAsync() {
         mainHandler.post { refreshTile() }
-    }
-
-    private fun setTileState(state: Int) {
-        mainHandler.post {
-            qsTile?.let {
-                it.state = state
-                it.updateTile()
-            }
-        }
     }
 
     private fun collapseQuickSettings() {
