@@ -53,7 +53,7 @@ import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.ui.theme.pressScale
 
 enum class StatusTone {
-    NEUTRAL, ACTIVE, WARNING, DANGER
+    NEUTRAL, ACTIVE, INFO, WARNING, DANGER
 }
 
 @Composable
@@ -173,12 +173,14 @@ fun StatusPill(
     val container = when (tone) {
         StatusTone.NEUTRAL -> scheme.surfaceContainerHighest
         StatusTone.ACTIVE -> extended.successContainer
+        StatusTone.INFO -> extended.infoContainer
         StatusTone.WARNING -> extended.warningContainer
         StatusTone.DANGER -> scheme.errorContainer
     }
     val content = when (tone) {
         StatusTone.NEUTRAL -> scheme.onSurfaceVariant
         StatusTone.ACTIVE -> extended.onSuccessContainer
+        StatusTone.INFO -> extended.onInfoContainer
         StatusTone.WARNING -> extended.onWarningContainer
         StatusTone.DANGER -> scheme.onErrorContainer
     }

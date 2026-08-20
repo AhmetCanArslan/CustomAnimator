@@ -50,7 +50,10 @@ data class ExtendedColors(
     val successContainer: Color,
     val warning: Color,
     val onWarningContainer: Color,
-    val warningContainer: Color
+    val warningContainer: Color,
+    val info: Color,
+    val onInfoContainer: Color,
+    val infoContainer: Color
 )
 
 val LocalExtendedColors = staticCompositionLocalOf {
@@ -60,7 +63,10 @@ val LocalExtendedColors = staticCompositionLocalOf {
         successContainer = SuccessContainerLight,
         warning = WarningLight,
         onWarningContainer = WarningLight,
-        warningContainer = WarningContainerLight
+        warningContainer = WarningContainerLight,
+        info = InfoLight,
+        onInfoContainer = InfoLight,
+        infoContainer = InfoContainerLight
     )
 }
 
@@ -141,7 +147,10 @@ fun CustomAnimatorTheme(
             successContainer = SuccessContainerDark,
             warning = WarningDark,
             onWarningContainer = WarningDark,
-            warningContainer = WarningContainerDark
+            warningContainer = WarningContainerDark,
+            info = InfoDark,
+            onInfoContainer = InfoDark,
+            infoContainer = InfoContainerDark
         )
     } else {
         ExtendedColors(
@@ -150,7 +159,10 @@ fun CustomAnimatorTheme(
             successContainer = SuccessContainerLight,
             warning = WarningLight,
             onWarningContainer = Color(0xFF2C1600),
-            warningContainer = WarningContainerLight
+            warningContainer = WarningContainerLight,
+            info = InfoLight,
+            onInfoContainer = Color(0xFF001C3B),
+            infoContainer = InfoContainerLight
         )
     }
 

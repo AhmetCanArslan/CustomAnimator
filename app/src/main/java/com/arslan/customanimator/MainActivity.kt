@@ -2635,7 +2635,7 @@ fun SyncedAnimationPreview(
                     )
                 }
                 val tone = when {
-                    currentScale <= 0f -> StatusTone.WARNING
+                    currentScale <= 0f -> StatusTone.INFO
                     currentScale < 0.95f -> StatusTone.ACTIVE
                     currentScale <= 1.05f -> StatusTone.NEUTRAL
                     else -> StatusTone.WARNING
