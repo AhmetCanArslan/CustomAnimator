@@ -1,10 +1,7 @@
-## 177 - 3.2
-- Acciones de captura de pantalla: copia o elimina una captura nueva desde una notificación o un botón flotante, más una baldosa de Ajustes rápidos "Copiar captura".
-- Administrador de Hotspot: enciende o apaga el hotspot, mira y bloquea los dispositivos conectados, edita nombre, contraseña, seguridad, banda y límites, comparte por QR, con baldosa de Ajustes rápidos.
-- Baldosa de sonido: una baldosa de Ajustes rápidos que abre el panel de volumen o el selector de salida de medios al tocarla o mantenerla presionada.
-- Modo Juego: restringe las apps en segundo plano mientras juegas, con baldosa de Ajustes rápidos y widget de pantalla de inicio.
-- Modo de compilación: elige cómo se compilan las apps (Everything, Speed, Speed profile, Verify).
-- Ancho por app: establece un ancho mínimo diferente para cada app y aplícalo automáticamente mientras está en primer plano.
-- Mejoras del Modo Juego: seguimiento más fiable de las apps en segundo plano y notificaciones mejoradas.
-- Sugerencias de comandos ampliadas en el terminal y compatibilidad con árabe.
-- Boost: una nueva página de mejora del rendimiento del sistema para maximizar el rendimiento de tu teléfono.
+## 179 - 3.3
+- Medidor del sistema: una superposición flotante que muestra FPS, CPU, GPU, RAM y batería mientras usas el teléfono.
+- Limpiador: encuentra y libera espacio de cachés y archivos sobrantes.
+- Lista blanca de Doze: elige qué apps pueden seguir funcionando mientras el teléfono está inactivo.
+- Ajustes HWUI: modifica las propiedades de renderizado por hardware para un dibujado más fluido.
+- Alertas de batería: recibe una notificación cuando la batería llegue a los niveles que definas.
+- Navegación rediseñada, tarjetas de información y etiquetas de estado renovadas en toda la app.

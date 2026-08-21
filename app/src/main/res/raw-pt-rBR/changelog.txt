@@ -1,10 +1,7 @@
-## 177 - 3.2
-- Ações de captura de tela: copie ou exclua uma nova captura por uma notificação ou botão flutuante, além do bloco das Configurações rápidas "Copiar captura".
-- Gerenciador de Hotspot: ligue ou desligue o hotspot, veja e bloqueie dispositivos conectados, edite nome, senha, segurança, banda e limites, compartilhe por QR, com bloco das Configurações rápidas.
-- Bloco de som: um bloco das Configurações rápidas que abre o painel de volume ou o seletor de saída de mídia ao tocar ou manter pressionado.
-- Modo Jogo: restringe apps em segundo plano enquanto você joga, com bloco das Configurações rápidas e widget na tela inicial.
-- Modo de compilação: escolha como os apps são compilados (Everything, Speed, Speed profile, Verify).
-- Largura por app: defina uma menor largura diferente para cada app e aplique-a automaticamente enquanto o app estiver em primeiro plano.
-- Melhorias no Modo Jogo: rastreamento mais confiável de apps em segundo plano e notificações aprimoradas.
-- Sugestões de comandos ampliadas no terminal e suporte ao árabe.
-- Boost: nova página de melhoria de desempenho do sistema para maximizar o desempenho do seu celular.
+## 179 - 3.3
+- Medidor do sistema: uma sobreposição flutuante que mostra FPS, CPU, GPU, RAM e bateria enquanto você usa o telefone.
+- Limpeza: encontre e libere espaço de caches e arquivos restantes.
+- Lista branca do Doze: escolha quais apps podem continuar rodando enquanto o telefone está ocioso.
+- Ajustes HWUI: altere as propriedades de renderização por hardware para um desenho mais fluido.
+- Alertas de bateria: receba uma notificação quando a bateria atingir os níveis que você definir.
+- Navegação reformulada, cartões de informação e etiquetas de status renovados no app.

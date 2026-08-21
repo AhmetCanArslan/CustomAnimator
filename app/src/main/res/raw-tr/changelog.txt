@@ -1,10 +1,7 @@
-## 177 - 3.2
-- Ekran görüntüsü işlemleri: yeni ekran görüntüsünü bildirimden veya kayan düğmeden kopyalayın ya da silin; ayrıca "Ekran görüntüsünü kopyala" Hızlı Ayarlar kutusu.
-- Hotspot Yöneticisi: hotspot'u başlatın veya durdurun, bağlı cihazları görün ve engelleyin, ad, parola, güvenlik, bant ve sınırları düzenleyin, QR ile paylaşın; Hızlı Ayarlar kutusuyla birlikte.
-- Ses kutusu: basınca veya basılı tutunca ses panelini ya da medya çıkışı seçiciyi açan Hızlı Ayarlar kutusu.
-- Oyun Modu: oyunlarınız çalışırken arka plan uygulamalarını kısıtlar; Hızlı Ayarlar kutusu ve ana ekran widget'ı ile.
-- Derleme modu: uygulamaların nasıl derleneceğini seçin (Her şey, Hız, Hız (profil), Doğrulama).
-- Uygulama başına genişlik: her uygulama için farklı bir en küçük genişlik ayarlayın ve uygulama ön plandayken otomatik olarak uygulayın.
-- Oyun Modu iyileştirmeleri: daha güvenilir arka plan uygulaması takibi ve geliştirilmiş bildirimler.
-- Genişletilmiş terminal komut önerileri ve Arapça dil desteği.
-- Boost: telefon performansınızı en üst düzeye çıkaran yeni Sistem performans artırma sayfası.
+## 179 - 3.3
+- Sistem Ölçer: telefonu kullanırken FPS, CPU, GPU, RAM ve pili gösteren kayan bir katman.
+- Temizleyici: önbellekleri ve artık dosyaları bulup yer açın.
+- Doze Beyaz Listesi: telefon boştayken hangi uygulamaların çalışmaya devam edeceğini seçin.
+- HWUI Ayarları: daha akıcı çizim için donanım hızlandırma özelliklerini ayarlayın.
+- Pil uyarıları: belirlediğiniz pil seviyelerinde bildirim alın.
+- Yenilenen gezinme, bilgi kartları ve durum etiketleri.

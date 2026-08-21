@@ -1,10 +1,7 @@
-## 177 - 3.2
-- Aksi tangkapan layar: salin atau hapus tangkapan layar baru dari notifikasi atau tombol mengambang, plus ubin Setelan Cepat "Salin tangkapan layar".
-- Pengelola Hotspot: nyalakan atau matikan hotspot, lihat dan blokir perangkat yang terhubung, ubah nama, sandi, keamanan, pita, dan batas, bagikan lewat QR, dengan ubin Setelan Cepat.
-- Ubin suara: ubin Setelan Cepat yang membuka panel volume atau pemilih output media saat ditekan atau ditekan lama.
-- Mode Game: membatasi aplikasi latar belakang saat game berjalan, dengan ubin Setelan Cepat dan widget layar utama.
-- Mode kompilasi: pilih cara aplikasi dikompilasi (Everything, Speed, Speed profile, Verify).
-- Lebar per aplikasi: atur lebar minimum yang berbeda untuk setiap aplikasi dan terapkan otomatis saat aplikasi berada di latar depan.
-- Peningkatan Mode Game: pelacakan aplikasi latar belakang yang lebih andal dan notifikasi yang lebih baik.
-- Saran perintah terminal yang diperluas dan dukungan bahasa Arab.
-- Boost: halaman peningkatan performa sistem baru untuk memaksimalkan performa ponsel Anda.
+## 179 - 3.3
+- System Meter: overlay mengambang yang menampilkan FPS, CPU, GPU, RAM, dan baterai saat kamu memakai ponsel.
+- Pembersih: temukan dan bebaskan ruang dari cache serta file sisa.
+- Daftar Putih Doze: pilih aplikasi mana yang boleh tetap berjalan saat ponsel idle.
+- Tweak HWUI: atur properti rendering perangkat keras agar gambar lebih mulus.
+- Peringatan baterai: dapatkan notifikasi saat baterai mencapai level yang kamu tentukan.
+- Navigasi, kartu info, dan label status yang diperbarui di seluruh aplikasi.

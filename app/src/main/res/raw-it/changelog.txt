@@ -1,10 +1,7 @@
-## 177 - 3.2
-- Azioni screenshot: copia o elimina un nuovo screenshot da una notifica o da un pulsante flottante, più un riquadro delle Impostazioni rapide "Copia screenshot".
-- Gestione hotspot: avvia o ferma l'hotspot, vedi e blocca i dispositivi connessi, modifica nome, password, sicurezza, banda e limiti, condividi con QR, con riquadro delle Impostazioni rapide.
-- Riquadro audio: un riquadro delle Impostazioni rapide che apre il pannello del volume o il selettore di uscita audio con tocco o pressione prolungata.
-- Modalità gioco: limita le app in background mentre giochi, con riquadro delle Impostazioni rapide e widget per la schermata home.
-- Modalità di compilazione: scegli come vengono compilate le app (Everything, Speed, Speed profile, Verify).
-- Larghezza per app: imposta una larghezza minima diversa per ogni app e applicala automaticamente quando l'app è in primo piano.
-- Miglioramenti alla modalità gioco: rilevamento più affidabile delle app in background e notifiche migliorate.
-- Suggerimenti dei comandi del terminale ampliati e supporto per l'arabo.
-- Boost: nuova pagina di potenziamento delle prestazioni di sistema per massimizzare le prestazioni del telefono.
+## 179 - 3.3
+- Misuratore di sistema: un overlay flottante che mostra FPS, CPU, GPU, RAM e batteria mentre usi il telefono.
+- Pulizia: trova e libera spazio da cache e file residui.
+- Whitelist Doze: scegli quali app possono continuare a funzionare mentre il telefono è inattivo.
+- Modifiche HWUI: regola le proprietà di rendering hardware per un disegno più fluido.
+- Avvisi batteria: ricevi una notifica quando la batteria raggiunge i livelli che imposti.
+- Navigazione rinnovata, schede informative ed etichette di stato aggiornate in tutta l'app.
