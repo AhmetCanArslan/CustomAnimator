@@ -11,8 +11,8 @@ import android.os.Bundle
 import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import com.arslan.customanimator.R
-import com.arslan.customanimator.notify.widget.WidgetMaterialColors
 import com.arslan.customanimator.service.BoostService
 
 class BoostWidgetProvider : AppWidgetProvider() {
@@ -79,17 +79,16 @@ class BoostWidgetProvider : AppWidgetProvider() {
 
         private fun viewsFor(context: Context, layoutId: Int, hasText: Boolean): RemoteViews {
             val views = RemoteViews(context.packageName, layoutId)
-            val colors = WidgetMaterialColors.resolve(context)
             val running = BoostWidgetState.isRunning(context)
             val result = BoostWidgetState.result(context)
 
-            applyBackground(views, WidgetMaterialColors.withAlpha(colors.background, 100))
-            tintButton(views, colors.accent.toInt(), hasText, colors.background.toInt())
+            applyBackground(context, views)
+            tintButton(context, views, hasText)
 
             if (hasText) {
-                views.setTextColor(R.id.boost_title, colors.text.toInt())
-                views.setTextColor(R.id.boost_status, colors.text.toInt())
-                views.setInt(R.id.boost_icon, "setColorFilter", colors.accent.toInt())
+                applyColor(context, views, R.id.boost_title, "setTextColor", R.color.widget_dynamic_text)
+                applyColor(context, views, R.id.boost_status, "setTextColor", R.color.widget_dynamic_text)
+                applyColor(context, views, R.id.boost_icon, "setImageTintList", R.color.widget_dynamic_accent)
                 views.setTextViewText(R.id.boost_title, context.getString(R.string.boost_widget_title))
                 views.setTextViewText(
                     R.id.boost_status,
@@ -116,33 +115,38 @@ class BoostWidgetProvider : AppWidgetProvider() {
             return views
         }
 
-        private fun tintButton(views: RemoteViews, color: Int, hasText: Boolean, contentColor: Int) {
+        private fun tintButton(context: Context, views: RemoteViews, hasText: Boolean) {
             if (hasText) {
-                views.setTextColor(R.id.boost_button, contentColor)
+                applyColor(context, views, R.id.boost_button, "setTextColor", R.color.widget_dynamic_background)
             } else {
-                views.setInt(R.id.boost_button, "setColorFilter", contentColor)
+                applyColor(context, views, R.id.boost_button, "setImageTintList", R.color.widget_dynamic_background)
             }
+            applyColor(context, views, R.id.boost_button, "setBackgroundTintList", R.color.widget_dynamic_accent)
+        }
+
+        private fun applyBackground(context: Context, views: RemoteViews) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                views.setColorStateList(
-                    R.id.boost_button,
-                    "setBackgroundTintList",
-                    android.content.res.ColorStateList.valueOf(color)
-                )
+                views.setInt(R.id.boost_root, "setBackgroundResource", R.drawable.widget_bg_24)
+                views.setColorStateList(R.id.boost_root, "setBackgroundTintList", R.color.widget_dynamic_background)
             } else {
-                views.setInt(R.id.boost_button, "setBackgroundColor", color)
+                views.setInt(
+                    R.id.boost_root,
+                    "setBackgroundColor",
+                    ContextCompat.getColor(context, R.color.widget_dynamic_background)
+                )
             }
         }
 
-        private fun applyBackground(views: RemoteViews, color: Int) {
+        private fun applyColor(context: Context, views: RemoteViews, viewId: Int, method: String, colorRes: Int) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                views.setInt(R.id.boost_root, "setBackgroundResource", R.drawable.widget_bg_24)
-                views.setColorStateList(
-                    R.id.boost_root,
-                    "setBackgroundTintList",
-                    android.content.res.ColorStateList.valueOf(color)
-                )
-            } else {
-                views.setInt(R.id.boost_root, "setBackgroundColor", color)
+                views.setColorStateList(viewId, method, colorRes)
+                return
+            }
+            val color = ContextCompat.getColor(context, colorRes)
+            when (method) {
+                "setTextColor" -> views.setTextColor(viewId, color)
+                "setImageTintList" -> views.setInt(viewId, "setColorFilter", color)
+                else -> views.setInt(viewId, "setBackgroundColor", color)
             }
         }
     }

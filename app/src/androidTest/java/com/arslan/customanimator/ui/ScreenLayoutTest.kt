@@ -11,14 +11,14 @@ import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
-import com.arslan.customanimator.BoostScreen
+import com.arslan.customanimator.BoostScreenContent
 import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.CleanerScreenContent
 import com.arslan.customanimator.CloseAppsExclusionsScreen
 import com.arslan.customanimator.CompileBoosterScreenContent
 import com.arslan.customanimator.DeveloperScreenContent
 import com.arslan.customanimator.DozeWhitelistScreen
-import com.arslan.customanimator.GameModeScreen
+import com.arslan.customanimator.GameModeScreenContent
 import com.arslan.customanimator.GraphicsApiOverrideScreen
 import com.arslan.customanimator.HotspotManagerScreen
 import com.arslan.customanimator.HwuiTweaksScreen
@@ -67,8 +67,8 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun gameModeScreenFitsSmallPhones() = screenFits(R.string.game_mode) {
-        GameModeScreen(onBack = {}, hasShizukuPermission = false)
+    fun gameModeScreenFitsSmallPhones() = screenFits {
+        GameModeScreenContent(hasShizukuPermission = false)
     }
 
     @Test
@@ -147,6 +147,8 @@ class ScreenLayoutTest {
             onNavigateToAppThreading = {},
             onNavigateToScreenshotActions = {},
             onNavigateToSoundTile = {},
+            onNavigateToCompileBooster = {},
+            onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},
             onNavigateToHotspotManager = {},
             onNavigateToAlarmRevealer = {},
@@ -241,8 +243,8 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun boostScreenFitsSmallPhones() = screenFits(R.string.boost_screen_title) {
-        BoostScreen(onBack = {})
+    fun boostScreenFitsSmallPhones() = screenFits {
+        BoostScreenContent()
     }
 
     @Test

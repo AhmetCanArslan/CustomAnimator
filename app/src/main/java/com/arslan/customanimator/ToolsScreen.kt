@@ -10,12 +10,14 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SignalCellularAlt
+import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
@@ -47,6 +49,8 @@ fun ToolsScreenContent(
     onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
+    onNavigateToCompileBooster: () -> Unit,
+    onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -159,6 +163,20 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.app_threading),
                             description = stringResource(R.string.app_threading_desc),
                             onClick = onNavigateToAppThreading
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Speed,
+                            title = stringResource(R.string.compile_booster),
+                            description = stringResource(R.string.more_compile_booster_desc),
+                            onClick = onNavigateToCompileBooster
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.PlaylistRemove,
+                            title = stringResource(R.string.auto_actions),
+                            description = stringResource(R.string.more_auto_actions_desc),
+                            onClick = onNavigateToAutoActions
                         )
                     }
                 }

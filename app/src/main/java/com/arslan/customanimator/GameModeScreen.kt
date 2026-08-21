@@ -28,8 +28,7 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GameModeScreen(
-    onBack: () -> Unit,
+fun GameModeScreenContent(
     hasShizukuPermission: Boolean,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -97,34 +96,10 @@ fun GameModeScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.game_mode),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
-            )
-        },
-        bottomBar = { BannerAdView() }
-    ) { paddingValues ->
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -263,5 +238,4 @@ fun GameModeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
 }

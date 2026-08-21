@@ -42,7 +42,7 @@ import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.filled.Bolt
-import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.PlaylistRemove
@@ -87,7 +87,7 @@ import com.arslan.customanimator.notify.ui.LoggingSection
 import com.arslan.customanimator.notify.ui.NotifyHomeSection
 import com.arslan.customanimator.notify.ui.RulesSection
 import com.arslan.customanimator.service.AutoForceStopService
-import com.arslan.customanimator.ui.components.ExpressiveNavBar
+import com.arslan.customanimator.ui.components.ExpressiveTopNavBar
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.theme.MonoNumeralLarge
@@ -206,15 +206,41 @@ class MainActivity : ComponentActivity() {
 private const val WIDTH_REVERT_MS = 15_000L
 
 enum class HomeTab {
-    ANIMATION, WIDTH, TERMINAL, MORE
+    ANIMATION, WIDTH, BOOST, GAME_MODE, SYSTEM_METER, CLEANER, BATTERY, TOOLS, DEVELOPER, TERMINAL
 }
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
-    CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    DEVELOPER, TOOLS, SYSTEM_METER, CLEANER, COMPILE_BOOSTER, AUTO_ACTIONS, BATTERY, BOOST
+    COMPILE_BOOSTER, AUTO_ACTIONS
+}
+
+private fun HomeTab.labelRes(): Int = when (this) {
+    HomeTab.ANIMATION -> R.string.nav_animation
+    HomeTab.WIDTH -> R.string.nav_width
+    HomeTab.BOOST -> R.string.nav_boost
+    HomeTab.GAME_MODE -> R.string.game_mode
+    HomeTab.SYSTEM_METER -> R.string.system_meter_title
+    HomeTab.CLEANER -> R.string.cleaner_title
+    HomeTab.BATTERY -> R.string.nav_battery
+    HomeTab.TOOLS -> R.string.tools_title
+    HomeTab.DEVELOPER -> R.string.developer_title
+    HomeTab.TERMINAL -> R.string.nav_terminal
+}
+
+private fun HomeTab.icon(): ImageVector = when (this) {
+    HomeTab.ANIMATION -> Icons.Default.PlayArrow
+    HomeTab.WIDTH -> Icons.Default.Straighten
+    HomeTab.BOOST -> Icons.Default.Bolt
+    HomeTab.GAME_MODE -> Icons.Default.VideogameAsset
+    HomeTab.SYSTEM_METER -> Icons.Default.Speed
+    HomeTab.CLEANER -> Icons.Default.CleaningServices
+    HomeTab.BATTERY -> Icons.Default.BatterySaver
+    HomeTab.TOOLS -> Icons.Default.Build
+    HomeTab.DEVELOPER -> Icons.Default.DeveloperMode
+    HomeTab.TERMINAL -> Icons.Default.Terminal
 }
 
 private val NOTIFY_SCREENS = setOf(
@@ -227,19 +253,27 @@ private val NOTIFY_SCREENS = setOf(
 
 private val SUB_SCREEN_PARENTS = mapOf(
     HomeScreen.AUTO_FORCE_STOP to HomeScreen.AUTO_ACTIONS,
-    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS,
-    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeScreen.CLEANER,
-    HomeScreen.GRAPHICS_API_OVERRIDE to HomeScreen.TOOLS,
-    HomeScreen.HWUI_TWEAKS to HomeScreen.TOOLS,
-    HomeScreen.APP_THREADING to HomeScreen.TOOLS,
-    HomeScreen.DOZE_WHITELIST to HomeScreen.BATTERY,
-    HomeScreen.WIFI_PASSWORDS to HomeScreen.TOOLS,
-    HomeScreen.HOTSPOT_MANAGER to HomeScreen.TOOLS,
-    HomeScreen.ALARM_REVEALER to HomeScreen.TOOLS,
-    HomeScreen.CARRIER_NAME to HomeScreen.TOOLS,
-    HomeScreen.SCREENSHOT_ACTIONS to HomeScreen.TOOLS,
-    HomeScreen.SOUND_TILE to HomeScreen.TOOLS
+    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS
 )
+
+private val SUB_SCREEN_TABS = mapOf(
+    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.CLEANER,
+    HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
+    HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
+    HomeScreen.APP_THREADING to HomeTab.TOOLS,
+    HomeScreen.DOZE_WHITELIST to HomeTab.BATTERY,
+    HomeScreen.WIFI_PASSWORDS to HomeTab.TOOLS,
+    HomeScreen.HOTSPOT_MANAGER to HomeTab.TOOLS,
+    HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
+    HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
+    HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.SOUND_TILE to HomeTab.TOOLS,
+    HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
+    HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH
+)
+
+private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
 
 private fun HomeScreen.navDepth(): Int = when (this) {
     HomeScreen.MAIN -> 0
@@ -247,21 +281,8 @@ private fun HomeScreen.navDepth(): Int = when (this) {
     HomeScreen.PERMISSIONS, HomeScreen.PROFILE_EDITOR, HomeScreen.NOTIFY_RULES, HomeScreen.NOTIFY_LOGGING -> 2
     HomeScreen.NOTIFY_IGNORED, HomeScreen.NOTIFY_ADD_EDIT_RULE -> 3
     HomeScreen.NOTIFY_CREATE_PATTERN -> 4
-    else -> if (this in SUB_SCREEN_PARENTS) 2 else 1
+    else -> if (this in SUB_SCREEN_PARENTS) 3 else if (this in SUB_SCREEN_TABS) 2 else 1
 }
-
-private val MORE_SCREENS = setOf(
-    HomeScreen.NOTIFY_HOME,
-    HomeScreen.DEVELOPER,
-    HomeScreen.TOOLS,
-    HomeScreen.SYSTEM_METER,
-    HomeScreen.GAME_MODE,
-    HomeScreen.CLEANER,
-    HomeScreen.COMPILE_BOOSTER,
-    HomeScreen.AUTO_ACTIONS,
-    HomeScreen.BATTERY,
-    HomeScreen.BOOST
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -318,7 +339,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val setupGuideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val openSetupGuide: () -> Unit = { currentScreen = HomeScreen.SETUP_GUIDE }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val moreTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val cleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -541,16 +561,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
+    val backToTab: (HomeTab) -> Unit = { tab ->
+        currentScreen = HomeScreen.MAIN
+        selectedTab = tab
+    }
+
     BackHandler(enabled = currentScreen in SUB_SCREEN_PARENTS) {
         SUB_SCREEN_PARENTS[currentScreen]?.let { currentScreen = it }
     }
-    BackHandler(enabled = currentScreen in MORE_SCREENS) {
-        currentScreen = HomeScreen.MAIN
-        selectedTab = HomeTab.MORE
+    BackHandler(enabled = currentScreen in SUB_SCREEN_TABS) {
+        SUB_SCREEN_TABS[currentScreen]?.let(backToTab)
     }
-    BackHandler(enabled = currentScreen == HomeScreen.PER_APP_WIDTH) {
+    BackHandler(enabled = currentScreen in ROOT_LEVEL_SCREENS) {
         currentScreen = HomeScreen.MAIN
-        selectedTab = HomeTab.WIDTH
     }
     BackHandler(enabled = currentScreen == HomeScreen.PROFILES) {
         currentScreen = HomeScreen.MAIN
@@ -657,70 +680,67 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
     } else if (targetScreen == HomeScreen.HWUI_TWEAKS) {
         HwuiTweaksScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = hwuiTweaksListState
         )
     } else if (targetScreen == HomeScreen.APP_THREADING) {
         AppThreadingScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = appThreadingListState
         )
     } else if (targetScreen == HomeScreen.DOZE_WHITELIST) {
         DozeWhitelistScreen(
-            onBack = { currentScreen = HomeScreen.BATTERY },
+            onBack = { backToTab(HomeTab.BATTERY) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = dozeWhitelistListState
         )
     } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
         PerAppWidthScreen(
-            onBack = {
-                currentScreen = HomeScreen.MAIN
-                selectedTab = HomeTab.WIDTH
-            },
+            onBack = { backToTab(HomeTab.WIDTH) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = perAppWidthListState
         )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = wifiPasswordsListState
         )
     } else if (targetScreen == HomeScreen.HOTSPOT_MANAGER) {
         HotspotManagerScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = hotspotManagerListState
         )
     } else if (targetScreen == HomeScreen.ALARM_REVEALER) {
         AlarmRevealerScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = alarmRevealerListState
         )
     } else if (targetScreen == HomeScreen.CARRIER_NAME) {
         CarrierNameScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
         )
     } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
         ScreenshotActionsScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             listState = screenshotActionsListState
         )
     } else if (targetScreen == HomeScreen.SOUND_TILE) {
         SoundTileScreen(
-            onBack = { currentScreen = HomeScreen.TOOLS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = soundTileListState
         )
@@ -766,19 +786,13 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         CreatePatternSection(onNavigateBack = notifyBack)
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
         CloseAppsExclusionsScreen(
-            onBack = { currentScreen = HomeScreen.CLEANER },
+            onBack = { backToTab(HomeTab.CLEANER) },
             listState = closeAppsExclusionsListState
         )
-    } else if (targetScreen == HomeScreen.GAME_MODE) {
-        GameModeScreen(
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE },
-            hasShizukuPermission = hasShizukuPermission.value,
-            listState = gameModeListState
-        )
     } else if (targetScreen == HomeScreen.NOTIFY_HOME) {
-        MoreSubScreen(
+        SubScreen(
             title = stringResource(R.string.pn_title),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE },
+            onBack = { currentScreen = HomeScreen.MAIN },
             actions = {
                 IconButton(onClick = { currentScreen = HomeScreen.NOTIFY_LOGGING }) {
                     Icon(
@@ -793,59 +807,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
             )
         }
-    } else if (targetScreen == HomeScreen.DEVELOPER) {
-        MoreSubScreen(
-            title = stringResource(R.string.developer_title),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
-        ) {
-            DeveloperScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
-                hasWriteSecureSettings = hasWriteSecureSettings.value,
-                listState = developerTabListState
-            )
-        }
-    } else if (targetScreen == HomeScreen.TOOLS) {
-        MoreSubScreen(
-            title = stringResource(R.string.tools_title),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
-        ) {
-            ToolsScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
-                hasWriteSecureSettings = hasWriteSecureSettings.value,
-                onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
-                onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
-                onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
-                onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
-                onNavigateToSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
-                onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
-                onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
-                onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
-                onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
-                listState = toolsListState
-            )
-        }
-    } else if (targetScreen == HomeScreen.SYSTEM_METER) {
-        MoreSubScreen(
-            title = stringResource(R.string.system_meter_title),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
-        ) {
-            SystemMeterScreenContent(listState = systemMeterListState)
-        }
-    } else if (targetScreen == HomeScreen.CLEANER) {
-        MoreSubScreen(
-            title = stringResource(R.string.cleaner_title),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
-        ) {
-            CleanerScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
-                onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
-                listState = cleanerListState
-            )
-        }
     } else if (targetScreen == HomeScreen.COMPILE_BOOSTER) {
-        MoreSubScreen(
+        SubScreen(
             title = stringResource(R.string.compile_booster),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
+            onBack = { backToTab(HomeTab.TOOLS) }
         ) {
             CompileBoosterScreenContent(
                 hasShizukuPermission = hasShizukuPermission.value,
@@ -853,9 +818,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             )
         }
     } else if (targetScreen == HomeScreen.AUTO_ACTIONS) {
-        MoreSubScreen(
+        SubScreen(
             title = stringResource(R.string.auto_actions),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
+            onBack = { backToTab(HomeTab.TOOLS) }
         ) {
             AutoActionsScreenContent(
                 hasShizukuPermission = hasShizukuPermission.value,
@@ -864,22 +829,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 listState = autoActionsListState
             )
         }
-    } else if (targetScreen == HomeScreen.BATTERY) {
-        MoreSubScreen(
-            title = stringResource(R.string.nav_battery),
-            onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE }
-        ) {
-            BatteryScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
-                onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
-                listState = batteryTabListState
-            )
-        }
-    } else if (targetScreen == HomeScreen.BOOST) {
-        BoostScreen(onBack = { currentScreen = HomeScreen.MAIN; selectedTab = HomeTab.MORE })
     } else {
     Scaffold(
         topBar = {
+            Column {
             TopAppBar(
                 title = {
                     Text(
@@ -895,21 +848,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                 actions = {
-                    if (selectedTab == HomeTab.ANIMATION || selectedTab == HomeTab.WIDTH) {
-                        IconButton(
-                            onClick = {
-                                if (selectedTab == HomeTab.ANIMATION) {
-                                    showPresetDialog = true
-                                } else {
-                                    showWidthPresetDialog = true
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.new_preset)
-                            )
-                        }
+                    IconButton(onClick = { currentScreen = HomeScreen.NOTIFY_HOME }) {
+                        Icon(
+                            imageVector = Icons.Default.Notifications,
+                            contentDescription = stringResource(R.string.pn_title)
+                        )
                     }
                     IconButton(onClick = {
                         profilesRefreshToken++
@@ -927,41 +870,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                 }
-            )
+                )
+                ExpressiveTopNavBar(
+                    items = HomeTab.entries.map { tab ->
+                        NavBarItem(
+                            icon = tab.icon(),
+                            label = stringResource(tab.labelRes()),
+                            selected = selectedTab == tab,
+                            onClick = { selectedTab = tab }
+                        )
+                    }
+                )
+            }
         },
         bottomBar = {
             Column(modifier = Modifier.navigationBarsPadding()) {
                 RemoveAdsPrompt()
                 BannerAdView(applyNavigationBarPadding = false)
-                ExpressiveNavBar(
-                    items = listOf(
-                        NavBarItem(
-                            icon = Icons.Default.PlayArrow,
-                            label = stringResource(R.string.nav_animation),
-                            selected = selectedTab == HomeTab.ANIMATION,
-                            onClick = { selectedTab = HomeTab.ANIMATION },
-                            contentDescription = stringResource(R.string.animation_scale_slider)
-                        ),
-                        NavBarItem(
-                            icon = Icons.Default.Straighten,
-                            label = stringResource(R.string.nav_width),
-                            selected = selectedTab == HomeTab.WIDTH,
-                            onClick = { selectedTab = HomeTab.WIDTH }
-                        ),
-                        NavBarItem(
-                            icon = Icons.Default.Terminal,
-                            label = stringResource(R.string.nav_terminal),
-                            selected = selectedTab == HomeTab.TERMINAL,
-                            onClick = { selectedTab = HomeTab.TERMINAL }
-                        ),
-                        NavBarItem(
-                            icon = Icons.Default.MoreHoriz,
-                            label = stringResource(R.string.nav_more),
-                            selected = selectedTab == HomeTab.MORE,
-                            onClick = { selectedTab = HomeTab.MORE }
-                        )
-                    )
-                )
             }
         }
     ) { paddingValues ->
@@ -973,21 +898,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             modifier = Modifier.padding(paddingValues),
             label = "tab transition"
         ) { targetTab ->
-        if (targetTab == HomeTab.MORE) {
-        MoreTabContent(
-            onNavigateToNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
-            onNavigateToDeveloper = { currentScreen = HomeScreen.DEVELOPER },
-            onNavigateToTools = { currentScreen = HomeScreen.TOOLS },
-            onNavigateToSystemMeter = { currentScreen = HomeScreen.SYSTEM_METER },
-            onNavigateToGameMode = { currentScreen = HomeScreen.GAME_MODE },
-            onNavigateToCleaner = { currentScreen = HomeScreen.CLEANER },
-            onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
-            onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
-            onNavigateToBattery = { currentScreen = HomeScreen.BATTERY },
-            onNavigateToBoost = { currentScreen = HomeScreen.BOOST },
-            listState = moreTabListState
-        )
-        } else if (targetTab == HomeTab.TERMINAL) {
+        if (targetTab == HomeTab.TERMINAL) {
         TerminalScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
             listState = terminalTabListState,
@@ -996,6 +907,50 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             history = terminalHistory,
             onHistoryChange = { terminalHistory = it },
             isActive = targetScreen == currentScreen && targetTab == selectedTab
+        )
+        } else if (targetTab == HomeTab.BOOST) {
+        BoostScreenContent()
+        } else if (targetTab == HomeTab.DEVELOPER) {
+        DeveloperScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            hasWriteSecureSettings = hasWriteSecureSettings.value,
+            listState = developerTabListState
+        )
+        } else if (targetTab == HomeTab.TOOLS) {
+        ToolsScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            hasWriteSecureSettings = hasWriteSecureSettings.value,
+            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
+            onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
+            onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
+            onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
+            onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
+            onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
+            onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
+            onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
+            onNavigateToSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
+            onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
+            onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
+            listState = toolsListState
+        )
+        } else if (targetTab == HomeTab.SYSTEM_METER) {
+        SystemMeterScreenContent(listState = systemMeterListState)
+        } else if (targetTab == HomeTab.GAME_MODE) {
+        GameModeScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = gameModeListState
+        )
+        } else if (targetTab == HomeTab.CLEANER) {
+        CleanerScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
+            listState = cleanerListState
+        )
+        } else if (targetTab == HomeTab.BATTERY) {
+        BatteryScreenContent(
+            hasShizukuPermission = hasShizukuPermission.value,
+            onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
+            listState = batteryTabListState
         )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
@@ -1049,29 +1004,40 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            IconButton(
-                                onClick = {
-                                    isApplyingSettings = true
-                                    coroutineScope.launch {
-                                        val result = withContext(Dispatchers.IO) {
-                                            SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(
+                                    onClick = { showWidthPresetDialog = true },
+                                    modifier = Modifier.size(32.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = stringResource(R.string.new_preset)
+                                    )
+                                }
+                                IconButton(
+                                    onClick = {
+                                        isApplyingSettings = true
+                                        coroutineScope.launch {
+                                            val result = withContext(Dispatchers.IO) {
+                                                SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                                            }
+                                            isApplyingSettings = false
+                                            if (result.success) {
+                                                smallestWidth = SettingsManager.getSmallestWidth(context)
+                                                smallestWidthInputValue = ""
+                                                showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
+                                            } else {
+                                                showDefaultShizukuRecommendation()
+                                            }
                                         }
-                                        isApplyingSettings = false
-                                        if (result.success) {
-                                            smallestWidth = SettingsManager.getSmallestWidth(context)
-                                            smallestWidthInputValue = ""
-                                            showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
-                                        } else {
-                                            showDefaultShizukuRecommendation()
-                                        }
-                                    }
-                                },
-                                modifier = Modifier.size(32.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Refresh,
-                                    contentDescription = stringResource(R.string.smallest_width_reset)
-                                )
+                                    },
+                                    modifier = Modifier.size(32.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = stringResource(R.string.smallest_width_reset)
+                                    )
+                                }
                             }
                         }
                         
@@ -1358,16 +1324,27 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                IconButton(
-                                    onClick = {
-                                        resetAnimationScalesToDefault()
-                                    },
-                                    modifier = Modifier.size(32.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = stringResource(R.string.restore_to_default)
-                                    )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(
+                                        onClick = { showPresetDialog = true },
+                                        modifier = Modifier.size(32.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Add,
+                                            contentDescription = stringResource(R.string.new_preset)
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            resetAnimationScalesToDefault()
+                                        },
+                                        modifier = Modifier.size(32.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = stringResource(R.string.restore_to_default)
+                                        )
+                                    }
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
@@ -1595,16 +1572,27 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                IconButton(
-                                    onClick = {
-                                        resetAnimationScalesToDefault()
-                                    },
-                                    modifier = Modifier.size(32.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = stringResource(R.string.restore_to_default)
-                                    )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(
+                                        onClick = { showPresetDialog = true },
+                                        modifier = Modifier.size(32.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Add,
+                                            contentDescription = stringResource(R.string.new_preset)
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            resetAnimationScalesToDefault()
+                                        },
+                                        modifier = Modifier.size(32.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = stringResource(R.string.restore_to_default)
+                                        )
+                                    }
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
@@ -2387,164 +2375,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 }
 
-@Composable
-private fun MoreTabContent(
-    onNavigateToNotify: () -> Unit,
-    onNavigateToDeveloper: () -> Unit,
-    onNavigateToTools: () -> Unit,
-    onNavigateToSystemMeter: () -> Unit,
-    onNavigateToGameMode: () -> Unit,
-    onNavigateToCleaner: () -> Unit,
-    onNavigateToCompileBooster: () -> Unit,
-    onNavigateToAutoActions: () -> Unit,
-    onNavigateToBattery: () -> Unit,
-    onNavigateToBoost: () -> Unit,
-    listState: LazyListState = rememberLazyListState()
-) {
-    LazyColumn(
-        state = listState,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        item {
-            MoreNavCard(
-                icon = Icons.Default.Bolt,
-                title = stringResource(R.string.nav_boost),
-                description = stringResource(R.string.more_boost_desc),
-                onClick = onNavigateToBoost
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.Notifications,
-                title = stringResource(R.string.pn_title),
-                description = stringResource(R.string.more_notify_desc),
-                onClick = onNavigateToNotify
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.DeveloperMode,
-                title = stringResource(R.string.developer_title),
-                description = stringResource(R.string.more_developer_desc),
-                onClick = onNavigateToDeveloper
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.Build,
-                title = stringResource(R.string.tools_title),
-                description = stringResource(R.string.more_tools_desc),
-                onClick = onNavigateToTools
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.Speed,
-                title = stringResource(R.string.system_meter_title),
-                description = stringResource(R.string.more_system_meter_desc),
-                onClick = onNavigateToSystemMeter
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.VideogameAsset,
-                title = stringResource(R.string.game_mode),
-                description = stringResource(R.string.more_game_mode_desc),
-                onClick = onNavigateToGameMode
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.CleaningServices,
-                title = stringResource(R.string.cleaner_title),
-                description = stringResource(R.string.more_cleaner_desc),
-                onClick = onNavigateToCleaner
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.Speed,
-                title = stringResource(R.string.compile_booster),
-                description = stringResource(R.string.more_compile_booster_desc),
-                onClick = onNavigateToCompileBooster
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.PlaylistRemove,
-                title = stringResource(R.string.auto_actions),
-                description = stringResource(R.string.more_auto_actions_desc),
-                onClick = onNavigateToAutoActions
-            )
-        }
-        item {
-            MoreNavCard(
-                icon = Icons.Default.BatterySaver,
-                title = stringResource(R.string.nav_battery),
-                description = stringResource(R.string.more_battery_desc),
-                onClick = onNavigateToBattery
-            )
-        }
-    }
-}
-
-@Composable
-private fun MoreNavCard(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    title: String,
-    description: String,
-    onClick: () -> Unit
-) {
-    Card(
-        shape = AppShapes.card,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = title, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MoreSubScreen(
+private fun SubScreen(
     title: String,
     onBack: () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},

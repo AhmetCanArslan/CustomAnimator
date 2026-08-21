@@ -54,9 +54,7 @@ private const val FINALIZE_DELAY_MS = 1500L
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BoostScreen(
-    onBack: () -> Unit
-) {
+fun BoostScreenContent() {
     val context = LocalContext.current
     val openSetup = LocalOpenSetupGuide.current
     val scope = rememberCoroutineScope()
@@ -155,33 +153,9 @@ fun BoostScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.boost_screen_title),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
-            )
-        },
-        bottomBar = { BannerAdView() }
-    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -292,7 +266,6 @@ fun BoostScreen(
             }
         }
     }
-}
 
 @Composable
 private fun TerminalLine(text: String) {
