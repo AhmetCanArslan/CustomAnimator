@@ -345,7 +345,11 @@ private fun RouteOption(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = title, style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
                     if (recommended) {
                         StatusPill(
                             text = stringResource(R.string.setup_recommended),

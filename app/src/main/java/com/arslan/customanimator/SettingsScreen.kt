@@ -52,6 +52,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -622,8 +623,8 @@ private fun ThemeModeSelector() {
                             text = stringResource(labelRes),
                             style = MaterialTheme.typography.labelMedium,
                             color = content,
-                            maxLines = 1,
-                            softWrap = false,
+                            maxLines = 2,
+                            textAlign = TextAlign.Center,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
@@ -644,8 +645,8 @@ private fun ThemeModeSelector() {
                             text = stringResource(labelRes),
                             style = MaterialTheme.typography.labelMedium,
                             color = content,
-                            maxLines = 1,
-                            softWrap = false,
+                            maxLines = 2,
+                            textAlign = TextAlign.Center,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
