@@ -21,12 +21,8 @@
     <string name="settings_permission_status_not_granted">لم يتم منح الإذن</string>
     <string name="nav_animation">الحركة</string>
     <string name="nav_width">العرض</string>
-    <string name="nav_developer">المطور</string>
-    <string name="nav_notify">الإشعارات</string>
     <string name="nav_terminal">الطرفية</string>
     <string name="developer_toggles">مفاتيح النظام</string>
-    <string name="developer_quick_actions">إجراءات سريعة</string>
-    <string name="developer_performance">الأداء</string>
     <string name="developer_needs_shizuku">تتطلب هذه الإجراءات اتصال شيزوكو.</string>
     <string name="usb_debugging">تصحيح أخطاء USB</string>
     <string name="usb_debugging_desc">السماح بتصحيح الأخطاء عبر اتصال USB</string>
@@ -84,7 +80,6 @@
     <string name="auto_force_stop_desc">إيقاف التطبيقات المحددة قسريًا فور مغادرتها الواجهة الأمامية</string>
     <string name="auto_force_stop_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>
     <string name="open_usage_access_settings">فتح إعدادات الوصول إلى الاستخدام</string>
-    <string name="grant_shizuku_permission">منح إذن شيزوكو</string>
     <string name="auto_force_stop_status_active">الإيقاف القسري التلقائي نشط لـ %1$d تطبيق</string>
     <string name="auto_force_stop_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="auto_force_stop_channel_name">الإيقاف القسري التلقائي</string>
@@ -526,7 +521,6 @@
     <string name="onboarding_skip">تخطي</string>
     <string name="onboarding_next">التالي</string>
     <string name="onboarding_back">رجوع</string>
-    <string name="onboarding_start">ابدأ</string>
     <string name="onboarding_welcome_title">مرحبًا بك في Custom Animator</string>
     <string name="onboarding_welcome_body">سارع جهازك بضبط مقاييس الرسوم المتحركة وكثافة الشاشة وسلوك البطارية والإعدادات المخفية للمطورين، كل ذلك من مكان واحد وبدون جذر.</string>
     <string name="onboarding_permission_title">إعداد لمرة واحدة</string>
@@ -562,8 +556,6 @@
     <string name="remove_ads_support_message">هذا التطبيق مجاني ويُحسَّن باستمرار. يرجى دعم التطوير بشراء لمرة واحدة — فهو يزيل جميع الإعلانات أيضًا.</string>
     <string name="remove_ads_support_buy_price">إزالة الإعلانات مقابل %1$s</string>
     <string name="ad_info_remove_ads_hint">إذا كنت تفضل عدم رؤية الإعلانات نهائيًا، يمكنك إزالتها نهائيًا بشراء لمرة واحدة، في أي وقت، من الإعدادات › النسخة المدفوعة.</string>
-    <string name="fps_meter">عداد FPS</string>
-    <string name="fps_meter_desc">يعرض تراكب FPS لحظيًا فوق الألعاب والتطبيقات لتحليل الأداء والتأخير.</string>
     <string name="sound_tile_label">الصوت</string>
     <string name="sound_tile">مربع الصوت في الإعدادات السريعة</string>
     <string name="sound_tile_desc">زر في الإعدادات السريعة للوحة الصوت أو منتقي مخرجات الوسائط</string>
@@ -676,7 +668,6 @@
     <string name="pn_flash_screen_color_yellow">أصفر</string>
     <string name="pn_flash_screen_duration_label">المدة</string>
     <string name="pn_flash_screen_title">وميض الشاشة</string>
-    <string name="pn_flash_screen_until_interaction">حتى التفاعل</string>
     <string name="pn_got_it">فهمت</string>
     <string name="pn_grant_secure_settings_adb_info">بما أن هذا إذن نظام، يجب منحه عبر ADB على كمبيوتر. افتح الطرفية أو موجه الأوامر وشغّل:</string>
     <string name="pn_grant_secure_settings_desc">لتبديل الشاشة الدائمة، يحتاج CustomAnimator إلى إذن WRITE_SECURE_SETTINGS.</string>
@@ -741,18 +732,13 @@
     <string name="pn_logs_delete_confirm_body">ستتم إزالة إدخال السجل هذا نهائيًا.</string>
     <string name="pn_logs_delete_confirm_title">حذف الإشعار؟</string>
     <string name="pn_logs_empty">لا توجد سجلات بعد.\nتظهر السجلات عندما يطابق إشعار قاعدة.</string>
-    <string name="pn_logs_filter_all">الكل</string>
     <string name="pn_logs_filter_aod">الشاشة الدائمة</string>
     <string name="pn_logs_filter_flash">وميض</string>
     <string name="pn_logs_filter_wake_up">إيقاظ</string>
-    <string name="pn_logs_only_rule_matched">إظهار المطابق للقواعد فقط</string>
-    <string name="pn_logs_only_rule_matched_desc">إظهار الإشعارات التي طابقت قاعدة واحدة على الأقل فقط</string>
     <string name="pn_logs_search_cd">البحث في الإشعارات</string>
     <string name="pn_logs_search_hint">ابحث حسب التطبيق أو العنوان أو الوصف…</string>
     <string name="pn_logs_settings">إعدادات السجل</string>
     <string name="pn_logs_settings_done">تم</string>
-    <string name="pn_logs_show_system_apps">إظهار تطبيقات النظام</string>
-    <string name="pn_logs_show_system_apps_desc">تضمين الإشعارات من تطبيقات النظام والخلفية</string>
     <string name="pn_logs_title">سجلات الإشعارات</string>
     <string name="pn_no_apps_chosen">لم يتم اختيار تطبيقات</string>
     <string name="pn_no_rules_configured">لا توجد قواعد مهيأة.\nاضغط + لإضافة قاعدة جديدة.</string>
@@ -831,8 +817,6 @@
     <string name="pn_widget_label">عنصر واجهة الإشعارات</string>
     <string name="pn_widget_description">يعرض الإشعارات المطابقة لقواعدك على الشاشة الرئيسية.</string>
     <string name="pn_widget_action_title">إظهار على عنصر الواجهة</string>
-    <string name="pn_widget_action_hint">تُجمع الإشعارات المطابقة في عنصر واجهة الشاشة الرئيسية. أضف العنصر بالضغط المطول على شاشتك الرئيسية.</string>
-    <string name="pn_widget_action_keep_body">تضمين نص الإشعار</string>
     <string name="pn_widget_default_header">الإشعارات</string>
     <string name="pn_widget_empty">لا توجد إشعارات بعد</string>
     <string name="pn_widget_refresh">تحديث</string>
@@ -931,7 +915,6 @@
 
     <string name="setup_nudge_title">يلزم إعداد لمرة واحدة</string>
     <string name="setup_nudge_action">أرني كيف</string>
-    <string name="setup_nudge_generic">تغيّر هذه الميزة إعدادات نظام محمية، لذلك يحتاج التطبيق إلى إذن لمرة واحدة أولاً.</string>
     <string name="setup_open">دليل الإعداد</string>
     <string name="setup_open_desc">مساعدة خطوة بخطوة لفتح كل ميزة</string>
     <string name="onboarding_setup_now">أعده الآن</string>
@@ -979,16 +962,9 @@
     <string name="profile_width_reset_desc">استعادة كثافة الجهاز الافتراضية بدلاً من قيمة ثابتة.</string>
     <string name="profile_width_dp">أصغر عرض (dp)</string>
     <string name="profile_width_dp_helper">القيم الأعلى تجعل كل شيء أصغر.</string>
-    <string name="profile_tile_enable_desc">إضافة مربع إعدادات سريعة يطبق هذا الملف الشخصي.</string>
     <string name="profile_tile_default_label">ملف شخصي</string>
     <string name="profile_tile_toast_applied">تم تطبيق %1$s</string>
     <string name="profile_tile_toast_partial">%1$s: تم تطبيق %2$d من %3$d</string>
-    <string name="profile_chip_animation">الرسوم المتحركة</string>
-    <string name="profile_chip_width">العرض %1$d dp</string>
-    <string name="profile_chip_width_reset">إعادة تعيين العرض</string>
-    <string name="profile_chip_battery">البطارية</string>
-    <string name="profile_chip_developer">المطور ×%1$d</string>
-    <string name="profile_chip_tile">مربع</string>
     <string name="profile_dev_auto_rotation">التدوير التلقائي للشاشة</string>
     <string name="profile_dev_auto_rotation_desc">تشغيل أو إيقاف التدوير التلقائي للشاشة.</string>
 
@@ -1050,7 +1026,6 @@
     <string name="screenshot_watcher_switch">إشعار عند التقاط لقطات شاشة جديدة</string>
     <string name="screenshot_watcher_needs_perms">امنح الوصول إلى الصور والإشعارات للتفعيل.</string>
     <string name="screenshot_notification_hint">يراقب مجلد لقطات الشاشة وينشر إشعارًا بإجراءات النسخ والحذف.</string>
-    <string name="screenshot_section_delay">تأخير الإشعار</string>
     <string name="screenshot_delay_label">التأخير قبل الإشعار</string>
     <string name="screenshot_delay_value">%1$d ثانية</string>
     <string name="screenshot_notif_show_copy">إظهار إجراء النسخ والحذف</string>
@@ -1063,7 +1038,6 @@
     <string name="screenshot_overlay_show_delete">إظهار زر الحذف</string>
     <string name="screenshot_overlay_timeout_label">إخفاء الأزرار بعد</string>
     <string name="screenshot_overlay_timeout_value">%1$d ثانية</string>
-    <string name="screenshot_section_overlay_position">موضع الزر</string>
     <string name="screenshot_tile_label">نسخ لقطة الشاشة</string>
     <string name="screenshot_tile_hint">أضف مربع "نسخ لقطة الشاشة" في الإعدادات السريعة لنسخ أحدث لقطة شاشة إلى الحافظة عند الطلب، دون تشغيل خدمة.</string>
     <string name="screenshot_overlay_x_label">من اليسار</string>
@@ -1087,7 +1061,6 @@
     <string name="screenshot_toast_cancelled">تم الاحتفاظ بلقطة الشاشة</string>
     <string name="screenshot_toast_not_found">لم يتم العثور على لقطة شاشة حديثة</string>
     <string name="screenshot_delete_note">يطلب أندرويد تأكيد كل عملية حذف. هذا يبقي التطبيق خاليًا من إذن الملفات الكامل المقيد.</string>
-    <string name="screenshot_open_app_settings">فتح إعدادات التطبيق</string>
     <string name="screenshot_toast_copied_deleted">تم النسخ إلى الحافظة والحذف</string>
 
     <string name="hotspot_manager">مدير نقطة الاتصال</string>
@@ -1130,7 +1103,6 @@
     <string name="hotspot_band_5">5 جيجاهرتز</string>
     <string name="hotspot_band_6">6 جيجاهرتز</string>
     <string name="hotspot_mac_randomization">تغيير MAC عشوائيًا</string>
-    <string name="hotspot_mac_randomization_desc">عنوان الجهاز المستخدم بواسطة نقطة الوصول</string>
     <string name="hotspot_randomization_none">استخدام MAC الجهاز</string>
     <string name="hotspot_randomization_persistent">MAC عشوائي دائم</string>
     <string name="hotspot_randomization_non_persistent">MAC عشوائي جديد في كل مرة</string>
@@ -1158,7 +1130,6 @@
     <string name="hotspot_copy_password">نسخ كلمة المرور</string>
     <string name="hotspot_show_qr">إظهار رمز QR</string>
     <string name="game_mode">وضع الألعاب</string>
-    <string name="game_mode_desc">تقييد تطبيقات الخلفية أثناء تشغيل ألعابك</string>
     <string name="game_mode_needs_shizuku">يحتاج وضع الألعاب إلى شيزوكو لتغيير إعدادات التطبيقات والنظام.</string>
     <string name="game_mode_status_active">وضع الألعاب مفعّل</string>
     <string name="game_mode_status_inactive">وضع الألعاب متوقف</string>
@@ -1178,7 +1149,6 @@
     <string name="game_mode_failed_toast">تعذر تطبيق وضع الألعاب. تحقق من شيزوكو وحاول مرة أخرى.</string>
     <string name="game_mode_widget_label">وضع الألعاب</string>
     <string name="game_mode_widget_description">يشغّل وضع الألعاب أو يوقفه بلمسة واحدة.</string>
-    <string name="boost_screen_title">تحسين النظام</string>
     <string name="boost_start">بدء التحسين</string>
     <string name="boost_cancel">إلغاء</string>
     <string name="boost_cancelled">تم إلغاء التحسين</string>
@@ -1192,19 +1162,11 @@
     <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="boost_ad_loading">جارٍ تحميل الإعلان…</string>
     <string name="boost_terminal_empty">اضغط الزر أدناه لبدء التحسين.</string>
-    <string name="more_boost_desc">عزّز أداء هاتفك</string>
-    <string name="nav_more">المزيد</string>
     <string name="nav_boost">تسريع</string>
     <string name="developer_title">المطوّر</string>
-    <string name="more_notify_desc">وميض الإشعارات وتخصيصها</string>
-    <string name="more_developer_desc">مفاتيح النظام وإعدادات المطوّر</string>
-    <string name="more_battery_desc">توفير البطارية وإعدادات Doze</string>
     <string name="tools_title">الأدوات</string>
-    <string name="more_tools_desc">المربعات وأدوات الشبكة وتعديلات النظام</string>
     <string name="tools_utilities">أدوات مساعدة</string>
     <string name="cleaner_title">المنظّف</string>
-    <string name="more_cleaner_desc">مسح الذاكرة المؤقتة وإغلاق تطبيقات الخلفية</string>
-    <string name="more_game_mode_desc">إعدادات وضع الألعاب لكل تطبيق</string>
     <string name="more_compile_booster_desc">إعادة ترجمة التطبيقات لتشغيل أسرع</string>
     <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
@@ -1219,7 +1181,6 @@
     <string name="compile_all_apps_with_ad">إعلان ثم ترجمة</string>
     <string name="game_mode_turn_on_with_ad">إعلان ثم تشغيل</string>
     <string name="system_meter_title">مقياس النظام</string>
-    <string name="more_system_meter_desc">طبقة FPS والمعالج وكرت الرسوم والذاكرة والبطارية فوق الألعاب والتطبيقات.</string>
     <string name="system_meter_overlay">الطبقة</string>
     <string name="system_meter_metrics">القياسات</string>
     <string name="system_meter_enable">إظهار الطبقة</string>

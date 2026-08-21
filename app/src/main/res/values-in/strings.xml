@@ -21,12 +21,8 @@
     <string name="settings_permission_status_not_granted">Izin belum diberikan</string>
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Lebar</string>
-    <string name="nav_developer">Dev</string>
-    <string name="nav_notify">Notif.</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Pengalih Sistem</string>
-    <string name="developer_quick_actions">Aksi Cepat</string>
-    <string name="developer_performance">Performa</string>
     <string name="developer_needs_shizuku">Tindakan ini memerlukan Shizuku yang terhubung.</string>
     <string name="usb_debugging">Debugging USB</string>
     <string name="usb_debugging_desc">Izinkan debugging melalui koneksi USB</string>
@@ -49,7 +45,6 @@
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>
     <string name="auto_force_stop_needs_usage_access">Fitur ini memerlukan Akses Penggunaan untuk mendeteksi kapan aplikasi keluar dari latar depan.</string>
     <string name="open_usage_access_settings">Buka Pengaturan Akses Penggunaan</string>
-    <string name="grant_shizuku_permission">Berikan Izin Shizuku</string>
     <string name="auto_force_stop_status_active">Hentikan paksa otomatis aktif untuk %1$d aplikasi</string>
     <string name="auto_force_stop_status_paused">Pilihan disimpan, tetapi layanan dijeda hingga izin diberikan</string>
     <string name="auto_force_stop_channel_name">Hentikan Paksa Otomatis</string>
@@ -438,7 +433,6 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_skip">Lewati</string>
     <string name="onboarding_next">Lanjut</string>
     <string name="onboarding_back">Kembali</string>
-    <string name="onboarding_start">Mulai</string>
     <string name="onboarding_welcome_title">Selamat Datang di Custom Animator</string>
     <string name="onboarding_welcome_body">Percepat perangkat Anda dengan mengatur skala animasi, kepadatan layar, perilaku baterai, dan pengaturan pengembang tersembunyi, semuanya dari satu tempat dan tanpa root.</string>
     <string name="onboarding_permission_title">Penyiapan Sekali Saja</string>
@@ -474,8 +468,6 @@ Durasi Animator: %3$.2f</string>
     <string name="remove_ads_support_message">Aplikasi ini gratis dan terus dikembangkan. Dukung pengembangan dengan pembelian sekali bayar — sekaligus menghapus semua iklan.</string>
     <string name="remove_ads_support_buy_price">Hapus iklan seharga %1$s</string>
     <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar, kapan saja, lewat Setelan › Premium.</string>
-    <string name="fps_meter">FPS Meter</string>
-    <string name="fps_meter_desc">Menampilkan overlay FPS real-time di atas game dan aplikasi untuk analisis performa dan lag.</string>
     <string name="fps_meter_hint">Seret penghitung untuk memindahkannya. Matikan ini untuk menghapus overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Izinkan tampil di atas aplikasi lain untuk menampilkan meter FPS.</string>
@@ -633,7 +625,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_flash_screen_color_yellow">Kuning</string>
     <string name="pn_flash_screen_duration_label">Durasi</string>
     <string name="pn_flash_screen_title">Kilatkan layar</string>
-    <string name="pn_flash_screen_until_interaction">Sampai ada interaksi</string>
     <string name="pn_got_it">Mengerti</string>
     <string name="pn_grant_secure_settings_adb_info">Karena ini izin sistem, izin harus diberikan lewat ADB dari komputer. Buka terminal atau command prompt lalu jalankan:</string>
     <string name="pn_grant_secure_settings_desc">Untuk mengaktifkan layar selalu aktif, CustomAnimator memerlukan izin WRITE_SECURE_SETTINGS.</string>
@@ -696,18 +687,13 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_logs_delete_confirm_body">Entri log ini akan dihapus permanen.</string>
     <string name="pn_logs_delete_confirm_title">Hapus notifikasi?</string>
     <string name="pn_logs_empty">Belum ada log.\nLog muncul saat notifikasi cocok dengan sebuah aturan.</string>
-    <string name="pn_logs_filter_all">Semua</string>
     <string name="pn_logs_filter_aod">AOD</string>
     <string name="pn_logs_filter_flash">Kilat</string>
     <string name="pn_logs_filter_wake_up">Bangunkan</string>
-    <string name="pn_logs_only_rule_matched">Tampilkan hanya yang cocok aturan</string>
-    <string name="pn_logs_only_rule_matched_desc">Hanya tampilkan notifikasi yang cocok dengan minimal satu aturan</string>
     <string name="pn_logs_search_cd">Cari notifikasi</string>
     <string name="pn_logs_search_hint">Cari berdasarkan aplikasi, judul, atau deskripsi…</string>
     <string name="pn_logs_settings">Setelan log</string>
     <string name="pn_logs_settings_done">Selesai</string>
-    <string name="pn_logs_show_system_apps">Tampilkan aplikasi sistem</string>
-    <string name="pn_logs_show_system_apps_desc">Sertakan notifikasi dari aplikasi sistem dan latar belakang</string>
     <string name="pn_logs_title">Log notifikasi</string>
     <string name="pn_no_apps_chosen">Belum ada aplikasi dipilih</string>
     <string name="pn_no_rules_configured">Belum ada aturan.\nKetuk + untuk menambah aturan baru.</string>
@@ -787,8 +773,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_widget_label">Widget notifikasi</string>
     <string name="pn_widget_description">Menampilkan notifikasi yang cocok dengan aturan Anda di layar utama.</string>
     <string name="pn_widget_action_title">Tampilkan di widget</string>
-    <string name="pn_widget_action_hint">Notifikasi yang cocok dikumpulkan di widget layar utama. Tambahkan widget dengan menekan lama layar utama.</string>
-    <string name="pn_widget_action_keep_body">Sertakan isi notifikasi</string>
     <string name="pn_widget_default_header">Notifikasi</string>
     <string name="pn_widget_empty">Belum ada notifikasi</string>
     <string name="pn_widget_refresh">Segarkan</string>
@@ -880,7 +864,6 @@ Durasi Animator: %3$.2f</string>
     <string name="setup_ready_next_action">Kembali ke aplikasi</string>
     <string name="setup_nudge_title">Perlu penyiapan sekali saja</string>
     <string name="setup_nudge_action">Tunjukkan caranya</string>
-    <string name="setup_nudge_generic">Fitur ini mengubah pengaturan sistem yang dilindungi, jadi aplikasi butuh satu izin sekali pakai lebih dulu.</string>
     <string name="setup_open">Panduan penyiapan</string>
     <string name="setup_open_desc">Bantuan langkah demi langkah untuk membuka semua fitur</string>
     <string name="onboarding_setup_now">Siapkan sekarang</string>
@@ -925,16 +908,9 @@ Durasi Animator: %3$.2f</string>
     <string name="profile_width_reset_desc">Pulihkan kepadatan bawaan perangkat, bukan nilai tetap.</string>
     <string name="profile_width_dp">Lebar terkecil (dp)</string>
     <string name="profile_width_dp_helper">Nilai yang lebih tinggi membuat semuanya lebih kecil.</string>
-    <string name="profile_tile_enable_desc">Tambahkan ubin Setelan Cepat untuk menerapkan profil ini.</string>
     <string name="profile_tile_default_label">Profil</string>
     <string name="profile_tile_toast_applied">%1$s diterapkan</string>
     <string name="profile_tile_toast_partial">%1$s: %2$d dari %3$d diterapkan</string>
-    <string name="profile_chip_animation">Animasi</string>
-    <string name="profile_chip_width">Lebar %1$d dp</string>
-    <string name="profile_chip_width_reset">Lebar direset</string>
-    <string name="profile_chip_battery">Baterai</string>
-    <string name="profile_chip_developer">Developer ×%1$d</string>
-    <string name="profile_chip_tile">Ubin</string>
     <string name="profile_dev_auto_rotation">Rotasi layar otomatis</string>
     <string name="profile_dev_auto_rotation_desc">Aktifkan atau nonaktifkan rotasi layar otomatis.</string>
     <plurals name="profile_action_count">
@@ -991,7 +967,6 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_watcher_switch">Beri tahu tangkapan layar baru</string>
     <string name="screenshot_watcher_needs_perms">Berikan akses Foto dan Notifikasi untuk mengaktifkan.</string>
     <string name="screenshot_notification_hint">Memantau folder tangkapan layar dan menampilkan notifikasi dengan tindakan Salin &amp; Hapus.</string>
-    <string name="screenshot_section_delay">Jeda notifikasi</string>
     <string name="screenshot_delay_label">Jeda sebelum notifikasi</string>
     <string name="screenshot_delay_value">%1$d dtk</string>
     <string name="screenshot_notif_show_copy">Tampilkan tindakan Salin &amp; Hapus</string>
@@ -1004,7 +979,6 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_overlay_show_delete">Tampilkan tombol Hapus</string>
     <string name="screenshot_overlay_timeout_label">Sembunyikan tombol setelah</string>
     <string name="screenshot_overlay_timeout_value">%1$d dtk</string>
-    <string name="screenshot_section_overlay_position">Posisi tombol</string>
     <string name="screenshot_tile_label">Salin tangkapan layar</string>
     <string name="screenshot_tile_hint">Tambahkan ubin \"Salin tangkapan layar\" ke Setelan Cepat untuk menyalin tangkapan layar terbaru ke papan klip kapan saja, tanpa layanan yang berjalan.</string>
     <string name="screenshot_overlay_x_label">Dari kiri</string>
@@ -1028,7 +1002,6 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_toast_cancelled">Tangkapan layar disimpan</string>
     <string name="screenshot_toast_not_found">Tidak ada tangkapan layar terbaru</string>
     <string name="screenshot_delete_note">Android meminta konfirmasi untuk setiap penghapusan. Dengan begitu aplikasi tidak perlu izin akses semua berkas yang dibatasi.</string>
-    <string name="screenshot_open_app_settings">Buka setelan aplikasi</string>
     <string name="screenshot_toast_copied_deleted">Disalin ke papan klip dan dihapus</string>
     <string name="hotspot_manager">Pengelola Hotspot</string>
     <string name="hotspot_manager_desc">Kendalikan hotspot Wi-Fi, klien, dan setelan titik akses lanjutan</string>
@@ -1070,7 +1043,6 @@ Durasi Animator: %3$.2f</string>
     <string name="hotspot_band_5">5 GHz</string>
     <string name="hotspot_band_6">6 GHz</string>
     <string name="hotspot_mac_randomization">Pengacakan MAC</string>
-    <string name="hotspot_mac_randomization_desc">Alamat perangkat keras yang dipakai titik akses</string>
     <string name="hotspot_randomization_none">Gunakan MAC perangkat</string>
     <string name="hotspot_randomization_persistent">MAC acak tetap</string>
     <string name="hotspot_randomization_non_persistent">MAC acak baru setiap kali</string>
@@ -1118,7 +1090,6 @@ Durasi Animator: %3$.2f</string>
     <string name="sound_tile_shizuku_note">Pemilih output media dan penutupan Setelan Cepat menggunakan Shizuku. Panel volume dapat digunakan tanpa Shizuku.</string>
     <string name="sound_tile_test">Uji</string>
     <string name="game_mode">Mode Game</string>
-    <string name="game_mode_desc">Batasi aplikasi latar belakang saat gim berjalan</string>
     <string name="game_mode_needs_shizuku">Mode Game memerlukan Shizuku untuk mengubah pengaturan aplikasi dan sistem.</string>
     <string name="game_mode_status_active">Mode Game aktif</string>
     <string name="game_mode_status_inactive">Mode Game nonaktif</string>
@@ -1138,7 +1109,6 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_failed_toast">Mode Game gagal diterapkan. Periksa Shizuku lalu coba lagi.</string>
     <string name="game_mode_widget_label">Mode Game</string>
     <string name="game_mode_widget_description">Mengaktifkan atau menonaktifkan Mode Game dengan sekali ketuk.</string>
-    <string name="boost_screen_title">Optimalisasi sistem</string>
     <string name="boost_start">Mulai optimalisasi</string>
     <string name="boost_cancel">Batal</string>
     <string name="boost_cancelled">Optimalisasi dibatalkan</string>
@@ -1152,19 +1122,11 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
     <string name="boost_ad_loading">Memuat iklan…</string>
     <string name="boost_terminal_empty">Ketuk tombol di bawah untuk memulai optimalisasi.</string>
-    <string name="more_boost_desc">Tingkatkan performa ponsel Anda</string>
-    <string name="nav_more">Lainnya</string>
     <string name="nav_boost">Boost</string>
     <string name="developer_title">Pengembang</string>
-    <string name="more_notify_desc">Kedipkan dan sesuaikan notifikasi</string>
-    <string name="more_developer_desc">Sakelar sistem dan opsi pengembang</string>
-    <string name="more_battery_desc">Penghemat baterai dan pengaturan Doze</string>
     <string name="tools_title">Alat</string>
-    <string name="more_tools_desc">Ubin, alat jaringan, dan pengaturan sistem</string>
     <string name="tools_utilities">Utilitas</string>
     <string name="cleaner_title">Pembersih</string>
-    <string name="more_cleaner_desc">Bersihkan cache dan tutup aplikasi latar belakang</string>
-    <string name="more_game_mode_desc">Pengaturan mode game per aplikasi</string>
     <string name="more_compile_booster_desc">Kompilasi ulang aplikasi agar terbuka lebih cepat</string>
     <string name="more_auto_actions_desc">Aturan hentikan paksa dan izin otomatis</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>
@@ -1179,7 +1141,6 @@ Durasi Animator: %3$.2f</string>
     <string name="compile_all_apps_with_ad">Tonton iklan &amp; kompilasi</string>
     <string name="game_mode_turn_on_with_ad">Tonton iklan &amp; nyalakan</string>
     <string name="system_meter_title">Meteran Sistem</string>
-    <string name="more_system_meter_desc">Overlay FPS, CPU, GPU, RAM, dan baterai di atas game dan aplikasi.</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrik</string>
     <string name="system_meter_enable">Tampilkan overlay</string>

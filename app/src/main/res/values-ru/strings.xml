@@ -21,12 +21,8 @@
     <string name="settings_permission_status_not_granted">Разрешение не предоставлено</string>
     <string name="nav_animation">Аним.</string>
     <string name="nav_width">Ширина</string>
-    <string name="nav_developer">Разраб.</string>
-    <string name="nav_notify">Увед.</string>
     <string name="nav_terminal">Терминал</string>
     <string name="developer_toggles">Системные переключатели</string>
-    <string name="developer_quick_actions">Быстрые действия</string>
-    <string name="developer_performance">Производительность</string>
     <string name="developer_needs_shizuku">Эти действия требуют подключения Shizuku.</string>
     <string name="usb_debugging">Отладка по USB</string>
     <string name="usb_debugging_desc">Разрешить отладку через USB-соединение</string>
@@ -49,7 +45,6 @@
     <string name="auto_force_stop_desc">Принудительно останавливает выбранные приложения сразу после выхода из переднего плана</string>
     <string name="auto_force_stop_needs_usage_access">Для этой функции нужен доступ к статистике использования, чтобы определять выход приложений из переднего плана.</string>
     <string name="open_usage_access_settings">Открыть настройки доступа к использованию</string>
-    <string name="grant_shizuku_permission">Предоставить разрешение Shizuku</string>
     <string name="auto_force_stop_status_active">Автоостановка активна для %1$d прил.</string>
     <string name="auto_force_stop_status_paused">Выбор сохранён, но служба приостановлена до предоставления разрешений</string>
     <string name="auto_force_stop_channel_name">Автоостановка приложений</string>
@@ -438,7 +433,6 @@
     <string name="onboarding_skip">Пропустить</string>
     <string name="onboarding_next">Далее</string>
     <string name="onboarding_back">Назад</string>
-    <string name="onboarding_start">Начать</string>
     <string name="onboarding_welcome_title">Добро пожаловать в Custom Animator</string>
     <string name="onboarding_welcome_body">Ускорьте устройство, настроив скорость анимаций, плотность экрана, поведение батареи и скрытые параметры разработчика. Всё в одном месте, без root.</string>
     <string name="onboarding_permission_title">Разовая настройка</string>
@@ -474,8 +468,6 @@
     <string name="remove_ads_support_message">Это приложение бесплатное и постоянно улучшается. Поддержите разработку разовой покупкой — она также уберёт всю рекламу.</string>
     <string name="remove_ads_support_buy_price">Убрать рекламу за %1$s</string>
     <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой в любой момент, в разделе Настройки › Премиум.</string>
-    <string name="fps_meter">FPS Meter</string>
-    <string name="fps_meter_desc">Показывает счётчик FPS поверх игр и приложений для анализа производительности и лагов.</string>
     <string name="fps_meter_hint">Перетащите счётчик, чтобы переместить его. Выключите, чтобы убрать наложение.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Разрешите наложение поверх других приложений, чтобы показать счётчик FPS.</string>
@@ -633,7 +625,6 @@
     <string name="pn_flash_screen_color_yellow">Жёлтый</string>
     <string name="pn_flash_screen_duration_label">Длительность</string>
     <string name="pn_flash_screen_title">Вспышка экрана</string>
-    <string name="pn_flash_screen_until_interaction">До взаимодействия</string>
     <string name="pn_got_it">Понятно</string>
     <string name="pn_grant_secure_settings_adb_info">Это системное разрешение, поэтому его нужно выдать через ADB с компьютера. Откройте терминал или командную строку и выполните:</string>
     <string name="pn_grant_secure_settings_desc">Для переключения постоянного экрана приложению CustomAnimator нужно разрешение WRITE_SECURE_SETTINGS.</string>
@@ -696,18 +687,13 @@
     <string name="pn_logs_delete_confirm_body">Эта запись журнала будет удалена навсегда.</string>
     <string name="pn_logs_delete_confirm_title">Удалить уведомление?</string>
     <string name="pn_logs_empty">Записей пока нет.\nОни появляются, когда уведомление совпадает с правилом.</string>
-    <string name="pn_logs_filter_all">Все</string>
     <string name="pn_logs_filter_aod">AOD</string>
     <string name="pn_logs_filter_flash">Вспышка</string>
     <string name="pn_logs_filter_wake_up">Пробуждение</string>
-    <string name="pn_logs_only_rule_matched">Только совпавшие с правилами</string>
-    <string name="pn_logs_only_rule_matched_desc">Показывать только уведомления, совпавшие хотя бы с одним правилом</string>
     <string name="pn_logs_search_cd">Поиск уведомлений</string>
     <string name="pn_logs_search_hint">Поиск по приложению, заголовку или описанию…</string>
     <string name="pn_logs_settings">Настройки журнала</string>
     <string name="pn_logs_settings_done">Готово</string>
-    <string name="pn_logs_show_system_apps">Показывать системные приложения</string>
-    <string name="pn_logs_show_system_apps_desc">Включать уведомления системных и фоновых приложений</string>
     <string name="pn_logs_title">Журнал уведомлений</string>
     <string name="pn_no_apps_chosen">Приложения не выбраны</string>
     <string name="pn_no_rules_configured">Правил пока нет.\nНажмите +, чтобы добавить правило.</string>
@@ -787,8 +773,6 @@
     <string name="pn_widget_label">Виджет уведомлений</string>
     <string name="pn_widget_description">Показывает на главном экране уведомления, соответствующие вашим правилам.</string>
     <string name="pn_widget_action_title">Показывать в виджете</string>
-    <string name="pn_widget_action_hint">Совпавшие уведомления собираются в виджете на главном экране. Добавьте виджет долгим нажатием на главный экран.</string>
-    <string name="pn_widget_action_keep_body">Включать текст уведомления</string>
     <string name="pn_widget_default_header">Уведомления</string>
     <string name="pn_widget_empty">Уведомлений пока нет</string>
     <string name="pn_widget_refresh">Обновить</string>
@@ -880,7 +864,6 @@
     <string name="setup_ready_next_action">Вернуться в приложение</string>
     <string name="setup_nudge_title">Нужна разовая настройка</string>
     <string name="setup_nudge_action">Показать, как это сделать</string>
-    <string name="setup_nudge_generic">Эта функция меняет защищённые системные настройки, поэтому приложению сначала нужно разовое разрешение.</string>
     <string name="setup_open">Руководство по настройке</string>
     <string name="setup_open_desc">Пошаговая помощь, чтобы открыть все функции</string>
     <string name="onboarding_setup_now">Настроить сейчас</string>
@@ -925,16 +908,9 @@
     <string name="profile_width_reset_desc">Восстановить плотность устройства вместо фиксированного значения.</string>
     <string name="profile_width_dp">Минимальная ширина (dp)</string>
     <string name="profile_width_dp_helper">Большие значения делают всё меньше.</string>
-    <string name="profile_tile_enable_desc">Добавить плитку быстрых настроек для применения этого профиля.</string>
     <string name="profile_tile_default_label">Профиль</string>
     <string name="profile_tile_toast_applied">Применён: %1$s</string>
     <string name="profile_tile_toast_partial">%1$s: применено %2$d из %3$d</string>
-    <string name="profile_chip_animation">Анимация</string>
-    <string name="profile_chip_width">Ширина %1$d dp</string>
-    <string name="profile_chip_width_reset">Ширина сброшена</string>
-    <string name="profile_chip_battery">Батарея</string>
-    <string name="profile_chip_developer">Разработчик ×%1$d</string>
-    <string name="profile_chip_tile">Плитка</string>
     <string name="profile_dev_auto_rotation">Автоповорот экрана</string>
     <string name="profile_dev_auto_rotation_desc">Включить или отключить автоматический поворот экрана.</string>
     <plurals name="profile_action_count">
@@ -993,7 +969,6 @@
     <string name="screenshot_watcher_switch">Уведомлять о новых скриншотах</string>
     <string name="screenshot_watcher_needs_perms">Для включения предоставьте доступ к Фото и Уведомлениям.</string>
     <string name="screenshot_notification_hint">Следит за папкой скриншотов и показывает уведомление с действиями «Копировать» и «Удалить».</string>
-    <string name="screenshot_section_delay">Задержка уведомления</string>
     <string name="screenshot_delay_label">Задержка перед уведомлением</string>
     <string name="screenshot_delay_value">%1$d с</string>
     <string name="screenshot_notif_show_copy">Показывать действие «Копировать и удалить»</string>
@@ -1006,7 +981,6 @@
     <string name="screenshot_overlay_show_delete">Показывать кнопку «Удалить»</string>
     <string name="screenshot_overlay_timeout_label">Скрывать кнопки через</string>
     <string name="screenshot_overlay_timeout_value">%1$d с</string>
-    <string name="screenshot_section_overlay_position">Положение кнопок</string>
     <string name="screenshot_tile_label">Копировать скриншот</string>
     <string name="screenshot_tile_hint">Добавьте плитку «Копировать скриншот» в быстрые настройки, чтобы копировать последний скриншот в буфер обмена по требованию, без работающей службы.</string>
     <string name="screenshot_overlay_x_label">Слева</string>
@@ -1030,7 +1004,6 @@
     <string name="screenshot_toast_cancelled">Скриншот сохранён</string>
     <string name="screenshot_toast_not_found">Свежих скриншотов не найдено</string>
     <string name="screenshot_delete_note">Android запрашивает подтверждение каждого удаления. Благодаря этому приложению не нужно разрешение на доступ ко всем файлам.</string>
-    <string name="screenshot_open_app_settings">Открыть настройки приложения</string>
     <string name="screenshot_toast_copied_deleted">Скопировано в буфер обмена и удалено</string>
     <string name="hotspot_manager">Менеджер точки доступа</string>
     <string name="hotspot_manager_desc">Управление Wi-Fi точкой доступа, клиентами и расширенными настройками</string>
@@ -1072,7 +1045,6 @@
     <string name="hotspot_band_5">5 ГГц</string>
     <string name="hotspot_band_6">6 ГГц</string>
     <string name="hotspot_mac_randomization">Случайный MAC-адрес</string>
-    <string name="hotspot_mac_randomization_desc">Аппаратный адрес, используемый точкой доступа</string>
     <string name="hotspot_randomization_none">Использовать MAC устройства</string>
     <string name="hotspot_randomization_persistent">Постоянный случайный MAC</string>
     <string name="hotspot_randomization_non_persistent">Новый случайный MAC каждый раз</string>
@@ -1120,7 +1092,6 @@
     <string name="sound_tile_shizuku_note">Выбор вывода мультимедиа и сворачивание быстрых настроек используют Shizuku. Панель громкости работает без него.</string>
     <string name="sound_tile_test">Проверить</string>
     <string name="game_mode">Игровой режим</string>
-    <string name="game_mode_desc">Ограничивает фоновые приложения во время игры</string>
     <string name="game_mode_needs_shizuku">Игровому режиму нужен Shizuku для изменения настроек приложений и системы.</string>
     <string name="game_mode_status_active">Игровой режим включён</string>
     <string name="game_mode_status_inactive">Игровой режим выключен</string>
@@ -1140,7 +1111,6 @@
     <string name="game_mode_failed_toast">Не удалось включить игровой режим. Проверьте Shizuku и попробуйте снова.</string>
     <string name="game_mode_widget_label">Игровой режим</string>
     <string name="game_mode_widget_description">Включает или выключает игровой режим одним нажатием.</string>
-    <string name="boost_screen_title">Оптимизация системы</string>
     <string name="boost_start">Запустить оптимизацию</string>
     <string name="boost_cancel">Отмена</string>
     <string name="boost_cancelled">Оптимизация отменена</string>
@@ -1154,19 +1124,11 @@
     <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
     <string name="boost_ad_loading">Загрузка рекламы…</string>
     <string name="boost_terminal_empty">Нажмите кнопку ниже, чтобы начать оптимизацию.</string>
-    <string name="more_boost_desc">Повысьте производительность телефона</string>
-    <string name="nav_more">Ещё</string>
     <string name="nav_boost">Ускорение</string>
     <string name="developer_title">Разработчик</string>
-    <string name="more_notify_desc">Вспышки и настройка уведомлений</string>
-    <string name="more_developer_desc">Системные переключатели и настройки разработчика</string>
-    <string name="more_battery_desc">Энергосбережение и настройки Doze</string>
     <string name="tools_title">Инструменты</string>
-    <string name="more_tools_desc">Плитки, сетевые инструменты и системные настройки</string>
     <string name="tools_utilities">Утилиты</string>
     <string name="cleaner_title">Очистка</string>
-    <string name="more_cleaner_desc">Очистка кэша и закрытие фоновых приложений</string>
-    <string name="more_game_mode_desc">Игровой режим для отдельных приложений</string>
     <string name="more_compile_booster_desc">Перекомпиляция приложений для быстрого запуска</string>
     <string name="more_auto_actions_desc">Автоматическая остановка и правила разрешений</string>
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
@@ -1181,7 +1143,6 @@
     <string name="compile_all_apps_with_ad">Реклама и компиляция</string>
     <string name="game_mode_turn_on_with_ad">Реклама и включение</string>
     <string name="system_meter_title">Системный монитор</string>
-    <string name="more_system_meter_desc">Наложение FPS, CPU, GPU, ОЗУ и батареи поверх игр и приложений.</string>
     <string name="system_meter_overlay">Наложение</string>
     <string name="system_meter_metrics">Метрики</string>
     <string name="system_meter_enable">Показывать наложение</string>

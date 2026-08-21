@@ -21,14 +21,9 @@
     <string name="settings_permission_status_not_granted">İzin verilmedi</string>
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Genişlik</string>
-    <string name="nav_developer">Gelişt.</string>
-    <string name="nav_notify">Bildirim</string>
     <string name="nav_terminal">Terminal</string>
     <string name="developer_toggles">Sistem Anahtarları</string>
-    <string name="developer_quick_actions">Hızlı İşlemler</string>
     <string name="developer_needs_shizuku">Bu işlemler için Shizuku bağlı olmalı.</string>
-    <string name="developer_performance">Performans</string>
-    <string name="grant_shizuku_permission">Shizuku İznini Ver</string>
     <string name="usb_debugging">USB Hata Ayıklama</string>
     <string name="usb_debugging_desc">USB bağlantısı üzerinden hata ayıklamaya izin ver</string>
     <string name="wireless_debugging">Kablosuz Hata Ayıklama</string>
@@ -438,7 +433,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_skip">Atla</string>
     <string name="onboarding_next">İleri</string>
     <string name="onboarding_back">Geri</string>
-    <string name="onboarding_start">Başla</string>
     <string name="onboarding_welcome_title">Custom Animator\'a Hoş Geldiniz</string>
     <string name="onboarding_welcome_body">Animasyon hızlarını, ekran yoğunluğunu, batarya davranışını ve gizli geliştirici ayarlarını tek yerden düzenleyerek cihazınızı hızlandırın, root gerekmez.</string>
     <string name="onboarding_permission_title">Tek Seferlik Kurulum</string>
@@ -474,8 +468,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="remove_ads_support_message">Bu uygulama ücretsiz ve sürekli geliştiriliyor. Tek seferlik bir satın alma ile geliştirmeyi destekleyin — aynı zamanda tüm reklamları da kaldırır.</string>
     <string name="remove_ads_support_buy_price">Reklamları %1$s karşılığında kaldır</string>
     <string name="ad_info_remove_ads_hint">Reklamları hiç görmemeyi tercih ediyorsan, tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsin. Bunu istediğin zaman Ayarlar › Premium bölümünden yapabilirsin.</string>
-    <string name="fps_meter">FPS Meter</string>
-    <string name="fps_meter_desc">Oyunların ve uygulamaların üzerinde gerçek zamanlı FPS göstergesi göstererek performans ve takılma analizi yapmanızı sağlar.</string>
     <string name="fps_meter_hint">Sayacı sürükleyerek taşıyabilirsiniz. Katmanı kaldırmak için bunu kapatın.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">FPS göstergesini görmek için diğer uygulamaların üzerinde gösterime izin verin.</string>
@@ -633,7 +625,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_flash_screen_color_yellow">Sarı</string>
     <string name="pn_flash_screen_duration_label">Süre</string>
     <string name="pn_flash_screen_title">Ekranı Yakıp Söndür</string>
-    <string name="pn_flash_screen_until_interaction">Etkileşime kadar</string>
     <string name="pn_got_it">Anladım</string>
     <string name="pn_grant_secure_settings_adb_info">Bu bir sistem izni olduğundan bilgisayardan ADB ile verilmelidir. Terminalinizi veya komut istemini açıp şunu çalıştırın:</string>
     <string name="pn_grant_secure_settings_desc">Her zaman açık ekranı açıp kapatmak için CustomAnimator\'ın WRITE_SECURE_SETTINGS iznine ihtiyacı var.</string>
@@ -696,18 +687,13 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_logs_delete_confirm_body">Bu günlük kaydı kalıcı olarak silinecek.</string>
     <string name="pn_logs_delete_confirm_title">Bildirim silinsin mi?</string>
     <string name="pn_logs_empty">Henüz günlük yok.\nBir bildirim bir kuralla eşleştiğinde günlükler burada görünür.</string>
-    <string name="pn_logs_filter_all">Tümü</string>
     <string name="pn_logs_filter_aod">AOD</string>
     <string name="pn_logs_filter_flash">Flaş</string>
     <string name="pn_logs_filter_wake_up">Uyandır</string>
-    <string name="pn_logs_only_rule_matched">Yalnızca kuralla eşleşenleri göster</string>
-    <string name="pn_logs_only_rule_matched_desc">Yalnızca en az bir kuralla eşleşen bildirimleri göster</string>
     <string name="pn_logs_search_cd">Bildirimlerde ara</string>
     <string name="pn_logs_search_hint">Uygulama, başlık veya açıklamaya göre ara…</string>
     <string name="pn_logs_settings">Günlük Ayarları</string>
     <string name="pn_logs_settings_done">Bitti</string>
-    <string name="pn_logs_show_system_apps">Sistem uygulamalarını göster</string>
-    <string name="pn_logs_show_system_apps_desc">Sistem ve arka plan uygulamalarının bildirimlerini dahil et</string>
     <string name="pn_logs_title">Bildirim Günlükleri</string>
     <string name="pn_no_apps_chosen">Uygulama Seçilmedi</string>
     <string name="pn_no_rules_configured">Yapılandırılmış kural yok.\nYeni kural eklemek için + simgesine dokunun.</string>
@@ -787,8 +773,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_widget_label">Bildirim Widget\'ı</string>
     <string name="pn_widget_description">Kurallarınızla eşleşen bildirimleri ana ekranda gösterir.</string>
     <string name="pn_widget_action_title">Widget\'ta Göster</string>
-    <string name="pn_widget_action_hint">Eşleşen bildirimler ana ekran widget\'ında toplanır. Widget\'ı ana ekrana uzun basarak ekleyebilirsiniz.</string>
-    <string name="pn_widget_action_keep_body">Bildirim içeriğini de göster</string>
     <string name="pn_widget_default_header">Bildirimler</string>
     <string name="pn_widget_empty">Henüz bildirim yok</string>
     <string name="pn_widget_refresh">Yenile</string>
@@ -887,7 +871,6 @@ Animatör Süresi: %3$.2f</string>
 
     <string name="setup_nudge_title">Tek seferlik kurulum gerekiyor</string>
     <string name="setup_nudge_action">Nasıl yapılır?</string>
-    <string name="setup_nudge_generic">Bu özellik korumalı sistem ayarlarını değiştirir, bu yüzden uygulamanın önce tek seferlik bir izne ihtiyacı var.</string>
     <string name="setup_open">Kurulum rehberi</string>
     <string name="setup_open_desc">Tüm özellikleri açmak için adım adım yardım</string>
     <string name="onboarding_setup_now">Şimdi kur</string>
@@ -933,16 +916,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="profile_width_reset_desc">Sabit bir değer yerine cihazın varsayılan yoğunluğunu geri yükle.</string>
     <string name="profile_width_dp">Smallest width (dp)</string>
     <string name="profile_width_dp_helper">Daha yüksek değerler her şeyi küçültür.</string>
-    <string name="profile_tile_enable_desc">Bu profili uygulayan bir Hızlı Ayarlar kutusu ekle.</string>
     <string name="profile_tile_default_label">Profil</string>
     <string name="profile_tile_toast_applied">%1$s uygulandı</string>
     <string name="profile_tile_toast_partial">%1$s: %3$d ayardan %2$d tanesi uygulandı</string>
-    <string name="profile_chip_animation">Animasyon</string>
-    <string name="profile_chip_width">Genişlik %1$d dp</string>
-    <string name="profile_chip_width_reset">Genişlik sıfırlandı</string>
-    <string name="profile_chip_battery">Pil</string>
-    <string name="profile_chip_developer">Geliştirici ×%1$d</string>
-    <string name="profile_chip_tile">Kutu</string>
     <string name="profile_dev_auto_rotation">Ekranı otomatik döndür</string>
     <string name="profile_dev_auto_rotation_desc">Ekranın otomatik döndürülmesini aç veya kapat.</string>
     <plurals name="profile_action_count">
@@ -999,7 +975,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_watcher_switch">Yeni ekran görüntülerinde bildir</string>
     <string name="screenshot_watcher_needs_perms">Etkinleştirmek için Fotoğraflar ve Bildirim izinlerini verin.</string>
     <string name="screenshot_notification_hint">Ekran görüntüsü klasörünü izler ve Kopyala &amp; Sil eylemleriyle bildirim gösterir.</string>
-    <string name="screenshot_section_delay">Bildirim gecikmesi</string>
     <string name="screenshot_delay_label">Bildirimden önceki gecikme</string>
     <string name="screenshot_delay_value">%1$d sn</string>
     <string name="screenshot_notif_show_copy">Kopyala &amp; Sil eylemini göster</string>
@@ -1012,7 +987,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_overlay_show_delete">Sil düğmesini göster</string>
     <string name="screenshot_overlay_timeout_label">Düğmeleri şu süre sonra gizle</string>
     <string name="screenshot_overlay_timeout_value">%1$d sn</string>
-    <string name="screenshot_section_overlay_position">Düğme konumu</string>
     <string name="screenshot_tile_label">Ekran görüntüsünü kopyala</string>
     <string name="screenshot_tile_hint">Hiçbir servis çalışmadan en son ekran görüntüsünü panoya kopyalamak için \"Ekran görüntüsünü kopyala\" Hızlı Ayarlar kartını ekleyin.</string>
     <string name="screenshot_overlay_x_label">Soldan</string>
@@ -1036,7 +1010,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_toast_cancelled">Ekran görüntüsü korundu</string>
     <string name="screenshot_toast_not_found">Yakın zamanlı ekran görüntüsü bulunamadı</string>
     <string name="screenshot_delete_note">Android her silme için onay ister. Bu sayede uygulama kısıtlı Tüm dosyalar iznine ihtiyaç duymaz.</string>
-    <string name="screenshot_open_app_settings">Uygulama ayarlarını aç</string>
     <string name="screenshot_toast_copied_deleted">Panoya kopyalandı ve silindi</string>
     <string name="hotspot_manager">Hotspot Yöneticisi</string>
     <string name="hotspot_manager_desc">Wi-Fi hotspot\'unu, bağlı cihazları ve gelişmiş erişim noktası ayarlarını yönet</string>
@@ -1078,7 +1051,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="hotspot_band_5">5 GHz</string>
     <string name="hotspot_band_6">6 GHz</string>
     <string name="hotspot_mac_randomization">MAC rastgeleleştirme</string>
-    <string name="hotspot_mac_randomization_desc">Erişim noktasının kullandığı donanım adresi</string>
     <string name="hotspot_randomization_none">Cihaz MAC adresini kullan</string>
     <string name="hotspot_randomization_persistent">Kalıcı rastgele MAC</string>
     <string name="hotspot_randomization_non_persistent">Her seferinde yeni rastgele MAC</string>
@@ -1126,7 +1098,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="sound_tile_shizuku_note">Medya çıkış seçicisi ve Hızlı Ayarlar’ı kapatma işlemi Shizuku kullanır. Ses paneli olmadan da çalışır.</string>
     <string name="sound_tile_test">Test et</string>
     <string name="game_mode">Oyun Modu</string>
-    <string name="game_mode_desc">Oyunların çalışırken arka plan uygulamalarını kısıtla</string>
     <string name="game_mode_needs_shizuku">Oyun Modu, uygulama ve sistem ayarlarını değiştirmek için Shizuku gerektirir.</string>
     <string name="game_mode_status_active">Oyun Modu açık</string>
     <string name="game_mode_status_inactive">Oyun Modu kapalı</string>
@@ -1146,7 +1117,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_failed_toast">Oyun Modu uygulanamadı. Shizuku\'yu kontrol edip tekrar dene.</string>
     <string name="game_mode_widget_label">Oyun Modu</string>
     <string name="game_mode_widget_description">Oyun Modunu tek dokunuşla açar veya kapatır.</string>
-    <string name="boost_screen_title">Sistem optimizasyonu</string>
     <string name="boost_start">Optimizasyonu başlat</string>
     <string name="boost_cancel">İptal</string>
     <string name="boost_cancelled">Optimizasyon iptal edildi</string>
@@ -1160,19 +1130,11 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantını kontrol edip tekrar dene.</string>
     <string name="boost_ad_loading">Reklam yükleniyor…</string>
     <string name="boost_terminal_empty">Optimizasyonu başlatmak için aşağıdaki düğmeye dokun.</string>
-    <string name="more_boost_desc">Telefonunun performansını artır</string>
-    <string name="nav_more">Daha</string>
     <string name="nav_boost">Hızlandır</string>
     <string name="developer_title">Geliştirici</string>
-    <string name="more_notify_desc">Bildirimleri flaşla ve özelleştir</string>
-    <string name="more_developer_desc">Sistem anahtarları ve geliştirici ayarları</string>
-    <string name="more_battery_desc">Pil tasarrufu ve Doze ayarları</string>
     <string name="tools_title">Araçlar</string>
-    <string name="more_tools_desc">Kutucuklar, ağ araçları ve sistem ayarları</string>
     <string name="tools_utilities">Yardımcı araçlar</string>
     <string name="cleaner_title">Temizleyici</string>
-    <string name="more_cleaner_desc">Önbellekleri temizle ve arka plan uygulamalarını kapat</string>
-    <string name="more_game_mode_desc">Uygulama bazlı oyun modu ayarları</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
     <string name="more_auto_actions_desc">Otomatik zorla durdurma ve izin kuralları</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
@@ -1187,7 +1149,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="compile_all_apps_with_ad">Reklam izle ve derle</string>
     <string name="game_mode_turn_on_with_ad">Reklam izle ve aç</string>
     <string name="system_meter_title">Sistem Göstergesi</string>
-    <string name="more_system_meter_desc">Oyunların ve uygulamaların üzerinde FPS, CPU, GPU, RAM ve pil katmanı.</string>
     <string name="system_meter_overlay">Katman</string>
     <string name="system_meter_metrics">Ölçümler</string>
     <string name="system_meter_enable">Katmanı göster</string>

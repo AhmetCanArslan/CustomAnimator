@@ -20,27 +20,15 @@
     <string name="settings_permission_status_not_granted">Permission not granted</string>
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Width</string>
-    <string name="nav_developer">Dev</string>
-    <string name="nav_notify">Notify</string>
     <string name="nav_terminal">Terminal</string>
-    <string name="nav_more">More</string>
     <string name="nav_boost">Boost</string>
     <string name="developer_title">Developer</string>
-    <string name="more_notify_desc">Flash and customize notifications</string>
-    <string name="more_developer_desc">System toggles and developer tweaks</string>
-    <string name="more_battery_desc">Battery saver and Doze settings</string>
-    <string name="more_boost_desc">Boost your phone performance</string>
     <string name="tools_title">Tools</string>
-    <string name="more_tools_desc">Tiles, network tools and system tweaks</string>
     <string name="tools_utilities">Utilities</string>
     <string name="cleaner_title">Cleaner</string>
-    <string name="more_cleaner_desc">Clear caches and close background apps</string>
-    <string name="more_game_mode_desc">Per-app game mode settings</string>
     <string name="more_compile_booster_desc">Recompile apps for faster launches</string>
     <string name="more_auto_actions_desc">Automatic force stop and permission rules</string>
     <string name="developer_toggles">System Toggles</string>
-    <string name="developer_quick_actions">Quick Actions</string>
-    <string name="developer_performance">Performance</string>
     <string name="developer_needs_shizuku">These actions require Shizuku to be connected.</string>
     <string name="usb_debugging">USB Debugging</string>
     <string name="usb_debugging_desc">Allow debugging over a USB connection</string>
@@ -98,7 +86,6 @@
     <string name="auto_force_stop_desc">Force-stop selected apps the instant they leave the foreground</string>
     <string name="auto_force_stop_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
     <string name="open_usage_access_settings">Open Usage Access Settings</string>
-    <string name="grant_shizuku_permission">Grant Shizuku Permission</string>
     <string name="auto_force_stop_status_active">Auto force-stop active for %1$d app(s)</string>
     <string name="auto_force_stop_status_paused">Selection saved, but service is paused until permissions are granted</string>
     <string name="auto_force_stop_channel_name">Auto Force-Stop</string>
@@ -540,7 +527,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_skip">Skip</string>
     <string name="onboarding_next">Next</string>
     <string name="onboarding_back">Back</string>
-    <string name="onboarding_start">Get Started</string>
     <string name="onboarding_welcome_title">Welcome to Custom Animator</string>
     <string name="onboarding_welcome_body">Speed up your device by tuning animation scales, screen density, battery behaviour and hidden developer settings, all from one place and without root.</string>
     <string name="onboarding_permission_title">One-Time Setup</string>
@@ -576,8 +562,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="remove_ads_support_message">This app is free and constantly improved. Please support development with a one-time purchase — it also removes all ads.</string>
     <string name="remove_ads_support_buy_price">Remove Ads for %1$s</string>
     <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase, anytime, from Settings › Premium.</string>
-    <string name="fps_meter">FPS Meter</string>
-    <string name="fps_meter_desc">Displays a real-time FPS overlay over games and apps for performance and lag analysis.</string>
     <string name="sound_tile_label">Sound</string>
     <string name="sound_tile">Sound QS tile</string>
     <string name="sound_tile_desc">Quick Settings button for the volume panel or the media output picker</string>
@@ -690,7 +674,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_flash_screen_color_yellow">Yellow</string>
     <string name="pn_flash_screen_duration_label">Duration</string>
     <string name="pn_flash_screen_title">Flash Screen</string>
-    <string name="pn_flash_screen_until_interaction">Until interaction</string>
     <string name="pn_got_it">Got It</string>
     <string name="pn_grant_secure_settings_adb_info">Since this is a system permission, it must be granted via ADB on a computer. Open your terminal or command prompt and run:</string>
     <string name="pn_grant_secure_settings_desc">To toggle Always-On Display, CustomAnimator needs the WRITE_SECURE_SETTINGS permission.</string>
@@ -755,18 +738,13 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_logs_delete_confirm_body">This log entry will be permanently removed.</string>
     <string name="pn_logs_delete_confirm_title">Delete notification?</string>
     <string name="pn_logs_empty">No logs yet.\nLogs appear when a notification matches a rule.</string>
-    <string name="pn_logs_filter_all">All</string>
     <string name="pn_logs_filter_aod">AOD</string>
     <string name="pn_logs_filter_flash">Flash</string>
     <string name="pn_logs_filter_wake_up">Wake Up</string>
-    <string name="pn_logs_only_rule_matched">Show only rule-matched</string>
-    <string name="pn_logs_only_rule_matched_desc">Only show notifications that matched at least one rule</string>
     <string name="pn_logs_search_cd">Search notifications</string>
     <string name="pn_logs_search_hint">Search by app, title, or description…</string>
     <string name="pn_logs_settings">Log Settings</string>
     <string name="pn_logs_settings_done">Done</string>
-    <string name="pn_logs_show_system_apps">Show system apps</string>
-    <string name="pn_logs_show_system_apps_desc">Include notifications from system and background apps</string>
     <string name="pn_logs_title">Notification Logs</string>
     <string name="pn_no_apps_chosen">No Apps Chosen</string>
     <string name="pn_no_rules_configured">No rules configured.\nTap + to add a new rule.</string>
@@ -845,8 +823,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_widget_label">Notification Widget</string>
     <string name="pn_widget_description">Shows notifications matched by your rules on the home screen.</string>
     <string name="pn_widget_action_title">Show on Widget</string>
-    <string name="pn_widget_action_hint">Matching notifications are collected in the home screen widget. Add the widget by long-pressing your home screen.</string>
-    <string name="pn_widget_action_keep_body">Include notification body</string>
     <string name="pn_widget_default_header">Notifications</string>
     <string name="pn_widget_empty">No notifications yet</string>
     <string name="pn_widget_refresh">Refresh</string>
@@ -945,7 +921,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
 
     <string name="setup_nudge_title">One-time setup needed</string>
     <string name="setup_nudge_action">Show me how</string>
-    <string name="setup_nudge_generic">This feature changes protected system settings, so the app needs a one-time permission first.</string>
     <string name="setup_open">Setup guide</string>
     <string name="setup_open_desc">Step-by-step help to unlock every feature</string>
     <string name="onboarding_setup_now">Set it up now</string>
@@ -993,16 +968,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="profile_width_reset_desc">Restore the device default density instead of a fixed value.</string>
     <string name="profile_width_dp">Smallest width (dp)</string>
     <string name="profile_width_dp_helper">Higher values make everything smaller.</string>
-    <string name="profile_tile_enable_desc">Add a Quick Settings tile that applies this profile.</string>
     <string name="profile_tile_default_label">Profile</string>
     <string name="profile_tile_toast_applied">%1$s applied</string>
     <string name="profile_tile_toast_partial">%1$s: %2$d of %3$d applied</string>
-    <string name="profile_chip_animation">Animation</string>
-    <string name="profile_chip_width">Width %1$d dp</string>
-    <string name="profile_chip_width_reset">Width reset</string>
-    <string name="profile_chip_battery">Battery</string>
-    <string name="profile_chip_developer">Developer ×%1$d</string>
-    <string name="profile_chip_tile">Tile</string>
     <string name="profile_dev_auto_rotation">Auto-rotate screen</string>
     <string name="profile_dev_auto_rotation_desc">Turn automatic screen rotation on or off.</string>
 
@@ -1060,7 +1028,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_watcher_switch">Notify on new screenshots</string>
     <string name="screenshot_watcher_needs_perms">Grant Photos and Notifications access to enable.</string>
     <string name="screenshot_notification_hint">Watches the screenshot folder and posts a notification with Copy &amp; Delete actions.</string>
-    <string name="screenshot_section_delay">Notification delay</string>
     <string name="screenshot_delay_label">Delay before notification</string>
     <string name="screenshot_delay_value">%1$d s</string>
     <string name="screenshot_notif_show_copy">Show Copy &amp; Delete action</string>
@@ -1073,7 +1040,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_overlay_show_delete">Show Delete button</string>
     <string name="screenshot_overlay_timeout_label">Hide buttons after</string>
     <string name="screenshot_overlay_timeout_value">%1$d s</string>
-    <string name="screenshot_section_overlay_position">Button position</string>
     <string name="screenshot_tile_label">Copy screenshot</string>
     <string name="screenshot_tile_hint">Add the \"Copy screenshot\" Quick Settings tile to copy the newest screenshot to the clipboard on demand, with no service running.</string>
     <string name="screenshot_overlay_x_label">From left</string>
@@ -1097,7 +1063,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_toast_cancelled">Screenshot kept</string>
     <string name="screenshot_toast_not_found">No recent screenshot found</string>
     <string name="screenshot_delete_note">Android asks you to confirm each deletion. This keeps the app free of the restricted All-files permission.</string>
-    <string name="screenshot_open_app_settings">Open app settings</string>
     <string name="screenshot_toast_copied_deleted">Copied to clipboard and deleted</string>
 
     <string name="hotspot_manager">Hotspot Manager</string>
@@ -1140,7 +1105,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="hotspot_band_5">5 GHz</string>
     <string name="hotspot_band_6">6 GHz</string>
     <string name="hotspot_mac_randomization">MAC randomization</string>
-    <string name="hotspot_mac_randomization_desc">Hardware address used by the access point</string>
     <string name="hotspot_randomization_none">Use device MAC</string>
     <string name="hotspot_randomization_persistent">Persistent random MAC</string>
     <string name="hotspot_randomization_non_persistent">New random MAC each time</string>
@@ -1168,7 +1132,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="hotspot_copy_password">Copy password</string>
     <string name="hotspot_show_qr">Show QR code</string>
     <string name="game_mode">Game Mode</string>
-    <string name="game_mode_desc">Restrict background apps while your games run</string>
     <string name="game_mode_needs_shizuku">Game Mode needs Shizuku to change app and system settings.</string>
     <string name="game_mode_status_active">Game Mode is on</string>
     <string name="game_mode_status_inactive">Game Mode is off</string>
@@ -1189,7 +1152,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_failed_toast">Game Mode could not be applied. Check Shizuku and try again.</string>
     <string name="game_mode_widget_label">Game Mode</string>
     <string name="game_mode_widget_description">Turns Game Mode on or off in one tap.</string>
-    <string name="boost_screen_title">System optimization</string>
     <string name="boost_start">Start optimization</string>
     <string name="boost_cancel">Cancel</string>
     <string name="boost_cancelled">Optimization cancelled</string>
@@ -1214,7 +1176,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="boost_terminal_empty">Tap the button below to start the optimization.</string>
     <string name="system_meter_title">System Meter</string>
-    <string name="more_system_meter_desc">FPS, CPU, GPU, RAM and battery overlay on top of games and apps.</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrics</string>
     <string name="system_meter_enable">Show overlay</string>
