@@ -189,7 +189,7 @@ fun SystemMeterScreenContent(
                         }
                     )
                     if (meterEnabled) {
-                        InfoNote(text = stringResource(R.string.fps_meter_hint))
+                        InfoNote(text = stringResource(R.string.fps_meter_hint), dismissKey = "fps_meter_hint")
                     }
                 }
             }

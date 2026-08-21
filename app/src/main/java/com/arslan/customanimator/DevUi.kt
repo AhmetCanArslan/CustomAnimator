@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.LockOpen
@@ -17,11 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.ui.theme.AppShapes
+import com.arslan.customanimator.utils.InfoNoticeManager
 
 @Composable
 internal fun DevSectionTitle(title: String) {
@@ -162,11 +165,23 @@ internal fun QuickActionRow(
 }
 
 @Composable
-internal fun InfoNote(text: String) {
+internal fun rememberInfoNoticeVisible(dismissKey: String): MutableState<Boolean> {
+    val context = LocalContext.current
+    return remember(dismissKey) {
+        mutableStateOf(!InfoNoticeManager.isDismissed(context, dismissKey))
+    }
+}
+
+@Composable
+internal fun InfoNote(text: String, dismissKey: String) {
+    val context = LocalContext.current
+    val visible = rememberInfoNoticeVisible(dismissKey)
+    if (!visible.value) return
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+            .padding(start = 16.dp, end = 4.dp, bottom = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.Top
     ) {
@@ -181,6 +196,74 @@ internal fun InfoNote(text: String) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f)
+        )
+        InfoDismissButton(
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            onDismiss = {
+                InfoNoticeManager.dismiss(context, dismissKey)
+                visible.value = false
+            }
+        )
+    }
+}
+
+@Composable
+internal fun InfoCard(
+    dismissKey: String,
+    texts: List<String>,
+    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.secondaryContainer,
+    contentColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSecondaryContainer
+) {
+    val context = LocalContext.current
+    val visible = rememberInfoNoticeVisible(dismissKey)
+    if (!visible.value) return
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        shape = AppShapes.card
+    ) {
+        Row(
+            modifier = Modifier.padding(start = 12.dp, top = 12.dp, end = 4.dp, bottom = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Info,
+                contentDescription = null,
+                tint = contentColor
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                texts.forEach { text ->
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = contentColor
+                    )
+                }
+            }
+            InfoDismissButton(
+                tint = contentColor,
+                onDismiss = {
+                    InfoNoticeManager.dismiss(context, dismissKey)
+                    visible.value = false
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun InfoDismissButton(tint: androidx.compose.ui.graphics.Color, onDismiss: () -> Unit) {
+    IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp)) {
+        Icon(
+            imageVector = Icons.Filled.Close,
+            contentDescription = stringResource(R.string.close),
+            tint = tint,
+            modifier = Modifier.size(16.dp)
         )
     }
 }

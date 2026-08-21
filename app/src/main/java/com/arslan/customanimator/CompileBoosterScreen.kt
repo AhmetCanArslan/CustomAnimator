@@ -86,7 +86,7 @@ fun CompileBoosterScreenContent(
                         onCancel = { CompileBoosterService.stop(context) }
                     )
                     if (!isAdFree) {
-                        InfoNote(text = stringResource(R.string.compile_booster_ad_desc))
+                        InfoNote(text = stringResource(R.string.compile_booster_ad_desc), dismissKey = "compile_booster_ad")
                     }
                     }
                 }

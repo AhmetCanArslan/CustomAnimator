@@ -220,7 +220,7 @@ fun ToolsScreenContent(
                             }
                         )
                         if (DeveloperOptionsManager.isOneUi()) {
-                            InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note))
+                            InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note), dismissKey = "clock_seconds_samsung")
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ToggleRow(
@@ -241,7 +241,7 @@ fun ToolsScreenContent(
                             }
                         )
                         if (highVolumeWarningPending) {
-                            InfoNote(text = stringResource(R.string.remove_high_volume_warning_note))
+                            InfoNote(text = stringResource(R.string.remove_high_volume_warning_note), dismissKey = "high_volume_warning")
                         }
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

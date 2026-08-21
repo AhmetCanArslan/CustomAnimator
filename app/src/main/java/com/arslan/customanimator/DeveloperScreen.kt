@@ -309,7 +309,7 @@ fun DeveloperScreenContent(
                                 )
                             }
                         )
-                        InfoNote(text = stringResource(R.string.developer_tiles_restart_note))
+                        InfoNote(text = stringResource(R.string.developer_tiles_restart_note), dismissKey = "developer_tiles_restart")
                     }
                 }
             }

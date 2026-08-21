@@ -336,11 +336,7 @@ fun BatteryScreenContent(
         }
 
         if (policySupported) item {
-            Text(
-                text = stringResource(R.string.bt_policy_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            InfoNote(text = stringResource(R.string.bt_policy_note), dismissKey = "bt_policy_note")
         }
 
         if (policySupported) item {

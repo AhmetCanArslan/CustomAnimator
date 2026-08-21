@@ -179,7 +179,7 @@ fun HwuiTweaksScreen(
                                 }
                             }
                         }
-                        InfoNote(text = stringResource(R.string.hwui_restart_note))
+                        InfoNote(text = stringResource(R.string.hwui_restart_note), dismissKey = "hwui_restart")
                     }
                 }
             }

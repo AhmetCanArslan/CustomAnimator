@@ -202,24 +202,13 @@ fun GameModeScreen(
             }
 
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-                    shape = AppShapes.card
-                ) {
-                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text(
-                            text = stringResource(R.string.game_mode_info),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                        Text(
-                            text = stringResource(R.string.game_mode_fixed_performance),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
+                InfoCard(
+                    dismissKey = "game_mode_info",
+                    texts = listOf(
+                        stringResource(R.string.game_mode_info),
+                        stringResource(R.string.game_mode_fixed_performance)
+                    )
+                )
             }
 
             item {

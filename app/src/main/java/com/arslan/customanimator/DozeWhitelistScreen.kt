@@ -109,27 +109,10 @@ fun DozeWhitelistScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                        Text(
-                            text = stringResource(R.string.doze_whitelist_disclaimer),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
+                InfoCard(
+                    dismissKey = "doze_whitelist_disclaimer",
+                    texts = listOf(stringResource(R.string.doze_whitelist_disclaimer))
+                )
             }
 
             if (!hasShizukuPermission) {

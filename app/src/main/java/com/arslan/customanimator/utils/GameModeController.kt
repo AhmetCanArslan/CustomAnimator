@@ -18,6 +18,11 @@ object GameModeController {
     private const val KEY_BACKGROUND_LIMIT = "previous_background_limit"
     private const val KEY_MASTER_SYNC = "previous_master_sync"
     private const val KEY_MIN_REFRESH_RATE = "previous_min_refresh_rate"
+    private const val KEY_HWUI_APPLIED = "hwui_applied"
+    private const val KEY_PREVIOUS_TEXTURE_CACHE = "previous_texture_cache"
+    private const val KEY_PREVIOUS_FORCE_GPU = "previous_force_gpu"
+
+    private const val GAME_TEXTURE_CACHE_MB = 96
 
     private const val MIN_REFRESH_RATE_KEY = "min_refresh_rate"
     private const val NO_SAVED_REFRESH_RATE = -1f
@@ -50,7 +55,14 @@ object GameModeController {
             if (success) restricted++
         }
 
+        val boostHwui = games.isNotEmpty()
+        val previousTextureCache = if (boostHwui) HwuiTweaksManager.getTextureCacheSize() else 0
+        val previousForceGpu = if (boostHwui) HwuiTweaksManager.isForceGpuRenderingEnabled() else false
+
         prefs(appContext).edit()
+            .putBoolean(KEY_HWUI_APPLIED, boostHwui)
+            .putInt(KEY_PREVIOUS_TEXTURE_CACHE, previousTextureCache)
+            .putBoolean(KEY_PREVIOUS_FORCE_GPU, previousForceGpu)
             .putBoolean(KEY_BACKGROUND_LIMIT, DeveloperOptionsManager.isBackgroundProcessLimitEnabled(resolver))
             .putBoolean(KEY_MASTER_SYNC, isMasterSyncEnabled())
             .putFloat(KEY_MIN_REFRESH_RATE, currentMinRefreshRate(resolver))
@@ -65,6 +77,12 @@ object GameModeController {
         }
 
         games.forEach { packageName -> setGameMode(packageName, "performance") }
+
+        if (boostHwui) {
+            HwuiTweaksManager.setTextureCacheSize(GAME_TEXTURE_CACHE_MB)
+            HwuiTweaksManager.setForceGpuRendering(true)
+            games.forEach { packageName -> forceStop(packageName) }
+        }
 
         DeveloperOptionsManager.setBackgroundProcessLimit(appContext, resolver, true)
         setMasterSync(false)
@@ -99,6 +117,11 @@ object GameModeController {
 
         games.forEach { packageName -> setGameMode(packageName, "standard") }
 
+        if (prefs.getBoolean(KEY_HWUI_APPLIED, false)) {
+            HwuiTweaksManager.setTextureCacheSize(prefs.getInt(KEY_PREVIOUS_TEXTURE_CACHE, HwuiTweaksManager.TEXTURE_CACHE_DEFAULT))
+            HwuiTweaksManager.setForceGpuRendering(prefs.getBoolean(KEY_PREVIOUS_FORCE_GPU, false))
+        }
+
         DeveloperOptionsManager.setBackgroundProcessLimit(
             appContext, resolver, prefs.getBoolean(KEY_BACKGROUND_LIMIT, false)
         )
@@ -120,11 +143,17 @@ object GameModeController {
             .remove(KEY_BACKGROUND_LIMIT)
             .remove(KEY_MASTER_SYNC)
             .remove(KEY_MIN_REFRESH_RATE)
+            .remove(KEY_HWUI_APPLIED)
+            .remove(KEY_PREVIOUS_TEXTURE_CACHE)
+            .remove(KEY_PREVIOUS_FORCE_GPU)
             .putBoolean(KEY_ACTIVE, false)
             .apply()
 
         return Result((targets.isEmpty() || restored > 0) && fixedPerformanceDisabled)
     }
+
+    private fun forceStop(packageName: String): Boolean =
+        ShizukuHelper.executeShellCommand(arrayOf("am", "force-stop", packageName))
 
     private fun setStandbyBucket(packageName: String, bucket: String): Boolean =
         ShizukuHelper.executeShellCommand(arrayOf("am", "set-standby-bucket", packageName, bucket))
