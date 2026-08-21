@@ -79,10 +79,6 @@ private const val PRIVACY_POLICY_URL =
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
-    isSimpleMode: Boolean,
-    onSimpleModeChange: (Boolean) -> Unit,
-    inputMode: String,
-    onInputModeChange: (String) -> Unit,
     isShizukuAvailable: Boolean,
     hasShizukuPermission: Boolean,
     hasWriteSecureSettings: Boolean,
@@ -158,38 +154,6 @@ fun SettingsScreen(
 
             SettingsSection(title = stringResource(R.string.settings_appearance)) {
                 ThemeModeSelector()
-            }
-
-            SettingsSection(title = stringResource(R.string.settings_general)) {
-                SelectableSettingRow(
-                    title = stringResource(R.string.simple_mode),
-                    description = stringResource(R.string.settings_simple_mode_desc),
-                    selected = isSimpleMode,
-                    onClick = { onSimpleModeChange(true) }
-                )
-                SettingDivider()
-                SelectableSettingRow(
-                    title = stringResource(R.string.advanced_mode),
-                    description = stringResource(R.string.settings_advanced_mode_desc),
-                    selected = !isSimpleMode,
-                    onClick = { onSimpleModeChange(false) }
-                )
-            }
-
-            SettingsSection(title = stringResource(R.string.settings_input_mode)) {
-                SelectableSettingRow(
-                    title = stringResource(R.string.use_sliders),
-                    description = stringResource(R.string.settings_slider_desc),
-                    selected = inputMode == "slider",
-                    onClick = { onInputModeChange("slider") }
-                )
-                SettingDivider()
-                SelectableSettingRow(
-                    title = stringResource(R.string.use_manual_input),
-                    description = stringResource(R.string.settings_manual_desc),
-                    selected = inputMode == "manual",
-                    onClick = { onInputModeChange("manual") }
-                )
             }
 
             SettingsSection(title = stringResource(R.string.settings_backup)) {
@@ -421,80 +385,6 @@ private fun SettingDivider() {
         modifier = Modifier.padding(start = 16.dp),
         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
     )
-}
-
-@Composable
-private fun SelectableSettingRow(
-    title: String,
-    description: String,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
-    val background by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
-        } else {
-            Color.Transparent
-        },
-        animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
-        label = "rowSelection"
-    )
-    val indicatorScale by animateFloatAsState(
-        targetValue = if (selected) 1f else 0.7f,
-        animationSpec = Motion.bouncy(),
-        label = "rowIndicator"
-    )
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .selectable(
-                selected = selected,
-                onClick = onClick,
-                role = androidx.compose.ui.semantics.Role.RadioButton
-            )
-            .background(background)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier.size(22.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (selected) {
-                Icon(
-                    imageVector = Icons.Filled.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(22.dp)
-                        .scale(indicatorScale)
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .size(22.dp)
-                        .border(1.5.dp, MaterialTheme.colorScheme.outline, CircleShape)
-                )
-            }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.onSurface
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
-                }
-            )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
 }
 
 @Composable

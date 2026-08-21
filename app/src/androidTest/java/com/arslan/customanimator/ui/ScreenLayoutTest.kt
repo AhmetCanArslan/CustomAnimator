@@ -226,10 +226,6 @@ class ScreenLayoutTest {
     fun settingsScreenFitsSmallPhones() = screenFits(R.string.settings) {
         SettingsScreen(
             onBack = {},
-            isSimpleMode = false,
-            onSimpleModeChange = {},
-            inputMode = "slider",
-            onInputModeChange = {},
             isShizukuAvailable = false,
             hasShizukuPermission = false,
             hasWriteSecureSettings = false,

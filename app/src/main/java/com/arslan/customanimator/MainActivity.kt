@@ -27,8 +27,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.History
@@ -425,14 +427,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
     var smallestWidthInputValue by remember { mutableStateOf(if (smallestWidth > 0) smallestWidth.toString() else "") }
     
-    var shouldShowContent by remember { mutableStateOf(true) }
-    var pendingInputMode by remember { mutableStateOf<String?>(null) }
-    val contentAlpha by animateFloatAsState(
-        targetValue = if (shouldShowContent) 1f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = "content fade animation"
-    )
-
     val showPermissionError: (String) -> Unit = { message ->
         permissionErrorMessage = message
         showPermissionDialog = true
@@ -521,18 +515,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    var isFirstModeRender by remember { mutableStateOf(true) }
-    LaunchedEffect(inputMode) {
-        if (isFirstModeRender) {
-            isFirstModeRender = false
-        } else {
-            shouldShowContent = false
-            delay(150)
-            shouldShowContent = true
+    val changeInputMode: (String) -> Unit = { newMode ->
+        if (newMode != inputMode) {
+            inputMode = newMode
+            SettingsManager.setInputMode(context, inputMode)
+            if (inputMode == "manual") {
+                windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
+                transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
+                animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
+            }
         }
     }
-    
-    
+
     val toggleSimpleMode: (Boolean) -> Unit = { newSimpleMode ->
         isSimpleMode = newSimpleMode
         SettingsManager.setSimpleMode(context, isSimpleMode)
@@ -622,20 +616,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (targetScreen == HomeScreen.SETTINGS) {
         SettingsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
-            isSimpleMode = isSimpleMode,
-            onSimpleModeChange = toggleSimpleMode,
-            inputMode = inputMode,
-            onInputModeChange = { newMode ->
-                if (newMode != inputMode) {
-                    inputMode = newMode
-                    SettingsManager.setInputMode(context, inputMode)
-                    if (inputMode == "manual") {
-                        windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                        transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                        animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                    }
-                }
-            },
             isShizukuAvailable = isShizukuAvailable,
             hasShizukuPermission = hasShizukuPermission.value,
             hasWriteSecureSettings = hasWriteSecureSettings.value,
@@ -982,7 +962,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     
                     modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -1123,7 +1102,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = { currentScreen = HomeScreen.PER_APP_WIDTH },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)
                 ) {
                     Row(
                         modifier = Modifier
@@ -1157,7 +1135,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         text = stringResource(R.string.width_presets),
-                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -1172,7 +1149,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         modifier = Modifier
                             .fillMaxWidth()
-                            .graphicsLayer(alpha = contentAlpha)
                     ) {
                         Row(
                             modifier = Modifier
@@ -1266,7 +1242,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
-                            .graphicsLayer(alpha = contentAlpha)
                     )
                 }
             }
@@ -1301,7 +1276,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             item {
                 SyncedAnimationPreview(
                     currentScale = windowAnimScale,
-                    modifier = Modifier.graphicsLayer(alpha = contentAlpha)
+                )
+            }
+
+            item {
+                AnimationModeSelectors(
+                    isSimpleMode = isSimpleMode,
+                    onSimpleModeChange = toggleSimpleMode,
+                    inputMode = inputMode,
+                    onInputModeChange = changeInputMode,
                 )
             }
             
@@ -1311,8 +1294,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         shape = AppShapes.card,
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                         modifier = Modifier
-                        .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)) {
+                        .fillMaxWidth()) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -1553,7 +1535,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                         modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = {
@@ -1687,7 +1668,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         text = stringResource(R.string.saved_presets),
-                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -1702,7 +1682,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         modifier = Modifier
                             .fillMaxWidth()
-                            .graphicsLayer(alpha = contentAlpha)
                             .background(
                                 if (expandedPresetId == preset.id)
                                     MaterialTheme.colorScheme.primaryContainer
@@ -1842,7 +1821,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
-                            .graphicsLayer(alpha = contentAlpha)
                     )
                 }
             }
@@ -2625,4 +2603,108 @@ private fun decelerateInterpolation(input: Float): Float {
 
 private fun accelerateInterpolation(input: Float): Float {
     return input * input
+}
+
+@Composable
+fun AnimationModeSelectors(
+    isSimpleMode: Boolean,
+    onSimpleModeChange: (Boolean) -> Unit,
+    inputMode: String,
+    onInputModeChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var scaleModeExpanded by remember { mutableStateOf(false) }
+    var inputModeExpanded by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        ModeDropdownChip(
+            label = stringResource(if (isSimpleMode) R.string.simple_mode else R.string.advanced_mode),
+            expanded = scaleModeExpanded,
+            onExpandedChange = { scaleModeExpanded = it },
+            modifier = Modifier.weight(1f)
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.simple_mode)) },
+                onClick = {
+                    scaleModeExpanded = false
+                    onSimpleModeChange(true)
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.advanced_mode)) },
+                onClick = {
+                    scaleModeExpanded = false
+                    onSimpleModeChange(false)
+                }
+            )
+        }
+        ModeDropdownChip(
+            label = stringResource(if (inputMode == "manual") R.string.use_manual_input else R.string.use_sliders),
+            expanded = inputModeExpanded,
+            onExpandedChange = { inputModeExpanded = it },
+            modifier = Modifier.weight(1f)
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.use_sliders)) },
+                onClick = {
+                    inputModeExpanded = false
+                    onInputModeChange("slider")
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.use_manual_input)) },
+                onClick = {
+                    inputModeExpanded = false
+                    onInputModeChange("manual")
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModeDropdownChip(
+    label: String,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    menuItems: @Composable ColumnScope.() -> Unit
+) {
+    Box(modifier = modifier) {
+        Surface(
+            onClick = { onExpandedChange(true) },
+            shape = AppShapes.card,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpandedChange(false) },
+            content = menuItems
+        )
+    }
 }
