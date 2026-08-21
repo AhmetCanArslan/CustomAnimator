@@ -39,6 +39,7 @@ import kotlin.math.roundToInt
 @Composable
 fun BatteryScreenContent(
     hasShizukuPermission: Boolean,
+    onNavigateToDozeWhitelist: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -427,6 +428,21 @@ fun BatteryScreenContent(
                 }
                 mgr.setAppliedPreset(context, mgr.GROUP_DOZE, preset.id)
                 afterWrite(success)
+            }
+        }
+
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth(),
+                shape = AppShapes.card
+            ) {
+                NavigationRow(
+                    icon = Icons.Filled.Check,
+                    title = stringResource(R.string.doze_whitelist),
+                    description = stringResource(R.string.doze_whitelist_desc),
+                    onClick = onNavigateToDozeWhitelist
+                )
             }
         }
 

@@ -211,6 +211,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
+    HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
     CLOSE_APPS_EXCLUSIONS, GAME_MODE, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     DEVELOPER, TOOLS, SYSTEM_METER, CLEANER, COMPILE_BOOSTER, AUTO_ACTIONS, BATTERY, BOOST
@@ -229,6 +230,9 @@ private val SUB_SCREEN_PARENTS = mapOf(
     HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS,
     HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeScreen.CLEANER,
     HomeScreen.GRAPHICS_API_OVERRIDE to HomeScreen.TOOLS,
+    HomeScreen.HWUI_TWEAKS to HomeScreen.TOOLS,
+    HomeScreen.APP_THREADING to HomeScreen.TOOLS,
+    HomeScreen.DOZE_WHITELIST to HomeScreen.BATTERY,
     HomeScreen.WIFI_PASSWORDS to HomeScreen.TOOLS,
     HomeScreen.HOTSPOT_MANAGER to HomeScreen.TOOLS,
     HomeScreen.ALARM_REVEALER to HomeScreen.TOOLS,
@@ -323,6 +327,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val hwuiTweaksListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val appThreadingListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val dozeWhitelistListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -655,6 +662,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
+    } else if (targetScreen == HomeScreen.HWUI_TWEAKS) {
+        HwuiTweaksScreen(
+            onBack = { currentScreen = HomeScreen.TOOLS },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = hwuiTweaksListState
+        )
+    } else if (targetScreen == HomeScreen.APP_THREADING) {
+        AppThreadingScreen(
+            onBack = { currentScreen = HomeScreen.TOOLS },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = appThreadingListState
+        )
+    } else if (targetScreen == HomeScreen.DOZE_WHITELIST) {
+        DozeWhitelistScreen(
+            onBack = { currentScreen = HomeScreen.BATTERY },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = dozeWhitelistListState
+        )
     } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
         PerAppWidthScreen(
             onBack = {
@@ -788,6 +813,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 hasShizukuPermission = hasShizukuPermission.value,
                 hasWriteSecureSettings = hasWriteSecureSettings.value,
                 onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
+                onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
+                onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
                 onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
                 onNavigateToSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
                 onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
@@ -844,6 +871,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         ) {
             BatteryScreenContent(
                 hasShizukuPermission = hasShizukuPermission.value,
+                onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
                 listState = batteryTabListState
             )
         }

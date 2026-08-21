@@ -7,6 +7,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Schedule
@@ -37,6 +39,8 @@ fun ToolsScreenContent(
     hasShizukuPermission: Boolean,
     hasWriteSecureSettings: Boolean,
     onNavigateToGraphicsApiOverride: () -> Unit,
+    onNavigateToHwuiTweaks: () -> Unit,
+    onNavigateToAppThreading: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
     onNavigateToSoundTile: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
@@ -141,6 +145,20 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.graphics_api_override),
                             description = stringResource(R.string.graphics_api_override_desc),
                             onClick = onNavigateToGraphicsApiOverride
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Brush,
+                            title = stringResource(R.string.hwui_tweaks),
+                            description = stringResource(R.string.hwui_tweaks_desc),
+                            onClick = onNavigateToHwuiTweaks
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Memory,
+                            title = stringResource(R.string.app_threading),
+                            description = stringResource(R.string.app_threading_desc),
+                            onClick = onNavigateToAppThreading
                         )
                     }
                 }
