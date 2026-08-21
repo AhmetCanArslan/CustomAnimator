@@ -10,12 +10,6 @@
     <string name="settings">Pengaturan</string>
     <string name="new_preset">Preset Baru</string>
     <string name="back">Kembali</string>
-    <string name="settings_general">Umum</string>
-    <string name="settings_simple_mode_desc">Gunakan satu skala untuk semua animasi</string>
-    <string name="settings_advanced_mode_desc">Atur skala window, transisi, dan animator secara terpisah</string>
-    <string name="settings_input_mode">Metode Input</string>
-    <string name="settings_slider_desc">Sesuaikan nilai dengan penggeser dan tombol +/-</string>
-    <string name="settings_manual_desc">Ketik nilai yang tepat dengan keyboard</string>
     <string name="settings_about">Tentang</string>
     <string name="settings_permission_status_granted">Izin telah diberikan</string>
     <string name="settings_permission_status_not_granted">Izin belum diberikan</string>

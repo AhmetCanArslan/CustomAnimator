@@ -10,12 +10,6 @@
     <string name="settings">Ayarlar</string>
     <string name="new_preset">Yeni Ön Ayar</string>
     <string name="back">Geri</string>
-    <string name="settings_general">Genel</string>
-    <string name="settings_simple_mode_desc">Tüm animasyonlar için tek bir ölçek kullan</string>
-    <string name="settings_advanced_mode_desc">Pencere, geçiş ve animatör ölçeklerini ayrı ayrı kontrol et</string>
-    <string name="settings_input_mode">Giriş Yöntemi</string>
-    <string name="settings_slider_desc">Değerleri kaydırıcılar ve +/- düğmeleriyle ayarla</string>
-    <string name="settings_manual_desc">Klavyeyle tam değerler gir</string>
     <string name="settings_about">Hakkında</string>
     <string name="settings_permission_status_granted">İzin verildi</string>
     <string name="settings_permission_status_not_granted">İzin verilmedi</string>

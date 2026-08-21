@@ -10,12 +10,6 @@
     <string name="settings">الإعدادات</string>
     <string name="new_preset">إعداد مسبق جديد</string>
     <string name="back">رجوع</string>
-    <string name="settings_general">عام</string>
-    <string name="settings_simple_mode_desc">استخدام مقياس واحد لجميع الرسوم المتحركة</string>
-    <string name="settings_advanced_mode_desc">التحكم في مقاييس النافذة والانتقال والرسوم المتحركة بشكل منفصل</string>
-    <string name="settings_input_mode">طريقة الإدخال</string>
-    <string name="settings_slider_desc">اضبط القيم باستخدام أشرطة التمرير وأزرار + و-</string>
-    <string name="settings_manual_desc">اكتب القيم الدقيقة باستخدام لوحة المفاتيح</string>
     <string name="settings_about">حول التطبيق</string>
     <string name="settings_permission_status_granted">تم منح الإذن</string>
     <string name="settings_permission_status_not_granted">لم يتم منح الإذن</string>

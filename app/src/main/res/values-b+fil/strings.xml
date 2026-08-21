@@ -10,12 +10,6 @@
     <string name="settings">Mga Setting</string>
     <string name="new_preset">Bagong Preset</string>
     <string name="back">Bumalik</string>
-    <string name="settings_general">Pangkalahatan</string>
-    <string name="settings_simple_mode_desc">Gumamit ng iisang scale para sa lahat ng animation</string>
-    <string name="settings_advanced_mode_desc">Kontrolin nang hiwalay ang window, transition, at animator scale</string>
-    <string name="settings_input_mode">Paraan ng Pag-input</string>
-    <string name="settings_slider_desc">Ayusin ang mga value gamit ang slider at +/- na mga button</string>
-    <string name="settings_manual_desc">I-type ang eksaktong value gamit ang keyboard</string>
     <string name="settings_about">Tungkol Dito</string>
     <string name="settings_permission_status_granted">Ipinagkaloob na ang pahintulot</string>
     <string name="settings_permission_status_not_granted">Hindi pa ipinagkaloob ang pahintulot</string>

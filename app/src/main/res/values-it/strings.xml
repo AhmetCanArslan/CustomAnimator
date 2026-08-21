@@ -10,12 +10,6 @@
     <string name="settings">Impostazioni</string>
     <string name="new_preset">Nuovo preset</string>
     <string name="back">Indietro</string>
-    <string name="settings_general">Generali</string>
-    <string name="settings_simple_mode_desc">Usa un unico valore per tutte le animazioni</string>
-    <string name="settings_advanced_mode_desc">Controlla separatamente finestre, transizioni e animatori</string>
-    <string name="settings_input_mode">Metodo di inserimento</string>
-    <string name="settings_slider_desc">Regola i valori con cursori e pulsanti +/-</string>
-    <string name="settings_manual_desc">Digita valori esatti con la tastiera</string>
     <string name="settings_about">Informazioni</string>
     <string name="settings_permission_status_granted">Autorizzazione concessa</string>
     <string name="settings_permission_status_not_granted">Autorizzazione non concessa</string>

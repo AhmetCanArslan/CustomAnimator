@@ -10,12 +10,6 @@
     <string name="settings">Настройки</string>
     <string name="new_preset">Новый пресет</string>
     <string name="back">Назад</string>
-    <string name="settings_general">Общие</string>
-    <string name="settings_simple_mode_desc">Использовать один масштаб для всех анимаций</string>
-    <string name="settings_advanced_mode_desc">Управлять масштабами окна, перехода и аниматора отдельно</string>
-    <string name="settings_input_mode">Способ ввода</string>
-    <string name="settings_slider_desc">Изменять значения ползунками и кнопками +/-</string>
-    <string name="settings_manual_desc">Вводить точные значения с клавиатуры</string>
     <string name="settings_about">О приложении</string>
     <string name="settings_permission_status_granted">Разрешение предоставлено</string>
     <string name="settings_permission_status_not_granted">Разрешение не предоставлено</string>

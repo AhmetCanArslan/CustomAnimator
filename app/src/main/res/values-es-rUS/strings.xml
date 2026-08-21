@@ -10,12 +10,6 @@
     <string name="settings">Configuración</string>
     <string name="new_preset">Nuevo Preset</string>
     <string name="back">Atrás</string>
-    <string name="settings_general">General</string>
-    <string name="settings_simple_mode_desc">Usar una sola escala para todas las animaciones</string>
-    <string name="settings_advanced_mode_desc">Controlar las escalas de ventana, transición y animador por separado</string>
-    <string name="settings_input_mode">Método de Entrada</string>
-    <string name="settings_slider_desc">Ajustar valores con controles deslizantes y botones +/-</string>
-    <string name="settings_manual_desc">Escribir valores exactos con el teclado</string>
     <string name="settings_about">Acerca de</string>
     <string name="settings_permission_status_granted">Permiso concedido</string>
     <string name="settings_permission_status_not_granted">Permiso no concedido</string>
