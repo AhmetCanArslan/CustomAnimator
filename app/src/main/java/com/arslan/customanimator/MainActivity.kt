@@ -214,7 +214,7 @@ enum class HomeTab {
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, PERMISSIONS, SETUP_GUIDE,
+    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     COMPILE_BOOSTER, AUTO_ACTIONS
 }
@@ -272,6 +272,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.SOUND_TILE to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
     HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH
 )
 
@@ -353,6 +354,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val appThreadingListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val dozeWhitelistListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val refreshRateListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -689,6 +691,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = perAppWidthListState
         )
+    } else if (targetScreen == HomeScreen.REFRESH_RATE) {
+        RefreshRateScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = refreshRateListState
+        )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -903,6 +911,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
             onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
+            onNavigateToRefreshRate = { currentScreen = HomeScreen.REFRESH_RATE },
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },

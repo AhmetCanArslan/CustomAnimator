@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.RestartAlt
@@ -43,6 +44,7 @@ fun ToolsScreenContent(
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToHwuiTweaks: () -> Unit,
     onNavigateToAppThreading: () -> Unit,
+    onNavigateToRefreshRate: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
     onNavigateToSoundTile: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
@@ -163,6 +165,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.app_threading),
                             description = stringResource(R.string.app_threading_desc),
                             onClick = onNavigateToAppThreading
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.MonitorHeart,
+                            title = stringResource(R.string.refresh_rate),
+                            description = stringResource(R.string.refresh_rate_desc),
+                            onClick = onNavigateToRefreshRate
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
