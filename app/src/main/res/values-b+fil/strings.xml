@@ -215,6 +215,7 @@ Tagal ng Animator: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Listahan ng Eksklusyon</string>
     <string name="close_apps_exclusions_desc">Piliin ang mga app na hindi dapat isara ng “Isara ang mga app sa background”</string>
+    <string name="cleaner_info">Binubura ang cache ng mga app para makalaya ang storage at hinihinto ang mga background app para makalaya ang memory; maaaring mapuno muli ang naka-free na espasyo habang muling nagagawa ang cache. Inirerekomenda minsan isang linggo.</string>
     <string name="close_apps_exclusions_count">%1$d (na) app ang hindi isasara</string>
     <string name="compile_all_apps_short">I-compile</string>
     <!-- Rotation recovery -->
@@ -931,6 +932,34 @@ Tagal ng Animator: %3$.2f</string>
     <string name="per_app_width_notif_title">Aktibo ang Lapad Kada App</string>
     <string name="per_app_width_notif_text">Awtomatikong nagpapalit ang density ng screen para sa mga app na na-configure mo</string>
     <string name="per_app_width_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
+    <string name="refresh_rate">Refresh Rate</string>
+    <string name="refresh_rate_desc">Tingnan ang mga refresh rate na suportado ng display mo, itakda ang system minimum at peak, at pumili ng rate para sa bawat app.</string>
+    <string name="refresh_rate_disclaimer">Gumagamit ang refresh rate control ng system min_refresh_rate at peak_refresh_rate settings. Binabalewala ito ng ilang device o inilalantad lang ang bahagi ng mga mode nito.</string>
+    <string name="refresh_rate_current_title">Display</string>
+    <string name="refresh_rate_active">Aktibo ngayon: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Hindi ini-report ng device na ito</string>
+    <string name="refresh_rate_supported">Suportado: %1$s Hz</string>
+    <string name="refresh_rate_system_values">System min: %1$s, peak: %2$s</string>
+    <string name="refresh_rate_default">Default</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Minimum refresh rate</string>
+    <string name="refresh_rate_min_desc">Ang pinakamababang rate na maaaring maabot ng screen.</string>
+    <string name="refresh_rate_peak_title">Peak refresh rate</string>
+    <string name="refresh_rate_peak_desc">Ang pinakamataas na rate na maaaring maabot ng screen.</string>
+    <string name="per_app_refresh_rate">Per-App Refresh Rate</string>
+    <string name="per_app_refresh_rate_desc">Pumili ng refresh rate para sa bawat app. Ito ay ina-apply kapag binuksan ang app at ibinabalik kapag umalis ka rito.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Pumili ng rate na suportado ng display na ito.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">Kailangan ng per-app refresh rate ng Usage Access para malaman kung aling app ang nasa foreground.</string>
+    <string name="per_app_refresh_rate_status_active">Aktibo ang per-app refresh rate para sa %1$d app</string>
+    <string name="per_app_refresh_rate_status_paused">Na-save na ang mga override, pero naka-pause ang service hanggang mabigyan ng permiso</string>
+    <string name="per_app_refresh_rate_none">System rate</string>
+    <string name="per_app_refresh_rate_reset">I-reset</string>
+    <string name="per_app_refresh_rate_clear_all">I-clear lahat</string>
+    <string name="per_app_refresh_rate_channel_name">Per-App Refresh Rate</string>
+    <string name="per_app_refresh_rate_channel_desc">Ipinapakita habang ina-apply ang mga per-app refresh rate override</string>
+    <string name="per_app_refresh_rate_notif_title">Aktibo ang Per-App Refresh Rate</string>
+    <string name="per_app_refresh_rate_notif_text">Awtomatikong nagpapalit ang refresh rate para sa mga app na na-configure mo</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Nililinis ang cache ng mga app at isinasara ang mga app sa background sa isang tap.</string>
@@ -1094,7 +1123,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_turn_off">I-off ang Game Mode</string>
     <string name="game_mode_widget_turn_on">I-on</string>
     <string name="game_mode_widget_turn_off">I-off</string>
-    <string name="game_mode_info">Habang naka-on: tumatakbo sa performance mode ang mga piniling laro, inilalagay sa restricted standby bucket ang lahat ng ibang user app at hinaharangan sa background, iniaktibo ang background process limit, pinapatay ang auto-sync, nananatiling gising ang screen, at nakapirmi sa pinakamataas ang refresh rate. Hindi kailanman pinipilit na ihinto ang mga app. Hindi ginagalaw ang mga system app, launcher, keyboard, dialer, SMS, assistant, accessibility service at notification listener. Naibabalik ang lahat kapag na-off.</string>
+    <string name="game_mode_info">Habang naka-on, tumatakbo sa pinakamataas na performance ang mga piniling laro: naka-pause sa background ang ibang apps, nakasara ang auto-sync, gising ang screen, at naka-pirmi sa pinakamataas ang refresh rate. Hindi ginagalaw ang mga system app, at bumabalik sa normal ang lahat kapag na-off.</string>
     <string name="game_mode_tile_label">Game Mode</string>
     <string name="game_mode_tile_subtitle_on">Naka-on</string>
     <string name="game_mode_tile_subtitle_off">Naka-off</string>
@@ -1116,6 +1145,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
     <string name="boost_ad_loading">Nilo-load ang ad…</string>
     <string name="boost_terminal_empty">I-tap ang button sa ibaba para simulan ang pag-optimize.</string>
+    <string name="boost_info">Nagpapalaya ang "I-start ang optimization" ng storage sa pagbura ng cache ng mga app, tinutulungan ang mga app na mas mabilis bumukas, at hinihinto ang mga background app para makalaya ang memory. Inirerekomenda tuwing 2 araw.</string>
     <string name="nav_boost">Boost</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Mga tool</string>

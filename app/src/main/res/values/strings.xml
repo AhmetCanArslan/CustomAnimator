@@ -341,6 +341,7 @@ Animator Duration: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Exclusion List</string>
     <string name="close_apps_exclusions_desc">Pick apps that "Close background apps" should never force-stop</string>
+    <string name="cleaner_info">Wipes every app\'s cache to free storage and stops background apps to free memory; some freed space returns as caches rebuild. Recommended once a week.</string>
     <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
     <string name="compile_all_apps_short">Compile</string>
     <!-- Rotation recovery -->
@@ -1164,7 +1165,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_turn_off">Turn off Game Mode</string>
     <string name="game_mode_widget_turn_on">Turn on</string>
     <string name="game_mode_widget_turn_off">Turn off</string>
-    <string name="game_mode_info">While on: selected games run in performance mode, every other user app is moved to the restricted standby bucket and blocked from background work, the background process limit is enabled, auto-sync is turned off, the screen stays awake, the refresh rate is pinned to its maximum and HWUI rendering is boosted (larger texture cache, GPU rendering forced) for your games. Your selected games are force stopped once when Game Mode turns on so they restart with the new rendering settings; no other app is force stopped. System apps, launcher, keyboard, dialer, SMS, assistant, accessibility services and notification listeners are left untouched. Everything is restored when you turn it off.</string>
+    <string name="game_mode_info">While on, your selected games run at maximum performance: other apps are paused from working in the background, auto-sync turns off, the screen stays awake and the refresh rate is pinned to its highest. System apps are never touched, and everything returns to normal when you turn it off.</string>
     <string name="game_mode_fixed_performance">Fixed performance mode is enabled while Game Mode is active.</string>
     <string name="game_mode_tile_label">Game Mode</string>
     <string name="game_mode_tile_subtitle_on">On</string>
@@ -1197,6 +1198,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
     <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="boost_terminal_empty">Tap the button below to start the optimization.</string>
+    <string name="boost_info">"Start optimization" frees storage by wiping app caches, helps apps open faster, and stops background apps to free up memory. Recommended once every 2 days.</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrics</string>

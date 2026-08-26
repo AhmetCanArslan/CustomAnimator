@@ -215,6 +215,7 @@ Durasi Animator: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Daftar Pengecualian</string>
     <string name="close_apps_exclusions_desc">Pilih aplikasi yang tidak boleh dihentikan oleh “Tutup aplikasi latar belakang”</string>
+    <string name="cleaner_info">Menghapus cache aplikasi untuk membebaskan penyimpanan dan menghentikan aplikasi latar belakang untuk membebaskan memori; ruang yang terbebas bisa terpakai kembali saat cache dibangun ulang. Disarankan sekali seminggu.</string>
     <string name="close_apps_exclusions_count">%1$d aplikasi dikecualikan dari penutupan</string>
     <string name="compile_all_apps_short">Kompilasi</string>
     <!-- Rotation recovery -->
@@ -931,6 +932,34 @@ Durasi Animator: %3$.2f</string>
     <string name="per_app_width_notif_title">Lebar per Aplikasi aktif</string>
     <string name="per_app_width_notif_text">Kepadatan layar berganti otomatis untuk aplikasi yang kamu atur</string>
     <string name="per_app_width_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
+    <string name="refresh_rate">Refresh Rate</string>
+    <string name="refresh_rate_desc">Lihat refresh rate yang didukung layar Anda, atur minimum dan puncak sistem, dan pilih rate per aplikasi.</string>
+    <string name="refresh_rate_disclaimer">Kontrol refresh rate menggunakan pengaturan sistem min_refresh_rate dan peak_refresh_rate. Sebagian perangkat mengabaikannya atau hanya menampilkan sebagian modenya.</string>
+    <string name="refresh_rate_current_title">Layar</string>
+    <string name="refresh_rate_active">Aktif sekarang: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Tidak dilaporkan oleh perangkat ini</string>
+    <string name="refresh_rate_supported">Didukung: %1$s Hz</string>
+    <string name="refresh_rate_system_values">Min sistem: %1$s, puncak: %2$s</string>
+    <string name="refresh_rate_default">Default</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Refresh rate minimum</string>
+    <string name="refresh_rate_min_desc">Rate terendah yang bisa dicapai layar.</string>
+    <string name="refresh_rate_peak_title">Refresh rate puncak</string>
+    <string name="refresh_rate_peak_desc">Rate tertinggi yang bisa dicapai layar.</string>
+    <string name="per_app_refresh_rate">Refresh Rate per Aplikasi</string>
+    <string name="per_app_refresh_rate_desc">Pilih refresh rate untuk masing-masing aplikasi. Diterapkan saat aplikasi dibuka dan dikembalikan saat Anda meninggalkannya.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Pilih rate yang didukung layar ini.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">Refresh rate per aplikasi butuh Akses Penggunaan untuk mendeteksi aplikasi yang sedang di depan.</string>
+    <string name="per_app_refresh_rate_status_active">Refresh rate per aplikasi aktif untuk %1$d aplikasi</string>
+    <string name="per_app_refresh_rate_status_paused">Override tersimpan, tapi layanan dijeda hingga izin diberikan</string>
+    <string name="per_app_refresh_rate_none">Rate sistem</string>
+    <string name="per_app_refresh_rate_reset">Reset</string>
+    <string name="per_app_refresh_rate_clear_all">Hapus semua</string>
+    <string name="per_app_refresh_rate_channel_name">Refresh Rate per Aplikasi</string>
+    <string name="per_app_refresh_rate_channel_desc">Muncul saat override refresh rate per aplikasi sedang diterapkan</string>
+    <string name="per_app_refresh_rate_notif_title">Refresh Rate per Aplikasi aktif</string>
+    <string name="per_app_refresh_rate_notif_text">Refresh rate berganti otomatis untuk aplikasi yang Anda konfigurasi</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Bersihkan cache aplikasi dan tutup aplikasi latar belakang dengan sekali ketuk.</string>
@@ -1094,7 +1123,7 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_turn_off">Nonaktifkan Mode Game</string>
     <string name="game_mode_widget_turn_on">Aktifkan</string>
     <string name="game_mode_widget_turn_off">Nonaktifkan</string>
-    <string name="game_mode_info">Saat aktif: gim yang dipilih berjalan dalam mode performa, semua aplikasi pengguna lain dipindahkan ke bucket standby terbatas dan diblokir dari kerja latar belakang, batas proses latar belakang diaktifkan, sinkronisasi otomatis dimatikan, layar tetap menyala, dan refresh rate dikunci di nilai maksimum. Aplikasi tidak pernah dihentikan paksa. Aplikasi sistem, peluncur, papan ketik, telepon, SMS, asisten, layanan aksesibilitas, dan pendengar notifikasi tidak disentuh. Semuanya dipulihkan saat dimatikan.</string>
+    <string name="game_mode_info">Saat aktif, game pilihanmu berjalan dengan performa maksimal: aplikasi lain dijeda dari bekerja di latar belakang, sinkronisasi otomatis dimatikan, layar tetap menyala, dan refresh rate dikunci di nilai maksimum. Aplikasi sistem tidak disentuh, dan semuanya kembali normal saat dimatikan.</string>
     <string name="game_mode_tile_label">Mode Game</string>
     <string name="game_mode_tile_subtitle_on">Aktif</string>
     <string name="game_mode_tile_subtitle_off">Nonaktif</string>
@@ -1116,6 +1145,7 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
     <string name="boost_ad_loading">Memuat iklan…</string>
     <string name="boost_terminal_empty">Ketuk tombol di bawah untuk memulai optimalisasi.</string>
+    <string name="boost_info">"Mulai optimalisasi" membebaskan penyimpanan dengan menghapus cache aplikasi, membantu aplikasi terbuka lebih cepat, dan menghentikan aplikasi latar belakang untuk membebaskan memori. Disarankan setiap 2 hari.</string>
     <string name="nav_boost">Boost</string>
     <string name="developer_title">Pengembang</string>
     <string name="tools_title">Alat</string>

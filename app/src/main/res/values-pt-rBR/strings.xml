@@ -215,6 +215,7 @@ Duração do Animador: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Lista de Exceções</string>
     <string name="close_apps_exclusions_desc">Escolha apps que "Fechar apps em segundo plano" nunca deve encerrar</string>
+    <string name="cleaner_info">Apaga o cache dos apps para liberar armazenamento e encerra apps em segundo plano para liberar memória; o espaço liberado pode voltar a ser usado conforme o cache é reconstituído. Recomendado uma vez por semana.</string>
     <string name="close_apps_exclusions_count">%1$d app(s) fora da lista de fechamento</string>
     <string name="compile_all_apps_short">Compilar</string>
     <!-- Rotation recovery -->
@@ -931,6 +932,34 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_width_notif_title">Largura por app ativa</string>
     <string name="per_app_width_notif_text">A densidade da tela muda automaticamente para os apps que você configurou</string>
     <string name="per_app_width_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
+    <string name="refresh_rate">Taxa de atualização</string>
+    <string name="refresh_rate_desc">Veja as taxas de atualização compatíveis com sua tela, defina o mínimo e o máximo do sistema, e escolha uma taxa por app.</string>
+    <string name="refresh_rate_disclaimer">O controle de taxa de atualização usa as configurações do sistema min_refresh_rate e peak_refresh_rate. Alguns dispositivos as ignoram ou expõem apenas parte de seus modos.</string>
+    <string name="refresh_rate_current_title">Tela</string>
+    <string name="refresh_rate_active">Ativa agora: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Não informado por este dispositivo</string>
+    <string name="refresh_rate_supported">Compatível: %1$s Hz</string>
+    <string name="refresh_rate_system_values">Mín. do sistema: %1$s, máx.: %2$s</string>
+    <string name="refresh_rate_default">Padrão</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Taxa de atualização mínima</string>
+    <string name="refresh_rate_min_desc">A taxa mais baixa que a tela pode atingir.</string>
+    <string name="refresh_rate_peak_title">Taxa de atualização máxima</string>
+    <string name="refresh_rate_peak_desc">A taxa mais alta que a tela pode atingir.</string>
+    <string name="per_app_refresh_rate">Taxa de atualização por app</string>
+    <string name="per_app_refresh_rate_desc">Escolha uma taxa de atualização para cada app. É aplicada ao abrir o app e revertida ao sair dele.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Escolha uma taxa compatível com esta tela.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">A taxa de atualização por app precisa de Acesso de uso para detectar qual app está em primeiro plano.</string>
+    <string name="per_app_refresh_rate_status_active">Taxa de atualização por app ativa para %1$d app(s)</string>
+    <string name="per_app_refresh_rate_status_paused">As substituições foram salvas, mas o serviço está pausado até que as permissões sejam concedidas</string>
+    <string name="per_app_refresh_rate_none">Taxa do sistema</string>
+    <string name="per_app_refresh_rate_reset">Redefinir</string>
+    <string name="per_app_refresh_rate_clear_all">Limpar tudo</string>
+    <string name="per_app_refresh_rate_channel_name">Taxa de atualização por app</string>
+    <string name="per_app_refresh_rate_channel_desc">Exibido enquanto as substituições de taxa de atualização por app são aplicadas</string>
+    <string name="per_app_refresh_rate_notif_title">Taxa de atualização por app ativa</string>
+    <string name="per_app_refresh_rate_notif_text">A taxa de atualização muda automaticamente para os apps configurados</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Limpa o cache dos apps e fecha apps em segundo plano com um toque.</string>
@@ -1094,7 +1123,7 @@ Duração do Animador: %3$.2f</string>
     <string name="game_mode_turn_off">Desativar Modo jogo</string>
     <string name="game_mode_widget_turn_on">Ativar</string>
     <string name="game_mode_widget_turn_off">Desativar</string>
-    <string name="game_mode_info">Enquanto ativo: os jogos escolhidos rodam em modo desempenho, todos os outros apps do usuário vão para o grupo de espera restrito e ficam bloqueados em segundo plano, o limite de processos em segundo plano é ativado, a sincronização automática é desligada, a tela fica acesa e a taxa de atualização é fixada no máximo. Os apps nunca são forçados a parar. Apps do sistema, launcher, teclado, telefone, SMS, assistente, serviços de acessibilidade e leitores de notificação não são tocados. Tudo é restaurado ao desativar.</string>
+    <string name="game_mode_info">Enquanto ativo, seus jogos escolhidos rendem ao máximo: os outros apps são pausados em segundo plano, a sincronização automática é desligada, a tela fica acesa e a taxa de atualização é fixada no máximo. Apps do sistema não são tocados e tudo volta ao normal ao desativar.</string>
     <string name="game_mode_tile_label">Modo jogo</string>
     <string name="game_mode_tile_subtitle_on">Ativado</string>
     <string name="game_mode_tile_subtitle_off">Desativado</string>
@@ -1116,6 +1145,7 @@ Duração do Animador: %3$.2f</string>
     <string name="boost_ad_unavailable">Não foi possível carregar o anúncio. Verifique sua conexão e tente novamente.</string>
     <string name="boost_ad_loading">Carregando anúncio…</string>
     <string name="boost_terminal_empty">Toque no botão abaixo para iniciar a otimização.</string>
+    <string name="boost_info">"Iniciar otimização" libera armazenamento apagando o cache dos apps, ajuda os apps a abrirem mais rápido e encerra apps em segundo plano para liberar memória. Recomendado a cada 2 dias.</string>
     <string name="nav_boost">Impulso</string>
     <string name="developer_title">Desenvolvedor</string>
     <string name="tools_title">Ferramentas</string>

@@ -215,6 +215,7 @@ Animatör Süresi: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Hariç Tutulanlar</string>
     <string name="close_apps_exclusions_desc">“Arka plandaki uygulamaları kapat” işleminin asla kapatmayacağı uygulamaları seçin</string>
+    <string name="cleaner_info">Uygulama önbelleklerini silip depolama alanı boşaltır ve arka plandaki uygulamaları durdurarak belleği rahatlatır; önbellekler yeniden oluştukça boşalan alan tekrar dolabilir. Haftada bir yapılması önerilir.</string>
     <string name="close_apps_exclusions_count">%1$d uygulama kapatma dışında tutuluyor</string>
     <string name="compile_all_apps_short">Derle</string>
     <!-- Rotation recovery -->
@@ -939,6 +940,34 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_width_notif_title">Uygulama Başına Genişlik etkin</string>
     <string name="per_app_width_notif_text">Ayarladığınız uygulamalar için ekran yoğunluğu otomatik değişir</string>
     <string name="per_app_width_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
+    <string name="refresh_rate">Yenileme Hızı</string>
+    <string name="refresh_rate_desc">Ekranının desteklediği yenileme hızlarını gör, sistem minimumunu ve tepe değerini ayarla, uygulama başına hız seç.</string>
+    <string name="refresh_rate_disclaimer">Yenileme hızı kontrolü, sistemin min_refresh_rate ve peak_refresh_rate ayarlarını kullanır. Bazı cihazlar bunları yok sayar veya modlarının yalnızca bir kısmını sunar.</string>
+    <string name="refresh_rate_current_title">Ekran</string>
+    <string name="refresh_rate_active">Şu an aktif: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Bu cihaz tarafından bildirilmiyor</string>
+    <string name="refresh_rate_supported">Desteklenen: %1$s Hz</string>
+    <string name="refresh_rate_system_values">Sistem min: %1$s, tepe: %2$s</string>
+    <string name="refresh_rate_default">Varsayılan</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Minimum yenileme hızı</string>
+    <string name="refresh_rate_min_desc">Ekranın düşebileceği en düşük hız.</string>
+    <string name="refresh_rate_peak_title">Tepe yenileme hızı</string>
+    <string name="refresh_rate_peak_desc">Ekranın ulaşabileceği en yüksek hız.</string>
+    <string name="per_app_refresh_rate">Uygulama Bazlı Yenileme Hızı</string>
+    <string name="per_app_refresh_rate_desc">Her uygulama için yenileme hızı seç. Uygulama açıldığında uygulanır, uygulamadan çıkınca eski haline döner.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Bu ekranın desteklediği bir hız seç.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">Uygulama bazlı yenileme hızı, hangi uygulamanın önde olduğunu tespit etmek için Kullanım Erişimi gerektirir.</string>
+    <string name="per_app_refresh_rate_status_active">Uygulama bazlı yenileme hızı %1$d uygulama için aktif</string>
+    <string name="per_app_refresh_rate_status_paused">Geçersiz kılmalar kaydedildi, ancak izinler verilene kadar servis duraklatıldı</string>
+    <string name="per_app_refresh_rate_none">Sistem hızı</string>
+    <string name="per_app_refresh_rate_reset">Sıfırla</string>
+    <string name="per_app_refresh_rate_clear_all">Tümünü temizle</string>
+    <string name="per_app_refresh_rate_channel_name">Uygulama Bazlı Yenileme Hızı</string>
+    <string name="per_app_refresh_rate_channel_desc">Uygulama bazlı yenileme hızı geçersiz kılmaları uygulanırken gösterilir</string>
+    <string name="per_app_refresh_rate_notif_title">Uygulama Bazlı Yenileme Hızı aktif</string>
+    <string name="per_app_refresh_rate_notif_text">Yapılandırdığın uygulamalar için yenileme hızı otomatik değişir</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
     <string name="disable_rotation_suggestions">Döndürme önerilerini kapat</string>
     <string name="disable_rotation_suggestions_desc">Cihaz döndüğünde çıkan döndürme düğmesini gizler (show_rotation_suggestions)</string>
     <string name="boost_widget_label">Boost</string>
@@ -1102,7 +1131,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_turn_off">Oyun Modunu kapat</string>
     <string name="game_mode_widget_turn_on">Aç</string>
     <string name="game_mode_widget_turn_off">Kapat</string>
-    <string name="game_mode_info">Açıkken: seçilen oyunlar performans modunda çalışır, diğer tüm kullanıcı uygulamaları kısıtlı bekleme grubuna alınır ve arka planda çalışamaz, arka plan işlem sınırı açılır, otomatik eşitleme kapanır, ekran açık kalır ve yenileme hızı en yükseğe sabitlenir. Uygulamalar hiçbir zaman zorla durdurulmaz. Sistem uygulamaları, başlatıcı, klavye, telefon, SMS, asistan, erişilebilirlik servisleri ve bildirim dinleyicilerine dokunulmaz. Kapattığında her şey geri alınır.</string>
+    <string name="game_mode_info">Açıkken seçtiğin oyunlar en yüksek performansla çalışır: arka plandaki diğer uygulamalar duraklatılır, otomatik eşitleme kapanır, ekran açık kalır ve yenileme hızı en yükseğe sabitlenir. Sistem uygulamalarına dokunulmaz ve kapattığında her şey normale döner.</string>
     <string name="game_mode_tile_label">Oyun Modu</string>
     <string name="game_mode_tile_subtitle_on">Açık</string>
     <string name="game_mode_tile_subtitle_off">Kapalı</string>
@@ -1124,6 +1153,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantını kontrol edip tekrar dene.</string>
     <string name="boost_ad_loading">Reklam yükleniyor…</string>
     <string name="boost_terminal_empty">Optimizasyonu başlatmak için aşağıdaki düğmeye dokun.</string>
+    <string name="boost_info">"Optimizasyonu başlat" uygulama önbelleklerini silerek depolama alanı boşaltır, uygulamaların daha hızlı açılmasını sağlar ve arka plandaki uygulamaları durdurup belleği rahatlatır. 2 günde bir yapılması önerilir.</string>
     <string name="nav_boost">Hızlandır</string>
     <string name="developer_title">Geliştirici</string>
     <string name="tools_title">Araçlar</string>

@@ -335,6 +335,7 @@
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">قائمة الاستثناءات</string>
     <string name="close_apps_exclusions_desc">اختر التطبيقات التي يجب ألا يقوم "إغلاق تطبيقات الخلفية" بإيقافها قسريًا أبدًا</string>
+    <string name="cleaner_info">يمسح ذاكرة التخزين المؤقت للتطبيقات لتحرير مساحة التخزين ويوقف تطبيقات الخلفية لتحرير الذاكرة؛ قد تمتلئ المساحة المحررة مجددًا مع إعادة بناء ذاكرة التخزين المؤقت. يُنصح به مرة واحدة أسبوعيًا.</string>
     <string name="close_apps_exclusions_count">%1$d تطبيق مستثنى من الإغلاق</string>
     <string name="compile_all_apps_short">ترجمة</string>
     <!-- Rotation recovery -->
@@ -990,6 +991,34 @@
     <string name="per_app_width_notif_title">العرض لكل تطبيق نشط</string>
     <string name="per_app_width_notif_text">تتبدل كثافة الشاشة تلقائيًا للتطبيقات التي أعددتها</string>
     <string name="per_app_width_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
+    <string name="refresh_rate">معدل التحديث</string>
+    <string name="refresh_rate_desc">اطّلع على معدلات التحديث التي تدعمها شاشتك، واضبط الحد الأدنى والأقصى للنظام، واختر معدلًا لكل تطبيق.</string>
+    <string name="refresh_rate_disclaimer">يستخدم التحكم في معدل التحديث إعدادات النظام min_refresh_rate و peak_refresh_rate. بعض الأجهزة تتجاهلها أو تعرض جزءًا فقط من أوضاعها.</string>
+    <string name="refresh_rate_current_title">الشاشة</string>
+    <string name="refresh_rate_active">النشط الآن: %1$s هرتز</string>
+    <string name="refresh_rate_unknown">غير مُبلَّغ عنه من هذا الجهاز</string>
+    <string name="refresh_rate_supported">المدعوم: %1$s هرتز</string>
+    <string name="refresh_rate_system_values">الحد الأدنى للنظام: %1$s، الأقصى: %2$s</string>
+    <string name="refresh_rate_default">افتراضي</string>
+    <string name="refresh_rate_value">%1$s هرتز</string>
+    <string name="refresh_rate_min_title">الحد الأدنى لمعدل التحديث</string>
+    <string name="refresh_rate_min_desc">أدنى معدل يمكن أن تنخفض إليه الشاشة.</string>
+    <string name="refresh_rate_peak_title">الحد الأقصى لمعدل التحديث</string>
+    <string name="refresh_rate_peak_desc">أعلى معدل يمكن أن تصل إليه الشاشة.</string>
+    <string name="per_app_refresh_rate">معدل التحديث لكل تطبيق</string>
+    <string name="per_app_refresh_rate_desc">اختر معدل تحديث لكل تطبيق على حدة. يُطبَّق عند فتح التطبيق ويُعاد للوضع السابق عند مغادرته.</string>
+    <string name="per_app_refresh_rate_dialog_desc">اختر معدلًا تدعمه هذه الشاشة.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">يحتاج معدل التحديث لكل تطبيق إلى إذن الوصول إلى الاستخدام لمعرفة التطبيق الذي في المقدمة.</string>
+    <string name="per_app_refresh_rate_status_active">معدل التحديث لكل تطبيق نشط لعدد %1$d تطبيق (تطبيقات)</string>
+    <string name="per_app_refresh_rate_status_paused">تم حفظ التجاوزات، لكن الخدمة متوقفة مؤقتًا حتى تُمنح الأذونات</string>
+    <string name="per_app_refresh_rate_none">معدل النظام</string>
+    <string name="per_app_refresh_rate_reset">إعادة ضبط</string>
+    <string name="per_app_refresh_rate_clear_all">مسح الكل</string>
+    <string name="per_app_refresh_rate_channel_name">معدل التحديث لكل تطبيق</string>
+    <string name="per_app_refresh_rate_channel_desc">يظهر أثناء تطبيق تجاوزات معدل التحديث لكل تطبيق</string>
+    <string name="per_app_refresh_rate_notif_title">معدل التحديث لكل تطبيق نشط</string>
+    <string name="per_app_refresh_rate_notif_text">يتغيّر معدل التحديث تلقائيًا للتطبيقات التي قمت بضبطها</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
     <string name="boost_widget_label">تعزيز</string>
     <string name="boost_widget_title">تعزيز</string>
     <string name="boost_widget_description">يمسح ذاكرة التخزين المؤقت للتطبيقات ويغلق تطبيقات الخلفية بلمسة واحدة.</string>
@@ -1134,7 +1163,7 @@
     <string name="game_mode_turn_off">إيقاف وضع الألعاب</string>
     <string name="game_mode_widget_turn_on">تشغيل</string>
     <string name="game_mode_widget_turn_off">إيقاف</string>
-    <string name="game_mode_info">أثناء التفعيل: تعمل الألعاب المحددة في وضع الأداء، ويُنقل كل تطبيق مستخدم آخر إلى مجموعة الاستعداد المقيدة ويُحظر من عمل الخلفية، ويُفعّل حد عمليات الخلفية، وتُطفأ المزامنة التلقائية، وتبقى الشاشة مضاءة ويُثبت معدل التحديث على الحد الأقصى. لا تُوقف التطبيقات قسريًا أبدًا. تُترك تطبيقات النظام والمشغّل ولوحة المفاتيح والهاتف والرسائل والمساعد وخدمات إمكانية الوصول ومستمعو الإشعارات دون مساس. يُستعاد كل شيء عند إيقافه.</string>
+    <string name="game_mode_info">أثناء التفعيل، تعمل ألعابك المحددة بأقصى أداء: تُوقَف التطبيقات الأخرى عن العمل في الخلفية، وتُطفأ المزامنة التلقائية، وتبقى الشاشة مضاءة، ويُثبَّت معدل التحديث على الحد الأقصى. لا تُمسّ تطبيقات النظام، ويعود كل شيء إلى طبيعته عند الإيقاف.</string>
     <string name="game_mode_tile_label">وضع الألعاب</string>
     <string name="game_mode_tile_subtitle_on">مفعّل</string>
     <string name="game_mode_tile_subtitle_off">متوقف</string>
@@ -1156,6 +1185,7 @@
     <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="boost_ad_loading">جارٍ تحميل الإعلان…</string>
     <string name="boost_terminal_empty">اضغط الزر أدناه لبدء التحسين.</string>
+    <string name="boost_info">"بدء التحسين" يحرر مساحة التخزين بمسح ذاكرة التخزين المؤقت للتطبيقات، ويساعد التطبيقات على الفتح أسرع، ويوقف تطبيقات الخلفية لتحرير الذاكرة. يُنصح به كل يومين.</string>
     <string name="nav_boost">تسريع</string>
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>

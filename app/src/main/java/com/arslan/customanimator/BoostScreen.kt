@@ -4,6 +4,8 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -156,6 +158,7 @@ fun BoostScreenContent() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -167,6 +170,11 @@ fun BoostScreenContent() {
             }
 
             UnlockCard(isAdFree = isAdFree)
+
+            InfoCard(
+                dismissKey = "boost_info",
+                texts = listOf(stringResource(R.string.boost_info))
+            )
 
             Card(
                 shape = AppShapes.card,

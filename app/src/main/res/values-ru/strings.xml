@@ -215,6 +215,7 @@
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Список исключений</string>
     <string name="close_apps_exclusions_desc">Выберите приложения, которые «Закрыть фоновые приложения» никогда не должно останавливать</string>
+    <string name="cleaner_info">Удаляет кэш приложений, освобождая место, и останавливает фоновые приложения, освобождая память; освобождённое место может снова заполниться по мере восстановления кэша. Рекомендуется раз в неделю.</string>
     <string name="close_apps_exclusions_count">Приложений в исключениях: %1$d</string>
     <string name="compile_all_apps_short">Компилировать</string>
     <!-- Rotation recovery -->
@@ -933,6 +934,34 @@
     <string name="per_app_width_notif_title">Ширина для приложений активна</string>
     <string name="per_app_width_notif_text">Плотность экрана переключается автоматически для настроенных приложений</string>
     <string name="per_app_width_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
+    <string name="refresh_rate">Частота обновления</string>
+    <string name="refresh_rate_desc">Узнайте, какие частоты обновления поддерживает ваш экран, задайте системный минимум и максимум и выберите частоту для каждого приложения.</string>
+    <string name="refresh_rate_disclaimer">Управление частотой обновления использует системные настройки min_refresh_rate и peak_refresh_rate. Некоторые устройства игнорируют их или предоставляют лишь часть режимов.</string>
+    <string name="refresh_rate_current_title">Экран</string>
+    <string name="refresh_rate_active">Активна сейчас: %1$s Гц</string>
+    <string name="refresh_rate_unknown">Не сообщается этим устройством</string>
+    <string name="refresh_rate_supported">Поддерживается: %1$s Гц</string>
+    <string name="refresh_rate_system_values">Системный мин.: %1$s, макс.: %2$s</string>
+    <string name="refresh_rate_default">По умолчанию</string>
+    <string name="refresh_rate_value">%1$s Гц</string>
+    <string name="refresh_rate_min_title">Минимальная частота обновления</string>
+    <string name="refresh_rate_min_desc">Самая низкая частота, до которой может опуститься экран.</string>
+    <string name="refresh_rate_peak_title">Максимальная частота обновления</string>
+    <string name="refresh_rate_peak_desc">Самая высокая частота, которой может достичь экран.</string>
+    <string name="per_app_refresh_rate">Частота обновления для приложений</string>
+    <string name="per_app_refresh_rate_desc">Выберите частоту обновления для отдельных приложений. Она применяется при открытии приложения и отменяется при выходе из него.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Выберите частоту, поддерживаемую этим экраном.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">Для частоты обновления по приложениям нужен доступ к статистике использования, чтобы определить активное приложение.</string>
+    <string name="per_app_refresh_rate_status_active">Частота обновления для приложений активна для %1$d прил.</string>
+    <string name="per_app_refresh_rate_status_paused">Переопределения сохранены, но служба приостановлена до предоставления разрешений</string>
+    <string name="per_app_refresh_rate_none">Системная частота</string>
+    <string name="per_app_refresh_rate_reset">Сбросить</string>
+    <string name="per_app_refresh_rate_clear_all">Очистить всё</string>
+    <string name="per_app_refresh_rate_channel_name">Частота обновления для приложений</string>
+    <string name="per_app_refresh_rate_channel_desc">Отображается при применении переопределений частоты обновления по приложениям</string>
+    <string name="per_app_refresh_rate_notif_title">Частота обновления для приложений активна</string>
+    <string name="per_app_refresh_rate_notif_text">Частота обновления автоматически меняется для настроенных вами приложений</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Очищает кэш приложений и закрывает фоновые приложения одним нажатием.</string>
@@ -1096,7 +1125,7 @@
     <string name="game_mode_turn_off">Выключить игровой режим</string>
     <string name="game_mode_widget_turn_on">Включить</string>
     <string name="game_mode_widget_turn_off">Выключить</string>
-    <string name="game_mode_info">Пока включён: выбранные игры работают в режиме производительности, все остальные пользовательские приложения переводятся в ограниченную группу ожидания и не могут работать в фоне, включается лимит фоновых процессов, автосинхронизация выключается, экран остаётся включённым, а частота обновления фиксируется на максимуме. Приложения никогда не останавливаются принудительно. Системные приложения, лаунчер, клавиатура, телефон, SMS, ассистент, службы специальных возможностей и слушатели уведомлений не затрагиваются. При выключении всё восстанавливается.</string>
+    <string name="game_mode_info">Пока включён, выбранные игры работают на максимуме: остальные приложения приостанавливаются в фоне, автосинхронизация выключается, экран остаётся включённым, а частота обновления фиксируется на максимуме. Системные приложения не затрагиваются, и при выключении всё возвращается к норме.</string>
     <string name="game_mode_tile_label">Игровой режим</string>
     <string name="game_mode_tile_subtitle_on">Вкл</string>
     <string name="game_mode_tile_subtitle_off">Выкл</string>
@@ -1118,6 +1147,7 @@
     <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
     <string name="boost_ad_loading">Загрузка рекламы…</string>
     <string name="boost_terminal_empty">Нажмите кнопку ниже, чтобы начать оптимизацию.</string>
+    <string name="boost_info">«Запустить оптимизацию» освобождает место, удаляя кэш приложений, помогает приложениям запускаться быстрее и останавливает фоновые приложения, освобождая память. Рекомендуется раз в 2 дня.</string>
     <string name="nav_boost">Ускорение</string>
     <string name="developer_title">Разработчик</string>
     <string name="tools_title">Инструменты</string>

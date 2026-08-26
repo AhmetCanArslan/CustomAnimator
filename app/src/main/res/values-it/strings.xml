@@ -267,6 +267,7 @@ Durata animatore: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Elenco esclusioni</string>
     <string name="close_apps_exclusions_desc">Scegli le app che "Chiudi app in background" non deve mai arrestare</string>
+    <string name="cleaner_info">Cancella la cache delle app per liberare spazio e arresta le app in background per liberare memoria; lo spazio liberato può tornare occupato man mano che la cache si ricostruisce. Consigliato una volta a settimana.</string>
     <string name="close_apps_exclusions_count">%1$d app escluse dalla chiusura</string>
     <string name="compile_all_apps_short">Compila</string>
     <!-- Rotation recovery -->
@@ -951,6 +952,34 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="per_app_width_notif_title">Larghezza per app attiva</string>
     <string name="per_app_width_notif_text">La densità dello schermo cambia automaticamente per le app che hai configurato</string>
     <string name="per_app_width_notif_text_waiting">In attesa di Shizuku e Accesso ai dati di utilizzo</string>
+    <string name="refresh_rate">Frequenza di aggiornamento</string>
+    <string name="refresh_rate_desc">Leggi le frequenze di aggiornamento supportate dal display, imposta il minimo e il massimo di sistema e scegli una frequenza per app.</string>
+    <string name="refresh_rate_disclaimer">Il controllo della frequenza di aggiornamento usa le impostazioni di sistema min_refresh_rate e peak_refresh_rate. Alcuni dispositivi le ignorano o espongono solo parte delle loro modalità.</string>
+    <string name="refresh_rate_current_title">Display</string>
+    <string name="refresh_rate_active">Attiva ora: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Non riportata da questo dispositivo</string>
+    <string name="refresh_rate_supported">Supportate: %1$s Hz</string>
+    <string name="refresh_rate_system_values">Min di sistema: %1$s, massimo: %2$s</string>
+    <string name="refresh_rate_default">Predefinita</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Frequenza di aggiornamento minima</string>
+    <string name="refresh_rate_min_desc">La frequenza più bassa a cui può scendere lo schermo.</string>
+    <string name="refresh_rate_peak_title">Frequenza di aggiornamento massima</string>
+    <string name="refresh_rate_peak_desc">La frequenza più alta che può raggiungere lo schermo.</string>
+    <string name="per_app_refresh_rate">Frequenza di aggiornamento per app</string>
+    <string name="per_app_refresh_rate_desc">Scegli una frequenza di aggiornamento per ogni app. Viene applicata all\'apertura dell\'app e ripristinata quando la lasci.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Scegli una frequenza supportata da questo display.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">La frequenza di aggiornamento per app richiede l\'Accesso ai dati di utilizzo per rilevare quale app è in primo piano.</string>
+    <string name="per_app_refresh_rate_status_active">Frequenza di aggiornamento per app attiva per %1$d app</string>
+    <string name="per_app_refresh_rate_status_paused">Le sostituzioni sono salvate, ma il servizio è in pausa finché non vengono concessi i permessi</string>
+    <string name="per_app_refresh_rate_none">Frequenza di sistema</string>
+    <string name="per_app_refresh_rate_reset">Reimposta</string>
+    <string name="per_app_refresh_rate_clear_all">Cancella tutto</string>
+    <string name="per_app_refresh_rate_channel_name">Frequenza di aggiornamento per app</string>
+    <string name="per_app_refresh_rate_channel_desc">Mostrata mentre vengono applicate le sostituzioni della frequenza di aggiornamento per app</string>
+    <string name="per_app_refresh_rate_notif_title">Frequenza di aggiornamento per app attiva</string>
+    <string name="per_app_refresh_rate_notif_text">La frequenza di aggiornamento cambia automaticamente per le app configurate</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">In attesa di Shizuku e Accesso ai dati di utilizzo</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Svuota la cache delle app e chiude le app in background con un tocco.</string>
@@ -1114,7 +1143,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_turn_off">Disattiva Modalità gioco</string>
     <string name="game_mode_widget_turn_on">Attiva</string>
     <string name="game_mode_widget_turn_off">Disattiva</string>
-    <string name="game_mode_info">Quando è attiva: i giochi selezionati girano in modalità prestazioni, tutte le altre app utente passano al bucket standby limitato e non possono lavorare in background, il limite dei processi in background viene attivato, la sincronizzazione automatica viene disattivata, lo schermo resta acceso e la frequenza di aggiornamento viene fissata al massimo. Le app non vengono mai chiuse forzatamente. App di sistema, launcher, tastiera, telefono, SMS, assistente, servizi di accessibilità e listener delle notifiche non vengono toccati. Tutto viene ripristinato alla disattivazione.</string>
+    <string name="game_mode_info">Quando è attiva, i tuoi giochi scelti rendono al massimo: le altre app vengono messe in pausa in background, la sincronizzazione automatica si disattiva, lo schermo resta acceso e la frequenza di aggiornamento viene fissata al massimo. Le app di sistema non vengono toccate e tutto torna normale alla disattivazione.</string>
     <string name="game_mode_tile_label">Modalità gioco</string>
     <string name="game_mode_tile_subtitle_on">Attiva</string>
     <string name="game_mode_tile_subtitle_off">Disattivata</string>
@@ -1136,6 +1165,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
     <string name="boost_ad_loading">Caricamento annuncio…</string>
     <string name="boost_terminal_empty">Tocca il pulsante qui sotto per avviare l’ottimizzazione.</string>
+    <string name="boost_info">"Avvia ottimizzazione" libera spazio cancellando la cache delle app, aiuta le app ad aprirsi più velocemente e arresta le app in background per liberare memoria. Consigliato ogni 2 giorni.</string>
     <string name="nav_boost">Boost</string>
     <string name="developer_title">Sviluppatore</string>
     <string name="tools_title">Strumenti</string>

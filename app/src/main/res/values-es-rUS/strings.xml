@@ -215,6 +215,7 @@ Duración del Animador: %3$.2f</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Lista de exclusiones</string>
     <string name="close_apps_exclusions_desc">Elige las apps que “Cerrar apps en segundo plano” nunca debe forzar a detenerse</string>
+    <string name="cleaner_info">Borra la caché de las apps para liberar almacenamiento y detiene las apps en segundo plano para liberar memoria; el espacio liberado puede volver a ocuparse cuando se reconstruye la caché. Se recomienda una vez por semana.</string>
     <string name="close_apps_exclusions_count">%1$d app(s) excluidas del cierre</string>
     <string name="compile_all_apps_short">Compilar</string>
     <!-- Rotation recovery -->
@@ -931,6 +932,34 @@ Duración del Animador: %3$.2f</string>
     <string name="per_app_width_notif_title">Ancho por app activo</string>
     <string name="per_app_width_notif_text">La densidad de pantalla cambia automáticamente para las apps que configuraste</string>
     <string name="per_app_width_notif_text_waiting">Esperando Shizuku y Acceso de uso</string>
+    <string name="refresh_rate">Tasa de refresco</string>
+    <string name="refresh_rate_desc">Consulta las tasas de refresco que admite tu pantalla, ajusta el mínimo y el máximo del sistema, y elige una tasa por app.</string>
+    <string name="refresh_rate_disclaimer">El control de la tasa de refresco usa los ajustes del sistema min_refresh_rate y peak_refresh_rate. Algunos dispositivos los ignoran o solo exponen parte de sus modos.</string>
+    <string name="refresh_rate_current_title">Pantalla</string>
+    <string name="refresh_rate_active">Activa ahora: %1$s Hz</string>
+    <string name="refresh_rate_unknown">Este dispositivo no lo informa</string>
+    <string name="refresh_rate_supported">Compatible: %1$s Hz</string>
+    <string name="refresh_rate_system_values">Mín. del sistema: %1$s, máx.: %2$s</string>
+    <string name="refresh_rate_default">Predeterminada</string>
+    <string name="refresh_rate_value">%1$s Hz</string>
+    <string name="refresh_rate_min_title">Tasa de refresco mínima</string>
+    <string name="refresh_rate_min_desc">La tasa más baja a la que puede bajar la pantalla.</string>
+    <string name="refresh_rate_peak_title">Tasa de refresco máxima</string>
+    <string name="refresh_rate_peak_desc">La tasa más alta que puede alcanzar la pantalla.</string>
+    <string name="per_app_refresh_rate">Tasa de refresco por app</string>
+    <string name="per_app_refresh_rate_desc">Elige una tasa de refresco para cada app. Se aplica al abrir la app y se revierte al salir de ella.</string>
+    <string name="per_app_refresh_rate_dialog_desc">Elige una tasa compatible con esta pantalla.</string>
+    <string name="per_app_refresh_rate_needs_usage_access">La tasa de refresco por app necesita Acceso de uso para detectar qué app está en primer plano.</string>
+    <string name="per_app_refresh_rate_status_active">Tasa de refresco por app activa para %1$d app(s)</string>
+    <string name="per_app_refresh_rate_status_paused">Las anulaciones se guardaron, pero el servicio está en pausa hasta que se concedan los permisos</string>
+    <string name="per_app_refresh_rate_none">Tasa del sistema</string>
+    <string name="per_app_refresh_rate_reset">Restablecer</string>
+    <string name="per_app_refresh_rate_clear_all">Borrar todo</string>
+    <string name="per_app_refresh_rate_channel_name">Tasa de refresco por app</string>
+    <string name="per_app_refresh_rate_channel_desc">Se muestra mientras se aplican las anulaciones de tasa de refresco por app</string>
+    <string name="per_app_refresh_rate_notif_title">Tasa de refresco por app activa</string>
+    <string name="per_app_refresh_rate_notif_text">La tasa de refresco cambia automáticamente para las apps que configuraste</string>
+    <string name="per_app_refresh_rate_notif_text_waiting">Esperando Shizuku y Acceso de uso</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Borra la caché de las apps y cierra las apps en segundo plano con un toque.</string>
@@ -1094,7 +1123,7 @@ Duración del Animador: %3$.2f</string>
     <string name="game_mode_turn_off">Desactivar Modo juego</string>
     <string name="game_mode_widget_turn_on">Activar</string>
     <string name="game_mode_widget_turn_off">Desactivar</string>
-    <string name="game_mode_info">Mientras está activo: los juegos elegidos se ejecutan en modo rendimiento, el resto de apps del usuario pasan al grupo de espera restringido y no pueden trabajar en segundo plano, se activa el límite de procesos en segundo plano, se desactiva la sincronización automática, la pantalla permanece encendida y la tasa de refresco se fija al máximo. Las apps nunca se fuerzan a detenerse. No se tocan las apps del sistema, el launcher, el teclado, el teléfono, los SMS, el asistente, los servicios de accesibilidad ni los lectores de notificaciones. Todo se restaura al desactivarlo.</string>
+    <string name="game_mode_info">Mientras está activo, tus juegos elegidos rinden al máximo: las demás apps se pausan en segundo plano, la sincronización automática se desactiva, la pantalla permanece encendida y la tasa de refresco se fija al máximo. No se tocan las apps del sistema y todo vuelve a la normalidad al desactivarlo.</string>
     <string name="game_mode_tile_label">Modo juego</string>
     <string name="game_mode_tile_subtitle_on">Activado</string>
     <string name="game_mode_tile_subtitle_off">Desactivado</string>
@@ -1116,6 +1145,7 @@ Duración del Animador: %3$.2f</string>
     <string name="boost_ad_unavailable">No se pudo cargar el anuncio. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="boost_ad_loading">Cargando anuncio…</string>
     <string name="boost_terminal_empty">Toca el botón de abajo para iniciar la optimización.</string>
+    <string name="boost_info">"Iniciar optimización" libera almacenamiento borrando la caché de las apps, ayuda a que abran más rápido y detiene las apps en segundo plano para liberar memoria. Se recomienda cada 2 días.</string>
     <string name="nav_boost">Impulso</string>
     <string name="developer_title">Desarrollador</string>
     <string name="tools_title">Herramientas</string>

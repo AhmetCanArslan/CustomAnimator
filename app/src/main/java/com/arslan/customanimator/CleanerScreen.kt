@@ -68,6 +68,13 @@ fun CleanerScreenContent(
             }
 
             item {
+                InfoCard(
+                    dismissKey = "cleaner_info",
+                    texts = listOf(stringResource(R.string.cleaner_info))
+                )
+            }
+
+            item {
                 Card(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                     modifier = Modifier.fillMaxWidth(),
