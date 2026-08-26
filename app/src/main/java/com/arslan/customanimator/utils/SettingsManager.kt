@@ -159,12 +159,12 @@ object SettingsManager {
     }
 
     fun markRateDialogRated(context: Context) {
-        val next = System.currentTimeMillis() + 7L * 24 * 60 * 60 * 1000
+        val next = System.currentTimeMillis() + 14L * 24 * 60 * 60 * 1000
         getPrefs(context).edit().putLong(KEY_RATE_DIALOG_NEXT_SHOW, next).apply()
     }
 
     fun markRateDialogLater(context: Context) {
-        val next = System.currentTimeMillis() + 24L * 60 * 60 * 1000
+        val next = System.currentTimeMillis() + 2L * 24 * 60 * 60 * 1000
         getPrefs(context).edit().putLong(KEY_RATE_DIALOG_NEXT_SHOW, next).apply()
     }
     
