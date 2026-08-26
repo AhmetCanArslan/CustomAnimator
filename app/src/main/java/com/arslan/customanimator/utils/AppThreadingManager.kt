@@ -106,9 +106,20 @@ class AppThreadingManager(context: Context) {
     fun isRunning(packageName: String): Boolean = runningPids(packageName).isNotEmpty()
 
     private fun runningPids(packageName: String): List<String> {
-        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("pidof", packageName))
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", "ps -Ao PID,ARGS"))
         if (!result.isSuccess) return emptyList()
-        return result.output.trim().split(Regex("\\s+")).filter { it.toIntOrNull() != null }
+        return result.output.lineSequence()
+            .mapNotNull { line ->
+                val parts = line.trim().split(Regex("\\s+"), limit = 2)
+                if (parts.size < 2) return@mapNotNull null
+                val pid = parts[0].toIntOrNull() ?: return@mapNotNull null
+                val process = parts[1]
+                val matches = process == packageName ||
+                    process.startsWith("$packageName:") ||
+                    process.startsWith("$packageName/")
+                if (matches) pid.toString() else null
+            }
+            .toList()
     }
 
     private companion object {
