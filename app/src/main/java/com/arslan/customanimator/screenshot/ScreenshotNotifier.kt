@@ -7,11 +7,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.arslan.customanimator.R
 
 object ScreenshotNotifier {
+
+    private const val TAG = "ScreenshotNotifier"
 
     const val CHANNEL_WATCHER = "screenshot_actions_watcher"
     const val CHANNEL_ALERT = "screenshot_actions_alert"
@@ -94,8 +97,10 @@ object ScreenshotNotifier {
             builder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(preview))
         }
 
-        runCatching {
+        try {
             NotificationManagerCompat.from(context).notify(notifId, builder.build())
+        } catch (e: SecurityException) {
+            Log.d(TAG, "Notification permission not granted, skipping screenshot notification")
         }
     }
 

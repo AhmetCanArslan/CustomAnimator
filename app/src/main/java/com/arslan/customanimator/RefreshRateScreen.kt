@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
-import com.arslan.customanimator.service.PerAppRefreshRateService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PerAppRefreshRateManager
@@ -57,7 +57,7 @@ fun RefreshRateScreen(
     var isLoading by remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
-    var hasUsageAccess by remember { mutableStateOf(UsageAccessHelper.hasUsageAccess(context)) }
+    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var editingApp by remember { mutableStateOf<InstalledAppInfo?>(null) }
 
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, overrides) {
@@ -86,7 +86,6 @@ fun RefreshRateScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                hasUsageAccess = UsageAccessHelper.hasUsageAccess(context)
                 activeRate = RefreshRateManager.getActiveRate(context)
                 minRate = RefreshRateManager.getMinRate(context.contentResolver)
                 peakRate = RefreshRateManager.getPeakRate(context.contentResolver)
@@ -109,10 +108,8 @@ fun RefreshRateScreen(
             ) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
-            PerAppRefreshRateService.start(context)
-        } else {
-            PerAppRefreshRateService.stop(context)
         }
+        ForegroundAppWatcherService.sync(context)
     }
 
     val applyGlobalRate: (Float?, Boolean) -> Unit = { rate, isPeak ->

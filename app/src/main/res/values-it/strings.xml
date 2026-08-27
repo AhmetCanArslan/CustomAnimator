@@ -40,11 +40,6 @@
     <string name="open_usage_access_settings">Apri impostazioni accesso ai dati di utilizzo</string>
     <string name="auto_force_stop_status_active">Arresto forzato automatico attivo per %1$d app</string>
     <string name="auto_force_stop_status_paused">Selezione salvata, ma il servizio è in pausa finché non concedi le autorizzazioni</string>
-    <string name="auto_force_stop_channel_name">Arresto forzato automatico</string>
-    <string name="auto_force_stop_channel_desc">Visibile mentre le app selezionate vengono arrestate automaticamente all\'uscita</string>
-    <string name="auto_force_stop_notif_title">Arresto forzato automatico attivo</string>
-    <string name="auto_force_stop_notif_text">Le app selezionate verranno arrestate quando le lasci</string>
-    <string name="auto_force_stop_notif_text_combined">Le app selezionate verranno arrestate o vedranno gestite le proprie autorizzazioni quando le lasci</string>
     <string name="auto_permission_disabler">Disattivazione automatica autorizzazioni</string>
     <string name="auto_permission_disabler_desc">Revoca le autorizzazioni delle app selezionate appena escono dal primo piano e ripristinale alla riapertura</string>
     <string name="auto_permission_disabler_needs_usage_access">Questa funzione richiede l\'accesso ai dati di utilizzo per rilevare quando le app lasciano il primo piano.</string>
@@ -567,7 +562,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
     <string name="onboarding_disclaimer_highlight">Lo sviluppatore non si assume alcuna responsabilità per perdite di dati, malfunzionamenti o danni derivanti dall\'uso di questa app. Tutto ciò che modifichi qui lo fai a tuo rischio.</string>
     <string name="onboarding_disclaimer_consent">Ho letto e accetto quanto sopra; lo sviluppatore non si assume alcuna responsabilità.</string>
-    <string name="auto_force_stop_notif_text_waiting">In pausa, in attesa di Shizuku e accesso all\'utilizzo</string>
 
 <string name="permissions_title">Autorizzazioni</string>
     <string name="permissions_summary">%1$d di %2$d concesse</string>
@@ -947,11 +941,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="per_app_width_dialog_desc">Larghezza attuale del dispositivo: %1$d dp</string>
     <string name="per_app_width_range">Intervallo consentito: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Densità applicata: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Larghezza per app</string>
-    <string name="per_app_width_channel_desc">Visibile mentre vengono applicate le larghezze per app</string>
-    <string name="per_app_width_notif_title">Larghezza per app attiva</string>
-    <string name="per_app_width_notif_text">La densità dello schermo cambia automaticamente per le app che hai configurato</string>
-    <string name="per_app_width_notif_text_waiting">In attesa di Shizuku e Accesso ai dati di utilizzo</string>
     <string name="refresh_rate">Frequenza di aggiornamento</string>
     <string name="refresh_rate_desc">Leggi le frequenze di aggiornamento supportate dal display, imposta il minimo e il massimo di sistema e scegli una frequenza per app.</string>
     <string name="refresh_rate_disclaimer">Il controllo della frequenza di aggiornamento usa le impostazioni di sistema min_refresh_rate e peak_refresh_rate. Alcuni dispositivi le ignorano o espongono solo parte delle loro modalità.</string>
@@ -975,11 +964,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="per_app_refresh_rate_none">Frequenza di sistema</string>
     <string name="per_app_refresh_rate_reset">Reimposta</string>
     <string name="per_app_refresh_rate_clear_all">Cancella tutto</string>
-    <string name="per_app_refresh_rate_channel_name">Frequenza di aggiornamento per app</string>
-    <string name="per_app_refresh_rate_channel_desc">Mostrata mentre vengono applicate le sostituzioni della frequenza di aggiornamento per app</string>
-    <string name="per_app_refresh_rate_notif_title">Frequenza di aggiornamento per app attiva</string>
-    <string name="per_app_refresh_rate_notif_text">La frequenza di aggiornamento cambia automaticamente per le app configurate</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">In attesa di Shizuku e Accesso ai dati di utilizzo</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Svuota la cache delle app e chiude le app in background con un tocco.</string>
@@ -1244,7 +1228,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="hwui_restart_systemui_desc">Riavvia l\'interfaccia di sistema perché le modifiche al renderer abbiano effetto anche lì.</string>
     <string name="app_threading">Thread per app</string>
     <string name="app_threading_desc">Assegna le app ai cluster CPU e cambia la loro priorità di scheduling.</string>
-    <string name="app_threading_disclaimer">Le impostazioni si applicano al processo in esecuzione e ai suoi thread. Vanno perse se l\'app viene chiusa, quindi riapplicale dopo un riavvio.</string>
+    <string name="app_threading_disclaimer">Le impostazioni vengono applicate al processo in esecuzione e ai suoi thread. Un monitor in background le riapplica ogni volta che un\'app configurata torna in primo piano.</string>
     <string name="app_threading_cores">Core: %1$d totali, %2$d grandi, %3$d piccoli</string>
     <string name="app_threading_cores_label">Core CPU</string>
     <string name="app_threading_cores_all">Tutti</string>
@@ -1254,9 +1238,14 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="app_threading_priority_high">Alta</string>
     <string name="app_threading_priority_normal">Normale</string>
     <string name="app_threading_priority_low">Bassa</string>
-    <string name="app_threading_reapply">Riapplica alle app attive</string>
-    <string name="app_threading_reapply_desc">Applica ogni configurazione salvata ai processi in esecuzione adesso.</string>
-    <string name="app_threading_apply_with_ad">Guarda annuncio e applica</string>
-    <string name="app_threading_apply_hint">Scegli core o priorità per almeno un\'app qui sotto per abilitarlo.</string>
-    <string name="app_threading_applied">Applicato a %1$d app</string>
+    <string name="app_watcher_channel_name">Monitor app in primo piano</string>
+    <string name="app_watcher_channel_desc">Mostrata mentre le funzioni per app controllano quale app è in primo piano</string>
+    <string name="app_watcher_notif_title">Funzioni per app attive</string>
+    <string name="app_watcher_notif_text">App in primo piano monitorata per %1$d funzione/i</string>
+    <string name="app_watcher_notif_text_waiting">In attesa di Shizuku e Accesso ai dati di utilizzo</string>
+    <string name="app_threading_needs_usage_access">Il threading per app richiede l\'Accesso ai dati di utilizzo per rilevare quando si apre un\'app configurata.</string>
+    <string name="app_threading_status_active">Monitor attivo per %1$d app</string>
+    <string name="app_threading_status_paused">Impostazioni salvate, ma il monitor è in pausa finché non vengono concessi i permessi</string>
+    <string name="app_threading_priority_denied">Questo dispositivo non consente di aumentare la priorità dei thread tramite Shizuku, quindi la priorità Alta non viene applicata.</string>
+    <string name="app_threading_priority_use_normal">Passa a Normale</string>
 </resources>

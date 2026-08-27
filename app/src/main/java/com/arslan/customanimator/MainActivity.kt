@@ -88,7 +88,7 @@ import com.arslan.customanimator.notify.ui.IgnoredNotificationsSection
 import com.arslan.customanimator.notify.ui.LoggingSection
 import com.arslan.customanimator.notify.ui.NotifyHomeSection
 import com.arslan.customanimator.notify.ui.RulesSection
-import com.arslan.customanimator.service.AutoForceStopService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.ui.components.ExpressiveTopNavBar
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
@@ -128,7 +128,7 @@ class MainActivity : ComponentActivity() {
         initBilling(this)
         initAds(this)
 
-        AutoForceStopService.startIfSelectionExists(this)
+        ForegroundAppWatcherService.sync(this)
 
         AppListManager.initialize(this)
         RulesManager(this).hasProximitySensor()

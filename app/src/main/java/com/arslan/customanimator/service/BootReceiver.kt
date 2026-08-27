@@ -14,19 +14,9 @@ class BootReceiver : BroadcastReceiver() {
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
                 Log.d(TAG, "Restoring watcher after ${intent.action}")
                 try {
-                    AutoForceStopService.startIfSelectionExists(context.applicationContext)
+                    ForegroundAppWatcherService.sync(context.applicationContext)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to restore watcher", e)
-                }
-                try {
-                    PerAppWidthService.startIfOverridesExist(context.applicationContext)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to restore per-app width watcher", e)
-                }
-                try {
-                    PerAppRefreshRateService.startIfOverridesExist(context.applicationContext)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Failed to restore per-app refresh rate watcher", e)
+                    Log.e(TAG, "Failed to restore foreground app watcher", e)
                 }
                 try {
                     ScreenshotWatcherService.sync(context.applicationContext)

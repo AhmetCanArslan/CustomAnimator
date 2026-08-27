@@ -78,30 +78,12 @@
         </receiver>
 
         <service
-            android:name=".service.AutoForceStopService"
+            android:name=".service.ForegroundAppWatcherService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Force-stops user-selected apps when they leave the foreground (dev tool)" />
-        </service>
-
-        <service
-            android:name=".service.PerAppWidthService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Switches screen density while user-selected apps are in the foreground (dev tool)" />
-        </service>
-
-        <service
-            android:name=".service.PerAppRefreshRateService"
-            android:exported="false"
-            android:foregroundServiceType="specialUse">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Switches display refresh rate while user-selected apps are in the foreground (dev tool)" />
+                android:value="Applies user-selected per-app tweaks (density, refresh rate, CPU affinity, force-stop, permissions) as apps enter and leave the foreground (dev tool)" />
         </service>
 
         <service

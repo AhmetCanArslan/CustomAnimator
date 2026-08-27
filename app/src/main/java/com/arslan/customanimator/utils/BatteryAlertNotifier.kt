@@ -7,12 +7,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 
 object BatteryAlertNotifier {
+
+    private const val TAG = "BatteryAlertNotifier"
 
     const val CHANNEL_WATCHER = "battery_alert_watcher"
     const val CHANNEL_ALERT = "battery_alert"
@@ -81,7 +84,11 @@ object BatteryAlertNotifier {
             .setCategory(NotificationCompat.CATEGORY_STATUS)
             .setContentIntent(appIntent(context))
             .build()
-        runCatching { NotificationManagerCompat.from(context).notify(id, notification) }
+        try {
+            NotificationManagerCompat.from(context).notify(id, notification)
+        } catch (e: SecurityException) {
+            Log.d(TAG, "Notification permission not granted, skipping battery alert")
+        }
     }
 
     private fun appIntent(context: Context): PendingIntent {

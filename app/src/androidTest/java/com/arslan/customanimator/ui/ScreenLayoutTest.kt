@@ -145,6 +145,7 @@ class ScreenLayoutTest {
             onNavigateToGraphicsApiOverride = {},
             onNavigateToHwuiTweaks = {},
             onNavigateToAppThreading = {},
+            onNavigateToRefreshRate = {},
             onNavigateToScreenshotActions = {},
             onNavigateToSoundTile = {},
             onNavigateToCompileBooster = {},

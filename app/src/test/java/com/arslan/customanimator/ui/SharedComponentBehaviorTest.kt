@@ -136,18 +136,18 @@ class SharedComponentBehaviorTest {
             CustomAnimatorTheme {
                 ActionRow(
                     icon = Icons.Filled.Bolt,
-                    title = context.getString(R.string.app_threading_reapply),
-                    description = context.getString(R.string.app_threading_reapply_desc),
-                    buttonLabel = context.getString(R.string.app_threading_apply_with_ad),
+                    title = context.getString(R.string.app_threading),
+                    description = context.getString(R.string.app_threading_desc),
+                    buttonLabel = context.getString(R.string.apply_settings),
                     enabled = false,
                     onClick = { clicks++ }
                 )
             }
         }
 
-        composeTestRule.onNodeWithText(context.getString(R.string.app_threading_apply_with_ad))
+        composeTestRule.onNodeWithText(context.getString(R.string.apply_settings))
             .assertIsNotEnabled()
-        composeTestRule.onNodeWithText(context.getString(R.string.app_threading_apply_with_ad)).performClick()
+        composeTestRule.onNodeWithText(context.getString(R.string.apply_settings)).performClick()
         composeTestRule.waitForIdle()
         assertEquals(0, clicks)
     }

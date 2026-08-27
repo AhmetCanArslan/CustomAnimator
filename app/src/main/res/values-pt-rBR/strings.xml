@@ -41,11 +41,6 @@
     <string name="open_usage_access_settings">Abrir Configurações de Acesso ao Uso</string>
     <string name="auto_force_stop_status_active">Parada forçada automática ativa para %1$d app(s)</string>
     <string name="auto_force_stop_status_paused">Seleção salva, mas o serviço está pausado até que as permissões sejam concedidas</string>
-    <string name="auto_force_stop_channel_name">Parada Forçada Automática</string>
-    <string name="auto_force_stop_channel_desc">Exibido enquanto os apps selecionados estão sendo parados automaticamente ao sair</string>
-    <string name="auto_force_stop_notif_title">Parada forçada automática ativa</string>
-    <string name="auto_force_stop_notif_text">Os apps selecionados serão parados à força quando você sair deles</string>
-    <string name="auto_force_stop_notif_text_combined">Os apps selecionados terão suas permissões gerenciadas ou serão parados à força quando você sair deles</string>
     <string name="auto_permission_disabler">Desativador Automático de Permissões</string>
     <string name="auto_permission_disabler_desc">Revoga as permissões dos apps selecionados assim que saem do primeiro plano e as restaura ao reabrir</string>
     <string name="auto_permission_disabler_needs_usage_access">Este recurso precisa de Acesso ao Uso para detectar quando os apps saem do primeiro plano.</string>
@@ -547,7 +542,6 @@ Duração do Animador: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Este app altera configurações do sistema. Dependendo do seu aparelho e da sua ROM, isso pode afetar a bateria, as notificações, os alarmes, os apps em segundo plano e a estabilidade.</string>
     <string name="onboarding_disclaimer_highlight">O desenvolvedor não assume nenhuma responsabilidade por perda de dados, mau funcionamento ou danos decorrentes do uso deste app. Tudo o que você alterar aqui é por sua conta e risco.</string>
     <string name="onboarding_disclaimer_consent">Li e aceito o texto acima; o desenvolvedor não assume nenhuma responsabilidade.</string>
-    <string name="auto_force_stop_notif_text_waiting">Pausado, aguardando o Shizuku e o acesso de uso</string>
 
 <string name="permissions_title">Permissões</string>
     <string name="permissions_summary">%1$d de %2$d concedidas</string>
@@ -927,11 +921,6 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_width_dialog_desc">Largura atual do aparelho: %1$d dp</string>
     <string name="per_app_width_range">Faixa permitida: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Densidade aplicada: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Largura por app</string>
-    <string name="per_app_width_channel_desc">Aparece enquanto as larguras por app são aplicadas</string>
-    <string name="per_app_width_notif_title">Largura por app ativa</string>
-    <string name="per_app_width_notif_text">A densidade da tela muda automaticamente para os apps que você configurou</string>
-    <string name="per_app_width_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
     <string name="refresh_rate">Taxa de atualização</string>
     <string name="refresh_rate_desc">Veja as taxas de atualização compatíveis com sua tela, defina o mínimo e o máximo do sistema, e escolha uma taxa por app.</string>
     <string name="refresh_rate_disclaimer">O controle de taxa de atualização usa as configurações do sistema min_refresh_rate e peak_refresh_rate. Alguns dispositivos as ignoram ou expõem apenas parte de seus modos.</string>
@@ -955,11 +944,6 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_refresh_rate_none">Taxa do sistema</string>
     <string name="per_app_refresh_rate_reset">Redefinir</string>
     <string name="per_app_refresh_rate_clear_all">Limpar tudo</string>
-    <string name="per_app_refresh_rate_channel_name">Taxa de atualização por app</string>
-    <string name="per_app_refresh_rate_channel_desc">Exibido enquanto as substituições de taxa de atualização por app são aplicadas</string>
-    <string name="per_app_refresh_rate_notif_title">Taxa de atualização por app ativa</string>
-    <string name="per_app_refresh_rate_notif_text">A taxa de atualização muda automaticamente para os apps configurados</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Limpa o cache dos apps e fecha apps em segundo plano com um toque.</string>
@@ -1224,7 +1208,7 @@ Duração do Animador: %3$.2f</string>
     <string name="hwui_restart_systemui_desc">Reinicie a interface do sistema para que as mudanças de renderizador valham lá também.</string>
     <string name="app_threading">Threads por app</string>
     <string name="app_threading_desc">Fixe apps em clusters de CPU e mude a prioridade de agendamento deles.</string>
-    <string name="app_threading_disclaimer">As configurações valem para o processo em execução e suas threads. Elas se perdem quando o app é encerrado, então reaplique depois de reiniciar.</string>
+    <string name="app_threading_disclaimer">As configurações são aplicadas ao processo em execução e às suas threads. Um monitor em segundo plano as reaplica sempre que um app configurado vai para o primeiro plano.</string>
     <string name="app_threading_cores">Núcleos: %1$d no total, %2$d grandes, %3$d pequenos</string>
     <string name="app_threading_cores_label">Núcleos da CPU</string>
     <string name="app_threading_cores_all">Todos</string>
@@ -1234,9 +1218,14 @@ Duração do Animador: %3$.2f</string>
     <string name="app_threading_priority_high">Alta</string>
     <string name="app_threading_priority_normal">Normal</string>
     <string name="app_threading_priority_low">Baixa</string>
-    <string name="app_threading_reapply">Reaplicar aos apps ativos</string>
-    <string name="app_threading_reapply_desc">Aplica todas as configurações salvas aos processos em execução agora.</string>
-    <string name="app_threading_apply_with_ad">Ver anúncio e aplicar</string>
-    <string name="app_threading_apply_hint">Escolha núcleos ou prioridade em pelo menos um app abaixo para habilitar isto.</string>
-    <string name="app_threading_applied">Aplicado a %1$d apps</string>
+    <string name="app_watcher_channel_name">Monitor de app em primeiro plano</string>
+    <string name="app_watcher_channel_desc">Exibido enquanto os recursos por app monitoram qual app está em primeiro plano</string>
+    <string name="app_watcher_notif_title">Recursos por app ativos</string>
+    <string name="app_watcher_notif_text">Monitorando o app em primeiro plano para %1$d recurso(s)</string>
+    <string name="app_watcher_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
+    <string name="app_threading_needs_usage_access">O threading por app precisa de Acesso de uso para detectar quando um app configurado é aberto.</string>
+    <string name="app_threading_status_active">Monitor ativo para %1$d app(s)</string>
+    <string name="app_threading_status_paused">As configurações foram salvas, mas o monitor está pausado até que as permissões sejam concedidas</string>
+    <string name="app_threading_priority_denied">Este dispositivo não permite aumentar a prioridade de threads pelo Shizuku, então a prioridade Alta não é aplicada.</string>
+    <string name="app_threading_priority_use_normal">Mudar para Normal</string>
 </resources>

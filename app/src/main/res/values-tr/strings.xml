@@ -41,11 +41,6 @@
     <string name="open_usage_access_settings">Kullanım Erişimi Ayarlarını Aç</string>
     <string name="auto_force_stop_status_active">Otomatik zorla durdurma %1$d uygulama için etkin</string>
     <string name="auto_force_stop_status_paused">Seçim kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
-    <string name="auto_force_stop_channel_name">Otomatik Zorla Durdurma</string>
-    <string name="auto_force_stop_channel_desc">Seçilen uygulamalar çıkışta otomatik olarak zorla durdurulurken gösterilir</string>
-    <string name="auto_force_stop_notif_title">Otomatik zorla durdurma etkin</string>
-    <string name="auto_force_stop_notif_text">Seçilen uygulamalar, onlardan çıktığınızda zorla durdurulacak</string>
-    <string name="auto_force_stop_notif_text_combined">Seçilen uygulamalar, onlardan çıktığınızda zorla durdurulacak veya izinleri yönetilecek</string>
     <string name="auto_permission_disabler">Otomatik İzin Devre Dışı Bırakıcı</string>
     <string name="auto_permission_disabler_desc">Seçilen uygulamaların izinlerini ön plandan çıktığı anda geri alır, tekrar açıldığında geri yükler</string>
     <string name="auto_permission_disabler_needs_usage_access">Bu özellik, uygulamaların ne zaman ön plandan çıktığını algılamak için Kullanım Erişimi gerektirir.</string>
@@ -547,7 +542,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Bu uygulama sistem düzeyinde ayarları değiştirir. Cihazınıza ve ROM\'unuza bağlı olarak bu; pil ömrünü, bildirimleri, alarmları, arka plan uygulamalarını ve kararlılığı etkileyebilir.</string>
     <string name="onboarding_disclaimer_highlight">Geliştirici, bu uygulamanın kullanımından doğabilecek veri kaybı, arıza veya zarardan hiçbir sorumluluk kabul etmez. Burada yaptığınız tüm değişiklikler kendi sorumluluğunuzdadır.</string>
     <string name="onboarding_disclaimer_consent">Yukarıdakileri okudum ve kabul ediyorum; geliştirici hiçbir sorumluluk kabul etmez.</string>
-    <string name="auto_force_stop_notif_text_waiting">Duraklatıldı, Shizuku ve kullanım erişimi bekleniyor</string>
 
 <string name="permissions_title">İzinler</string>
     <string name="permissions_summary">%2$d izinden %1$d tanesi verildi</string>
@@ -935,11 +929,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_width_dialog_desc">Cihazın mevcut genişliği: %1$d dp</string>
     <string name="per_app_width_range">İzin verilen aralık: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Uygulanan yoğunluk: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Uygulama Başına Genişlik</string>
-    <string name="per_app_width_channel_desc">Uygulama başına genişlik ayarları uygulanırken görünür</string>
-    <string name="per_app_width_notif_title">Uygulama Başına Genişlik etkin</string>
-    <string name="per_app_width_notif_text">Ayarladığınız uygulamalar için ekran yoğunluğu otomatik değişir</string>
-    <string name="per_app_width_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
     <string name="refresh_rate">Yenileme Hızı</string>
     <string name="refresh_rate_desc">Ekranının desteklediği yenileme hızlarını gör, sistem minimumunu ve tepe değerini ayarla, uygulama başına hız seç.</string>
     <string name="refresh_rate_disclaimer">Yenileme hızı kontrolü, sistemin min_refresh_rate ve peak_refresh_rate ayarlarını kullanır. Bazı cihazlar bunları yok sayar veya modlarının yalnızca bir kısmını sunar.</string>
@@ -963,11 +952,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_refresh_rate_none">Sistem hızı</string>
     <string name="per_app_refresh_rate_reset">Sıfırla</string>
     <string name="per_app_refresh_rate_clear_all">Tümünü temizle</string>
-    <string name="per_app_refresh_rate_channel_name">Uygulama Bazlı Yenileme Hızı</string>
-    <string name="per_app_refresh_rate_channel_desc">Uygulama bazlı yenileme hızı geçersiz kılmaları uygulanırken gösterilir</string>
-    <string name="per_app_refresh_rate_notif_title">Uygulama Bazlı Yenileme Hızı aktif</string>
-    <string name="per_app_refresh_rate_notif_text">Yapılandırdığın uygulamalar için yenileme hızı otomatik değişir</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
     <string name="disable_rotation_suggestions">Döndürme önerilerini kapat</string>
     <string name="disable_rotation_suggestions_desc">Cihaz döndüğünde çıkan döndürme düğmesini gizler (show_rotation_suggestions)</string>
     <string name="boost_widget_label">Boost</string>
@@ -1232,7 +1216,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="hwui_restart_systemui_desc">Çizici değişikliklerinin orada da geçerli olması için sistem arayüzünü yeniden başlatın.</string>
     <string name="app_threading">Uygulama bazlı iş parçacığı</string>
     <string name="app_threading_desc">Uygulamaları CPU kümelerine sabitleyin ve öncelik düzeylerini değiştirin.</string>
-    <string name="app_threading_disclaimer">Ayarlar çalışan sürece ve iş parçacıklarına uygulanır. Uygulama kapatılınca kaybolur, bu yüzden yeniden başlattıktan sonra tekrar uygulayın.</string>
+    <string name="app_threading_disclaimer">Ayarlar çalışan işleme ve iş parçacıklarına uygulanır. Arka plandaki bir izleyici, ayarlanan uygulama her öne geldiğinde bunları yeniden uygular.</string>
     <string name="app_threading_cores">Çekirdekler: %1$d toplam, %2$d büyük, %3$d küçük</string>
     <string name="app_threading_cores_label">CPU çekirdekleri</string>
     <string name="app_threading_cores_all">Tümü</string>
@@ -1242,9 +1226,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="app_threading_priority_high">Yüksek</string>
     <string name="app_threading_priority_normal">Normal</string>
     <string name="app_threading_priority_low">Düşük</string>
-    <string name="app_threading_reapply">Çalışan uygulamalara uygula</string>
-    <string name="app_threading_reapply_desc">Kayıtlı tüm yapılandırmaları şu anda çalışan süreçlere uygular.</string>
-    <string name="app_threading_apply_with_ad">Reklam izle ve uygula</string>
-    <string name="app_threading_apply_hint">Bunu etkinleştirmek için aşağıda en az bir uygulamada çekirdek veya öncelik seçin.</string>
-    <string name="app_threading_applied">%1$d uygulamaya uygulandı</string>
+    <string name="app_watcher_channel_name">Ön plan uygulama izleyici</string>
+    <string name="app_watcher_channel_desc">Uygulama bazlı özellikler hangi uygulamanın önde olduğunu izlerken gösterilir</string>
+    <string name="app_watcher_notif_title">Uygulama bazlı özellikler etkin</string>
+    <string name="app_watcher_notif_text">%1$d özellik için ön plandaki uygulama izleniyor</string>
+    <string name="app_watcher_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
+    <string name="app_threading_needs_usage_access">Uygulama bazlı iş parçacığı ayarı, ayarlanan bir uygulamanın açıldığını algılamak için Kullanım Erişimi gerektirir.</string>
+    <string name="app_threading_status_active">İzleyici %1$d uygulama için etkin</string>
+    <string name="app_threading_status_paused">Ayarlar kaydedildi, ancak izinler verilene kadar izleyici duraklatıldı</string>
+    <string name="app_threading_priority_denied">Bu cihaz Shizuku üzerinden iş parçacığı önceliğinin yükseltilmesine izin vermiyor, bu yüzden Yüksek öncelik uygulanmıyor.</string>
+    <string name="app_threading_priority_use_normal">Normal\'e geç</string>
 </resources>

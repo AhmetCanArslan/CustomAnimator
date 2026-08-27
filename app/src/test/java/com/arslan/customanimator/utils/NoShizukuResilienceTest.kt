@@ -77,7 +77,8 @@ class NoShizukuResilienceTest {
         val manager = AppThreadingManager(context)
         manager.clearAll()
         manager.setConfig("com.example.game", AppThreadingConfig(ThreadAffinityMode.BIG, ThreadPriority.HIGH))
-        assertEquals(0, manager.applyAll())
+        val config = manager.getConfig("com.example.game")
+        assertFalse(manager.apply("com.example.game", config).isSuccess)
         assertEquals(1, manager.getConfigs().size)
     }
 }

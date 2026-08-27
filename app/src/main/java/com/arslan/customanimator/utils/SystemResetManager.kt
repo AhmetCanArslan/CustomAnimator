@@ -2,8 +2,8 @@ package com.arslan.customanimator.utils
 
 import android.content.ContentResolver
 import android.content.Context
-import com.arslan.customanimator.service.AutoForceStopService
 import com.arslan.customanimator.service.CompileBoosterService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 
 object SystemResetManager {
 
@@ -20,7 +20,7 @@ object SystemResetManager {
     }
 
     fun revertEverything(context: Context, contentResolver: ContentResolver): ResetResult {
-        AutoForceStopService.stop(context)
+        ForegroundAppWatcherService.stop(context)
         CompileBoosterService.stop(context)
 
         val scales = SettingsManager.applyAllScales(context, contentResolver, 1.0f, 1.0f, 1.0f)

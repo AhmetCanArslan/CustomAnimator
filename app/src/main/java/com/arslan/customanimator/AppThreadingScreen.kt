@@ -1,6 +1,10 @@
 package com.arslan.customanimator
 
-import android.widget.Toast
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -8,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.AppThreadingConfig
 import com.arslan.customanimator.utils.AppThreadingManager
@@ -25,6 +29,7 @@ import com.arslan.customanimator.utils.CpuTopology
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ThreadAffinityMode
 import com.arslan.customanimator.utils.ThreadPriority
+import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,7 +52,25 @@ fun AppThreadingScreen(
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
     var coreSummary by remember { mutableStateOf<Triple<Int, Int, Int>?>(null) }
-    val isAdFree by rememberIsAdFree()
+    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
+    var priorityDenied by remember { mutableStateOf(false) }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+
+    val syncServiceState: (Boolean) -> Unit = { hasConfigs ->
+        if (hasConfigs) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                androidx.core.content.ContextCompat.checkSelfPermission(
+                    context, Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+        ForegroundAppWatcherService.sync(context)
+    }
 
     LaunchedEffect(hasShizukuPermission) {
         apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
@@ -72,19 +95,14 @@ fun AppThreadingScreen(
 
     val updateConfig: (String, AppThreadingConfig) -> Unit = { packageName, config ->
         configs = if (config.isDefault) configs - packageName else configs + (packageName to config)
+        val hasConfigs = configs.isNotEmpty()
         coroutineScope.launch {
-            withContext(Dispatchers.IO) { manager.setConfig(packageName, config) }
-        }
-    }
-
-    val applyAll: () -> Unit = {
-        coroutineScope.launch {
-            val applied = withContext(Dispatchers.IO) { manager.applyAll() }
-            Toast.makeText(
-                context,
-                context.getString(R.string.app_threading_applied, applied),
-                Toast.LENGTH_SHORT
-            ).show()
+            val result = withContext(Dispatchers.IO) {
+                manager.setConfig(packageName, config)
+                if (config.isDefault) null else manager.apply(packageName, config)
+            }
+            if (result?.priorityDenied == true) priorityDenied = true
+            syncServiceState(hasConfigs)
         }
     }
 
@@ -135,6 +153,30 @@ fun AppThreadingScreen(
                 }
             }
 
+            if (!hasUsageAccess) {
+                item {
+                    WarningCard(
+                        message = stringResource(R.string.app_threading_needs_usage_access),
+                        actionLabel = stringResource(R.string.open_usage_access_settings),
+                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
+                    )
+                }
+            }
+
+            if (configs.isNotEmpty()) {
+                item {
+                    Text(
+                        text = if (hasShizukuPermission && hasUsageAccess) {
+                            stringResource(R.string.app_threading_status_active, configs.size)
+                        } else {
+                            stringResource(R.string.app_threading_status_paused)
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+
             coreSummary?.let { (total, big, little) ->
                 item {
                     Text(
@@ -145,28 +187,19 @@ fun AppThreadingScreen(
                 }
             }
 
-            item {
-                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                ActionRow(
-                    icon = Icons.Filled.Info,
-                    title = stringResource(R.string.app_threading_reapply),
-                    description = stringResource(R.string.app_threading_reapply_desc),
-                    buttonLabel = stringResource(
-                        if (isAdFree) R.string.apply_settings else R.string.app_threading_apply_with_ad
-                    ),
-                    enabled = hasShizukuPermission && configs.isNotEmpty(),
-                    onClick = {
-                        if (isAdFree) applyAll() else requestReward(context) { applyAll() }
-                    }
-                )
-                if (hasShizukuPermission && configs.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.app_threading_apply_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+            if (priorityDenied) {
+                item {
+                    WarningCard(
+                        message = stringResource(R.string.app_threading_priority_denied),
+                        actionLabel = stringResource(R.string.app_threading_priority_use_normal),
+                        onAction = {
+                            configs.filterValues { it.priority == ThreadPriority.HIGH }
+                                .forEach { (packageName, config) ->
+                                    updateConfig(packageName, config.copy(priority = ThreadPriority.NORMAL))
+                                }
+                            priorityDenied = false
+                        }
                     )
-                }
                 }
             }
 

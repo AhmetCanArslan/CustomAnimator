@@ -41,11 +41,6 @@
     <string name="open_usage_access_settings">Открыть настройки доступа к использованию</string>
     <string name="auto_force_stop_status_active">Автоостановка активна для %1$d прил.</string>
     <string name="auto_force_stop_status_paused">Выбор сохранён, но служба приостановлена до предоставления разрешений</string>
-    <string name="auto_force_stop_channel_name">Автоостановка приложений</string>
-    <string name="auto_force_stop_channel_desc">Отображается, пока выбранные приложения принудительно останавливаются при выходе</string>
-    <string name="auto_force_stop_notif_title">Автоостановка активна</string>
-    <string name="auto_force_stop_notif_text">Выбранные приложения будут принудительно остановлены при выходе из них</string>
-    <string name="auto_force_stop_notif_text_combined">У выбранных приложений при выходе будут остановлены процессы или изменены разрешения</string>
     <string name="auto_permission_disabler">Автоотключение разрешений</string>
     <string name="auto_permission_disabler_desc">Отзывает разрешения выбранных приложений сразу после выхода из переднего плана и восстанавливает их при повторном открытии</string>
     <string name="auto_permission_disabler_needs_usage_access">Для этой функции нужен доступ к статистике использования, чтобы определять выход приложений из переднего плана.</string>
@@ -547,7 +542,6 @@
     <string name="onboarding_disclaimer_body">Приложение изменяет системные настройки. В зависимости от устройства и прошивки это может повлиять на время работы батареи, уведомления, будильники, фоновые приложения и стабильность.</string>
     <string name="onboarding_disclaimer_highlight">Разработчик не несёт никакой ответственности за потерю данных, сбои или ущерб, которые могут возникнуть при использовании этого приложения. Все изменения вы вносите на свой страх и риск.</string>
     <string name="onboarding_disclaimer_consent">Я прочитал(а) и принимаю изложенное выше; разработчик не несёт ответственности.</string>
-    <string name="auto_force_stop_notif_text_waiting">Приостановлено, ожидание Shizuku и доступа к статистике</string>
 
 <string name="permissions_title">Разрешения</string>
     <string name="permissions_summary">Предоставлено %1$d из %2$d</string>
@@ -929,11 +923,6 @@
     <string name="per_app_width_dialog_desc">Текущая ширина устройства: %1$d dp</string>
     <string name="per_app_width_range">Допустимый диапазон: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Применяемая плотность: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Ширина для приложений</string>
-    <string name="per_app_width_channel_desc">Показывается, пока применяются значения ширины для приложений</string>
-    <string name="per_app_width_notif_title">Ширина для приложений активна</string>
-    <string name="per_app_width_notif_text">Плотность экрана переключается автоматически для настроенных приложений</string>
-    <string name="per_app_width_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
     <string name="refresh_rate">Частота обновления</string>
     <string name="refresh_rate_desc">Узнайте, какие частоты обновления поддерживает ваш экран, задайте системный минимум и максимум и выберите частоту для каждого приложения.</string>
     <string name="refresh_rate_disclaimer">Управление частотой обновления использует системные настройки min_refresh_rate и peak_refresh_rate. Некоторые устройства игнорируют их или предоставляют лишь часть режимов.</string>
@@ -957,11 +946,6 @@
     <string name="per_app_refresh_rate_none">Системная частота</string>
     <string name="per_app_refresh_rate_reset">Сбросить</string>
     <string name="per_app_refresh_rate_clear_all">Очистить всё</string>
-    <string name="per_app_refresh_rate_channel_name">Частота обновления для приложений</string>
-    <string name="per_app_refresh_rate_channel_desc">Отображается при применении переопределений частоты обновления по приложениям</string>
-    <string name="per_app_refresh_rate_notif_title">Частота обновления для приложений активна</string>
-    <string name="per_app_refresh_rate_notif_text">Частота обновления автоматически меняется для настроенных вами приложений</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Очищает кэш приложений и закрывает фоновые приложения одним нажатием.</string>
@@ -1226,7 +1210,7 @@
     <string name="hwui_restart_systemui_desc">Перезапустите системный интерфейс, чтобы изменения отрисовщика применились и там.</string>
     <string name="app_threading">Потоки по приложениям</string>
     <string name="app_threading_desc">Закрепляйте приложения за кластерами CPU и меняйте их приоритет планирования.</string>
-    <string name="app_threading_disclaimer">Настройки применяются к запущенному процессу и его потокам. Они теряются при завершении приложения, поэтому применяйте их заново после перезапуска.</string>
+    <string name="app_threading_disclaimer">Настройки применяются к запущенному процессу и его потокам. Фоновый наблюдатель применяет их заново каждый раз, когда настроенное приложение выходит на передний план.</string>
     <string name="app_threading_cores">Ядра: всего %1$d, больших %2$d, малых %3$d</string>
     <string name="app_threading_cores_label">Ядра CPU</string>
     <string name="app_threading_cores_all">Все</string>
@@ -1236,9 +1220,14 @@
     <string name="app_threading_priority_high">Высокий</string>
     <string name="app_threading_priority_normal">Обычный</string>
     <string name="app_threading_priority_low">Низкий</string>
-    <string name="app_threading_reapply">Применить к запущенным приложениям</string>
-    <string name="app_threading_reapply_desc">Применяет все сохранённые настройки к процессам, работающим прямо сейчас.</string>
-    <string name="app_threading_apply_with_ad">Реклама и применение</string>
-    <string name="app_threading_apply_hint">Выберите ядра или приоритет хотя бы для одного приложения ниже, чтобы включить это.</string>
-    <string name="app_threading_applied">Применено к %1$d приложениям</string>
+    <string name="app_watcher_channel_name">Наблюдатель активного приложения</string>
+    <string name="app_watcher_channel_desc">Отображается, пока функции для отдельных приложений отслеживают активное приложение</string>
+    <string name="app_watcher_notif_title">Функции для приложений активны</string>
+    <string name="app_watcher_notif_text">Отслеживание активного приложения для %1$d функц.</string>
+    <string name="app_watcher_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
+    <string name="app_threading_needs_usage_access">Для потоков по приложениям нужен доступ к статистике использования, чтобы определять запуск настроенного приложения.</string>
+    <string name="app_threading_status_active">Наблюдатель активен для %1$d прил.</string>
+    <string name="app_threading_status_paused">Настройки сохранены, но наблюдатель приостановлен до предоставления разрешений</string>
+    <string name="app_threading_priority_denied">Это устройство не позволяет повышать приоритет потоков через Shizuku, поэтому высокий приоритет не применяется.</string>
+    <string name="app_threading_priority_use_normal">Переключить на обычный</string>
 </resources>

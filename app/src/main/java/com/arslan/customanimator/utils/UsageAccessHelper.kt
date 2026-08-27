@@ -29,6 +29,13 @@ object UsageAccessHelper {
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
+    fun grantUsageAccess(context: Context): Boolean {
+        if (!ShizukuHelper.hasShizukuPermission()) return false
+        return ShizukuHelper.executeShellCommand(
+            arrayOf("appops", "set", context.packageName, "android:get_usage_stats", "allow")
+        )
+    }
+
     fun openUsageAccessSettings(context: Context) {
         try {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS).apply {

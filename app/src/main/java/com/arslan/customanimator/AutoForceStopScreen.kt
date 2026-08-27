@@ -28,16 +28,12 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.InstalledAppInfo
-import com.arslan.customanimator.service.AutoForceStopService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.utils.AutoForceStopManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
-import com.arslan.customanimator.utils.PermissionDisablerManager
-import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -53,12 +49,11 @@ fun AutoForceStopScreen(
     val context = LocalContext.current
     val openSetup = LocalOpenSetupGuide.current
     val manager = remember { AutoForceStopManager(context) }
-    val otherManager = remember { PermissionDisablerManager(context) }
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedPackages by remember { mutableStateOf(manager.getSelectedPackages()) }
     var isLoading by remember { mutableStateOf(true) }
-    var hasUsageAccess by remember { mutableStateOf(UsageAccessHelper.hasUsageAccess(context)) }
+    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, selectedPackages) {
@@ -82,7 +77,6 @@ fun AutoForceStopScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                hasUsageAccess = UsageAccessHelper.hasUsageAccess(context)
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -104,10 +98,8 @@ fun AutoForceStopScreen(
             ) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
-            AutoForceStopService.start(context)
-        } else if (otherManager.getSelectedPackages().isEmpty()) {
-            AutoForceStopService.stop(context)
         }
+        ForegroundAppWatcherService.sync(context)
     }
 
     Scaffold(

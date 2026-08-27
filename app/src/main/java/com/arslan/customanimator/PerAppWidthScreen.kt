@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -27,7 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
-import com.arslan.customanimator.service.PerAppWidthService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PerAppWidthManager
@@ -52,7 +51,7 @@ fun PerAppWidthScreen(
     var isLoading by remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
-    var hasUsageAccess by remember { mutableStateOf(UsageAccessHelper.hasUsageAccess(context)) }
+    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var editingApp by remember { mutableStateOf<InstalledAppInfo?>(null) }
 
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, overrides) {
@@ -76,7 +75,6 @@ fun PerAppWidthScreen(
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                hasUsageAccess = UsageAccessHelper.hasUsageAccess(context)
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -96,10 +94,8 @@ fun PerAppWidthScreen(
             ) {
                 notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
-            PerAppWidthService.start(context)
-        } else {
-            PerAppWidthService.stop(context)
         }
+        ForegroundAppWatcherService.sync(context)
     }
 
     editingApp?.let { app ->

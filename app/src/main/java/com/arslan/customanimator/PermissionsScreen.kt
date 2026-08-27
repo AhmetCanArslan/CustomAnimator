@@ -47,8 +47,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -286,7 +284,18 @@ fun PermissionsScreen(
                 }
             }
 
-            AppPermission.USAGE_ACCESS -> UsageAccessHelper.openUsageAccessSettings(context)
+            AppPermission.USAGE_ACCESS -> {
+                if (UsageAccessHelper.grantUsageAccess(context)) {
+                    refreshKey++
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.action_succeeded),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    UsageAccessHelper.openUsageAccessSettings(context)
+                }
+            }
 
             AppPermission.NOTIFICATION_ACCESS ->
                 settingsLauncher.launch(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))

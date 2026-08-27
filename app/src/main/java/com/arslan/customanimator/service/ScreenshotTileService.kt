@@ -43,7 +43,7 @@ class ScreenshotTileService : TileService() {
                 )
             )
         } else {
-            @Suppress("DEPRECATION")
+            @Suppress("DEPRECATION", "StartActivityAndCollapseDeprecated")
             startActivityAndCollapse(intent)
         }
     }

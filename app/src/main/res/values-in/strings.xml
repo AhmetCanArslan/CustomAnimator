@@ -41,11 +41,6 @@
     <string name="open_usage_access_settings">Buka Pengaturan Akses Penggunaan</string>
     <string name="auto_force_stop_status_active">Hentikan paksa otomatis aktif untuk %1$d aplikasi</string>
     <string name="auto_force_stop_status_paused">Pilihan disimpan, tetapi layanan dijeda hingga izin diberikan</string>
-    <string name="auto_force_stop_channel_name">Hentikan Paksa Otomatis</string>
-    <string name="auto_force_stop_channel_desc">Ditampilkan saat aplikasi terpilih dihentikan paksa secara otomatis ketika keluar</string>
-    <string name="auto_force_stop_notif_title">Hentikan paksa otomatis aktif</string>
-    <string name="auto_force_stop_notif_text">Aplikasi terpilih akan dihentikan paksa saat Anda keluar dari aplikasi tersebut</string>
-    <string name="auto_force_stop_notif_text_combined">Aplikasi terpilih akan dihentikan paksa atau izinnya akan dikelola saat Anda keluar dari aplikasi tersebut</string>
     <string name="auto_permission_disabler">Nonaktifkan Izin Otomatis</string>
     <string name="auto_permission_disabler_desc">Cabut izin aplikasi terpilih segera setelah keluar dari latar depan, dan kembalikan saat dibuka lagi</string>
     <string name="auto_permission_disabler_needs_usage_access">Fitur ini memerlukan Akses Penggunaan untuk mendeteksi kapan aplikasi keluar dari latar depan.</string>
@@ -547,7 +542,6 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Aplikasi ini mengubah pengaturan tingkat sistem. Tergantung perangkat dan ROM Anda, hal itu dapat memengaruhi daya tahan baterai, notifikasi, alarm, aplikasi latar belakang, dan stabilitas.</string>
     <string name="onboarding_disclaimer_highlight">Pengembang tidak bertanggung jawab atas kehilangan data, kerusakan, atau gangguan apa pun yang mungkin timbul dari penggunaan aplikasi ini. Semua perubahan yang Anda lakukan di sini menjadi risiko Anda sendiri.</string>
     <string name="onboarding_disclaimer_consent">Saya telah membaca dan menerima hal di atas; pengembang tidak bertanggung jawab.</string>
-    <string name="auto_force_stop_notif_text_waiting">Dijeda, menunggu Shizuku dan akses penggunaan</string>
 
 <string name="permissions_title">Izin</string>
     <string name="permissions_summary">%1$d dari %2$d diberikan</string>
@@ -927,11 +921,6 @@ Durasi Animator: %3$.2f</string>
     <string name="per_app_width_dialog_desc">Lebar perangkat saat ini: %1$d dp</string>
     <string name="per_app_width_range">Rentang yang diizinkan: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Kepadatan yang diterapkan: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Lebar per Aplikasi</string>
-    <string name="per_app_width_channel_desc">Muncul selama lebar per aplikasi diterapkan</string>
-    <string name="per_app_width_notif_title">Lebar per Aplikasi aktif</string>
-    <string name="per_app_width_notif_text">Kepadatan layar berganti otomatis untuk aplikasi yang kamu atur</string>
-    <string name="per_app_width_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
     <string name="refresh_rate">Refresh Rate</string>
     <string name="refresh_rate_desc">Lihat refresh rate yang didukung layar Anda, atur minimum dan puncak sistem, dan pilih rate per aplikasi.</string>
     <string name="refresh_rate_disclaimer">Kontrol refresh rate menggunakan pengaturan sistem min_refresh_rate dan peak_refresh_rate. Sebagian perangkat mengabaikannya atau hanya menampilkan sebagian modenya.</string>
@@ -955,11 +944,6 @@ Durasi Animator: %3$.2f</string>
     <string name="per_app_refresh_rate_none">Rate sistem</string>
     <string name="per_app_refresh_rate_reset">Reset</string>
     <string name="per_app_refresh_rate_clear_all">Hapus semua</string>
-    <string name="per_app_refresh_rate_channel_name">Refresh Rate per Aplikasi</string>
-    <string name="per_app_refresh_rate_channel_desc">Muncul saat override refresh rate per aplikasi sedang diterapkan</string>
-    <string name="per_app_refresh_rate_notif_title">Refresh Rate per Aplikasi aktif</string>
-    <string name="per_app_refresh_rate_notif_text">Refresh rate berganti otomatis untuk aplikasi yang Anda konfigurasi</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Bersihkan cache aplikasi dan tutup aplikasi latar belakang dengan sekali ketuk.</string>
@@ -1224,7 +1208,7 @@ Durasi Animator: %3$.2f</string>
     <string name="hwui_restart_systemui_desc">Mulai ulang antarmuka sistem agar perubahan perender berlaku di sana juga.</string>
     <string name="app_threading">Threading per aplikasi</string>
     <string name="app_threading_desc">Sematkan aplikasi ke klaster CPU dan ubah prioritas penjadwalannya.</string>
-    <string name="app_threading_disclaimer">Pengaturan diterapkan ke proses yang berjalan dan thread-nya. Pengaturan hilang saat aplikasi ditutup, jadi terapkan lagi setelah dimulai ulang.</string>
+    <string name="app_threading_disclaimer">Pengaturan diterapkan ke proses yang berjalan dan thread-nya. Pemantau latar belakang menerapkannya lagi setiap kali aplikasi yang diatur muncul di depan.</string>
     <string name="app_threading_cores">Inti: %1$d total, %2$d besar, %3$d kecil</string>
     <string name="app_threading_cores_label">Inti CPU</string>
     <string name="app_threading_cores_all">Semua</string>
@@ -1234,9 +1218,14 @@ Durasi Animator: %3$.2f</string>
     <string name="app_threading_priority_high">Tinggi</string>
     <string name="app_threading_priority_normal">Normal</string>
     <string name="app_threading_priority_low">Rendah</string>
-    <string name="app_threading_reapply">Terapkan ulang ke aplikasi aktif</string>
-    <string name="app_threading_reapply_desc">Menerapkan semua konfigurasi tersimpan ke proses yang berjalan sekarang.</string>
-    <string name="app_threading_apply_with_ad">Tonton iklan &amp; terapkan</string>
-    <string name="app_threading_apply_hint">Pilih inti atau prioritas untuk setidaknya satu aplikasi di bawah agar ini aktif.</string>
-    <string name="app_threading_applied">Diterapkan ke %1$d aplikasi</string>
+    <string name="app_watcher_channel_name">Pemantau aplikasi depan</string>
+    <string name="app_watcher_channel_desc">Muncul saat fitur per aplikasi memantau aplikasi yang sedang di depan</string>
+    <string name="app_watcher_notif_title">Fitur per aplikasi aktif</string>
+    <string name="app_watcher_notif_text">Memantau aplikasi depan untuk %1$d fitur</string>
+    <string name="app_watcher_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
+    <string name="app_threading_needs_usage_access">Threading per aplikasi butuh Akses Penggunaan untuk mendeteksi saat aplikasi yang diatur dibuka.</string>
+    <string name="app_threading_status_active">Pemantau aktif untuk %1$d aplikasi</string>
+    <string name="app_threading_status_paused">Pengaturan tersimpan, tapi pemantau dijeda hingga izin diberikan</string>
+    <string name="app_threading_priority_denied">Perangkat ini tidak mengizinkan menaikkan prioritas thread lewat Shizuku, jadi prioritas Tinggi tidak diterapkan.</string>
+    <string name="app_threading_priority_use_normal">Ubah ke Normal</string>
 </resources>

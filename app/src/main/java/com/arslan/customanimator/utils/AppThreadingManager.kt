@@ -33,6 +33,15 @@ data class AppThreadingConfig(
         get() = affinity == ThreadAffinityMode.ALL && priority == ThreadPriority.NORMAL
 }
 
+data class ThreadingApplyResult(
+    val affinityApplied: Boolean = false,
+    val priorityApplied: Boolean = false,
+    val priorityDenied: Boolean = false
+) {
+    val isSuccess: Boolean
+        get() = affinityApplied || priorityApplied
+}
+
 class AppThreadingManager(context: Context) {
 
     private val appContext = context.applicationContext
@@ -84,28 +93,32 @@ class AppThreadingManager(context: Context) {
         sharedPreferences.edit().putString(KEY_CONFIGS, json.toString()).apply()
     }
 
-    fun applyAll(): Int = getConfigs().count { (packageName, config) -> apply(packageName, config) }
+    fun apply(packageName: String, config: AppThreadingConfig): ThreadingApplyResult =
+        apply(config, runningPids(packageName))
 
-    fun apply(packageName: String, config: AppThreadingConfig): Boolean {
-        val pids = runningPids(packageName)
-        if (pids.isEmpty()) return false
+    fun apply(config: AppThreadingConfig, pids: List<String>): ThreadingApplyResult {
+        if (pids.isEmpty()) return ThreadingApplyResult()
         val mask = CpuTopology.affinityMask(config.affinity)
-        var applied = false
+        var affinityApplied = false
+        var priorityApplied = false
+        var priorityDenied = false
         pids.forEach { pid ->
-            val affinity = ShizukuHelper.executeShellCommand(
-                arrayOf("taskset", "-ap", mask, pid)
-            )
-            val priority = ShizukuHelper.executeShellCommand(
+            if (ShizukuHelper.executeShellCommand(arrayOf("taskset", "-ap", mask, pid))) {
+                affinityApplied = true
+            }
+            val priority = ShizukuHelper.executeShellCommandWithOutput(
                 arrayOf("renice", "-n", config.priority.nice.toString(), "-p", pid)
             )
-            if (affinity || priority) applied = true
+            if (priority.isSuccess) {
+                priorityApplied = true
+            } else if (config.priority.nice < 0) {
+                priorityDenied = true
+            }
         }
-        return applied
+        return ThreadingApplyResult(affinityApplied, priorityApplied, priorityDenied)
     }
 
-    fun isRunning(packageName: String): Boolean = runningPids(packageName).isNotEmpty()
-
-    private fun runningPids(packageName: String): List<String> {
+    fun runningPids(packageName: String): List<String> {
         val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", "ps -Ao PID,ARGS"))
         if (!result.isSuccess) return emptyList()
         return result.output.lineSequence()
@@ -132,25 +145,39 @@ class AppThreadingManager(context: Context) {
 
 object CpuTopology {
 
-    private val maxFrequencies: List<Long> by lazy { readMaxFrequencies() }
+    @Volatile
+    private var cachedFrequencies: List<Long>? = null
+
+    private val maxFrequencies: List<Long>
+        get() {
+            cachedFrequencies?.let { return it }
+            val read = readMaxFrequencies()
+            if (read.isNotEmpty()) cachedFrequencies = read
+            return read
+        }
 
     val coreCount: Int get() = maxFrequencies.size
 
     fun bigCoreCount(): Int {
-        if (maxFrequencies.isEmpty()) return 0
-        val top = maxFrequencies.max()
-        return maxFrequencies.count { it == top }
+        val frequencies = maxFrequencies
+        if (frequencies.isEmpty()) return 0
+        val top = frequencies.max()
+        return frequencies.count { it == top }
     }
 
     fun littleCoreCount(): Int {
-        if (maxFrequencies.isEmpty()) return 0
-        val bottom = maxFrequencies.min()
-        return maxFrequencies.count { it == bottom }
+        val frequencies = maxFrequencies
+        if (frequencies.isEmpty()) return 0
+        val bottom = frequencies.min()
+        return frequencies.count { it == bottom }
     }
 
     fun affinityMask(mode: ThreadAffinityMode): String {
         val frequencies = maxFrequencies
-        if (frequencies.isEmpty()) return "f"
+        if (frequencies.isEmpty()) {
+            val count = Runtime.getRuntime().availableProcessors()
+            return java.lang.Long.toHexString((1L shl count) - 1)
+        }
         val top = frequencies.max()
         val bottom = frequencies.min()
         var mask = 0L
@@ -166,8 +193,6 @@ object CpuTopology {
         return java.lang.Long.toHexString(mask)
     }
 
-    fun hasClusters(): Boolean = maxFrequencies.distinct().size > 1
-
     private fun readMaxFrequencies(): List<Long> {
         val count = Runtime.getRuntime().availableProcessors()
         val frequencies = mutableListOf<Long>()
@@ -176,7 +201,8 @@ object CpuTopology {
                 arrayOf("cat", "/sys/devices/system/cpu/cpu$index/cpufreq/cpuinfo_max_freq")
             )
             val frequency = result.output.trim().toLongOrNull()
-            if (result.isSuccess && frequency != null) frequencies.add(frequency) else frequencies.add(0L)
+            if (!result.isSuccess || frequency == null || frequency <= 0L) return emptyList()
+            frequencies.add(frequency)
         }
         return frequencies
     }

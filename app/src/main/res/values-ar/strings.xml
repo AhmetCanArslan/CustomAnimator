@@ -76,11 +76,6 @@
     <string name="open_usage_access_settings">فتح إعدادات الوصول إلى الاستخدام</string>
     <string name="auto_force_stop_status_active">الإيقاف القسري التلقائي نشط لـ %1$d تطبيق</string>
     <string name="auto_force_stop_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
-    <string name="auto_force_stop_channel_name">الإيقاف القسري التلقائي</string>
-    <string name="auto_force_stop_channel_desc">يظهر أثناء الإيقاف القسري التلقائي للتطبيقات التي حددتها عند خروجها</string>
-    <string name="auto_force_stop_notif_title">الإيقاف القسري التلقائي نشط</string>
-    <string name="auto_force_stop_notif_text">سيتم إيقاف التطبيقات المحددة قسريًا عند مغادرتها</string>
-    <string name="auto_force_stop_notif_text_combined">سيتم إيقاف التطبيقات المحددة قسريًا أو إدارة أذوناتها عند مغادرتها</string>
     <string name="auto_permission_disabler">معطّل الأذونات التلقائي</string>
     <string name="auto_permission_disabler_desc">إلغاء أذونات التطبيقات المحددة فور مغادرتها الواجهة الأمامية، واستعادتها عند إعادة فتحها</string>
     <string name="auto_permission_disabler_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>
@@ -587,7 +582,6 @@
     <string name="onboarding_disclaimer_body">يغيّر هذا التطبيق إعدادات على مستوى النظام. اعتمادًا على جهازك ونظامك، قد يؤثر ذلك على عمر البطارية والإشعارات والمنبهات وتطبيقات الخلفية والاستقرار.</string>
     <string name="onboarding_disclaimer_highlight">لا يتحمل المطور أي مسؤولية عن أي فقدان بيانات أو عطل أو ضرر قد ينتج عن استخدام هذا التطبيق. كل ما تغيره هنا، تغيره على مسؤوليتك.</string>
     <string name="onboarding_disclaimer_consent">قرأت ما سبق وأقبله؛ المطور لا يتحمل أي مسؤولية.</string>
-    <string name="auto_force_stop_notif_text_waiting">متوقف مؤقتًا، بانتظار شيزوكو والوصول إلى الاستخدام</string>
 
     <!-- Permissions -->
     <string name="permissions_title">الأذونات</string>
@@ -986,11 +980,6 @@
     <string name="per_app_width_dialog_desc">عرض الجهاز الحالي: %1$d dp</string>
     <string name="per_app_width_range">النطاق المسموح: من %1$d إلى %2$d dp</string>
     <string name="per_app_width_density_preview">الكثافة المطبقة: %1$d dpi</string>
-    <string name="per_app_width_channel_name">العرض لكل تطبيق</string>
-    <string name="per_app_width_channel_desc">يظهر أثناء تطبيق تجاوزات العرض لكل تطبيق</string>
-    <string name="per_app_width_notif_title">العرض لكل تطبيق نشط</string>
-    <string name="per_app_width_notif_text">تتبدل كثافة الشاشة تلقائيًا للتطبيقات التي أعددتها</string>
-    <string name="per_app_width_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
     <string name="refresh_rate">معدل التحديث</string>
     <string name="refresh_rate_desc">اطّلع على معدلات التحديث التي تدعمها شاشتك، واضبط الحد الأدنى والأقصى للنظام، واختر معدلًا لكل تطبيق.</string>
     <string name="refresh_rate_disclaimer">يستخدم التحكم في معدل التحديث إعدادات النظام min_refresh_rate و peak_refresh_rate. بعض الأجهزة تتجاهلها أو تعرض جزءًا فقط من أوضاعها.</string>
@@ -1014,11 +1003,6 @@
     <string name="per_app_refresh_rate_none">معدل النظام</string>
     <string name="per_app_refresh_rate_reset">إعادة ضبط</string>
     <string name="per_app_refresh_rate_clear_all">مسح الكل</string>
-    <string name="per_app_refresh_rate_channel_name">معدل التحديث لكل تطبيق</string>
-    <string name="per_app_refresh_rate_channel_desc">يظهر أثناء تطبيق تجاوزات معدل التحديث لكل تطبيق</string>
-    <string name="per_app_refresh_rate_notif_title">معدل التحديث لكل تطبيق نشط</string>
-    <string name="per_app_refresh_rate_notif_text">يتغيّر معدل التحديث تلقائيًا للتطبيقات التي قمت بضبطها</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
     <string name="boost_widget_label">تعزيز</string>
     <string name="boost_widget_title">تعزيز</string>
     <string name="boost_widget_description">يمسح ذاكرة التخزين المؤقت للتطبيقات ويغلق تطبيقات الخلفية بلمسة واحدة.</string>
@@ -1264,7 +1248,7 @@
     <string name="hwui_restart_systemui_desc">أعد تشغيل واجهة النظام لتسري تغييرات المُصيّر هناك أيضًا.</string>
     <string name="app_threading">خيوط لكل تطبيق</string>
     <string name="app_threading_desc">ثبّت التطبيقات على مجموعات نوى المعالج وغيّر أولوية جدولتها.</string>
-    <string name="app_threading_disclaimer">تُطبَّق الإعدادات على العملية العاملة وخيوطها، وتضيع عند إغلاق التطبيق، لذا أعد تطبيقها بعد إعادة التشغيل.</string>
+    <string name="app_threading_disclaimer">تُطبق الإعدادات على العملية قيد التشغيل وخيوطها. يعيد المراقب في الخلفية تطبيقها في كل مرة يأتي فيها تطبيق مُعد إلى المقدمة.</string>
     <string name="app_threading_cores">النوى: %1$d إجمالًا، %2$d كبيرة، %3$d صغيرة</string>
     <string name="app_threading_cores_label">نوى المعالج</string>
     <string name="app_threading_cores_all">الكل</string>
@@ -1274,9 +1258,14 @@
     <string name="app_threading_priority_high">عالية</string>
     <string name="app_threading_priority_normal">عادية</string>
     <string name="app_threading_priority_low">منخفضة</string>
-    <string name="app_threading_reapply">إعادة التطبيق على التطبيقات العاملة</string>
-    <string name="app_threading_reapply_desc">يطبّق كل الإعدادات المحفوظة على العمليات العاملة الآن.</string>
-    <string name="app_threading_apply_with_ad">إعلان ثم تطبيق</string>
-    <string name="app_threading_apply_hint">اختر النوى أو الأولوية لتطبيق واحد على الأقل أدناه لتفعيل هذا.</string>
-    <string name="app_threading_applied">طُبِّق على %1$d تطبيقات</string>
+    <string name="app_watcher_channel_name">مراقب التطبيق في المقدمة</string>
+    <string name="app_watcher_channel_desc">يظهر أثناء مراقبة الميزات الخاصة بكل تطبيق للتطبيق الموجود في المقدمة</string>
+    <string name="app_watcher_notif_title">ميزات كل تطبيق نشطة</string>
+    <string name="app_watcher_notif_text">تتم مراقبة التطبيق في المقدمة من أجل %1$d ميزة</string>
+    <string name="app_watcher_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
+    <string name="app_threading_needs_usage_access">تحتاج إعدادات المعالجة لكل تطبيق إلى إذن الوصول إلى الاستخدام لاكتشاف فتح التطبيق المُعد.</string>
+    <string name="app_threading_status_active">المراقب نشط لـ %1$d تطبيق</string>
+    <string name="app_threading_status_paused">تم حفظ الإعدادات، لكن المراقب متوقف مؤقتًا حتى تُمنح الأذونات</string>
+    <string name="app_threading_priority_denied">لا يسمح هذا الجهاز برفع أولوية المعالجة عبر شيزوكو، لذلك لا يتم تطبيق الأولوية العالية.</string>
+    <string name="app_threading_priority_use_normal">التبديل إلى عادي</string>
 </resources>

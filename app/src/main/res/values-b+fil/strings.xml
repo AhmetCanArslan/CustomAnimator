@@ -41,11 +41,6 @@
     <string name="open_usage_access_settings">Buksan ang Usage Access Settings</string>
     <string name="auto_force_stop_status_active">Aktibo ang auto force-stop para sa %1$d app</string>
     <string name="auto_force_stop_status_paused">Na-save ang seleksyon, pero naka-pause ang serbisyo hangga\'t hindi pa ipinagkakaloob ang mga pahintulot</string>
-    <string name="auto_force_stop_channel_name">Auto Force-Stop</string>
-    <string name="auto_force_stop_channel_desc">Ipinapakita habang awtomatikong ino-force-stop ang mga napiling app kapag umalis</string>
-    <string name="auto_force_stop_notif_title">Aktibo ang Auto Force-Stop</string>
-    <string name="auto_force_stop_notif_text">Puwersahang ihihinto ang mga napiling app kapag umalis ka sa mga ito</string>
-    <string name="auto_force_stop_notif_text_combined">Puwersahang ihihinto o mababago ang mga pahintulot ng mga napiling app kapag umalis ka sa mga ito</string>
     <string name="auto_permission_disabler">Awtomatikong Pag-disable ng Permission</string>
     <string name="auto_permission_disabler_desc">Bawiin ang mga pahintulot ng napiling app sa sandaling umalis ito sa foreground, at ibalik kapag muling binuksan</string>
     <string name="auto_permission_disabler_needs_usage_access">Kailangan ng feature na ito ng Usage Access para malaman kung kailan umaalis ang mga app sa foreground.</string>
@@ -547,7 +542,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_disclaimer_body">Binabago ng app na ito ang mga setting sa antas ng sistema. Depende sa iyong device at ROM, maaari nitong maapektuhan ang baterya, mga notification, alarma, background apps, at katatagan.</string>
     <string name="onboarding_disclaimer_highlight">Walang anumang pananagutan ang developer sa pagkawala ng data, depekto, o pinsalang maaaring idulot ng paggamit ng app na ito. Lahat ng babaguhin mo rito ay nasa iyong sariling panganib.</string>
     <string name="onboarding_disclaimer_consent">Nabasa at tinatanggap ko ang nasa itaas; walang pananagutan ang developer.</string>
-    <string name="auto_force_stop_notif_text_waiting">Naka-pause, hinihintay ang Shizuku at usage access</string>
 
 <string name="permissions_title">Mga pahintulot</string>
     <string name="permissions_summary">%1$d sa %2$d ang naibigay</string>
@@ -927,11 +921,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="per_app_width_dialog_desc">Kasalukuyang lapad ng device: %1$d dp</string>
     <string name="per_app_width_range">Pinapayagang saklaw: %1$d - %2$d dp</string>
     <string name="per_app_width_density_preview">Inilapat na density: %1$d dpi</string>
-    <string name="per_app_width_channel_name">Lapad Kada App</string>
-    <string name="per_app_width_channel_desc">Lumalabas habang inilalapat ang mga per-app na lapad</string>
-    <string name="per_app_width_notif_title">Aktibo ang Lapad Kada App</string>
-    <string name="per_app_width_notif_text">Awtomatikong nagpapalit ang density ng screen para sa mga app na na-configure mo</string>
-    <string name="per_app_width_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
     <string name="refresh_rate">Refresh Rate</string>
     <string name="refresh_rate_desc">Tingnan ang mga refresh rate na suportado ng display mo, itakda ang system minimum at peak, at pumili ng rate para sa bawat app.</string>
     <string name="refresh_rate_disclaimer">Gumagamit ang refresh rate control ng system min_refresh_rate at peak_refresh_rate settings. Binabalewala ito ng ilang device o inilalantad lang ang bahagi ng mga mode nito.</string>
@@ -955,11 +944,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="per_app_refresh_rate_none">System rate</string>
     <string name="per_app_refresh_rate_reset">I-reset</string>
     <string name="per_app_refresh_rate_clear_all">I-clear lahat</string>
-    <string name="per_app_refresh_rate_channel_name">Per-App Refresh Rate</string>
-    <string name="per_app_refresh_rate_channel_desc">Ipinapakita habang ina-apply ang mga per-app refresh rate override</string>
-    <string name="per_app_refresh_rate_notif_title">Aktibo ang Per-App Refresh Rate</string>
-    <string name="per_app_refresh_rate_notif_text">Awtomatikong nagpapalit ang refresh rate para sa mga app na na-configure mo</string>
-    <string name="per_app_refresh_rate_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
     <string name="boost_widget_label">Boost</string>
     <string name="boost_widget_title">Boost</string>
     <string name="boost_widget_description">Nililinis ang cache ng mga app at isinasara ang mga app sa background sa isang tap.</string>
@@ -1224,7 +1208,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="hwui_restart_systemui_desc">I-restart ang system UI para gumana rin doon ang pagbabago sa renderer.</string>
     <string name="app_threading">Threading kada app</string>
     <string name="app_threading_desc">I-pin ang mga app sa CPU cluster at baguhin ang priyoridad ng scheduling.</string>
-    <string name="app_threading_disclaimer">Inilalapat ang mga setting sa tumatakbong proseso at mga thread nito. Nawawala ang mga ito kapag pinatay ang app, kaya ilapat muli pagkatapos mag-restart.</string>
+    <string name="app_threading_disclaimer">Inilalapat ang mga setting sa tumatakbong process at sa mga thread nito. Muling inilalapat ito ng background watcher tuwing bumubukas ang isang naka-configure na app.</string>
     <string name="app_threading_cores">Mga core: %1$d lahat, %2$d malaki, %3$d maliit</string>
     <string name="app_threading_cores_label">Mga CPU core</string>
     <string name="app_threading_cores_all">Lahat</string>
@@ -1234,9 +1218,14 @@ Tagal ng Animator: %3$.2f</string>
     <string name="app_threading_priority_high">Mataas</string>
     <string name="app_threading_priority_normal">Normal</string>
     <string name="app_threading_priority_low">Mababa</string>
-    <string name="app_threading_reapply">Ilapat muli sa mga tumatakbong app</string>
-    <string name="app_threading_reapply_desc">Inilalapat ang bawat na-save na configuration sa mga prosesong tumatakbo ngayon.</string>
-    <string name="app_threading_apply_with_ad">Ad at ilapat</string>
-    <string name="app_threading_apply_hint">Pumili ng core o priyoridad sa kahit isang app sa ibaba para ma-enable ito.</string>
-    <string name="app_threading_applied">Inilapat sa %1$d app</string>
+    <string name="app_watcher_channel_name">Foreground app watcher</string>
+    <string name="app_watcher_channel_desc">Ipinapakita habang binabantayan ng mga per-app na feature kung aling app ang nasa foreground</string>
+    <string name="app_watcher_notif_title">Aktibo ang mga per-app na feature</string>
+    <string name="app_watcher_notif_text">Binabantayan ang foreground app para sa %1$d na feature</string>
+    <string name="app_watcher_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
+    <string name="app_threading_needs_usage_access">Kailangan ng per-app threading ng Usage Access para matukoy kung kailan bumukas ang isang naka-configure na app.</string>
+    <string name="app_threading_status_active">Aktibo ang watcher para sa %1$d na app</string>
+    <string name="app_threading_status_paused">Na-save ang mga setting, pero naka-pause ang watcher hanggang mabigyan ng permiso</string>
+    <string name="app_threading_priority_denied">Hindi pinapayagan ng device na ito na itaas ang thread priority sa pamamagitan ng Shizuku, kaya hindi nailalapat ang High priority.</string>
+    <string name="app_threading_priority_use_normal">Gawing Normal</string>
 </resources>

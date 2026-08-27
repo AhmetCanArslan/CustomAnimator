@@ -59,9 +59,9 @@ class ComponentLayoutTest {
                             )
                             ActionRow(
                                 icon = Icons.Filled.Bolt,
-                                title = string(R.string.app_threading_reapply),
-                                description = string(R.string.app_threading_reapply_desc),
-                                buttonLabel = string(R.string.app_threading_apply_with_ad),
+                                title = string(R.string.app_threading),
+                                description = string(R.string.app_threading_desc),
+                                buttonLabel = string(R.string.apply_settings),
                                 enabled = true,
                                 onClick = {}
                             )
