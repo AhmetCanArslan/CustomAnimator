@@ -31,8 +31,8 @@ android {
         applicationId = "com.arslan.customanimator"
         minSdk = 24
         targetSdk = 36
-        versionCode = 179
-        versionName = "3.3"
+        versionCode = 181
+        versionName = "3.4"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["admobAppId"] = admobAppId
