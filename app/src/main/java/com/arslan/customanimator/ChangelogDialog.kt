@@ -45,6 +45,11 @@ fun ChangelogDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                Text(
+                    text = stringResource(R.string.changelog_feedback_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 releases.forEach { release ->
                     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Text(
