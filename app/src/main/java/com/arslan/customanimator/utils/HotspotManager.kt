@@ -29,7 +29,7 @@ object HotspotManager {
 
     private const val TAG = "HotspotManager"
     private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 1
+    private const val SERVICE_VERSION = 2
 
     const val SSID_MIN_LENGTH = 1
     const val SSID_MAX_LENGTH = 32

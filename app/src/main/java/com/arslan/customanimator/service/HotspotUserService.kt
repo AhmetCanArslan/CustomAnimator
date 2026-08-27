@@ -2,6 +2,10 @@ package com.arslan.customanimator.service
 
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
+import android.os.IBinder
+import android.os.Parcelable
+import android.os.Process
 import android.util.Log
 import org.json.JSONArray
 import org.json.JSONObject
@@ -57,15 +61,9 @@ class HotspotUserService : IHotspotUserService.Stub {
 
     override fun applyConfig(configJson: String): String {
         val response = JSONObject()
-        val wifi = wifiManager() ?: return response.put("success", false)
-            .put("error", "wifi service unavailable").toString()
         return try {
-            val desired = JSONObject(configJson)
-            val built = buildConfiguration(desired)
-            val method = wifi.javaClass.methods.firstOrNull {
-                it.name == "setSoftApConfiguration" && it.parameterTypes.size == 1
-            } ?: error("setSoftApConfiguration missing")
-            val ok = method.invoke(wifi, built) as? Boolean ?: true
+            val built = buildConfiguration(JSONObject(configJson))
+            val ok = invokeSetSoftApConfiguration(built)
             response.put("success", ok)
             if (!ok) response.put("error", "rejected by framework")
             response.toString()
@@ -73,6 +71,41 @@ class HotspotUserService : IHotspotUserService.Stub {
             Log.e(TAG, "applyConfig failed", e)
             response.put("success", false).put("error", describe(e)).toString()
         }
+    }
+
+    private fun invokeSetSoftApConfiguration(config: Any): Boolean {
+        val service = wifiService()
+        val method = service.javaClass.methods.firstOrNull { it.name == "setSoftApConfiguration" }
+            ?: error("setSoftApConfiguration missing")
+        val args = method.parameterTypes.map { type ->
+            when (type) {
+                String::class.java -> SHELL_PACKAGE
+                Bundle::class.java -> attributionBundle()
+                else -> config
+            }
+        }
+        return method.invoke(service, *args.toTypedArray()) as? Boolean ?: true
+    }
+
+    private fun wifiService(): Any {
+        val binder = Class.forName("android.os.ServiceManager")
+            .getMethod("getService", String::class.java)
+            .invoke(null, Context.WIFI_SERVICE) as? IBinder ?: error("wifi service unavailable")
+        val stub = Class.forName("android.net.wifi.IWifiManager\$Stub")
+        return stub.getMethod("asInterface", IBinder::class.java).invoke(null, binder)
+            ?: error("IWifiManager unavailable")
+    }
+
+    private fun attributionBundle(): Bundle {
+        val bundle = Bundle()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return bundle
+        val builderClass = Class.forName("android.content.AttributionSource\$Builder")
+        val builder = builderClass.getConstructor(Int::class.javaPrimitiveType)
+            .newInstance(Process.myUid())
+        builderClass.getMethod("setPackageName", String::class.java).invoke(builder, SHELL_PACKAGE)
+        val source = builderClass.getMethod("build").invoke(builder) as Parcelable
+        bundle.putParcelable(ATTRIBUTION_SOURCE_KEY, source)
+        return bundle
     }
 
     override fun setHotspotEnabled(enabled: Boolean): String {
@@ -531,6 +564,8 @@ class HotspotUserService : IHotspotUserService.Stub {
 
     private companion object {
         const val TAG = "HotspotUserService"
+        const val SHELL_PACKAGE = "com.android.shell"
+        const val ATTRIBUTION_SOURCE_KEY = "EXTRA_PARAM_KEY_ATTRIBUTION_SOURCE"
         const val TETHERING_SERVICE = "tethering"
         const val TETHERING_WIFI = 0
         const val STATE_DISABLED = 11
