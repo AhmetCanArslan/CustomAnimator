@@ -107,6 +107,8 @@ import com.arslan.customanimator.utils.TerminalPresetManager
 import com.arslan.customanimator.utils.TileNumberIcon
 import com.arslan.customanimator.utils.WidthTileSlots
 import com.arslan.customanimator.utils.TerminalTileSlots
+import com.arslan.customanimator.utils.ToggleTileManager
+import com.arslan.customanimator.utils.ToggleTileSlots
 import com.arslan.customanimator.utils.WidthPresetManager
 import rikka.shizuku.Shizuku
 import androidx.compose.ui.res.stringResource
@@ -134,6 +136,7 @@ class MainActivity : ComponentActivity() {
         RulesManager(this).hasProximitySensor()
 
         TerminalTileSlots.sync(this, TerminalPresetManager(this))
+        ToggleTileSlots.sync(this, ToggleTileManager(this))
         WidthTileSlots.sync(this, WidthPresetManager(this))
         AnimationTileSlots.sync(this, PresetManager(this))
 
@@ -216,7 +219,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
     CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -273,6 +276,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
     HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
+    HomeScreen.QS_TILES to HomeTab.TOOLS,
     HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH
 )
 
@@ -355,6 +359,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val dozeWhitelistListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val refreshRateListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val qsTilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -697,6 +702,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = refreshRateListState
         )
+    } else if (targetScreen == HomeScreen.QS_TILES) {
+        QsTilesScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = qsTilesListState
+        )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -912,6 +923,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
             onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
             onNavigateToRefreshRate = { currentScreen = HomeScreen.REFRESH_RATE },
+            onNavigateToQsTiles = { currentScreen = HomeScreen.QS_TILES },
             onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
             onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },

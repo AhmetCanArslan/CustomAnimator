@@ -27,6 +27,7 @@ import com.arslan.customanimator.PerAppWidthScreen
 import com.arslan.customanimator.PermissionsScreen
 import com.arslan.customanimator.ProfileEditorScreen
 import com.arslan.customanimator.ProfilesScreen
+import com.arslan.customanimator.QsTilesScreen
 import com.arslan.customanimator.R
 import com.arslan.customanimator.ScreenshotActionsScreen
 import com.arslan.customanimator.SettingsScreen
@@ -146,6 +147,7 @@ class ScreenLayoutTest {
             onNavigateToHwuiTweaks = {},
             onNavigateToAppThreading = {},
             onNavigateToRefreshRate = {},
+            onNavigateToQsTiles = {},
             onNavigateToScreenshotActions = {},
             onNavigateToSoundTile = {},
             onNavigateToCompileBooster = {},
@@ -181,6 +183,11 @@ class ScreenLayoutTest {
     @Test
     fun hotspotManagerScreenFitsSmallPhones() = screenFits(R.string.hotspot_manager, R.string.hotspot_no_ssid) {
         HotspotManagerScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun qsTilesScreenFitsSmallPhones() = screenFits(R.string.qs_tiles) {
+        QsTilesScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test

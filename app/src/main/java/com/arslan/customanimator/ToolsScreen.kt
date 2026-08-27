@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiTethering
+import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -45,6 +46,7 @@ fun ToolsScreenContent(
     onNavigateToHwuiTweaks: () -> Unit,
     onNavigateToAppThreading: () -> Unit,
     onNavigateToRefreshRate: () -> Unit,
+    onNavigateToQsTiles: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
     onNavigateToSoundTile: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
@@ -172,6 +174,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.refresh_rate),
                             description = stringResource(R.string.refresh_rate_desc),
                             onClick = onNavigateToRefreshRate
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Widgets,
+                            title = stringResource(R.string.qs_tiles),
+                            description = stringResource(R.string.qs_tiles_desc),
+                            onClick = onNavigateToQsTiles
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
