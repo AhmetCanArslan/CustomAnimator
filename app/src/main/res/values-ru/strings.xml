@@ -746,6 +746,7 @@
     <string name="pn_logs_create_rule_title">Создать правило из уведомления?</string>
     <string name="changelog_title">Что нового</string>
     <string name="changelog_version">Версия %1$s</string>
+    <string name="changelog_feedback_note">Возможно, работает не всё. По ошибкам и отзывам пишите: ahmetcanarslandev@gmail.com</string>
     <string name="pn_service_channel_group">Фоновая служба</string>
     <string name="pn_notification_persistent_settings_hint">Нажмите здесь, чтобы отключить это уведомление.</string>
     <string name="settings_appearance">Оформление</string>

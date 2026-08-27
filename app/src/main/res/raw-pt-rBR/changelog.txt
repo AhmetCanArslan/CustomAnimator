@@ -1,7 +1,5 @@
-## 179 - 3.3
-- Medidor do sistema: uma sobreposição flutuante que mostra FPS, CPU, GPU, RAM e bateria enquanto você usa o telefone.
-- Limpeza: encontre e libere espaço de caches e arquivos restantes.
-- Lista branca do Doze: escolha quais apps podem continuar rodando enquanto o telefone está ocioso.
-- Ajustes HWUI: altere as propriedades de renderização por hardware para um desenho mais fluido.
-- Alertas de bateria: receba uma notificação quando a bateria atingir os níveis que você definir.
-- Navegação reformulada, cartões de informação e etiquetas de status renovados no app.
+## 181 - 3.4
+- Taxa de atualização por app: defina uma taxa de atualização para cada app e ela muda automaticamente.
+- Blocos das Configurações rápidas: crie seus próprios blocos de alternância, escolha os ícones e adicione ao painel.
+- Todos os recursos por app agora usam um único serviço em segundo plano, gastando menos bateria.
+- Detecção de apps mais rápida e pequenas correções.

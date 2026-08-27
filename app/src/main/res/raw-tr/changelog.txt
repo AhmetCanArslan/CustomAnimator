@@ -1,7 +1,5 @@
-## 179 - 3.3
-- Sistem Ölçer: telefonu kullanırken FPS, CPU, GPU, RAM ve pili gösteren kayan bir katman.
-- Temizleyici: önbellekleri ve artık dosyaları bulup yer açın.
-- Doze Beyaz Listesi: telefon boştayken hangi uygulamaların çalışmaya devam edeceğini seçin.
-- HWUI Ayarları: daha akıcı çizim için donanım hızlandırma özelliklerini ayarlayın.
-- Pil uyarıları: belirlediğiniz pil seviyelerinde bildirim alın.
-- Yenilenen gezinme, bilgi kartları ve durum etiketleri.
+## 181 - 3.4
+- Uygulama başına yenileme hızı: her uygulama için ekran yenileme hızı belirleyin, otomatik olarak geçsin.
+- Hızlı Ayarlar kartları: kendi anahtar kartlarınızı oluşturun, simgelerini seçin ve Hızlı Ayarlar paneline ekleyin.
+- Uygulama başına tüm özellikler artık tek bir arka plan servisini paylaşıyor, daha az pil harcıyor.
+- Daha hızlı uygulama algılama ve küçük düzeltmeler.

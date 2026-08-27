@@ -1,7 +1,5 @@
-## 179 - 3.3
-- System Meter: a floating overlay showing FPS, CPU, GPU, RAM and battery while you use your phone.
-- Cleaner: find and free up space from caches and leftover files.
-- Doze Whitelist: choose which apps are allowed to keep running while the phone is idle.
-- HWUI Tweaks: adjust hardware rendering properties for smoother drawing.
-- Battery alerts: get notified when the battery reaches the levels you set.
-- Reworked navigation, refreshed info cards and status labels across the app.
+## 181 - 3.4
+- Per-app refresh rate: set a screen refresh rate for each app and it switches automatically.
+- Quick Settings tiles: build your own toggle tiles, pick their icons and add them to the Quick Settings panel.
+- All per-app features now share a single background service, so they use less battery.
+- Faster app detection and smaller fixes

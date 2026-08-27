@@ -1,7 +1,5 @@
-## 179 - 3.3
-- Misuratore di sistema: un overlay flottante che mostra FPS, CPU, GPU, RAM e batteria mentre usi il telefono.
-- Pulizia: trova e libera spazio da cache e file residui.
-- Whitelist Doze: scegli quali app possono continuare a funzionare mentre il telefono è inattivo.
-- Modifiche HWUI: regola le proprietà di rendering hardware per un disegno più fluido.
-- Avvisi batteria: ricevi una notifica quando la batteria raggiunge i livelli che imposti.
-- Navigazione rinnovata, schede informative ed etichette di stato aggiornate in tutta l'app.
+## 181 - 3.4
+- Frequenza di aggiornamento per app: imposta una frequenza per ogni app e cambierà automaticamente.
+- Riquadri Impostazioni rapide: crea i tuoi interruttori, scegli le icone e aggiungili al pannello Impostazioni rapide.
+- Tutte le funzioni per app ora usano un solo servizio in background, quindi consumano meno batteria.
+- Rilevamento delle app più rapido e piccole correzioni.

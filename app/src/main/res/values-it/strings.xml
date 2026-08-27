@@ -766,6 +766,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_logs_create_rule_title">Creare una regola dalla notifica?</string>
     <string name="changelog_title">Novità</string>
     <string name="changelog_version">Versione %1$s</string>
+    <string name="changelog_feedback_note">Potrebbe non funzionare tutto. Per bug o feedback scrivimi: ahmetcanarslandev@gmail.com</string>
     <string name="pn_service_channel_group">Servizio in background</string>
     <string name="pn_notification_persistent_settings_hint">Tocca qui per disattivare questa notifica.</string>
     <string name="settings_appearance">Aspetto</string>

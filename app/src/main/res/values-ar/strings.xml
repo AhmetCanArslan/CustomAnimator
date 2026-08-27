@@ -790,6 +790,7 @@
     <string name="pn_nav_logging">السجل</string>
     <string name="changelog_title">ما الجديد</string>
     <string name="changelog_version">الإصدار %1$s</string>
+    <string name="changelog_feedback_note">قد لا يعمل كل شيء بشكل مثالي. لأي خطأ أو ملاحظة راسلني: ahmetcanarslandev@gmail.com</string>
     <string name="pn_service_channel_group">خدمة الخلفية</string>
     <string name="pn_notification_persistent_settings_hint">اضغط هنا لإيقاف تشغيل هذا الإشعار.</string>
     <string name="settings_appearance">المظهر</string>

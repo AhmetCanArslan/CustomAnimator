@@ -1,7 +1,5 @@
-## 179 - 3.3
-- System Meter: overlay mengambang yang menampilkan FPS, CPU, GPU, RAM, dan baterai saat kamu memakai ponsel.
-- Pembersih: temukan dan bebaskan ruang dari cache serta file sisa.
-- Daftar Putih Doze: pilih aplikasi mana yang boleh tetap berjalan saat ponsel idle.
-- Tweak HWUI: atur properti rendering perangkat keras agar gambar lebih mulus.
-- Peringatan baterai: dapatkan notifikasi saat baterai mencapai level yang kamu tentukan.
-- Navigasi, kartu info, dan label status yang diperbarui di seluruh aplikasi.
+## 181 - 3.4
+- Refresh rate per aplikasi: tetapkan refresh rate layar untuk tiap aplikasi dan biarkan berpindah otomatis.
+- Tile Setelan Cepat: buat tile sakelar sendiri, pilih ikonnya, dan tambahkan ke panel Setelan Cepat.
+- Semua fitur per aplikasi kini memakai satu layanan latar belakang, jadi lebih hemat baterai.
+- Deteksi aplikasi lebih cepat dan perbaikan kecil.
