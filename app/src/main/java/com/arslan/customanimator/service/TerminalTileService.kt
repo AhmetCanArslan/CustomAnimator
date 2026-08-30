@@ -1,124 +1,55 @@
 package com.arslan.customanimator.service
 
-import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.service.quicksettings.Tile
-import android.service.quicksettings.TileService
-import android.widget.Toast
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TerminalPresetManager
 import com.arslan.customanimator.utils.TerminalTileIcons
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
-abstract class TerminalTileService : TileService() {
+abstract class TerminalTileService : BaseTileService() {
 
     protected abstract val slot: Int
 
-    private val mainHandler = Handler(Looper.getMainLooper())
-
-    override fun onStartListening() {
-        super.onStartListening()
-        refreshTile()
-    }
-
-    override fun onTileAdded() {
-        super.onTileAdded()
-        refreshTile()
+    override suspend fun loadSpec(): TileSpec {
+        val preset = TerminalPresetManager(this).getPresetForSlot(slot)
+        val config = preset?.tile ?: return unavailableSpec(
+            R.string.terminal_tile_unassigned,
+            TileIcon.Res(TerminalTileIcons.resFor(TerminalTileIcons.DEFAULT_KEY))
+        )
+        val ready = ShizukuHelper.hasShizukuPermission()
+        return TileSpec(
+            label = config.label.ifBlank { preset.name },
+            icon = TileIcon.Res(TerminalTileIcons.resFor(config.iconKey)),
+            state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE,
+            subtitle = if (ready) null else getString(R.string.terminal_tile_subtitle_no_shizuku)
+        )
     }
 
     override fun onClick() {
         super.onClick()
-
-        val preset = TerminalPresetManager(this).getPresetForSlot(slot)
-        val config = preset?.tile
-        if (preset == null || config == null) {
-            toast(getString(R.string.terminal_tile_unassigned_message))
-            refreshTile()
-            return
-        }
-
-        if (!ShizukuHelper.hasShizukuPermission()) {
-            toast(getString(R.string.terminal_tile_needs_shizuku))
-            refreshTile()
-            return
-        }
-
-        val label = config.label.ifBlank { preset.name }
-        backgroundScope.launch {
-            if (config.collapsePanel) {
-                collapseQuickSettings()
+        runTileAction {
+            val preset = TerminalPresetManager(this).getPresetForSlot(slot)
+            val config = preset?.tile
+                ?: return@runTileAction toast(R.string.terminal_tile_unassigned_message)
+            if (!ShizukuHelper.hasShizukuPermission()) {
+                return@runTileAction toast(R.string.terminal_tile_needs_shizuku)
             }
-
+            if (config.collapsePanel) {
+                collapseShade()
+            }
             val result = ShizukuHelper.executeShellCommandWithOutput(
                 arrayOf("sh", "-c", preset.command)
             )
-
-            if (config.showToast) {
-                val message = if (result.exitCode == 0) {
-                    getString(R.string.terminal_tile_toast_success, label)
-                } else {
-                    getString(R.string.terminal_tile_toast_failed, label, result.exitCode)
-                }
-                toast(message)
+            if (!config.showToast) {
+                return@runTileAction
             }
-            setTileState(Tile.STATE_INACTIVE)
-        }
-    }
-
-    private fun refreshTile() {
-        val tile = qsTile ?: return
-        val preset = TerminalPresetManager(this).getPresetForSlot(slot)
-        val config = preset?.tile
-
-        if (preset == null || config == null) {
-            tile.label = getString(R.string.terminal_tile_unassigned)
-            tile.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(TerminalTileIcons.DEFAULT_KEY))
-            tile.state = Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = null
-            }
-        } else {
-            tile.label = config.label.ifBlank { preset.name }
-            tile.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(config.iconKey))
-            val ready = ShizukuHelper.hasShizukuPermission()
-            tile.state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = if (ready) null else getString(R.string.terminal_tile_subtitle_no_shizuku)
+            val label = config.label.ifBlank { preset.name }
+            if (result.exitCode == 0) {
+                toast(R.string.terminal_tile_toast_success, label)
+            } else {
+                toast(R.string.terminal_tile_toast_failed, label, result.exitCode)
             }
         }
-        tile.updateTile()
-    }
-
-    private fun setTileState(state: Int) {
-        mainHandler.post {
-            qsTile?.let {
-                it.state = state
-                it.updateTile()
-            }
-        }
-    }
-
-    private fun collapseQuickSettings() {
-        runCatching {
-            ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", "collapse"))
-        }
-    }
-
-    private fun toast(message: String) {
-        val appContext = applicationContext
-        mainHandler.post {
-            Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private companion object {
-        val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 }
 

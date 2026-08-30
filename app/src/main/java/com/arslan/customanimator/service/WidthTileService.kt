@@ -1,125 +1,61 @@
 package com.arslan.customanimator.service
 
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.service.quicksettings.Tile
-import android.service.quicksettings.TileService
-import android.widget.Toast
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TileNumberIcon
 import com.arslan.customanimator.utils.WidthPresetManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
-abstract class WidthTileService : TileService() {
+abstract class WidthTileService : BaseTileService() {
 
     protected abstract val slot: Int
 
-    private val mainHandler = Handler(Looper.getMainLooper())
-
-    override fun onStartListening() {
-        super.onStartListening()
-        refreshTile()
-    }
-
-    override fun onTileAdded() {
-        super.onTileAdded()
-        refreshTile()
+    override suspend fun loadSpec(): TileSpec {
+        val preset = WidthPresetManager(this).getPresetForSlot(slot)
+        val config = preset?.tile ?: return unavailableSpec(
+            R.string.terminal_tile_unassigned,
+            TileIcon.Number(PLACEHOLDER_TEXT)
+        )
+        val ready = canApply()
+        return TileSpec(
+            label = config.label.ifBlank { preset.name },
+            icon = TileIcon.Number(TileNumberIcon.widthText(preset.widthDp)),
+            state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE,
+            subtitle = if (ready) null else getString(R.string.preset_tile_subtitle_no_permission)
+        )
     }
 
     override fun onClick() {
         super.onClick()
-
-        val preset = WidthPresetManager(this).getPresetForSlot(slot)
-        val config = preset?.tile
-        if (preset == null || config == null) {
-            toast(getString(R.string.terminal_tile_unassigned_message))
-            refreshTile()
-            return
-        }
-
-        if (!canApply()) {
-            toast(getString(R.string.preset_tile_needs_permission))
-            refreshTile()
-            return
-        }
-
-        val label = config.label.ifBlank { preset.name }
-        backgroundScope.launch {
+        runTileAction {
+            val preset = WidthPresetManager(this).getPresetForSlot(slot)
+            val config = preset?.tile
+                ?: return@runTileAction toast(R.string.terminal_tile_unassigned_message)
+            if (!canApply()) {
+                return@runTileAction toast(R.string.preset_tile_needs_permission)
+            }
             if (config.collapsePanel) {
-                collapseQuickSettings()
+                collapseShade()
             }
-
-            val result = SettingsManager.setSmallestWidth(contentResolver, this@WidthTileService, preset.widthDp)
-
+            val result = SettingsManager.setSmallestWidth(contentResolver, this, preset.widthDp)
             if (config.showToast) {
-                val message = when {
-                    !result.success -> getString(R.string.preset_tile_toast_failed, label)
-                    result.usedWriteSecureFallback ->
-                        getString(R.string.preset_tile_toast_applied_unverified, label)
-                    else -> getString(R.string.preset_tile_toast_applied, label)
-                }
-                toast(message)
+                toast(toastFor(result), config.label.ifBlank { preset.name })
             }
-            refreshTileAsync()
         }
     }
 
-    private fun refreshTile() {
-        val tile = qsTile ?: return
-        val preset = WidthPresetManager(this).getPresetForSlot(slot)
-        val config = preset?.tile
-
-        if (preset == null || config == null) {
-            tile.label = getString(R.string.terminal_tile_unassigned)
-            tile.icon = TileNumberIcon.create("--")
-            tile.state = Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = null
-            }
-        } else {
-            tile.label = config.label.ifBlank { preset.name }
-            tile.icon = TileNumberIcon.create(TileNumberIcon.widthText(preset.widthDp))
-            val ready = canApply()
-            tile.state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = if (ready) {
-                    null
-                } else {
-                    getString(R.string.preset_tile_subtitle_no_permission)
-                }
-            }
-        }
-        tile.updateTile()
+    private fun toastFor(result: SettingsManager.SmallestWidthResult): Int = when {
+        !result.success -> R.string.preset_tile_toast_failed
+        result.usedWriteSecureFallback -> R.string.preset_tile_toast_applied_unverified
+        else -> R.string.preset_tile_toast_applied
     }
 
     private fun canApply(): Boolean =
         ShizukuHelper.hasShizukuPermission() || ShizukuHelper.hasWriteSecureSettingsPermission(this)
 
-    private fun refreshTileAsync() {
-        mainHandler.post { refreshTile() }
-    }
-
-    private fun collapseQuickSettings() {
-        runCatching {
-            ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", "collapse"))
-        }
-    }
-
-    private fun toast(message: String) {
-        val appContext = applicationContext
-        mainHandler.post {
-            Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private companion object {
-        val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        const val PLACEHOLDER_TEXT = "--"
     }
 }
 

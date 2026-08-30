@@ -1,140 +1,69 @@
 package com.arslan.customanimator.service
 
-import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.service.quicksettings.Tile
-import android.service.quicksettings.TileService
-import android.widget.Toast
 import com.arslan.customanimator.R
 import com.arslan.customanimator.data.ToggleTile
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TerminalTileIcons
 import com.arslan.customanimator.utils.ToggleTileManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
-abstract class ToggleTileService : TileService() {
+abstract class ToggleTileService : BaseTileService() {
 
     protected abstract val slot: Int
 
-    private val mainHandler = Handler(Looper.getMainLooper())
-
-    override fun onStartListening() {
-        super.onStartListening()
-        refreshTile()
-    }
-
-    override fun onTileAdded() {
-        super.onTileAdded()
-        refreshTile()
+    override suspend fun loadSpec(): TileSpec {
+        val manager = ToggleTileManager(this)
+        val tile = manager.getTileForSlot(slot) ?: return unassignedSpec()
+        val ready = ShizukuHelper.awaitShizukuPermission(BINDER_WAIT_MS)
+        val active = if (ready) manager.resolveState(tile) else manager.getStoredState(tile.id)
+        return specFor(tile, active, ready)
     }
 
     override fun onClick() {
         super.onClick()
-
-        val manager = ToggleTileManager(this)
-        val tile = manager.getTileForSlot(slot)
-        if (tile == null) {
-            toast(getString(R.string.qs_tile_unassigned_message))
-            renderUnassigned()
-            return
-        }
-
-        backgroundScope.launch {
+        runTileAction {
+            val manager = ToggleTileManager(this)
+            val tile = manager.getTileForSlot(slot)
+                ?: return@runTileAction toast(R.string.qs_tile_unassigned_message)
             if (!ShizukuHelper.awaitShizukuPermission(BINDER_WAIT_MS)) {
-                toast(getString(R.string.qs_tile_needs_shizuku))
-                val stored = manager.getStoredState(tile.id)
-                mainHandler.post { render(tile, stored, false) }
-                return@launch
+                return@runTileAction toast(R.string.qs_tile_needs_shizuku)
             }
-
             if (tile.collapsePanel) {
-                collapseQuickSettings()
+                collapseShade()
             }
-
             val target = !manager.resolveState(tile)
             val success = manager.apply(tile, target)
-            val state = manager.resolveState(tile)
-
             if (tile.showToast) {
-                val message = if (success) {
-                    getString(
-                        if (state) R.string.qs_tile_toast_on else R.string.qs_tile_toast_off,
-                        tile.label
-                    )
-                } else {
-                    getString(R.string.qs_tile_toast_failed, tile.label)
-                }
-                toast(message)
-            }
-
-            mainHandler.post { render(tile, state, true) }
-        }
-    }
-
-    private fun refreshTile() {
-        val manager = ToggleTileManager(this)
-        val tile = manager.getTileForSlot(slot)
-        if (tile == null) {
-            renderUnassigned()
-            return
-        }
-
-        render(tile, manager.getStoredState(tile.id), ShizukuHelper.hasShizukuPermission())
-
-        backgroundScope.launch {
-            val ready = ShizukuHelper.awaitShizukuPermission(BINDER_WAIT_MS)
-            val state = if (ready) manager.resolveState(tile) else manager.getStoredState(tile.id)
-            mainHandler.post { render(tile, state, ready) }
-        }
-    }
-
-    private fun renderUnassigned() {
-        val qs = qsTile ?: return
-        qs.label = getString(R.string.qs_tile_unassigned)
-        qs.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(TerminalTileIcons.DEFAULT_KEY))
-        qs.state = Tile.STATE_UNAVAILABLE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            qs.subtitle = null
-        }
-        qs.updateTile()
-    }
-
-    private fun render(tile: ToggleTile, active: Boolean, ready: Boolean) {
-        val qs = qsTile ?: return
-        qs.label = tile.label
-        qs.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(tile.iconKey))
-        qs.state = if (active) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            qs.subtitle = when {
-                !ready -> getString(R.string.qs_tile_subtitle_no_shizuku)
-                active -> getString(R.string.qs_tile_subtitle_on)
-                else -> getString(R.string.qs_tile_subtitle_off)
+                toast(toastFor(success, target), tile.label)
             }
         }
-        qs.updateTile()
     }
 
-    private fun collapseQuickSettings() {
-        runCatching {
-            ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", "collapse"))
-        }
+    private fun unassignedSpec(): TileSpec = unavailableSpec(
+        R.string.qs_tile_unassigned,
+        TileIcon.Res(TerminalTileIcons.resFor(TerminalTileIcons.DEFAULT_KEY))
+    )
+
+    private fun specFor(tile: ToggleTile, active: Boolean, ready: Boolean) = TileSpec(
+        label = tile.label,
+        icon = TileIcon.Res(TerminalTileIcons.resFor(tile.iconKey)),
+        state = stateOf(ready, active),
+        subtitle = getString(subtitleFor(active, ready))
+    )
+
+    private fun subtitleFor(active: Boolean, ready: Boolean): Int = when {
+        !ready -> R.string.qs_tile_subtitle_no_shizuku
+        active -> R.string.qs_tile_subtitle_on
+        else -> R.string.qs_tile_subtitle_off
     }
 
-    private fun toast(message: String) {
-        val appContext = applicationContext
-        mainHandler.post {
-            Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
-        }
+    private fun toastFor(success: Boolean, active: Boolean): Int = when {
+        !success -> R.string.qs_tile_toast_failed
+        active -> R.string.qs_tile_toast_on
+        else -> R.string.qs_tile_toast_off
     }
 
     private companion object {
         const val BINDER_WAIT_MS = 3000L
-        val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 }
 

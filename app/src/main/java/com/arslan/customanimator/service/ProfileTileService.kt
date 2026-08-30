@@ -1,131 +1,61 @@
 package com.arslan.customanimator.service
 
-import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.service.quicksettings.Tile
-import android.service.quicksettings.TileService
-import android.widget.Toast
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ProfileApplier
 import com.arslan.customanimator.utils.ProfileManager
-import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TerminalTileIcons
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
-abstract class ProfileTileService : TileService() {
+abstract class ProfileTileService : BaseTileService() {
 
     protected abstract val slot: Int
 
-    private val mainHandler = Handler(Looper.getMainLooper())
-
-    override fun onStartListening() {
-        super.onStartListening()
-        refreshTile()
-    }
-
-    override fun onTileAdded() {
-        super.onTileAdded()
-        refreshTile()
+    override suspend fun loadSpec(): TileSpec {
+        val profile = ProfileManager(this).getProfileForSlot(slot)
+        val config = profile?.tile ?: return unavailableSpec(
+            R.string.terminal_tile_unassigned,
+            TileIcon.Res(TerminalTileIcons.resFor(ProfileManager.DEFAULT_ICON_KEY))
+        )
+        val ready = ProfileApplier.canApply(this)
+        return TileSpec(
+            label = config.label.ifBlank { profile.name },
+            icon = TileIcon.Res(TerminalTileIcons.resFor(profile.iconKey)),
+            state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE,
+            subtitle = if (ready) {
+                resources.getQuantityString(
+                    R.plurals.profile_action_count,
+                    profile.actionCount,
+                    profile.actionCount
+                )
+            } else {
+                getString(R.string.preset_tile_subtitle_no_permission)
+            }
+        )
     }
 
     override fun onClick() {
         super.onClick()
-
-        val profile = ProfileManager(this).getProfileForSlot(slot)
-        val config = profile?.tile
-        if (profile == null || config == null) {
-            toast(getString(R.string.terminal_tile_unassigned_message))
-            refreshTile()
-            return
-        }
-
-        if (!ProfileApplier.canApply(this)) {
-            toast(getString(R.string.preset_tile_needs_permission))
-            refreshTile()
-            return
-        }
-
-        val label = config.label.ifBlank { profile.name }
-        backgroundScope.launch {
+        runTileAction {
+            val profile = ProfileManager(this).getProfileForSlot(slot)
+            val config = profile?.tile
+                ?: return@runTileAction toast(R.string.terminal_tile_unassigned_message)
+            if (!ProfileApplier.canApply(this)) {
+                return@runTileAction toast(R.string.preset_tile_needs_permission)
+            }
             if (config.collapsePanel) {
-                collapseQuickSettings()
+                collapseShade()
             }
-
-            val result = ProfileApplier.apply(this@ProfileTileService, profile)
-
-            if (config.showToast) {
-                val message = if (result.failed == 0) {
-                    getString(R.string.profile_tile_toast_applied, label)
-                } else {
-                    getString(R.string.profile_tile_toast_partial, label, result.applied, result.total)
-                }
-                toast(message)
+            val result = ProfileApplier.apply(this, profile)
+            if (!config.showToast) {
+                return@runTileAction
             }
-            setTileState(Tile.STATE_INACTIVE)
-        }
-    }
-
-    private fun refreshTile() {
-        val tile = qsTile ?: return
-        val profile = ProfileManager(this).getProfileForSlot(slot)
-        val config = profile?.tile
-
-        if (profile == null || config == null) {
-            tile.label = getString(R.string.terminal_tile_unassigned)
-            tile.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(ProfileManager.DEFAULT_ICON_KEY))
-            tile.state = Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = null
-            }
-        } else {
-            tile.label = config.label.ifBlank { profile.name }
-            tile.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(profile.iconKey))
-            val ready = ProfileApplier.canApply(this)
-            tile.state = if (ready) Tile.STATE_INACTIVE else Tile.STATE_UNAVAILABLE
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                tile.subtitle = if (ready) {
-                    resources.getQuantityString(
-                        R.plurals.profile_action_count,
-                        profile.actionCount,
-                        profile.actionCount
-                    )
-                } else {
-                    getString(R.string.preset_tile_subtitle_no_permission)
-                }
+            val label = config.label.ifBlank { profile.name }
+            if (result.failed == 0) {
+                toast(R.string.profile_tile_toast_applied, label)
+            } else {
+                toast(R.string.profile_tile_toast_partial, label, result.applied, result.total)
             }
         }
-        tile.updateTile()
-    }
-
-    private fun setTileState(state: Int) {
-        mainHandler.post {
-            qsTile?.let {
-                it.state = state
-                it.updateTile()
-            }
-        }
-    }
-
-    private fun collapseQuickSettings() {
-        runCatching {
-            ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", "collapse"))
-        }
-    }
-
-    private fun toast(message: String) {
-        val appContext = applicationContext
-        mainHandler.post {
-            Toast.makeText(appContext, message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private companion object {
-        val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 }
 
