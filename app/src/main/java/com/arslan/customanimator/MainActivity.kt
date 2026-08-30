@@ -94,6 +94,7 @@ import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.theme.MonoNumeralLarge
 import com.arslan.customanimator.ui.components.NavBarItem
+import com.arslan.customanimator.ui.components.NavBarItems
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.PresetManager
@@ -831,56 +832,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else {
     Scaffold(
         topBar = {
-            Column {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.app_name),
-                        style = MaterialTheme.typography.headlineMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+            HomeTopBar(
+                selectedTab = selectedTab,
+                onSelectTab = { selectedTab = it },
+                onOpenNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
+                onOpenProfiles = {
+                    profilesRefreshToken++
+                    currentScreen = HomeScreen.PROFILES
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground,
-                    actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                ),
-                actions = {
-                    IconButton(onClick = { currentScreen = HomeScreen.NOTIFY_HOME }) {
-                        Icon(
-                            imageVector = Icons.Default.Notifications,
-                            contentDescription = stringResource(R.string.pn_title)
-                        )
-                    }
-                    IconButton(onClick = {
-                        profilesRefreshToken++
-                        currentScreen = HomeScreen.PROFILES
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = stringResource(R.string.profiles_title)
-                        )
-                    }
-                    IconButton(onClick = { currentScreen = HomeScreen.SETTINGS }) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = stringResource(R.string.settings)
-                        )
-                    }
-                }
-                )
-                ExpressiveTopNavBar(
-                    items = HomeTab.entries.map { tab ->
-                        NavBarItem(
-                            icon = tab.icon(),
-                            label = stringResource(tab.labelRes()),
-                            selected = selectedTab == tab,
-                            onClick = { selectedTab = tab }
-                        )
-                    }
-                )
-            }
+                onOpenSettings = { currentScreen = HomeScreen.SETTINGS }
+            )
         },
         bottomBar = {
             Column(modifier = Modifier.navigationBarsPadding()) {
@@ -2416,27 +2377,74 @@ private fun SubScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeTopBar(
+    selectedTab: HomeTab,
+    onSelectTab: (HomeTab) -> Unit,
+    onOpenNotify: () -> Unit,
+    onOpenProfiles: () -> Unit,
+    onOpenSettings: () -> Unit
+) {
+    Column {
+        TopAppBar(
+            title = {
+                Text(
+                    stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.headlineMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            actions = {
+                IconButton(onClick = onOpenNotify) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = stringResource(R.string.pn_title)
+                    )
+                }
+                IconButton(onClick = onOpenProfiles) {
+                    Icon(
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = stringResource(R.string.profiles_title)
+                    )
+                }
+                IconButton(onClick = onOpenSettings) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(R.string.settings)
+                    )
+                }
+            }
+        )
+        ExpressiveTopNavBar(
+            items = rememberHomeNavItems(),
+            selectedIndex = selectedTab.ordinal,
+            onSelect = { onSelectTab(HomeTab.entries[it]) }
+        )
+    }
+}
+
+@Composable
+private fun rememberHomeNavItems(): NavBarItems {
+    val labels = HomeTab.entries.map { stringResource(it.labelRes()) }
+    return remember(labels) {
+        NavBarItems(HomeTab.entries.map { NavBarItem(it.icon(), labels[it.ordinal]) })
+    }
+}
+
 @Composable
 fun SyncedAnimationPreview(
     currentScale: Float,
     modifier: Modifier = Modifier
 ) {
-    val baseSlideMs = 300f
-    val pauseMs = 600f
-    val restMs = 400f
-
-    val slideIn1x = baseSlideMs
-    val slideInCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
-
-    val slideOut1x = baseSlideMs
-    val slideOutCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
-
-    val maxSlideIn = maxOf(slideIn1x, slideInCurrent)
-    val slideOutStart = maxSlideIn + pauseMs
-    val maxSlideOut = maxOf(slideOut1x, slideOutCurrent)
-    val totalCycleMs = slideOutStart + maxSlideOut + restMs
-
-    var elapsedMs by remember { mutableFloatStateOf(0f) }
+    val timings = remember(currentScale) { PreviewTimings.of(currentScale) }
+    val elapsedMs = remember { mutableFloatStateOf(0f) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     var isAppForeground by remember { mutableStateOf(true) }
@@ -2455,20 +2463,17 @@ fun SyncedAnimationPreview(
         }
     }
 
-    LaunchedEffect(currentScale, isAppForeground) {
+    LaunchedEffect(timings, isAppForeground) {
         if (!isAppForeground) return@LaunchedEffect
-        
-        elapsedMs = 0f
+
+        elapsedMs.floatValue = 0f
         var last = withFrameNanos { it }
         while (true) {
             withFrameNanos { now ->
                 val dt = (now - last) / 1_000_000f
                 last = now
-                val step = if (dt > 500f) 0f else dt
-                elapsedMs += step
-                if (elapsedMs >= totalCycleMs) {
-                    elapsedMs %= totalCycleMs
-                }
+                val step = if (dt > MAX_FRAME_STEP_MS) 0f else dt
+                elapsedMs.floatValue = (elapsedMs.floatValue + step) % timings.totalCycleMs
             }
         }
     }
@@ -2514,10 +2519,9 @@ fun SyncedAnimationPreview(
             ) {
                 AppOpenCloseCard(
                     label = stringResource(R.string.preview_default_scale_label),
-                    slideInMs = slideIn1x,
-                    slideOutStartMs = slideOutStart,
-                    slideOutMs = slideOut1x,
-                    totalCycleMs = totalCycleMs,
+                    slideInMs = timings.slideInDefault,
+                    slideOutStartMs = timings.slideOutStartMs,
+                    slideOutMs = timings.slideOutDefault,
                     elapsedMs = elapsedMs,
                     animOff = false,
                     isPrimary = true,
@@ -2528,10 +2532,9 @@ fun SyncedAnimationPreview(
                         R.string.preview_current_scale_label,
                         String.format(java.util.Locale.US, "%.2f", currentScale)
                     ),
-                    slideInMs = slideInCurrent,
-                    slideOutStartMs = slideOutStart,
-                    slideOutMs = slideOutCurrent,
-                    totalCycleMs = totalCycleMs,
+                    slideInMs = timings.slideInCurrent,
+                    slideOutStartMs = timings.slideOutStartMs,
+                    slideOutMs = timings.slideOutCurrent,
                     elapsedMs = elapsedMs,
                     animOff = currentScale <= 0f,
                     isPrimary = false,
@@ -2548,36 +2551,16 @@ private fun AppOpenCloseCard(
     slideInMs: Float,
     slideOutStartMs: Float,
     slideOutMs: Float,
-    totalCycleMs: Float,
-    elapsedMs: Float,
+    elapsedMs: FloatState,
     animOff: Boolean,
     isPrimary: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val progress: Float
-
-    when {
-        animOff -> {
-            progress = 1f
-        }
-        elapsedMs < slideInMs -> {
-            val frac = decelerateInterpolation(elapsedMs / slideInMs)
-            progress = frac
-        }
-        elapsedMs < slideOutStartMs -> {
-            progress = 1f
-        }
-        elapsedMs < slideOutStartMs + slideOutMs -> {
-            val frac = accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
-            progress = 1f - frac
-        }
-        else -> {
-            progress = 0f
-        }
-    }
-
     val accentColor = if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
     val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
+    val progress = {
+        previewProgress(elapsedMs.floatValue, slideInMs, slideOutStartMs, slideOutMs, animOff)
+    }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
@@ -2599,23 +2582,76 @@ private fun AppOpenCloseCard(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
                     .height(80.dp)
-                    .graphicsLayer(
-                        scaleX = 0.4f + 0.6f * progress,
-                        scaleY = 0.4f + 0.6f * progress,
-                        translationY = (1f - progress) * 100f,
-                        alpha = progress
-                    )
+                    .graphicsLayer {
+                        val value = progress()
+                        scaleX = PREVIEW_MIN_SCALE + PREVIEW_SCALE_RANGE * value
+                        scaleY = PREVIEW_MIN_SCALE + PREVIEW_SCALE_RANGE * value
+                        translationY = (1f - value) * PREVIEW_SLIDE_PX
+                        alpha = value
+                    }
                     .background(accentColor, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (progress > 0.3f) stringResource(R.string.preview_app_text) else "",
+                    text = stringResource(R.string.preview_app_text),
                     color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = if (progress() > PREVIEW_TEXT_THRESHOLD) 1f else 0f
+                    }
                 )
             }
         }
     }
+}
+
+@Immutable
+private data class PreviewTimings(
+    val slideInDefault: Float,
+    val slideInCurrent: Float,
+    val slideOutDefault: Float,
+    val slideOutCurrent: Float,
+    val slideOutStartMs: Float,
+    val totalCycleMs: Float
+) {
+    companion object {
+        fun of(currentScale: Float): PreviewTimings {
+            val scaled = if (currentScale <= 0f) 0f else BASE_SLIDE_MS * currentScale * currentScale
+            val slideOutStart = maxOf(BASE_SLIDE_MS, scaled) + PAUSE_MS
+            return PreviewTimings(
+                slideInDefault = BASE_SLIDE_MS,
+                slideInCurrent = scaled,
+                slideOutDefault = BASE_SLIDE_MS,
+                slideOutCurrent = scaled,
+                slideOutStartMs = slideOutStart,
+                totalCycleMs = slideOutStart + maxOf(BASE_SLIDE_MS, scaled) + REST_MS
+            )
+        }
+    }
+}
+
+private const val BASE_SLIDE_MS = 300f
+private const val PAUSE_MS = 600f
+private const val REST_MS = 400f
+private const val MAX_FRAME_STEP_MS = 500f
+private const val PREVIEW_MIN_SCALE = 0.4f
+private const val PREVIEW_SCALE_RANGE = 0.6f
+private const val PREVIEW_SLIDE_PX = 100f
+private const val PREVIEW_TEXT_THRESHOLD = 0.3f
+
+private fun previewProgress(
+    elapsedMs: Float,
+    slideInMs: Float,
+    slideOutStartMs: Float,
+    slideOutMs: Float,
+    animOff: Boolean
+): Float = when {
+    animOff -> 1f
+    elapsedMs < slideInMs -> decelerateInterpolation(elapsedMs / slideInMs)
+    elapsedMs < slideOutStartMs -> 1f
+    elapsedMs < slideOutStartMs + slideOutMs ->
+        1f - accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
+    else -> 0f
 }
 
 private fun decelerateInterpolation(input: Float): Float {
