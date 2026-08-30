@@ -44,13 +44,14 @@ abstract class ToggleTileService : TileService() {
             return
         }
 
-        if (!ShizukuHelper.hasShizukuPermission()) {
-            toast(getString(R.string.qs_tile_needs_shizuku))
-            render(tile, manager.getStoredState(tile.id), false)
-            return
-        }
-
         backgroundScope.launch {
+            if (!ShizukuHelper.awaitShizukuPermission(BINDER_WAIT_MS)) {
+                toast(getString(R.string.qs_tile_needs_shizuku))
+                val stored = manager.getStoredState(tile.id)
+                mainHandler.post { render(tile, stored, false) }
+                return@launch
+            }
+
             if (tile.collapsePanel) {
                 collapseQuickSettings()
             }
@@ -83,15 +84,12 @@ abstract class ToggleTileService : TileService() {
             return
         }
 
-        val ready = ShizukuHelper.hasShizukuPermission()
-        if (!ready) {
-            render(tile, manager.getStoredState(tile.id), false)
-            return
-        }
+        render(tile, manager.getStoredState(tile.id), ShizukuHelper.hasShizukuPermission())
 
         backgroundScope.launch {
-            val state = manager.resolveState(tile)
-            mainHandler.post { render(tile, state, true) }
+            val ready = ShizukuHelper.awaitShizukuPermission(BINDER_WAIT_MS)
+            val state = if (ready) manager.resolveState(tile) else manager.getStoredState(tile.id)
+            mainHandler.post { render(tile, state, ready) }
         }
     }
 
@@ -110,11 +108,7 @@ abstract class ToggleTileService : TileService() {
         val qs = qsTile ?: return
         qs.label = tile.label
         qs.icon = Icon.createWithResource(this, TerminalTileIcons.resFor(tile.iconKey))
-        qs.state = when {
-            !ready -> Tile.STATE_UNAVAILABLE
-            active -> Tile.STATE_ACTIVE
-            else -> Tile.STATE_INACTIVE
-        }
+        qs.state = if (active) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             qs.subtitle = when {
                 !ready -> getString(R.string.qs_tile_subtitle_no_shizuku)
@@ -139,6 +133,7 @@ abstract class ToggleTileService : TileService() {
     }
 
     private companion object {
+        const val BINDER_WAIT_MS = 3000L
         val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 }

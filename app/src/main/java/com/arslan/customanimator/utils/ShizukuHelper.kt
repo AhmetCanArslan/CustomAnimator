@@ -14,6 +14,8 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.reflect.Method
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 data class ShellResult(val exitCode: Int, val output: String) {
     val isSuccess: Boolean get() = exitCode == 0
@@ -44,6 +46,22 @@ object ShizukuHelper {
         }
     }
     
+    fun awaitShizukuPermission(timeoutMs: Long): Boolean {
+        if (hasShizukuPermission()) return true
+        val latch = CountDownLatch(1)
+        val listener = Shizuku.OnBinderReceivedListener { latch.countDown() }
+        return try {
+            Shizuku.addBinderReceivedListenerSticky(listener)
+            latch.await(timeoutMs, TimeUnit.MILLISECONDS)
+            hasShizukuPermission()
+        } catch (e: Exception) {
+            Log.d(TAG, "Waiting for Shizuku binder failed: ${e.message}")
+            false
+        } finally {
+            runCatching { Shizuku.removeBinderReceivedListener(listener) }
+        }
+    }
+
     fun requestShizukuPermission(context: Context) {
         try {
             Shizuku.requestPermission(0)

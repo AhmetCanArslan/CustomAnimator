@@ -25,8 +25,7 @@ class SoundTileLongPressActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val componentId = intent?.getParcelableExtra<ComponentName>(EXTRA_COMPONENT_ID)
-        if (componentId != null && componentId.className != SoundTileService::class.java.name) {
+        if (!isSoundTileLongPress()) {
             runCatching {
                 startActivity(
                     Intent(this, MainActivity::class.java).apply {
@@ -49,5 +48,12 @@ class SoundTileLongPressActivity : Activity() {
         }
 
         finish()
+    }
+
+    private fun isSoundTileLongPress(): Boolean {
+        val component = intent?.getParcelableExtra<ComponentName>(Intent.EXTRA_COMPONENT_NAME)
+            ?: intent?.getParcelableExtra<ComponentName>(EXTRA_COMPONENT_ID)
+            ?: return false
+        return component.className == SoundTileService::class.java.name
     }
 }
