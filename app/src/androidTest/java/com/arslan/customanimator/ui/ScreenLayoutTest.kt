@@ -11,11 +11,9 @@ import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
-import com.arslan.customanimator.BoostScreenContent
+import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.StatusBarIconsScreen
-import com.arslan.customanimator.CleanerScreenContent
-import com.arslan.customanimator.CloseAppsExclusionsScreen
 import com.arslan.customanimator.CompileBoosterScreenContent
 import com.arslan.customanimator.DeveloperScreenContent
 import com.arslan.customanimator.DozeWhitelistScreen
@@ -97,14 +95,6 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun cleanerScreenFitsSmallPhones() = screenFits {
-        CleanerScreenContent(
-            hasShizukuPermission = false,
-            onNavigateToCloseAppsExclusions = {}
-        )
-    }
-
-    @Test
     fun autoForceStopScreenFitsSmallPhones() = screenFits(R.string.auto_force_stop) {
         AutoForceStopScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
     }
@@ -112,11 +102,6 @@ class ScreenLayoutTest {
     @Test
     fun autoPermissionDisablerScreenFitsSmallPhones() = screenFits(R.string.auto_permission_disabler) {
         AutoPermissionDisablerScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
-    }
-
-    @Test
-    fun closeAppsExclusionsScreenFitsSmallPhones() = screenFits(R.string.close_apps_exclusions) {
-        CloseAppsExclusionsScreen(onBack = {})
     }
 
     @Test
@@ -254,8 +239,8 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun boostScreenFitsSmallPhones() = screenFits {
-        BoostScreenContent()
+    fun optimizerScreenFitsSmallPhones() = screenFits {
+        OptimizerScreenContent()
     }
 
     @Test

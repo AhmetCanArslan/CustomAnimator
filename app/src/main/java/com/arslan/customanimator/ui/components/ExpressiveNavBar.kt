@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
@@ -22,12 +24,14 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.first
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.Motion
 
@@ -51,9 +55,17 @@ fun ExpressiveTopNavBar(
     val listState = rememberLazyListState()
 
     LaunchedEffect(selectedIndex) {
-        if (selectedIndex >= 0) {
-            listState.animateScrollToItem(selectedIndex, TOP_NAV_SCROLL_OFFSET)
+        if (selectedIndex < 0) return@LaunchedEffect
+        val info = snapshotFlow { listState.layoutInfo }
+            .first { it.visibleItemsInfo.isNotEmpty() }
+        val item = info.visibleItemsInfo.firstOrNull { it.index == selectedIndex }
+        if (item == null) {
+            listState.animateScrollToItem(selectedIndex)
+            return@LaunchedEffect
         }
+        val delta = revealScrollDelta(info.viewportStartOffset + info.beforeContentPadding,
+            info.viewportEndOffset - info.afterContentPadding, item)
+        if (delta != 0f) listState.animateScrollBy(delta)
     }
 
     LazyRow(
@@ -130,8 +142,15 @@ private fun TopNavBarCell(
     }
 }
 
+private fun revealScrollDelta(start: Int, end: Int, item: LazyListItemInfo): Float {
+    return when {
+        item.offset < start -> (item.offset - start).toFloat()
+        item.offset + item.size > end -> (item.offset + item.size - end).toFloat()
+        else -> 0f
+    }
+}
+
 private val OUTER_PADDING = 12.dp
 private val INNER_PADDING = 6.dp
-private val CELL_SPACING = 2.dp
+private val CELL_SPACING = 8.dp
 private val ICON_SIZE = 22.dp
-private const val TOP_NAV_SCROLL_OFFSET = -160

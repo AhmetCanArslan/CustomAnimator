@@ -15,11 +15,9 @@
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Width</string>
     <string name="nav_terminal">Terminal</string>
-    <string name="nav_boost">Boost</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Tools</string>
     <string name="tools_utilities">Utilities</string>
-    <string name="cleaner_title">Cleaner</string>
     <string name="more_compile_booster_desc">Recompile apps for faster launches</string>
     <string name="more_auto_actions_desc">Automatic force stop and permission rules</string>
     <string name="developer_toggles">System Toggles</string>
@@ -72,10 +70,6 @@
     <string name="clear_all_app_caches_desc">Frees up storage without touching app data or login sessions</string>
     <string name="close_background_apps">Close Background Apps</string>
     <string name="close_background_apps_desc">Force-stops every installed app except this one</string>
-    <string name="clear_caches_confirm_title">Clear All App Caches?</string>
-    <string name="clear_caches_confirm_message">This trims cached files from every app to free up storage. App data and logins are not affected.</string>
-    <string name="close_apps_confirm_title">Close Background Apps?</string>
-    <string name="close_apps_confirm_message">This force-stops every other installed app. Unsaved work in those apps may be lost.</string>
     <string name="auto_force_stop">Auto Force-Stop Apps</string>
     <string name="auto_force_stop_desc">Force-stop selected apps the instant they leave the foreground</string>
     <string name="auto_force_stop_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
@@ -121,7 +115,6 @@
     <string name="clear">Clear</string>
     <string name="action_succeeded">Done!</string>
     <string name="action_failed">Action failed. Make sure Shizuku is running and permission is granted.</string>
-    <string name="apps_closed_count">Closed %1$d apps</string>
     <string name="working">Working…</string>
     <string name="width_presets">Saved Width Presets</string>
     <string name="no_width_presets_saved">No width presets saved yet. Tap + to create one!</string>
@@ -334,10 +327,6 @@ Animator Duration: %3$.2f</string>
     <string name="rotation_reverse_portrait">Reverse Portrait (180°)</string>
     <string name="rotation_landscape_270">Landscape (90° right)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Exclusion List</string>
-    <string name="close_apps_exclusions_desc">Pick apps that "Close background apps" should never force-stop</string>
-    <string name="cleaner_info">Wipes every app\'s cache to free storage and stops background apps to free memory; some freed space returns as caches rebuild. Recommended once a week.</string>
-    <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
     <string name="compile_all_apps_short">Compile</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Reset Rotation</string>
@@ -1160,29 +1149,30 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_widget_label">Game Mode</string>
     <string name="game_mode_widget_description">Turns Game Mode on or off in one tap.</string>
     <string name="boost_start">Start optimization</string>
+    <string name="optimizer_title">Optimizer</string>
+    <string name="optimizer_info">Cleaner makes room on your phone and frees up memory in one tap. Performance Booster does a deeper job: it also tidies up your apps so they open faster. Use Cleaner any time; use Performance Booster when your phone feels slow.</string>
+    <string name="optimizer_terminal_empty">Pick clean or boost below to start.</string>
+    <string name="optimizer_clean_start">Clean now</string>
+    <string name="optimizer_cleaning_label">Cleaning…</string>
     <string name="boost_cancel">Cancel</string>
     <string name="boost_cancelled">Optimization cancelled</string>
-    <string name="boost_watch_ad">Watch ad &amp; optimize</string>
     <string name="boost_running_label">Optimizing…</string>
     <string name="boost_ad_title">Ad-supported</string>
-    <string name="boost_ad_desc">Watch a short ad to run the optimization</string>
     <string name="boost_premium_title">Premium unlocked</string>
     <string name="boost_premium_desc">Unlimited optimizations, no ads</string>
     <string name="boost_ad_reward_denied">Finish the ad to unlock the optimization</string>
+    <string name="boost_watch_ad">Watch ad &amp; optimize</string>
+    <string name="optimizer_clean_watch_ad">Watch ad &amp; clean</string>
     <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
-    <string name="boost_ad_loading">Loading ad…</string>
     <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
     <string name="reward_gate_watch">Watch ad</string>
     <string name="reward_gate_unlocked_title">Unlocked</string>
     <string name="reward_gate_unlocked_desc">Available for %1$d:%2$02d more</string>
-    <string name="reward_gate_cleaner_desc">Watch a short ad to unlock the cleaner for 3 minutes</string>
     <string name="game_mode_ad_desc">Watch a short ad to turn on game mode</string>
     <string name="game_mode_select_games_first">Select at least one game first</string>
     <string name="compile_booster_ad_desc">Watch a short ad to start compiling</string>
     <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
     <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
-    <string name="boost_terminal_empty">Tap the button below to start the optimization.</string>
-    <string name="boost_info">"Start optimization" frees storage by wiping app caches, helps apps open faster, and stops background apps to free up memory. Recommended once every 2 days.</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrics</string>
@@ -1445,4 +1435,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="status_bar_icon_sync_active">Sync active</string>
     <string name="status_bar_icon_sync_failing">Sync failing</string>
     <string name="status_bar_icon_bluetooth_battery">Bluetooth battery</string>
+    <string name="optimizer_performance_booster">Performance Booster</string>
+    <string name="optimizer_performance_booster_desc">Deep tune-up you can watch step by step</string>
+    <string name="optimizer_cleaner">Cleaner</string>
+    <string name="optimizer_cleaner_desc">Frees up space and memory in one tap</string>
+    <string name="optimizer_clean_done">Clean finished</string>
 </resources>

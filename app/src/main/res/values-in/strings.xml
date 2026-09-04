@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Membebaskan penyimpanan tanpa mengubah data aplikasi atau sesi login</string>
     <string name="close_background_apps">Tutup Aplikasi Latar Belakang</string>
     <string name="close_background_apps_desc">Paksa hentikan semua aplikasi terpasang kecuali aplikasi ini</string>
-    <string name="clear_caches_confirm_title">Hapus Cache Semua Aplikasi?</string>
-    <string name="clear_caches_confirm_message">Ini akan menghapus file cache dari setiap aplikasi untuk membebaskan penyimpanan. Data aplikasi dan login tidak akan terpengaruh.</string>
-    <string name="close_apps_confirm_title">Tutup Aplikasi Latar Belakang?</string>
-    <string name="close_apps_confirm_message">Ini akan memaksa menghentikan semua aplikasi terpasang lainnya. Pekerjaan yang belum disimpan di aplikasi tersebut dapat hilang.</string>
     <string name="auto_actions">Tindakan Otomatis</string>
     <string name="auto_force_stop">Hentikan Paksa Otomatis</string>
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>
@@ -80,7 +76,6 @@
     <string name="clear">Hapus</string>
     <string name="action_succeeded">Selesai!</string>
     <string name="action_failed">Tindakan gagal. Pastikan Shizuku berjalan dan izin telah diberikan.</string>
-    <string name="apps_closed_count">%1$d aplikasi ditutup</string>
     <string name="working">Memproses…</string>
     <string name="width_presets">Preset Lebar Tersimpan</string>
     <string name="no_width_presets_saved">Belum ada preset lebar yang disimpan. Ketuk + untuk membuat satu!</string>
@@ -208,10 +203,6 @@ Durasi Animator: %3$.2f</string>
     <string name="rotation_reverse_portrait">Potret Terbalik (180°)</string>
     <string name="rotation_landscape_270">Lanskap (90° kanan)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Daftar Pengecualian</string>
-    <string name="close_apps_exclusions_desc">Pilih aplikasi yang tidak boleh dihentikan oleh “Tutup aplikasi latar belakang”</string>
-    <string name="cleaner_info">Menghapus cache aplikasi untuk membebaskan penyimpanan dan menghentikan aplikasi latar belakang untuk membebaskan memori; ruang yang terbebas bisa terpakai kembali saat cache dibangun ulang. Disarankan sekali seminggu.</string>
-    <string name="close_apps_exclusions_count">%1$d aplikasi dikecualikan dari penutupan</string>
     <string name="compile_all_apps_short">Kompilasi</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Setel Ulang Rotasi</string>
@@ -1119,22 +1110,17 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_start">Mulai optimalisasi</string>
     <string name="boost_cancel">Batal</string>
     <string name="boost_cancelled">Optimalisasi dibatalkan</string>
-    <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
     <string name="boost_running_label">Mengoptimalkan…</string>
     <string name="boost_ad_title">Didukung iklan</string>
-    <string name="boost_ad_desc">Tonton iklan singkat untuk menjalankan optimalisasi</string>
     <string name="boost_premium_title">Premium aktif</string>
     <string name="boost_premium_desc">Optimalisasi tanpa batas, tanpa iklan</string>
     <string name="boost_ad_reward_denied">Selesaikan iklan untuk membuka optimalisasi</string>
+    <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
+    <string name="optimizer_clean_watch_ad">Tonton iklan &amp; bersihkan</string>
     <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
-    <string name="boost_ad_loading">Memuat iklan…</string>
-    <string name="boost_terminal_empty">Ketuk tombol di bawah untuk memulai optimalisasi.</string>
-    <string name="boost_info">"Mulai optimalisasi" membebaskan penyimpanan dengan menghapus cache aplikasi, membantu aplikasi terbuka lebih cepat, dan menghentikan aplikasi latar belakang untuk membebaskan memori. Disarankan setiap 2 hari.</string>
-    <string name="nav_boost">Boost</string>
     <string name="developer_title">Pengembang</string>
     <string name="tools_title">Alat</string>
     <string name="tools_utilities">Utilitas</string>
-    <string name="cleaner_title">Pembersih</string>
     <string name="more_compile_booster_desc">Kompilasi ulang aplikasi agar terbuka lebih cepat</string>
     <string name="more_auto_actions_desc">Aturan hentikan paksa dan izin otomatis</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>
@@ -1142,7 +1128,6 @@ Durasi Animator: %3$.2f</string>
     <string name="reward_gate_watch">Tonton iklan</string>
     <string name="reward_gate_unlocked_title">Terbuka</string>
     <string name="reward_gate_unlocked_desc">Tersedia %1$d:%2$02d lagi</string>
-    <string name="reward_gate_cleaner_desc">Tonton iklan singkat untuk membuka pembersih selama 3 menit</string>
     <string name="game_mode_ad_desc">Tonton iklan singkat untuk menyalakan mode game</string>
     <string name="game_mode_select_games_first">Pilih setidaknya satu game dulu</string>
     <string name="compile_booster_ad_desc">Tonton iklan singkat untuk mulai mengompilasi</string>
@@ -1410,4 +1395,14 @@ Durasi Animator: %3$.2f</string>
     <string name="status_bar_icon_sync_active">Sinkronisasi aktif</string>
     <string name="status_bar_icon_sync_failing">Sinkronisasi gagal</string>
     <string name="status_bar_icon_bluetooth_battery">Baterai Bluetooth</string>
+    <string name="optimizer_title">Pengoptimal</string>
+    <string name="optimizer_info">Pembersih melapangkan ruang di ponsel dan melegakan memori dengan satu ketukan. Penguat Performa bekerja lebih dalam: aplikasi juga dirapikan agar terbuka lebih cepat. Gunakan Pembersih kapan saja, dan Penguat Performa saat ponsel terasa lambat.</string>
+    <string name="optimizer_terminal_empty">Pilih bersihkan atau boost di bawah untuk memulai.</string>
+    <string name="optimizer_clean_start">Bersihkan sekarang</string>
+    <string name="optimizer_cleaning_label">Membersihkan…</string>
+    <string name="optimizer_performance_booster">Penguat Performa</string>
+    <string name="optimizer_performance_booster_desc">Perawatan mendalam yang bisa kamu ikuti langkah demi langkah</string>
+    <string name="optimizer_cleaner">Pembersih</string>
+    <string name="optimizer_cleaner_desc">Melapangkan ruang dan memori dalam satu ketukan</string>
+    <string name="optimizer_clean_done">Pembersihan selesai</string>
 </resources>

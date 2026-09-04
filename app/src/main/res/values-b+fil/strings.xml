@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Nagpapalaya ng storage nang hindi ginagalaw ang data ng app o login session</string>
     <string name="close_background_apps">Isara ang mga Background App</string>
     <string name="close_background_apps_desc">Puwersahang itigil ang lahat ng naka-install na app maliban dito</string>
-    <string name="clear_caches_confirm_title">I-clear ang Cache ng Lahat ng App?</string>
-    <string name="clear_caches_confirm_message">Aalisin nito ang mga cached na file ng bawat app para makakuha ng storage. Hindi maaapektuhan ang data ng app at mga login.</string>
-    <string name="close_apps_confirm_title">Isara ang mga Background App?</string>
-    <string name="close_apps_confirm_message">Puwersahang ihihinto nito ang lahat ng ibang naka-install na app. Maaaring mawala ang hindi na-save na gawain sa mga app na iyon.</string>
     <string name="auto_actions">Mga Awtomatikong Aksyon</string>
     <string name="auto_force_stop">Auto Force-Stop ng mga App</string>
     <string name="auto_force_stop_desc">Puwersahang ihihinto ang mga napiling app sa sandaling umalis ang mga ito sa foreground</string>
@@ -80,7 +76,6 @@
     <string name="clear">I-clear</string>
     <string name="action_succeeded">Tapos na!</string>
     <string name="action_failed">Nabigo ang aksyon. Tiyaking tumatakbo ang Shizuku at ipinagkaloob na ang pahintulot.</string>
-    <string name="apps_closed_count">%1$d app ang sinara</string>
     <string name="working">Ginagawa…</string>
     <string name="width_presets">Mga Naka-save na Width Preset</string>
     <string name="no_width_presets_saved">Wala pang naka-save na width preset. I-tap ang + para gumawa ng isa!</string>
@@ -208,10 +203,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="rotation_reverse_portrait">Baligtad na Patayo (180°)</string>
     <string name="rotation_landscape_270">Pahiga (90° kanan)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Listahan ng Eksklusyon</string>
-    <string name="close_apps_exclusions_desc">Piliin ang mga app na hindi dapat isara ng “Isara ang mga app sa background”</string>
-    <string name="cleaner_info">Binubura ang cache ng mga app para makalaya ang storage at hinihinto ang mga background app para makalaya ang memory; maaaring mapuno muli ang naka-free na espasyo habang muling nagagawa ang cache. Inirerekomenda minsan isang linggo.</string>
-    <string name="close_apps_exclusions_count">%1$d (na) app ang hindi isasara</string>
     <string name="compile_all_apps_short">I-compile</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">I-reset ang Pag-ikot</string>
@@ -1119,22 +1110,17 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_start">Simulan ang pag-optimize</string>
     <string name="boost_cancel">Kanselahin</string>
     <string name="boost_cancelled">Kinansela ang optimization</string>
-    <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
     <string name="boost_running_label">Ino-optimize…</string>
     <string name="boost_ad_title">May suporta ng ad</string>
-    <string name="boost_ad_desc">Manood ng maikling ad para patakbuhin ang pag-optimize</string>
     <string name="boost_premium_title">Naka-unlock ang Premium</string>
     <string name="boost_premium_desc">Walang limitasyong pag-optimize, walang ad</string>
     <string name="boost_ad_reward_denied">Tapusin ang ad para ma-unlock ang pag-optimize</string>
+    <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
+    <string name="optimizer_clean_watch_ad">Manood ng ad &amp; maglinis</string>
     <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
-    <string name="boost_ad_loading">Nilo-load ang ad…</string>
-    <string name="boost_terminal_empty">I-tap ang button sa ibaba para simulan ang pag-optimize.</string>
-    <string name="boost_info">Nagpapalaya ang "I-start ang optimization" ng storage sa pagbura ng cache ng mga app, tinutulungan ang mga app na mas mabilis bumukas, at hinihinto ang mga background app para makalaya ang memory. Inirerekomenda tuwing 2 araw.</string>
-    <string name="nav_boost">Boost</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Mga tool</string>
     <string name="tools_utilities">Mga utility</string>
-    <string name="cleaner_title">Cleaner</string>
     <string name="more_compile_booster_desc">I-recompile ang mga app para mas mabilis magbukas</string>
     <string name="more_auto_actions_desc">Mga awtomatikong panuntunan sa force stop at pahintulot</string>
     <string name="game_mode_fixed_performance">Naka-on ang fixed performance mode habang bukas ang Game Mode.</string>
@@ -1142,7 +1128,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="reward_gate_watch">Manood ng ad</string>
     <string name="reward_gate_unlocked_title">Naka-unlock</string>
     <string name="reward_gate_unlocked_desc">Available pa nang %1$d:%2$02d</string>
-    <string name="reward_gate_cleaner_desc">Manood ng maikling ad para ma-unlock ang cleaner nang 3 minuto</string>
     <string name="game_mode_ad_desc">Manood ng maikling ad para i-on ang game mode</string>
     <string name="game_mode_select_games_first">Pumili muna ng kahit isang laro</string>
     <string name="compile_booster_ad_desc">Manood ng maikling ad para magsimulang mag-compile</string>
@@ -1410,4 +1395,14 @@ Tagal ng Animator: %3$.2f</string>
     <string name="status_bar_icon_sync_active">Aktibo ang sync</string>
     <string name="status_bar_icon_sync_failing">Nabigo ang sync</string>
     <string name="status_bar_icon_bluetooth_battery">Baterya ng Bluetooth</string>
+    <string name="optimizer_title">Optimizer</string>
+    <string name="optimizer_info">Naglilikha ng espasyo sa telepono ang Panglinis at nagpapaginhawa ng memory sa isang tap. Mas malalim ang ginagawa ng Performance Booster: inaayos din nito ang mga app para mas mabilis magbukas. Gamitin ang Panglinis kahit kailan, at ang Performance Booster kapag mabagal ang telepono.</string>
+    <string name="optimizer_terminal_empty">Pumili ng clean o boost sa ibaba para magsimula.</string>
+    <string name="optimizer_clean_start">Maglinis ngayon</string>
+    <string name="optimizer_cleaning_label">Naglilinis…</string>
+    <string name="optimizer_performance_booster">Performance Booster</string>
+    <string name="optimizer_performance_booster_desc">Malalim na pag-ayos na masusubaybayan mo hakbang-hakbang</string>
+    <string name="optimizer_cleaner">Panglinis</string>
+    <string name="optimizer_cleaner_desc">Nagpapalaya ng espasyo at memory sa isang tap</string>
+    <string name="optimizer_clean_done">Tapos na ang paglilinis</string>
 </resources>

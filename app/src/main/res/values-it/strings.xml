@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Libera spazio senza toccare dati delle app o sessioni di accesso</string>
     <string name="close_background_apps">Chiudi app in background</string>
     <string name="close_background_apps_desc">Arresta forzatamente ogni app installata tranne questa</string>
-    <string name="clear_caches_confirm_title">Svuotare la cache di tutte le app?</string>
-    <string name="clear_caches_confirm_message">Questo rimuove i file nella cache di ogni app per liberare spazio. I dati delle app e gli accessi non vengono toccati.</string>
-    <string name="close_apps_confirm_title">Chiudere le app in background?</string>
-    <string name="close_apps_confirm_message">Questo arresta forzatamente ogni altra app installata. Il lavoro non salvato in quelle app potrebbe andare perso.</string>
     <string name="auto_force_stop">Arresto forzato automatico</string>
     <string name="auto_force_stop_desc">Arresta le app selezionate non appena escono dal primo piano</string>
     <string name="auto_force_stop_needs_usage_access">Questa funzione richiede l\'accesso ai dati di utilizzo per rilevare quando le app lasciano il primo piano.</string>
@@ -79,7 +75,6 @@
     <string name="clear">Cancella</string>
     <string name="action_succeeded">Fatto!</string>
     <string name="action_failed">Azione non riuscita. Assicurati che Shizuku sia in esecuzione e che l\'autorizzazione sia concessa.</string>
-    <string name="apps_closed_count">Chiuse %1$d app</string>
     <string name="working">Elaborazione…</string>
     <string name="width_presets">Preset di larghezza salvati</string>
     <string name="no_width_presets_saved">Nessun preset di larghezza salvato. Tocca + per crearne uno!</string>
@@ -260,10 +255,6 @@ Durata animatore: %3$.2f</string>
     <string name="rotation_reverse_portrait">Verticale capovolto (180°)</string>
     <string name="rotation_landscape_270">Orizzontale (90° a destra)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Elenco esclusioni</string>
-    <string name="close_apps_exclusions_desc">Scegli le app che "Chiudi app in background" non deve mai arrestare</string>
-    <string name="cleaner_info">Cancella la cache delle app per liberare spazio e arresta le app in background per liberare memoria; lo spazio liberato può tornare occupato man mano che la cache si ricostruisce. Consigliato una volta a settimana.</string>
-    <string name="close_apps_exclusions_count">%1$d app escluse dalla chiusura</string>
     <string name="compile_all_apps_short">Compila</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Reimposta rotazione</string>
@@ -1139,22 +1130,17 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_start">Avvia ottimizzazione</string>
     <string name="boost_cancel">Annulla</string>
     <string name="boost_cancelled">Ottimizzazione annullata</string>
-    <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
     <string name="boost_running_label">Ottimizzazione…</string>
     <string name="boost_ad_title">Con annunci</string>
-    <string name="boost_ad_desc">Guarda un breve annuncio per eseguire l’ottimizzazione</string>
     <string name="boost_premium_title">Premium sbloccato</string>
     <string name="boost_premium_desc">Ottimizzazioni illimitate, senza annunci</string>
     <string name="boost_ad_reward_denied">Completa l’annuncio per sbloccare l’ottimizzazione</string>
+    <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
+    <string name="optimizer_clean_watch_ad">Guarda un ad e pulisci</string>
     <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
-    <string name="boost_ad_loading">Caricamento annuncio…</string>
-    <string name="boost_terminal_empty">Tocca il pulsante qui sotto per avviare l’ottimizzazione.</string>
-    <string name="boost_info">"Avvia ottimizzazione" libera spazio cancellando la cache delle app, aiuta le app ad aprirsi più velocemente e arresta le app in background per liberare memoria. Consigliato ogni 2 giorni.</string>
-    <string name="nav_boost">Boost</string>
     <string name="developer_title">Sviluppatore</string>
     <string name="tools_title">Strumenti</string>
     <string name="tools_utilities">Utilità</string>
-    <string name="cleaner_title">Pulizia</string>
     <string name="more_compile_booster_desc">Ricompila le app per avvii più rapidi</string>
     <string name="more_auto_actions_desc">Regole automatiche di arresto forzato e permessi</string>
     <string name="game_mode_fixed_performance">La modalità prestazioni fisse è attiva mentre la Modalità Gioco è accesa.</string>
@@ -1162,7 +1148,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="reward_gate_watch">Guarda annuncio</string>
     <string name="reward_gate_unlocked_title">Sbloccato</string>
     <string name="reward_gate_unlocked_desc">Disponibile ancora per %1$d:%2$02d</string>
-    <string name="reward_gate_cleaner_desc">Guarda un breve annuncio per sbloccare la pulizia per 3 minuti</string>
     <string name="game_mode_ad_desc">Guarda un breve annuncio per attivare la modalità gioco</string>
     <string name="game_mode_select_games_first">Seleziona prima almeno un gioco</string>
     <string name="compile_booster_ad_desc">Guarda un breve annuncio per avviare la compilazione</string>
@@ -1430,4 +1415,14 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="status_bar_icon_sync_active">Sincronizzazione attiva</string>
     <string name="status_bar_icon_sync_failing">Errore di sincronizzazione</string>
     <string name="status_bar_icon_bluetooth_battery">Batteria Bluetooth</string>
+    <string name="optimizer_title">Ottimizzatore</string>
+    <string name="optimizer_info">La Pulizia libera spazio sul telefono e alleggerisce la memoria con un tocco. Il Booster prestazioni fa un lavoro più profondo: sistema anche le app perché si aprano più in fretta. Usa la Pulizia quando vuoi e il Booster quando il telefono va lento.</string>
+    <string name="optimizer_terminal_empty">Scegli pulizia o boost qui sotto per iniziare.</string>
+    <string name="optimizer_clean_start">Pulisci ora</string>
+    <string name="optimizer_cleaning_label">Pulizia…</string>
+    <string name="optimizer_performance_booster">Booster prestazioni</string>
+    <string name="optimizer_performance_booster_desc">Messa a punto profonda che puoi seguire passo dopo passo</string>
+    <string name="optimizer_cleaner">Pulizia</string>
+    <string name="optimizer_cleaner_desc">Libera spazio e memoria con un tocco</string>
+    <string name="optimizer_clean_done">Pulizia completata</string>
 </resources>

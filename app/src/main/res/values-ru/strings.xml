@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Освобождает место, не затрагивая данные приложений и сессии входа</string>
     <string name="close_background_apps">Закрыть фоновые приложения</string>
     <string name="close_background_apps_desc">Принудительно останавливает все установленные приложения, кроме этого</string>
-    <string name="clear_caches_confirm_title">Очистить кэш всех приложений?</string>
-    <string name="clear_caches_confirm_message">Это удалит кэшированные файлы всех приложений для освобождения места. Данные приложений и входы в аккаунты не затрагиваются.</string>
-    <string name="close_apps_confirm_title">Закрыть фоновые приложения?</string>
-    <string name="close_apps_confirm_message">Это принудительно остановит все остальные установленные приложения. Несохранённая работа в них может быть потеряна.</string>
     <string name="auto_actions">Автоматические действия</string>
     <string name="auto_force_stop">Автоостановка приложений</string>
     <string name="auto_force_stop_desc">Принудительно останавливает выбранные приложения сразу после выхода из переднего плана</string>
@@ -80,7 +76,6 @@
     <string name="clear">Очистить</string>
     <string name="action_succeeded">Готово!</string>
     <string name="action_failed">Действие не выполнено. Убедитесь, что Shizuku запущен и разрешение предоставлено.</string>
-    <string name="apps_closed_count">Закрыто приложений: %1$d</string>
     <string name="working">Выполняется…</string>
     <string name="width_presets">Сохранённые пресеты ширины</string>
     <string name="no_width_presets_saved">Пресеты ширины ещё не сохранены. Нажмите +, чтобы создать!</string>
@@ -208,10 +203,6 @@
     <string name="rotation_reverse_portrait">Перевёрнутая портретная (180°)</string>
     <string name="rotation_landscape_270">Альбомная (90° вправо)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Список исключений</string>
-    <string name="close_apps_exclusions_desc">Выберите приложения, которые «Закрыть фоновые приложения» никогда не должно останавливать</string>
-    <string name="cleaner_info">Удаляет кэш приложений, освобождая место, и останавливает фоновые приложения, освобождая память; освобождённое место может снова заполниться по мере восстановления кэша. Рекомендуется раз в неделю.</string>
-    <string name="close_apps_exclusions_count">Приложений в исключениях: %1$d</string>
     <string name="compile_all_apps_short">Компилировать</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Сбросить поворот</string>
@@ -1121,22 +1112,17 @@
     <string name="boost_start">Запустить оптимизацию</string>
     <string name="boost_cancel">Отмена</string>
     <string name="boost_cancelled">Оптимизация отменена</string>
-    <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
     <string name="boost_running_label">Оптимизация…</string>
     <string name="boost_ad_title">С рекламой</string>
-    <string name="boost_ad_desc">Посмотрите короткую рекламу, чтобы запустить оптимизацию</string>
     <string name="boost_premium_title">Premium активирован</string>
     <string name="boost_premium_desc">Неограниченные оптимизации, без рекламы</string>
     <string name="boost_ad_reward_denied">Досмотрите рекламу, чтобы разблокировать оптимизацию</string>
+    <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
+    <string name="optimizer_clean_watch_ad">Реклама и очистка</string>
     <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
-    <string name="boost_ad_loading">Загрузка рекламы…</string>
-    <string name="boost_terminal_empty">Нажмите кнопку ниже, чтобы начать оптимизацию.</string>
-    <string name="boost_info">«Запустить оптимизацию» освобождает место, удаляя кэш приложений, помогает приложениям запускаться быстрее и останавливает фоновые приложения, освобождая память. Рекомендуется раз в 2 дня.</string>
-    <string name="nav_boost">Ускорение</string>
     <string name="developer_title">Разработчик</string>
     <string name="tools_title">Инструменты</string>
     <string name="tools_utilities">Утилиты</string>
-    <string name="cleaner_title">Очистка</string>
     <string name="more_compile_booster_desc">Перекомпиляция приложений для быстрого запуска</string>
     <string name="more_auto_actions_desc">Автоматическая остановка и правила разрешений</string>
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
@@ -1144,7 +1130,6 @@
     <string name="reward_gate_watch">Смотреть рекламу</string>
     <string name="reward_gate_unlocked_title">Открыто</string>
     <string name="reward_gate_unlocked_desc">Доступно ещё %1$d:%2$02d</string>
-    <string name="reward_gate_cleaner_desc">Посмотрите короткую рекламу, чтобы открыть очистку на 3 минуты</string>
     <string name="game_mode_ad_desc">Посмотрите короткую рекламу, чтобы включить игровой режим</string>
     <string name="game_mode_select_games_first">Сначала выберите хотя бы одну игру</string>
     <string name="compile_booster_ad_desc">Посмотрите короткую рекламу, чтобы начать компиляцию</string>
@@ -1412,4 +1397,14 @@
     <string name="status_bar_icon_sync_active">Синхронизация активна</string>
     <string name="status_bar_icon_sync_failing">Ошибка синхронизации</string>
     <string name="status_bar_icon_bluetooth_battery">Заряд Bluetooth-устройства</string>
+    <string name="optimizer_title">Оптимизатор</string>
+    <string name="optimizer_info">«Очистка» освобождает место на телефоне и разгружает память одним касанием. «Ускорение производительности» работает глубже: оно ещё и приводит приложения в порядок, чтобы они открывались быстрее. Очистку можно запускать когда угодно, ускорение — когда телефон стал медленным.</string>
+    <string name="optimizer_terminal_empty">Выберите очистку или ускорение ниже, чтобы начать.</string>
+    <string name="optimizer_clean_start">Очистить</string>
+    <string name="optimizer_cleaning_label">Очистка…</string>
+    <string name="optimizer_performance_booster">Ускорение производительности</string>
+    <string name="optimizer_performance_booster_desc">Глубокая настройка, за которой можно наблюдать шаг за шагом</string>
+    <string name="optimizer_cleaner">Очистка</string>
+    <string name="optimizer_cleaner_desc">Освобождает место и память одним касанием</string>
+    <string name="optimizer_clean_done">Очистка завершена</string>
 </resources>

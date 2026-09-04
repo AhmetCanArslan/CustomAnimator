@@ -201,8 +201,7 @@ object DeveloperOptionsManager {
     }
 
     fun forceStopBackgroundApps(context: Context): Boolean {
-        val skip = CloseAppsExclusionManager(context).getSelectedPackages() +
-            InstalledAppsProvider.getUnsafeToKillPackages(context)
+        val skip = InstalledAppsProvider.getUnsafeToKillPackages(context)
         val apps = InstalledAppsProvider.getLaunchableApps(context).filterNot { skip.contains(it.packageName) }
         return apps.all { forceStopApp(it.packageName) }
     }

@@ -61,7 +61,7 @@ class MainActivityFlowTest {
 
     @Test
     fun everyTopTabOpensWithoutCrashing() {
-        listOf(R.string.nav_animation, R.string.nav_width, R.string.nav_boost, R.string.game_mode)
+        listOf(R.string.nav_animation, R.string.nav_width, R.string.optimizer_title, R.string.game_mode)
             .forEach { tab ->
                 composeTestRule.onNodeWithText(string(tab)).performClick()
                 settle()
@@ -71,10 +71,10 @@ class MainActivityFlowTest {
 
     @Test
     fun tabSelectionSurvivesRecreation() {
-        composeTestRule.onNodeWithText(string(R.string.nav_boost)).performClick()
+        composeTestRule.onNodeWithText(string(R.string.optimizer_title)).performClick()
         settle()
         composeTestRule.activityRule.scenario.recreate()
-        assertTrue("top nav bar never came back", waitForText(R.string.nav_boost))
-        composeTestRule.onNodeWithText(string(R.string.nav_boost)).assertIsDisplayed()
+        assertTrue("top nav bar never came back", waitForText(R.string.optimizer_title))
+        composeTestRule.onNodeWithText(string(R.string.optimizer_title)).assertIsDisplayed()
     }
 }

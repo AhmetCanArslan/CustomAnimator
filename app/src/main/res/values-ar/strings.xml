@@ -66,10 +66,6 @@
     <string name="clear_all_app_caches_desc">يحرر مساحة التخزين دون لمس بيانات التطبيقات أو جلسات تسجيل الدخول</string>
     <string name="close_background_apps">إغلاق تطبيقات الخلفية</string>
     <string name="close_background_apps_desc">إيقاف كل تطبيق مثبت قسريًا باستثناء هذا التطبيق</string>
-    <string name="clear_caches_confirm_title">مسح ذاكرة التخزين المؤقت لجميع التطبيقات؟</string>
-    <string name="clear_caches_confirm_message">سيؤدي هذا إلى تقليص الملفات المؤقتة من كل التطبيقات لتحرير مساحة. بيانات التطبيقات وتسجيلات الدخول غير متأثرة.</string>
-    <string name="close_apps_confirm_title">إغلاق تطبيقات الخلفية؟</string>
-    <string name="close_apps_confirm_message">سيؤدي هذا إلى إيقاف كل تطبيق مثبت آخر قسريًا. قد يُفقد العمل غير المحفوظ في تلك التطبيقات.</string>
     <string name="auto_force_stop">الإيقاف القسري التلقائي للتطبيقات</string>
     <string name="auto_force_stop_desc">إيقاف التطبيقات المحددة قسريًا فور مغادرتها الواجهة الأمامية</string>
     <string name="auto_force_stop_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>
@@ -115,7 +111,6 @@
     <string name="clear">مسح</string>
     <string name="action_succeeded">تم!</string>
     <string name="action_failed">فشل الإجراء. تأكد من أن شيزوكو يعمل وأن الإذن ممنوح.</string>
-    <string name="apps_closed_count">تم إغلاق %1$d تطبيق</string>
     <string name="working">جارٍ العمل…</string>
     <string name="width_presets">إعدادات العرض المحفوظة</string>
     <string name="no_width_presets_saved">لا توجد إعدادات عرض محفوظة بعد. اضغط + لإنشاء واحد!</string>
@@ -328,10 +323,6 @@
     <string name="rotation_reverse_portrait">عمودي معكوس (180°)</string>
     <string name="rotation_landscape_270">أفقي (90° يمين)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">قائمة الاستثناءات</string>
-    <string name="close_apps_exclusions_desc">اختر التطبيقات التي يجب ألا يقوم "إغلاق تطبيقات الخلفية" بإيقافها قسريًا أبدًا</string>
-    <string name="cleaner_info">يمسح ذاكرة التخزين المؤقت للتطبيقات لتحرير مساحة التخزين ويوقف تطبيقات الخلفية لتحرير الذاكرة؛ قد تمتلئ المساحة المحررة مجددًا مع إعادة بناء ذاكرة التخزين المؤقت. يُنصح به مرة واحدة أسبوعيًا.</string>
-    <string name="close_apps_exclusions_count">%1$d تطبيق مستثنى من الإغلاق</string>
     <string name="compile_all_apps_short">ترجمة</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">إعادة تعيين الدوران</string>
@@ -1159,22 +1150,17 @@
     <string name="boost_start">بدء التحسين</string>
     <string name="boost_cancel">إلغاء</string>
     <string name="boost_cancelled">تم إلغاء التحسين</string>
-    <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
     <string name="boost_ad_title">مدعوم بالإعلانات</string>
-    <string name="boost_ad_desc">شاهد إعلانًا قصيرًا لتشغيل التحسين</string>
     <string name="boost_premium_title">النسخة المميزة مفعّلة</string>
     <string name="boost_premium_desc">تحسينات غير محدودة وبدون إعلانات</string>
     <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
+    <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
+    <string name="optimizer_clean_watch_ad">شاهد إعلانًا ونظّف</string>
     <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
-    <string name="boost_ad_loading">جارٍ تحميل الإعلان…</string>
-    <string name="boost_terminal_empty">اضغط الزر أدناه لبدء التحسين.</string>
-    <string name="boost_info">"بدء التحسين" يحرر مساحة التخزين بمسح ذاكرة التخزين المؤقت للتطبيقات، ويساعد التطبيقات على الفتح أسرع، ويوقف تطبيقات الخلفية لتحرير الذاكرة. يُنصح به كل يومين.</string>
-    <string name="nav_boost">تسريع</string>
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
     <string name="tools_utilities">أدوات مساعدة</string>
-    <string name="cleaner_title">المنظّف</string>
     <string name="more_compile_booster_desc">إعادة ترجمة التطبيقات لتشغيل أسرع</string>
     <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
@@ -1182,7 +1168,6 @@
     <string name="reward_gate_watch">مشاهدة إعلان</string>
     <string name="reward_gate_unlocked_title">مفتوح</string>
     <string name="reward_gate_unlocked_desc">متاح لمدة %1$d:%2$02d أخرى</string>
-    <string name="reward_gate_cleaner_desc">شاهد إعلانًا قصيرًا لفتح المنظّف لمدة 3 دقائق</string>
     <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
     <string name="compile_booster_ad_desc">شاهد إعلانًا قصيرًا لبدء الترجمة</string>
@@ -1450,4 +1435,14 @@
     <string name="status_bar_icon_sync_active">المزامنة نشطة</string>
     <string name="status_bar_icon_sync_failing">فشل المزامنة</string>
     <string name="status_bar_icon_bluetooth_battery">بطارية البلوتوث</string>
+    <string name="optimizer_title">المُحسِّن</string>
+    <string name="optimizer_info">يوفّر «المنظّف» مساحة على هاتفك ويريح الذاكرة بنقرة واحدة. أما «مُسرِّع الأداء» فيقوم بعمل أعمق: يرتّب تطبيقاتك أيضًا لتفتح أسرع. استخدم المنظّف في أي وقت، واستخدم مُسرِّع الأداء عندما تشعر بأن الهاتف بطيء.</string>
+    <string name="optimizer_terminal_empty">اختر التنظيف أو التسريع بالأسفل للبدء.</string>
+    <string name="optimizer_clean_start">نظّف الآن</string>
+    <string name="optimizer_cleaning_label">جارٍ التنظيف…</string>
+    <string name="optimizer_performance_booster">مُسرِّع الأداء</string>
+    <string name="optimizer_performance_booster_desc">صيانة عميقة يمكنك متابعتها خطوة بخطوة</string>
+    <string name="optimizer_cleaner">المنظّف</string>
+    <string name="optimizer_cleaner_desc">يوفّر مساحة وذاكرة بنقرة واحدة</string>
+    <string name="optimizer_clean_done">انتهى التنظيف</string>
 </resources>

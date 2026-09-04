@@ -45,7 +45,7 @@ class PrefsManagersTest {
 
     @Test
     fun selectedAppsNeverKeepOwnPackage() {
-        val manager = CloseAppsExclusionManager(context)
+        val manager = GameModeManager(context)
         manager.setSelectedPackages(setOf(context.packageName, "com.example.app"))
         assertFalse(manager.getSelectedPackages().contains(context.packageName))
         assertTrue(manager.getSelectedPackages().contains("com.example.app"))

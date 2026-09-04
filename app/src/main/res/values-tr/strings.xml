@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Uygulama verilerine veya oturumlara dokunmadan depolama alanı boşaltır</string>
     <string name="close_background_apps">Arka Plan Uygulamalarını Kapat</string>
     <string name="close_background_apps_desc">Bu uygulama hariç yüklü tüm uygulamaları zorla durdurur</string>
-    <string name="clear_caches_confirm_title">Tüm Uygulama Önbellekleri Temizlensin mi?</string>
-    <string name="clear_caches_confirm_message">Bu, depolama alanı boşaltmak için her uygulamanın önbelleğini kırpar. Uygulama verileri ve oturumlar etkilenmez.</string>
-    <string name="close_apps_confirm_title">Arka Plan Uygulamaları Kapatılsın mı?</string>
-    <string name="close_apps_confirm_message">Bu, yüklü diğer tüm uygulamaları zorla durdurur. O uygulamalardaki kaydedilmemiş işler kaybolabilir.</string>
     <string name="auto_actions">Otomatik İşlemler</string>
     <string name="auto_force_stop">Otomatik Zorla Durdurma</string>
     <string name="auto_force_stop_desc">Seçilen uygulamaları ön plandan çıktığı anda zorla durdurur</string>
@@ -80,7 +76,6 @@
     <string name="clear">Temizle</string>
     <string name="action_succeeded">Tamamlandı!</string>
     <string name="action_failed">İşlem başarısız. Shizuku\'nun çalıştığından ve izin verildiğinden emin olun.</string>
-    <string name="apps_closed_count">%1$d uygulama kapatıldı</string>
     <string name="working">İşleniyor…</string>
     <string name="width_presets">Kaydedilmiş Genişlik Ön Ayarları</string>
     <string name="no_width_presets_saved">Henüz kaydedilmiş genişlik ön ayarı yok. Oluşturmak için + simgesine dokunun!</string>
@@ -208,10 +203,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="rotation_reverse_portrait">Ters Dikey (180°)</string>
     <string name="rotation_landscape_270">Yatay (90° sağ)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Hariç Tutulanlar</string>
-    <string name="close_apps_exclusions_desc">“Arka plandaki uygulamaları kapat” işleminin asla kapatmayacağı uygulamaları seçin</string>
-    <string name="cleaner_info">Uygulama önbelleklerini silip depolama alanı boşaltır ve arka plandaki uygulamaları durdurarak belleği rahatlatır; önbellekler yeniden oluştukça boşalan alan tekrar dolabilir. Haftada bir yapılması önerilir.</string>
-    <string name="close_apps_exclusions_count">%1$d uygulama kapatma dışında tutuluyor</string>
     <string name="compile_all_apps_short">Derle</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Ekran Dönüşünü Sıfırla</string>
@@ -1127,22 +1118,17 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_start">Optimizasyonu başlat</string>
     <string name="boost_cancel">İptal</string>
     <string name="boost_cancelled">Optimizasyon iptal edildi</string>
-    <string name="boost_watch_ad">Reklam izle ve optimize et</string>
     <string name="boost_running_label">Optimize ediliyor…</string>
     <string name="boost_ad_title">Reklam destekli</string>
-    <string name="boost_ad_desc">Optimizasyonu çalıştırmak için kısa bir reklam izle</string>
     <string name="boost_premium_title">Premium açık</string>
     <string name="boost_premium_desc">Sınırsız optimizasyon, reklam yok</string>
     <string name="boost_ad_reward_denied">Optimizasyonu açmak için reklamı bitir</string>
+    <string name="boost_watch_ad">Reklam izle ve optimize et</string>
+    <string name="optimizer_clean_watch_ad">Reklam izle &amp; temizle</string>
     <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantını kontrol edip tekrar dene.</string>
-    <string name="boost_ad_loading">Reklam yükleniyor…</string>
-    <string name="boost_terminal_empty">Optimizasyonu başlatmak için aşağıdaki düğmeye dokun.</string>
-    <string name="boost_info">"Optimizasyonu başlat" uygulama önbelleklerini silerek depolama alanı boşaltır, uygulamaların daha hızlı açılmasını sağlar ve arka plandaki uygulamaları durdurup belleği rahatlatır. 2 günde bir yapılması önerilir.</string>
-    <string name="nav_boost">Hızlandır</string>
     <string name="developer_title">Geliştirici</string>
     <string name="tools_title">Araçlar</string>
     <string name="tools_utilities">Yardımcı araçlar</string>
-    <string name="cleaner_title">Temizleyici</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
     <string name="more_auto_actions_desc">Otomatik zorla durdurma ve izin kuralları</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
@@ -1150,7 +1136,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="reward_gate_watch">Reklam izle</string>
     <string name="reward_gate_unlocked_title">Açıldı</string>
     <string name="reward_gate_unlocked_desc">%1$d:%2$02d süreyle daha kullanılabilir</string>
-    <string name="reward_gate_cleaner_desc">Temizleyiciyi 3 dakikalığına açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_ad_desc">Oyun modunu açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_select_games_first">Önce en az bir oyun seçin</string>
     <string name="compile_booster_ad_desc">Derlemeyi başlatmak için kısa bir reklam izleyin</string>
@@ -1418,4 +1403,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="status_bar_icon_sync_active">Eşitleme etkin</string>
     <string name="status_bar_icon_sync_failing">Eşitleme hatası</string>
     <string name="status_bar_icon_bluetooth_battery">Bluetooth pili</string>
+    <string name="optimizer_title">Optimize</string>
+    <string name="optimizer_info">Temizleyici tek dokunuşla telefonunda yer açar ve belleği rahatlatır. Performans Hızlandırıcı daha derin çalışır: uygulamaların daha hızlı açılması için onları da düzenler. Temizleyiciyi istediğin zaman, Performans Hızlandırıcıyı telefonun yavaşladığında kullan.</string>
+    <string name="optimizer_terminal_empty">Başlamak için aşağıdan temizleme veya hızlandırmayı seç.</string>
+    <string name="optimizer_clean_start">Şimdi temizle</string>
+    <string name="optimizer_cleaning_label">Temizleniyor…</string>
+    <string name="optimizer_performance_booster">Performans Hızlandırıcı</string>
+    <string name="optimizer_performance_booster_desc">Adım adım izleyebileceğin derin bakım</string>
+    <string name="optimizer_cleaner">Temizleyici</string>
+    <string name="optimizer_cleaner_desc">Tek dokunuşla yer ve bellek açar</string>
+    <string name="optimizer_clean_done">Temizlik tamamlandı</string>
 </resources>

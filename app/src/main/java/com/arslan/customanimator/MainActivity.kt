@@ -212,13 +212,13 @@ class MainActivity : ComponentActivity() {
 private const val WIDTH_REVERT_MS = 15_000L
 
 enum class HomeTab {
-    ANIMATION, WIDTH, BOOST, GAME_MODE, SYSTEM_METER, CLEANER, BATTERY, TOOLS, DEVELOPER, TERMINAL
+    ANIMATION, WIDTH, OPTIMIZER, GAME_MODE, SYSTEM_METER, BATTERY, TOOLS, DEVELOPER, TERMINAL
 }
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
-    CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
+    WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS
 }
@@ -226,10 +226,9 @@ enum class HomeScreen {
 private fun HomeTab.labelRes(): Int = when (this) {
     HomeTab.ANIMATION -> R.string.nav_animation
     HomeTab.WIDTH -> R.string.nav_width
-    HomeTab.BOOST -> R.string.nav_boost
+    HomeTab.OPTIMIZER -> R.string.optimizer_title
     HomeTab.GAME_MODE -> R.string.game_mode
     HomeTab.SYSTEM_METER -> R.string.system_meter_title
-    HomeTab.CLEANER -> R.string.cleaner_title
     HomeTab.BATTERY -> R.string.nav_battery
     HomeTab.TOOLS -> R.string.tools_title
     HomeTab.DEVELOPER -> R.string.developer_title
@@ -239,10 +238,9 @@ private fun HomeTab.labelRes(): Int = when (this) {
 private fun HomeTab.icon(): ImageVector = when (this) {
     HomeTab.ANIMATION -> Icons.Default.PlayArrow
     HomeTab.WIDTH -> Icons.Default.Straighten
-    HomeTab.BOOST -> Icons.Default.Bolt
+    HomeTab.OPTIMIZER -> Icons.Default.Bolt
     HomeTab.GAME_MODE -> Icons.Default.VideogameAsset
     HomeTab.SYSTEM_METER -> Icons.Default.Speed
-    HomeTab.CLEANER -> Icons.Default.CleaningServices
     HomeTab.BATTERY -> Icons.Default.BatterySaver
     HomeTab.TOOLS -> Icons.Default.Build
     HomeTab.DEVELOPER -> Icons.Default.DeveloperMode
@@ -264,7 +262,6 @@ private val SUB_SCREEN_PARENTS = mapOf(
 )
 
 private val SUB_SCREEN_TABS = mapOf(
-    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.CLEANER,
     HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
     HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
     HomeScreen.APP_THREADING to HomeTab.TOOLS,
@@ -349,7 +346,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val openSetupGuide: () -> Unit = { currentScreen = HomeScreen.SETUP_GUIDE }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val cleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -362,7 +358,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val refreshRateListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val qsTilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -796,11 +791,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.NOTIFY_CREATE_PATTERN) {
         CreatePatternSection(onNavigateBack = notifyBack)
-    } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
-        CloseAppsExclusionsScreen(
-            onBack = { backToTab(HomeTab.CLEANER) },
-            listState = closeAppsExclusionsListState
-        )
     } else if (targetScreen == HomeScreen.NOTIFY_HOME) {
         SubScreen(
             title = stringResource(R.string.pn_title),
@@ -880,8 +870,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onHistoryChange = { terminalHistory = it },
             isActive = targetScreen == currentScreen && targetTab == selectedTab
         )
-        } else if (targetTab == HomeTab.BOOST) {
-        BoostScreenContent()
+        } else if (targetTab == HomeTab.OPTIMIZER) {
+        OptimizerScreenContent()
         } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
@@ -913,12 +903,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         GameModeScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
             listState = gameModeListState
-        )
-        } else if (targetTab == HomeTab.CLEANER) {
-        CleanerScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
-            listState = cleanerListState
         )
         } else if (targetTab == HomeTab.BATTERY) {
         BatteryScreenContent(

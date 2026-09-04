@@ -30,10 +30,6 @@
     <string name="clear_all_app_caches_desc">Libera espaço sem afetar dados do app ou sessões de login</string>
     <string name="close_background_apps">Fechar Apps em Segundo Plano</string>
     <string name="close_background_apps_desc">Força a parada de todos os apps instalados, exceto este</string>
-    <string name="clear_caches_confirm_title">Limpar Caches de Todos os Apps?</string>
-    <string name="clear_caches_confirm_message">Isso remove arquivos de cache de todos os apps para liberar espaço. Dados do app e logins não são afetados.</string>
-    <string name="close_apps_confirm_title">Fechar Apps em Segundo Plano?</string>
-    <string name="close_apps_confirm_message">Isso forçará a parada de todos os outros apps instalados. Trabalhos não salvos nesses apps podem ser perdidos.</string>
     <string name="auto_actions">Ações Automáticas</string>
     <string name="auto_force_stop">Parada Forçada Automática</string>
     <string name="auto_force_stop_desc">Força a parada dos apps selecionados assim que saem do primeiro plano</string>
@@ -80,7 +76,6 @@
     <string name="clear">Limpar</string>
     <string name="action_succeeded">Concluído!</string>
     <string name="action_failed">Falha na ação. Certifique-se de que o Shizuku está em execução e a permissão foi concedida.</string>
-    <string name="apps_closed_count">%1$d apps fechados</string>
     <string name="working">Trabalhando…</string>
     <string name="width_presets">Presets de Largura Salvos</string>
     <string name="no_width_presets_saved">Nenhum preset de largura salvo ainda. Toque em + para criar um!</string>
@@ -208,10 +203,6 @@ Duração do Animador: %3$.2f</string>
     <string name="rotation_reverse_portrait">Retrato invertido (180°)</string>
     <string name="rotation_landscape_270">Paisagem (90° à direita)</string>
     <!-- Close apps exclusions -->
-    <string name="close_apps_exclusions">Lista de Exceções</string>
-    <string name="close_apps_exclusions_desc">Escolha apps que "Fechar apps em segundo plano" nunca deve encerrar</string>
-    <string name="cleaner_info">Apaga o cache dos apps para liberar armazenamento e encerra apps em segundo plano para liberar memória; o espaço liberado pode voltar a ser usado conforme o cache é reconstituído. Recomendado uma vez por semana.</string>
-    <string name="close_apps_exclusions_count">%1$d app(s) fora da lista de fechamento</string>
     <string name="compile_all_apps_short">Compilar</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Redefinir Rotação</string>
@@ -1119,22 +1110,17 @@ Duração do Animador: %3$.2f</string>
     <string name="boost_start">Iniciar otimização</string>
     <string name="boost_cancel">Cancelar</string>
     <string name="boost_cancelled">Otimização cancelada</string>
-    <string name="boost_watch_ad">Assistir anúncio e otimizar</string>
     <string name="boost_running_label">Otimizando…</string>
     <string name="boost_ad_title">Com anúncios</string>
-    <string name="boost_ad_desc">Assista a um anúncio curto para executar a otimização</string>
     <string name="boost_premium_title">Premium desbloqueado</string>
     <string name="boost_premium_desc">Otimizações ilimitadas, sem anúncios</string>
     <string name="boost_ad_reward_denied">Conclua o anúncio para desbloquear a otimização</string>
+    <string name="boost_watch_ad">Assistir anúncio e otimizar</string>
+    <string name="optimizer_clean_watch_ad">Ver anúncio e limpar</string>
     <string name="boost_ad_unavailable">Não foi possível carregar o anúncio. Verifique sua conexão e tente novamente.</string>
-    <string name="boost_ad_loading">Carregando anúncio…</string>
-    <string name="boost_terminal_empty">Toque no botão abaixo para iniciar a otimização.</string>
-    <string name="boost_info">"Iniciar otimização" libera armazenamento apagando o cache dos apps, ajuda os apps a abrirem mais rápido e encerra apps em segundo plano para liberar memória. Recomendado a cada 2 dias.</string>
-    <string name="nav_boost">Impulso</string>
     <string name="developer_title">Desenvolvedor</string>
     <string name="tools_title">Ferramentas</string>
     <string name="tools_utilities">Utilitários</string>
-    <string name="cleaner_title">Limpeza</string>
     <string name="more_compile_booster_desc">Recompile apps para abrirem mais rápido</string>
     <string name="more_auto_actions_desc">Regras automáticas de parada forçada e permissões</string>
     <string name="game_mode_fixed_performance">O modo de desempenho fixo fica ativo enquanto o Modo Jogo está ligado.</string>
@@ -1142,7 +1128,6 @@ Duração do Animador: %3$.2f</string>
     <string name="reward_gate_watch">Ver anúncio</string>
     <string name="reward_gate_unlocked_title">Desbloqueado</string>
     <string name="reward_gate_unlocked_desc">Disponível por mais %1$d:%2$02d</string>
-    <string name="reward_gate_cleaner_desc">Assista a um anúncio curto para liberar a limpeza por 3 minutos</string>
     <string name="game_mode_ad_desc">Assista a um anúncio curto para ligar o modo jogo</string>
     <string name="game_mode_select_games_first">Selecione pelo menos um jogo primeiro</string>
     <string name="compile_booster_ad_desc">Assista a um anúncio curto para começar a compilar</string>
@@ -1410,4 +1395,14 @@ Duração do Animador: %3$.2f</string>
     <string name="status_bar_icon_sync_active">Sincronização ativa</string>
     <string name="status_bar_icon_sync_failing">Falha de sincronização</string>
     <string name="status_bar_icon_bluetooth_battery">Bateria do Bluetooth</string>
+    <string name="optimizer_title">Otimizador</string>
+    <string name="optimizer_info">A Limpeza libera espaço no seu celular e alivia a memória com um toque. O Otimizador de desempenho faz um trabalho mais profundo: também organiza seus apps para que abram mais rápido. Use a Limpeza quando quiser e o Otimizador quando o celular estiver lento.</string>
+    <string name="optimizer_terminal_empty">Escolha limpar ou otimizar abaixo para começar.</string>
+    <string name="optimizer_clean_start">Limpar agora</string>
+    <string name="optimizer_cleaning_label">Limpando…</string>
+    <string name="optimizer_performance_booster">Otimizador de desempenho</string>
+    <string name="optimizer_performance_booster_desc">Ajuste profundo que você acompanha passo a passo</string>
+    <string name="optimizer_cleaner">Limpeza</string>
+    <string name="optimizer_cleaner_desc">Libera espaço e memória com um toque</string>
+    <string name="optimizer_clean_done">Limpeza concluída</string>
 </resources>
