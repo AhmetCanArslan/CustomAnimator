@@ -1357,4 +1357,6 @@
     <string name="qs_tiles_add_custom_desc">Создайте переключатель со своими командами включения и выключения</string>
     <string name="qs_tiles_category_count">Доступно: %1$d</string>
     <string name="qs_tiles_action_settings">Настройки плитки</string>
+    <string name="restart_system_ui_tile_label">Перезапуск System UI</string>
+    <string name="qs_tiles_builtin_restart_system_ui_desc">Перезапустите системный интерфейс через Shizuku</string>
 </resources>

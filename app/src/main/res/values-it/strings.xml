@@ -1375,4 +1375,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="qs_tiles_add_custom_desc">Crea un interruttore con i tuoi comandi ON e OFF</string>
     <string name="qs_tiles_category_count">%1$d disponibili</string>
     <string name="qs_tiles_action_settings">Impostazioni del riquadro</string>
+    <string name="restart_system_ui_tile_label">Riavvia l\'interfaccia di sistema</string>
+    <string name="qs_tiles_builtin_restart_system_ui_desc">Riavvia l\'interfaccia di sistema con Shizuku</string>
 </resources>

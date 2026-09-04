@@ -102,7 +102,7 @@ abstract class BaseTileService : TileService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             tile.subtitle = spec.subtitle
         }
-        tile.updateTile()
+        runCatching { tile.updateTile() }
     }
 
     private fun iconFor(icon: TileIcon): Icon = synchronized(iconCache) {

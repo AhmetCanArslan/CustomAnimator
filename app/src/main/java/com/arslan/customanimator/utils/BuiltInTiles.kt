@@ -13,6 +13,7 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.service.AlwaysOnDisplayTileService
 import com.arslan.customanimator.service.CaffeineTileService
 import com.arslan.customanimator.service.GameModeTileService
+import com.arslan.customanimator.service.RestartSystemUiTileService
 import com.arslan.customanimator.service.ScreenshotTileService
 import com.arslan.customanimator.service.SoundTileService
 
@@ -47,6 +48,13 @@ object BuiltInTiles {
             R.string.qs_tiles_builtin_caffeine_desc,
             R.drawable.ic_tile_caffeine,
             CaffeineTileService::class.java
+        ),
+        Entry(
+            "restart_system_ui",
+            R.string.restart_system_ui_tile_label,
+            R.string.qs_tiles_builtin_restart_system_ui_desc,
+            R.drawable.ic_tile_restart_alt,
+            RestartSystemUiTileService::class.java
         ),
         Entry(
             "sound",

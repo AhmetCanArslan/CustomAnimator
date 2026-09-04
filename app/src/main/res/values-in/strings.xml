@@ -1355,4 +1355,6 @@ Durasi Animator: %3$.2f</string>
     <string name="qs_tiles_add_custom_desc">Buat sakelar dengan perintah ON dan OFF milikmu</string>
     <string name="qs_tiles_category_count">%1$d tersedia</string>
     <string name="qs_tiles_action_settings">Setelan ubin</string>
+    <string name="restart_system_ui_tile_label">Mulai Ulang Antarmuka Sistem</string>
+    <string name="qs_tiles_builtin_restart_system_ui_desc">Mulai ulang antarmuka sistem dengan Shizuku</string>
 </resources>
