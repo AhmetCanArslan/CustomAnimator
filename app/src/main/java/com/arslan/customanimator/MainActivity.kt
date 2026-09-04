@@ -259,7 +259,8 @@ private val NOTIFY_SCREENS = setOf(
 
 private val SUB_SCREEN_PARENTS = mapOf(
     HomeScreen.AUTO_FORCE_STOP to HomeScreen.AUTO_ACTIONS,
-    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS
+    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS,
+    HomeScreen.SOUND_TILE to HomeScreen.QS_TILES
 )
 
 private val SUB_SCREEN_TABS = mapOf(
@@ -273,7 +274,6 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
     HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
-    HomeScreen.SOUND_TILE to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
     HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
@@ -707,7 +707,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         QsTilesScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
             hasShizukuPermission = hasShizukuPermission.value,
-            listState = qsTilesListState
+            listState = qsTilesListState,
+            onOpenTab = { tab -> backToTab(tab) },
+            onOpenProfiles = { currentScreen = HomeScreen.PROFILES },
+            onOpenSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
+            onOpenScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS }
         )
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
@@ -740,7 +744,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.SOUND_TILE) {
         SoundTileScreen(
-            onBack = { backToTab(HomeTab.TOOLS) },
+            onBack = { currentScreen = HomeScreen.QS_TILES },
             hasShizukuPermission = hasShizukuPermission.value,
             listState = soundTileListState
         )
@@ -890,7 +894,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
-            onNavigateToSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = toolsListState

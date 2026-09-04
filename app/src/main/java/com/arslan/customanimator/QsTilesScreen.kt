@@ -1,7 +1,9 @@
 package com.arslan.customanimator
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,35 +40,66 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.ToggleTile
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ExpandableCard
 import com.arslan.customanimator.ui.components.SectionHeader
-import com.arslan.customanimator.ui.components.SettingRow
-import com.arslan.customanimator.ui.components.StatusPill
-import com.arslan.customanimator.ui.components.StatusTone
+import com.arslan.customanimator.ui.components.TileFaceIcon
 import com.arslan.customanimator.ui.components.TileIconPickerDialog
-import com.arslan.customanimator.utils.BuiltInTiles
 import com.arslan.customanimator.utils.TerminalTileIcons
+import com.arslan.customanimator.utils.TileCatalog
 import com.arslan.customanimator.utils.ToggleTileManager
 import com.arslan.customanimator.utils.ToggleTilePresets
 import com.arslan.customanimator.utils.ToggleTileSlots
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QsTilesScreen(
     onBack: () -> Unit,
     hasShizukuPermission: Boolean,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
+    onOpenTab: (HomeTab) -> Unit = {},
+    onOpenProfiles: () -> Unit = {},
+    onOpenSoundTile: () -> Unit = {},
+    onOpenScreenshotActions: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val openSetup = LocalOpenSetupGuide.current
     val manager = remember { ToggleTileManager(context) }
+    val scope = rememberCoroutineScope()
 
-    var tiles by remember { mutableStateOf(manager.getTiles()) }
+    var refreshToken by remember { mutableIntStateOf(0) }
+    var toggleTiles by remember { mutableStateOf(emptyList<ToggleTile>()) }
+    var activeTiles by remember { mutableStateOf(emptyList<TileCatalog.Entry>()) }
+    var appTilesOff by remember { mutableStateOf(emptyList<TileCatalog.Entry>()) }
     var editingTile by remember { mutableStateOf<ToggleTile?>(null) }
     var showCustomDialog by remember { mutableStateOf(false) }
+    var expandedCategory by remember { mutableStateOf<Int?>(null) }
 
-    val reload: () -> Unit = { tiles = manager.getTiles() }
+    LaunchedEffect(hasShizukuPermission, refreshToken) {
+        val loaded = withContext(Dispatchers.IO) {
+            Triple(
+                manager.getTiles(),
+                TileCatalog.activeTiles(context),
+                TileCatalog.disabledAppTiles(context)
+            )
+        }
+        toggleTiles = loaded.first
+        activeTiles = loaded.second
+        appTilesOff = loaded.third
+    }
 
-    val activate: (ToggleTilePresets.Preset) -> Unit = { preset ->
+    val reload: () -> Unit = { refreshToken++ }
+
+    val runAndReload: ((Context) -> Unit) -> Unit = { action ->
+        scope.launch {
+            withContext(Dispatchers.IO) { action(context) }
+            reload()
+        }
+    }
+
+    val addPreset: (ToggleTilePresets.Preset) -> Unit = { preset ->
         val added = manager.addTile(
             presetKey = preset.key,
             label = context.getString(preset.nameRes),
@@ -80,10 +115,31 @@ fun QsTilesScreen(
             Toast.makeText(context, R.string.qs_tiles_no_free_slot, Toast.LENGTH_SHORT).show()
         } else {
             reload()
-            if (ToggleTileSlots.canRequestAdd()) {
-                ToggleTileSlots.requestAddTile(context, added.slot, added.label, added.iconKey)
-            }
+            ToggleTileSlots.requestAddTile(context, added.slot, added.label, added.iconKey)
             maybeShowInterstitial(context)
+        }
+    }
+
+    val settingsFor: (TileCatalog.Entry) -> (() -> Unit)? = { entry ->
+        when (entry.group) {
+            TileCatalog.Group.TOGGLE -> {
+                { editingTile = toggleTiles.firstOrNull { it.id == entry.id } }
+            }
+            TileCatalog.Group.ANIMATION -> {
+                { onOpenTab(HomeTab.ANIMATION) }
+            }
+            TileCatalog.Group.WIDTH -> {
+                { onOpenTab(HomeTab.WIDTH) }
+            }
+            TileCatalog.Group.TERMINAL -> {
+                { onOpenTab(HomeTab.TERMINAL) }
+            }
+            TileCatalog.Group.PROFILE -> onOpenProfiles
+            TileCatalog.Group.APP -> when (entry.id) {
+                "sound" -> onOpenSoundTile
+                "screenshot" -> onOpenScreenshotActions
+                else -> null
+            }
         }
     }
 
@@ -118,168 +174,26 @@ fun QsTilesScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            item {
-                AppCard {
-                    Text(
-                        text = stringResource(R.string.qs_tiles_intro_title),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Spacer(Modifier.height(6.dp))
-                    Text(
-                        text = stringResource(R.string.qs_tiles_intro_desc),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    StatusPill(
-                        text = stringResource(
-                            R.string.qs_tiles_slots_used,
-                            tiles.size,
-                            ToggleTileManager.MAX_TILE_SLOTS
-                        ),
-                        tone = if (tiles.size < ToggleTileManager.MAX_TILE_SLOTS) {
-                            StatusTone.INFO
-                        } else {
-                            StatusTone.WARNING
-                        }
-                    )
-                }
-            }
-
             if (!hasShizukuPermission) {
-                item {
-                    AppCard(onClick = openSetup) {
-                        Text(
-                            text = stringResource(R.string.qs_tiles_needs_shizuku_title),
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(R.string.qs_tiles_needs_shizuku_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+                item { QsTilesShizukuCard(onOpenSetup = openSetup) }
             }
 
-            item {
-                SectionHeader(
-                    title = stringResource(R.string.qs_tiles_active_section),
-                    subtitle = stringResource(R.string.qs_tiles_active_section_desc)
-                )
-            }
+            activeTilesSection(
+                tiles = activeTiles,
+                settingsFor = settingsFor,
+                onAddToPanel = { entry -> entry.addToPanel(context) },
+                onRemove = { entry -> runAndReload(entry.remove) }
+            )
 
-            if (tiles.isEmpty()) {
-                item {
-                    AppCard {
-                        Text(
-                            text = stringResource(R.string.qs_tiles_empty),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            } else {
-                item {
-                    AppCard(contentPadding = 4.dp) {
-                        tiles.forEachIndexed { index, tile ->
-                            if (index > 0) {
-                                HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                            }
-                            ActiveTileRow(
-                                tile = tile,
-                                onEdit = { editingTile = tile },
-                                onAddToPanel = {
-                                    ToggleTileSlots.requestAddTile(
-                                        context,
-                                        tile.slot,
-                                        tile.label,
-                                        tile.iconKey
-                                    )
-                                },
-                                onRemove = {
-                                    manager.removeTile(tile.id)
-                                    reload()
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-
-            item {
-                Button(
-                    onClick = { showCustomDialog = true },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = null)
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.qs_tiles_add_custom))
-                }
-            }
-
-            item {
-                SectionHeader(
-                    title = stringResource(R.string.qs_tiles_builtin_section),
-                    subtitle = stringResource(R.string.qs_tiles_builtin_section_desc)
-                )
-            }
-
-            item {
-                AppCard(contentPadding = 4.dp) {
-                    BuiltInTiles.all.forEachIndexed { index, entry ->
-                        if (index > 0) {
-                            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        }
-                        BuiltInTileRow(
-                            entry = entry,
-                            onAddToPanel = { BuiltInTiles.requestAddTile(context, entry) }
-                        )
-                    }
-                }
-            }
-
-            if (!BuiltInTiles.canRequestAdd()) {
-                item {
-                    Text(
-                        text = stringResource(R.string.qs_tiles_builtin_unsupported),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            ToggleTilePresets.categories.forEach { category ->
-                item(key = "header-${category.titleRes}") {
-                    SectionHeader(title = stringResource(category.titleRes))
-                }
-                item(key = "cat-${category.titleRes}") {
-                    AppCard(contentPadding = 4.dp) {
-                        category.presets.forEachIndexed { index, preset ->
-                            if (index > 0) {
-                                HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                            }
-                            val existing = tiles.firstOrNull { it.presetKey == preset.key }
-                            PresetRow(
-                                preset = preset,
-                                checked = existing != null,
-                                enabled = existing != null || tiles.size < ToggleTileManager.MAX_TILE_SLOTS,
-                                onCheckedChange = { checked ->
-                                    if (checked) {
-                                        activate(preset)
-                                    } else {
-                                        existing?.let {
-                                            manager.removeTile(it.id)
-                                            reload()
-                                        }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
-            }
+            availableTilesSection(
+                appTilesOff = appTilesOff,
+                toggleTiles = toggleTiles,
+                expandedCategory = expandedCategory,
+                onExpandedChange = { expandedCategory = it },
+                onAddAppTile = { entry -> runAndReload(entry.addToPanel) },
+                onAddPreset = addPreset,
+                onAddCustom = { showCustomDialog = true }
+            )
         }
     }
 
@@ -320,9 +234,7 @@ fun QsTilesScreen(
                     Toast.makeText(context, R.string.qs_tiles_no_free_slot, Toast.LENGTH_SHORT).show()
                 } else {
                     reload()
-                    if (ToggleTileSlots.canRequestAdd()) {
-                        ToggleTileSlots.requestAddTile(context, added.slot, added.label, added.iconKey)
-                    }
+                    ToggleTileSlots.requestAddTile(context, added.slot, added.label, added.iconKey)
                 }
                 showCustomDialog = false
             },
@@ -331,110 +243,259 @@ fun QsTilesScreen(
     }
 }
 
-@Composable
-private fun ActiveTileRow(
-    tile: ToggleTile,
-    onEdit: () -> Unit,
-    onAddToPanel: () -> Unit,
-    onRemove: () -> Unit
+private fun LazyListScope.activeTilesSection(
+    tiles: List<TileCatalog.Entry>,
+    settingsFor: (TileCatalog.Entry) -> (() -> Unit)?,
+    onAddToPanel: (TileCatalog.Entry) -> Unit,
+    onRemove: (TileCatalog.Entry) -> Unit
 ) {
-    SettingRow(
-        title = tile.label,
-        subtitle = stringResource(R.string.qs_tiles_slot_label, tile.slot + 1),
-        onClick = onEdit,
-        trailing = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (ToggleTileSlots.canRequestAdd()) {
-                    TextButton(onClick = onAddToPanel) {
-                        Text(stringResource(R.string.qs_tiles_add_to_panel))
-                    }
-                }
-                IconButton(onClick = onRemove) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.qs_tiles_remove)
-                    )
-                }
-            }
-        }
-    )
-}
+    item {
+        SectionHeader(
+            title = stringResource(R.string.qs_tiles_placed_section),
+            subtitle = stringResource(R.string.qs_tiles_placed_section_desc)
+        )
+    }
 
-@Composable
-private fun BuiltInTileRow(
-    entry: BuiltInTiles.Entry,
-    onAddToPanel: () -> Unit
-) {
-    val canAdd = BuiltInTiles.canRequestAdd()
-    SettingRow(
-        title = stringResource(entry.nameRes),
-        subtitle = stringResource(entry.descriptionRes),
-        enabled = canAdd,
-        onClick = if (canAdd) onAddToPanel else null,
-        trailing = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(entry.iconRes),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-                if (canAdd) {
-                    Spacer(Modifier.width(4.dp))
-                    TextButton(onClick = onAddToPanel) {
-                        Text(stringResource(R.string.qs_tiles_add_to_panel))
-                    }
-                }
-            }
-        }
-    )
-}
-
-@Composable
-private fun PresetRow(
-    preset: ToggleTilePresets.Preset,
-    checked: Boolean,
-    enabled: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    SettingRow(
-        title = stringResource(preset.nameRes),
-        subtitle = stringResource(preset.descriptionRes),
-        enabled = enabled,
-        onClick = { onCheckedChange(!checked) },
-        trailing = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(TerminalTileIcons.resFor(preset.iconKey)),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-                Spacer(Modifier.width(10.dp))
-                Switch(
-                    checked = checked,
-                    onCheckedChange = onCheckedChange,
-                    enabled = enabled
+    if (tiles.isEmpty()) {
+        item {
+            AppCard {
+                Text(
+                    text = stringResource(R.string.qs_tiles_placed_empty),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
+        return
+    }
+
+    item {
+        AppCard(contentPadding = 4.dp) {
+            tiles.forEachIndexed { index, entry ->
+                if (index > 0) {
+                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                }
+                TileRow(
+                    face = entry.face,
+                    title = entry.label,
+                    subtitle = stringResource(entry.subtitleRes),
+                    onSettings = settingsFor(entry),
+                    onAdd = { onAddToPanel(entry) }.takeIf { TileCatalog.canRequestAdd() },
+                    onRemove = { onRemove(entry) }
+                )
+            }
+        }
+    }
+
+    if (!TileCatalog.canRequestAdd()) {
+        item {
+            Text(
+                text = stringResource(R.string.qs_tiles_builtin_unsupported),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+private fun LazyListScope.availableTilesSection(
+    appTilesOff: List<TileCatalog.Entry>,
+    toggleTiles: List<ToggleTile>,
+    expandedCategory: Int?,
+    onExpandedChange: (Int?) -> Unit,
+    onAddAppTile: (TileCatalog.Entry) -> Unit,
+    onAddPreset: (ToggleTilePresets.Preset) -> Unit,
+    onAddCustom: () -> Unit
+) {
+    item {
+        SectionHeader(
+            title = stringResource(R.string.qs_tiles_available_section),
+            subtitle = stringResource(R.string.qs_tiles_available_section_desc)
+        )
+    }
+
+    if (appTilesOff.isNotEmpty()) {
+        item {
+            AppCard(contentPadding = 4.dp) {
+                appTilesOff.forEachIndexed { index, entry ->
+                    if (index > 0) {
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                    }
+                    TileRow(
+                        face = entry.face,
+                        title = entry.label,
+                        subtitle = stringResource(entry.subtitleRes),
+                        onSettings = null,
+                        onAdd = { onAddAppTile(entry) },
+                        onRemove = null
+                    )
+                }
+            }
+        }
+    }
+
+    presetCatalogItems(
+        toggleTiles = toggleTiles,
+        expandedCategory = expandedCategory,
+        onExpandedChange = onExpandedChange,
+        onAddPreset = onAddPreset
     )
+
+    item {
+        AppCard(contentPadding = 4.dp) {
+            TileRow(
+                face = TileCatalog.Face.Drawable(
+                    TerminalTileIcons.resFor(TerminalTileIcons.DEFAULT_KEY)
+                ),
+                title = stringResource(R.string.qs_tiles_add_custom),
+                subtitle = stringResource(R.string.qs_tiles_add_custom_desc),
+                onSettings = null,
+                onAdd = onAddCustom,
+                onRemove = null
+            )
+        }
+    }
+}
+
+private fun LazyListScope.presetCatalogItems(
+    toggleTiles: List<ToggleTile>,
+    expandedCategory: Int?,
+    onExpandedChange: (Int?) -> Unit,
+    onAddPreset: (ToggleTilePresets.Preset) -> Unit
+) {
+    ToggleTilePresets.categories.forEach { category ->
+        item(key = "cat-${category.titleRes}") {
+            val available = category.presets.filter { preset ->
+                toggleTiles.none { it.presetKey == preset.key }
+            }
+            if (available.isNotEmpty()) {
+                ExpandableCard(
+                    title = stringResource(category.titleRes),
+                    subtitle = stringResource(R.string.qs_tiles_category_count, available.size),
+                    expanded = expandedCategory == category.titleRes,
+                    onExpandedChange = { expanded ->
+                        onExpandedChange(if (expanded) category.titleRes else null)
+                    }
+                ) {
+                    available.forEach { preset ->
+                        TileRow(
+                            face = TileCatalog.Face.Drawable(TerminalTileIcons.resFor(preset.iconKey)),
+                            title = stringResource(preset.nameRes),
+                            subtitle = stringResource(preset.descriptionRes),
+                            onSettings = null,
+                            onAdd = { onAddPreset(preset) },
+                            onRemove = null
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun QsTilesShizukuCard(onOpenSetup: () -> Unit) {
+    AppCard(onClick = onOpenSetup) {
+        Text(
+            text = stringResource(R.string.qs_tiles_needs_shizuku_title),
+            style = MaterialTheme.typography.titleSmall
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = stringResource(R.string.qs_tiles_needs_shizuku_desc),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+private fun TileFaceBadge(face: TileCatalog.Face) {
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+        contentAlignment = Alignment.Center
+    ) {
+        when (face) {
+            is TileCatalog.Face.Drawable -> Icon(
+                painter = painterResource(face.res),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp)
+            )
+            is TileCatalog.Face.Number -> TileFaceIcon(
+                iconKey = null,
+                numberText = face.text,
+                size = 24.dp
+            )
+        }
+    }
+}
+
+@Composable
+private fun TileRow(
+    face: TileCatalog.Face,
+    title: String,
+    subtitle: String,
+    onSettings: (() -> Unit)?,
+    onAdd: (() -> Unit)?,
+    onRemove: (() -> Unit)?
+) {
+    val rowClick = onSettings ?: onAdd
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 64.dp)
+            .then(
+                if (rowClick != null) Modifier.clickable(onClick = rowClick) else Modifier
+            )
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TileFaceBadge(face)
+        Spacer(Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        if (onSettings != null) {
+            IconButton(onClick = onSettings) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = stringResource(R.string.qs_tiles_action_settings)
+                )
+            }
+        }
+        if (onAdd != null) {
+            IconButton(onClick = onAdd) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.qs_tiles_add_to_panel)
+                )
+            }
+        }
+        if (onRemove != null) {
+            IconButton(onClick = onRemove) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.qs_tiles_remove)
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -454,6 +515,7 @@ private fun ToggleTileDialog(
     }
     var collapsePanel by remember { mutableStateOf(initial?.collapsePanel ?: true) }
     var showToast by remember { mutableStateOf(initial?.showToast ?: true) }
+    var showAdvanced by remember { mutableStateOf(false) }
     var showIconPicker by remember { mutableStateOf(false) }
 
     val canSave = label.isNotBlank() && onCommand.isNotBlank() && offCommand.isNotBlank()
@@ -473,6 +535,12 @@ private fun ToggleTileDialog(
                     .heightIn(max = 420.dp)
                     .verticalScroll(rememberScrollState())
             ) {
+                Text(
+                    text = stringResource(R.string.qs_tiles_dialog_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(10.dp))
                 OutlinedTextField(
                     value = label,
                     onValueChange = { label = it },
@@ -496,57 +564,42 @@ private fun ToggleTileDialog(
                     minLines = 2,
                     modifier = Modifier.fillMaxWidth()
                 )
-                Spacer(Modifier.height(10.dp))
-                OutlinedTextField(
-                    value = readCommand,
-                    onValueChange = { readCommand = it },
-                    label = { Text(stringResource(R.string.qs_tiles_field_read_command)) },
-                    supportingText = { Text(stringResource(R.string.qs_tiles_field_read_command_hint)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(10.dp))
-                OutlinedTextField(
-                    value = onValue,
-                    onValueChange = { onValue = it },
-                    label = { Text(stringResource(R.string.qs_tiles_field_on_value)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
                 Spacer(Modifier.height(12.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    OutlinedButton(onClick = { showIconPicker = true }) {
-                        Icon(
-                            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.qs_tiles_pick_icon))
-                    }
+                OutlinedButton(
+                    onClick = { showIconPicker = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        painter = painterResource(TerminalTileIcons.resFor(iconKey)),
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.qs_tiles_pick_icon))
                 }
                 Spacer(Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                TextButton(onClick = { showAdvanced = !showAdvanced }) {
                     Text(
-                        text = stringResource(R.string.qs_tiles_collapse_panel),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
+                        stringResource(
+                            if (showAdvanced) {
+                                R.string.qs_tiles_advanced_hide
+                            } else {
+                                R.string.qs_tiles_advanced_show
+                            }
+                        )
                     )
-                    Switch(checked = collapsePanel, onCheckedChange = { collapsePanel = it })
                 }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = stringResource(R.string.qs_tiles_show_toast),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f)
+                if (showAdvanced) {
+                    ToggleTileAdvancedFields(
+                        readCommand = readCommand,
+                        onReadCommandChange = { readCommand = it },
+                        onValue = onValue,
+                        onOnValueChange = { onValue = it },
+                        collapsePanel = collapsePanel,
+                        onCollapsePanelChange = { collapsePanel = it },
+                        showToast = showToast,
+                        onShowToastChange = { showToast = it }
                     )
-                    Switch(checked = showToast, onCheckedChange = { showToast = it })
                 }
             }
         },
@@ -597,5 +650,64 @@ private fun ToggleTileDialog(
                 showIconPicker = false
             }
         )
+    }
+}
+
+@Composable
+private fun ToggleTileAdvancedFields(
+    readCommand: String,
+    onReadCommandChange: (String) -> Unit,
+    onValue: String,
+    onOnValueChange: (String) -> Unit,
+    collapsePanel: Boolean,
+    onCollapsePanelChange: (Boolean) -> Unit,
+    showToast: Boolean,
+    onShowToastChange: (Boolean) -> Unit
+) {
+    OutlinedTextField(
+        value = readCommand,
+        onValueChange = onReadCommandChange,
+        label = { Text(stringResource(R.string.qs_tiles_field_read_command)) },
+        supportingText = { Text(stringResource(R.string.qs_tiles_field_read_command_hint)) },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth()
+    )
+    Spacer(Modifier.height(10.dp))
+    OutlinedTextField(
+        value = onValue,
+        onValueChange = onOnValueChange,
+        label = { Text(stringResource(R.string.qs_tiles_field_on_value)) },
+        singleLine = true,
+        modifier = Modifier.fillMaxWidth()
+    )
+    Spacer(Modifier.height(8.dp))
+    ToggleTileSwitchRow(
+        title = stringResource(R.string.qs_tiles_collapse_panel),
+        checked = collapsePanel,
+        onCheckedChange = onCollapsePanelChange
+    )
+    ToggleTileSwitchRow(
+        title = stringResource(R.string.qs_tiles_show_toast),
+        checked = showToast,
+        onCheckedChange = onShowToastChange
+    )
+}
+
+@Composable
+private fun ToggleTileSwitchRow(
+    title: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.weight(1f)
+        )
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }

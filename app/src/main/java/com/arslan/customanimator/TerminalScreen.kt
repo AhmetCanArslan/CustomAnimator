@@ -9,13 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items as gridItems
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
@@ -28,7 +23,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,7 +42,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +56,9 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import com.arslan.customanimator.data.TerminalPreset
 import com.arslan.customanimator.data.TerminalTileConfig
+import com.arslan.customanimator.ui.components.TileSetupDialog
+import com.arslan.customanimator.ui.components.TileSetupDraft
+import com.arslan.customanimator.ui.components.TileSetupInitial
 import com.arslan.customanimator.utils.CommandSuggestions
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.TerminalPresetManager
@@ -332,27 +328,49 @@ fun TerminalScreenContent(
     }
 
     tilePreset?.let { preset ->
-        TileConfigDialog(
-            preset = preset,
-            freeSlot = remember(preset.id, presets) {
-                presetManager.firstFreeSlot(excludingPresetId = preset.id)
-            },
+        val existing = preset.tile
+        val slot = remember(preset.id, presets) {
+            existing?.slot ?: presetManager.firstFreeSlot(excludingPresetId = preset.id)
+        }
+        val toConfig: (TileSetupDraft) -> TerminalTileConfig? = { draft ->
+            slot?.let {
+                TerminalTileConfig(
+                    slot = it,
+                    label = draft.label,
+                    iconKey = draft.iconKey,
+                    showToast = draft.showToast,
+                    collapsePanel = draft.collapsePanel
+                )
+            }
+        }
+        val store: (TerminalTileConfig?) -> Unit = { config ->
+            presetManager.setTileConfig(preset.id, config)
+            presets = presetManager.getAllPresets()
+            tilePreset = null
+        }
+        TileSetupDialog(
+            tileName = preset.name,
+            initial = TileSetupInitial(
+                enabled = existing != null,
+                label = existing?.label.orEmpty(),
+                iconKey = existing?.iconKey ?: TerminalTileIcons.DEFAULT_KEY,
+                showToast = existing?.showToast ?: true,
+                collapsePanel = existing?.collapsePanel ?: true
+            ),
+            slot = slot,
+            maxSlots = TerminalPresetManager.MAX_TILE_SLOTS,
+            canRequestAdd = TerminalTileSlots.canRequestAdd(),
             onDismiss = { tilePreset = null },
-            onSave = { config ->
-                presetManager.setTileConfig(preset.id, config)
-                presets = presetManager.getAllPresets()
-                tilePreset = null
-            },
-            onSaveAndAdd = { config ->
-                presetManager.setTileConfig(preset.id, config)
-                presets = presetManager.getAllPresets()
+            onSave = { draft -> store(draft?.let(toConfig)) },
+            onSaveAndAdd = { draft ->
+                val config = toConfig(draft) ?: return@TileSetupDialog
+                store(config)
                 TerminalTileSlots.requestAddTile(
                     context = context,
                     slot = config.slot,
                     label = config.label.ifBlank { preset.name },
                     iconKey = config.iconKey
                 )
-                tilePreset = null
             }
         )
     }
@@ -713,362 +731,5 @@ private fun TileBadge(iconKey: String) {
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSecondaryContainer
         )
-    }
-}
-
-@Composable
-private fun TileConfigDialog(
-    preset: TerminalPreset,
-    freeSlot: Int?,
-    onDismiss: () -> Unit,
-    onSave: (TerminalTileConfig?) -> Unit,
-    onSaveAndAdd: (TerminalTileConfig) -> Unit
-) {
-    val existing = preset.tile
-
-    var enabled by remember { mutableStateOf(existing != null) }
-    var label by remember { mutableStateOf(existing?.label?.ifBlank { preset.name } ?: preset.name) }
-    var iconKey by remember {
-        mutableStateOf(TerminalTileIcons.canonicalKey(existing?.iconKey ?: TerminalTileIcons.DEFAULT_KEY))
-    }
-    var showToast by remember { mutableStateOf(existing?.showToast ?: true) }
-    var collapsePanel by remember { mutableStateOf(existing?.collapsePanel ?: true) }
-    var showIconPicker by remember { mutableStateOf(false) }
-
-    val slot = existing?.slot ?: freeSlot
-    val trimmedLabel = label.trim()
-    val buildConfig: () -> TerminalTileConfig? = {
-        if (enabled && slot != null) {
-            TerminalTileConfig(
-                slot = slot,
-                label = trimmedLabel,
-                iconKey = iconKey,
-                showToast = showToast,
-                collapsePanel = collapsePanel
-            )
-        } else {
-            null
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.terminal_tile_title)) },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                TileToggleRow(
-                    title = stringResource(R.string.terminal_tile_enable),
-                    description = stringResource(R.string.terminal_tile_enable_description),
-                    checked = enabled,
-                    enabled = slot != null,
-                    onCheckedChange = { enabled = it }
-                )
-
-                if (slot == null) {
-                    Text(
-                        text = stringResource(
-                            R.string.terminal_tile_slots_full,
-                            TerminalPresetManager.MAX_TILE_SLOTS
-                        ),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-
-                if (enabled && slot != null) {
-                    Spacer(Modifier.height(4.dp))
-                    TilePreview(iconKey = iconKey, label = trimmedLabel.ifEmpty { preset.name })
-
-                    Spacer(Modifier.height(12.dp))
-                    OutlinedTextField(
-                        value = label,
-                        onValueChange = { label = it },
-                        label = { Text(stringResource(R.string.terminal_tile_label)) },
-                        supportingText = { Text(stringResource(R.string.terminal_tile_label_helper)) },
-                        isError = trimmedLabel.isEmpty(),
-                        singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-                    Spacer(Modifier.height(8.dp))
-                    OutlinedButton(
-                        onClick = { showIconPicker = true },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Icon(
-                            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(Modifier.width(10.dp))
-                        Text(
-                            text = stringResource(R.string.terminal_tile_icon),
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.Start
-                        )
-                        Text(
-                            text = stringResource(R.string.terminal_tile_icon_change),
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-
-                    Spacer(Modifier.height(8.dp))
-                    TileToggleRow(
-                        title = stringResource(R.string.terminal_tile_toast),
-                        description = stringResource(R.string.terminal_tile_toast_description),
-                        checked = showToast,
-                        onCheckedChange = { showToast = it }
-                    )
-                    TileToggleRow(
-                        title = stringResource(R.string.terminal_tile_collapse),
-                        description = stringResource(R.string.terminal_tile_collapse_description),
-                        checked = collapsePanel,
-                        onCheckedChange = { collapsePanel = it }
-                    )
-
-                    Spacer(Modifier.height(8.dp))
-                    if (!TerminalTileSlots.canRequestAdd()) {
-                        Text(
-                            text = stringResource(R.string.terminal_tile_add_manual_hint),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    } else {
-                        OutlinedButton(
-                            onClick = { buildConfig()?.let(onSaveAndAdd) },
-                            enabled = trimmedLabel.isNotEmpty(),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp)
-                            )
-                            Spacer(Modifier.width(6.dp))
-                            Text(stringResource(R.string.terminal_tile_add))
-                        }
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onSave(buildConfig()) },
-                enabled = !enabled || (slot != null && trimmedLabel.isNotEmpty())
-            ) {
-                Text(stringResource(R.string.save))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
-        }
-    )
-
-    if (showIconPicker) {
-        TileIconPickerDialog(
-            selectedKey = iconKey,
-            onDismiss = { showIconPicker = false },
-            onSelect = {
-                iconKey = it
-                showIconPicker = false
-            }
-        )
-    }
-}
-
-@Composable
-private fun TilePreview(iconKey: String, label: String) {
-    Column {
-        Text(
-            text = stringResource(R.string.terminal_tile_preview),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(Modifier.height(6.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(28.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(TerminalTileIcons.resFor(iconKey)),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(Modifier.width(14.dp))
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
-private fun TileIconPickerDialog(
-    selectedKey: String,
-    onDismiss: () -> Unit,
-    onSelect: (String) -> Unit
-) {
-    var query by remember { mutableStateOf("") }
-    val normalisedQuery = query.trim().lowercase().replace(' ', '_')
-    val matches = remember(normalisedQuery) {
-        if (normalisedQuery.isEmpty()) {
-            emptyList()
-        } else {
-            TerminalTileIcons.keys.filter { it.contains(normalisedQuery) }
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.terminal_tile_icon_picker_title)) },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = query,
-                    onValueChange = { query = it },
-                    label = { Text(stringResource(R.string.terminal_tile_icon_search)) },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(12.dp))
-
-                if (normalisedQuery.isNotEmpty() && matches.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.terminal_tile_icon_none),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 56.dp),
-                        modifier = Modifier.heightIn(min = 200.dp, max = 340.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        if (normalisedQuery.isEmpty()) {
-                            TerminalTileIcons.categories.forEach { category ->
-                                item(
-                                    key = "header-${category.titleRes}",
-                                    span = { GridItemSpan(maxLineSpan) }
-                                ) {
-                                    Text(
-                                        text = stringResource(category.titleRes),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        letterSpacing = 0.5.sp,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                gridItems(category.keys, key = { it }) { key ->
-                                    TileIconCell(
-                                        iconKey = key,
-                                        selected = key == selectedKey,
-                                        onClick = { onSelect(key) }
-                                    )
-                                }
-                            }
-                        } else {
-                            gridItems(matches, key = { it }) { key ->
-                                TileIconCell(
-                                    iconKey = key,
-                                    selected = key == selectedKey,
-                                    onClick = { onSelect(key) }
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel))
-            }
-        }
-    )
-}
-
-@Composable
-private fun TileIconCell(iconKey: String, selected: Boolean, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(52.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(
-                if (selected) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                }
-            )
-            .border(
-                width = if (selected) 2.dp else 0.dp,
-                color = if (selected) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    Color.Transparent
-                },
-                shape = RoundedCornerShape(14.dp)
-            )
-            .selectable(
-                selected = selected,
-                role = Role.RadioButton,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
-            contentDescription = iconKey.replace('_', ' '),
-            tint = if (selected) {
-                MaterialTheme.colorScheme.onPrimaryContainer
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            },
-            modifier = Modifier.size(24.dp)
-        )
-    }
-}
-
-@Composable
-private fun TileToggleRow(
-    title: String,
-    description: String,
-    checked: Boolean,
-    enabled: Boolean = true,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, style = MaterialTheme.typography.titleSmall,)
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }

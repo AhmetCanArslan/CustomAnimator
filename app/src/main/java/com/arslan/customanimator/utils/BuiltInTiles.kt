@@ -3,6 +3,7 @@ package com.arslan.customanimator.utils
 import android.app.StatusBarManager
 import android.content.ComponentName
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.service.quicksettings.TileService
@@ -13,6 +14,7 @@ import com.arslan.customanimator.service.AlwaysOnDisplayTileService
 import com.arslan.customanimator.service.CaffeineTileService
 import com.arslan.customanimator.service.GameModeTileService
 import com.arslan.customanimator.service.ScreenshotTileService
+import com.arslan.customanimator.service.SoundTileService
 
 object BuiltInTiles {
 
@@ -47,6 +49,13 @@ object BuiltInTiles {
             CaffeineTileService::class.java
         ),
         Entry(
+            "sound",
+            R.string.sound_tile_label,
+            R.string.qs_tiles_builtin_sound_desc,
+            R.drawable.ic_tile_volume_up,
+            SoundTileService::class.java
+        ),
+        Entry(
             "aod",
             R.string.aod_tile_label,
             R.string.qs_tiles_builtin_aod_desc,
@@ -57,12 +66,37 @@ object BuiltInTiles {
 
     fun canRequestAdd(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
+    fun isEnabled(context: Context, entry: Entry): Boolean {
+        val appContext = context.applicationContext
+        val state = appContext.packageManager.getComponentEnabledSetting(component(appContext, entry))
+        return state != PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+    }
+
+    fun setEnabled(context: Context, entry: Entry, enabled: Boolean) {
+        val appContext = context.applicationContext
+        val wanted = if (enabled) {
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        } else {
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+        }
+        runCatching {
+            appContext.packageManager.setComponentEnabledSetting(
+                component(appContext, entry),
+                wanted,
+                PackageManager.DONT_KILL_APP
+            )
+            if (enabled) {
+                TileService.requestListeningState(appContext, component(appContext, entry))
+            }
+        }
+    }
+
     fun requestAddTile(context: Context, entry: Entry) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
         val appContext = context.applicationContext
         runCatching {
             appContext.getSystemService(StatusBarManager::class.java)?.requestAddTileService(
-                ComponentName(appContext, entry.serviceClass),
+                component(appContext, entry),
                 appContext.getString(entry.nameRes),
                 Icon.createWithResource(appContext, entry.iconRes),
                 { runnable -> runnable.run() },
@@ -70,4 +104,7 @@ object BuiltInTiles {
             )
         }
     }
+
+    private fun component(context: Context, entry: Entry): ComponentName =
+        ComponentName(context, entry.serviceClass)
 }

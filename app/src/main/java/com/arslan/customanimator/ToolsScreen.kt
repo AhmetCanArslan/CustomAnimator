@@ -48,7 +48,6 @@ fun ToolsScreenContent(
     onNavigateToRefreshRate: () -> Unit,
     onNavigateToQsTiles: () -> Unit,
     onNavigateToScreenshotActions: () -> Unit,
-    onNavigateToSoundTile: () -> Unit,
     onNavigateToWifiPasswords: () -> Unit,
     onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
@@ -139,13 +138,6 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.screenshot_actions),
                             description = stringResource(R.string.screenshot_actions_desc),
                             onClick = onNavigateToScreenshotActions
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.VolumeUp,
-                            title = stringResource(R.string.sound_tile),
-                            description = stringResource(R.string.sound_tile_desc),
-                            onClick = onNavigateToSoundTile
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

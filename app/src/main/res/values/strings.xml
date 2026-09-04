@@ -1263,10 +1263,20 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="app_threading_priority_high">High</string>
     <string name="app_threading_priority_normal">Normal</string>
     <string name="app_threading_priority_low">Low</string>
-    <string name="qs_tiles">QS Toggle Tiles</string>
-    <string name="qs_tiles_desc">Two-command ON/OFF tiles for the Quick Settings panel</string>
-    <string name="qs_tiles_intro_title">Quick Settings toggles</string>
-    <string name="qs_tiles_intro_desc">Each tile runs one command when switched on and another when switched off. Pick a ready-made toggle below or build your own.</string>
+    <string name="qs_tiles">Quick Settings tiles</string>
+    <string name="qs_tiles_desc">Every tile this app offers, in one place</string>
+    <string name="qs_tiles_placed_section">Your tiles</string>
+    <string name="qs_tiles_placed_section_desc">Tiles you already set up. Tap one to change it.</string>
+    <string name="qs_tiles_placed_empty">No tiles yet. Add one from the lists below.</string>
+    <string name="qs_tiles_dialog_hint">A toggle runs one command when switched on and another when switched off.</string>
+    <string name="qs_tiles_advanced_show">Advanced options</string>
+    <string name="qs_tiles_advanced_hide">Hide advanced options</string>
+    <string name="qs_tiles_group_app">App tile</string>
+    <string name="qs_tiles_group_toggle">Command toggle</string>
+    <string name="qs_tiles_group_animation">Animation preset</string>
+    <string name="qs_tiles_group_width">Width preset</string>
+    <string name="qs_tiles_group_terminal">Terminal preset</string>
+    <string name="qs_tiles_group_profile">Profile</string>
     <string name="qs_tiles_slots_used">%1$d of %2$d tile slots used</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku is not connected</string>
     <string name="qs_tiles_needs_shizuku_desc">Tiles stay unavailable until Shizuku is running. Tap to open the setup guide.</string>
@@ -1296,6 +1306,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="qs_tiles_builtin_game_mode_desc">Switch game mode on or off</string>
     <string name="qs_tiles_builtin_caffeine_desc">Keep the screen awake</string>
     <string name="qs_tiles_builtin_aod_desc">Toggle always on display</string>
+    <string name="qs_tiles_builtin_sound_desc">Switch the sound mode from the panel</string>
     <string name="qs_tiles_cat_display">Display toggles</string>
     <string name="qs_tiles_cat_network">Connectivity toggles</string>
     <string name="qs_tiles_cat_performance">Performance and developer toggles</string>
@@ -1374,4 +1385,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="qs_toggle_touch_haptics_desc">Haptic feedback on taps</string>
     <string name="qs_toggle_charging_sounds">Charging sounds</string>
     <string name="qs_toggle_charging_sounds_desc">Sound when a charger is plugged in</string>
+    <string name="qs_tiles_available_section">Add a tile</string>
+    <string name="qs_tiles_available_section_desc">Tap + to place one in the Quick Settings panel.</string>
+    <string name="qs_tiles_add_custom_desc">Build a toggle from your own ON and OFF commands</string>
+    <string name="qs_tiles_category_count">%1$d available</string>
+    <string name="qs_tiles_action_settings">Tile settings</string>
 </resources>
