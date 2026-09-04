@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SignalCellularAlt
+import androidx.compose.material.icons.filled.WebAsset
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
@@ -52,6 +53,7 @@ fun ToolsScreenContent(
     onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
+    onNavigateToStatusBarIcons: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -298,6 +300,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.carrier_name),
                             description = stringResource(R.string.carrier_name_desc),
                             onClick = onNavigateToCarrierName
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.WebAsset,
+                            title = stringResource(R.string.status_bar_icons),
+                            description = stringResource(R.string.status_bar_icons_desc),
+                            onClick = onNavigateToStatusBarIcons
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ActionRow(

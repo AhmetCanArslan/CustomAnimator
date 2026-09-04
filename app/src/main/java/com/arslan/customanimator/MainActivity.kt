@@ -220,7 +220,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
     CLOSE_APPS_EXCLUSIONS, WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -273,6 +273,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.HOTSPOT_MANAGER to HomeTab.TOOLS,
     HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
     HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
+    HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
@@ -367,6 +368,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val hotspotManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -737,6 +739,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
         )
+    } else if (targetScreen == HomeScreen.STATUS_BAR_ICONS) {
+        StatusBarIconsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = statusBarIconsListState
+        )
     } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
         ScreenshotActionsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -893,6 +901,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
+            onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },

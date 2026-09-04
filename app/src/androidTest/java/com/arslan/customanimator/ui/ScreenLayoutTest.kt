@@ -13,6 +13,7 @@ import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
 import com.arslan.customanimator.BoostScreenContent
 import com.arslan.customanimator.CarrierNameScreen
+import com.arslan.customanimator.StatusBarIconsScreen
 import com.arslan.customanimator.CleanerScreenContent
 import com.arslan.customanimator.CloseAppsExclusionsScreen
 import com.arslan.customanimator.CompileBoosterScreenContent
@@ -155,7 +156,8 @@ class ScreenLayoutTest {
             onNavigateToWifiPasswords = {},
             onNavigateToHotspotManager = {},
             onNavigateToAlarmRevealer = {},
-            onNavigateToCarrierName = {}
+            onNavigateToCarrierName = {},
+            onNavigateToStatusBarIcons = {}
         )
     }
 
@@ -198,6 +200,11 @@ class ScreenLayoutTest {
     @Test
     fun carrierNameScreenFitsSmallPhones() = screenFits(R.string.carrier_name) {
         CarrierNameScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun statusBarIconsScreenFitsSmallPhones() = screenFits(R.string.status_bar_icons) {
+        StatusBarIconsScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test
