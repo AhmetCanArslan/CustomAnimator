@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,6 +38,7 @@ fun CarrierNameScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -68,7 +70,7 @@ fun CarrierNameScreen(
             isBusy = false
             Toast.makeText(
                 context,
-                context.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
                 Toast.LENGTH_SHORT
             ).show()
             reloadKey++

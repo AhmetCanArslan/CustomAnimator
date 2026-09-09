@@ -45,6 +45,7 @@ import com.arslan.customanimator.ui.theme.MonoBody
 import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
@@ -229,6 +230,7 @@ fun PermissionsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var refreshKey by remember { mutableIntStateOf(0) }
     var showAdbDialog by remember { mutableStateOf(false) }
@@ -263,7 +265,7 @@ fun PermissionsScreen(
                 } else {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.permission_shizuku_unavailable),
+                        resources.getString(R.string.permission_shizuku_unavailable),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -276,7 +278,7 @@ fun PermissionsScreen(
                     refreshKey++
                     Toast.makeText(
                         context,
-                        context.getString(R.string.action_succeeded),
+                        resources.getString(R.string.action_succeeded),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -289,7 +291,7 @@ fun PermissionsScreen(
                     refreshKey++
                     Toast.makeText(
                         context,
-                        context.getString(R.string.action_succeeded),
+                        resources.getString(R.string.action_succeeded),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
@@ -668,6 +670,7 @@ private fun AdbCommandBox(
     contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val adbCommand =
         "adb shell pm grant ${context.packageName} android.permission.WRITE_SECURE_SETTINGS"
     Surface(
@@ -694,7 +697,7 @@ private fun AdbCommandBox(
                     )
                     Toast.makeText(
                         context,
-                        context.getString(R.string.pn_command_copied),
+                        resources.getString(R.string.pn_command_copied),
                         Toast.LENGTH_SHORT
                     ).show()
                 },

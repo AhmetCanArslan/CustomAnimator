@@ -29,6 +29,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.ui.theme.AppShapes
@@ -59,6 +60,7 @@ fun ToolsScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
@@ -102,7 +104,7 @@ fun ToolsScreenContent(
                 maybeShowInterstitial(context)
             } else {
                 setState(!newValue)
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -323,7 +325,7 @@ fun ToolsScreenContent(
                                     if (!success) {
                                         Toast.makeText(
                                             context,
-                                            context.getString(R.string.action_failed),
+                                            resources.getString(R.string.action_failed),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
@@ -359,7 +361,7 @@ fun ToolsScreenContent(
                                         }
                                         if (!success) {
                                             userRotation = previous
-                                            Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
@@ -381,7 +383,7 @@ fun ToolsScreenContent(
                                     userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
                                     Toast.makeText(
                                         context,
-                                        context.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                        resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }

@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -87,7 +88,7 @@ class SharedComponentBehaviorTest {
     fun toggleRowReportsUserChanges() {
         var checked = false
         composeTestRule.setContent {
-            var state by mutableStateOf(checked)
+            var state by remember { mutableStateOf(checked) }
             CustomAnimatorTheme {
                 ToggleRow(
                     icon = Icons.Filled.Bolt,

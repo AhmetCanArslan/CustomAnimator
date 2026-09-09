@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -111,6 +112,7 @@ private fun rememberShizukuPermission(): Boolean {
 @Composable
 private fun OptimizerHome(onOpenBooster: () -> Unit) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val scope = rememberCoroutineScope()
 
@@ -135,7 +137,7 @@ private fun OptimizerHome(onOpenBooster: () -> Unit) {
             cleanOutcome = outcome
             Toast.makeText(
                 context,
-                context.getString(
+                resources.getString(
                     R.string.boost_widget_result,
                     BoostStats.formatSize(context, outcome.storageFreed),
                     BoostStats.formatSize(context, outcome.ramFreed)
@@ -322,6 +324,7 @@ private fun CleanResultCard(outcome: CleanOutcome) {
 @Composable
 private fun BoosterTerminalScreen(onClose: () -> Unit) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val scope = rememberCoroutineScope()
 
     val lines = remember { mutableStateListOf<String>() }
@@ -339,7 +342,7 @@ private fun BoosterTerminalScreen(onClose: () -> Unit) {
 
     LaunchedEffect(Unit) {
         isRunning = true
-        statusLabel = context.getString(R.string.boost_running_label)
+        statusLabel = resources.getString(R.string.boost_running_label)
         val writer = TerminalWriter({ text -> lines.add(text) }, { status -> statusLabel = status })
         runJob = scope.launch {
             try {
@@ -347,7 +350,7 @@ private fun BoosterTerminalScreen(onClose: () -> Unit) {
             } catch (e: CancellationException) {
                 withContext(NonCancellable) {
                     lines.add("")
-                    lines.add("  ── ${context.getString(R.string.boost_cancelled)} ──")
+                    lines.add("  ── ${resources.getString(R.string.boost_cancelled)} ──")
                 }
                 throw e
             } finally {

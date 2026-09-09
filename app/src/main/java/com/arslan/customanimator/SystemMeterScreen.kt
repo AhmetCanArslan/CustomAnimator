@@ -38,6 +38,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.service.FpsOverlayService
@@ -84,6 +85,7 @@ fun SystemMeterScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
 
     var meterEnabled by remember { mutableStateOf(FpsOverlayManager.isActive(context)) }
     val metricStates = remember {
@@ -165,7 +167,7 @@ fun SystemMeterScreenContent(
                                 if (metricStates.none { it }) {
                                     Toast.makeText(
                                         context,
-                                        context.getString(R.string.system_meter_need_metric),
+                                        resources.getString(R.string.system_meter_need_metric),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 } else if (FpsOverlayManager.canDrawOverlay(context)) {
@@ -174,7 +176,7 @@ fun SystemMeterScreenContent(
                                 } else {
                                     Toast.makeText(
                                         context,
-                                        context.getString(R.string.fps_overlay_permission_needed),
+                                        resources.getString(R.string.fps_overlay_permission_needed),
                                         Toast.LENGTH_LONG
                                     ).show()
                                     overlayPermissionLauncher.launch(
@@ -218,7 +220,7 @@ fun SystemMeterScreenContent(
                                     if (!newValue && metricStates.count { it } <= 1) {
                                         Toast.makeText(
                                             context,
-                                            context.getString(R.string.system_meter_need_metric),
+                                            resources.getString(R.string.system_meter_need_metric),
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     } else {

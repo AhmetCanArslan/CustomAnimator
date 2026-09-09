@@ -32,6 +32,7 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +62,7 @@ fun WifiPasswordsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -116,7 +118,7 @@ fun WifiPasswordsScreen(
             }
             Toast.makeText(
                 context,
-                context.getString(if (success) R.string.wifi_export_done else R.string.wifi_export_failed),
+                resources.getString(if (success) R.string.wifi_export_done else R.string.wifi_export_failed),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -257,7 +259,7 @@ fun WifiPasswordsScreen(
                                     copyToClipboard(context, network.ssid, network.password)
                                     Toast.makeText(
                                         context,
-                                        context.getString(R.string.wifi_password_copied),
+                                        resources.getString(R.string.wifi_password_copied),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 },

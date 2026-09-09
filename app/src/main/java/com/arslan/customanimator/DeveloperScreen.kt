@@ -25,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.DeveloperOptionsManager
@@ -42,6 +43,7 @@ fun DeveloperScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
@@ -104,7 +106,7 @@ fun DeveloperScreenContent(
                 maybeShowInterstitial(context)
             } else {
                 setState(!newValue)
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,7 @@ fun GameModeScreenContent(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val manager = remember { GameModeManager(context) }
     val coroutineScope = rememberCoroutineScope()
@@ -84,7 +86,7 @@ fun GameModeScreenContent(
             isBusy = false
             android.widget.Toast.makeText(
                 context,
-                context.getString(
+                resources.getString(
                     when {
                         !result.succeeded -> R.string.game_mode_failed_toast
                         enable -> R.string.game_mode_enabled_toast
@@ -147,13 +149,13 @@ fun GameModeScreenContent(
                                 when {
                                     !hasShizukuPermission -> Toast.makeText(
                                         context,
-                                        context.getString(R.string.game_mode_needs_shizuku),
+                                        resources.getString(R.string.game_mode_needs_shizuku),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     isActive -> toggle(false)
                                     selectedGames.isEmpty() -> Toast.makeText(
                                         context,
-                                        context.getString(R.string.game_mode_select_games_first),
+                                        resources.getString(R.string.game_mode_select_games_first),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     isAdFree -> toggle(true)

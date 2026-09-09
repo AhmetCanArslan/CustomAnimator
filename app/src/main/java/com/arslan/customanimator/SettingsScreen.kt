@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -85,6 +86,7 @@ fun SettingsScreen(
     onNavigateToPermissions: () -> Unit
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
     val canRevert = hasShizukuPermission || hasWriteSecureSettings
@@ -92,7 +94,7 @@ fun SettingsScreen(
     var isReverting by remember { mutableStateOf(false) }
 
     val toast: (Int) -> Unit = { res ->
-        Toast.makeText(context, context.getString(res), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, resources.getString(res), Toast.LENGTH_SHORT).show()
     }
 
     val isAdFree by rememberIsAdFree()

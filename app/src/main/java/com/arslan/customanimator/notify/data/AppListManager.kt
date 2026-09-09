@@ -181,7 +181,7 @@ object AppListManager {
 
         if (iconFile.exists()) {
             try {
-                val bmp = BitmapFactory.decodeFile(iconFile.absolutePath)
+                val bmp = decodeIconFile(iconFile)
                 if (bmp != null) {
                     val img = bmp.asImageBitmap()
                     iconIndex[packageName] = img
@@ -203,8 +203,25 @@ object AppListManager {
     private fun loadIconFromDisk(iconDir: File, packageName: String): ImageBitmap? = try {
         val file = File(iconDir, iconFileName(packageName))
         if (!file.exists()) null
-        else BitmapFactory.decodeFile(file.absolutePath)?.asImageBitmap()
+        else decodeIconFile(file)?.asImageBitmap()
     } catch (_: Exception) { null }
+
+    private fun decodeIconFile(file: File): Bitmap? {
+        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(file.absolutePath, bounds)
+        val options = BitmapFactory.Options().apply {
+            inSampleSize = iconSampleSize(bounds.outWidth, bounds.outHeight)
+        }
+        return BitmapFactory.decodeFile(file.absolutePath, options)
+    }
+
+    private fun iconSampleSize(width: Int, height: Int): Int {
+        var sample = 1
+        while (width / (sample * 2) >= ICON_SIZE_PX && height / (sample * 2) >= ICON_SIZE_PX) {
+            sample *= 2
+        }
+        return sample
+    }
 
     private fun saveIconToDisk(bitmap: Bitmap, file: File) {
         try {

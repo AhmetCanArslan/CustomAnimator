@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -83,6 +84,7 @@ fun HotspotManagerScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val scope = rememberCoroutineScope()
 
@@ -237,7 +239,7 @@ fun HotspotManagerScreen(
                     onTogglePassphrase = { passphraseVisible = !passphraseVisible },
                     onCopyPassphrase = {
                         copyToClipboard(context, config.passphrase)
-                        toast(context.getString(R.string.hotspot_copied))
+                        toast(resources.getString(R.string.hotspot_copied))
                     },
                     onShowQr = { showQr = true },
                     onToggleHotspot = { enable ->
@@ -289,7 +291,7 @@ fun HotspotManagerScreen(
                                             HotspotManager.blockClient(context, config, client.macAddress)
                                         }
                                         if (reportOutcome(outcome)) {
-                                            toast(context.getString(R.string.hotspot_blocked_toast))
+                                            toast(resources.getString(R.string.hotspot_blocked_toast))
                                         }
                                         refresh()
                                         isWorking = false
@@ -403,7 +405,7 @@ fun HotspotManagerScreen(
                                     }
                                     if (reportOutcome(outcome)) {
                                         isDirty = false
-                                        toast(context.getString(R.string.hotspot_config_applied))
+                                        toast(resources.getString(R.string.hotspot_config_applied))
                                     }
                                     delay(600)
                                     refresh()

@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -371,6 +372,7 @@ private fun RouteOption(
 @Composable
 private fun PhoneOnlySteps(stage: SetupStage) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val installed = stage != SetupStage.NOT_INSTALLED
     val running = stage == SetupStage.NOT_AUTHORIZED || stage == SetupStage.AUTHORIZED
     val authorized = stage == SetupStage.AUTHORIZED
@@ -420,7 +422,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
                 if (!SetupHelper.openShizukuApp(context)) {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.setup_shizuku_missing),
+                        resources.getString(R.string.setup_shizuku_missing),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -440,7 +442,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
                 } else {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.setup_not_running_yet),
+                        resources.getString(R.string.setup_not_running_yet),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -458,7 +460,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
                 val granted = authorized && ShizukuHelper.grantWriteSecureSettingsPermission(context)
                 Toast.makeText(
                     context,
-                    context.getString(
+                    resources.getString(
                         if (granted) R.string.setup_finish_success else R.string.setup_finish_failed
                     ),
                     Toast.LENGTH_SHORT
@@ -614,6 +616,7 @@ private fun SetupStep(
 @Composable
 private fun CommandBox(command: String) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainerHighest,
         shape = AppShapes.field,
@@ -633,7 +636,7 @@ private fun CommandBox(command: String) {
                     clipboard.setPrimaryClip(ClipData.newPlainText("ADB Command", command))
                     Toast.makeText(
                         context,
-                        context.getString(R.string.pn_command_copied),
+                        resources.getString(R.string.pn_command_copied),
                         Toast.LENGTH_SHORT
                     ).show()
                 },

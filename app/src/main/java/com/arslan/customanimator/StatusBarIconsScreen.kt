@@ -53,6 +53,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -146,6 +147,7 @@ fun StatusBarIconsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val contentResolver = context.contentResolver
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
@@ -172,7 +174,7 @@ fun StatusBarIconsScreen(
                 maybeShowInterstitial(context)
             } else {
                 hiddenSlots = previous
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -190,7 +192,7 @@ fun StatusBarIconsScreen(
             }
             if (!success) {
                 hiddenSlots = previous
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }

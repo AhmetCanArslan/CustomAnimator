@@ -20,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +44,7 @@ fun RefreshRateScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
     val manager = remember { PerAppRefreshRateManager(context) }
@@ -126,7 +128,7 @@ fun RefreshRateScreen(
             } else {
                 minRate = previousMin
                 peakRate = previousPeak
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
