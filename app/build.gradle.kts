@@ -31,7 +31,7 @@ android {
         applicationId = "com.arslan.customanimator"
         minSdk = 24
         targetSdk = 36
-        versionCode = 185
+        versionCode = 186
         versionName = "3.5"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
