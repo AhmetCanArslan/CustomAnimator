@@ -1,5 +1,7 @@
-## 181 - 3.4
-- Taxa de atualização por app: defina uma taxa de atualização para cada app e ela muda automaticamente.
-- Blocos das Configurações rápidas: crie seus próprios blocos de alternância, escolha os ícones e adicione ao painel.
-- Todos os recursos por app agora usam um único serviço em segundo plano, gastando menos bateria.
-- Detecção de apps mais rápida e pequenas correções.
+## 186 - 3.5
+- Gerenciador de ícones da barra de status (Ferramentas): alterne 40+ ícones — relógio, bateria, Wi-Fi, hotspot, NFC e mais — agrupados em Status, Conectividade, Som e Sistema, com Mostrar tudo / Ocultar tudo.
+- Nova aba Otimizador (substitui Boost e Cleaner): Limpador libera espaço e memória com um toque, Turbinar faz otimização profunda passo a passo — agora em uma única tela.
+- Blocos de Configurações rápidas reconstruídos: listas Instalados vs. Adicionar, categorias expansíveis com contagem, opções avançadas e criador de alternância mais simples; novo bloco Reiniciar interface do sistema, bloco de Som agora gerenciado aqui.
+- Navegação mais fluida: HomeTopBar extraída, ExpressiveNavBar renovada e prévia de animação re-temporizada.
+- Blocos e permissões mais confiáveis: todos compartilham BaseTileService e Shizuku agora usa awaitShizukuPermission para binder estável.
+- Hotspot mais confiável: ligar/desligar o hotspot e alterar suas configurações agora funciona de forma mais consistente, especialmente em versões mais recentes do Android.

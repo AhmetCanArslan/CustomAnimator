@@ -1,5 +1,7 @@
-## 181 - 3.4
-- Uygulama başına yenileme hızı: her uygulama için ekran yenileme hızı belirleyin, otomatik olarak geçsin.
-- Hızlı Ayarlar kartları: kendi anahtar kartlarınızı oluşturun, simgelerini seçin ve Hızlı Ayarlar paneline ekleyin.
-- Uygulama başına tüm özellikler artık tek bir arka plan servisini paylaşıyor, daha az pil harcıyor.
-- Daha hızlı uygulama algılama ve küçük düzeltmeler.
+## 186 - 3.5
+- Durum Çubuğu Simge Yöneticisi (Araçlar): 40+ simgeyi — saat, pil, Wi-Fi, hotspot, NFC ve daha fazlası — Durum, Bağlantı, Ses ve Sistem gruplarında aç/kapat, Tümünü göster / Tümünü gizle ile.
+- Yeni Optimize Edici sekmesi (Boost ve Cleaner'ın yerini aldı): Temizleyici tek dokunuşla yer ve bellek açar, Performans Artırıcı adım adım daha derin iyileştirme yapar — artık tek ekranda.
+- Yeniden kurulan Hızlı Ayarlar kartları: Ekli ve Eklenecek listeler, sayı gösteren açılır kategoriler, gelişmiş seçenekler ve daha basit özel anahtar oluşturucu; yeni Sistem Arayüzünü Yeniden Başlat kartı, Ses kartı artık burada yönetiliyor.
+- Daha akıcı gezinme: HomeTopBar ayrıldı, ExpressiveNavBar yenilendi ve animasyon önizlemesi daha akıcı zamanlamayla yeniden düzenlendi.
+- Daha güvenilir kartlar ve izinler: tüm kartlar BaseTileService'i paylaşıyor, Shizuku artık kararlı bağlayıcı için awaitShizukuPermission kullanıyor.
+- Daha güvenilir hotspot: hotspot'u açma/kapama ve ayarlarını değiştirme artık özellikle yeni Android sürümlerinde daha tutarlı çalışıyor.

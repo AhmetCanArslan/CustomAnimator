@@ -1,5 +1,7 @@
-## 181 - 3.4
-- Frecuencia de actualización por app: define una frecuencia para cada app y cambia automáticamente.
-- Mosaicos de Ajustes rápidos: crea tus propios interruptores, elige sus iconos y agrégalos al panel de Ajustes rápidos.
-- Todas las funciones por app ahora comparten un solo servicio en segundo plano, así consumen menos batería.
-- Detección de apps más rápida y correcciones menores.
+## 186 - 3.5
+- Gestor de iconos de la barra de estado (Herramientas): activa 40+ iconos — reloj, batería, Wi-Fi, hotspot, NFC y más — agrupados en Estado, Conectividad, Sonido y Sistema, con Mostrar todo / Ocultar todo.
+- Nueva pestaña Optimizador (reemplaza Boost y Cleaner): Limpiador libera espacio y memoria con un toque, Potenciador hace una optimización profunda paso a paso — ahora en una sola pantalla.
+- Mosaicos de Ajustes rápidos reconstruidos: listas Colocados vs. Añadir, categorías expandibles con conteo, opciones avanzadas y creador de interruptor más simple; nuevo mosaico Reiniciar interfaz del sistema, el mosaico de Sonido ahora se gestiona aquí.
+- Navegación más fluida: HomeTopBar extraído, ExpressiveNavBar renovada y previsualización de animación re-temporizada.
+- Mosaicos y permisos más fiables: todos comparten BaseTileService y Shizuku ahora usa awaitShizukuPermission para un binder estable.
+- Punto de acceso más fiable: encender/apagar el hotspot y cambiar su configuración ahora funciona con mayor consistencia, sobre todo en versiones recientes de Android.

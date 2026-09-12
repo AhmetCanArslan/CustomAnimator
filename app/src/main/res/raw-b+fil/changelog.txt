@@ -1,5 +1,7 @@
-## 181 - 3.4
-- Refresh rate bawat app: magtakda ng refresh rate ng screen para sa bawat app at awtomatiko itong lilipat.
-- Mga Quick Settings tile: gumawa ng sarili mong toggle tile, piliin ang icon at idagdag sa Quick Settings panel.
-- Iisang background service na lang ang ginagamit ng lahat ng per-app na feature, kaya mas tipid sa baterya.
-- Mas mabilis na pagtukoy ng app at maliliit na pag-aayos.
+## 186 - 3.5
+- Status Bar Icon Manager (Tools): i-toggle ang 40+ icon — orasan, baterya, Wi-Fi, hotspot, NFC atbp. — naka-grupo sa Status, Connectivity, Sound at System, may Show all / Hide all.
+- Bagong Optimizer tab (pamalit sa Boost at Cleaner): Cleaner naglilinis ng space at memory sa isang tap, Performance Booster mas malalim na step-by-step tune-up — iisang screen na ngayon.
+- Muling binuong Quick Settings tiles: Placed vs. Add a tile lists, expandable categories na may bilang, advanced options at mas simpleng custom toggle builder; bagong Restart System UI tile, Sound tile dito na pinamamahalaan.
+- Mas maayos na navigation: hiniwalay ang HomeTopBar, ni-refresh ang ExpressiveNavBar at muling tiniming ang animation preview para bawas jank.
+- Mas maaasahang tiles at permiso: lahat ng tile naka-BaseTileService at gumagamit na ang Shizuku ng awaitShizukuPermission para sa stable binder.
+- Mas maaasahang hotspot: mas consistent na ngayon ang pag-on/off at pagpalit ng settings ng hotspot, lalo na sa mas bagong Android versions.

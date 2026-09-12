@@ -1,5 +1,7 @@
-## 181 - 3.4
-- Frequenza di aggiornamento per app: imposta una frequenza per ogni app e cambierà automaticamente.
-- Riquadri Impostazioni rapide: crea i tuoi interruttori, scegli le icone e aggiungili al pannello Impostazioni rapide.
-- Tutte le funzioni per app ora usano un solo servizio in background, quindi consumano meno batteria.
-- Rilevamento delle app più rapido e piccole correzioni.
+## 186 - 3.5
+- Gestore icone barra di stato (Strumenti): 40+ icone — orologio, batteria, Wi-Fi, hotspot, NFC e altro — raggruppate per Stato, Connettività, Audio e Sistema, con Mostra tutto / Nascondi tutto.
+- Nuova scheda Ottimizzatore (sostituisce Boost e Cleaner): Pulizia libera spazio e memoria con un tocco, Potenziamento fa un'ottimizzazione approfondita passo-passo — ora in un'unica schermata.
+- Riquadri Impostazioni rapide ricostruiti: elenchi Posizionati vs. Aggiungi, categorie espandibili con conteggio, opzioni avanzate e creatore interruttore più semplice; nuovo riquadro Riavvia interfaccia di sistema, il riquadro Audio ora qui gestito.
+- Navigazione più fluida: HomeTopBar estratta, ExpressiveNavBar aggiornata e anteprima animazione ri-temporizzata.
+- Riquadri e permessi più affidabili: tutti condividono BaseTileService e Shizuku ora usa awaitShizukuPermission per binder stabile.
+- Hotspot più affidabile: accendere/spegnere l'hotspot e modificarne le impostazioni ora funziona in modo più costante, soprattutto sulle versioni più recenti di Android.
