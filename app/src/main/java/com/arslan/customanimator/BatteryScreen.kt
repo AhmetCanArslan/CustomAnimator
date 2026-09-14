@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BatteryChargingFull
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -40,6 +41,7 @@ import kotlin.math.roundToInt
 fun BatteryScreenContent(
     hasShizukuPermission: Boolean,
     onNavigateToDozeWhitelist: () -> Unit,
+    onNavigateToBatteryHealth: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -164,6 +166,21 @@ fun BatteryScreenContent(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        item {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                modifier = Modifier.fillMaxWidth(),
+                shape = AppShapes.card
+            ) {
+                NavigationRow(
+                    icon = Icons.Filled.BatteryChargingFull,
+                    title = stringResource(R.string.bh_title),
+                    description = stringResource(R.string.bh_nav_desc),
+                    onClick = onNavigateToBatteryHealth
+                )
+            }
+        }
+
         if (!canWrite) {
             item {
                 SetupNudgeCard(

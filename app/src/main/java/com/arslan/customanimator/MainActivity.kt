@@ -217,7 +217,7 @@ enum class HomeTab {
 
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
-    HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST,
+    HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS
@@ -266,6 +266,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
     HomeScreen.APP_THREADING to HomeTab.TOOLS,
     HomeScreen.DOZE_WHITELIST to HomeTab.BATTERY,
+    HomeScreen.BATTERY_HEALTH to HomeTab.BATTERY,
     HomeScreen.WIFI_PASSWORDS to HomeTab.TOOLS,
     HomeScreen.HOTSPOT_MANAGER to HomeTab.TOOLS,
     HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
@@ -355,6 +356,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val hwuiTweaksListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val appThreadingListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val dozeWhitelistListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val batteryHealthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val refreshRateListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val qsTilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -688,6 +690,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             hasShizukuPermission = hasShizukuPermission.value,
             listState = dozeWhitelistListState
         )
+    } else if (targetScreen == HomeScreen.BATTERY_HEALTH) {
+        BatteryHealthScreen(
+            onBack = { backToTab(HomeTab.BATTERY) },
+            hasShizukuPermission = hasShizukuPermission.value,
+            listState = batteryHealthListState
+        )
     } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
         PerAppWidthScreen(
             onBack = { backToTab(HomeTab.WIDTH) },
@@ -908,6 +916,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         BatteryScreenContent(
             hasShizukuPermission = hasShizukuPermission.value,
             onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
+            onNavigateToBatteryHealth = { currentScreen = HomeScreen.BATTERY_HEALTH },
             listState = batteryTabListState
         )
         } else if (targetTab == HomeTab.WIDTH) {
