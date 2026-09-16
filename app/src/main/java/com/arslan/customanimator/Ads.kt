@@ -1,7 +1,6 @@
 package com.arslan.customanimator
 
 import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
@@ -19,11 +18,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdError
@@ -33,7 +29,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
@@ -57,13 +52,6 @@ private val INTERSTITIAL_AD_UNIT_ID: String
         "ca-app-pub-3940256099942544/1033173712"
     } else {
         BuildConfig.INTERSTITIAL_AD_UNIT_ID
-    }
-
-private val APP_OPEN_AD_UNIT_ID: String
-    get() = if (BuildConfig.DEBUG) {
-        "ca-app-pub-3940256099942544/9257395921"
-    } else {
-        BuildConfig.APP_OPEN_AD_UNIT_ID
     }
 
 private val REWARDED_AD_UNIT_ID: String
@@ -98,7 +86,6 @@ private fun initializeMobileAds(activity: Activity) {
         MobileAds.initialize(activity.applicationContext) {
             activity.runOnUiThread {
                 InterstitialAds.preload(activity)
-                AppOpenAds.register(activity.application)
             }
         }
     }.start()
@@ -169,17 +156,47 @@ object AdsConsent {
     }
 }
 
+object NewUserGrace {
+    private const val GRACE_MS = 2L * 24 * 60 * 60 * 1000
+
+    fun isActive(context: Context): Boolean {
+        val installedAtMs = context.packageManager
+            .getPackageInfo(context.packageName, 0)
+            .firstInstallTime
+        return System.currentTimeMillis() - installedAtMs < GRACE_MS
+    }
+}
+
 private object AdBudget {
     private const val KEY_DAY = "ads_day_of_year"
     private const val KEY_FULLSCREEN_TODAY = "ads_fullscreen_today"
+    private const val KEY_LAST_FULLSCREEN = "ads_last_fullscreen"
 
-    private const val MAX_FULLSCREEN_PER_DAY = 12
+    private const val MAX_FULLSCREEN_PER_DAY = 5
+    private const val MIN_GAP_MS = 6L * 60 * 1000
 
-    fun remainingToday(context: Context): Int {
-        val prefs = context.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
-        val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+    private fun remainingToday(prefs: android.content.SharedPreferences, today: Int): Int {
         if (prefs.getInt(KEY_DAY, -1) != today) return MAX_FULLSCREEN_PER_DAY
         return MAX_FULLSCREEN_PER_DAY - prefs.getInt(KEY_FULLSCREEN_TODAY, 0)
+    }
+
+    fun canShow(context: Context): Boolean {
+        if (NewUserGrace.isActive(context)) {
+            Log.d("Ads", "Skipped: new user grace period")
+            return false
+        }
+        val prefs = context.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
+        val now = System.currentTimeMillis()
+        val lastShown = prefs.getLong(KEY_LAST_FULLSCREEN, 0L)
+        if (lastShown in 1..now && now - lastShown < MIN_GAP_MS) {
+            Log.d("Ads", "Skipped: ${(now - lastShown) / 1000}s since the last full-screen ad")
+            return false
+        }
+        if (remainingToday(prefs, Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) <= 0) {
+            Log.d("Ads", "Skipped: daily full-screen budget spent")
+            return false
+        }
+        return true
     }
 
     fun record(context: Context) {
@@ -193,6 +210,7 @@ private object AdBudget {
         prefs.edit()
             .putInt(KEY_DAY, today)
             .putInt(KEY_FULLSCREEN_TODAY, shownToday + 1)
+            .putLong(KEY_LAST_FULLSCREEN, System.currentTimeMillis())
             .apply()
     }
 }
@@ -273,155 +291,12 @@ fun BannerAdView(applyNavigationBarPadding: Boolean = true) {
     }
 }
 
-object AppOpenAds {
-    private const val TAG = "AppOpenAd"
-    private const val KEY_LAST_SHOWN = "app_open_last_shown"
-
-    private const val MIN_INTERVAL_MS = 4L * 60 * 1000
-    private const val AD_EXPIRY_MS = 4L * 60 * 60 * 1000
-    private const val COLD_START_GRACE_MS = 20L * 1000
-
-    private val processStartElapsedMs = SystemClock.elapsedRealtime()
-
-    private var ad: AppOpenAd? = null
-    private var loadedAtMs = 0L
-    private var isLoading = false
-    private var registered = false
-    private var currentActivity: Activity? = null
-
-    fun register(application: Application) {
-        if (registered) return
-        registered = true
-
-        application.registerActivityLifecycleCallbacks(
-            object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityStarted(activity: Activity) {
-                    if (activity is MainActivity) currentActivity = activity
-                }
-
-                override fun onActivityDestroyed(activity: Activity) {
-                    if (currentActivity === activity) currentActivity = null
-                }
-
-                override fun onActivityCreated(activity: Activity, bundle: android.os.Bundle?) = Unit
-                override fun onActivityResumed(activity: Activity) = Unit
-                override fun onActivityPaused(activity: Activity) = Unit
-                override fun onActivityStopped(activity: Activity) {
-                    if (currentActivity === activity) currentActivity = null
-                }
-                override fun onActivitySaveInstanceState(activity: Activity, bundle: android.os.Bundle) = Unit
-            }
-        )
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(
-            object : DefaultLifecycleObserver {
-                override fun onStart(owner: LifecycleOwner) {
-                    showIfEligible()
-                }
-            }
-        )
-
-        preload(application)
-    }
-
-    fun preload(context: Context) {
-        if (isAdFreeNow()) return
-        if (isLoading || isAdAvailable()) return
-        if (!AdsConsent.canRequestAds(context)) return
-
-        isLoading = true
-        AppOpenAd.load(
-            context.applicationContext,
-            APP_OPEN_AD_UNIT_ID,
-            AdRequest.Builder().build(),
-            object : AppOpenAd.AppOpenAdLoadCallback() {
-                override fun onAdLoaded(loaded: AppOpenAd) {
-                    isLoading = false
-                    ad = loaded
-                    loadedAtMs = SystemClock.elapsedRealtime()
-                    Log.d(TAG, "Loaded and ready")
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    isLoading = false
-                    ad = null
-                    Log.e(TAG, "Failed to load: ${error.code} ${error.message}")
-                }
-            }
-        )
-    }
-
-    private fun isAdAvailable(): Boolean {
-        return ad != null && SystemClock.elapsedRealtime() - loadedAtMs < AD_EXPIRY_MS
-    }
-
-    private fun showIfEligible() {
-        if (isAdFreeNow()) return
-        val activity = currentActivity ?: return
-        if (activity !is MainActivity || activity.isFinishing || activity.isDestroyed) return
-        if (FullScreenAdState.isShowing) return
-
-        if (SystemClock.elapsedRealtime() - processStartElapsedMs < COLD_START_GRACE_MS) {
-            Log.d(TAG, "Skipped: cold start grace")
-            preload(activity)
-            return
-        }
-
-        if (!SettingsManager.hasCompletedOnboarding(activity)) {
-            Log.d(TAG, "Skipped: onboarding not finished")
-            return
-        }
-
-        val prefs = activity.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
-        val now = System.currentTimeMillis()
-        val lastShown = prefs.getLong(KEY_LAST_SHOWN, 0L)
-        if (lastShown in 1..now && now - lastShown < MIN_INTERVAL_MS) {
-            Log.d(TAG, "Skipped: ${(now - lastShown) / 1000}s since last app open ad")
-            return
-        }
-
-        if (AdBudget.remainingToday(activity) <= 0) {
-            Log.d(TAG, "Skipped: daily full-screen budget spent")
-            return
-        }
-
-        val loaded = ad
-        if (!isAdAvailable() || loaded == null) {
-            preload(activity)
-            return
-        }
-
-        ad = null
-        loaded.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdShowedFullScreenContent() {
-                FullScreenAdState.isShowing = true
-            }
-
-            override fun onAdDismissedFullScreenContent() {
-                FullScreenAdState.isShowing = false
-                preload(activity)
-            }
-
-            override fun onAdFailedToShowFullScreenContent(error: com.google.android.gms.ads.AdError) {
-                FullScreenAdState.isShowing = false
-                Log.e(TAG, "Failed to show: ${error.code} ${error.message}")
-                preload(activity)
-            }
-        }
-        prefs.edit().putLong(KEY_LAST_SHOWN, now).apply()
-        AdBudget.record(activity)
-        loaded.show(activity)
-    }
-}
-
 object InterstitialAds {
-    private const val KEY_LAST_SHOWN = "interstitial_last_shown"
     private const val KEY_ACTION_COUNT = "interstitial_action_count"
     private const val KEY_PENDING = "interstitial_pending"
 
-    private const val MIN_INTERVAL_MS = 3L * 60 * 1000
-    private const val FREE_ACTIONS = 5
-    private const val ACTIONS_PER_AD = 3
+    private const val FREE_ACTIONS = 10
+    private const val ACTIONS_PER_AD = 6
 
     private const val TAG = "InterstitialAd"
 
@@ -434,6 +309,7 @@ object InterstitialAds {
 
     fun preload(context: Context) {
         if (isAdFreeNow()) return
+        if (NewUserGrace.isActive(context)) return
         if (ad != null || isLoading) {
             Log.d(TAG, "preload skipped (ready=${ad != null}, loading=$isLoading)")
             return
@@ -466,6 +342,7 @@ object InterstitialAds {
 
     fun maybeShow(context: Context) {
         if (isAdFreeNow()) return
+        if (NewUserGrace.isActive(context)) return
         val activity = context.findActivity()
         if (activity == null) {
             Log.w(TAG, "Skipped: no Activity behind the context")
@@ -503,18 +380,7 @@ object InterstitialAds {
             return
         }
 
-        val lastShown = prefs.getLong(KEY_LAST_SHOWN, 0L)
-        val now = System.currentTimeMillis()
-
-        if (lastShown in 1..now && now - lastShown < MIN_INTERVAL_MS) {
-            Log.d(TAG, "Skipped: ${(now - lastShown) / 1000}s since last ad (interval ${MIN_INTERVAL_MS / 1000}s)")
-            return
-        }
-
-        if (AdBudget.remainingToday(activity) <= 0) {
-            Log.d(TAG, "Skipped: daily full-screen budget spent")
-            return
-        }
+        if (!AdBudget.canShow(activity)) return
 
         val loaded = ad
         if (loaded == null) {
@@ -544,7 +410,6 @@ object InterstitialAds {
             }
         }
         prefs.edit()
-            .putLong(KEY_LAST_SHOWN, now)
             .putBoolean(KEY_PENDING, false)
             .apply()
         AdBudget.record(activity)

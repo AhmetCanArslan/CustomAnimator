@@ -46,17 +46,17 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val isAdFree by rememberIsAdFree()
     val price by rememberRemoveAdsPrice()
-    var dismissed by remember { mutableStateOf(SettingsManager.isRemoveAdsPromptDismissed(context)) }
+    var visible by remember { mutableStateOf(SettingsManager.shouldShowRemoveAdsPrompt(context)) }
 
-    LaunchedEffect(dismissed) {
-        if (!dismissed) return@LaunchedEffect
-        val remaining = SettingsManager.getRemoveAdsPromptDismissedUntil(context) - System.currentTimeMillis()
-        if (remaining > 0) delay(remaining)
-        dismissed = false
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(SettingsManager.promoRecheckDelayMs(context))
+            visible = SettingsManager.shouldShowRemoveAdsPrompt(context)
+        }
     }
 
     AnimatedVisibility(
-        visible = !isAdFree && !dismissed,
+        visible = !isAdFree && visible,
         enter = fadeIn() + expandVertically(),
         exit = fadeOut() + shrinkVertically()
     ) {
@@ -97,7 +97,7 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
                 IconButton(
                     onClick = {
                         SettingsManager.dismissRemoveAdsPrompt(context)
-                        dismissed = true
+                        visible = false
                     }
                 ) {
                     Icon(

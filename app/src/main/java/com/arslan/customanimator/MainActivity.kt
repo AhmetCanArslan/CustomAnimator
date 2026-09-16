@@ -2034,6 +2034,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (showRemoveAdsSupportDialog) {
         RemoveAdsSupportDialog(
             onBuy = {
+                SettingsManager.markRemoveAdsSupportDialogLater(context)
                 showRemoveAdsSupportDialog = false
                 startRemoveAdsPurchase(context)
             },
