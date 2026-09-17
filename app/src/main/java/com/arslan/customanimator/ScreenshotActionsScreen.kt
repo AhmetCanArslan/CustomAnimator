@@ -64,6 +64,7 @@ fun ScreenshotActionsScreen(
     var watcherEnabled by remember { mutableStateOf(prefs.watcherEnabled) }
     var overlayEnabled by remember { mutableStateOf(prefs.overlayEnabled) }
     var delaySeconds by remember { mutableIntStateOf(prefs.notificationDelaySeconds) }
+    var autoDismissSeconds by remember { mutableIntStateOf(prefs.notificationAutoDismissSeconds) }
     var notifShowCopy by remember { mutableStateOf(prefs.notificationShowCopy) }
     var notifShowDelete by remember { mutableStateOf(prefs.notificationShowDelete) }
     var notifShowPreview by remember { mutableStateOf(prefs.notificationShowPreview) }
@@ -252,6 +253,22 @@ fun ScreenshotActionsScreen(
                                 onSelect = {
                                     delaySeconds = it
                                     prefs.notificationDelaySeconds = it
+                                }
+                            )
+                            ScreenshotChipRow(
+                                label = stringResource(R.string.screenshot_auto_dismiss_label),
+                                options = ScreenshotPrefs.AUTO_DISMISS_OPTIONS,
+                                selected = autoDismissSeconds,
+                                labelFor = {
+                                    if (it == ScreenshotPrefs.AUTO_DISMISS_OFF) {
+                                        stringResource(R.string.screenshot_auto_dismiss_off)
+                                    } else {
+                                        stringResource(R.string.screenshot_auto_dismiss_value, it)
+                                    }
+                                },
+                                onSelect = {
+                                    autoDismissSeconds = it
+                                    prefs.notificationAutoDismissSeconds = it
                                 }
                             )
                         }

@@ -970,6 +970,9 @@
     <string name="screenshot_notification_hint">Следит за папкой скриншотов и показывает уведомление с действиями «Копировать» и «Удалить».</string>
     <string name="screenshot_delay_label">Задержка перед уведомлением</string>
     <string name="screenshot_delay_value">%1$d с</string>
+    <string name="screenshot_auto_dismiss_label">Автоматически скрывать уведомление</string>
+    <string name="screenshot_auto_dismiss_value">%1$d с</string>
+    <string name="screenshot_auto_dismiss_off">Выкл.</string>
     <string name="screenshot_notif_show_copy">Показывать действие «Копировать и удалить»</string>
     <string name="screenshot_notif_show_delete">Показывать действие «Удалить»</string>
     <string name="screenshot_notif_show_preview">Показывать превью скриншота</string>

@@ -988,6 +988,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_notification_hint">Controlla la cartella degli screenshot e mostra una notifica con le azioni Copia ed Elimina.</string>
     <string name="screenshot_delay_label">Ritardo prima della notifica</string>
     <string name="screenshot_delay_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_label">Chiudi notifica automaticamente</string>
+    <string name="screenshot_auto_dismiss_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_off">Off</string>
     <string name="screenshot_notif_show_copy">Mostra azione Copia ed elimina</string>
     <string name="screenshot_notif_show_delete">Mostra azione Elimina</string>
     <string name="screenshot_notif_show_preview">Mostra anteprima dello screenshot</string>

@@ -968,6 +968,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="screenshot_notification_hint">Binabantayan ang folder ng screenshot at nagpapakita ng notification na may Kopyahin at Burahin.</string>
     <string name="screenshot_delay_label">Delay bago mag-notify</string>
     <string name="screenshot_delay_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_label">Awtomatikong itago ang notification</string>
+    <string name="screenshot_auto_dismiss_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_off">Naka-off</string>
     <string name="screenshot_notif_show_copy">Ipakita ang aksyong Kopyahin at Burahin</string>
     <string name="screenshot_notif_show_delete">Ipakita ang aksyong Burahin</string>
     <string name="screenshot_notif_show_preview">Ipakita ang preview ng screenshot</string>

@@ -976,6 +976,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_notification_hint">Ekran görüntüsü klasörünü izler ve Kopyala &amp; Sil eylemleriyle bildirim gösterir.</string>
     <string name="screenshot_delay_label">Bildirimden önceki gecikme</string>
     <string name="screenshot_delay_value">%1$d sn</string>
+    <string name="screenshot_auto_dismiss_label">Bildirimi otomatik kapat</string>
+    <string name="screenshot_auto_dismiss_value">%1$d sn</string>
+    <string name="screenshot_auto_dismiss_off">Kapalı</string>
     <string name="screenshot_notif_show_copy">Kopyala &amp; Sil eylemini göster</string>
     <string name="screenshot_notif_show_delete">Sil eylemini göster</string>
     <string name="screenshot_notif_show_preview">Ekran görüntüsü önizlemesini göster</string>

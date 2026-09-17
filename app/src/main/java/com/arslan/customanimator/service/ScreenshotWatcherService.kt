@@ -99,7 +99,17 @@ class ScreenshotWatcherService : Service() {
         handler.postDelayed({
             val current = ScreenshotActions.itemFor(applicationContext, item.id) ?: return@postDelayed
             ScreenshotNotifier.notifyScreenshot(applicationContext, current)
+            scheduleAutoDismiss(ScreenshotNotifier.notificationIdFor(current))
         }, delayMs)
+    }
+
+    private fun scheduleAutoDismiss(notifId: Int) {
+        val seconds = prefs.notificationAutoDismissSeconds
+        if (seconds <= ScreenshotPrefs.AUTO_DISMISS_OFF) return
+        handler.postDelayed(
+            { ScreenshotNotifier.cancel(applicationContext, notifId) },
+            seconds * 1000L
+        )
     }
 
     private fun showOverlay() {

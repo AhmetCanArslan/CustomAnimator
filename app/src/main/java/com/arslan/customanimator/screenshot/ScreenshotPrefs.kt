@@ -17,6 +17,10 @@ class ScreenshotPrefs(context: Context) {
         get() = sp.getInt(KEY_DELAY, DEFAULT_DELAY)
         set(value) = sp.edit().putInt(KEY_DELAY, value).apply()
 
+    var notificationAutoDismissSeconds: Int
+        get() = sp.getInt(KEY_AUTO_DISMISS, DEFAULT_AUTO_DISMISS)
+        set(value) = sp.edit().putInt(KEY_AUTO_DISMISS, value).apply()
+
     var watcherEnabled: Boolean
         get() = sp.getBoolean(KEY_ENABLED, false)
         set(value) = sp.edit().putBoolean(KEY_ENABLED, value).apply()
@@ -61,6 +65,7 @@ class ScreenshotPrefs(context: Context) {
         private const val NAME = "screenshot_actions_prefs"
         private const val KEY_PATH = "watched_path"
         private const val KEY_DELAY = "notification_delay_seconds"
+        private const val KEY_AUTO_DISMISS = "notification_auto_dismiss_seconds"
         private const val KEY_ENABLED = "watcher_enabled"
         private const val KEY_NOTIF_COPY = "notification_show_copy"
         private const val KEY_NOTIF_DELETE = "notification_show_delete"
@@ -74,6 +79,10 @@ class ScreenshotPrefs(context: Context) {
 
         const val DEFAULT_DELAY = 2
         val DELAY_OPTIONS = listOf(0, 1, 2, 3, 5, 10)
+
+        const val AUTO_DISMISS_OFF = 0
+        const val DEFAULT_AUTO_DISMISS = AUTO_DISMISS_OFF
+        val AUTO_DISMISS_OPTIONS = listOf(AUTO_DISMISS_OFF, 5, 10, 30, 60)
 
         const val DEFAULT_OVERLAY_TIMEOUT = 5
         val OVERLAY_TIMEOUT_OPTIONS = listOf(2, 3, 5, 8, 12)

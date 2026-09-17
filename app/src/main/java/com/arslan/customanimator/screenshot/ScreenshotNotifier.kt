@@ -104,6 +104,10 @@ object ScreenshotNotifier {
         }
     }
 
+    fun cancel(context: Context, notifId: Int) {
+        NotificationManagerCompat.from(context).cancel(notifId)
+    }
+
     fun notificationIdFor(item: ScreenshotItem): Int =
         ((item.id.hashCode()) and 0x7FFFFFFF).coerceAtLeast(WATCHER_NOTIFICATION_ID + 1)
 

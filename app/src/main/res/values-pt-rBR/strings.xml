@@ -968,6 +968,9 @@ Duração do Animador: %3$.2f</string>
     <string name="screenshot_notification_hint">Monitora a pasta de capturas e envia uma notificação com as ações Copiar e Excluir.</string>
     <string name="screenshot_delay_label">Atraso antes da notificação</string>
     <string name="screenshot_delay_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_label">Dispensar notificação automaticamente</string>
+    <string name="screenshot_auto_dismiss_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_off">Desativado</string>
     <string name="screenshot_notif_show_copy">Mostrar ação Copiar e excluir</string>
     <string name="screenshot_notif_show_delete">Mostrar ação Excluir</string>
     <string name="screenshot_notif_show_preview">Mostrar prévia da captura</string>

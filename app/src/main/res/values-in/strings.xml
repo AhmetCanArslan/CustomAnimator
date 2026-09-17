@@ -968,6 +968,9 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_notification_hint">Memantau folder tangkapan layar dan menampilkan notifikasi dengan tindakan Salin &amp; Hapus.</string>
     <string name="screenshot_delay_label">Jeda sebelum notifikasi</string>
     <string name="screenshot_delay_value">%1$d dtk</string>
+    <string name="screenshot_auto_dismiss_label">Tutup notifikasi otomatis</string>
+    <string name="screenshot_auto_dismiss_value">%1$d dtk</string>
+    <string name="screenshot_auto_dismiss_off">Nonaktif</string>
     <string name="screenshot_notif_show_copy">Tampilkan tindakan Salin &amp; Hapus</string>
     <string name="screenshot_notif_show_delete">Tampilkan tindakan Hapus</string>
     <string name="screenshot_notif_show_preview">Tampilkan pratinjau tangkapan layar</string>

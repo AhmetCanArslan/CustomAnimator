@@ -1027,6 +1027,9 @@
     <string name="screenshot_notification_hint">يراقب مجلد لقطات الشاشة وينشر إشعارًا بإجراءات النسخ والحذف.</string>
     <string name="screenshot_delay_label">التأخير قبل الإشعار</string>
     <string name="screenshot_delay_value">%1$d ثانية</string>
+    <string name="screenshot_auto_dismiss_label">إخفاء الإشعار تلقائيًا</string>
+    <string name="screenshot_auto_dismiss_value">%1$d ثانية</string>
+    <string name="screenshot_auto_dismiss_off">إيقاف</string>
     <string name="screenshot_notif_show_copy">إظهار إجراء النسخ والحذف</string>
     <string name="screenshot_notif_show_delete">إظهار إجراء الحذف</string>
     <string name="screenshot_notif_show_preview">إظهار معاينة لقطة الشاشة</string>

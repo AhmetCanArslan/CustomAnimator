@@ -1027,6 +1027,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_notification_hint">Watches the screenshot folder and posts a notification with Copy &amp; Delete actions.</string>
     <string name="screenshot_delay_label">Delay before notification</string>
     <string name="screenshot_delay_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_label">Auto dismiss notification</string>
+    <string name="screenshot_auto_dismiss_value">%1$d s</string>
+    <string name="screenshot_auto_dismiss_off">Off</string>
     <string name="screenshot_notif_show_copy">Show Copy &amp; Delete action</string>
     <string name="screenshot_notif_show_delete">Show Delete action</string>
     <string name="screenshot_notif_show_preview">Show screenshot preview</string>
