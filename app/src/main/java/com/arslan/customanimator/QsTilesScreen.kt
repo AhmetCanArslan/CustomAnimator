@@ -53,12 +53,13 @@ import com.arslan.customanimator.utils.ToggleTileSlots
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QsTilesScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState(),
     onOpenTab: (HomeTab) -> Unit = {},
     onOpenProfiles: () -> Unit = {},

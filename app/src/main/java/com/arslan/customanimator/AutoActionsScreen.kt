@@ -13,11 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.ui.theme.AppShapes
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @Composable
 fun AutoActionsScreenContent(
     modifier: Modifier = Modifier,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     onNavigateToAutoForceStop: () -> Unit,
     onNavigateToAutoPermissionDisabler: () -> Unit,
     listState: LazyListState = rememberLazyListState()

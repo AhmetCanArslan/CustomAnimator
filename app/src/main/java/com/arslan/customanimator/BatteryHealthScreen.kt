@@ -30,6 +30,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private const val BATTERY_HEALTH_REFRESH_MS = 2000L
 private const val BATTERY_USAGE_REFRESH_MS = 60000L
@@ -156,7 +157,7 @@ private fun prettifyKey(key: String): String =
 @Composable
 fun BatteryHealthScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

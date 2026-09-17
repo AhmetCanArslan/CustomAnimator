@@ -53,6 +53,7 @@ import com.arslan.customanimator.ui.theme.MonoBody
 import com.arslan.customanimator.utils.SetupHelper
 import com.arslan.customanimator.utils.SetupStage
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.utils.ShizukuState
 import kotlinx.coroutines.delay
 
 private enum class SetupRoute { PHONE_ONLY, COMPUTER }
@@ -86,7 +87,10 @@ fun rememberSetupStage(): State<SetupStage> {
         while (active) {
             delay(1000)
             val current = SetupHelper.stage(context)
-            if (current != stage.value) stage.value = current
+            if (current != stage.value) {
+                stage.value = current
+                ShizukuState.refresh()
+            }
         }
     }
 
@@ -438,7 +442,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
             primaryIcon = Icons.Filled.Security,
             onPrimary = {
                 if (running) {
-                    ShizukuHelper.requestShizukuPermission(context)
+                    ShizukuState.requestPermission(context)
                 } else {
                     Toast.makeText(
                         context,
@@ -458,6 +462,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
             primaryIcon = Icons.Filled.CheckCircle,
             onPrimary = {
                 val granted = authorized && ShizukuHelper.grantWriteSecureSettingsPermission(context)
+                ShizukuState.refresh()
                 Toast.makeText(
                     context,
                     resources.getString(

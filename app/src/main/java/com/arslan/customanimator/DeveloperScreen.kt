@@ -33,13 +33,15 @@ import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeveloperScreenContent(
     modifier: Modifier = Modifier,
-    hasShizukuPermission: Boolean,
-    hasWriteSecureSettings: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

@@ -28,13 +28,15 @@ import com.arslan.customanimator.utils.PermissionDisablerManager
 import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuAvailable
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutoPermissionDisablerScreen(
     onBack: () -> Unit,
-    isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean,
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

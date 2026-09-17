@@ -50,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private const val QR_SIZE_PX = 640
 private const val CONNECTED_POLL_MS = 5000L
@@ -58,7 +59,7 @@ private const val CONNECTED_POLL_MS = 5000L
 @Composable
 fun WifiPasswordsScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

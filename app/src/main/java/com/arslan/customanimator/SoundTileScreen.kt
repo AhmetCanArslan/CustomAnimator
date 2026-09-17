@@ -34,12 +34,13 @@ import com.arslan.customanimator.utils.SoundTileActions
 import com.arslan.customanimator.utils.SoundTilePrefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SoundTileScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

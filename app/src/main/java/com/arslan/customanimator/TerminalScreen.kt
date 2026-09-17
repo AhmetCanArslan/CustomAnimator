@@ -67,10 +67,11 @@ import com.arslan.customanimator.utils.TerminalTileSlots
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @Composable
 fun TerminalScreenContent(
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState(),
     command: TextFieldValue,
     onCommandChange: (TextFieldValue) -> Unit,

@@ -21,11 +21,12 @@ import com.arslan.customanimator.service.CompileBoosterService
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
 import com.arslan.customanimator.utils.CompileFilterManager
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @Composable
 fun CompileBoosterScreenContent(
     modifier: Modifier = Modifier,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

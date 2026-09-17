@@ -32,9 +32,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.BoostSnapshot
 import com.arslan.customanimator.utils.BoostStats
@@ -51,6 +48,7 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private val SPINNER_FRAMES = listOf("|", "/", "-", "\\")
 
@@ -94,29 +92,13 @@ fun OptimizerScreenContent() {
 }
 
 @Composable
-private fun rememberShizukuPermission(): Boolean {
-    var granted by remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                granted = ShizukuHelper.hasShizukuPermission()
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-    return granted
-}
-
-@Composable
 private fun OptimizerHome(onOpenBooster: () -> Unit) {
     val context = LocalContext.current
     val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val scope = rememberCoroutineScope()
 
-    val hasShizukuPermission = rememberShizukuPermission()
+    val hasShizukuPermission = LocalShizukuPermission.current
     val isAdFree by rememberIsAdFree()
 
     var isCleaning by remember { mutableStateOf(false) }

@@ -38,12 +38,14 @@ import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 
 @Composable
 fun ToolsScreenContent(
     modifier: Modifier = Modifier,
-    hasShizukuPermission: Boolean,
-    hasWriteSecureSettings: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     onNavigateToGraphicsApiOverride: () -> Unit,
     onNavigateToHwuiTweaks: () -> Unit,
     onNavigateToAppThreading: () -> Unit,

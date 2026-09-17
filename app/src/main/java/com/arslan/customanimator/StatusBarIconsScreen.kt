@@ -62,6 +62,7 @@ import com.arslan.customanimator.utils.StatusBarIconsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private data class StatusBarIconEntry(
     val slot: String,
@@ -143,7 +144,7 @@ private val statusBarIconSections = listOf(
 @Composable
 fun StatusBarIconsScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current

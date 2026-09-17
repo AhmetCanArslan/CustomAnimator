@@ -59,7 +59,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.utils.ShizukuState
 import com.arslan.customanimator.utils.UsageAccessHelper
+import com.arslan.customanimator.utils.LocalShizukuAvailable
 
 private val GrantedGreen: Color
     @Composable
@@ -226,7 +228,7 @@ private fun hardwareEntries(context: Context): List<PermissionEntry> {
 @Composable
 fun PermissionsScreen(
     onBack: () -> Unit,
-    isShizukuAvailable: Boolean,
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -261,7 +263,7 @@ fun PermissionsScreen(
         when (permission) {
             AppPermission.SHIZUKU -> {
                 if (isShizukuAvailable) {
-                    ShizukuHelper.requestShizukuPermission(context)
+                    ShizukuState.requestPermission(context)
                 } else {
                     Toast.makeText(
                         context,
@@ -276,6 +278,7 @@ fun PermissionsScreen(
                     ShizukuHelper.grantWriteSecureSettingsPermission(context)
                 if (grantedViaShizuku) {
                     refreshKey++
+                    ShizukuState.refresh()
                     Toast.makeText(
                         context,
                         resources.getString(R.string.action_succeeded),

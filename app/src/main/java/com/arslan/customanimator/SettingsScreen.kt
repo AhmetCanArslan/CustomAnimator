@@ -71,6 +71,9 @@ import com.arslan.customanimator.utils.SystemResetManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuAvailable
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 
 private const val DEVELOPER_EMAIL = "ahmetcanarslandev@gmail.com"
 private const val PRIVACY_POLICY_URL =
@@ -80,9 +83,9 @@ private const val PRIVACY_POLICY_URL =
 @Composable
 fun SettingsScreen(
     onBack: () -> Unit,
-    isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean,
-    hasWriteSecureSettings: Boolean,
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     onNavigateToPermissions: () -> Unit
 ) {
     val context = LocalContext.current

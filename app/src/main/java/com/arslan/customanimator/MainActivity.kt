@@ -3,7 +3,6 @@ package com.arslan.customanimator
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -11,7 +10,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.content.ContextCompat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -100,7 +98,6 @@ import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.ChangelogManager
 import com.arslan.customanimator.utils.SettingsManager
-import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.data.AnimatorPreset
 import com.arslan.customanimator.data.WidthPreset
 import com.arslan.customanimator.utils.AnimationTileSlots
@@ -111,7 +108,11 @@ import com.arslan.customanimator.utils.TerminalTileSlots
 import com.arslan.customanimator.utils.ToggleTileManager
 import com.arslan.customanimator.utils.ToggleTileSlots
 import com.arslan.customanimator.utils.WidthPresetManager
-import rikka.shizuku.Shizuku
+import com.arslan.customanimator.utils.LocalShizukuAvailable
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import com.arslan.customanimator.utils.ProvideShizukuState
+import com.arslan.customanimator.utils.ShizukuState
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -119,12 +120,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.arslan.customanimator.R
 
 class MainActivity : ComponentActivity() {
-    private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
-        if (grantResult == 0) {
-            ShizukuHelper.grantWriteSecureSettingsPermission(this)
-        }
-    }
-    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -141,15 +136,11 @@ class MainActivity : ComponentActivity() {
         WidthTileSlots.sync(this, WidthPresetManager(this))
         AnimationTileSlots.sync(this, PresetManager(this))
 
-        Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
-        
-        if (ShizukuHelper.isShizukuAvailable() && !ShizukuHelper.hasShizukuBeenRequested(this) && !ShizukuHelper.hasShizukuPermission()) {
-            ShizukuHelper.requestShizukuPermission(this)
-            ShizukuHelper.markShizukuRequested(this)
-        }
-        
+        ShizukuState.start(this)
+
         setContent {
             CustomAnimatorTheme {
+                ProvideShizukuState {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     var showOnboarding by rememberSaveable {
                         mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
@@ -182,30 +173,16 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+                }
             }
         }
     }
-    
+
     override fun onResume() {
         super.onResume()
         initBilling(this)
         preloadInterstitial(this)
-
-        if (ShizukuHelper.hasShizukuPermission()) {
-            val hasSecureSettings = ContextCompat.checkSelfPermission(
-                this,
-                "android.permission.WRITE_SECURE_SETTINGS"
-            ) == PackageManager.PERMISSION_GRANTED
-            
-            if (!hasSecureSettings) {
-                ShizukuHelper.grantWriteSecureSettingsPermission(this)
-            }
-        }
-    }
-    
-    override fun onDestroy() {
-        super.onDestroy()
-        Shizuku.removeRequestPermissionResultListener(shizukuRequestListener)
+        ShizukuState.refresh()
     }
 }
 
@@ -302,21 +279,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val widthPresetManager = remember { WidthPresetManager(context) }
     val focusManager = LocalFocusManager.current
     
-    val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
-    val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
-    val hasWriteSecureSettings = remember { mutableStateOf(ShizukuHelper.hasWriteSecureSettingsPermission(context)) }
-
-    val permissionLifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(permissionLifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                hasShizukuPermission.value = ShizukuHelper.hasShizukuPermission()
-                hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
-            }
-        }
-        permissionLifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { permissionLifecycleOwner.lifecycle.removeObserver(observer) }
-    }
+    val isShizukuAvailable = LocalShizukuAvailable.current
+    val hasShizukuPermission = LocalShizukuPermission.current
+    val hasWriteSecureSettings = LocalWriteSecureSettings.current
     
     var windowAnimScale by remember {
         mutableStateOf(SettingsManager.getWindowAnimationScale(contentResolver))
@@ -389,8 +354,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     LaunchedEffect(currentScreen) {
-        hasShizukuPermission.value = ShizukuHelper.hasShizukuPermission()
-        hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
+        ShizukuState.refresh()
         if (currentScreen != HomeScreen.SETUP_GUIDE) {
             SettingsManager.setLastScreen(context, currentScreen.name)
         }
@@ -623,9 +587,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     if (targetScreen == HomeScreen.SETTINGS) {
         SettingsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
             onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
         )
     } else if (targetScreen == HomeScreen.PROFILES) {
@@ -654,64 +615,51 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
             onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = autoForceStopListState
         )
     } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         AutoPermissionDisablerScreen(
             onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = autoPermissionDisablerListState
         )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = graphicsApiOverrideListState
         )
     } else if (targetScreen == HomeScreen.HWUI_TWEAKS) {
         HwuiTweaksScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = hwuiTweaksListState
         )
     } else if (targetScreen == HomeScreen.APP_THREADING) {
         AppThreadingScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = appThreadingListState
         )
     } else if (targetScreen == HomeScreen.DOZE_WHITELIST) {
         DozeWhitelistScreen(
             onBack = { backToTab(HomeTab.BATTERY) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = dozeWhitelistListState
         )
     } else if (targetScreen == HomeScreen.BATTERY_HEALTH) {
         BatteryHealthScreen(
             onBack = { backToTab(HomeTab.BATTERY) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = batteryHealthListState
         )
     } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
         PerAppWidthScreen(
             onBack = { backToTab(HomeTab.WIDTH) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = perAppWidthListState
         )
     } else if (targetScreen == HomeScreen.REFRESH_RATE) {
         RefreshRateScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = refreshRateListState
         )
     } else if (targetScreen == HomeScreen.QS_TILES) {
         QsTilesScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = qsTilesListState,
             onOpenTab = { tab -> backToTab(tab) },
             onOpenProfiles = { currentScreen = HomeScreen.PROFILES },
@@ -721,31 +669,26 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
         WifiPasswordsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = wifiPasswordsListState
         )
     } else if (targetScreen == HomeScreen.HOTSPOT_MANAGER) {
         HotspotManagerScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = hotspotManagerListState
         )
     } else if (targetScreen == HomeScreen.ALARM_REVEALER) {
         AlarmRevealerScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = alarmRevealerListState
         )
     } else if (targetScreen == HomeScreen.CARRIER_NAME) {
         CarrierNameScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = carrierNameListState
         )
     } else if (targetScreen == HomeScreen.STATUS_BAR_ICONS) {
         StatusBarIconsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = statusBarIconsListState
         )
     } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
@@ -756,7 +699,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.SOUND_TILE) {
         SoundTileScreen(
             onBack = { currentScreen = HomeScreen.QS_TILES },
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = soundTileListState
         )
     } else if (targetScreen == HomeScreen.SETUP_GUIDE) {
@@ -767,7 +709,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.PERMISSIONS) {
         PermissionsScreen(
             onBack = { currentScreen = HomeScreen.SETTINGS },
-            isShizukuAvailable = isShizukuAvailable,
             listState = permissionsListState
         )
     } else if (targetScreen == HomeScreen.NOTIFY_RULES) {
@@ -823,7 +764,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) }
         ) {
             CompileBoosterScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
                 listState = compileBoosterListState
             )
         }
@@ -833,7 +773,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) }
         ) {
             AutoActionsScreenContent(
-                hasShizukuPermission = hasShizukuPermission.value,
                 onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
                 onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
                 listState = autoActionsListState
@@ -870,7 +809,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         ) { targetTab ->
         if (targetTab == HomeTab.TERMINAL) {
         TerminalScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = terminalTabListState,
             command = terminalCommand,
             onCommandChange = { terminalCommand = it },
@@ -882,14 +820,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         OptimizerScreenContent()
         } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
             listState = developerTabListState
         )
         } else if (targetTab == HomeTab.TOOLS) {
         ToolsScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
             onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
             onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
@@ -909,12 +843,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         SystemMeterScreenContent(listState = systemMeterListState)
         } else if (targetTab == HomeTab.GAME_MODE) {
         GameModeScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
             listState = gameModeListState
         )
         } else if (targetTab == HomeTab.BATTERY) {
         BatteryScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
             onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
             onNavigateToBatteryHealth = { currentScreen = HomeScreen.BATTERY_HEALTH },
             listState = batteryTabListState
@@ -933,7 +865,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!hasWriteSecureSettings.value) {
+            if (!hasWriteSecureSettings) {
                 item {
                     SetupNudgeCard(
                         message = stringResource(R.string.setup_nudge_home),
@@ -1251,7 +1183,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (!hasWriteSecureSettings.value) {
+            if (!hasWriteSecureSettings) {
                 item {
                     SetupNudgeCard(
                         message = stringResource(R.string.setup_nudge_home),
@@ -1857,7 +1789,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
-                    if (isShizukuAvailable && hasShizukuPermission.value) {
+                    if (isShizukuAvailable && hasShizukuPermission) {
                         Text(
                             stringResource(R.string.shizuku_ready),
                             style = MaterialTheme.typography.bodyMedium,
@@ -1871,7 +1803,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
-                    } else if (isShizukuAvailable && !hasShizukuPermission.value) {
+                    } else if (isShizukuAvailable && !hasShizukuPermission) {
                         Text(
                             stringResource(R.string.shizuku_available),
                             style = MaterialTheme.typography.bodyMedium,
@@ -1896,7 +1828,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                     }
                     
-                    if (!hasWriteSecureSettings.value) {
+                    if (!hasWriteSecureSettings) {
                         Text(
                             stringResource(R.string.use_adb_command),
                             style = MaterialTheme.typography.titleSmall,

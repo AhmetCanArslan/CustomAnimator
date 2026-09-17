@@ -34,12 +34,13 @@ import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.service.BatteryAlertService
 import com.arslan.customanimator.utils.BatteryAlertPrefs
 import com.arslan.customanimator.utils.BatteryTweaksManager
-import com.arslan.customanimator.utils.ShizukuHelper
 import kotlin.math.roundToInt
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 
 @Composable
 fun BatteryScreenContent(
-    hasShizukuPermission: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     onNavigateToDozeWhitelist: () -> Unit,
     onNavigateToBatteryHealth: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -49,8 +50,7 @@ fun BatteryScreenContent(
     val resolver = context.contentResolver
     val mgr = BatteryTweaksManager
 
-    val canWrite = hasShizukuPermission ||
-        ShizukuHelper.hasWriteSecureSettingsPermission(context)
+    val canWrite = hasShizukuPermission || LocalWriteSecureSettings.current
 
     var refreshToken by remember { mutableIntStateOf(0) }
 
