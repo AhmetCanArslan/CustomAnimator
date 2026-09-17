@@ -18,8 +18,32 @@ fun propOrEnv(name: String, default: String): String {
 val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~3347511713")
 val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
 val admobInterstitialId = propOrEnv("admob.interstitial.id", "ca-app-pub-3940256099942544/1033173712")
-val admobAppOpenId = propOrEnv("admob.appopen.id", "ca-app-pub-3940256099942544/9257395921")
 val admobRewardedId = propOrEnv("admob.rewarded.id", "ca-app-pub-3940256099942544/5224354917")
+
+val admobTestPublisherPrefix = "ca-app-pub-3940256099942544"
+
+val verifyReleaseAdUnitIds = tasks.register("verifyReleaseAdUnitIds") {
+    val configuredIds = listOf(
+        "admob.app.id" to admobAppId,
+        "admob.banner.id" to admobBannerId,
+        "admob.interstitial.id" to admobInterstitialId,
+        "admob.rewarded.id" to admobRewardedId
+    )
+    doLast {
+        val missing = configuredIds.filter { it.second.startsWith(admobTestPublisherPrefix) }
+        if (missing.isNotEmpty()) {
+            throw GradleException(
+                "Release build would ship AdMob test ad units. Set " +
+                    missing.joinToString(", ") { it.first } +
+                    " in local.properties or the matching environment variables."
+            )
+        }
+    }
+}
+
+tasks.matching { it.name == "assembleRelease" || it.name == "bundleRelease" }.configureEach {
+    dependsOn(verifyReleaseAdUnitIds)
+}
 
 android {
     namespace = "com.arslan.customanimator"
@@ -38,7 +62,6 @@ android {
         manifestPlaceholders["admobAppId"] = admobAppId
         buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
         buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
-        buildConfigField("String", "APP_OPEN_AD_UNIT_ID", "\"$admobAppOpenId\"")
         buildConfigField("String", "REWARDED_AD_UNIT_ID", "\"$admobRewardedId\"")
     }
 
@@ -97,7 +120,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
-    implementation(libs.androidx.lifecycle.process)
     implementation(libs.billing.ktx)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
