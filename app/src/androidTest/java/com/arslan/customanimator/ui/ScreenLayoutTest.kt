@@ -106,7 +106,11 @@ class ScreenLayoutTest {
 
     @Test
     fun batteryScreenFitsSmallPhones() = screenFits {
-        BatteryScreenContent(hasShizukuPermission = false, onNavigateToDozeWhitelist = {})
+        BatteryScreenContent(
+            hasShizukuPermission = false,
+            onNavigateToDozeWhitelist = {},
+            onNavigateToBatteryHealth = {}
+        )
     }
 
     @Test
