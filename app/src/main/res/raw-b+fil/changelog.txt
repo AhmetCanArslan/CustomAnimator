@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Mga Tool): ilista ang lahat ng preinstalled na app at alisin, i-disable, o ibalik ang mga ito para sa user na ito — may mga antas ng panganib, proteksyon para sa mahahalagang system app, pag-export ng APK, at Ibalik lahat sa isang tap.
+- Opsyonal na listahan ng mga package mula sa komunidad: i-download ang listahan ng Universal Debloater Alliance para sa mas detalyadong paglalarawan at antas ng panganib.
+- Kalusugan ng Baterya (tab na Baterya): tingnan ang kapasidad, cycle, temperatura, agos, at detalye ng Doze.
+- Sinusubaybayan na ang status ng Shizuku sa iisang lugar, kaya laging updated ang permission sa lahat ng screen.
+- Inalis ang app-open ads: wala nang full-screen na ad kapag binuksan ang app.
+
 ## 186 - 3.5
 - Status Bar Icon Manager (Tools): i-toggle ang 40+ icon — orasan, baterya, Wi-Fi, hotspot, NFC atbp. — naka-grupo sa Status, Connectivity, Sound at System, may Show all / Hide all.
 - Bagong Optimizer tab (pamalit sa Boost at Cleaner): Cleaner naglilinis ng space at memory sa isang tap, Performance Booster mas malalim na step-by-step tune-up — iisang screen na ngayon.

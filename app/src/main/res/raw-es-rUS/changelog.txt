@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Herramientas): lista todas las apps preinstaladas y quítalas, desactívalas o restáuralas para este usuario, con niveles de riesgo, protección de las apps críticas del sistema, exportación de APK y Restaurar todo con un toque.
+- Lista de paquetes de la comunidad (opcional): descarga la lista de Universal Debloater Alliance para obtener descripciones y niveles de riesgo más detallados.
+- Salud de la batería (pestaña Batería): consulta capacidad, ciclos, temperatura, corriente y detalles de Doze.
+- El estado de Shizuku ahora se controla en un solo lugar, así que los permisos se mantienen actualizados en todas las pantallas.
+- Se eliminaron los anuncios de apertura: ya no aparece un anuncio a pantalla completa al abrir la app.
+
 ## 186 - 3.5
 - Gestor de iconos de la barra de estado (Herramientas): activa 40+ iconos — reloj, batería, Wi-Fi, hotspot, NFC y más — agrupados en Estado, Conectividad, Sonido y Sistema, con Mostrar todo / Ocultar todo.
 - Nueva pestaña Optimizador (reemplaza Boost y Cleaner): Limpiador libera espacio y memoria con un toque, Potenciador hace una optimización profunda paso a paso — ahora en una sola pantalla.

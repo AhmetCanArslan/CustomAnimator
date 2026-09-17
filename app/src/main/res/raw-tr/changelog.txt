@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Araçlar): önyüklü uygulamaları listele; bu kullanıcı için kaldır, devre dışı bırak veya geri yükle — risk seviyeleri, kritik sistem uygulamaları için koruma, APK dışa aktarma ve tek dokunuşla Tümünü geri yükle.
+- İsteğe bağlı topluluk paket listesi: daha ayrıntılı açıklamalar ve risk değerlendirmeleri için Universal Debloater Alliance listesini indir.
+- Pil Sağlığı (Pil sekmesi): kapasite, şarj döngüsü, sıcaklık, akım ve Doze ayrıntılarını gör.
+- Shizuku durumu artık tek yerden izleniyor; izin durumu tüm ekranlarda güncel kalıyor.
+- Uygulama açılış reklamları kaldırıldı: uygulamayı açarken artık tam ekran reklam yok.
+
 ## 186 - 3.5
 - Durum Çubuğu Simge Yöneticisi (Araçlar): 40+ simgeyi — saat, pil, Wi-Fi, hotspot, NFC ve daha fazlası — Durum, Bağlantı, Ses ve Sistem gruplarında aç/kapat, Tümünü göster / Tümünü gizle ile.
 - Yeni Optimize Edici sekmesi (Boost ve Cleaner'ın yerini aldı): Temizleyici tek dokunuşla yer ve bellek açar, Performans Artırıcı adım adım daha derin iyileştirme yapar — artık tek ekranda.

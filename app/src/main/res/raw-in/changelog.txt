@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Alat): tampilkan semua aplikasi bawaan lalu hapus, nonaktifkan, atau pulihkan untuk pengguna ini — dengan tingkat risiko, perlindungan untuk aplikasi sistem penting, ekspor APK, dan Pulihkan semua dalam satu ketukan.
+- Daftar paket komunitas (opsional): unduh daftar Universal Debloater Alliance untuk deskripsi dan penilaian risiko yang lebih lengkap.
+- Kesehatan Baterai (tab Baterai): lihat kapasitas, siklus, suhu, arus, dan detail Doze.
+- Status Shizuku kini dilacak di satu tempat, jadi status izin tetap terbaru di semua layar.
+- Iklan pembuka aplikasi dihapus: tidak ada lagi iklan layar penuh saat membuka aplikasi.
+
 ## 186 - 3.5
 - Pengelola Ikon Bilah Status (Alat): alihkan 40+ ikon — jam, baterai, Wi-Fi, hotspot, NFC dan lainnya — dikelompokkan Status, Konektivitas, Suara dan Sistem, dengan Tampilkan semua / Sembunyikan semua.
 - Tab Optimizer baru (menggantikan Boost & Cleaner): Cleaner mengosongkan ruang dan memori satu ketukan, Performance Booster tune-up mendalam langkah demi langkah — kini satu layar.

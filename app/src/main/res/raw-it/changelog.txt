@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Strumenti): elenca tutte le app preinstallate e rimuovile, disattivale o ripristinale per questo utente, con livelli di rischio, protezione per le app di sistema critiche, esportazione APK e Ripristina tutto con un tocco.
+- Elenco pacchetti della community (opzionale): scarica l'elenco della Universal Debloater Alliance per descrizioni e valutazioni di rischio più dettagliate.
+- Salute della batteria (scheda Batteria): capacità, cicli, temperatura, corrente e dettagli Doze.
+- Lo stato di Shizuku è ora gestito in un unico punto: i permessi restano aggiornati in tutte le schermate.
+- Rimossi gli annunci all'apertura: niente più annuncio a schermo intero all'avvio dell'app.
+
 ## 186 - 3.5
 - Gestore icone barra di stato (Strumenti): 40+ icone — orologio, batteria, Wi-Fi, hotspot, NFC e altro — raggruppate per Stato, Connettività, Audio e Sistema, con Mostra tutto / Nascondi tutto.
 - Nuova scheda Ottimizzatore (sostituisce Boost e Cleaner): Pulizia libera spazio e memoria con un tocco, Potenziamento fa un'ottimizzazione approfondita passo-passo — ora in un'unica schermata.

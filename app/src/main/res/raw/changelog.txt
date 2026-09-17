@@ -1,3 +1,10 @@
+## 189 - 3.6
+- Debloater (Tools): list every preinstalled app and remove, disable or restore it for this user — with risk levels, protection for critical system apps, APK export and one-tap Restore all.
+- Optional community package list: download the Universal Debloater Alliance list for more detailed descriptions and risk ratings.
+- Battery Health (Battery tab): see capacity, cycles, temperature, current and Doze details.
+- Shizuku status is now tracked in one place, so permission state stays fresh on every screen.
+- App-open ads removed: no more full-screen ad when you open the app.
+
 ## 186 - 3.5
 - Status Bar Icon Manager (Tools): toggle 40+ icons — clock, battery, Wi-Fi, hotspot, NFC and more — grouped by Status, Connectivity, Sound and System, with Show all / Hide all.
 - New Optimizer tab (replaces Boost & Cleaner): Cleaner frees space and memory in one tap, Performance Booster does a deeper step-by-step tune-up — now in one screen.
