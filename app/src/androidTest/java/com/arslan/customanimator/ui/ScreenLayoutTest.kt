@@ -13,6 +13,7 @@ import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
+import com.arslan.customanimator.DebloaterScreen
 import com.arslan.customanimator.StatusBarIconsScreen
 import com.arslan.customanimator.CompileBoosterScreenContent
 import com.arslan.customanimator.DeveloperScreenContent
@@ -95,6 +96,11 @@ class ScreenLayoutTest {
     }
 
     @Test
+    fun debloaterScreenFitsSmallPhones() = screenFits(R.string.debloater) {
+        DebloaterScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
     fun autoForceStopScreenFitsSmallPhones() = screenFits(R.string.auto_force_stop) {
         AutoForceStopScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
     }
@@ -139,7 +145,7 @@ class ScreenLayoutTest {
             onNavigateToRefreshRate = {},
             onNavigateToQsTiles = {},
             onNavigateToScreenshotActions = {},
-            onNavigateToSoundTile = {},
+            onNavigateToDebloater = {},
             onNavigateToCompileBooster = {},
             onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},

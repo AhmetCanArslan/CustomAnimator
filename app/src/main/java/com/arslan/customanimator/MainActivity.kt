@@ -197,7 +197,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -239,6 +239,7 @@ private val SUB_SCREEN_PARENTS = mapOf(
 )
 
 private val SUB_SCREEN_TABS = mapOf(
+    HomeScreen.DEBLOATER to HomeTab.TOOLS,
     HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
     HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
     HomeScreen.APP_THREADING to HomeTab.TOOLS,
@@ -314,6 +315,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -622,6 +624,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = autoPermissionDisablerListState
         )
+    } else if (targetScreen == HomeScreen.DEBLOATER) {
+        DebloaterScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = debloaterListState
+        )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -835,6 +842,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
             onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
+            onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = toolsListState

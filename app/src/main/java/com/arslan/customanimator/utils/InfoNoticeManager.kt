@@ -15,4 +15,8 @@ object InfoNoticeManager {
     fun dismiss(context: Context, key: String) {
         prefs(context).edit().putBoolean(key, true).apply()
     }
+
+    fun restore(context: Context, key: String) {
+        prefs(context).edit().putBoolean(key, false).apply()
+    }
 }

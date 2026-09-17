@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
+import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
@@ -57,6 +58,7 @@ fun ToolsScreenContent(
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
+    onNavigateToDebloater: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -179,6 +181,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.qs_tiles),
                             description = stringResource(R.string.qs_tiles_desc),
                             onClick = onNavigateToQsTiles
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.DeleteSweep,
+                            title = stringResource(R.string.debloater),
+                            description = stringResource(R.string.debloater_desc),
+                            onClick = onNavigateToDebloater
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
