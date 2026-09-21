@@ -17,6 +17,7 @@ object BackupManager {
         "auto_force_stop",
         "auto_permission_disabler",
         "auto_permission_disabler_state",
+        "close_apps_exclusions",
         "fps_overlay_prefs",
         "compile_booster_prefs"
     )

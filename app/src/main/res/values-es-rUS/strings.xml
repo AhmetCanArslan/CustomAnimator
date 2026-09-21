@@ -1559,4 +1559,7 @@ Duración del Animador: %3$.2f</string>
     <string name="debloater_clear_selection">Borrar selección</string>
     <string name="debloater_empty">Ninguna app coincide con este filtro.</string>
     <string name="debloater_result">%1$d listas, %2$d con error.</string>
+    <string name="close_apps_exclusions">Lista de exclusiones</string>
+    <string name="close_apps_exclusions_desc">Elige las apps que el Potenciador de rendimiento nunca debe forzar a detenerse</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) excluidas del cierre</string>
 </resources>

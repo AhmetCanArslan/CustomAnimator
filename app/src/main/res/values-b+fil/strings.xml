@@ -1559,4 +1559,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="debloater_clear_selection">I-clear ang napili</string>
     <string name="debloater_empty">Walang app na tumutugma sa filter na ito.</string>
     <string name="debloater_result">%1$d tapos, %2$d nabigo.</string>
+    <string name="close_apps_exclusions">Listahan ng Eksklusyon</string>
+    <string name="close_apps_exclusions_desc">Piliin ang mga app na hindi dapat puwersahang isara ng Performance Booster</string>
+    <string name="close_apps_exclusions_count">%1$d (na) app ang hindi isasara</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Close
@@ -36,6 +37,7 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.BoostSnapshot
 import com.arslan.customanimator.utils.BoostStats
 import com.arslan.customanimator.data.InstalledAppInfo
+import com.arslan.customanimator.utils.CloseAppsExclusionManager
 import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.DeveloperOptionsManager
@@ -81,18 +83,24 @@ private class TerminalWriter(
 private class CleanOutcome(val storageFreed: Long, val ramFreed: Long)
 
 @Composable
-fun OptimizerScreenContent() {
+fun OptimizerScreenContent(onNavigateToCloseAppsExclusions: () -> Unit) {
     var showBooster by rememberSaveable { mutableStateOf(false) }
 
     if (showBooster) {
         BoosterTerminalScreen(onClose = { showBooster = false })
     } else {
-        OptimizerHome(onOpenBooster = { showBooster = true })
+        OptimizerHome(
+            onOpenBooster = { showBooster = true },
+            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions
+        )
     }
 }
 
 @Composable
-private fun OptimizerHome(onOpenBooster: () -> Unit) {
+private fun OptimizerHome(
+    onOpenBooster: () -> Unit,
+    onNavigateToCloseAppsExclusions: () -> Unit
+) {
     val context = LocalContext.current
     val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
@@ -187,6 +195,19 @@ private fun OptimizerHome(onOpenBooster: () -> Unit) {
             enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
             onClick = { gatedStart(::startClean) }
         )
+
+        Card(
+            shape = AppShapes.card,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            NavigationRow(
+                icon = Icons.Filled.Block,
+                title = stringResource(R.string.close_apps_exclusions),
+                description = stringResource(R.string.close_apps_exclusions_desc),
+                onClick = onNavigateToCloseAppsExclusions
+            )
+        }
 
         cleanOutcome?.let { outcome ->
             CleanResultCard(outcome = outcome)
@@ -527,15 +548,18 @@ private suspend fun trimCaches(context: Context, writer: TerminalWriter, beforeS
 }
 
 private suspend fun compactMemory(writer: TerminalWriter) {
-    val memoryOk = withContext(Dispatchers.IO) { MemoryBooster.boost() }
-    writer.line(if (memoryOk) "   · am kill-all + am compact all full OK" else "   · memory compaction FAILED")
+    val memoryOk = withContext(Dispatchers.IO) { MemoryBooster.compact() }
+    writer.line(if (memoryOk) "   · am compact all full OK" else "   · memory compaction FAILED")
     val syncOk = withContext(Dispatchers.IO) { ShizukuHelper.executeShellCommand(arrayOf("sync")) }
     writer.line(if (syncOk) "   · filesystem buffers flushed" else "   · sync FAILED", STAGE_DELAY_MS)
 }
 
 private suspend fun closeBackgroundApps(context: Context, writer: TerminalWriter, apps: List<InstalledAppInfo>): Int {
-    val unsafe = withContext(Dispatchers.IO) { InstalledAppsProvider.getUnsafeToKillPackages(context) }
-    val targets = apps.filterNot { unsafe.contains(it.packageName) }
+    val skip = withContext(Dispatchers.IO) {
+        CloseAppsExclusionManager(context).getSelectedPackages() +
+            InstalledAppsProvider.getUnsafeToKillPackages(context)
+    }
+    val targets = apps.filterNot { skip.contains(it.packageName) }
     var closed = 0
     targets.forEachIndexed { index, app ->
         val ok = withContext(Dispatchers.IO) { DeveloperOptionsManager.forceStopApp(app.packageName) }

@@ -197,7 +197,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -255,7 +255,8 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
     HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
     HomeScreen.QS_TILES to HomeTab.TOOLS,
-    HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH
+    HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH,
+    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.OPTIMIZER
 )
 
 private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
@@ -316,6 +317,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -624,6 +626,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = autoPermissionDisablerListState
         )
+    } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
+        CloseAppsExclusionsScreen(
+            onBack = { backToTab(HomeTab.OPTIMIZER) },
+            listState = closeAppsExclusionsListState
+        )
     } else if (targetScreen == HomeScreen.DEBLOATER) {
         DebloaterScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -824,7 +831,9 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             isActive = targetScreen == currentScreen && targetTab == selectedTab
         )
         } else if (targetTab == HomeTab.OPTIMIZER) {
-        OptimizerScreenContent()
+        OptimizerScreenContent(
+            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS }
+        )
         } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
             listState = developerTabListState

@@ -1599,4 +1599,7 @@
     <string name="debloater_clear_selection">إلغاء التحديد</string>
     <string name="debloater_empty">لا توجد تطبيقات تطابق هذا الفلتر.</string>
     <string name="debloater_result">%1$d تم، %2$d فشل.</string>
+    <string name="close_apps_exclusions">قائمة الاستثناءات</string>
+    <string name="close_apps_exclusions_desc">اختر التطبيقات التي يجب ألا يوقفها “مُسرِّع الأداء” قسريًا أبدًا</string>
+    <string name="close_apps_exclusions_count">%1$d تطبيق مستثنى من الإغلاق</string>
 </resources>

@@ -11,6 +11,7 @@ import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
+import com.arslan.customanimator.CloseAppsExclusionsScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.DebloaterScreen
@@ -250,7 +251,12 @@ class ScreenLayoutTest {
 
     @Test
     fun optimizerScreenFitsSmallPhones() = screenFits {
-        OptimizerScreenContent()
+        OptimizerScreenContent(onNavigateToCloseAppsExclusions = {})
+    }
+
+    @Test
+    fun closeAppsExclusionsScreenFitsSmallPhones() = screenFits(R.string.close_apps_exclusions) {
+        CloseAppsExclusionsScreen(onBack = {})
     }
 
     @Test

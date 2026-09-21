@@ -1559,4 +1559,7 @@ Durasi Animator: %3$.2f</string>
     <string name="debloater_clear_selection">Hapus pilihan</string>
     <string name="debloater_empty">Tidak ada aplikasi yang cocok dengan filter ini.</string>
     <string name="debloater_result">%1$d selesai, %2$d gagal.</string>
+    <string name="close_apps_exclusions">Daftar Pengecualian</string>
+    <string name="close_apps_exclusions_desc">Pilih aplikasi yang tidak boleh dihentikan paksa oleh Penguat Performa</string>
+    <string name="close_apps_exclusions_count">%1$d aplikasi dikecualikan dari penutupan</string>
 </resources>

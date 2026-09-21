@@ -1567,4 +1567,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="debloater_clear_selection">Seçimi temizle</string>
     <string name="debloater_empty">Bu filtreye uyan uygulama yok.</string>
     <string name="debloater_result">%1$d tamamlandı, %2$d başarısız.</string>
+    <string name="close_apps_exclusions">Hariç Tutulanlar</string>
+    <string name="close_apps_exclusions_desc">Performans Hızlandırıcı’nın asla zorla kapatmayacağı uygulamaları seçin</string>
+    <string name="close_apps_exclusions_count">%1$d uygulama kapatma dışında tutuluyor</string>
 </resources>

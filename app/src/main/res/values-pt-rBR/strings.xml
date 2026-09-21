@@ -1559,4 +1559,7 @@ Duração do Animador: %3$.2f</string>
     <string name="debloater_clear_selection">Limpar seleção</string>
     <string name="debloater_empty">Nenhum app corresponde a este filtro.</string>
     <string name="debloater_result">%1$d concluídos, %2$d com falha.</string>
+    <string name="close_apps_exclusions">Lista de Exceções</string>
+    <string name="close_apps_exclusions_desc">Escolha apps que o Otimizador de desempenho nunca deve forçar a parada</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) fora da lista de fechamento</string>
 </resources>

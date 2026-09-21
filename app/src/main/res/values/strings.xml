@@ -327,6 +327,9 @@ Animator Duration: %3$.2f</string>
     <string name="rotation_reverse_portrait">Reverse Portrait (180°)</string>
     <string name="rotation_landscape_270">Landscape (90° right)</string>
     <!-- Close apps exclusions -->
+    <string name="close_apps_exclusions">Exclusion List</string>
+    <string name="close_apps_exclusions_desc">Pick apps that Performance Booster should never force-stop</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
     <string name="compile_all_apps_short">Compile</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Reset Rotation</string>

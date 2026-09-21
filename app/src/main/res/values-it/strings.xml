@@ -1579,4 +1579,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="debloater_clear_selection">Annulla selezione</string>
     <string name="debloater_empty">Nessuna app corrisponde a questo filtro.</string>
     <string name="debloater_result">%1$d completate, %2$d non riuscite.</string>
+    <string name="close_apps_exclusions">Elenco esclusioni</string>
+    <string name="close_apps_exclusions_desc">Scegli le app che Booster prestazioni non deve mai arrestare forzatamente</string>
+    <string name="close_apps_exclusions_count">%1$d app escluse dalla chiusura</string>
 </resources>

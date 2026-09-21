@@ -1561,4 +1561,7 @@
     <string name="debloater_clear_selection">Снять выделение</string>
     <string name="debloater_empty">Нет приложений, подходящих под этот фильтр.</string>
     <string name="debloater_result">Готово: %1$d, с ошибкой: %2$d.</string>
+    <string name="close_apps_exclusions">Список исключений</string>
+    <string name="close_apps_exclusions_desc">Выберите приложения, которые «Ускорение производительности» никогда не должно принудительно останавливать</string>
+    <string name="close_apps_exclusions_count">Приложений в исключениях: %1$d</string>
 </resources>
