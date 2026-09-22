@@ -1,18 +1,25 @@
 package com.arslan.customanimator.utils
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Context
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.IBinder
-import android.os.Parcel
-import android.os.PersistableBundle
-import android.telephony.CarrierConfigManager
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
+import android.util.Log
 import androidx.core.content.ContextCompat
-import rikka.shizuku.ShizukuBinderWrapper
-import rikka.shizuku.SystemServiceHelper
+import com.arslan.customanimator.service.CarrierUserService
+import com.arslan.customanimator.service.ICarrierUserService
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withTimeout
+import org.json.JSONObject
+import rikka.shizuku.Shizuku
+import kotlin.coroutines.resume
 
 data class SimSlot(
     val subId: Int,
@@ -22,10 +29,17 @@ data class SimSlot(
 
 object CarrierNameManager {
 
-    private const val CARRIER_CONFIG_SERVICE = "carrier_config"
-    private const val DESCRIPTOR = "com.android.internal.telephony.ICarrierConfigLoader"
-    private const val TRANSACTION_OVERRIDE_CONFIG = 3
-    private const val TRANSACTION_GET_DEFAULT_PACKAGE = 6
+    private const val TAG = "CarrierNameManager"
+    private const val BIND_TIMEOUT_MS = 15_000L
+    private const val SERVICE_VERSION = 1
+
+    sealed class Outcome {
+        object Success : Outcome()
+        data class Failure(val message: String?) : Outcome()
+    }
+
+    private val lock = Mutex()
+    private var service: ICarrierUserService? = null
 
     fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
@@ -52,66 +66,77 @@ object CarrierNameManager {
         }
     }
 
-    fun setCarrierName(subId: Int, name: String): Boolean {
-        val bundle = PersistableBundle()
-        bundle.putBoolean(CarrierConfigManager.KEY_CARRIER_NAME_OVERRIDE_BOOL, true)
-        bundle.putString(CarrierConfigManager.KEY_CARRIER_NAME_STRING, name)
-        return overrideConfig(subId, bundle)
-    }
+    suspend fun setCarrierName(context: Context, subId: Int, name: String): Outcome =
+        withService(context) { it.setCarrierName(subId, name) }
 
-    fun resetCarrierName(subId: Int): Boolean {
-        val bundle = PersistableBundle()
-        bundle.putBoolean(CarrierConfigManager.KEY_CARRIER_NAME_OVERRIDE_BOOL, false)
-        bundle.putString(CarrierConfigManager.KEY_CARRIER_NAME_STRING, "")
-        val cleared = overrideConfig(subId, bundle)
-        return overrideConfig(subId, null) || cleared
-    }
+    suspend fun resetCarrierName(context: Context, subId: Int): Outcome =
+        withService(context) { it.resetCarrierName(subId) }
 
-    private fun carrierConfigBinder(): IBinder? {
-        if (!isSupported() || !ShizukuHelper.hasShizukuPermission()) return null
-        val service = SystemServiceHelper.getSystemService(CARRIER_CONFIG_SERVICE) ?: return null
-        return ShizukuBinderWrapper(service)
-    }
-
-    private fun defaultCarrierServicePackage(binder: IBinder): String? {
-        val data = Parcel.obtain()
-        val reply = Parcel.obtain()
+    private suspend fun withService(
+        context: Context,
+        block: (ICarrierUserService) -> String
+    ): Outcome {
+        if (!isSupported() || !ShizukuHelper.hasShizukuPermission()) return Outcome.Failure(null)
+        val binder = lock.withLock { obtainService(context) } ?: return Outcome.Failure(null)
         return try {
-            data.writeInterfaceToken(DESCRIPTOR)
-            binder.transact(TRANSACTION_GET_DEFAULT_PACKAGE, data, reply, 0)
-            reply.readException()
-            reply.readString()
-        } catch (e: Exception) {
+            parseOutcome(block(binder))
+        } catch (e: Throwable) {
+            Log.e(TAG, "Privileged carrier call failed", e)
+            lock.withLock { service = null }
+            Outcome.Failure(null)
+        }
+    }
+
+    private suspend fun obtainService(context: Context): ICarrierUserService? {
+        service?.let { cached ->
+            if (runCatching { cached.asBinder().pingBinder() }.getOrDefault(false)) return cached
+            service = null
+        }
+        val args = Shizuku.UserServiceArgs(
+            ComponentName(context.packageName, CarrierUserService::class.java.name)
+        )
+            .daemon(false)
+            .processNameSuffix("carrier")
+            .debuggable(false)
+            .version(SERVICE_VERSION)
+        return try {
+            withTimeout(BIND_TIMEOUT_MS) { bind(args) }
+        } catch (e: Throwable) {
+            Log.d(TAG, "Carrier service bind failed: ${e.message}")
             null
-        } finally {
-            reply.recycle()
-            data.recycle()
         }
     }
 
-    private fun overrideConfig(subId: Int, bundle: PersistableBundle?): Boolean {
-        val binder = carrierConfigBinder() ?: return false
-        if (defaultCarrierServicePackage(binder).isNullOrEmpty()) return false
-        val data = Parcel.obtain()
-        val reply = Parcel.obtain()
-        return try {
-            data.writeInterfaceToken(DESCRIPTOR)
-            data.writeInt(subId)
-            if (bundle != null) {
-                data.writeInt(1)
-                bundle.writeToParcel(data, 0)
-            } else {
-                data.writeInt(0)
+    private suspend fun bind(args: Shizuku.UserServiceArgs): ICarrierUserService? =
+        suspendCancellableCoroutine { continuation ->
+            val connection = object : ServiceConnection {
+                override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                    if (!continuation.isActive) return
+                    val bound = binder?.takeIf { it.pingBinder() }
+                        ?.let { ICarrierUserService.Stub.asInterface(it) }
+                    service = bound
+                    continuation.resume(bound)
+                }
+
+                override fun onServiceDisconnected(name: ComponentName?) {
+                    service = null
+                    if (continuation.isActive) continuation.resume(null)
+                }
             }
-            data.writeInt(1)
-            binder.transact(TRANSACTION_OVERRIDE_CONFIG, data, reply, 0)
-            reply.readException()
-            true
-        } catch (e: Exception) {
-            false
-        } finally {
-            reply.recycle()
-            data.recycle()
+            try {
+                Shizuku.bindUserService(args, connection)
+            } catch (e: Throwable) {
+                Log.e(TAG, "bindUserService failed", e)
+                if (continuation.isActive) continuation.resume(null)
+            }
         }
-    }
+
+    private fun parseOutcome(json: String): Outcome = runCatching {
+        val root = JSONObject(json)
+        if (root.optBoolean("success", false)) {
+            Outcome.Success
+        } else {
+            Outcome.Failure(root.optString("error").takeIf { it.isNotBlank() })
+        }
+    }.getOrElse { Outcome.Failure(null) }
 }

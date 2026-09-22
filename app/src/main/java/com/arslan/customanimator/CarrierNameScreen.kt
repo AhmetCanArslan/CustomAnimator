@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.CarrierNameManager
-import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.SimSlot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,16 +63,19 @@ fun CarrierNameScreen(
         }
     }
 
-    val runAction: (suspend () -> Boolean) -> Unit = { action ->
+    val runAction: (suspend () -> CarrierNameManager.Outcome) -> Unit = { action ->
         isBusy = true
         coroutineScope.launch {
-            val success = withContext(Dispatchers.IO) { action() }
+            val outcome = withContext(Dispatchers.IO) { action() }
             isBusy = false
-            Toast.makeText(
-                context,
-                resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
-                Toast.LENGTH_SHORT
-            ).show()
+            val message = when (outcome) {
+                is CarrierNameManager.Outcome.Success -> resources.getString(R.string.action_succeeded)
+                is CarrierNameManager.Outcome.Failure -> {
+                    val failureText = resources.getString(R.string.action_failed)
+                    outcome.message?.let { "$failureText: $it" } ?: failureText
+                }
+            }
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
             reloadKey++
         }
     }
@@ -215,7 +217,7 @@ fun CarrierNameScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Button(
                                 onClick = {
-                                    runAction { CarrierNameManager.setCarrierName(selectedSubId, newName) }
+                                    runAction { CarrierNameManager.setCarrierName(context, selectedSubId, newName) }
                                 },
                                 enabled = hasShizukuPermission && !isBusy && newName.isNotBlank()
                             ) {
@@ -224,7 +226,7 @@ fun CarrierNameScreen(
                             Button(
                                 onClick = {
                                     newName = ""
-                                    runAction { CarrierNameManager.resetCarrierName(selectedSubId) }
+                                    runAction { CarrierNameManager.resetCarrierName(context, selectedSubId) }
                                 },
                                 enabled = hasShizukuPermission && !isBusy,
                                 colors = ButtonDefaults.buttonColors(

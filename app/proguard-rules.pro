@@ -6,10 +6,13 @@
 
 -keep class com.arslan.customanimator.service.WifiUserService { *; }
 -keep class com.arslan.customanimator.service.HotspotUserService { *; }
+-keep class com.arslan.customanimator.service.CarrierUserService { *; }
 -keep interface com.arslan.customanimator.service.IWifiUserService { *; }
 -keep interface com.arslan.customanimator.service.IHotspotUserService { *; }
+-keep interface com.arslan.customanimator.service.ICarrierUserService { *; }
 -keep class com.arslan.customanimator.service.IWifiUserService$* { *; }
 -keep class com.arslan.customanimator.service.IHotspotUserService$* { *; }
+-keep class com.arslan.customanimator.service.ICarrierUserService$* { *; }
 
 -keep class rikka.shizuku.** { *; }
 -keep class moe.shizuku.** { *; }

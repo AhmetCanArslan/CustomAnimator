@@ -5,6 +5,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.os.Looper
+import android.os.Process
+import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -26,6 +29,17 @@ object ShizukuHelper {
 
     private const val MAX_OUTPUT_LINES = 2000
     private const val MAX_OUTPUT_CHARS = 64_000
+    private const val STARTUP_BINDER_WAIT_MS = 3_000L
+
+    private val startupBinder = CountDownLatch(1)
+
+    init {
+        try {
+            Shizuku.addBinderReceivedListenerSticky { startupBinder.countDown() }
+        } catch (e: Exception) {
+            Log.d(TAG, "Shizuku binder listener unavailable: ${e.message}")
+        }
+    }
     
     fun isShizukuAvailable(): Boolean {
         return try {
@@ -39,21 +53,38 @@ object ShizukuHelper {
     }
     
     fun hasShizukuPermission(): Boolean {
+        awaitStartupBinder()
+        return isPermissionGranted()
+    }
+
+    private fun isPermissionGranted(): Boolean {
         return try {
             Shizuku.pingBinder() && Shizuku.checkSelfPermission() == 0
         } catch (e: Exception) {
             false
         }
     }
+
+    private fun awaitStartupBinder() {
+        if (Looper.myLooper() == Looper.getMainLooper() || Shizuku.pingBinder()) return
+        val remaining = Process.getStartElapsedRealtime() + STARTUP_BINDER_WAIT_MS -
+            SystemClock.elapsedRealtime()
+        if (remaining <= 0) return
+        try {
+            startupBinder.await(remaining, TimeUnit.MILLISECONDS)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+    }
     
     fun awaitShizukuPermission(timeoutMs: Long): Boolean {
-        if (hasShizukuPermission()) return true
+        if (isPermissionGranted()) return true
         val latch = CountDownLatch(1)
         val listener = Shizuku.OnBinderReceivedListener { latch.countDown() }
         return try {
             Shizuku.addBinderReceivedListenerSticky(listener)
             latch.await(timeoutMs, TimeUnit.MILLISECONDS)
-            hasShizukuPermission()
+            isPermissionGranted()
         } catch (e: Exception) {
             Log.d(TAG, "Waiting for Shizuku binder failed: ${e.message}")
             false
