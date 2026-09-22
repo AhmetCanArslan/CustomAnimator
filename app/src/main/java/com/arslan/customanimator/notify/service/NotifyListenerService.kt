@@ -9,11 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.content.pm.PackageManager
+import android.content.pm.ServiceInfo
 import android.media.AudioManager
 import android.provider.Settings
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.FlashPattern
 import com.arslan.customanimator.notify.data.IgnoreManager
@@ -295,7 +297,12 @@ class NotifyListenerService : NotificationListenerService() {
             .setContentIntent(settingsPendingIntent)
             .build()
 
-        startForeground(PERSISTENT_NOTIFICATION_ID, notification)
+        val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+        } else {
+            0
+        }
+        ServiceCompat.startForeground(this, PERSISTENT_NOTIFICATION_ID, notification, type)
     }
 
     companion object {
