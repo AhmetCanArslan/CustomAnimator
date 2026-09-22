@@ -33,7 +33,7 @@ class ScreenshotOverlay(private val context: Context) {
             bind(v, showCopy, showDelete, onCopy, onDelete)
             params?.let { p ->
                 p.x = dpToPx(xDp)
-                p.y = clearOfSystemPreview(xDp, yDp)
+                p.y = dpToPx(yDp)
                 runCatching { wm.updateViewLayout(v, p) }
             }
             v.animate().cancel()
@@ -59,7 +59,7 @@ class ScreenshotOverlay(private val context: Context) {
         ).apply {
             gravity = Gravity.START or Gravity.BOTTOM
             x = dpToPx(xDp)
-            y = clearOfSystemPreview(xDp, yDp)
+            y = dpToPx(yDp)
         }
 
         v.alpha = 0f
@@ -186,11 +186,6 @@ class ScreenshotOverlay(private val context: Context) {
             .start()
     }
 
-    private fun clearOfSystemPreview(xDp: Int, yDp: Int): Int {
-        val overlaps = xDp < PREVIEW_WIDTH_DP && yDp < PREVIEW_HEIGHT_DP
-        return dpToPx(if (overlaps) PREVIEW_HEIGHT_DP else yDp)
-    }
-
     private fun dpToPx(dp: Int): Int =
         (dp * context.resources.displayMetrics.density).toInt()
 
@@ -200,7 +195,5 @@ class ScreenshotOverlay(private val context: Context) {
         const val ENTER_MS = 220L
         const val SLIDE_DP = 56
         const val DISMISS_DP = 96
-        const val PREVIEW_WIDTH_DP = 200
-        const val PREVIEW_HEIGHT_DP = 260
     }
 }
