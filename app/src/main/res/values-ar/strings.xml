@@ -1223,8 +1223,6 @@
     <string name="hwui_texture_cache">حجم ذاكرة الخامات</string>
     <string name="hwui_texture_cache_desc">الذواكر الأكبر تبقي صورًا أكثر في معالج الرسوميات على حساب الذاكرة.</string>
     <string name="hwui_megabytes">%1$d ميغابايت</string>
-    <string name="hwui_force_gpu">فرض الرسم بمعالج الرسوميات</string>
-    <string name="hwui_force_gpu_desc">استخدام معالج الرسوميات للرسم ثنائي الأبعاد حتى في التطبيقات التي لم تطلبه.</string>
     <string name="hwui_disable_overlays">تعطيل طبقات العتاد</string>
     <string name="hwui_disable_overlays_desc">التركيب دائمًا عبر معالج الرسوميات بدل طبقات الشاشة.</string>
     <string name="hwui_overdraw">تصحيح الرسم الزائد</string>

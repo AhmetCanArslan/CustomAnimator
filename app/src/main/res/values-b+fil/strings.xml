@@ -1183,8 +1183,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="hwui_texture_cache">Laki ng texture cache</string>
     <string name="hwui_texture_cache_desc">Mas malaking cache ay nagtatago ng mas maraming bitmap sa GPU kapalit ng memorya.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">Puwersahin ang GPU rendering</string>
-    <string name="hwui_force_gpu_desc">Gamitin ang GPU sa 2D na pagguhit kahit sa mga app na hindi humiling.</string>
     <string name="hwui_disable_overlays">I-off ang HW overlay</string>
     <string name="hwui_disable_overlays_desc">Laging mag-compose sa GPU sa halip na display overlay.</string>
     <string name="hwui_overdraw">I-debug ang GPU overdraw</string>

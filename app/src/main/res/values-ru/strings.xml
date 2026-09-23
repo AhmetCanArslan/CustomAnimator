@@ -1185,8 +1185,6 @@
     <string name="hwui_texture_cache">Размер кэша текстур</string>
     <string name="hwui_texture_cache_desc">Больший кэш хранит больше изображений в GPU ценой памяти.</string>
     <string name="hwui_megabytes">%1$d МБ</string>
-    <string name="hwui_force_gpu">Принудительная отрисовка GPU</string>
-    <string name="hwui_force_gpu_desc">Использовать GPU для 2D-отрисовки даже в приложениях, которые этого не просили.</string>
     <string name="hwui_disable_overlays">Отключить аппаратные наложения</string>
     <string name="hwui_disable_overlays_desc">Всегда компоновать через GPU вместо наложений дисплея.</string>
     <string name="hwui_overdraw">Отладка перерисовки GPU</string>

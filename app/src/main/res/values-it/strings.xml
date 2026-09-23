@@ -1203,8 +1203,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="hwui_texture_cache">Dimensione cache texture</string>
     <string name="hwui_texture_cache_desc">Cache più grandi tengono più immagini sulla GPU a costo di memoria.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">Forza rendering GPU</string>
-    <string name="hwui_force_gpu_desc">Usa la GPU per il disegno 2D anche nelle app che non lo richiedono.</string>
     <string name="hwui_disable_overlays">Disattiva overlay HW</string>
     <string name="hwui_disable_overlays_desc">Componi sempre tramite GPU invece che con gli overlay del display.</string>
     <string name="hwui_overdraw">Debug overdraw GPU</string>

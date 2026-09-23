@@ -1191,8 +1191,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="hwui_texture_cache">Doku önbelleği boyutu</string>
     <string name="hwui_texture_cache_desc">Daha büyük önbellek, bellek karşılığında GPU\'da daha çok görsel tutar.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">GPU çizimini zorla</string>
-    <string name="hwui_force_gpu_desc">İstemeyen uygulamalarda da 2B çizim için GPU kullanılır.</string>
     <string name="hwui_disable_overlays">Donanım katmanlarını kapat</string>
     <string name="hwui_disable_overlays_desc">Ekran katmanları yerine her zaman GPU üzerinden birleştirir.</string>
     <string name="hwui_overdraw">GPU fazla çizimini göster</string>

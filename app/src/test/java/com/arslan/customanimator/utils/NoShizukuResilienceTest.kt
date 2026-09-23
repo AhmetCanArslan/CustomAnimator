@@ -42,7 +42,6 @@ class NoShizukuResilienceTest {
         assertEquals(HwuiTweaksManager.RENDERER_DEFAULT, HwuiTweaksManager.getRenderer())
         assertEquals(HwuiTweaksManager.TEXTURE_CACHE_DEFAULT, HwuiTweaksManager.getTextureCacheSize())
         assertFalse(HwuiTweaksManager.isOverdrawDebugEnabled())
-        assertFalse(HwuiTweaksManager.isForceGpuRenderingEnabled())
 
         assertFalse(HwuiTweaksManager.setRenderer(HwuiTweaksManager.RENDERER_SKIA_VK))
         assertFalse(HwuiTweaksManager.setTextureCacheSize(96))

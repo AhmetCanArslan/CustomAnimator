@@ -15,7 +15,6 @@ object HwuiTweaksManager {
     private const val PROP_RENDERER = "debug.hwui.renderer"
     private const val PROP_OVERDRAW = "debug.hwui.overdraw"
     private const val PROP_DIRTY_REGIONS = "debug.hwui.show_dirty_regions"
-    private const val PROP_FORCE_GPU = "persist.sys.ui.hw"
     private const val PROP_TEXTURE_CACHE = "debug.hwui.texture_cache_size"
     private const val PROP_LAYER_CACHE = "debug.hwui.layer_cache_size"
 
@@ -59,12 +58,6 @@ object HwuiTweaksManager {
         return setProp(PROP_DIRTY_REGIONS, if (enabled) "true" else "false")
     }
 
-    fun isForceGpuRenderingEnabled(): Boolean = getProp(PROP_FORCE_GPU) == "1"
-
-    fun setForceGpuRendering(enabled: Boolean): Boolean {
-        return setProp(PROP_FORCE_GPU, if (enabled) "1" else "0")
-    }
-
     fun getTextureCacheSize(): Int {
         return getProp(PROP_TEXTURE_CACHE).toFloatOrNull()?.toInt() ?: TEXTURE_CACHE_DEFAULT
     }
@@ -100,9 +93,8 @@ object HwuiTweaksManager {
         val renderer = setRenderer(RENDERER_DEFAULT)
         val overdraw = setOverdrawDebug(false)
         val dirty = setDirtyRegions(false)
-        val forceGpu = setForceGpuRendering(false)
         val cache = setTextureCacheSize(TEXTURE_CACHE_DEFAULT)
         val overlays = setHwOverlaysDisabled(context, false)
-        return renderer && overdraw && dirty && forceGpu && cache && overlays
+        return renderer && overdraw && dirty && cache && overlays
     }
 }

@@ -1183,8 +1183,6 @@ Durasi Animator: %3$.2f</string>
     <string name="hwui_texture_cache">Ukuran cache tekstur</string>
     <string name="hwui_texture_cache_desc">Cache lebih besar menyimpan lebih banyak gambar di GPU dengan biaya memori.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">Paksa render GPU</string>
-    <string name="hwui_force_gpu_desc">Gunakan GPU untuk penggambaran 2D di aplikasi yang tidak memintanya.</string>
     <string name="hwui_disable_overlays">Nonaktifkan overlay HW</string>
     <string name="hwui_disable_overlays_desc">Selalu susun lewat GPU alih-alih overlay layar.</string>
     <string name="hwui_overdraw">Debug overdraw GPU</string>

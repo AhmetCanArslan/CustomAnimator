@@ -1305,8 +1305,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="hwui_texture_cache">Texture cache size</string>
     <string name="hwui_texture_cache_desc">Larger caches keep more bitmaps on the GPU at the cost of memory.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">Force GPU rendering</string>
-    <string name="hwui_force_gpu_desc">Use the GPU for 2D drawing in apps that did not ask for it.</string>
     <string name="hwui_disable_overlays">Disable HW overlays</string>
     <string name="hwui_disable_overlays_desc">Always compose through the GPU instead of display overlays.</string>
     <string name="hwui_overdraw">Debug GPU overdraw</string>

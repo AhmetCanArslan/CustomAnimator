@@ -1183,8 +1183,6 @@ Duración del Animador: %3$.2f</string>
     <string name="hwui_texture_cache">Tamaño de caché de texturas</string>
     <string name="hwui_texture_cache_desc">Cachés más grandes mantienen más imágenes en la GPU a cambio de memoria.</string>
     <string name="hwui_megabytes">%1$d MB</string>
-    <string name="hwui_force_gpu">Forzar renderizado por GPU</string>
-    <string name="hwui_force_gpu_desc">Usa la GPU para el dibujado 2D en apps que no lo pidieron.</string>
     <string name="hwui_disable_overlays">Desactivar superposiciones HW</string>
     <string name="hwui_disable_overlays_desc">Compone siempre a través de la GPU en vez de usar superposiciones de pantalla.</string>
     <string name="hwui_overdraw">Depurar sobredibujo de GPU</string>

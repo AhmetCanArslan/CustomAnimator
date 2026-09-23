@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.GridOn
 import androidx.compose.material.icons.filled.Layers
@@ -45,7 +44,6 @@ fun HwuiTweaksScreen(
     var renderer by remember { mutableStateOf(HwuiTweaksManager.RENDERER_DEFAULT) }
     var overdrawDebug by remember { mutableStateOf(false) }
     var dirtyRegions by remember { mutableStateOf(false) }
-    var forceGpu by remember { mutableStateOf(false) }
     var textureCache by remember { mutableIntStateOf(HwuiTweaksManager.TEXTURE_CACHE_DEFAULT) }
     var showTextureCacheMenu by remember { mutableStateOf(false) }
     var hwOverlaysDisabled by remember { mutableStateOf(false) }
@@ -57,14 +55,12 @@ fun HwuiTweaksScreen(
                 val currentRenderer = HwuiTweaksManager.getRenderer()
                 val currentOverdraw = HwuiTweaksManager.isOverdrawDebugEnabled()
                 val currentDirty = HwuiTweaksManager.isDirtyRegionsEnabled()
-                val currentForceGpu = HwuiTweaksManager.isForceGpuRenderingEnabled()
                 val currentTextureCache = HwuiTweaksManager.getTextureCacheSize()
                 val currentOverlays = HwuiTweaksManager.areHwOverlaysDisabled(context)
                 withContext(Dispatchers.Main) {
                     renderer = currentRenderer
                     overdrawDebug = currentOverdraw
                     dirtyRegions = currentDirty
-                    forceGpu = currentForceGpu
                     textureCache = currentTextureCache
                     hwOverlaysDisabled = currentOverlays
                 }
@@ -271,19 +267,6 @@ fun HwuiTweaksScreen(
                 ) {
                     Column {
                         ToggleRow(
-                            icon = Icons.Filled.Brush,
-                            title = stringResource(R.string.hwui_force_gpu),
-                            description = stringResource(R.string.hwui_force_gpu_desc),
-                            checked = forceGpu,
-                            enabled = hasShizukuPermission && !isLoading,
-                            onCheckedChange = { newValue ->
-                                applyToggle(newValue, { forceGpu = it }) {
-                                    HwuiTweaksManager.setForceGpuRendering(newValue)
-                                }
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
                             icon = Icons.Filled.Layers,
                             title = stringResource(R.string.hwui_disable_overlays),
                             description = stringResource(R.string.hwui_disable_overlays_desc),
@@ -334,7 +317,6 @@ fun HwuiTweaksScreen(
                                     renderer = HwuiTweaksManager.RENDERER_DEFAULT
                                     overdrawDebug = false
                                     dirtyRegions = false
-                                    forceGpu = false
                                     textureCache = HwuiTweaksManager.TEXTURE_CACHE_DEFAULT
                                     hwOverlaysDisabled = false
                                     Toast.makeText(
