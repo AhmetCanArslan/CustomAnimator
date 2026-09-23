@@ -58,7 +58,7 @@
     <string name="show_layout_bounds">إظهار حدود التخطيط</string>
     <string name="show_layout_bounds_desc">رسم حدود القص والهوامش وحدود العرض</string>
     <string name="gpu_profiling">تحليل أداء GPU</string>
-    <string name="gpu_profiling_desc">عرض وقت العرض كأشرطة على الشاشة</string>
+    <string name="gpu_profiling_desc">عرض وقت الرسم كأشرطة على الشاشة</string>
     <string name="force_rtl">فرض تخطيط RTL</string>
     <string name="force_rtl_desc">ترتيب كل الشاشات من اليمين إلى اليسار</string>
     <string name="developer_tiles_restart_note">حدود التخطيط وتحليل GPU تنطبق فقط على التطبيقات التي تبدأ بعد التبديل؛ أعد تشغيل التطبيق الذي تريد فحصه.</string>
@@ -78,28 +78,28 @@
     <string name="auto_permission_disabler_status_active">معطّل الأذونات التلقائي نشط لـ %1$d تطبيق</string>
     <string name="auto_permission_disabler_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
-    <string name="compile_booster">معزّز الترجمة</string>
-    <string name="compile_booster_desc">فرض ترجمة AOT كاملة لكل تطبيق مثبت لبدء أسرع وأداء أكثر سلاسة</string>
-    <string name="compile_booster_progress">جارٍ الترجمة… %1$d%%</string>
-    <string name="compile_all_apps">ترجمة جميع التطبيقات</string>
-    <string name="compile_all_apps_desc">ترجمة كل تطبيق مثبت عند تطبيق هذا الملف الشخصي</string>
-    <string name="compile_all_apps_confirm_title">ترجمة جميع التطبيقات؟</string>
-    <string name="compile_all_apps_confirm_message">سيؤدي هذا إلى فرض الترجمة الكاملة لكل تطبيق مثبت، واحدًا تلو الآخر. قد يستغرق وقتًا ويستخدم بطارية/مساحة إضافية مؤقتًا، لكنه يستمر في العمل في الخلفية حتى لو غادرت هذا التطبيق.</string>
-    <string name="compile_booster_channel_name">معزّز الترجمة</string>
-    <string name="compile_booster_channel_desc">يعرض التقدم أثناء الترجمة القسرية للتطبيقات</string>
-    <string name="compile_booster_notif_title">معزّز الترجمة يعمل</string>
-    <string name="compile_booster_notif_text">جارٍ التحضير لترجمة التطبيقات…</string>
-    <string name="compile_booster_notif_text_app">جارٍ ترجمة %1$s… %2$d%%</string>
-    <string name="compile_filter_title">وضع الترجمة</string>
+    <string name="compile_booster">معزّز التجميع</string>
+    <string name="compile_booster_desc">فرض تجميع AOT كاملة لكل تطبيق مثبت لبدء أسرع وأداء أكثر سلاسة</string>
+    <string name="compile_booster_progress">جارٍ التجميع… %1$d%%</string>
+    <string name="compile_all_apps">تجميع جميع التطبيقات</string>
+    <string name="compile_all_apps_desc">تجميع كل تطبيق مثبت عند تطبيق هذا الملف الشخصي</string>
+    <string name="compile_all_apps_confirm_title">تجميع جميع التطبيقات؟</string>
+    <string name="compile_all_apps_confirm_message">سيؤدي هذا إلى فرض التجميع الكاملة لكل تطبيق مثبت، واحدًا تلو الآخر. قد يستغرق وقتًا ويستخدم بطارية/مساحة إضافية مؤقتًا، لكنه يستمر في العمل في الخلفية حتى لو غادرت هذا التطبيق.</string>
+    <string name="compile_booster_channel_name">معزّز التجميع</string>
+    <string name="compile_booster_channel_desc">يعرض التقدم أثناء التجميع القسرية للتطبيقات</string>
+    <string name="compile_booster_notif_title">معزّز التجميع يعمل</string>
+    <string name="compile_booster_notif_text">جارٍ التحضير لتجميع التطبيقات…</string>
+    <string name="compile_booster_notif_text_app">جارٍ تجميع %1$s… %2$d%%</string>
+    <string name="compile_filter_title">وضع التجميع</string>
     <string name="compile_filter_current">الوضع: %1$s</string>
     <string name="compile_filter_everything">كل شيء</string>
-    <string name="compile_filter_everything_desc">الأقوى. يترجم كل الكود مسبقًا، بما في ذلك المسارات نادرة الاستخدام. الأبطأ والأكثر استهلاكًا للتخزين.</string>
+    <string name="compile_filter_everything_desc">الأقوى. يجمّع كل الكود مسبقًا، بما في ذلك المسارات نادرة الاستخدام. الأبطأ والأكثر استهلاكًا للتخزين.</string>
     <string name="compile_filter_speed">السرعة</string>
-    <string name="compile_filter_speed_desc">ترجمة AOT كاملة لكود التطبيق. توازن ممتاز بين سرعة البدء ووقت الترجمة.</string>
+    <string name="compile_filter_speed_desc">تجميع AOT كاملة لكود التطبيق. توازن ممتاز بين سرعة البدء ووقت التجميع.</string>
     <string name="compile_filter_speed_profile">السرعة (ملف تعريف)</string>
-    <string name="compile_filter_speed_profile_desc">يترجم فقط الكود الذي يحدده ملف استخدامك كساخن. الأسرع تشغيلًا والأخف على التخزين.</string>
+    <string name="compile_filter_speed_profile_desc">يجمّع فقط الكود الذي يحدده ملف استخدامك ككثير الاستخدام. الأسرع تشغيلًا والأخف على التخزين.</string>
     <string name="compile_filter_verify">التحقق</string>
-    <string name="compile_filter_verify_desc">يتحقق فقط من البايت كود دون ترجمة AOT. الخيار الأخف والأقل فائدة.</string>
+    <string name="compile_filter_verify_desc">يتحقق فقط من البايت كود دون تجميع AOT. الخيار الأخف والأقل فائدة.</string>
     <string name="graphics_api_override">تجاوز واجهة الرسومات</string>
     <string name="graphics_api_override_desc">فرض استخدام ANGLE (ترجمة Vulkan) أو برنامج تشغيل GLES/Vulkan الأصلي</string>
     <string name="graphics_api_override_disclaimer">يستخدم هذا إعداد برنامج تشغيل ANGLE المدمج لكل تطبيق في أندرويد (أندرويد 10+). يعتمد فعليًا على جهازك وإصدار أندرويد. وهو الأكثر موثوقية على أجهزة Pixel وقد يتم تجاهله تمامًا في بعض إصدارات الشركات المصنعة الأخرى.</string>
@@ -222,16 +222,16 @@
     <string name="terminal_output">المخرجات</string>
     <string name="terminal_output_empty">لا توجد مخرجات بعد.</string>
     <string name="terminal_clear_output">مسح</string>
-    <string name="terminal_exit_code">خروج %1$d</string>
+    <string name="terminal_exit_code">الرمز %1$d</string>
 
     <!-- Quick Settings tile -->
-    <string name="terminal_tile_default_label">إعداد طرفية مسبق</string>
+    <string name="terminal_tile_default_label">إعداد مسبق للطرفية</string>
     <string name="terminal_tile_unassigned">غير معيّن</string>
     <string name="terminal_tile_unassigned_message">هذا المربع غير مرتبط بإعداد مسبق.</string>
     <string name="terminal_tile_needs_shizuku">شيزوكو غير متصل. افتح التطبيق وامنح الإذن.</string>
     <string name="terminal_tile_subtitle_no_shizuku">شيزوكو متوقف</string>
     <string name="terminal_tile_toast_success">انتهى %1$s</string>
-    <string name="terminal_tile_toast_failed">فشل %1$s (خروج %2$d)</string>
+    <string name="terminal_tile_toast_failed">فشل %1$s (الرمز %2$d)</string>
 
     <string name="terminal_tile_menu">مربع الإعدادات السريعة</string>
     <string name="terminal_tile_title">مربع الإعدادات السريعة</string>
@@ -264,8 +264,8 @@
     <string name="terminal_tile_preview">معاينة</string>
 
     <!-- Width / animation preset tiles -->
-    <string name="width_tile_default_label">إعداد عرض مسبق</string>
-    <string name="animation_tile_default_label">إعداد رسوم متحركة مسبق</string>
+    <string name="width_tile_default_label">إعداد مسبق للعرض</string>
+    <string name="animation_tile_default_label">إعداد مسبق للحركة</string>
     <string name="preset_tile_needs_permission">امنح شيزوكو أو WRITE_SECURE_SETTINGS أولاً.</string>
     <string name="preset_tile_subtitle_no_permission">لا يوجد إذن</string>
     <string name="preset_tile_toast_applied">تم تطبيق %1$s</string>
@@ -277,7 +277,7 @@
     <string name="preset_tile_collapse_description">إغلاق اللوحة فور تطبيق الإعداد المسبق.</string>
     <string name="developer_tweaks">تحسينات</string>
     <string name="disable_keyboard_animation">تعطيل حركة لوحة المفاتيح</string>
-    <string name="disable_keyboard_animation_desc">إيقاف تشغيل حركة فتح لوحة المفاتيح الفاخرة (fancy_ime_animations)</string>
+    <string name="disable_keyboard_animation_desc">إيقاف حركة فتح لوحة المفاتيح (fancy_ime_animations)</string>
     <string name="show_clock_seconds">إظهار ثواني الساعة</string>
     <string name="show_clock_seconds_desc">عرض الثواني في ساعة شريط الحالة</string>
     <string name="remove_high_volume_warning">إزالة تحذير الصوت المرتفع</string>
@@ -285,7 +285,7 @@
     <string name="remove_high_volume_warning_note">يسري مفعوله بعد إعادة التشغيل</string>
     <string name="wifi_password_manager">مدير كلمات مرور Wi-Fi</string>
     <string name="wifi_password_manager_desc">قراءة كلمات مرور Wi-Fi المحفوظة، مشاركتها كرموز QR وتصدير النسخ الاحتياطية</string>
-    <string name="wifi_unreadable">تعذر قراءة الشبكات المحفوظة. يتطلب هذا تشغيل شيزوكو على أندرويد 11 أو أحدث (حصل مستخدم الصدفة على الامتياز المطلوب هناك).</string>
+    <string name="wifi_unreadable">تعذر قراءة الشبكات المحفوظة. يتطلب هذا تشغيل شيزوكو على أندرويد 11 أو أحدث (حيث حصل مستخدم shell على الصلاحية المطلوبة).</string>
     <string name="wifi_search">ابحث في الشبكات</string>
     <string name="wifi_connected_to">متصل بـ %1$s</string>
     <string name="wifi_connected">متصل</string>
@@ -314,7 +314,7 @@
     <string name="fps_overlay_channel_name">عداد FPS</string>
     <string name="fps_overlay_channel_desc">يظهر أثناء تشغيل تراكب FPS</string>
     <string name="fps_overlay_notif_title">عداد FPS يعمل</string>
-    <string name="fps_overlay_notif_text">اضغط لفتح Custom Animator وإيقافه</string>
+    <string name="fps_overlay_notif_text">اضغط لفتح Custom Animator وإيقاف العداد</string>
     <string name="lock_screen_rotation">قفل دوران الشاشة</string>
     <string name="lock_screen_rotation_desc">تثبيت دوران الشاشة على اتجاه يحدده المستخدم</string>
     <string name="rotation_orientation">الاتجاه</string>
@@ -323,7 +323,7 @@
     <string name="rotation_reverse_portrait">عمودي معكوس (180°)</string>
     <string name="rotation_landscape_270">أفقي (90° يمين)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">ترجمة</string>
+    <string name="compile_all_apps_short">تجميع</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">إعادة تعيين الدوران</string>
     <string name="reset_rotation_desc">يستعيد التدوير التلقائي ويمسح تجاوز الاتجاه المفروض</string>
@@ -386,7 +386,7 @@
     <string name="bt_trigger_level">التفعيل التلقائي عند مستوى البطارية</string>
     <string name="bt_trigger_level_desc">تشغيل توفير البطارية تلقائيًا عند أقل من هذه النسبة. القيمة 0 تعطله.</string>
     <string name="bt_sticky">توفير البطارية الدائم</string>
-    <string name="bt_sticky_desc">البقاء مفعّلاً بعد فصل الجهاز عن الشحن وامتلائه</string>
+    <string name="bt_sticky_desc">البقاء مفعّلاً بعد فصل الجهاز عن الشاحن وإعادة شحنه</string>
     <string name="bt_sticky_auto_disable">إيقاف الوضع الدائم تلقائيًا</string>
     <string name="bt_sticky_auto_disable_desc">إنهاء الوضع الدائم بمجرد عودة البطارية فوق المستوى أدناه</string>
     <string name="bt_sticky_level">مستوى إيقاف الوضع الدائم تلقائيًا</string>
@@ -413,7 +413,7 @@
     <string name="bt_optional_sensors">تعطيل الحساسات الاختيارية</string>
     <string name="bt_optional_sensors_desc">إيقاف الحساسات غير الأساسية مثل اكتشاف الحركة</string>
     <string name="bt_disable_aod">تعطيل الشاشة الدائمة</string>
-    <string name="bt_disable_aod_desc">إيقاف الشاشة المحيطة أثناء التوفير</string>
+    <string name="bt_disable_aod_desc">إيقاف الشاشة الدائمة أثناء التوفير</string>
     <string name="bt_night_mode">فرض الوضع الداكن</string>
     <string name="bt_night_mode_desc">تحويل النظام إلى الوضع الليلي أثناء التوفير</string>
     <string name="bt_launch_boost">تعطيل تعزيز الإطلاق</string>
@@ -422,7 +422,7 @@
     <string name="bt_defer_full_backup_desc">تأجيل النسخ الاحتياطية الكاملة للبيانات حتى انتهاء التوفير</string>
     <string name="bt_defer_kv_backup">تأجيل النسخ الاحتياطية للمفتاح/القيمة</string>
     <string name="bt_defer_kv_backup_desc">تأجيل النسخ الاحتياطية التزايدية حتى انتهاء التوفير</string>
-    <string name="bt_advertise">الإعلان كمفعّل</string>
+    <string name="bt_advertise">الإبلاغ بأنه مفعّل</string>
     <string name="bt_advertise_desc">الإبلاغ عن توفير البطارية كنشط للتطبيقات التي تسأل</string>
     <string name="bt_brightness_adjust">تقليل السطوع</string>
     <string name="bt_brightness_adjust_desc">تخفيض سطوع الشاشة أثناء التوفير</string>
@@ -435,7 +435,7 @@
     <string name="bt_location_all_off_screen_off">إيقاف كل الموقع عند إطفاء الشاشة</string>
     <string name="bt_location_foreground_only">التطبيقات الأمامية فقط</string>
     <string name="bt_location_throttle">تقييد عند إطفاء الشاشة</string>
-    <string name="bt_soundtrigger">تنبيه الصوت</string>
+    <string name="bt_soundtrigger">التنشيط الصوتي</string>
     <string name="bt_soundtrigger_desc">كشف كلمة التنشيط والاستماع المستمر</string>
     <string name="bt_soundtrigger_all">الكل مسموح</string>
     <string name="bt_soundtrigger_critical">الحرج فقط</string>
@@ -448,7 +448,7 @@
     <string name="bt_preset_balanced">متوازن</string>
     <string name="bt_preset_balanced_desc">يوقف عمل الخلفية ويخفت الشاشة، ويحافظ على الاهتزاز.</string>
     <string name="bt_preset_aggressive">صارم</string>
-    <string name="bt_preset_aggressive_desc">يضيف توفير البيانات والموقع المقيد وبدون اهتزاز.</string>
+    <string name="bt_preset_aggressive_desc">يضيف توفير البيانات وتقييد الموقع وإيقاف الاهتزاز.</string>
     <string name="bt_preset_extreme">شديد</string>
     <string name="bt_preset_extreme_desc">الموقع معطل مع إطفاء الشاشة، وكلمة التنشيط معطلة، والشاشة في أقصى خفوت.</string>
 
@@ -462,7 +462,7 @@
     <string name="bt_app_standby">مجموعات استعداد التطبيقات</string>
     <string name="bt_app_standby_desc">دع أندرويد يحد من التطبيقات التي نادرًا ما تفتحها</string>
     <string name="bt_adaptive_battery">البطارية التكيفية</string>
-    <string name="bt_adaptive_battery_desc">تحديد البطارية للتطبيقات التي تستخدمها نادرًا</string>
+    <string name="bt_adaptive_battery_desc">الحد من استهلاك البطارية للتطبيقات التي تستخدمها نادرًا</string>
     <string name="bt_app_auto_restriction">التقييد التلقائي للتطبيقات</string>
     <string name="bt_app_auto_restriction_desc">تقييد التطبيقات التي تستنزف البطارية تلقائيًا</string>
     <string name="bt_cached_freezer">تجميد التطبيقات المخزنة</string>
@@ -503,12 +503,12 @@
     <string name="onboarding_next">التالي</string>
     <string name="onboarding_back">رجوع</string>
     <string name="onboarding_welcome_title">مرحبًا بك في Custom Animator</string>
-    <string name="onboarding_welcome_body">سارع جهازك بضبط مقاييس الرسوم المتحركة وكثافة الشاشة وسلوك البطارية والإعدادات المخفية للمطورين، كل ذلك من مكان واحد وبدون جذر.</string>
+    <string name="onboarding_welcome_body">سرّع جهازك بضبط مقاييس الرسوم المتحركة وكثافة الشاشة وسلوك البطارية وإعدادات المطور المخفية، كل ذلك من مكان واحد ودون الحاجة إلى روت.</string>
     <string name="onboarding_permission_title">إعداد لمرة واحدة</string>
     <string name="onboarding_permission_body">سرعة الرسوم المتحركة وكثافة الشاشة وسلوك البطارية محمية بواسطة أندرويد، لذلك يحتاج التطبيق إلى إذن خاص واحد قبل تغييرها. تمنحه مرة واحدة، في حوالي دقيقتين، باستخدام تطبيق مساعد مجاني يسمى شيزوكو أو أمر واحد من الكمبيوتر. سنرشدك خلال كل خطوة.</string>
     <string name="onboarding_permission_highlight">حتى ذلك الحين يمكن للتطبيق عرض إعداداتك الحالية لكن لا يمكنه تغييرها. يمكنك بدء الإعداد الموجّه في أي وقت من الشاشة الرئيسية أو من الإعدادات.</string>
-    <string name="onboarding_battery_title">قس البطارية بنفسك</string>
-    <string name="onboarding_battery_body">تغيّر تحسينات البطارية مدى عدوانية أندرويد في إسبات التطبيقات وتقييدها وتجميدها. لا توجد قيمة أفضل واحدة. يعتمد ذلك على جهازك ونظامك والتطبيقات التي تستخدمها.</string>
+    <string name="onboarding_battery_title">قِس استهلاك البطارية بنفسك</string>
+    <string name="onboarding_battery_body">تغيّر تحسينات البطارية مدى صرامة أندرويد في إسبات التطبيقات وتقييدها وتجميدها. لا توجد قيمة مثالية واحدة، فالأمر يعتمد على جهازك ونظامك والتطبيقات التي تستخدمها.</string>
     <string name="onboarding_battery_highlight">غيّر شيئًا واحدًا في كل مرة، ثم استخدم جهازك بشكل طبيعي ليوم واحد وقارن. الإعدادات الصارمة يمكن أن تستنزف بطاريتك أسرع، أو تؤخر الإشعارات، أو توقف تطبيقات الخلفية والمنبهات عن العمل.</string>
     <string name="onboarding_experimental_title">تجريبي بطبيعته</string>
     <string name="onboarding_experimental_body">الشركات المصنعة تعدّل أندرويد بشكل كبير. بعض التحسينات لا تفعل شيئًا بصمت على جهازك، وبعضها يُلغى بواسطة النظام، وبعضها يحتاج إعادة تشغيل قبل أن يسري مفعوله.</string>
@@ -529,14 +529,14 @@
     <string name="remove_ads_restore_desc">هل اشتريته بالفعل؟ استعده على هذا الجهاز</string>
     <string name="remove_ads_restored">تمت استعادة الشراء</string>
     <string name="remove_ads_nothing_to_restore">لم يتم العثور على شراء سابق</string>
-    <string name="remove_ads_prompt_title">تفضل بدون إعلانات؟</string>
+    <string name="remove_ads_prompt_title">تفضّل تجربة بلا إعلانات؟</string>
     <string name="remove_ads_prompt_body">أزلها بشراء لمرة واحدة وساعد في التطوير!</string>
     <string name="remove_ads_prompt_body_price">أزلها مقابل %1$s، مرة واحدة</string>
     <string name="remove_ads_prompt_dismiss">إخفاء هذا</string>
     <string name="remove_ads_support_title">يرجى دعم التطوير</string>
     <string name="remove_ads_support_message">هذا التطبيق مجاني ويُحسَّن باستمرار. يرجى دعم التطوير بشراء لمرة واحدة — فهو يزيل جميع الإعلانات أيضًا.</string>
     <string name="remove_ads_support_buy_price">إزالة الإعلانات مقابل %1$s</string>
-    <string name="ad_info_remove_ads_hint">إذا كنت تفضل عدم رؤية الإعلانات نهائيًا، يمكنك إزالتها نهائيًا بشراء لمرة واحدة، في أي وقت، من الإعدادات › النسخة المدفوعة.</string>
+    <string name="ad_info_remove_ads_hint">إذا كنت تفضّل عدم رؤية الإعلانات إطلاقًا، يمكنك إزالتها نهائيًا بشراء لمرة واحدة، في أي وقت، من الإعدادات › النسخة المدفوعة.</string>
     <string name="sound_tile_label">الصوت</string>
     <string name="sound_tile">مربع الصوت في الإعدادات السريعة</string>
     <string name="sound_tile_desc">زر في الإعدادات السريعة للوحة الصوت أو منتقي مخرجات الوسائط</string>
@@ -566,7 +566,7 @@
     <string name="aod_tile_unsupported">غير مدعومة على هذا الجهاز</string>
 
     <string name="contact_developer">التواصل مع المطور</string>
-    <string name="contact_developer_desc">يرجى التواصل مع ملاحظاتك واقتراحاتك وشكاويك</string>
+    <string name="contact_developer_desc">تواصل معنا بملاحظاتك واقتراحاتك وشكاويك</string>
     <string name="contact_developer_subject">ملاحظات حول Custom Animator</string>
     <string name="contact_developer_no_app">لم يتم العثور على تطبيق بريد</string>
     <string name="onboarding_disclaimer_title">استخدم على مسؤوليتك</string>
@@ -578,16 +578,16 @@
     <string name="permissions_title">الأذونات</string>
     <string name="permissions_summary">تم منح %1$d من %2$d</string>
     <string name="permissions_summary_all_desc">جميع الميزات مفتوحة.</string>
-    <string name="permissions_summary_partial_desc">تبقى بعض الميزات معطلة حتى يتم منح هذه.</string>
+    <string name="permissions_summary_partial_desc">تبقى بعض الميزات معطلة حتى يتم منح هذه الأذونات.</string>
     <string name="permissions_section_system">الوصول إلى النظام</string>
     <string name="permissions_section_notifications">الإشعارات</string>
     <string name="permissions_section_hardware">الأجهزة</string>
-    <string name="permissions_footer_note">لا يمكن منح الإعدادات الآمنة من داخل التطبيق. استخدم شيزوكو إذا كان يعمل، أو أمر ADB لمرة واحدة.</string>
+    <string name="permissions_footer_note">لا يمكن منح الوصول إلى الإعدادات الآمنة من داخل التطبيق. استخدم شيزوكو إذا كان يعمل، أو أمر ADB لمرة واحدة.</string>
     <string name="permission_optional">اختياري</string>
     <string name="permission_shizuku">شيزوكو</string>
     <string name="permission_shizuku_desc">يعمل، لكن لم يُصرَّح لهذا التطبيق بعد. اضغط لطلب الوصول.</string>
-    <string name="permission_shizuku_ready">متصل. يمكن منح الإعدادات الآمنة بدون كمبيوتر.</string>
-    <string name="permission_shizuku_unavailable">غير مفعّل. ابدأ شيزوكو، أو امنح الإعدادات الآمنة عبر ADB بدلاً من ذلك.</string>
+    <string name="permission_shizuku_ready">متصل. يمكن منح الوصول إلى الإعدادات الآمنة بدون كمبيوتر.</string>
+    <string name="permission_shizuku_unavailable">لا يعمل. ابدأ شيزوكو، أو امنح الوصول إلى الإعدادات الآمنة عبر ADB بدلاً من ذلك.</string>
     <string name="permission_secure_settings_desc">مطلوب لتغيير مقاييس الرسوم المتحركة وكثافة الشاشة والشاشة الدائمة.</string>
     <string name="permission_usage_access">الوصول إلى الاستخدام</string>
     <string name="permission_usage_access_desc">يسمح للتطبيق بمعرفة التطبيق الموجود في الواجهة الأمامية، للإيقاف القسري التلقائي.</string>
@@ -650,12 +650,12 @@
     <string name="pn_flash_screen_title">وميض الشاشة</string>
     <string name="pn_got_it">فهمت</string>
     <string name="pn_grant_secure_settings_adb_info">بما أن هذا إذن نظام، يجب منحه عبر ADB على كمبيوتر. افتح الطرفية أو موجه الأوامر وشغّل:</string>
-    <string name="pn_grant_secure_settings_desc">لتبديل الشاشة الدائمة، يحتاج CustomAnimator إلى إذن WRITE_SECURE_SETTINGS.</string>
-    <string name="pn_grant_secure_settings_title">منح الإعدادات الآمنة</string>
+    <string name="pn_grant_secure_settings_desc">لتشغيل الشاشة الدائمة أو إيقافها، يحتاج CustomAnimator إلى إذن WRITE_SECURE_SETTINGS.</string>
+    <string name="pn_grant_secure_settings_title">منح الوصول إلى الإعدادات الآمنة</string>
     <string name="pn_ignore_dialog_content_hint">إذا لم يتم تحديد أي شيء، سيتم تجاهل جميع إشعارات %1$s.</string>
     <string name="pn_ignore_dialog_content_section">مرشحات المحتوى (اختياري)</string>
-    <string name="pn_ignore_dialog_hint_exact">يطابق عندما يحتوي النص على هذا. فعّل Regex للنمط</string>
-    <string name="pn_ignore_dialog_hint_regex">مثال: \d+ رسالة جديدة من \d+ محادثة</string>
+    <string name="pn_ignore_dialog_hint_exact">يطابق عندما يحتوي النص على هذا. فعّل Regex للأنماط</string>
+    <string name="pn_ignore_dialog_hint_regex">مثال: \\d+ رسالة جديدة من \\d+ محادثة</string>
     <string name="pn_ignore_dialog_match_body">مطابقة النص</string>
     <string name="pn_ignore_dialog_match_title">مطابقة العنوان</string>
     <string name="pn_ignore_dialog_regex">Regex</string>
@@ -663,7 +663,7 @@
     <string name="pn_ignore_dialog_scope_hint">جميع القواعد أدناه تنطبق على %1$s فقط، وليس التطبيقات الأخرى.</string>
     <string name="pn_ignore_dialog_scope_label">النطاق: %1$s فقط</string>
     <string name="pn_ignore_dialog_title">تجاهل الإشعار</string>
-    <string name="pn_ignored_edit_app_only_hint">حاليًا تكتم جميع إشعارات هذا التطبيق. أضف نمط عنوان أو نص أدناه لتضييق القاعدة على إشعارات محددة.</string>
+    <string name="pn_ignored_edit_app_only_hint">يتم حاليًا كتم جميع إشعارات هذا التطبيق. أضف نمط عنوان أو نص أدناه لتضييق القاعدة على إشعارات محددة.</string>
     <string name="pn_ignored_edit_app_scope">نطاق التطبيق: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">تنطبق هذه القاعدة فقط على إشعارات هذا التطبيق.</string>
     <string name="pn_ignore_scope_note">التجاهل يخفي الإشعارات فقط من سجل التطبيق. لا يحجب الإشعار نفسه ولا يؤثر على ميزات التطبيق الأخرى.</string>
@@ -680,10 +680,10 @@
     <string name="pn_ignored_restore_confirm">إيقاف التجاهل</string>
     <string name="pn_ignored_restore_confirm_title">إيقاف التجاهل؟</string>
     <string name="pn_ignored_restore_desc_app">لن يتم تجاهل إشعارات %1$s بعد الآن.</string>
-    <string name="pn_ignored_restore_desc_body">لن يتم تجاهل الإشعارات ذات النص "%1$s" بعد الآن.</string>
-    <string name="pn_ignored_restore_desc_pattern">لن يتم تجاهل الإشعارات المطابقة للنمط "%1$s" بعد الآن.</string>
-    <string name="pn_ignored_restore_desc_title">لن يتم تجاهل الإشعارات ذات العنوان "%1$s" بعد الآن.</string>
-    <string name="pn_ignored_restore_desc_title_and_body">لن يتم تجاهل الإشعارات ذات العنوان "%1$s" والنص "%2$s" بعد الآن.</string>
+    <string name="pn_ignored_restore_desc_body">لن يتم تجاهل الإشعارات ذات النص \"%1$s\" بعد الآن.</string>
+    <string name="pn_ignored_restore_desc_pattern">لن يتم تجاهل الإشعارات المطابقة للنمط \"%1$s\" بعد الآن.</string>
+    <string name="pn_ignored_restore_desc_title">لن يتم تجاهل الإشعارات ذات العنوان \"%1$s\" بعد الآن.</string>
+    <string name="pn_ignored_restore_desc_title_and_body">لن يتم تجاهل الإشعارات ذات العنوان \"%1$s\" والنص \"%2$s\" بعد الآن.</string>
     <string name="pn_ignored_subtitle_all">يكتم جميع الإشعارات</string>
     <string name="pn_ignored_subtitle_body">يكتم حسب مطابقة النص</string>
     <string name="pn_ignored_subtitle_title">يكتم حسب مطابقة العنوان</string>
@@ -706,8 +706,8 @@
     <string name="pn_logs_create_rule_app">التطبيق: %1$s</string>
     <string name="pn_logs_create_rule_body">سيتم ملء قاعدة جديدة مسبقًا بتفاصيل هذا الإشعار:</string>
     <string name="pn_logs_create_rule_cd">إنشاء قاعدة من الإشعار</string>
-    <string name="pn_logs_create_rule_description">النص: "%1$s"</string>
-    <string name="pn_logs_create_rule_header">العنوان: "%1$s"</string>
+    <string name="pn_logs_create_rule_description">النص: \"%1$s\"</string>
+    <string name="pn_logs_create_rule_header">العنوان: \"%1$s\"</string>
     <string name="pn_logs_create_rule_title">إنشاء قاعدة من الإشعار؟</string>
     <string name="pn_logs_delete_confirm_body">ستتم إزالة إدخال السجل هذا نهائيًا.</string>
     <string name="pn_logs_delete_confirm_title">حذف الإشعار؟</string>
@@ -731,14 +731,14 @@
     <string name="pn_permission_notification_access_desc">الوصول إلى الإشعارات لاكتشاف إشعارات معينة</string>
     <string name="pn_permission_overlay_title">العرض فوق التطبيقات الأخرى</string>
     <string name="pn_permission_post_notifications">نشر الإشعارات</string>
-    <string name="pn_permission_post_notifications_desc">يسمح للتطبيق بعرض حالته وإشعارات الاختبار</string>
+    <string name="pn_permission_post_notifications_desc">يسمح للتطبيق بعرض إشعارات الحالة والاختبار الخاصة به</string>
     <string name="pn_permission_required_desc">امنح كل إذن مطلوب على شاشة الأذونات قبل بدء الخدمة.</string>
     <string name="pn_permission_required_title">أذونات مطلوبة</string>
     <string name="pn_permission_run_background">التشغيل في الخلفية</string>
-    <string name="pn_permission_run_background_desc">يمنع قتل الخدمة بواسطة توفير البطارية</string>
+    <string name="pn_permission_run_background_desc">يمنع توفير البطارية من إنهاء الخدمة</string>
     <string name="pn_permission_secure_settings">الإعدادات الآمنة (الشاشة الدائمة)</string>
     <string name="pn_pocket_mode">وضع الجيب</string>
-    <string name="pn_pocket_mode_desc">تخطي الإيقاظ عندما يكون الهاتف في الجيب</string>
+    <string name="pn_pocket_mode_desc">عدم إيقاظ الشاشة عندما يكون الهاتف في الجيب</string>
     <string name="pn_press_start_record">اضغط بدء للتسجيل (5 ثوانٍ كحد أقصى)</string>
     <string name="pn_prevent_multiple_notifications">منع الإشعارات المتعددة (فترة تهدئة 10 ثوانٍ)</string>
     <string name="pn_proximity_sensor_unavailable">حساس القرب غير متاح</string>
@@ -750,7 +750,7 @@
     <string name="pn_rules">القواعد</string>
     <string name="pn_rules_count">%1$d قاعدة</string>
     <string name="pn_save_pattern">حفظ النمط</string>
-    <string name="pn_screen_duration">مدة الشاشة</string>
+    <string name="pn_screen_duration">مدة إضاءة الشاشة</string>
     <string name="pn_search_apps">ابحث في التطبيقات…</string>
     <string name="pn_selected">محدد</string>
     <string name="pn_send_test_notification">إرسال إشعار اختبار</string>
@@ -761,7 +761,7 @@
     <string name="pn_silence">كتم</string>
     <string name="pn_start">بدء</string>
     <string name="pn_stop">إيقاف</string>
-    <string name="pn_tap_hold">اضغط/استمر</string>
+    <string name="pn_tap_hold">نقر/ضغط مطوّل</string>
     <string name="pn_target_apps">التطبيقات المستهدفة</string>
     <string name="pn_test_notification_channel">إشعارات الاختبار</string>
     <string name="pn_test_notification_channel_desc">قناة إشعارات الاختبار</string>
@@ -820,13 +820,13 @@
     <string name="pn_widget_show_app_name">إظهار اسم التطبيق</string>
     <string name="pn_widget_show_body">إظهار نص الإشعار</string>
     <string name="pn_widget_show_time">إظهار الوقت</string>
-    <string name="pn_widget_no_rules">لا توجد قاعدة بها إجراء "إظهار على عنصر الواجهة" بعد. أنشئ واحدة من تبويب القواعد.</string>
+    <string name="pn_widget_no_rules">لا توجد قاعدة بها إجراء \"إظهار على عنصر الواجهة\" بعد. أنشئ واحدة من تبويب القواعد.</string>
     <string name="pn_widget_rules_hint">اختر القواعد التي يعرضها عنصر الواجهة هذا.</string>
     <string name="pn_widget_all_rules">جميع القواعد</string>
-    <string name="pn_widget_opacity">الشفافية: %1$d%%</string>
+    <string name="pn_widget_opacity">العتامة: %1$d%%</string>
     <string name="pn_widget_corner_radius">نصف قطر الزوايا</string>
     <string name="pn_widget_text_size">حجم النص: %1$d sp</string>
-    <string name="pn_widget_material_colors_hint">يتبع عنصر الواجهة لوحة خلفية نظامك والوضع الفاتح/الداكن.</string>
+    <string name="pn_widget_material_colors_hint">يتبع عنصر الواجهة لوحة ألوان خلفية النظام والوضع الفاتح/الداكن.</string>
 
     <string name="setup_title">دليل الإعداد</string>
     <string name="setup_status_ready">كل شيء جاهز</string>
@@ -838,12 +838,12 @@
     <string name="setup_status_not_installed_desc">اتبع الخطوات أدناه. يستغرق الأمر حوالي دقيقتين وتقوم به مرة واحدة فقط.</string>
 
     <string name="setup_explainer_title">ما هذا ولماذا أحتاجه؟</string>
-    <string name="setup_explainer_q1">لماذا لا يستطيع التطبيق تغيير إعداداتي فقط؟</string>
+    <string name="setup_explainer_q1">لماذا لا يستطيع التطبيق تغيير إعداداتي مباشرةً؟</string>
     <string name="setup_explainer_a1">الإعدادات التي يضبطها هذا التطبيق (سرعة الرسوم المتحركة، كثافة الشاشة، سلوك البطارية) محمية بواسطة أندرويد. لا يُسمح لأي تطبيق عادي بتغييرها، مهما كان من صنعه. يحتاج هاتفك إلى منح إذن خاص واحد أولاً.</string>
     <string name="setup_explainer_q2">ما هو شيزوكو؟</string>
-    <string name="setup_explainer_a2">شيزوكو تطبيق مساعد صغير ومجاني ومفتوح المصدر. هو الطريقة القياسية لمنح هذا الإذن للتطبيقات مثل هذا التطبيق دون عمل جذر لهاتفك. يستخدمه ملايين الأشخاص، وهو ليس من صنعنا.</string>
-    <string name="setup_explainer_q3">هل هو آمن؟ هل يعمل جذرًا لهاتفي؟</string>
-    <string name="setup_explainer_a3">لا يعمل جذرًا لهاتفك ولا يعدّل أندرويد. يبقى شيزوكو نشطًا فقط حتى تعيد تشغيل هاتفك، ويمكنك إلغاء وصول هذا التطبيق من داخل شيزوكو في أي وقت.</string>
+    <string name="setup_explainer_a2">شيزوكو تطبيق مساعد صغير ومجاني ومفتوح المصدر. هو الطريقة القياسية لمنح هذا الإذن لتطبيقات مثل هذا التطبيق دون عمل روت لهاتفك. يستخدمه ملايين الأشخاص، وهو ليس من صنعنا.</string>
+    <string name="setup_explainer_q3">هل هو آمن؟ هل يتطلب عمل روت لهاتفي؟</string>
+    <string name="setup_explainer_a3">لا يقوم بعمل روت لهاتفك ولا يعدّل أندرويد. يبقى شيزوكو نشطًا فقط حتى تعيد تشغيل هاتفك، ويمكنك إلغاء وصول هذا التطبيق من داخل شيزوكو في أي وقت.</string>
     <string name="setup_explainer_q4">هل أحتاج إلى كمبيوتر؟</string>
     <string name="setup_explainer_a4">على أندرويد 11 والأحدث، لا. يمكن لهاتفك بدء شيزوكو بنفسه باستخدام التصحيح اللاسلكي. على الإصدارات الأقدم تحتاج إلى التوصيل بكمبيوتر مرة واحدة.</string>
 
@@ -912,7 +912,7 @@
     <string name="profile_new">ملف شخصي جديد</string>
     <string name="profile_edit">تعديل</string>
     <string name="profile_delete">حذف الملف الشخصي</string>
-    <string name="profile_delete_confirm">حذف "%1$s"؟ لا يمكن التراجع عن هذا.</string>
+    <string name="profile_delete_confirm">حذف \"%1$s\"؟ لا يمكن التراجع عن هذا.</string>
     <string name="profile_apply">تطبيق</string>
     <string name="profile_make_tile">إنشاء مربع إعدادات سريعة</string>
     <string name="profile_applied">تم تطبيق %1$s</string>
@@ -959,11 +959,11 @@
     </plurals>
     <string name="per_app_width">العرض لكل تطبيق</string>
     <string name="per_app_width_button">ضبط أصغر عرض لكل تطبيق</string>
-    <string name="per_app_width_desc">اختر أصغر عرض بالدقة dp لتطبيقات فردية، بنفس القيمة الموجودة في شاشة أصغر عرض. يُطبق تلقائيًا عند فتح التطبيق ويُلغى عند مغادرته.</string>
+    <string name="per_app_width_desc">اختر أصغر عرض بوحدة dp لكل تطبيق على حدة، بنفس القيمة الموجودة في شاشة أصغر عرض. يُطبَّق تلقائيًا عند فتح التطبيق ويُلغى عند مغادرته.</string>
     <string name="per_app_width_disclaimer">لا توجد كثافة أصلية لكل تطبيق في أندرويد. يعمل هذا بتبديل كثافة الشاشة أثناء وجود التطبيق المحدد في الواجهة الأمامية، لذلك قد يحدث وميض قصير أو إعادة تشغيل للتطبيق عند التبديل.</string>
     <string name="per_app_width_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف التطبيق الموجود في الواجهة الأمامية.</string>
     <string name="per_app_width_status_active">العرض لكل تطبيق نشط لـ %1$d تطبيق</string>
-    <string name="per_app_width_status_paused">تم حفظ التجاوزات، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
+    <string name="per_app_width_status_paused">تم حفظ الإعدادات، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="per_app_width_value">%1$d dp</string>
     <string name="per_app_width_none">عرض الجهاز</string>
     <string name="per_app_width_reset">إعادة تعيين</string>
@@ -976,7 +976,7 @@
     <string name="refresh_rate_desc">اطّلع على معدلات التحديث التي تدعمها شاشتك، واضبط الحد الأدنى والأقصى للنظام، واختر معدلًا لكل تطبيق.</string>
     <string name="refresh_rate_disclaimer">يستخدم التحكم في معدل التحديث إعدادات النظام min_refresh_rate و peak_refresh_rate. بعض الأجهزة تتجاهلها أو تعرض جزءًا فقط من أوضاعها.</string>
     <string name="refresh_rate_current_title">الشاشة</string>
-    <string name="refresh_rate_active">النشط الآن: %1$s هرتز</string>
+    <string name="refresh_rate_active">المعدل الحالي: %1$s هرتز</string>
     <string name="refresh_rate_unknown">غير مُبلَّغ عنه من هذا الجهاز</string>
     <string name="refresh_rate_supported">المدعوم: %1$s هرتز</string>
     <string name="refresh_rate_system_values">الحد الأدنى للنظام: %1$s، الأقصى: %2$s</string>
@@ -989,9 +989,9 @@
     <string name="per_app_refresh_rate">معدل التحديث لكل تطبيق</string>
     <string name="per_app_refresh_rate_desc">اختر معدل تحديث لكل تطبيق على حدة. يُطبَّق عند فتح التطبيق ويُعاد للوضع السابق عند مغادرته.</string>
     <string name="per_app_refresh_rate_dialog_desc">اختر معدلًا تدعمه هذه الشاشة.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">يحتاج معدل التحديث لكل تطبيق إلى إذن الوصول إلى الاستخدام لمعرفة التطبيق الذي في المقدمة.</string>
-    <string name="per_app_refresh_rate_status_active">معدل التحديث لكل تطبيق نشط لعدد %1$d تطبيق (تطبيقات)</string>
-    <string name="per_app_refresh_rate_status_paused">تم حفظ التجاوزات، لكن الخدمة متوقفة مؤقتًا حتى تُمنح الأذونات</string>
+    <string name="per_app_refresh_rate_needs_usage_access">يحتاج معدل التحديث لكل تطبيق إلى إذن الوصول إلى الاستخدام لمعرفة التطبيق الموجود في الواجهة الأمامية.</string>
+    <string name="per_app_refresh_rate_status_active">معدل التحديث لكل تطبيق نشط لـ %1$d تطبيق</string>
+    <string name="per_app_refresh_rate_status_paused">تم حفظ الإعدادات، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="per_app_refresh_rate_none">معدل النظام</string>
     <string name="per_app_refresh_rate_reset">إعادة ضبط</string>
     <string name="per_app_refresh_rate_clear_all">مسح الكل</string>
@@ -1041,7 +1041,7 @@
     <string name="screenshot_overlay_timeout_label">إخفاء الأزرار بعد</string>
     <string name="screenshot_overlay_timeout_value">%1$d ثانية</string>
     <string name="screenshot_tile_label">نسخ لقطة الشاشة</string>
-    <string name="screenshot_tile_hint">أضف مربع "نسخ لقطة الشاشة" في الإعدادات السريعة لنسخ أحدث لقطة شاشة إلى الحافظة عند الطلب، دون تشغيل خدمة.</string>
+    <string name="screenshot_tile_hint">أضف مربع \"نسخ لقطة الشاشة\" في الإعدادات السريعة لنسخ أحدث لقطة شاشة إلى الحافظة عند الطلب، دون تشغيل خدمة.</string>
     <string name="screenshot_overlay_x_label">من اليسار</string>
     <string name="screenshot_overlay_y_label">من الأسفل</string>
     <string name="screenshot_overlay_position_value">%1$s: %2$d dp</string>
@@ -1062,7 +1062,7 @@
     <string name="screenshot_toast_copied">تم نسخ لقطة الشاشة إلى الحافظة</string>
     <string name="screenshot_toast_cancelled">تم الاحتفاظ بلقطة الشاشة</string>
     <string name="screenshot_toast_not_found">لم يتم العثور على لقطة شاشة حديثة</string>
-    <string name="screenshot_delete_note">يطلب أندرويد تأكيد كل عملية حذف. هذا يبقي التطبيق خاليًا من إذن الملفات الكامل المقيد.</string>
+    <string name="screenshot_delete_note">يطلب أندرويد تأكيد كل عملية حذف. وبذلك لا يحتاج التطبيق إلى إذن الوصول إلى جميع الملفات المقيّد.</string>
     <string name="screenshot_toast_copied_deleted">تم النسخ إلى الحافظة والحذف</string>
 
     <string name="hotspot_manager">مدير نقطة الاتصال</string>
@@ -1088,7 +1088,7 @@
     <string name="hotspot_unblock">إلغاء الحظر</string>
     <string name="hotspot_blocked_toast">تم حظر الجهاز</string>
     <string name="hotspot_blocked_devices">الأجهزة المحظورة</string>
-    <string name="hotspot_blocked_devices_desc">لا يمكن لعناوين MAC المحظورة الانضمام إلى هذه نقطة الاتصال أبدًا</string>
+    <string name="hotspot_blocked_devices_desc">لا يمكن لعناوين MAC المحظورة الانضمام إلى نقطة الاتصال هذه أبدًا</string>
     <string name="hotspot_no_blocked">لا توجد أجهزة محظورة</string>
     <string name="hotspot_open_system_settings">فتح إعدادات نقطة الاتصال في النظام</string>
     <string name="hotspot_configuration">إعداد نقطة الاتصال</string>
@@ -1145,7 +1145,7 @@
     <string name="game_mode_tile_label">وضع الألعاب</string>
     <string name="game_mode_tile_subtitle_on">مفعّل</string>
     <string name="game_mode_tile_subtitle_off">متوقف</string>
-    <string name="game_mode_enabled_toast">وضع الألعاب مفعّل — تطبيقات الخلفية بعيدة عن الطريق، توقع إطارات أعلى وأكثر ثباتًا.</string>
+    <string name="game_mode_enabled_toast">وضع الألعاب مفعّل — لن تعيق تطبيقات الخلفية أداءك، توقّع معدل إطارات أعلى وأكثر ثباتًا.</string>
     <string name="game_mode_disabled_toast">وضع الألعاب متوقف — عاد كل تطبيق إلى طبيعته.</string>
     <string name="game_mode_failed_toast">تعذر تطبيق وضع الألعاب. تحقق من شيزوكو وحاول مرة أخرى.</string>
     <string name="game_mode_widget_label">وضع الألعاب</string>
@@ -1155,7 +1155,7 @@
     <string name="boost_cancelled">تم إلغاء التحسين</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
     <string name="boost_ad_title">مدعوم بالإعلانات</string>
-    <string name="boost_premium_title">النسخة المميزة مفعّلة</string>
+    <string name="boost_premium_title">النسخة المدفوعة مفعّلة</string>
     <string name="boost_premium_desc">تحسينات غير محدودة وبدون إعلانات</string>
     <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
     <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
@@ -1164,7 +1164,7 @@
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
     <string name="tools_utilities">أدوات مساعدة</string>
-    <string name="more_compile_booster_desc">إعادة ترجمة التطبيقات لتشغيل أسرع</string>
+    <string name="more_compile_booster_desc">إعادة تجميع التطبيقات لتشغيل أسرع</string>
     <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
     <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>
@@ -1173,8 +1173,8 @@
     <string name="reward_gate_unlocked_desc">متاح لمدة %1$d:%2$02d أخرى</string>
     <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
-    <string name="compile_booster_ad_desc">شاهد إعلانًا قصيرًا لبدء الترجمة</string>
-    <string name="compile_all_apps_with_ad">إعلان ثم ترجمة</string>
+    <string name="compile_booster_ad_desc">شاهد إعلانًا قصيرًا لبدء التجميع</string>
+    <string name="compile_all_apps_with_ad">إعلان ثم تجميع</string>
     <string name="game_mode_turn_on_with_ad">إعلان ثم تشغيل</string>
     <string name="system_meter_title">مقياس النظام</string>
     <string name="system_meter_overlay">الطبقة</string>
@@ -1188,8 +1188,8 @@
     <string name="meter_cpu_freq_desc">أعلى تردد حالي لمجموعة نوى المعالج.</string>
     <string name="meter_cpu_temp">حرارة المعالج</string>
     <string name="meter_cpu_temp_desc">قراءة المنطقة الحرارية للمعالج أو الشريحة.</string>
-    <string name="meter_gpu_freq">تردد كرت الرسوم</string>
-    <string name="meter_gpu_freq_desc">التردد الحالي لكرت الرسوم. غير متاح على كل الأجهزة.</string>
+    <string name="meter_gpu_freq">تردد معالج الرسوميات</string>
+    <string name="meter_gpu_freq_desc">التردد الحالي لمعالج الرسوميات. غير متاح على كل الأجهزة.</string>
     <string name="meter_ram">استخدام الذاكرة</string>
     <string name="meter_ram_desc">الذاكرة المستخدمة والإجمالية.</string>
     <string name="meter_battery_level">مستوى البطارية</string>
@@ -1221,12 +1221,12 @@
     <string name="hwui_renderer_vk">Skia Vulkan</string>
     <string name="hwui_restart_note">يجب إعادة تشغيل التطبيقات قبل استخدام المُصيّر الجديد.</string>
     <string name="hwui_texture_cache">حجم ذاكرة الخامات</string>
-    <string name="hwui_texture_cache_desc">الذواكر الأكبر تبقي صورًا أكثر في كرت الرسوم على حساب الذاكرة.</string>
+    <string name="hwui_texture_cache_desc">الذواكر الأكبر تبقي صورًا أكثر في معالج الرسوميات على حساب الذاكرة.</string>
     <string name="hwui_megabytes">%1$d ميغابايت</string>
-    <string name="hwui_force_gpu">فرض الرسم بكرت الرسوم</string>
-    <string name="hwui_force_gpu_desc">استخدام كرت الرسوم للرسم ثنائي الأبعاد حتى في التطبيقات التي لم تطلبه.</string>
+    <string name="hwui_force_gpu">فرض الرسم بمعالج الرسوميات</string>
+    <string name="hwui_force_gpu_desc">استخدام معالج الرسوميات للرسم ثنائي الأبعاد حتى في التطبيقات التي لم تطلبه.</string>
     <string name="hwui_disable_overlays">تعطيل طبقات العتاد</string>
-    <string name="hwui_disable_overlays_desc">التركيب دائمًا عبر كرت الرسوم بدل طبقات الشاشة.</string>
+    <string name="hwui_disable_overlays_desc">التركيب دائمًا عبر معالج الرسوميات بدل طبقات الشاشة.</string>
     <string name="hwui_overdraw">تصحيح الرسم الزائد</string>
     <string name="hwui_overdraw_desc">يلوّن المناطق التي تُرسم أكثر من مرة.</string>
     <string name="hwui_dirty_regions">إظهار تحديثات السطح</string>
@@ -1236,7 +1236,7 @@
     <string name="hwui_restart_systemui_desc">أعد تشغيل واجهة النظام لتسري تغييرات المُصيّر هناك أيضًا.</string>
     <string name="app_threading">خيوط لكل تطبيق</string>
     <string name="app_threading_desc">ثبّت التطبيقات على مجموعات نوى المعالج وغيّر أولوية جدولتها.</string>
-    <string name="app_threading_disclaimer">تُطبق الإعدادات على العملية قيد التشغيل وخيوطها. يعيد المراقب في الخلفية تطبيقها في كل مرة يأتي فيها تطبيق مُعد إلى المقدمة.</string>
+    <string name="app_threading_disclaimer">تُطبَّق الإعدادات على العملية قيد التشغيل وخيوطها. يعيد المراقب في الخلفية تطبيقها في كل مرة ينتقل فيها تطبيق مُعدّ إلى الواجهة الأمامية.</string>
     <string name="app_threading_cores">النوى: %1$d إجمالًا، %2$d كبيرة، %3$d صغيرة</string>
     <string name="app_threading_cores_label">نوى المعالج</string>
     <string name="app_threading_cores_all">الكل</string>
@@ -1246,21 +1246,21 @@
     <string name="app_threading_priority_high">عالية</string>
     <string name="app_threading_priority_normal">عادية</string>
     <string name="app_threading_priority_low">منخفضة</string>
-    <string name="app_watcher_channel_name">مراقب التطبيق في المقدمة</string>
-    <string name="app_watcher_channel_desc">يظهر أثناء مراقبة الميزات الخاصة بكل تطبيق للتطبيق الموجود في المقدمة</string>
+    <string name="app_watcher_channel_name">مراقب التطبيق في الواجهة الأمامية</string>
+    <string name="app_watcher_channel_desc">يظهر أثناء مراقبة الميزات الخاصة بكل تطبيق للتطبيق الموجود في الواجهة الأمامية</string>
     <string name="app_watcher_notif_title">ميزات كل تطبيق نشطة</string>
-    <string name="app_watcher_notif_text">تتم مراقبة التطبيق في المقدمة من أجل %1$d ميزة</string>
+    <string name="app_watcher_notif_text">تتم مراقبة التطبيق في الواجهة الأمامية من أجل %1$d ميزة</string>
     <string name="app_watcher_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
-    <string name="app_threading_needs_usage_access">تحتاج إعدادات المعالجة لكل تطبيق إلى إذن الوصول إلى الاستخدام لاكتشاف فتح التطبيق المُعد.</string>
+    <string name="app_threading_needs_usage_access">تحتاج ميزة الخيوط لكل تطبيق إلى إذن الوصول إلى الاستخدام لاكتشاف فتح التطبيق المُعدّ.</string>
     <string name="app_threading_status_active">المراقب نشط لـ %1$d تطبيق</string>
     <string name="app_threading_status_paused">تم حفظ الإعدادات، لكن المراقب متوقف مؤقتًا حتى تُمنح الأذونات</string>
-    <string name="app_threading_priority_denied">لا يسمح هذا الجهاز برفع أولوية المعالجة عبر شيزوكو، لذلك لا يتم تطبيق الأولوية العالية.</string>
+    <string name="app_threading_priority_denied">لا يسمح هذا الجهاز برفع أولوية الخيوط عبر شيزوكو، لذلك لا يتم تطبيق الأولوية العالية.</string>
     <string name="app_threading_priority_use_normal">التبديل إلى عادي</string>
-    <string name="qs_tiles">مربعات التبديل السريع</string>
-    <string name="qs_tiles_desc">مربعات بأمرين (تشغيل/إيقاف) للوحة الإعدادات السريعة</string>
+    <string name="qs_tiles">مربعات الإعدادات السريعة</string>
+    <string name="qs_tiles_desc">كل المربعات التي يوفرها هذا التطبيق في مكان واحد</string>
     <string name="qs_tiles_slots_used">تم استخدام %1$d من %2$d خانة</string>
-    <string name="qs_tiles_needs_shizuku_title">Shizuku غير متصل</string>
-    <string name="qs_tiles_needs_shizuku_desc">تبقى المربعات غير متاحة حتى يعمل Shizuku. اضغط لفتح دليل الإعداد.</string>
+    <string name="qs_tiles_needs_shizuku_title">شيزوكو غير متصل</string>
+    <string name="qs_tiles_needs_shizuku_desc">تبقى المربعات غير متاحة حتى يعمل شيزوكو. اضغط لفتح دليل الإعداد.</string>
     <string name="qs_tiles_active_section">المربعات النشطة</string>
     <string name="qs_tiles_active_section_desc">اضغط على مربع لتعديل أوامره</string>
     <string name="qs_tiles_empty">لا توجد مربعات بعد. فعّل مفتاحًا بالأسفل لحجز خانة.</string>
@@ -1279,7 +1279,7 @@
     <string name="qs_tiles_field_on_value">قيمة التشغيل</string>
     <string name="qs_tiles_pick_icon">اختر أيقونة</string>
     <string name="qs_tiles_collapse_panel">إغلاق الإعدادات السريعة بعد الضغط</string>
-    <string name="qs_tiles_show_toast">إظهار إشعار منبثق بعد الضغط</string>
+    <string name="qs_tiles_show_toast">إظهار رسالة قصيرة بعد الضغط</string>
     <string name="qs_tiles_cat_display">مفاتيح الشاشة</string>
     <string name="qs_tiles_cat_network">مفاتيح الاتصال</string>
     <string name="qs_tiles_cat_performance">مفاتيح الأداء والمطور</string>
@@ -1287,13 +1287,13 @@
     <string name="qs_tile_default_label">مربع تبديل</string>
     <string name="qs_tile_unassigned">مفتاح غير معيّن</string>
     <string name="qs_tile_unassigned_message">عيّن هذا المربع في Custom Animator أولًا</string>
-    <string name="qs_tile_needs_shizuku">Shizuku غير متصل</string>
+    <string name="qs_tile_needs_shizuku">شيزوكو غير متصل</string>
     <string name="qs_tile_toast_on">تم تشغيل %1$s</string>
     <string name="qs_tile_toast_off">تم إيقاف %1$s</string>
     <string name="qs_tile_toast_failed">فشل %1$s</string>
-    <string name="qs_tile_subtitle_no_shizuku">يحتاج Shizuku</string>
-    <string name="qs_tile_subtitle_on">تشغيل</string>
-    <string name="qs_tile_subtitle_off">إيقاف</string>
+    <string name="qs_tile_subtitle_no_shizuku">يحتاج إلى شيزوكو</string>
+    <string name="qs_tile_subtitle_on">مفعّل</string>
+    <string name="qs_tile_subtitle_off">متوقف</string>
     <string name="qs_toggle_grayscale">تدرج رمادي</string>
     <string name="qs_toggle_grayscale_desc">شاشة أحادية اللون عبر مصحح الألوان</string>
     <string name="qs_toggle_color_inversion">عكس الألوان</string>
@@ -1306,7 +1306,7 @@
     <string name="qs_toggle_adaptive_brightness_desc">تشغيل أو إيقاف السطوع التلقائي</string>
     <string name="qs_toggle_auto_rotate">التدوير التلقائي</string>
     <string name="qs_toggle_auto_rotate_desc">التدوير حسب مقياس التسارع</string>
-    <string name="qs_toggle_stay_awake">البقاء نشطًا أثناء الشحن</string>
+    <string name="qs_toggle_stay_awake">إبقاء الشاشة مضاءة أثناء الشحن</string>
     <string name="qs_toggle_stay_awake_desc">تبقى الشاشة مضاءة مع أي شاحن</string>
     <string name="qs_toggle_private_dns">DNS الخاص</string>
     <string name="qs_toggle_private_dns_desc">الوضع التلقائي بدل الإيقاف</string>
@@ -1332,7 +1332,7 @@
     <string name="qs_toggle_location_desc">وضع الدقة العالية أو الإيقاف التام</string>
     <string name="qs_toggle_dont_keep_activities">عدم الاحتفاظ بالأنشطة</string>
     <string name="qs_toggle_dont_keep_activities_desc">يُنهي كل نشاط فور مغادرته</string>
-    <string name="qs_toggle_gpu_profile_bars">أشرطة عرض GPU</string>
+    <string name="qs_toggle_gpu_profile_bars">أشرطة رسم GPU</string>
     <string name="qs_toggle_gpu_profile_bars_desc">أشرطة قياس الأداء على الشاشة</string>
     <string name="qs_toggle_overdraw">تصحيح الرسم الزائد</string>
     <string name="qs_toggle_overdraw_desc">يلوّن المناطق المرسومة أكثر من مرة</string>
@@ -1366,10 +1366,10 @@
     <string name="qs_tiles_advanced_hide">إخفاء الخيارات المتقدمة</string>
     <string name="qs_tiles_group_app">مربع التطبيق</string>
     <string name="qs_tiles_group_toggle">مفتاح أوامر</string>
-    <string name="qs_tiles_group_animation">إعداد الحركة</string>
-    <string name="qs_tiles_group_width">إعداد العرض</string>
-    <string name="qs_tiles_group_terminal">إعداد الطرفية</string>
-    <string name="qs_tiles_group_profile">ملف تعريف</string>
+    <string name="qs_tiles_group_animation">إعداد مسبق للحركة</string>
+    <string name="qs_tiles_group_width">إعداد مسبق للعرض</string>
+    <string name="qs_tiles_group_terminal">إعداد مسبق للطرفية</string>
+    <string name="qs_tiles_group_profile">ملف شخصي</string>
     <string name="qs_tiles_builtin_sound_desc">غيّر وضع الصوت من اللوحة</string>
     <string name="qs_tiles_builtin_section">مربعات التطبيق</string>
     <string name="qs_tiles_builtin_section_desc">مربعات الميزات المضمّنة في التطبيق</string>
@@ -1377,14 +1377,14 @@
     <string name="qs_tiles_builtin_screenshot_desc">التقاط لقطة شاشة ونسخها إلى الحافظة</string>
     <string name="qs_tiles_builtin_game_mode_desc">تشغيل وضع الألعاب أو إيقافه</string>
     <string name="qs_tiles_builtin_caffeine_desc">إبقاء الشاشة قيد التشغيل</string>
-    <string name="qs_tiles_builtin_aod_desc">تشغيل شاشة العرض الدائم أو إيقافها</string>
+    <string name="qs_tiles_builtin_aod_desc">تشغيل الشاشة الدائمة أو إيقافها</string>
     <string name="qs_tiles_available_section">إضافة مربع</string>
     <string name="qs_tiles_available_section_desc">اضغط على + لوضعه في لوحة الإعدادات السريعة.</string>
     <string name="qs_tiles_add_custom_desc">أنشئ مفتاحًا بأوامر التشغيل والإيقاف الخاصة بك</string>
     <string name="qs_tiles_category_count">%1$d متاح</string>
     <string name="qs_tiles_action_settings">إعدادات المربع</string>
     <string name="restart_system_ui_tile_label">إعادة تشغيل واجهة النظام</string>
-    <string name="qs_tiles_builtin_restart_system_ui_desc">أعد تشغيل واجهة النظام باستخدام Shizuku</string>
+    <string name="qs_tiles_builtin_restart_system_ui_desc">أعد تشغيل واجهة النظام باستخدام شيزوكو</string>
     <string name="status_bar_icons">مدير أيقونات شريط الحالة</string>
     <string name="status_bar_icons_desc">إظهار أو إخفاء كل أيقونات شريط الحالة</string>
     <string name="status_bar_icons_info">أوقف المفتاح لإخفاء تلك الأيقونة من شريط الحالة. بعض الأيقونات موجودة فقط في إصدارات أو واجهات أندرويد معينة، لذا لا يؤثر إخفاؤها هناك.</string>
@@ -1420,7 +1420,7 @@
     <string name="status_bar_icon_data_saver">توفير البيانات</string>
     <string name="status_bar_icon_managed_profile">ملف العمل</string>
     <string name="status_bar_icon_screen_record">تسجيل الشاشة</string>
-    <string name="status_bar_icon_sensors_off">إيقاف المستشعرات</string>
+    <string name="status_bar_icon_sensors_off">المستشعرات متوقفة</string>
     <string name="status_bar_icon_call_strength">قوة المكالمة</string>
     <string name="status_bar_icon_no_calling">لا مكالمات</string>
     <string name="status_bar_icon_roaming">التجوال</string>
@@ -1450,7 +1450,7 @@
     <string name="optimizer_clean_done">انتهى التنظيف</string>
     <string name="bh_title">صحة البطارية</string>
     <string name="bh_nav_desc">السعة ودورات الشحن ودرجة الحرارة والجهد وكل مقياس يبلغ عنه النظام.</string>
-    <string name="bh_needs_shizuku">تتم قراءة مقاييس صحة البطارية عبر Shizuku. قم بتوصيل Shizuku لعرضها.</string>
+    <string name="bh_needs_shizuku">تتم قراءة مقاييس صحة البطارية عبر شيزوكو. قم بتوصيل شيزوكو لعرضها.</string>
     <string name="bh_empty">لم يُرجع هذا الجهاز أي بيانات عن البطارية.</string>
     <string name="bh_health_label">الصحة المقدّرة</string>
     <string name="bh_health_detail">%1$d mAh من سعة التصميم %2$d mAh</string>
@@ -1472,7 +1472,7 @@
     <string name="bh_technology">التقنية</string>
     <string name="bh_unknown">غير معروف</string>
     <string name="bh_status_charging">قيد الشحن</string>
-    <string name="bh_status_discharging">تفريغ</string>
+    <string name="bh_status_discharging">يتم التفريغ</string>
     <string name="bh_status_not_charging">لا يتم الشحن</string>
     <string name="bh_status_full">ممتلئة</string>
     <string name="bh_health_good">جيدة</string>
@@ -1549,7 +1549,7 @@
     <string name="debloater_restore_all_done">تمت استعادة %1$d تطبيقًا.</string>
     <string name="debloater_search_hint">ابحث عن تطبيق أو اسم حزمة</string>
     <string name="debloater_filter_all">الكل</string>
-    <string name="debloater_show_system">إظهار النظام</string>
+    <string name="debloater_show_system">إظهار تطبيقات النظام</string>
     <string name="debloater_hide_protected">إخفاء المحمية</string>
     <string name="debloater_changed_only">المعدّلة</string>
     <string name="debloater_risk_recommended">موصى به</string>
@@ -1565,7 +1565,7 @@
     <string name="debloater_state_removed">مُزال</string>
     <string name="debloater_group_google">تطبيق من Google. إزالته تؤثر على ذلك التطبيق فقط.</string>
     <string name="debloater_group_assistant">مساعد صوتي أو اكتشاف كلمة التنشيط. إزالته تعطل الأوامر الصوتية.</string>
-    <string name="debloater_group_oem">تطبيق من الشركة المصنّعة مضاف فوق Android.</string>
+    <string name="debloater_group_oem">تطبيق من الشركة المصنّعة مضاف فوق أندرويد.</string>
     <string name="debloater_group_carrier">مرتبط بمشغل الشبكة أو بشريحة SIM. إزالته قد تؤثر على VoLTE أو RCS أو تنبيهات الطوارئ.</string>
     <string name="debloater_group_ads">مكوّن إعلاني أو لتحليل الاستخدام.</string>
     <string name="debloater_group_diagnostics">قياس عن بُعد أو تسجيل أو إرسال ملاحظات.</string>
@@ -1586,7 +1586,7 @@
     <string name="debloater_export_done">تم الحفظ في %1$s</string>
     <string name="debloater_export_failed">تعذّر تصدير ملف APK.</string>
     <string name="debloater_protected">محمي</string>
-    <string name="debloater_protected_desc">هذا التطبيق ضروري لعمل الجهاز، أو أنه المشغّل أو لوحة المفاتيح أو تطبيق الهاتف أو الرسائل الحالي لديك. لا يمكن إزالته من هنا.</string>
+    <string name="debloater_protected_desc">هذا التطبيق ضروري لعمل الجهاز، أو أنه واجهة التشغيل الرئيسية أو لوحة المفاتيح أو تطبيق الهاتف أو الرسائل الحالي لديك. لا يمكن إزالته من هنا.</string>
     <string name="debloater_not_restorable">ليس تطبيق نظام. إزالته تحذف ملف APK، لذا لن يستطيع Custom Animator إعادته.</string>
     <string name="debloater_system_app">نظام</string>
     <string name="debloater_confirm_remove_title">إزالة %1$d تطبيقًا؟</string>

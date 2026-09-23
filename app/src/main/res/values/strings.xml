@@ -687,10 +687,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_ignored_restore_confirm">Stop Ignoring</string>
     <string name="pn_ignored_restore_confirm_title">Stop ignoring?</string>
     <string name="pn_ignored_restore_desc_app">Notifications from %1$s will no longer be ignored.</string>
-    <string name="pn_ignored_restore_desc_body">Notifications with body "%1$s" will no longer be ignored.</string>
-    <string name="pn_ignored_restore_desc_pattern">Notifications matching pattern "%1$s" will no longer be ignored.</string>
-    <string name="pn_ignored_restore_desc_title">Notifications with title "%1$s" will no longer be ignored.</string>
-    <string name="pn_ignored_restore_desc_title_and_body">Notifications with title "%1$s" and body "%2$s" will no longer be ignored.</string>
+    <string name="pn_ignored_restore_desc_body">Notifications with body \"%1$s\" will no longer be ignored.</string>
+    <string name="pn_ignored_restore_desc_pattern">Notifications matching pattern \"%1$s\" will no longer be ignored.</string>
+    <string name="pn_ignored_restore_desc_title">Notifications with title \"%1$s\" will no longer be ignored.</string>
+    <string name="pn_ignored_restore_desc_title_and_body">Notifications with title \"%1$s\" and body \"%2$s\" will no longer be ignored.</string>
     <string name="pn_ignored_subtitle_all">Mutes all notifications</string>
     <string name="pn_ignored_subtitle_body">Mutes by body match</string>
     <string name="pn_ignored_subtitle_title">Mutes by title match</string>
@@ -713,8 +713,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_logs_create_rule_app">App: %1$s</string>
     <string name="pn_logs_create_rule_body">A new rule will be pre-filled with this notification\'s details:</string>
     <string name="pn_logs_create_rule_cd">Create rule from notification</string>
-    <string name="pn_logs_create_rule_description">Body: "%1$s"</string>
-    <string name="pn_logs_create_rule_header">Title: "%1$s"</string>
+    <string name="pn_logs_create_rule_description">Body: \"%1$s\"</string>
+    <string name="pn_logs_create_rule_header">Title: \"%1$s\"</string>
     <string name="pn_logs_create_rule_title">Create rule from notification?</string>
     <string name="pn_logs_delete_confirm_body">This log entry will be permanently removed.</string>
     <string name="pn_logs_delete_confirm_title">Delete notification?</string>
@@ -827,7 +827,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_widget_show_app_name">Show app name</string>
     <string name="pn_widget_show_body">Show notification body</string>
     <string name="pn_widget_show_time">Show time</string>
-    <string name="pn_widget_no_rules">No rule with the "Show on Widget" action yet. Create one from the Rules tab.</string>
+    <string name="pn_widget_no_rules">No rule with the \"Show on Widget\" action yet. Create one from the Rules tab.</string>
     <string name="pn_widget_rules_hint">Select which rules this widget shows.</string>
     <string name="pn_widget_all_rules">All rules</string>
     <string name="pn_widget_opacity">Opacity: %1$d%%</string>

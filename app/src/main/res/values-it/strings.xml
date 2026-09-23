@@ -42,16 +42,16 @@
     <string name="auto_permission_disabler_status_active">Disattivazione automatica autorizzazioni attiva per %1$d app</string>
     <string name="auto_permission_disabler_status_paused">Selezione salvata, ma il servizio è in pausa finché non concedi le autorizzazioni</string>
     <string name="no_apps_found">Nessuna app trovata</string>
-    <string name="compile_booster">Compile Booster</string>
+    <string name="compile_booster">Booster di compilazione</string>
     <string name="compile_booster_desc">Forza la compilazione AOT completa di ogni app installata per avvii più rapidi e prestazioni più fluide</string>
     <string name="compile_booster_progress">Compilazione… %1$d%%</string>
     <string name="compile_all_apps">Compila tutte le app</string>
     <string name="compile_all_apps_desc">Compila tutte le app installate quando viene applicato questo profilo</string>
     <string name="compile_all_apps_confirm_title">Compilare tutte le app?</string>
     <string name="compile_all_apps_confirm_message">Questo forza la compilazione completa di ogni app installata, una alla volta. Può richiedere del tempo e consumare temporaneamente più batteria e spazio, ma continua in background anche se esci da questa app.</string>
-    <string name="compile_booster_channel_name">Compile Booster</string>
+    <string name="compile_booster_channel_name">Booster di compilazione</string>
     <string name="compile_booster_channel_desc">Mostra l\'avanzamento mentre le app vengono compilate</string>
-    <string name="compile_booster_notif_title">Compile Booster in esecuzione</string>
+    <string name="compile_booster_notif_title">Booster di compilazione in esecuzione</string>
     <string name="compile_booster_notif_text">Preparazione alla compilazione…</string>
     <string name="compile_booster_notif_text_app">Compilazione di %1$s… %2$d%%</string>
     <string name="compile_filter_title">Modalità di compilazione</string>
@@ -219,7 +219,7 @@ Durata animatore: %3$.2f</string>
     <string name="terminal_tile_cat_security">Sicurezza</string>
     <string name="terminal_tile_cat_actions">Azioni</string>
     <string name="terminal_tile_cat_labels">Etichette</string>
-    <string name="terminal_tile_toast">Mostra notifica del risultato</string>
+    <string name="terminal_tile_toast">Mostra messaggio con il risultato</string>
     <string name="terminal_tile_toast_description">Conferma quando il comando termina, con il suo codice di uscita.</string>
     <string name="terminal_tile_collapse">Chiudi Impostazioni rapide</string>
     <string name="terminal_tile_collapse_description">Chiudi il pannello appena il comando parte.</string>
@@ -322,7 +322,7 @@ Durata animatore: %3$.2f</string>
     <string name="bt_sticky_auto_disable">Disattivazione automatica della modalità persistente</string>
     <string name="bt_sticky_auto_disable_desc">Disattiva la modalità persistente quando la batteria torna sopra il livello indicato sotto</string>
     <string name="bt_sticky_level">Livello di disattivazione automatica</string>
-    <string name="bt_sticky_level_desc">Percentuale di batteria che azzera il Risparmio energetico persistente</string>
+    <string name="bt_sticky_level_desc">Percentuale di batteria che disattiva il Risparmio energetico persistente</string>
     <string name="bt_auto_mode">Modalità automatica</string>
     <string name="bt_auto_mode_desc">Come il Risparmio energetico decide di attivarsi</string>
     <string name="bt_auto_mode_percentage">In base alla percentuale</string>
@@ -345,7 +345,7 @@ Durata animatore: %3$.2f</string>
     <string name="bt_optional_sensors">Disattiva sensori opzionali</string>
     <string name="bt_optional_sensors_desc">Spegni i sensori non essenziali come il rilevamento del movimento</string>
     <string name="bt_disable_aod">Disattiva Always-On Display</string>
-    <string name="bt_disable_aod_desc">Spegni il display ambient durante il risparmio</string>
+    <string name="bt_disable_aod_desc">Spegni l\'Always-On Display durante il risparmio</string>
     <string name="bt_night_mode">Forza tema scuro</string>
     <string name="bt_night_mode_desc">Passa il sistema alla modalità notte durante il risparmio</string>
     <string name="bt_launch_boost">Disattiva boost di avvio</string>
@@ -394,7 +394,7 @@ Durata animatore: %3$.2f</string>
     <string name="bt_app_standby">Bucket App Standby</string>
     <string name="bt_app_standby_desc">Lascia che Android limiti le app che apri raramente</string>
     <string name="bt_adaptive_battery">Batteria adattiva</string>
-    <string name="bt_adaptive_battery_desc">Limita la batteria per le app che usi di rado</string>
+    <string name="bt_adaptive_battery_desc">Limita il consumo di batteria delle app che usi di rado</string>
     <string name="bt_app_auto_restriction">Limita automaticamente le app</string>
     <string name="bt_app_auto_restriction_desc">Limita automaticamente le app che consumano molta batteria</string>
     <string name="bt_cached_freezer">Congela le app nella cache</string>
@@ -439,7 +439,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_permission_title">Configurazione una tantum</string>
     <string name="onboarding_permission_body">La velocità delle animazioni, la densità dello schermo e il comportamento della batteria sono protetti da Android, quindi l\'app ha bisogno di un permesso speciale prima di poterli modificare. Lo concedi una volta sola, in circa due minuti, con un\'app di supporto gratuita chiamata Shizuku oppure con un solo comando da un computer. Ti guideremo in ogni passaggio.</string>
     <string name="onboarding_permission_highlight">Fino ad allora l\'app può mostrare le impostazioni attuali ma non modificarle. Puoi avviare la configurazione guidata quando vuoi dalla schermata principale o dalle Impostazioni.</string>
-    <string name="onboarding_battery_title">Misura tu stesso la batteria</string>
+    <string name="onboarding_battery_title">Verifica tu i consumi della batteria</string>
     <string name="onboarding_battery_body">Le modifiche alla batteria cambiano quanto aggressivamente Android sospende, limita e congela le app. Non esiste un valore migliore in assoluto: dipende dal dispositivo, dalla ROM e dalle app che usi.</string>
     <string name="onboarding_battery_highlight">Cambia una cosa alla volta, poi usa il dispositivo normalmente per un giorno e confronta. Impostazioni aggressive possono consumare la batteria più in fretta, ritardare le notifiche o impedire il funzionamento di app in background e sveglie.</string>
     <string name="onboarding_experimental_title">Sperimentale per natura</string>
@@ -475,7 +475,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="fps_overlay_channel_name">Contatore FPS</string>
     <string name="fps_overlay_channel_desc">Visibile mentre l\'overlay FPS è attivo</string>
     <string name="fps_overlay_notif_title">Contatore FPS attivo</string>
-    <string name="fps_overlay_notif_text">Tocca per aprire Custom Animator e disattivarlo</string>
+    <string name="fps_overlay_notif_text">Tocca per aprire Custom Animator e disattivare il contatore</string>
     <string name="wifi_password_manager">Gestore password Wi-Fi</string>
     <string name="wifi_password_manager_desc">Leggi le password Wi-Fi salvate, condividile con un QR ed esporta backup</string>
     <string name="wifi_unreadable">Impossibile leggere le reti salvate. Serve Shizuku attivo su Android 11 o versioni successive (lì l\'utente shell ha ottenuto il privilegio necessario).</string>
@@ -547,7 +547,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
 
     <string name="contact_developer">Contatta lo sviluppatore</string>
     <string name="contact_developer_desc">Scrivici per opinioni, suggerimenti e reclami</string>
-    <string name="contact_developer_subject">Custom Animator Feedback</string>
+    <string name="contact_developer_subject">Feedback su Custom Animator</string>
     <string name="contact_developer_no_app">Nessuna app di posta trovata</string>
     <string name="onboarding_disclaimer_title">Usa a tuo rischio</string>
     <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
@@ -561,16 +561,16 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="permissions_section_system">Accesso al sistema</string>
     <string name="permissions_section_notifications">Notifiche</string>
     <string name="permissions_section_hardware">Hardware</string>
-    <string name="permissions_footer_note">Le impostazioni protette non possono essere concesse dall\'app. Usa Shizuku se è in esecuzione, oppure il comando ADB una tantum.</string>
+    <string name="permissions_footer_note">L\'accesso alle impostazioni protette non può essere concesso dall\'app stessa. Usa Shizuku se è in esecuzione, oppure il comando ADB una tantum.</string>
     <string name="permission_optional">facoltativa</string>
     <string name="permission_shizuku">Shizuku</string>
     <string name="permission_shizuku_desc">In esecuzione, ma questa app non è ancora autorizzata. Tocca per richiedere l\'accesso.</string>
-    <string name="permission_shizuku_ready">Connesso. Le impostazioni protette possono essere concesse senza un computer.</string>
-    <string name="permission_shizuku_unavailable">Non in esecuzione. Avvia Shizuku oppure concedi le impostazioni protette via ADB.</string>
+    <string name="permission_shizuku_ready">Connesso. L\'accesso alle impostazioni protette può essere concesso senza un computer.</string>
+    <string name="permission_shizuku_unavailable">Non in esecuzione. Avvia Shizuku oppure concedi l\'accesso alle impostazioni protette via ADB.</string>
     <string name="permission_secure_settings_desc">Necessaria per modificare le scale di animazione, la densità dello schermo e il display sempre attivo.</string>
     <string name="permission_usage_access">Accesso all\'utilizzo</string>
     <string name="permission_usage_access_desc">Permette all\'app di sapere quale app è in primo piano, per l\'arresto forzato automatico.</string>
-    <string name="permission_overlay_desc">Necessaria per disegnare il contatore FPS e il flash a schermo intero sopra le altre app.</string>
+    <string name="permission_overlay_desc">Necessaria per disegnare il contatore FPS e il flash di notifica a schermo intero sopra le altre app.</string>
     <string name="pn_actions_title">Azioni</string>
     <string name="pn_add_body_keyword_optional">Aggiungi parola chiave del corpo (facoltativo)</string>
     <string name="pn_add_new_rule">Aggiungi nuova regola</string>
@@ -624,11 +624,11 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_flash_screen_color_white">Bianco</string>
     <string name="pn_flash_screen_color_yellow">Giallo</string>
     <string name="pn_flash_screen_duration_label">Durata</string>
-    <string name="pn_flash_screen_title">Lampeggia schermo</string>
+    <string name="pn_flash_screen_title">Flash dello schermo</string>
     <string name="pn_got_it">Ho capito</string>
     <string name="pn_grant_secure_settings_adb_info">Trattandosi di un\'autorizzazione di sistema, va concessa tramite ADB da un computer. Apri il terminale o il prompt dei comandi ed esegui:</string>
-    <string name="pn_grant_secure_settings_desc">Per attivare il display sempre attivo, CustomAnimator ha bisogno dell\'autorizzazione WRITE_SECURE_SETTINGS.</string>
-    <string name="pn_grant_secure_settings_title">Concedi impostazioni protette</string>
+    <string name="pn_grant_secure_settings_desc">Per attivare o disattivare il display sempre attivo, CustomAnimator ha bisogno dell\'autorizzazione WRITE_SECURE_SETTINGS.</string>
+    <string name="pn_grant_secure_settings_title">Concedi accesso alle impostazioni protette</string>
     <string name="pn_ignore_dialog_content_hint">Se non selezioni nulla, verranno ignorate TUTTE le notifiche di %1$s.</string>
     <string name="pn_ignore_dialog_content_section">Filtri sul contenuto (facoltativi)</string>
     <string name="pn_ignore_dialog_hint_exact">Corrisponde se il testo contiene questo. Attiva Regex per i pattern</string>
@@ -725,7 +725,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_rules">Regole</string>
     <string name="pn_rules_count">%1$d regole</string>
     <string name="pn_save_pattern">Salva pattern</string>
-    <string name="pn_screen_duration">Durata schermo</string>
+    <string name="pn_screen_duration">Durata accensione schermo</string>
     <string name="pn_search_apps">Cerca app…</string>
     <string name="pn_selected">Selezionate</string>
     <string name="pn_send_test_notification">Invia notifica di test</string>
@@ -757,7 +757,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_logs_create_rule_title">Creare una regola dalla notifica?</string>
     <string name="changelog_title">Novità</string>
     <string name="changelog_version">Versione %1$s</string>
-    <string name="changelog_feedback_note">Potrebbe non funzionare tutto. Per bug o feedback scrivimi: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Non tutto potrebbe funzionare alla perfezione. Se trovi un bug o vuoi lasciare un feedback, scrivimi: ahmetcanarslandev@gmail.com</string>
     <string name="pn_service_channel_group">Servizio in background</string>
     <string name="pn_notification_persistent_settings_hint">Tocca qui per disattivare questa notifica.</string>
     <string name="settings_appearance">Aspetto</string>
@@ -952,7 +952,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="per_app_refresh_rate_dialog_desc">Scegli una frequenza supportata da questo display.</string>
     <string name="per_app_refresh_rate_needs_usage_access">La frequenza di aggiornamento per app richiede l\'Accesso ai dati di utilizzo per rilevare quale app è in primo piano.</string>
     <string name="per_app_refresh_rate_status_active">Frequenza di aggiornamento per app attiva per %1$d app</string>
-    <string name="per_app_refresh_rate_status_paused">Le sostituzioni sono salvate, ma il servizio è in pausa finché non vengono concessi i permessi</string>
+    <string name="per_app_refresh_rate_status_paused">Impostazioni salvate, ma il servizio è in pausa finché non concedi i permessi</string>
     <string name="per_app_refresh_rate_none">Frequenza di sistema</string>
     <string name="per_app_refresh_rate_reset">Reimposta</string>
     <string name="per_app_refresh_rate_clear_all">Cancella tutto</string>
@@ -990,7 +990,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_delay_value">%1$d s</string>
     <string name="screenshot_auto_dismiss_label">Chiudi notifica automaticamente</string>
     <string name="screenshot_auto_dismiss_value">%1$d s</string>
-    <string name="screenshot_auto_dismiss_off">Off</string>
+    <string name="screenshot_auto_dismiss_off">Disattivato</string>
     <string name="screenshot_notif_show_copy">Mostra azione Copia ed elimina</string>
     <string name="screenshot_notif_show_delete">Mostra azione Elimina</string>
     <string name="screenshot_notif_show_preview">Mostra anteprima dello screenshot</string>
@@ -1050,7 +1050,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="hotspot_blocked_devices">Dispositivi bloccati</string>
     <string name="hotspot_blocked_devices_desc">Gli indirizzi MAC bloccati non potranno mai collegarsi a questo hotspot</string>
     <string name="hotspot_no_blocked">Nessun dispositivo bloccato</string>
-    <string name="hotspot_open_system_settings">Apri le impostazioni di sistema</string>
+    <string name="hotspot_open_system_settings">Apri le impostazioni hotspot di sistema</string>
     <string name="hotspot_configuration">Configurazione hotspot</string>
     <string name="hotspot_configuration_desc">Le modifiche riavviano un hotspot attivo</string>
     <string name="hotspot_ssid">Nome della rete</string>
@@ -1125,7 +1125,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_tile_label">Modalità gioco</string>
     <string name="game_mode_tile_subtitle_on">Attiva</string>
     <string name="game_mode_tile_subtitle_off">Disattivata</string>
-    <string name="game_mode_enabled_toast">Modalità gioco attiva — le app in background sono fuori dai piedi, aspettati FPS più alti e più stabili.</string>
+    <string name="game_mode_enabled_toast">Modalità gioco attiva — le app in background non interferiscono più: aspettati FPS più alti e più stabili.</string>
     <string name="game_mode_disabled_toast">Modalità gioco disattivata — tutte le app sono tornate alla normalità.</string>
     <string name="game_mode_failed_toast">Impossibile applicare la Modalità gioco. Controlla Shizuku e riprova.</string>
     <string name="game_mode_widget_label">Modalità gioco</string>
@@ -1139,7 +1139,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_premium_desc">Ottimizzazioni illimitate, senza annunci</string>
     <string name="boost_ad_reward_denied">Completa l’annuncio per sbloccare l’ottimizzazione</string>
     <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
-    <string name="optimizer_clean_watch_ad">Guarda un ad e pulisci</string>
+    <string name="optimizer_clean_watch_ad">Guarda annuncio e pulisci</string>
     <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
     <string name="developer_title">Sviluppatore</string>
     <string name="tools_title">Strumenti</string>
@@ -1165,7 +1165,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="meter_fps">FPS</string>
     <string name="meter_fps_desc">Fotogrammi al secondo, misurati in tempo reale.</string>
     <string name="meter_cpu_freq">Frequenza CPU</string>
-    <string name="meter_cpu_freq_desc">Clock più alto attuale del cluster CPU.</string>
+    <string name="meter_cpu_freq_desc">Frequenza attuale più alta tra i cluster della CPU.</string>
     <string name="meter_cpu_temp">Temperatura CPU</string>
     <string name="meter_cpu_temp_desc">Lettura della zona termica CPU/SoC.</string>
     <string name="meter_gpu_freq">Frequenza GPU</string>
@@ -1236,8 +1236,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="app_threading_status_paused">Impostazioni salvate, ma il monitor è in pausa finché non vengono concessi i permessi</string>
     <string name="app_threading_priority_denied">Questo dispositivo non consente di aumentare la priorità dei thread tramite Shizuku, quindi la priorità Alta non viene applicata.</string>
     <string name="app_threading_priority_use_normal">Passa a Normale</string>
-    <string name="qs_tiles">Riquadri interruttore QS</string>
-    <string name="qs_tiles_desc">Riquadri con due comandi (ON/OFF) per le Impostazioni rapide</string>
+    <string name="qs_tiles">Riquadri Impostazioni rapide</string>
+    <string name="qs_tiles_desc">Tutti i riquadri offerti da questa app, in un unico posto</string>
     <string name="qs_tiles_slots_used">%1$d di %2$d slot riquadro usati</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku non è connesso</string>
     <string name="qs_tiles_needs_shizuku_desc">I riquadri restano non disponibili finché Shizuku non è in esecuzione. Tocca per aprire la guida.</string>
@@ -1259,7 +1259,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="qs_tiles_field_on_value">Valore ON</string>
     <string name="qs_tiles_pick_icon">Scegli icona</string>
     <string name="qs_tiles_collapse_panel">Chiudi le Impostazioni rapide dopo il tocco</string>
-    <string name="qs_tiles_show_toast">Mostra un avviso dopo il tocco</string>
+    <string name="qs_tiles_show_toast">Mostra un messaggio dopo il tocco</string>
     <string name="qs_tiles_cat_display">Interruttori display</string>
     <string name="qs_tiles_cat_network">Interruttori connettività</string>
     <string name="qs_tiles_cat_performance">Interruttori prestazioni e sviluppatore</string>
@@ -1286,7 +1286,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="qs_toggle_adaptive_brightness_desc">Attiva o disattiva la luminosità automatica</string>
     <string name="qs_toggle_auto_rotate">Rotazione automatica</string>
     <string name="qs_toggle_auto_rotate_desc">Rotazione dall\'accelerometro</string>
-    <string name="qs_toggle_stay_awake">Resta attivo in carica</string>
+    <string name="qs_toggle_stay_awake">Schermo acceso in carica</string>
     <string name="qs_toggle_stay_awake_desc">Lo schermo resta acceso con qualsiasi caricatore</string>
     <string name="qs_toggle_private_dns">DNS privato</string>
     <string name="qs_toggle_private_dns_desc">Modalità automatica invece di off</string>
@@ -1357,7 +1357,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="qs_tiles_builtin_screenshot_desc">Cattura lo schermo e copialo negli appunti</string>
     <string name="qs_tiles_builtin_game_mode_desc">Attiva o disattiva la modalità gioco</string>
     <string name="qs_tiles_builtin_caffeine_desc">Mantieni lo schermo acceso</string>
-    <string name="qs_tiles_builtin_aod_desc">Attiva o disattiva lo schermo sempre attivo</string>
+    <string name="qs_tiles_builtin_aod_desc">Attiva o disattiva il display sempre attivo</string>
     <string name="qs_tiles_available_section">Aggiungi un riquadro</string>
     <string name="qs_tiles_available_section_desc">Tocca + per inserirlo nel pannello Impostazioni rapide.</string>
     <string name="qs_tiles_add_custom_desc">Crea un interruttore con i tuoi comandi ON e OFF</string>
@@ -1529,7 +1529,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="debloater_restore_all_done">Ripristinate %1$d app.</string>
     <string name="debloater_search_hint">Cerca app o nomi di pacchetto</string>
     <string name="debloater_filter_all">Tutte</string>
-    <string name="debloater_show_system">Mostra sistema</string>
+    <string name="debloater_show_system">Mostra app di sistema</string>
     <string name="debloater_hide_protected">Nascondi protette</string>
     <string name="debloater_changed_only">Modificate</string>
     <string name="debloater_risk_recommended">Consigliato</string>

@@ -16,7 +16,7 @@
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Largura</string>
     <string name="nav_terminal">Terminal</string>
-    <string name="developer_toggles">Alternâncias do Sistema</string>
+    <string name="developer_toggles">Alternadores do Sistema</string>
     <string name="developer_needs_shizuku">Estas ações exigem que o Shizuku esteja conectado.</string>
     <string name="usb_debugging">Depuração USB</string>
     <string name="usb_debugging_desc">Permitir depuração via conexão USB</string>
@@ -43,7 +43,7 @@
     <string name="auto_permission_disabler_status_active">Desativador automático de permissões ativo para %1$d app(s)</string>
     <string name="auto_permission_disabler_status_paused">Seleção salva, mas o serviço está pausado até que as permissões sejam concedidas</string>
     <string name="no_apps_found">Nenhum app encontrado</string>
-    <string name="compile_booster">Otimizar Compilação</string>
+    <string name="compile_booster">Otimizador de Compilação</string>
     <string name="compile_booster_desc">Compilação AOT completa dos apps: abertura mais rápida e uso mais fluido</string>
     <string name="compile_booster_progress">Compilando… %1$d%%</string>
     <string name="compile_all_apps">Compilar Todos os Apps</string>
@@ -51,7 +51,7 @@
     <string name="compile_all_apps_confirm_title">Compilar Todos os Apps?</string>
     <string name="compile_all_apps_confirm_message">Isso força a compilação completa de todos os apps instalados, um por um. Pode demorar e usar bateria/armazenamento extra temporariamente, mas continua em segundo plano mesmo se você sair deste app.</string>
     <string name="compile_booster_channel_name">Otimizador de Compilação</string>
-    <string name="compile_booster_channel_desc">Exibido enquanto os apps estão sendo compilados à força</string>
+    <string name="compile_booster_channel_desc">Mostra o progresso enquanto os apps são compilados à força</string>
     <string name="compile_booster_notif_title">Otimizador de Compilação em execução</string>
     <string name="compile_booster_notif_text">Preparando para compilar apps…</string>
     <string name="compile_booster_notif_text_app">Compilando %1$s… %2$d%%</string>
@@ -66,7 +66,7 @@
     <string name="compile_filter_verify">Verificar</string>
     <string name="compile_filter_verify_desc">Apenas verifica o bytecode, sem compilação AOT. Opção mais leve e com menor ganho.</string>
     <string name="graphics_api_override">Substituir API Gráfica</string>
-    <string name="graphics_api_override_desc">Usa ANGLE (tradução Vulkan) ou o driver nativo GLES/Vulkan</string>
+    <string name="graphics_api_override_desc">Força os apps a usar ANGLE (tradução para Vulkan) ou o driver nativo GLES/Vulkan</string>
     <string name="graphics_api_override_disclaimer">Isso usa a configuração nativa do Android de driver ANGLE por app (Android 10+). Se realmente terá efeito depende do seu dispositivo e versão do Android. É mais confiável em dispositivos Pixel e pode ser ignorado em builds de outros fabricantes.</string>
     <string name="driver_default">Padrão</string>
     <string name="driver_native">Nativo</string>
@@ -107,7 +107,7 @@ Duração do Animador: %3$.2f</string>
     <string name="delete">Excluir</string>
     <string name="no_presets_saved">Nenhum preset salvo ainda. Toque em + para criar um!</string>
     <string name="permission_required">Permissão Necessária</string>
-    <string name="write_secure_settings_permission">Permissão WRITE_SECURE_SETTINGS</string>
+    <string name="write_secure_settings_permission">Permissão Especial do Sistema</string>
     <string name="permission_description">Este app precisa de uma permissão especial do sistema para alterar as configurações de animação e tamanho de tela. Você pode concedê-la uma vez usando Shizuku ou ADB.</string>
     <string name="one_time_only">⏱️ Apenas Uma Vez</string>
     <string name="one_time_description">Depois de conceder esta permissão uma vez, ela permanece concedida permanentemente. Você não precisa fazer novamente!</string>
@@ -214,15 +214,15 @@ Duração do Animador: %3$.2f</string>
     <!-- Backup and recovery -->
     <string name="settings_backup">Backup e Recuperação</string>
     <string name="backup_app_data">Backup dos Dados</string>
-    <string name="backup_app_data_desc">Salva predefinições e listas de apps em um arquivo JSON</string>
+    <string name="backup_app_data_desc">Salva presets e listas de apps em um arquivo JSON</string>
     <string name="backup_saved">Backup salvo</string>
     <string name="restore_app_data">Restaurar Dados</string>
-    <string name="restore_app_data_desc">Carrega predefinições e listas de apps de um backup</string>
+    <string name="restore_app_data_desc">Carrega presets e listas de apps de um backup</string>
     <string name="restore_done">Backup restaurado. Reabra o app para ver</string>
     <string name="restore_failed">Não foi possível ler esse arquivo de backup</string>
     <string name="revert_everything">Reverter Tudo</string>
     <string name="revert_everything_desc">Desfaz todas as alterações de sistema feitas por este app</string>
-    <string name="revert_everything_confirm">Isso restaura as escalas de animação, a largura da tela, a rotação, os ajustes e as substituições gráficas para o padrão, devolve as permissões retiradas pelo desativador automático e para os serviços em segundo plano. Suas predefinições e listas de apps são mantidas.</string>
+    <string name="revert_everything_confirm">Isso restaura as escalas de animação, a largura da tela, a rotação, os ajustes e as substituições gráficas para o padrão, devolve as permissões retiradas pelo desativador automático e para os serviços em segundo plano. Seus presets e listas de apps são mantidos.</string>
     <string name="revert_everything_done">Tudo revertido para o padrão</string>
     <string name="revert_everything_partial">Algumas configurações não puderam ser revertidas</string>
     <string name="show_clock_seconds_samsung_note">Observação: em alguns aparelhos Samsung (One UI) o sistema ignora essa configuração e os segundos podem não aparecer, mesmo com a opção ativada. Tente reiniciar a System UI abaixo.</string>
@@ -262,8 +262,8 @@ Duração do Animador: %3$.2f</string>
     <string name="terminal_tile_add">Adicionar às Configurações Rápidas</string>
     <string name="terminal_tile_add_manual_hint">Adicione o bloco manualmente na tela de edição das Configurações Rápidas.</string>
     <string name="terminal_tile_preview">Prévia</string>
-    <string name="width_tile_default_label">Predefinição de largura</string>
-    <string name="animation_tile_default_label">Predefinição de animação</string>
+    <string name="width_tile_default_label">Preset de largura</string>
+    <string name="animation_tile_default_label">Preset de animação</string>
     <string name="preset_tile_needs_permission">Conceda primeiro o Shizuku ou WRITE_SECURE_SETTINGS.</string>
     <string name="preset_tile_subtitle_no_permission">Sem permissão</string>
     <string name="preset_tile_toast_applied">%1$s aplicado</string>
@@ -314,7 +314,7 @@ Duração do Animador: %3$.2f</string>
     <string name="bt_sticky_auto_disable">Desativar modo persistente automaticamente</string>
     <string name="bt_sticky_auto_disable_desc">Encerrar o modo persistente quando a bateria voltar acima do nível abaixo</string>
     <string name="bt_sticky_level">Nível de desativação automática</string>
-    <string name="bt_sticky_level_desc">Porcentagem de bateria que limpa a economia persistente</string>
+    <string name="bt_sticky_level_desc">Porcentagem de bateria que desativa a economia persistente</string>
     <string name="bt_auto_mode">Modo automático</string>
     <string name="bt_auto_mode_desc">Como a Economia de bateria decide se ligar</string>
     <string name="bt_auto_mode_percentage">Por porcentagem</string>
@@ -336,7 +336,7 @@ Duração do Animador: %3$.2f</string>
     <string name="bt_optional_sensors">Desativar sensores opcionais</string>
     <string name="bt_optional_sensors_desc">Desligar sensores não essenciais, como detecção de movimento</string>
     <string name="bt_disable_aod">Desativar tela sempre ativa</string>
-    <string name="bt_disable_aod_desc">Desligar a tela ambiente durante a economia</string>
+    <string name="bt_disable_aod_desc">Desligar a tela sempre ativa durante a economia</string>
     <string name="bt_night_mode">Forçar tema escuro</string>
     <string name="bt_night_mode_desc">Mudar o sistema para o modo noturno durante a economia</string>
     <string name="bt_launch_boost">Desativar impulso de abertura</string>
@@ -358,7 +358,7 @@ Duração do Animador: %3$.2f</string>
     <string name="bt_location_all_off_screen_off">Toda localização desligada com a tela apagada</string>
     <string name="bt_location_foreground_only">Apenas apps em primeiro plano</string>
     <string name="bt_location_throttle">Limitar com a tela apagada</string>
-    <string name="bt_soundtrigger">Gatilho de som</string>
+    <string name="bt_soundtrigger">Ativação por voz</string>
     <string name="bt_soundtrigger_desc">Detecção de palavra-chave e escuta contínua</string>
     <string name="bt_soundtrigger_all">Tudo permitido</string>
     <string name="bt_soundtrigger_critical">Apenas crítico</string>
@@ -382,7 +382,7 @@ Duração do Animador: %3$.2f</string>
     <string name="bt_app_standby">Grupos de espera de apps</string>
     <string name="bt_app_standby_desc">Deixar o Android limitar apps que você raramente abre</string>
     <string name="bt_adaptive_battery">Bateria adaptativa</string>
-    <string name="bt_adaptive_battery_desc">Limitar a bateria de apps que você usa com pouca frequência</string>
+    <string name="bt_adaptive_battery_desc">Limitar o uso de bateria de apps que você usa com pouca frequência</string>
     <string name="bt_app_auto_restriction">Restringir apps automaticamente</string>
     <string name="bt_app_auto_restriction_desc">Restringir automaticamente apps que consomem bateria</string>
     <string name="bt_cached_freezer">Congelar apps em cache</string>
@@ -405,7 +405,7 @@ Duração do Animador: %3$.2f</string>
     <string name="risk_dialog_terminal">Os comandos executados aqui rodam com privilégios elevados do sistema, no mesmo nível do ADB. Eles podem desinstalar apps, apagar dados ou deixar seu aparelho inutilizável.\n\nO que você executa é inteiramente sua responsabilidade. O desenvolvedor deste aplicativo não pode ser responsabilizado por qualquer dano, perda de dados ou comando perigoso que você escolher executar.</string>
     <string name="risk_dialog_accept">Entendo os riscos</string>
     <string name="terminal_disclaimer">Os comandos rodam com privilégios de nível ADB. Você é responsável pelo que executa.</string>
-    <string name="close_apps_info">Forçar a parada de apps pode perder trabalho não salvo e interromper alarmes, lembretes e a entrega de mensagens desses apps até você abri-los de novo. Adicione tudo em que você confia à lista de exclusões abaixo.</string>
+    <string name="close_apps_info">Forçar a parada de apps pode fazer você perder trabalho não salvo e interromper alarmes, lembretes e a entrega de mensagens desses apps até você abri-los de novo. Adicione tudo de que você depende à lista de exceções abaixo.</string>
     <string name="width_revert_title">Manter este tamanho de tela?</string>
     <string name="width_revert_body">Voltando para %1$d dp em %2$d segundos se você não confirmar. Isso protege você de um tamanho que deixa a tela inutilizável.</string>
     <string name="width_revert_keep">Manter</string>
@@ -419,8 +419,8 @@ Duração do Animador: %3$.2f</string>
     <string name="onboarding_permission_title">Configuração Única</string>
     <string name="onboarding_permission_body">A velocidade das animações, a densidade da tela e o comportamento da bateria são protegidos pelo Android, então o app precisa de uma permissão especial antes de poder alterá-los. Você concede uma vez, em cerca de dois minutos, usando um app auxiliar gratuito chamado Shizuku ou um único comando de um computador. Vamos guiar você em cada passo.</string>
     <string name="onboarding_permission_highlight">Até lá o app pode mostrar suas configurações atuais, mas não alterá-las. Você pode iniciar a configuração guiada a qualquer momento pela tela inicial ou pelas Configurações.</string>
-    <string name="onboarding_battery_title">Meça a Bateria Você Mesmo</string>
-    <string name="onboarding_battery_body">Os ajustes de bateria mudam o quanto o Android hiberna, limita e congela apps. Não existe um valor ideal único. Depende do aparelho, da ROM e dos apps que você usa.</string>
+    <string name="onboarding_battery_title">Meça o Consumo de Bateria Você Mesmo</string>
+    <string name="onboarding_battery_body">Os ajustes de bateria mudam o quão agressivamente o Android hiberna, limita e congela apps. Não existe um valor ideal único. Depende do aparelho, da ROM e dos apps que você usa.</string>
     <string name="onboarding_battery_highlight">Mude uma coisa por vez, use o aparelho normalmente por um dia e compare. Ajustes agressivos podem descarregar a bateria mais rápido, atrasar notificações ou impedir que apps em segundo plano e alarmes funcionem.</string>
     <string name="onboarding_experimental_title">Experimental por Natureza</string>
     <string name="onboarding_experimental_body">Os fabricantes modificam bastante o Android. Alguns ajustes simplesmente não fazem nada no seu aparelho, outros são revertidos pelo sistema e alguns só valem após reiniciar.</string>
@@ -435,7 +435,7 @@ Duração do Animador: %3$.2f</string>
     <string name="remove_ads_desc_price">Compra única: %1$s</string>
     <string name="remove_ads_owned">Comprado. Obrigado pelo apoio!</string>
     <string name="remove_ads_thanks">Anúncios removidos. Obrigado!</string>
-    <string name="remove_ads_pending">Compra pendente. Os anúncios serão removidos quando concluir.</string>
+    <string name="remove_ads_pending">Compra pendente. Os anúncios serão removidos quando ela for concluída.</string>
     <string name="remove_ads_unavailable">A compra não está disponível agora. Tente novamente mais tarde.</string>
     <string name="remove_ads_restore">Restaurar compra</string>
     <string name="remove_ads_restore_desc">Já comprou? Restaure neste dispositivo</string>
@@ -455,7 +455,7 @@ Duração do Animador: %3$.2f</string>
     <string name="fps_overlay_channel_name">Contador de FPS</string>
     <string name="fps_overlay_channel_desc">Aparece enquanto a sobreposição de FPS está ativa</string>
     <string name="fps_overlay_notif_title">Contador de FPS ativo</string>
-    <string name="fps_overlay_notif_text">Toque para abrir o Custom Animator e desativá-lo</string>
+    <string name="fps_overlay_notif_text">Toque para abrir o Custom Animator e desativar o contador</string>
     <string name="wifi_password_manager">Gerenciador de senhas Wi-Fi</string>
     <string name="wifi_password_manager_desc">Leia as senhas de Wi-Fi salvas, compartilhe por QR e exporte backups</string>
     <string name="wifi_unreadable">Não foi possível ler as redes salvas. É necessário o Shizuku em execução no Android 11 ou mais recente (foi aí que o usuário shell ganhou o privilégio necessário).</string>
@@ -527,7 +527,7 @@ Duração do Animador: %3$.2f</string>
 
     <string name="contact_developer">Falar com o desenvolvedor</string>
     <string name="contact_developer_desc">Fale conosco com suas opiniões, sugestões e reclamações</string>
-    <string name="contact_developer_subject">Custom Animator Feedback</string>
+    <string name="contact_developer_subject">Feedback do Custom Animator</string>
     <string name="contact_developer_no_app">Nenhum app de e-mail encontrado</string>
     <string name="onboarding_disclaimer_title">Use por sua conta e risco</string>
     <string name="onboarding_disclaimer_body">Este app altera configurações do sistema. Dependendo do seu aparelho e da sua ROM, isso pode afetar a bateria, as notificações, os alarmes, os apps em segundo plano e a estabilidade.</string>
@@ -541,16 +541,16 @@ Duração do Animador: %3$.2f</string>
     <string name="permissions_section_system">Acesso ao sistema</string>
     <string name="permissions_section_notifications">Notificações</string>
     <string name="permissions_section_hardware">Hardware</string>
-    <string name="permissions_footer_note">As configurações protegidas não podem ser concedidas dentro do app. Use o Shizuku se ele estiver em execução, ou o comando ADB único.</string>
+    <string name="permissions_footer_note">O acesso às configurações protegidas não pode ser concedido dentro do app. Use o Shizuku se ele estiver em execução, ou o comando ADB único.</string>
     <string name="permission_optional">opcional</string>
     <string name="permission_shizuku">Shizuku</string>
     <string name="permission_shizuku_desc">Em execução, mas este app ainda não foi autorizado. Toque para solicitar acesso.</string>
-    <string name="permission_shizuku_ready">Conectado. As configurações protegidas podem ser concedidas sem um computador.</string>
-    <string name="permission_shizuku_unavailable">Não está em execução. Inicie o Shizuku ou conceda as configurações protegidas via ADB.</string>
+    <string name="permission_shizuku_ready">Conectado. O acesso às configurações protegidas pode ser concedido sem um computador.</string>
+    <string name="permission_shizuku_unavailable">Não está em execução. Inicie o Shizuku ou conceda o acesso às configurações protegidas via ADB.</string>
     <string name="permission_secure_settings_desc">Necessária para alterar as escalas de animação, a densidade da tela e a tela sempre ativa.</string>
     <string name="permission_usage_access">Acesso de uso</string>
     <string name="permission_usage_access_desc">Permite saber qual app está em primeiro plano, para a parada forçada automática.</string>
-    <string name="permission_overlay_desc">Necessária para desenhar o contador de FPS e o flash em tela cheia sobre outros apps.</string>
+    <string name="permission_overlay_desc">Necessária para desenhar o contador de FPS e o flash de notificação em tela cheia sobre outros apps.</string>
     <string name="pn_actions_title">Ações</string>
     <string name="pn_add_body_keyword_optional">Adicionar palavra-chave do corpo (opcional)</string>
     <string name="pn_add_new_rule">Adicionar nova regra</string>
@@ -608,7 +608,7 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_got_it">Entendi</string>
     <string name="pn_grant_secure_settings_adb_info">Por ser uma permissão do sistema, ela precisa ser concedida via ADB em um computador. Abra o terminal ou prompt de comando e execute:</string>
     <string name="pn_grant_secure_settings_desc">Para alternar a tela sempre ativa, o CustomAnimator precisa da permissão WRITE_SECURE_SETTINGS.</string>
-    <string name="pn_grant_secure_settings_title">Conceder configurações protegidas</string>
+    <string name="pn_grant_secure_settings_title">Conceder acesso às configurações protegidas</string>
     <string name="pn_ignore_dialog_content_hint">Se nada for selecionado, TODAS as notificações de %1$s serão ignoradas.</string>
     <string name="pn_ignore_dialog_content_section">Filtros de conteúdo (opcional)</string>
     <string name="pn_ignore_dialog_hint_exact">Corresponde se o texto contiver isto. Ative Regex para padrões</string>
@@ -705,7 +705,7 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_rules">Regras</string>
     <string name="pn_rules_count">%1$d regras</string>
     <string name="pn_save_pattern">Salvar padrão</string>
-    <string name="pn_screen_duration">Duração da tela</string>
+    <string name="pn_screen_duration">Tempo de tela acesa</string>
     <string name="pn_search_apps">Pesquisar apps…</string>
     <string name="pn_selected">Selecionados</string>
     <string name="pn_send_test_notification">Enviar notificação de teste</string>
@@ -737,7 +737,7 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Criar regra a partir da notificação?</string>
     <string name="changelog_title">Novidades</string>
     <string name="changelog_version">Versão %1$s</string>
-    <string name="changelog_feedback_note">Nem tudo pode funcionar perfeitamente. Para bugs ou feedback, me escreva: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Nem tudo pode funcionar perfeitamente. Se encontrar um bug ou quiser dar sua opinião, me mande um e-mail: ahmetcanarslandev@gmail.com</string>
     <string name="pn_service_channel_group">Serviço em segundo plano</string>
     <string name="pn_notification_persistent_settings_hint">Toque aqui para desativar esta notificação.</string>
     <string name="settings_appearance">Aparência</string>
@@ -849,7 +849,7 @@ Duração do Animador: %3$.2f</string>
     <string name="setup_open_desc">Ajuda passo a passo para liberar todos os recursos</string>
     <string name="onboarding_setup_now">Configurar agora</string>
     <string name="onboarding_setup_later">Talvez depois</string>
-    <string name="setup_nudge_home">A velocidade das animações, a densidade da tela e os ajustes de bateria precisam de uma permissão que o Android só concede em uma configuração rápida.</string>
+    <string name="setup_nudge_home">A velocidade das animações, a densidade da tela e os ajustes de bateria precisam de uma permissão que o Android só concede após uma breve configuração.</string>
     <string name="profiles_title">Perfis</string>
     <string name="profiles_subtitle">Reúna configurações de animação, largura, bateria e desenvolvedor em um toque.</string>
     <string name="profiles_empty_title">Nenhum perfil ainda</string>
@@ -858,7 +858,7 @@ Duração do Animador: %3$.2f</string>
     <string name="profile_new">Novo perfil</string>
     <string name="profile_edit">Editar</string>
     <string name="profile_delete">Excluir perfil</string>
-    <string name="profile_delete_confirm">Excluir "%1$s"? Esta ação não pode ser desfeita.</string>
+    <string name="profile_delete_confirm">Excluir \"%1$s\"? Esta ação não pode ser desfeita.</string>
     <string name="profile_apply">Aplicar</string>
     <string name="profile_make_tile">Criar bloco de Configurações rápidas</string>
     <string name="profile_applied">%1$s aplicado</string>
@@ -924,7 +924,7 @@ Duração do Animador: %3$.2f</string>
     <string name="refresh_rate_default">Padrão</string>
     <string name="refresh_rate_value">%1$s Hz</string>
     <string name="refresh_rate_min_title">Taxa de atualização mínima</string>
-    <string name="refresh_rate_min_desc">A taxa mais baixa que a tela pode atingir.</string>
+    <string name="refresh_rate_min_desc">A taxa mais baixa para a qual a tela pode cair.</string>
     <string name="refresh_rate_peak_title">Taxa de atualização máxima</string>
     <string name="refresh_rate_peak_desc">A taxa mais alta que a tela pode atingir.</string>
     <string name="per_app_refresh_rate">Taxa de atualização por app</string>
@@ -932,7 +932,7 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_refresh_rate_dialog_desc">Escolha uma taxa compatível com esta tela.</string>
     <string name="per_app_refresh_rate_needs_usage_access">A taxa de atualização por app precisa de Acesso de uso para detectar qual app está em primeiro plano.</string>
     <string name="per_app_refresh_rate_status_active">Taxa de atualização por app ativa para %1$d app(s)</string>
-    <string name="per_app_refresh_rate_status_paused">As substituições foram salvas, mas o serviço está pausado até que as permissões sejam concedidas</string>
+    <string name="per_app_refresh_rate_status_paused">Ajustes salvos, mas o serviço está pausado até as permissões serem concedidas</string>
     <string name="per_app_refresh_rate_none">Taxa do sistema</string>
     <string name="per_app_refresh_rate_reset">Redefinir</string>
     <string name="per_app_refresh_rate_clear_all">Limpar tudo</string>
@@ -1028,9 +1028,9 @@ Duração do Animador: %3$.2f</string>
     <string name="hotspot_unblock">Desbloquear</string>
     <string name="hotspot_blocked_toast">Dispositivo bloqueado</string>
     <string name="hotspot_blocked_devices">Dispositivos bloqueados</string>
-    <string name="hotspot_blocked_devices_desc">Endereços MAC bloqueados nunca poderão entrar neste roteador</string>
+    <string name="hotspot_blocked_devices_desc">Endereços MAC bloqueados nunca poderão se conectar a este roteador</string>
     <string name="hotspot_no_blocked">Nenhum dispositivo bloqueado</string>
-    <string name="hotspot_open_system_settings">Abrir configurações do sistema</string>
+    <string name="hotspot_open_system_settings">Abrir configurações de roteador do sistema</string>
     <string name="hotspot_configuration">Configuração do roteador</string>
     <string name="hotspot_configuration_desc">As alterações reiniciam um roteador em uso</string>
     <string name="hotspot_ssid">Nome da rede</string>
@@ -1087,7 +1087,7 @@ Duração do Animador: %3$.2f</string>
     <string name="sound_tile_collapse_custom">Atraso personalizado (ms)</string>
     <string name="sound_tile_collapse_custom_hint">De 0 a %1$d ms após recolher</string>
     <string name="sound_tile_needs_shizuku">O seletor de saída de mídia precisa do Shizuku</string>
-    <string name="sound_tile_hint">Adicione o bloco Som às Configurações rápidas e pressione ou pressione e segure.</string>
+    <string name="sound_tile_hint">Adicione o bloco Som às Configurações rápidas e toque nele ou toque e segure.</string>
     <string name="sound_tile_shizuku_note">O seletor de saída de mídia e o recolhimento das Configurações rápidas usam o Shizuku. O painel de volume funciona sem ele.</string>
     <string name="sound_tile_test">Testar</string>
     <string name="game_mode">Modo jogo</string>
@@ -1145,7 +1145,7 @@ Duração do Animador: %3$.2f</string>
     <string name="meter_fps">FPS</string>
     <string name="meter_fps_desc">Quadros por segundo, medidos em tempo real.</string>
     <string name="meter_cpu_freq">Frequência da CPU</string>
-    <string name="meter_cpu_freq_desc">Maior clock atual do cluster da CPU.</string>
+    <string name="meter_cpu_freq_desc">Maior frequência atual entre os clusters da CPU.</string>
     <string name="meter_cpu_temp">Temperatura da CPU</string>
     <string name="meter_cpu_temp_desc">Leitura da zona térmica da CPU/SoC.</string>
     <string name="meter_gpu_freq">Frequência da GPU</string>
@@ -1187,7 +1187,7 @@ Duração do Animador: %3$.2f</string>
     <string name="hwui_force_gpu_desc">Usa a GPU para desenho 2D em apps que não pediram isso.</string>
     <string name="hwui_disable_overlays">Desativar sobreposições de HW</string>
     <string name="hwui_disable_overlays_desc">Compõe sempre pela GPU em vez de usar sobreposições do display.</string>
-    <string name="hwui_overdraw">Depurar sobreposição da GPU</string>
+    <string name="hwui_overdraw">Depurar overdraw da GPU</string>
     <string name="hwui_overdraw_desc">Colore as áreas desenhadas mais de uma vez.</string>
     <string name="hwui_dirty_regions">Mostrar atualizações de superfície</string>
     <string name="hwui_dirty_regions_desc">Pisca as partes da tela que são redesenhadas.</string>
@@ -1211,26 +1211,26 @@ Duração do Animador: %3$.2f</string>
     <string name="app_watcher_notif_title">Recursos por app ativos</string>
     <string name="app_watcher_notif_text">Monitorando o app em primeiro plano para %1$d recurso(s)</string>
     <string name="app_watcher_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
-    <string name="app_threading_needs_usage_access">O threading por app precisa de Acesso de uso para detectar quando um app configurado é aberto.</string>
+    <string name="app_threading_needs_usage_access">O recurso Threads por app precisa de Acesso de uso para detectar quando um app configurado é aberto.</string>
     <string name="app_threading_status_active">Monitor ativo para %1$d app(s)</string>
     <string name="app_threading_status_paused">As configurações foram salvas, mas o monitor está pausado até que as permissões sejam concedidas</string>
     <string name="app_threading_priority_denied">Este dispositivo não permite aumentar a prioridade de threads pelo Shizuku, então a prioridade Alta não é aplicada.</string>
     <string name="app_threading_priority_use_normal">Mudar para Normal</string>
-    <string name="qs_tiles">Blocos de alternância QS</string>
-    <string name="qs_tiles_desc">Blocos com dois comandos (ON/OFF) para as Configurações rápidas</string>
+    <string name="qs_tiles">Blocos das Configurações rápidas</string>
+    <string name="qs_tiles_desc">Todos os blocos que este app oferece, em um só lugar</string>
     <string name="qs_tiles_slots_used">%1$d de %2$d espaços de bloco usados</string>
     <string name="qs_tiles_needs_shizuku_title">O Shizuku não está conectado</string>
     <string name="qs_tiles_needs_shizuku_desc">Os blocos ficam indisponíveis até o Shizuku estar em execução. Toque para abrir o guia de configuração.</string>
     <string name="qs_tiles_active_section">Blocos ativos</string>
     <string name="qs_tiles_active_section_desc">Toque em um bloco para editar seus comandos</string>
-    <string name="qs_tiles_empty">Ainda não há blocos. Ative uma alternância abaixo para ocupar um espaço.</string>
-    <string name="qs_tiles_add_custom">Adicionar alternância personalizada</string>
+    <string name="qs_tiles_empty">Ainda não há blocos. Ative um alternador abaixo para ocupar um espaço.</string>
+    <string name="qs_tiles_add_custom">Adicionar alternador personalizado</string>
     <string name="qs_tiles_no_free_slot">Todos os espaços estão em uso. Remova um primeiro.</string>
     <string name="qs_tiles_slot_label">Espaço de bloco %1$d</string>
     <string name="qs_tiles_add_to_panel">Adicionar ao painel</string>
     <string name="qs_tiles_remove">Remover</string>
-    <string name="qs_tiles_dialog_new">Novo bloco de alternância</string>
-    <string name="qs_tiles_dialog_edit">Editar bloco de alternância</string>
+    <string name="qs_tiles_dialog_new">Novo bloco alternador</string>
+    <string name="qs_tiles_dialog_edit">Editar bloco alternador</string>
     <string name="qs_tiles_field_label">Rótulo do bloco</string>
     <string name="qs_tiles_field_on_command">Comando ON</string>
     <string name="qs_tiles_field_off_command">Comando OFF</string>
@@ -1240,12 +1240,12 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_tiles_pick_icon">Escolher ícone</string>
     <string name="qs_tiles_collapse_panel">Fechar as Configurações rápidas após o toque</string>
     <string name="qs_tiles_show_toast">Mostrar aviso após o toque</string>
-    <string name="qs_tiles_cat_display">Alternâncias de tela</string>
-    <string name="qs_tiles_cat_network">Alternâncias de conectividade</string>
-    <string name="qs_tiles_cat_performance">Alternâncias de desempenho e desenvolvedor</string>
-    <string name="qs_tiles_cat_system">Alternâncias do sistema</string>
-    <string name="qs_tile_default_label">Bloco de alternância</string>
-    <string name="qs_tile_unassigned">Alternância não atribuída</string>
+    <string name="qs_tiles_cat_display">Alternadores de tela</string>
+    <string name="qs_tiles_cat_network">Alternadores de conectividade</string>
+    <string name="qs_tiles_cat_performance">Alternadores de desempenho e desenvolvedor</string>
+    <string name="qs_tiles_cat_system">Alternadores do sistema</string>
+    <string name="qs_tile_default_label">Bloco alternador</string>
+    <string name="qs_tile_unassigned">Alternador não atribuído</string>
     <string name="qs_tile_unassigned_message">Atribua este bloco no Custom Animator primeiro</string>
     <string name="qs_tile_needs_shizuku">O Shizuku não está conectado</string>
     <string name="qs_tile_toast_on">%1$s ativado</string>
@@ -1266,7 +1266,7 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_toggle_adaptive_brightness_desc">Ativa ou desativa o brilho automático</string>
     <string name="qs_toggle_auto_rotate">Rotação automática</string>
     <string name="qs_toggle_auto_rotate_desc">Rotação pelo acelerômetro</string>
-    <string name="qs_toggle_stay_awake">Manter ativo ao carregar</string>
+    <string name="qs_toggle_stay_awake">Tela ativa ao carregar</string>
     <string name="qs_toggle_stay_awake_desc">A tela fica ligada com qualquer carregador</string>
     <string name="qs_toggle_private_dns">DNS particular</string>
     <string name="qs_toggle_private_dns_desc">Modo automático em vez de desligado</string>
@@ -1294,8 +1294,8 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_toggle_dont_keep_activities_desc">Destrói cada atividade ao sair dela</string>
     <string name="qs_toggle_gpu_profile_bars">Barras de renderização da GPU</string>
     <string name="qs_toggle_gpu_profile_bars_desc">Barras de perfil na tela</string>
-    <string name="qs_toggle_overdraw">Depurar sobreposição</string>
-    <string name="qs_toggle_overdraw_desc">Colore as áreas sobrepostas</string>
+    <string name="qs_toggle_overdraw">Depurar overdraw</string>
+    <string name="qs_toggle_overdraw_desc">Colore as áreas com overdraw</string>
     <string name="qs_toggle_layout_bounds">Limites de layout</string>
     <string name="qs_toggle_layout_bounds_desc">Desenha os limites de corte das views</string>
     <string name="qs_toggle_disable_hw_overlays">Desativar sobreposições de HW</string>
@@ -1326,8 +1326,8 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_tiles_advanced_hide">Ocultar opções avançadas</string>
     <string name="qs_tiles_group_app">Bloco do app</string>
     <string name="qs_tiles_group_toggle">Alternador de comando</string>
-    <string name="qs_tiles_group_animation">Predefinição de animação</string>
-    <string name="qs_tiles_group_width">Predefinição de largura</string>
+    <string name="qs_tiles_group_animation">Preset de animação</string>
+    <string name="qs_tiles_group_width">Preset de largura</string>
     <string name="qs_tiles_group_terminal">Predefinição do terminal</string>
     <string name="qs_tiles_group_profile">Perfil</string>
     <string name="qs_tiles_builtin_sound_desc">Mude o modo de som pelo painel</string>
@@ -1364,7 +1364,7 @@ Duração do Animador: %3$.2f</string>
     <string name="status_bar_icon_mobile">Sinal móvel</string>
     <string name="status_bar_icon_ethernet">Ethernet</string>
     <string name="status_bar_icon_airplane">Modo avião</string>
-    <string name="status_bar_icon_hotspot">Ponto de acesso</string>
+    <string name="status_bar_icon_hotspot">Roteador Wi-Fi</string>
     <string name="status_bar_icon_bluetooth">Bluetooth</string>
     <string name="status_bar_icon_nfc">NFC</string>
     <string name="status_bar_icon_cast">Transmissão de tela</string>
@@ -1509,7 +1509,7 @@ Duração do Animador: %3$.2f</string>
     <string name="debloater_restore_all_done">%1$d apps restaurados.</string>
     <string name="debloater_search_hint">Buscar apps ou nomes de pacote</string>
     <string name="debloater_filter_all">Todos</string>
-    <string name="debloater_show_system">Mostrar sistema</string>
+    <string name="debloater_show_system">Mostrar apps do sistema</string>
     <string name="debloater_hide_protected">Ocultar protegidos</string>
     <string name="debloater_changed_only">Alterados</string>
     <string name="debloater_risk_recommended">Recomendado</string>
@@ -1560,6 +1560,6 @@ Duração do Animador: %3$.2f</string>
     <string name="debloater_empty">Nenhum app corresponde a este filtro.</string>
     <string name="debloater_result">%1$d concluídos, %2$d com falha.</string>
     <string name="close_apps_exclusions">Lista de Exceções</string>
-    <string name="close_apps_exclusions_desc">Escolha apps que o Otimizador de desempenho nunca deve forçar a parada</string>
-    <string name="close_apps_exclusions_count">%1$d app(s) fora da lista de fechamento</string>
+    <string name="close_apps_exclusions_desc">Escolha os apps que o Otimizador de desempenho nunca deve forçar a parar</string>
+    <string name="close_apps_exclusions_count">%1$d app(s) excluído(s) do fechamento</string>
 </resources>
