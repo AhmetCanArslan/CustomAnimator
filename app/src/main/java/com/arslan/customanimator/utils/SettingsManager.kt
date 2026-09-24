@@ -3,14 +3,10 @@ package com.arslan.customanimator.utils
 import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.provider.Settings
-import android.view.WindowManager
 import com.arslan.customanimator.ui.theme.ThemeMode
-import android.util.DisplayMetrics
 import java.util.Locale
 import java.util.TimeZone
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 object SettingsManager {
@@ -284,33 +280,23 @@ object SettingsManager {
     const val MIN_SMALLEST_WIDTH = 320
     const val MAX_SMALLEST_WIDTH = 1024
 
-    fun getSmallestWidthPx(context: Context): Int {
-        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val bounds = windowManager.maximumWindowMetrics.bounds
-            min(bounds.width(), bounds.height())
-        } else {
-            val metrics = DisplayMetrics()
-            @Suppress("DEPRECATION")
-            windowManager.defaultDisplay.getRealMetrics(metrics)
-            min(metrics.widthPixels, metrics.heightPixels)
-        }
+    private fun densityWidthProduct(context: Context): Float {
+        val configuration = context.applicationContext.resources.configuration
+        return configuration.densityDpi.toFloat() * configuration.smallestScreenWidthDp
     }
 
     fun densityForSmallestWidth(context: Context, widthDp: Int): Int {
-        val smallestPx = getSmallestWidthPx(context).toFloat()
-        return (smallestPx * DisplayMetrics.DENSITY_DEFAULT / widthDp)
+        return (densityWidthProduct(context) / widthDp)
             .roundToInt()
             .coerceIn(MIN_DENSITY, MAX_DENSITY)
     }
 
     fun smallestWidthForDensity(context: Context, density: Int): Int {
-        val smallestPx = getSmallestWidthPx(context).toFloat()
-        return (smallestPx * DisplayMetrics.DENSITY_DEFAULT / density).roundToInt()
+        return (densityWidthProduct(context) / density).roundToInt()
     }
 
     fun getSmallestWidth(context: Context): Int {
-        return smallestWidthForDensity(context, context.resources.configuration.densityDpi)
+        return context.applicationContext.resources.configuration.smallestScreenWidthDp
     }
 
     fun setSmallestWidth(contentResolver: ContentResolver, context: Context, width: Int): SmallestWidthResult {
