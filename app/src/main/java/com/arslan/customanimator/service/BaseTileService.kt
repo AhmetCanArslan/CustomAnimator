@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import rikka.shizuku.Shizuku
 import java.util.concurrent.ConcurrentHashMap
 
 sealed class TileIcon {
@@ -35,12 +36,19 @@ abstract class BaseTileService : TileService() {
 
     private var refreshJob: Job? = null
     private var rendered: TileSpec? = null
+    private var shizukuListenersRegistered = false
+
+    private val binderReceivedListener = Shizuku.OnBinderReceivedListener { refresh() }
+    private val binderDeadListener = Shizuku.OnBinderDeadListener { refresh() }
+    private val permissionResultListener =
+        Shizuku.OnRequestPermissionResultListener { _, _ -> refresh() }
 
     protected abstract suspend fun loadSpec(): TileSpec
 
     override fun onStartListening() {
         super.onStartListening()
         cachedSpecs[javaClass.name]?.let { render(it) }
+        registerShizukuListeners()
         refresh()
     }
 
@@ -50,9 +58,15 @@ abstract class BaseTileService : TileService() {
     }
 
     override fun onStopListening() {
+        unregisterShizukuListeners()
         refreshJob?.cancel()
         refreshJob = null
         super.onStopListening()
+    }
+
+    override fun onDestroy() {
+        unregisterShizukuListeners()
+        super.onDestroy()
     }
 
     protected fun refresh() {
@@ -83,6 +97,22 @@ abstract class BaseTileService : TileService() {
         !ready -> Tile.STATE_UNAVAILABLE
         active -> Tile.STATE_ACTIVE
         else -> Tile.STATE_INACTIVE
+    }
+
+    private fun registerShizukuListeners() {
+        if (shizukuListenersRegistered) return
+        shizukuListenersRegistered = true
+        Shizuku.addBinderReceivedListener(binderReceivedListener)
+        Shizuku.addBinderDeadListener(binderDeadListener)
+        Shizuku.addRequestPermissionResultListener(permissionResultListener)
+    }
+
+    private fun unregisterShizukuListeners() {
+        if (!shizukuListenersRegistered) return
+        shizukuListenersRegistered = false
+        Shizuku.removeBinderReceivedListener(binderReceivedListener)
+        Shizuku.removeBinderDeadListener(binderDeadListener)
+        Shizuku.removeRequestPermissionResultListener(permissionResultListener)
     }
 
     private suspend fun loadAndRender() {
