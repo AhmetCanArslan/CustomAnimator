@@ -172,8 +172,8 @@ private object AdBudget {
     private const val KEY_FULLSCREEN_TODAY = "ads_fullscreen_today"
     private const val KEY_LAST_FULLSCREEN = "ads_last_fullscreen"
 
-    private const val MAX_FULLSCREEN_PER_DAY = 5
-    private const val MIN_GAP_MS = 6L * 60 * 1000
+    private const val MAX_FULLSCREEN_PER_DAY = 2
+    private const val MIN_GAP_MS = 20L * 60 * 1000
 
     private fun remainingToday(prefs: android.content.SharedPreferences, today: Int): Int {
         if (prefs.getInt(KEY_DAY, -1) != today) return MAX_FULLSCREEN_PER_DAY
@@ -295,12 +295,12 @@ object InterstitialAds {
     private const val KEY_ACTION_COUNT = "interstitial_action_count"
     private const val KEY_PENDING = "interstitial_pending"
 
-    private const val FREE_ACTIONS = 10
-    private const val ACTIONS_PER_AD = 6
+    private const val FREE_ACTIONS = 20
+    private const val ACTIONS_PER_AD = 12
 
     private const val TAG = "InterstitialAd"
 
-    private const val LAUNCH_GRACE_MS = 45L * 1000
+    private const val LAUNCH_GRACE_MS = 2L * 60 * 1000
 
     private val processStartElapsedMs = SystemClock.elapsedRealtime()
 
