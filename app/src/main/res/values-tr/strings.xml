@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Uygulama verilerine veya oturumlara dokunmadan depolama alanı boşaltır</string>
     <string name="close_background_apps">Arka Plan Uygulamalarını Kapat</string>
     <string name="close_background_apps_desc">Bu uygulama hariç yüklü tüm uygulamaları zorla durdurur</string>
+    <string name="close_apps_confirm_title">Arka Plan Uygulamaları Kapatılsın mı?</string>
+    <string name="close_apps_confirm_message">Bu, yüklü diğer tüm uygulamaları zorla durdurur. O uygulamalardaki kaydedilmemiş işler kaybolabilir.</string>
+    <string name="apps_closed_count">%1$d uygulama kapatıldı</string>
     <string name="auto_actions">Otomatik İşlemler</string>
     <string name="auto_force_stop">Otomatik Zorla Durdurma</string>
     <string name="auto_force_stop_desc">Seçilen uygulamaları ön plandan çıktığı anda zorla durdurur</string>

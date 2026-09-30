@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Membebaskan penyimpanan tanpa mengubah data aplikasi atau sesi login</string>
     <string name="close_background_apps">Tutup Aplikasi Latar Belakang</string>
     <string name="close_background_apps_desc">Paksa hentikan semua aplikasi terpasang kecuali aplikasi ini</string>
+    <string name="close_apps_confirm_title">Tutup Aplikasi Latar Belakang?</string>
+    <string name="close_apps_confirm_message">Ini akan memaksa menghentikan semua aplikasi terpasang lainnya. Pekerjaan yang belum disimpan di aplikasi tersebut dapat hilang.</string>
+    <string name="apps_closed_count">%1$d aplikasi ditutup</string>
     <string name="auto_actions">Tindakan Otomatis</string>
     <string name="auto_force_stop">Hentikan Paksa Otomatis</string>
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>

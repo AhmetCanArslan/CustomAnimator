@@ -66,6 +66,9 @@
     <string name="clear_all_app_caches_desc">يحرر مساحة التخزين دون لمس بيانات التطبيقات أو جلسات تسجيل الدخول</string>
     <string name="close_background_apps">إغلاق تطبيقات الخلفية</string>
     <string name="close_background_apps_desc">إيقاف كل تطبيق مثبت قسريًا باستثناء هذا التطبيق</string>
+    <string name="close_apps_confirm_title">إغلاق تطبيقات الخلفية؟</string>
+    <string name="close_apps_confirm_message">سيؤدي هذا إلى إيقاف كل تطبيق مثبت آخر قسريًا. قد يُفقد العمل غير المحفوظ في تلك التطبيقات.</string>
+    <string name="apps_closed_count">تم إغلاق %1$d تطبيق</string>
     <string name="auto_force_stop">الإيقاف القسري التلقائي للتطبيقات</string>
     <string name="auto_force_stop_desc">إيقاف التطبيقات المحددة قسريًا فور مغادرتها الواجهة الأمامية</string>
     <string name="auto_force_stop_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>

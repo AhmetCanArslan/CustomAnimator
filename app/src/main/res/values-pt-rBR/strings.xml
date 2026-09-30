@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Libera espaço sem afetar dados do app ou sessões de login</string>
     <string name="close_background_apps">Fechar Apps em Segundo Plano</string>
     <string name="close_background_apps_desc">Força a parada de todos os apps instalados, exceto este</string>
+    <string name="close_apps_confirm_title">Fechar Apps em Segundo Plano?</string>
+    <string name="close_apps_confirm_message">Isso forçará a parada de todos os outros apps instalados. Trabalhos não salvos nesses apps podem ser perdidos.</string>
+    <string name="apps_closed_count">%1$d apps fechados</string>
     <string name="auto_actions">Ações Automáticas</string>
     <string name="auto_force_stop">Parada Forçada Automática</string>
     <string name="auto_force_stop_desc">Força a parada dos apps selecionados assim que saem do primeiro plano</string>

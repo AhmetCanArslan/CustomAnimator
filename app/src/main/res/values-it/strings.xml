@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Libera spazio senza toccare dati delle app o sessioni di accesso</string>
     <string name="close_background_apps">Chiudi app in background</string>
     <string name="close_background_apps_desc">Arresta forzatamente ogni app installata tranne questa</string>
+    <string name="close_apps_confirm_title">Chiudere le app in background?</string>
+    <string name="close_apps_confirm_message">Questo arresta forzatamente ogni altra app installata. Il lavoro non salvato in quelle app potrebbe andare perso.</string>
+    <string name="apps_closed_count">Chiuse %1$d app</string>
     <string name="auto_force_stop">Arresto forzato automatico</string>
     <string name="auto_force_stop_desc">Arresta le app selezionate non appena escono dal primo piano</string>
     <string name="auto_force_stop_needs_usage_access">Questa funzione richiede l\'accesso ai dati di utilizzo per rilevare quando le app lasciano il primo piano.</string>

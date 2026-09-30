@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Libera espacio de almacenamiento sin afectar los datos de las apps ni las sesiones iniciadas</string>
     <string name="close_background_apps">Cerrar Apps en Segundo Plano</string>
     <string name="close_background_apps_desc">Fuerza el cierre de todas las apps instaladas excepto esta</string>
+    <string name="close_apps_confirm_title">¿Cerrar Apps en Segundo Plano?</string>
+    <string name="close_apps_confirm_message">Esto forzará el cierre de todas las demás apps instaladas. El trabajo sin guardar en esas apps podría perderse.</string>
+    <string name="apps_closed_count">%1$d apps cerradas</string>
     <string name="auto_actions">Acciones Automáticas</string>
     <string name="auto_force_stop">Detención Forzada Automática</string>
     <string name="auto_force_stop_desc">Fuerza el cierre de las apps seleccionadas en el instante en que salen del primer plano</string>

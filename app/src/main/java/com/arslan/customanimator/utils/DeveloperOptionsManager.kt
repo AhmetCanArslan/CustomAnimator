@@ -3,6 +3,7 @@ package com.arslan.customanimator.utils
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
+import com.arslan.customanimator.data.InstalledAppInfo
 
 object DeveloperOptionsManager {
 
@@ -201,10 +202,17 @@ object DeveloperOptionsManager {
     }
 
     fun forceStopBackgroundApps(context: Context): Boolean {
+        return closableBackgroundApps(context).all { forceStopApp(it.packageName) }
+    }
+
+    fun closeBackgroundApps(context: Context): Int {
+        return closableBackgroundApps(context).count { forceStopApp(it.packageName) }
+    }
+
+    private fun closableBackgroundApps(context: Context): List<InstalledAppInfo> {
         val skip = CloseAppsExclusionManager(context).getSelectedPackages() +
             InstalledAppsProvider.getUnsafeToKillPackages(context)
-        val apps = InstalledAppsProvider.getLaunchableApps(context).filterNot { skip.contains(it.packageName) }
-        return apps.all { forceStopApp(it.packageName) }
+        return InstalledAppsProvider.getLaunchableApps(context).filterNot { skip.contains(it.packageName) }
     }
 
     fun forceStopApp(packageName: String): Boolean {

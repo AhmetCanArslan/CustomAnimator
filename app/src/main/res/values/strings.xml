@@ -70,6 +70,9 @@
     <string name="clear_all_app_caches_desc">Frees up storage without touching app data or login sessions</string>
     <string name="close_background_apps">Close Background Apps</string>
     <string name="close_background_apps_desc">Force-stops every installed app except this one</string>
+    <string name="close_apps_confirm_title">Close Background Apps?</string>
+    <string name="close_apps_confirm_message">This force-stops every other installed app. Unsaved work in those apps may be lost.</string>
+    <string name="apps_closed_count">Closed %1$d apps</string>
     <string name="auto_force_stop">Auto Force-Stop Apps</string>
     <string name="auto_force_stop_desc">Force-stop selected apps the instant they leave the foreground</string>
     <string name="auto_force_stop_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
@@ -328,7 +331,7 @@ Animator Duration: %3$.2f</string>
     <string name="rotation_landscape_270">Landscape (90° right)</string>
     <!-- Close apps exclusions -->
     <string name="close_apps_exclusions">Exclusion List</string>
-    <string name="close_apps_exclusions_desc">Pick apps that Performance Booster should never force-stop</string>
+    <string name="close_apps_exclusions_desc">Pick apps that \"Close Background Apps\" and Performance Booster should never force-stop</string>
     <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
     <string name="compile_all_apps_short">Compile</string>
     <!-- Rotation recovery -->

@@ -30,6 +30,9 @@
     <string name="clear_all_app_caches_desc">Освобождает место, не затрагивая данные приложений и сессии входа</string>
     <string name="close_background_apps">Закрыть фоновые приложения</string>
     <string name="close_background_apps_desc">Принудительно останавливает все установленные приложения, кроме этого</string>
+    <string name="close_apps_confirm_title">Закрыть фоновые приложения?</string>
+    <string name="close_apps_confirm_message">Это принудительно остановит все остальные установленные приложения. Несохранённая работа в них может быть потеряна.</string>
+    <string name="apps_closed_count">Закрыто приложений: %1$d</string>
     <string name="auto_actions">Автоматические действия</string>
     <string name="auto_force_stop">Автоостановка приложений</string>
     <string name="auto_force_stop_desc">Принудительно останавливает выбранные приложения сразу после выхода из переднего плана</string>

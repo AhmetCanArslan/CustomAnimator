@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayCircleOutline
+import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -196,11 +197,59 @@ private fun OptimizerHome(
             onClick = { gatedStart(::startClean) }
         )
 
-        Card(
-            shape = AppShapes.card,
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        CloseAppsCard(
+            enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
+            runGated = gatedStart,
+            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions
+        )
+
+        cleanOutcome?.let { outcome ->
+            CleanResultCard(outcome = outcome)
+        }
+    }
+}
+
+@Composable
+private fun CloseAppsCard(
+    enabled: Boolean,
+    runGated: (() -> Unit) -> Unit,
+    onNavigateToCloseAppsExclusions: () -> Unit
+) {
+    val context = LocalContext.current
+    val resources = LocalResources.current
+    val scope = rememberCoroutineScope()
+
+    var isClosing by remember { mutableStateOf(false) }
+    var showConfirm by remember { mutableStateOf(false) }
+
+    fun startClose() {
+        isClosing = true
+        scope.launch {
+            val closed = withContext(Dispatchers.IO) { DeveloperOptionsManager.closeBackgroundApps(context) }
+            isClosing = false
+            Toast.makeText(
+                context,
+                resources.getString(R.string.apps_closed_count, closed),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            QuickActionRow(
+                icon = Icons.Filled.StopCircle,
+                title = stringResource(R.string.close_background_apps),
+                description = stringResource(R.string.close_background_apps_desc),
+                enabled = enabled,
+                isRunning = isClosing,
+                onClick = { showConfirm = true }
+            )
+            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
             NavigationRow(
                 icon = Icons.Filled.Block,
                 title = stringResource(R.string.close_apps_exclusions),
@@ -208,10 +257,30 @@ private fun OptimizerHome(
                 onClick = onNavigateToCloseAppsExclusions
             )
         }
+    }
 
-        cleanOutcome?.let { outcome ->
-            CleanResultCard(outcome = outcome)
-        }
+    if (showConfirm) {
+        AlertDialog(
+            onDismissRequest = { showConfirm = false },
+            title = { Text(stringResource(R.string.close_apps_confirm_title)) },
+            text = { Text(stringResource(R.string.close_apps_confirm_message)) },
+            confirmButton = {
+                Button(onClick = {
+                    showConfirm = false
+                    runGated(::startClose)
+                }) {
+                    Text(stringResource(R.string.close_background_apps))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showConfirm = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
     }
 }
 
