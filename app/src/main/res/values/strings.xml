@@ -1168,6 +1168,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_watch_ad">Watch ad &amp; optimize</string>
     <string name="optimizer_clean_watch_ad">Watch ad &amp; clean</string>
     <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
+    <string name="reward_free_unlock">No ad available right now, so this one is free</string>
     <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
     <string name="reward_gate_watch">Watch ad</string>
     <string name="reward_gate_unlocked_title">Unlocked</string>

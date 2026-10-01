@@ -145,7 +145,14 @@ private fun OptimizerHome(
             isPreparingAd = true
             RewardedAds.show(context) { result ->
                 isPreparingAd = false
-                if (result == RewardedAds.Result.REWARDED) action() else showAdFailure(context, result)
+                when (result) {
+                    RewardedAds.Result.REWARDED -> action()
+                    RewardedAds.Result.UNAVAILABLE -> {
+                        showFreeUnlockToast(context)
+                        action()
+                    }
+                    else -> showAdFailure(context, result)
+                }
             }
         }
     }

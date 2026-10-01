@@ -1125,6 +1125,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="more_compile_booster_desc">I-recompile ang mga app para mas mabilis magbukas</string>
     <string name="more_auto_actions_desc">Mga awtomatikong panuntunan sa force stop at pahintulot</string>
     <string name="game_mode_fixed_performance">Naka-on ang fixed performance mode habang bukas ang Game Mode.</string>
+    <string name="reward_free_unlock">Walang available na ad ngayon, kaya libre ito ngayong beses</string>
     <string name="reward_unlock_denied">Tapusin ang ad para ma-unlock ito nang 3 minuto</string>
     <string name="reward_gate_watch">Manood ng ad</string>
     <string name="reward_gate_unlocked_title">Naka-unlock</string>

@@ -1145,6 +1145,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="more_compile_booster_desc">Ricompila le app per avvii più rapidi</string>
     <string name="more_auto_actions_desc">Regole automatiche di arresto forzato e permessi</string>
     <string name="game_mode_fixed_performance">La modalità prestazioni fisse è attiva mentre la Modalità Gioco è accesa.</string>
+    <string name="reward_free_unlock">Nessun annuncio disponibile al momento, quindi questa volta è gratis</string>
     <string name="reward_unlock_denied">Completa l\'annuncio per sbloccarlo per 3 minuti</string>
     <string name="reward_gate_watch">Guarda annuncio</string>
     <string name="reward_gate_unlocked_title">Sbloccato</string>

@@ -1125,6 +1125,7 @@ Duración del Animador: %3$.2f</string>
     <string name="more_compile_booster_desc">Recompila apps para que abran más rápido</string>
     <string name="more_auto_actions_desc">Reglas automáticas de cierre forzado y permisos</string>
     <string name="game_mode_fixed_performance">El modo de rendimiento fijo se activa mientras el Modo Juego está encendido.</string>
+    <string name="reward_free_unlock">No hay anuncios disponibles ahora, así que esta vez es gratis</string>
     <string name="reward_unlock_denied">Termina el anuncio para desbloquear esto por 3 minutos</string>
     <string name="reward_gate_watch">Ver anuncio</string>
     <string name="reward_gate_unlocked_title">Desbloqueado</string>

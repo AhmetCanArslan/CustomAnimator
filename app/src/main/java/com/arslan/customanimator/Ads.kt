@@ -422,26 +422,28 @@ object RewardedAds {
 
     private var ad: RewardedAd? = null
     private var isLoading = false
-    private val waiters = mutableListOf<(Boolean) -> Unit>()
+    private val waiters = mutableListOf<(LoadOutcome) -> Unit>()
 
-    enum class Result { REWARDED, CANCELLED, NOT_READY, ERROR }
+    enum class Result { REWARDED, CANCELLED, UNAVAILABLE, NOT_READY, ERROR }
+
+    private enum class LoadOutcome { READY, NO_FILL, FAILED }
 
     fun preload(context: Context) {
         load(context, null)
     }
 
-    private fun load(context: Context, onReady: ((Boolean) -> Unit)?) {
+    private fun load(context: Context, onReady: ((LoadOutcome) -> Unit)?) {
         if (isAdFreeNow()) {
-            onReady?.invoke(false)
+            onReady?.invoke(LoadOutcome.FAILED)
             return
         }
         if (ad != null) {
-            onReady?.invoke(true)
+            onReady?.invoke(LoadOutcome.READY)
             return
         }
         if (!AdsConsent.canRequestAds(context)) {
             Log.d(TAG, "Consent not granted, skipping load")
-            onReady?.invoke(false)
+            onReady?.invoke(LoadOutcome.NO_FILL)
             return
         }
         if (onReady != null) waiters.add(onReady)
@@ -456,23 +458,25 @@ object RewardedAds {
                     isLoading = false
                     ad = loaded
                     Log.d(TAG, "Loaded and ready")
-                    notifyWaiters(true)
+                    notifyWaiters(LoadOutcome.READY)
                 }
 
                 override fun onAdFailedToLoad(error: LoadAdError) {
                     isLoading = false
                     ad = null
                     Log.e(TAG, "Failed to load: ${error.code} ${error.message}")
-                    notifyWaiters(false)
+                    val noFill = error.code == AdRequest.ERROR_CODE_NO_FILL ||
+                        error.code == AdRequest.ERROR_CODE_MEDIATION_NO_FILL
+                    notifyWaiters(if (noFill) LoadOutcome.NO_FILL else LoadOutcome.FAILED)
                 }
             }
         )
     }
 
-    private fun notifyWaiters(ready: Boolean) {
+    private fun notifyWaiters(outcome: LoadOutcome) {
         val pending = waiters.toList()
         waiters.clear()
-        pending.forEach { it(ready) }
+        pending.forEach { it(outcome) }
     }
 
     fun show(context: Context, onResult: (Result) -> Unit) {
@@ -500,15 +504,19 @@ object RewardedAds {
                     initializeMobileAds(activity)
                     show(activity, false, onResult)
                 } else {
-                    onResult(Result.NOT_READY)
+                    onResult(Result.UNAVAILABLE)
                 }
             }
             return
         }
         val loaded = ad
         if (loaded == null) {
-            load(context) { ready ->
-                if (ready) show(context, false, onResult) else onResult(Result.NOT_READY)
+            load(context) { outcome ->
+                when (outcome) {
+                    LoadOutcome.READY -> show(context, false, onResult)
+                    LoadOutcome.NO_FILL -> onResult(Result.UNAVAILABLE)
+                    LoadOutcome.FAILED -> onResult(Result.NOT_READY)
+                }
             }
             return
         }
@@ -602,6 +610,10 @@ fun requestReward(context: Context, onRewarded: () -> Unit) {
     RewardedAds.show(context) { result ->
         when (result) {
             RewardedAds.Result.REWARDED -> onRewarded()
+            RewardedAds.Result.UNAVAILABLE -> {
+                showFreeUnlockToast(context)
+                onRewarded()
+            }
             RewardedAds.Result.CANCELLED -> android.widget.Toast.makeText(
                 context,
                 context.getString(R.string.reward_unlock_denied),
@@ -614,4 +626,12 @@ fun requestReward(context: Context, onRewarded: () -> Unit) {
             ).show()
         }
     }
+}
+
+fun showFreeUnlockToast(context: Context) {
+    android.widget.Toast.makeText(
+        context,
+        context.getString(R.string.reward_free_unlock),
+        android.widget.Toast.LENGTH_LONG
+    ).show()
 }
