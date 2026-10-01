@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">Arka planda en fazla 1 önbelleğe alınmış uygulama tut</string>
     <string name="clear_all_app_caches">Tüm Uygulama Önbelleklerini Temizle</string>
     <string name="clear_all_app_caches_desc">Uygulama verilerine veya oturumlara dokunmadan depolama alanı boşaltır</string>
+    <string name="clear_caches_confirm_title">Tüm Uygulama Önbellekleri Temizlensin mi?</string>
+    <string name="clear_caches_confirm_message">Bu, depolama alanı boşaltmak için her uygulamanın önbelleğini kırpar. Uygulama verileri ve oturumlar etkilenmez.</string>
     <string name="close_background_apps">Arka Plan Uygulamalarını Kapat</string>
     <string name="close_background_apps_desc">Bu uygulama hariç yüklü tüm uygulamaları zorla durdurur</string>
     <string name="close_apps_confirm_title">Arka Plan Uygulamaları Kapatılsın mı?</string>

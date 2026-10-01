@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">1 lang na cached app ang panatilihin sa background</string>
     <string name="clear_all_app_caches">I-clear ang Cache ng Lahat ng App</string>
     <string name="clear_all_app_caches_desc">Nagpapalaya ng storage nang hindi ginagalaw ang data ng app o login session</string>
+    <string name="clear_caches_confirm_title">I-clear ang Cache ng Lahat ng App?</string>
+    <string name="clear_caches_confirm_message">Aalisin nito ang mga cached na file ng bawat app para makakuha ng storage. Hindi maaapektuhan ang data ng app at mga login.</string>
     <string name="close_background_apps">Isara ang mga Background App</string>
     <string name="close_background_apps_desc">Puwersahang itigil ang lahat ng naka-install na app maliban dito</string>
     <string name="close_apps_confirm_title">Isara ang mga Background App?</string>

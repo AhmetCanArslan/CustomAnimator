@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">Simpan maksimal 1 aplikasi ter-cache di latar belakang</string>
     <string name="clear_all_app_caches">Hapus Cache Semua Aplikasi</string>
     <string name="clear_all_app_caches_desc">Membebaskan penyimpanan tanpa mengubah data aplikasi atau sesi login</string>
+    <string name="clear_caches_confirm_title">Hapus Cache Semua Aplikasi?</string>
+    <string name="clear_caches_confirm_message">Ini akan menghapus file cache dari setiap aplikasi untuk membebaskan penyimpanan. Data aplikasi dan login tidak akan terpengaruh.</string>
     <string name="close_background_apps">Tutup Aplikasi Latar Belakang</string>
     <string name="close_background_apps_desc">Paksa hentikan semua aplikasi terpasang kecuali aplikasi ini</string>
     <string name="close_apps_confirm_title">Tutup Aplikasi Latar Belakang?</string>

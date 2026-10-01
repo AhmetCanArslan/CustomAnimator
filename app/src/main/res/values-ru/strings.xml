@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">Держать в фоне не более 1 кэшированного приложения</string>
     <string name="clear_all_app_caches">Очистить кэш всех приложений</string>
     <string name="clear_all_app_caches_desc">Освобождает место, не затрагивая данные приложений и сессии входа</string>
+    <string name="clear_caches_confirm_title">Очистить кэш всех приложений?</string>
+    <string name="clear_caches_confirm_message">Это удалит кэшированные файлы всех приложений для освобождения места. Данные приложений и входы в аккаунты не затрагиваются.</string>
     <string name="close_background_apps">Закрыть фоновые приложения</string>
     <string name="close_background_apps_desc">Принудительно останавливает все установленные приложения, кроме этого</string>
     <string name="close_apps_confirm_title">Закрыть фоновые приложения?</string>

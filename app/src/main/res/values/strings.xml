@@ -68,6 +68,8 @@
     <string name="developer_tiles_restart_note">Layout bounds and GPU profiling only apply to apps started after the toggle; restart the app you want to inspect.</string>
     <string name="clear_all_app_caches">Clear All App Caches</string>
     <string name="clear_all_app_caches_desc">Frees up storage without touching app data or login sessions</string>
+    <string name="clear_caches_confirm_title">Clear All App Caches?</string>
+    <string name="clear_caches_confirm_message">This trims cached files from every app to free up storage. App data and logins are not affected.</string>
     <string name="close_background_apps">Close Background Apps</string>
     <string name="close_background_apps_desc">Force-stops every installed app except this one</string>
     <string name="close_apps_confirm_title">Close Background Apps?</string>

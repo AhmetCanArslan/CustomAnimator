@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">Mantieni al massimo 1 app nella cache in background</string>
     <string name="clear_all_app_caches">Svuota la cache di tutte le app</string>
     <string name="clear_all_app_caches_desc">Libera spazio senza toccare dati delle app o sessioni di accesso</string>
+    <string name="clear_caches_confirm_title">Svuotare la cache di tutte le app?</string>
+    <string name="clear_caches_confirm_message">Questo rimuove i file nella cache di ogni app per liberare spazio. I dati delle app e gli accessi non vengono toccati.</string>
     <string name="close_background_apps">Chiudi app in background</string>
     <string name="close_background_apps_desc">Arresta forzatamente ogni app installata tranne questa</string>
     <string name="close_apps_confirm_title">Chiudere le app in background?</string>

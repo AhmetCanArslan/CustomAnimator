@@ -197,7 +197,7 @@ private fun OptimizerHome(
             onClick = { gatedStart(::startClean) }
         )
 
-        CloseAppsCard(
+        QuickActionsCard(
             enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
             runGated = gatedStart,
             onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions
@@ -209,31 +209,47 @@ private fun OptimizerHome(
     }
 }
 
+private enum class QuickAction(
+    val titleRes: Int,
+    val confirmTitleRes: Int,
+    val confirmMessageRes: Int
+) {
+    CLEAR_CACHES(R.string.clear_all_app_caches, R.string.clear_caches_confirm_title, R.string.clear_caches_confirm_message),
+    CLOSE_APPS(R.string.close_background_apps, R.string.close_apps_confirm_title, R.string.close_apps_confirm_message)
+}
+
+private fun runQuickAction(context: Context, action: QuickAction): String = when (action) {
+    QuickAction.CLEAR_CACHES -> context.getString(
+        if (DeveloperOptionsManager.clearAllAppCaches()) R.string.action_succeeded else R.string.action_failed
+    )
+    QuickAction.CLOSE_APPS -> context.getString(
+        R.string.apps_closed_count,
+        DeveloperOptionsManager.closeBackgroundApps(context)
+    )
+}
+
 @Composable
-private fun CloseAppsCard(
+private fun QuickActionsCard(
     enabled: Boolean,
     runGated: (() -> Unit) -> Unit,
     onNavigateToCloseAppsExclusions: () -> Unit
 ) {
     val context = LocalContext.current
-    val resources = LocalResources.current
     val scope = rememberCoroutineScope()
 
-    var isClosing by remember { mutableStateOf(false) }
-    var showConfirm by remember { mutableStateOf(false) }
+    var runningAction by remember { mutableStateOf<QuickAction?>(null) }
+    var pendingAction by remember { mutableStateOf<QuickAction?>(null) }
 
-    fun startClose() {
-        isClosing = true
+    fun start(action: QuickAction) {
+        runningAction = action
         scope.launch {
-            val closed = withContext(Dispatchers.IO) { DeveloperOptionsManager.closeBackgroundApps(context) }
-            isClosing = false
-            Toast.makeText(
-                context,
-                resources.getString(R.string.apps_closed_count, closed),
-                Toast.LENGTH_SHORT
-            ).show()
+            val message = withContext(Dispatchers.IO) { runQuickAction(context, action) }
+            runningAction = null
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+    val rowsEnabled = enabled && runningAction == null
 
     Card(
         shape = AppShapes.card,
@@ -242,12 +258,21 @@ private fun CloseAppsCard(
     ) {
         Column {
             QuickActionRow(
+                icon = Icons.Filled.CleaningServices,
+                title = stringResource(R.string.clear_all_app_caches),
+                description = stringResource(R.string.clear_all_app_caches_desc),
+                enabled = rowsEnabled,
+                isRunning = runningAction == QuickAction.CLEAR_CACHES,
+                onClick = { pendingAction = QuickAction.CLEAR_CACHES }
+            )
+            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+            QuickActionRow(
                 icon = Icons.Filled.StopCircle,
                 title = stringResource(R.string.close_background_apps),
                 description = stringResource(R.string.close_background_apps_desc),
-                enabled = enabled,
-                isRunning = isClosing,
-                onClick = { showConfirm = true }
+                enabled = rowsEnabled,
+                isRunning = runningAction == QuickAction.CLOSE_APPS,
+                onClick = { pendingAction = QuickAction.CLOSE_APPS }
             )
             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
             NavigationRow(
@@ -259,29 +284,42 @@ private fun CloseAppsCard(
         }
     }
 
-    if (showConfirm) {
-        AlertDialog(
-            onDismissRequest = { showConfirm = false },
-            title = { Text(stringResource(R.string.close_apps_confirm_title)) },
-            text = { Text(stringResource(R.string.close_apps_confirm_message)) },
-            confirmButton = {
-                Button(onClick = {
-                    showConfirm = false
-                    runGated(::startClose)
-                }) {
-                    Text(stringResource(R.string.close_background_apps))
-                }
+    pendingAction?.let { action ->
+        QuickActionConfirmDialog(
+            action = action,
+            onConfirm = {
+                pendingAction = null
+                runGated { start(action) }
             },
-            dismissButton = {
-                Button(
-                    onClick = { showConfirm = false },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-                ) {
-                    Text(stringResource(R.string.cancel))
-                }
-            }
+            onDismiss = { pendingAction = null }
         )
     }
+}
+
+@Composable
+private fun QuickActionConfirmDialog(
+    action: QuickAction,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(action.confirmTitleRes)) },
+        text = { Text(stringResource(action.confirmMessageRes)) },
+        confirmButton = {
+            Button(onClick = onConfirm) {
+                Text(stringResource(action.titleRes))
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    )
 }
 
 @Composable

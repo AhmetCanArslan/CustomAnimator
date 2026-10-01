@@ -64,6 +64,8 @@
     <string name="developer_tiles_restart_note">حدود التخطيط وتحليل GPU تنطبق فقط على التطبيقات التي تبدأ بعد التبديل؛ أعد تشغيل التطبيق الذي تريد فحصه.</string>
     <string name="clear_all_app_caches">مسح ذاكرة التخزين المؤقت لجميع التطبيقات</string>
     <string name="clear_all_app_caches_desc">يحرر مساحة التخزين دون لمس بيانات التطبيقات أو جلسات تسجيل الدخول</string>
+    <string name="clear_caches_confirm_title">مسح ذاكرة التخزين المؤقت لجميع التطبيقات؟</string>
+    <string name="clear_caches_confirm_message">سيؤدي هذا إلى تقليص الملفات المؤقتة من كل التطبيقات لتحرير مساحة. بيانات التطبيقات وتسجيلات الدخول غير متأثرة.</string>
     <string name="close_background_apps">إغلاق تطبيقات الخلفية</string>
     <string name="close_background_apps_desc">إيقاف كل تطبيق مثبت قسريًا باستثناء هذا التطبيق</string>
     <string name="close_apps_confirm_title">إغلاق تطبيقات الخلفية؟</string>

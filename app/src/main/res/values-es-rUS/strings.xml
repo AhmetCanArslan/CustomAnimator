@@ -28,6 +28,8 @@
     <string name="limit_background_processes_desc">Mantener como máximo 1 app en caché en segundo plano</string>
     <string name="clear_all_app_caches">Borrar Caché de Todas las Apps</string>
     <string name="clear_all_app_caches_desc">Libera espacio de almacenamiento sin afectar los datos de las apps ni las sesiones iniciadas</string>
+    <string name="clear_caches_confirm_title">¿Borrar Caché de Todas las Apps?</string>
+    <string name="clear_caches_confirm_message">Esto eliminará los archivos en caché de cada app para liberar espacio. Los datos de las apps y las sesiones no se ven afectados.</string>
     <string name="close_background_apps">Cerrar Apps en Segundo Plano</string>
     <string name="close_background_apps_desc">Fuerza el cierre de todas las apps instaladas excepto esta</string>
     <string name="close_apps_confirm_title">¿Cerrar Apps en Segundo Plano?</string>
