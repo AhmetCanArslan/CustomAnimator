@@ -25,7 +25,6 @@ import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PermissionDisablerManager
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuAvailable
@@ -46,7 +45,6 @@ fun AutoPermissionDisablerScreen(
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedPackages by remember { mutableStateOf(manager.getSelectedPackages()) }
     var isLoading by remember { mutableStateOf(true) }
-    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, selectedPackages) {
@@ -75,8 +73,6 @@ fun AutoPermissionDisablerScreen(
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
-
-    val prerequisitesMet = hasShizukuPermission && hasUsageAccess
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -144,19 +140,9 @@ fun AutoPermissionDisablerScreen(
                 }
             }
 
-            if (!hasUsageAccess) {
-                item {
-                    WarningCard(
-                        message = stringResource(R.string.auto_permission_disabler_needs_usage_access),
-                        actionLabel = stringResource(R.string.open_usage_access_settings),
-                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
-                    )
-                }
-            }
-
             item {
                 Text(
-                    text = if (selectedPackages.isNotEmpty() && prerequisitesMet) {
+                    text = if (selectedPackages.isNotEmpty() && hasShizukuPermission) {
                         stringResource(R.string.auto_permission_disabler_status_active, selectedPackages.size)
                     } else if (selectedPackages.isNotEmpty()) {
                         stringResource(R.string.auto_permission_disabler_status_paused)

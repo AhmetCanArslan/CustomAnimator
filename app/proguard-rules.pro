@@ -7,12 +7,20 @@
 -keep class com.arslan.customanimator.service.WifiUserService { *; }
 -keep class com.arslan.customanimator.service.HotspotUserService { *; }
 -keep class com.arslan.customanimator.service.CarrierUserService { *; }
+-keep class com.arslan.customanimator.service.AppMonitorUserService { *; }
+-keep class com.arslan.customanimator.service.AppMonitorUserService$* { *; }
 -keep interface com.arslan.customanimator.service.IWifiUserService { *; }
 -keep interface com.arslan.customanimator.service.IHotspotUserService { *; }
 -keep interface com.arslan.customanimator.service.ICarrierUserService { *; }
 -keep class com.arslan.customanimator.service.IWifiUserService$* { *; }
 -keep class com.arslan.customanimator.service.IHotspotUserService$* { *; }
 -keep class com.arslan.customanimator.service.ICarrierUserService$* { *; }
+-keep interface com.arslan.customanimator.service.IAppMonitorUserService { *; }
+-keep class com.arslan.customanimator.service.IAppMonitorUserService$* { *; }
+-keep interface com.arslan.customanimator.service.IForegroundAppListener { *; }
+-keep class com.arslan.customanimator.service.IForegroundAppListener$* { *; }
+-keep interface android.app.IProcessObserver { *; }
+-keep class android.app.IProcessObserver$* { *; }
 
 -keep class rikka.shizuku.** { *; }
 -keep class moe.shizuku.** { *; }

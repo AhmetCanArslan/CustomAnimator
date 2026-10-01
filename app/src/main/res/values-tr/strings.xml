@@ -38,13 +38,10 @@
     <string name="auto_actions">Otomatik İşlemler</string>
     <string name="auto_force_stop">Otomatik Zorla Durdurma</string>
     <string name="auto_force_stop_desc">Seçilen uygulamaları ön plandan çıktığı anda zorla durdurur</string>
-    <string name="auto_force_stop_needs_usage_access">Bu özellik, uygulamaların ne zaman ön plandan çıktığını algılamak için Kullanım Erişimi gerektirir.</string>
-    <string name="open_usage_access_settings">Kullanım Erişimi Ayarlarını Aç</string>
     <string name="auto_force_stop_status_active">Otomatik zorla durdurma %1$d uygulama için etkin</string>
     <string name="auto_force_stop_status_paused">Seçim kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
     <string name="auto_permission_disabler">Otomatik İzin Kapatıcı</string>
     <string name="auto_permission_disabler_desc">Seçilen uygulamaların izinlerini ön plandan çıktığı anda geri alır, tekrar açıldığında geri yükler</string>
-    <string name="auto_permission_disabler_needs_usage_access">Bu özellik, uygulamaların ne zaman ön plandan çıktığını algılamak için Kullanım Erişimi gerektirir.</string>
     <string name="auto_permission_disabler_status_active">Otomatik izin kapatıcı %1$d uygulama için etkin</string>
     <string name="auto_permission_disabler_status_paused">Seçim kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
     <string name="no_apps_found">Uygulama bulunamadı</string>
@@ -553,8 +550,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="permission_shizuku_ready">Bağlandı. Güvenli ayarlar bilgisayar olmadan verilebilir.</string>
     <string name="permission_shizuku_unavailable">Çalışmıyor. Shizuku\'yu başlatın veya güvenli ayarları ADB ile verin.</string>
     <string name="permission_secure_settings_desc">Animasyon ölçekleri, ekran yoğunluğu ve her zaman açık ekranı değiştirmek için gerekli.</string>
-    <string name="permission_usage_access">Kullanım erişimi</string>
-    <string name="permission_usage_access_desc">Otomatik zorla durdurma için hangi uygulamanın ön planda olduğunu belirlemeyi sağlar.</string>
     <string name="permission_overlay_desc">FPS sayacını ve tam ekran bildirim flaşını diğer uygulamaların üzerine çizmek için gerekli.</string>
     <string name="pn_actions_title">Eylemler</string>
     <string name="pn_add_body_keyword_optional">Gövde Anahtar Kelimesi Ekle (İsteğe Bağlı)</string>
@@ -915,7 +910,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_width_button">Uygulama başına genişlik ayarla</string>
     <string name="per_app_width_desc">Uygulamalar için ayrı ayrı en küçük genişlik (dp) seçin; En Küçük Genişlik ekranındaki değerin aynısı. Uygulama açıldığında otomatik uygulanır, çıkınca eski değere döner.</string>
     <string name="per_app_width_disclaimer">Android\'de uygulama başına yoğunluk desteği yoktur. Bu özellik, seçtiğiniz uygulama ön plandayken ekran yoğunluğunu değiştirerek çalışır; geçişlerde kısa bir titreme veya uygulama yeniden başlatması olabilir.</string>
-    <string name="per_app_width_needs_usage_access">Bu özellik, ön plandaki uygulamayı algılamak için Kullanım Erişimi gerektirir.</string>
     <string name="per_app_width_status_active">Uygulama başına genişlik %1$d uygulama için etkin</string>
     <string name="per_app_width_status_paused">Ayarlar kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -943,7 +937,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="per_app_refresh_rate">Uygulama Bazlı Yenileme Hızı</string>
     <string name="per_app_refresh_rate_desc">Uygulamalar için ayrı ayrı yenileme hızı seçin. Uygulama açıldığında uygulanır, uygulamadan çıkınca eski haline döner.</string>
     <string name="per_app_refresh_rate_dialog_desc">Bu ekranın desteklediği bir hız seçin.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">Uygulama bazlı yenileme hızı, hangi uygulamanın ön planda olduğunu algılamak için Kullanım Erişimi gerektirir.</string>
     <string name="per_app_refresh_rate_status_active">Uygulama bazlı yenileme hızı %1$d uygulama için aktif</string>
     <string name="per_app_refresh_rate_status_paused">Ayarlar kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
     <string name="per_app_refresh_rate_none">Sistem hızı</string>
@@ -1221,8 +1214,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="app_watcher_channel_desc">Uygulama bazlı özellikler hangi uygulamanın ön planda olduğunu izlerken gösterilir</string>
     <string name="app_watcher_notif_title">Uygulama bazlı özellikler etkin</string>
     <string name="app_watcher_notif_text">%1$d özellik için ön plandaki uygulama izleniyor</string>
-    <string name="app_watcher_notif_text_waiting">Shizuku ve Kullanım Erişimi bekleniyor</string>
-    <string name="app_threading_needs_usage_access">Uygulama bazlı iş parçacığı ayarı, ayarlanan bir uygulamanın açıldığını algılamak için Kullanım Erişimi gerektirir.</string>
+    <string name="app_watcher_notif_text_waiting">Shizuku bekleniyor</string>
     <string name="app_threading_status_active">İzleyici %1$d uygulama için etkin</string>
     <string name="app_threading_status_paused">Ayarlar kaydedildi, ancak izinler verilene kadar izleyici duraklatıldı</string>
     <string name="app_threading_priority_denied">Bu cihaz Shizuku üzerinden iş parçacığı önceliğinin yükseltilmesine izin vermiyor, bu yüzden Yüksek öncelik uygulanmıyor.</string>

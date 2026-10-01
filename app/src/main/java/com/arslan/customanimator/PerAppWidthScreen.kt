@@ -31,7 +31,6 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PerAppWidthManager
 import com.arslan.customanimator.utils.SettingsManager
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
@@ -52,7 +51,6 @@ fun PerAppWidthScreen(
     var isLoading by remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
-    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var editingApp by remember { mutableStateOf<InstalledAppInfo?>(null) }
 
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, overrides) {
@@ -171,19 +169,9 @@ fun PerAppWidthScreen(
                 }
             }
 
-            if (!hasUsageAccess) {
-                item {
-                    WarningCard(
-                        message = stringResource(R.string.per_app_width_needs_usage_access),
-                        actionLabel = stringResource(R.string.open_usage_access_settings),
-                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
-                    )
-                }
-            }
-
             item {
                 Text(
-                    text = if (overrides.isNotEmpty() && hasShizukuPermission && hasUsageAccess) {
+                    text = if (overrides.isNotEmpty() && hasShizukuPermission) {
                         stringResource(R.string.per_app_width_status_active, overrides.size)
                     } else if (overrides.isNotEmpty()) {
                         stringResource(R.string.per_app_width_status_paused)

@@ -38,13 +38,10 @@
     <string name="auto_actions">Ações Automáticas</string>
     <string name="auto_force_stop">Parada Forçada Automática</string>
     <string name="auto_force_stop_desc">Força a parada dos apps selecionados assim que saem do primeiro plano</string>
-    <string name="auto_force_stop_needs_usage_access">Este recurso precisa de Acesso ao Uso para detectar quando os apps saem do primeiro plano.</string>
-    <string name="open_usage_access_settings">Abrir Configurações de Acesso ao Uso</string>
     <string name="auto_force_stop_status_active">Parada forçada automática ativa para %1$d app(s)</string>
     <string name="auto_force_stop_status_paused">Seleção salva, mas o serviço está pausado até que as permissões sejam concedidas</string>
     <string name="auto_permission_disabler">Desativador Automático de Permissões</string>
     <string name="auto_permission_disabler_desc">Revoga as permissões dos apps selecionados assim que saem do primeiro plano e as restaura ao reabrir</string>
-    <string name="auto_permission_disabler_needs_usage_access">Este recurso precisa de Acesso ao Uso para detectar quando os apps saem do primeiro plano.</string>
     <string name="auto_permission_disabler_status_active">Desativador automático de permissões ativo para %1$d app(s)</string>
     <string name="auto_permission_disabler_status_paused">Seleção salva, mas o serviço está pausado até que as permissões sejam concedidas</string>
     <string name="no_apps_found">Nenhum app encontrado</string>
@@ -553,8 +550,6 @@ Duração do Animador: %3$.2f</string>
     <string name="permission_shizuku_ready">Conectado. O acesso às configurações protegidas pode ser concedido sem um computador.</string>
     <string name="permission_shizuku_unavailable">Não está em execução. Inicie o Shizuku ou conceda o acesso às configurações protegidas via ADB.</string>
     <string name="permission_secure_settings_desc">Necessária para alterar as escalas de animação, a densidade da tela e a tela sempre ativa.</string>
-    <string name="permission_usage_access">Acesso de uso</string>
-    <string name="permission_usage_access_desc">Permite saber qual app está em primeiro plano, para a parada forçada automática.</string>
     <string name="permission_overlay_desc">Necessária para desenhar o contador de FPS e o flash de notificação em tela cheia sobre outros apps.</string>
     <string name="pn_actions_title">Ações</string>
     <string name="pn_add_body_keyword_optional">Adicionar palavra-chave do corpo (opcional)</string>
@@ -907,7 +902,6 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_width_button">Definir largura por app</string>
     <string name="per_app_width_desc">Escolha uma largura mínima em dp para cada app, o mesmo valor da tela de largura mínima. Ela é aplicada automaticamente ao abrir o app e revertida ao sair.</string>
     <string name="per_app_width_disclaimer">O Android não tem densidade por app de forma nativa. Isso funciona trocando a densidade da tela enquanto o app escolhido está em primeiro plano, então pode ocorrer uma piscada rápida ou o reinício do app na troca.</string>
-    <string name="per_app_width_needs_usage_access">Este recurso precisa do Acesso de uso para detectar qual app está em primeiro plano.</string>
     <string name="per_app_width_status_active">Largura por app ativa para %1$d app(s)</string>
     <string name="per_app_width_status_paused">Ajustes salvos, mas o serviço está pausado até as permissões serem concedidas</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -935,7 +929,6 @@ Duração do Animador: %3$.2f</string>
     <string name="per_app_refresh_rate">Taxa de atualização por app</string>
     <string name="per_app_refresh_rate_desc">Escolha uma taxa de atualização para cada app. É aplicada ao abrir o app e revertida ao sair dele.</string>
     <string name="per_app_refresh_rate_dialog_desc">Escolha uma taxa compatível com esta tela.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">A taxa de atualização por app precisa de Acesso de uso para detectar qual app está em primeiro plano.</string>
     <string name="per_app_refresh_rate_status_active">Taxa de atualização por app ativa para %1$d app(s)</string>
     <string name="per_app_refresh_rate_status_paused">Ajustes salvos, mas o serviço está pausado até as permissões serem concedidas</string>
     <string name="per_app_refresh_rate_none">Taxa do sistema</string>
@@ -1213,8 +1206,7 @@ Duração do Animador: %3$.2f</string>
     <string name="app_watcher_channel_desc">Exibido enquanto os recursos por app monitoram qual app está em primeiro plano</string>
     <string name="app_watcher_notif_title">Recursos por app ativos</string>
     <string name="app_watcher_notif_text">Monitorando o app em primeiro plano para %1$d recurso(s)</string>
-    <string name="app_watcher_notif_text_waiting">Aguardando Shizuku e Acesso de uso</string>
-    <string name="app_threading_needs_usage_access">O recurso Threads por app precisa de Acesso de uso para detectar quando um app configurado é aberto.</string>
+    <string name="app_watcher_notif_text_waiting">Aguardando Shizuku</string>
     <string name="app_threading_status_active">Monitor ativo para %1$d app(s)</string>
     <string name="app_threading_status_paused">As configurações foram salvas, mas o monitor está pausado até que as permissões sejam concedidas</string>
     <string name="app_threading_priority_denied">Este dispositivo não permite aumentar a prioridade de threads pelo Shizuku, então a prioridade Alta não é aplicada.</string>

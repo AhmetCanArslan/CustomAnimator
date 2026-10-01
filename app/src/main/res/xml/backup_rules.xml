@@ -10,4 +10,6 @@
    <include domain="sharedpref" path="."/>
    <exclude domain="sharedpref" path="device.xml"/>
 -->
+    <exclude domain="sharedpref" path="per_app_width_state.xml" />
+    <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
 </full-backup-content>

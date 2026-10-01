@@ -29,13 +29,17 @@ object PerAppWidthWatcher : AppVisibilityWatcher {
     override fun onAppForegrounded(context: Context, packageName: String, scope: CoroutineScope) {
         val targetWidthDp = overrides[packageName] ?: return
         if (appliedPackage == packageName) return
+        val manager = PerAppWidthManager(context)
         if (appliedPackage == null) {
             baselineDensity = SettingsManager.getForcedDensity(context.contentResolver)
+            manager.recordBaseline(baselineDensity)
         }
         val targetDensity = SettingsManager.densityForSmallestWidth(context, targetWidthDp)
         val success = SettingsManager.applyDensity(context.contentResolver, targetDensity)
         if (success) {
             appliedPackage = packageName
+        } else if (appliedPackage == null) {
+            manager.clearRecordedBaseline()
         }
         Log.d(TAG, "Applied width=${targetWidthDp}dp density=$targetDensity for $packageName success=$success")
     }
@@ -46,9 +50,20 @@ object PerAppWidthWatcher : AppVisibilityWatcher {
 
     override fun onWatchStopped(context: Context) = restoreBaseline(context)
 
+    override fun recoverStaleState(context: Context) {
+        if (appliedPackage != null) return
+        val manager = PerAppWidthManager(context)
+        if (!manager.hasRecordedBaseline()) return
+        val baseline = manager.recordedBaseline()
+        val success = SettingsManager.applyDensity(context.contentResolver, baseline)
+        if (success) manager.clearRecordedBaseline()
+        Log.d(TAG, "Recovered stale baseline density=$baseline success=$success")
+    }
+
     private fun restoreBaseline(context: Context) {
         if (appliedPackage == null) return
         val success = SettingsManager.applyDensity(context.contentResolver, baselineDensity)
+        if (success) PerAppWidthManager(context).clearRecordedBaseline()
         Log.d(TAG, "Restored baseline density=$baselineDensity success=$success")
         appliedPackage = null
         baselineDensity = null

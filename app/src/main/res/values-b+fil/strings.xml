@@ -38,13 +38,10 @@
     <string name="auto_actions">Mga Awtomatikong Aksyon</string>
     <string name="auto_force_stop">Auto Force-Stop ng mga App</string>
     <string name="auto_force_stop_desc">Puwersahang ihihinto ang mga napiling app sa sandaling umalis ang mga ito sa foreground</string>
-    <string name="auto_force_stop_needs_usage_access">Kailangan ng feature na ito ng Usage Access para malaman kung kailan umaalis ang mga app sa foreground.</string>
-    <string name="open_usage_access_settings">Buksan ang Usage Access Settings</string>
     <string name="auto_force_stop_status_active">Aktibo ang auto force-stop para sa %1$d app</string>
     <string name="auto_force_stop_status_paused">Na-save ang seleksyon, pero naka-pause ang serbisyo hangga\'t hindi pa ipinagkakaloob ang mga pahintulot</string>
     <string name="auto_permission_disabler">Awtomatikong Pag-disable ng Permission</string>
     <string name="auto_permission_disabler_desc">Bawiin ang mga pahintulot ng napiling app sa sandaling umalis ito sa foreground, at ibalik kapag muling binuksan</string>
-    <string name="auto_permission_disabler_needs_usage_access">Kailangan ng feature na ito ng Usage Access para malaman kung kailan umaalis ang mga app sa foreground.</string>
     <string name="auto_permission_disabler_status_active">Aktibo ang auto permission disabler para sa %1$d app</string>
     <string name="auto_permission_disabler_status_paused">Na-save ang seleksyon, pero naka-pause ang serbisyo hangga\'t hindi pa ipinagkakaloob ang mga pahintulot</string>
     <string name="no_apps_found">Walang nahanap na app</string>
@@ -553,8 +550,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="permission_shizuku_ready">Nakakonekta. Maibibigay ang access sa secure settings nang walang computer.</string>
     <string name="permission_shizuku_unavailable">Hindi tumatakbo. Simulan ang Shizuku, o ibigay ang access sa secure settings sa pamamagitan ng ADB.</string>
     <string name="permission_secure_settings_desc">Kailangan para baguhin ang animation scale, screen density at always-on display.</string>
-    <string name="permission_usage_access">Usage access</string>
-    <string name="permission_usage_access_desc">Nagbibigay-daan malaman kung aling app ang nasa harapan, para sa auto force-stop.</string>
     <string name="permission_overlay_desc">Kailangan para ipakita ang FPS counter at full-screen na notification flash sa ibabaw ng ibang app.</string>
     <string name="pn_actions_title">Mga aksyon</string>
     <string name="pn_add_body_keyword_optional">Magdagdag ng keyword sa body (opsyonal)</string>
@@ -907,7 +902,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="per_app_width_button">Itakda ang lapad kada app</string>
     <string name="per_app_width_desc">Pumili ng pinakamaliit na lapad sa dp para sa bawat app, kaparehong halaga ng nasa screen ng Pinakamaliit na Lapad. Awtomatiko itong ilalapat kapag binuksan ang app at ibabalik kapag umalis ka.</string>
     <string name="per_app_width_disclaimer">Walang katutubong per-app density ang Android. Gumagana ito sa pamamagitan ng pagpapalit ng density ng screen habang nasa harapan ang napiling app, kaya posibleng may maikling pagkurap o pag-restart ng app sa paglipat.</string>
-    <string name="per_app_width_needs_usage_access">Kailangan ng feature na ito ang Usage Access upang matukoy kung aling app ang nasa harapan.</string>
     <string name="per_app_width_status_active">Aktibo ang per-app na lapad para sa %1$d app</string>
     <string name="per_app_width_status_paused">Naka-save ang mga override, pero naka-pause ang serbisyo hangga\'t hindi ibinibigay ang mga pahintulot</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -935,7 +929,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="per_app_refresh_rate">Per-App Refresh Rate</string>
     <string name="per_app_refresh_rate_desc">Pumili ng refresh rate para sa bawat app. Ito ay ina-apply kapag binuksan ang app at ibinabalik kapag umalis ka rito.</string>
     <string name="per_app_refresh_rate_dialog_desc">Pumili ng rate na suportado ng display na ito.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">Kailangan ng per-app refresh rate ng Usage Access para malaman kung aling app ang nasa foreground.</string>
     <string name="per_app_refresh_rate_status_active">Aktibo ang per-app refresh rate para sa %1$d app</string>
     <string name="per_app_refresh_rate_status_paused">Na-save na ang mga override, pero naka-pause ang serbisyo hangga\'t hindi naibibigay ang mga pahintulot</string>
     <string name="per_app_refresh_rate_none">System rate</string>
@@ -1213,8 +1206,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="app_watcher_channel_desc">Ipinapakita habang binabantayan ng mga per-app na feature kung aling app ang nasa foreground</string>
     <string name="app_watcher_notif_title">Aktibo ang mga per-app na feature</string>
     <string name="app_watcher_notif_text">Binabantayan ang foreground app para sa %1$d na feature</string>
-    <string name="app_watcher_notif_text_waiting">Naghihintay ng Shizuku at Usage Access</string>
-    <string name="app_threading_needs_usage_access">Kailangan ng per-app threading ng Usage Access para matukoy kung kailan bumukas ang isang naka-configure na app.</string>
+    <string name="app_watcher_notif_text_waiting">Naghihintay ng Shizuku</string>
     <string name="app_threading_status_active">Aktibo ang watcher para sa %1$d na app</string>
     <string name="app_threading_status_paused">Na-save ang mga setting, pero naka-pause ang watcher hangga\'t hindi naibibigay ang mga pahintulot</string>
     <string name="app_threading_priority_denied">Hindi pinapayagan ng device na ito na itaas ang thread priority sa pamamagitan ng Shizuku, kaya hindi nailalapat ang High priority.</string>

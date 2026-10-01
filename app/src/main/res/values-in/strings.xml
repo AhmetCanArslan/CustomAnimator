@@ -38,13 +38,10 @@
     <string name="auto_actions">Tindakan Otomatis</string>
     <string name="auto_force_stop">Hentikan Paksa Otomatis</string>
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>
-    <string name="auto_force_stop_needs_usage_access">Fitur ini memerlukan Akses Penggunaan untuk mendeteksi kapan aplikasi keluar dari latar depan.</string>
-    <string name="open_usage_access_settings">Buka Pengaturan Akses Penggunaan</string>
     <string name="auto_force_stop_status_active">Hentikan paksa otomatis aktif untuk %1$d aplikasi</string>
     <string name="auto_force_stop_status_paused">Pilihan disimpan, tetapi layanan dijeda hingga izin diberikan</string>
     <string name="auto_permission_disabler">Penonaktif Izin Otomatis</string>
     <string name="auto_permission_disabler_desc">Cabut izin aplikasi terpilih segera setelah keluar dari latar depan, dan kembalikan saat dibuka lagi</string>
-    <string name="auto_permission_disabler_needs_usage_access">Fitur ini memerlukan Akses Penggunaan untuk mendeteksi kapan aplikasi keluar dari latar depan.</string>
     <string name="auto_permission_disabler_status_active">Penonaktif izin otomatis aktif untuk %1$d aplikasi</string>
     <string name="auto_permission_disabler_status_paused">Pilihan disimpan, tetapi layanan dijeda hingga izin diberikan</string>
     <string name="no_apps_found">Tidak ada aplikasi ditemukan</string>
@@ -553,8 +550,6 @@ Durasi Animator: %3$.2f</string>
     <string name="permission_shizuku_ready">Terhubung. Akses setelan aman dapat diberikan tanpa komputer.</string>
     <string name="permission_shizuku_unavailable">Tidak berjalan. Jalankan Shizuku, atau berikan akses setelan aman lewat ADB.</string>
     <string name="permission_secure_settings_desc">Diperlukan untuk mengubah skala animasi, kepadatan layar, dan layar selalu aktif.</string>
-    <string name="permission_usage_access">Akses penggunaan</string>
-    <string name="permission_usage_access_desc">Memungkinkan aplikasi mengetahui aplikasi mana yang aktif, untuk hentikan paksa otomatis.</string>
     <string name="permission_overlay_desc">Diperlukan untuk menampilkan penghitung FPS dan kilat notifikasi layar penuh di atas aplikasi lain.</string>
     <string name="pn_actions_title">Tindakan</string>
     <string name="pn_add_body_keyword_optional">Tambah kata kunci isi (opsional)</string>
@@ -907,7 +902,6 @@ Durasi Animator: %3$.2f</string>
     <string name="per_app_width_button">Atur lebar per aplikasi</string>
     <string name="per_app_width_desc">Pilih lebar terkecil dalam dp untuk tiap aplikasi, nilai yang sama seperti di layar Lebar Terkecil. Otomatis diterapkan saat aplikasi dibuka dan dikembalikan saat Anda keluar.</string>
     <string name="per_app_width_disclaimer">Android tidak punya kepadatan per aplikasi secara bawaan. Ini bekerja dengan mengganti kepadatan layar selama aplikasi terpilih berada di latar depan, jadi bisa muncul kedipan singkat atau aplikasi memulai ulang saat berpindah.</string>
-    <string name="per_app_width_needs_usage_access">Fitur ini butuh Akses Penggunaan untuk mendeteksi aplikasi yang sedang di latar depan.</string>
     <string name="per_app_width_status_active">Lebar per aplikasi aktif untuk %1$d aplikasi</string>
     <string name="per_app_width_status_paused">Pengaturan tersimpan, tetapi layanan dijeda sampai izin diberikan</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -935,7 +929,6 @@ Durasi Animator: %3$.2f</string>
     <string name="per_app_refresh_rate">Refresh Rate per Aplikasi</string>
     <string name="per_app_refresh_rate_desc">Pilih refresh rate untuk masing-masing aplikasi. Diterapkan saat aplikasi dibuka dan dikembalikan saat Anda meninggalkannya.</string>
     <string name="per_app_refresh_rate_dialog_desc">Pilih rate yang didukung layar ini.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">Refresh rate per aplikasi butuh Akses Penggunaan untuk mendeteksi aplikasi yang sedang di latar depan.</string>
     <string name="per_app_refresh_rate_status_active">Refresh rate per aplikasi aktif untuk %1$d aplikasi</string>
     <string name="per_app_refresh_rate_status_paused">Pengaturan tersimpan, tetapi layanan dijeda sampai izin diberikan</string>
     <string name="per_app_refresh_rate_none">Rate sistem</string>
@@ -1213,8 +1206,7 @@ Durasi Animator: %3$.2f</string>
     <string name="app_watcher_channel_desc">Muncul saat fitur per aplikasi memantau aplikasi yang sedang di latar depan</string>
     <string name="app_watcher_notif_title">Fitur per aplikasi aktif</string>
     <string name="app_watcher_notif_text">Memantau aplikasi latar depan untuk %1$d fitur</string>
-    <string name="app_watcher_notif_text_waiting">Menunggu Shizuku dan Akses Penggunaan</string>
-    <string name="app_threading_needs_usage_access">Threading per aplikasi butuh Akses Penggunaan untuk mendeteksi saat aplikasi yang diatur dibuka.</string>
+    <string name="app_watcher_notif_text_waiting">Menunggu Shizuku</string>
     <string name="app_threading_status_active">Pemantau aktif untuk %1$d aplikasi</string>
     <string name="app_threading_status_paused">Pengaturan tersimpan, tapi pemantau dijeda hingga izin diberikan</string>
     <string name="app_threading_priority_denied">Perangkat ini tidak mengizinkan menaikkan prioritas thread lewat Shizuku, jadi prioritas Tinggi tidak diterapkan.</string>

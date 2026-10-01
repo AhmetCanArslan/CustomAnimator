@@ -19,7 +19,6 @@ import com.arslan.customanimator.utils.RevokedPermissionsStore
 import com.arslan.customanimator.utils.SettingsManager
 import com.arslan.customanimator.utils.ThreadAffinityMode
 import com.arslan.customanimator.utils.ThreadPriority
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.After
@@ -59,7 +58,9 @@ class ForegroundAppWatcherBehaviorTest {
         AutoForceStopManager(context).setSelectedPackages(emptySet())
         PermissionDisablerManager(context).setSelectedPackages(emptySet())
         PerAppWidthManager(context).clearAll()
+        PerAppWidthManager(context).clearRecordedBaseline()
         PerAppRefreshRateManager(context).clearAll()
+        PerAppRefreshRateManager(context).clearRecordedBaseline()
         AppThreadingManager(context).clearAll()
         RevokedPermissionsStore(context).clearAll()
         Settings.Secure.putString(context.contentResolver, "display_density_forced", null)
@@ -241,6 +242,72 @@ class ForegroundAppWatcherBehaviorTest {
     }
 
     @Test
+    fun perAppWidthRecordsTheBaselineWhileAppliedAndClearsItOnRestore() {
+        PerAppWidthManager(context).setWidth(target, 400)
+        PerAppWidthWatcher.refresh(context)
+        Settings.Secure.putString(context.contentResolver, "display_density_forced", "420")
+
+        PerAppWidthWatcher.onAppForegrounded(context, target, scope)
+        val manager = PerAppWidthManager(context)
+        assertTrue(manager.hasRecordedBaseline())
+        assertEquals(420, manager.recordedBaseline())
+
+        PerAppWidthWatcher.onAppBackgrounded(context, target, scope)
+        assertFalse(manager.hasRecordedBaseline())
+    }
+
+    @Test
+    fun perAppWidthRecoversABaselineLeftBehindByADeadProcess() {
+        val manager = PerAppWidthManager(context)
+        manager.recordBaseline(420)
+        Settings.Secure.putString(context.contentResolver, "display_density_forced", "999")
+
+        PerAppWidthWatcher.recoverStaleState(context)
+        assertEquals(420, forcedDensity())
+        assertFalse(manager.hasRecordedBaseline())
+    }
+
+    @Test
+    fun perAppWidthRecoveryRestoresAnUnforcedBaseline() {
+        PerAppWidthManager(context).recordBaseline(null)
+        Settings.Secure.putString(context.contentResolver, "display_density_forced", "999")
+
+        PerAppWidthWatcher.recoverStaleState(context)
+        assertNull(forcedDensity())
+    }
+
+    @Test
+    fun perAppWidthRecoveryLeavesALiveOverrideAlone() {
+        PerAppWidthManager(context).setWidth(target, 400)
+        PerAppWidthWatcher.refresh(context)
+        PerAppWidthWatcher.onAppForegrounded(context, target, scope)
+        val applied = forcedDensity()
+
+        PerAppWidthWatcher.recoverStaleState(context)
+        assertEquals(applied, forcedDensity())
+        assertTrue(PerAppWidthManager(context).hasRecordedBaseline())
+    }
+
+    @Test
+    fun perAppWidthRecoveryIsANoOpWithoutARecordedBaseline() {
+        Settings.Secure.putString(context.contentResolver, "display_density_forced", "420")
+        PerAppWidthWatcher.recoverStaleState(context)
+        assertEquals(420, forcedDensity())
+    }
+
+    @Test
+    fun perAppRefreshRateKeepsTheRecordedBaselineWhenRecoveryFails() {
+        val manager = PerAppRefreshRateManager(context)
+        manager.recordBaseline(60f, null)
+
+        PerAppRefreshRateWatcher.recoverStaleState(context)
+        assertTrue(awaitLog("PerAppRefreshRateWatcher", "Recovered").contains("success=false"))
+        assertTrue(manager.hasRecordedBaseline())
+        assertEquals(60f, manager.recordedBaselineMin())
+        assertNull(manager.recordedBaselinePeak())
+    }
+
+    @Test
     fun perAppRefreshRateFailsSafelyWithoutShizuku() {
         PerAppRefreshRateManager(context).setRate(target, 60f)
         PerAppRefreshRateWatcher.refresh(context)
@@ -268,11 +335,9 @@ class ForegroundAppWatcherBehaviorTest {
         AutoForceStopWatcher.refresh(context)
 
         AutoForceStopWatcher.onAppBackgrounded(context, target, scope)
-        AutoForceStopWatcher.onTick(context, scope)
         assertNoLog("AutoForceStopWatcher", "Force-stopped")
 
         Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
         assertTrue(awaitLog("AutoForceStopWatcher", "Force-stopped").contains(target))
     }
 
@@ -284,25 +349,20 @@ class ForegroundAppWatcherBehaviorTest {
         AutoForceStopWatcher.onAppBackgrounded(context, target, scope)
         AutoForceStopWatcher.onAppForegrounded(context, target, scope)
         Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
         assertNoLog("AutoForceStopWatcher", "Force-stopped")
     }
 
     @Test
-    fun autoForceStopDoesNotKillTheSameAppTwiceInARow() {
+    fun autoForceStopSchedulesOneKillForRepeatedBackgroundEvents() {
         AutoForceStopManager(context).setSelectedPackages(setOf(target))
         AutoForceStopWatcher.refresh(context)
 
         AutoForceStopWatcher.onAppBackgrounded(context, target, scope)
-        Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
-        awaitLog("AutoForceStopWatcher", "Force-stopped")
-        ShadowLog.clear()
-
         AutoForceStopWatcher.onAppBackgrounded(context, target, scope)
         Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
-        assertNoLog("AutoForceStopWatcher", "Force-stopped")
+        awaitLog("AutoForceStopWatcher", "Force-stopped")
+        Thread.sleep(200)
+        assertEquals(1, logsFor("AutoForceStopWatcher").count { it.contains("Force-stopped") })
     }
 
     @Test
@@ -312,7 +372,6 @@ class ForegroundAppWatcherBehaviorTest {
 
         AutoForceStopWatcher.onAppBackgrounded(context, other, scope)
         Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
         assertNoLog("AutoForceStopWatcher", "Force-stopped")
     }
 
@@ -324,7 +383,6 @@ class ForegroundAppWatcherBehaviorTest {
         AutoForceStopWatcher.onAppBackgrounded(context, target, scope)
         AutoForceStopWatcher.onWatchStopped(context)
         Thread.sleep(1300)
-        AutoForceStopWatcher.onTick(context, scope)
         assertNoLog("AutoForceStopWatcher", "Force-stopped")
     }
 
@@ -334,11 +392,9 @@ class ForegroundAppWatcherBehaviorTest {
         PermissionDisablerWatcher.refresh(context)
 
         PermissionDisablerWatcher.onAppBackgrounded(context, target, scope)
-        PermissionDisablerWatcher.onTick(context, scope)
         assertNoLog("PermissionDisablerWatcher", "Revoked")
 
         Thread.sleep(1300)
-        PermissionDisablerWatcher.onTick(context, scope)
         assertNoLog("PermissionDisablerWatcher", "Revoked")
     }
 
@@ -376,7 +432,6 @@ class ForegroundAppWatcherBehaviorTest {
         PermissionDisablerWatcher.onAppBackgrounded(context, target, scope)
         PermissionDisablerWatcher.onWatchStopped(context)
         Thread.sleep(1300)
-        PermissionDisablerWatcher.onTick(context, scope)
         assertNoLog("PermissionDisablerWatcher", "Revoked")
     }
 
@@ -404,10 +459,5 @@ class ForegroundAppWatcherBehaviorTest {
         assertNoLog("AppThreadingWatcher", "Applied")
         AppThreadingWatcher.onAppBackgrounded(context, target, scope)
         AppThreadingWatcher.onWatchStopped(context)
-    }
-
-    @Test
-    fun usageAccessIsNotSelfGrantedWithoutShizuku() {
-        assertFalse(UsageAccessHelper.grantUsageAccess(context))
     }
 }

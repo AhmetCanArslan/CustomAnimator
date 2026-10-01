@@ -13,7 +13,7 @@ interface AppVisibilityWatcher {
 
     fun onAppBackgrounded(context: Context, packageName: String, scope: CoroutineScope)
 
-    fun onTick(context: Context, scope: CoroutineScope) {}
-
     fun onWatchStopped(context: Context) {}
+
+    fun recoverStaleState(context: Context) {}
 }

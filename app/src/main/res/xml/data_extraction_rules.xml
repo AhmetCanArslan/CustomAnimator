@@ -5,6 +5,8 @@
 -->
 <data-extraction-rules>
     <cloud-backup>
+        <exclude domain="sharedpref" path="per_app_width_state.xml" />
+        <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
         <!-- TODO: Use <include> and <exclude> to control what is backed up.
         <include .../>
         <exclude .../>
@@ -16,4 +18,8 @@
         <exclude .../>
     </device-transfer>
     -->
+    <device-transfer>
+        <exclude domain="sharedpref" path="per_app_width_state.xml" />
+        <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
+    </device-transfer>
 </data-extraction-rules>

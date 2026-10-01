@@ -38,13 +38,10 @@
     <string name="auto_actions">Автоматические действия</string>
     <string name="auto_force_stop">Автоостановка приложений</string>
     <string name="auto_force_stop_desc">Принудительно останавливает выбранные приложения сразу после выхода из переднего плана</string>
-    <string name="auto_force_stop_needs_usage_access">Для этой функции нужен доступ к статистике использования, чтобы определять выход приложений из переднего плана.</string>
-    <string name="open_usage_access_settings">Открыть настройки доступа к использованию</string>
     <string name="auto_force_stop_status_active">Автоостановка активна для %1$d прил.</string>
     <string name="auto_force_stop_status_paused">Выбор сохранён, но служба приостановлена до предоставления разрешений</string>
     <string name="auto_permission_disabler">Автоотключение разрешений</string>
     <string name="auto_permission_disabler_desc">Отзывает разрешения выбранных приложений сразу после выхода из переднего плана и восстанавливает их при повторном открытии</string>
-    <string name="auto_permission_disabler_needs_usage_access">Для этой функции нужен доступ к статистике использования, чтобы определять выход приложений из переднего плана.</string>
     <string name="auto_permission_disabler_status_active">Автоотключение разрешений активно для %1$d прил.</string>
     <string name="auto_permission_disabler_status_paused">Выбор сохранён, но служба приостановлена до предоставления разрешений</string>
     <string name="no_apps_found">Приложения не найдены</string>
@@ -553,8 +550,6 @@
     <string name="permission_shizuku_ready">Подключено. Доступ к защищённым настройкам можно выдать без компьютера.</string>
     <string name="permission_shizuku_unavailable">Не запущен. Запустите Shizuku или выдайте доступ к защищённым настройкам через ADB.</string>
     <string name="permission_secure_settings_desc">Требуется для изменения масштаба анимации, плотности экрана и Always-On Display.</string>
-    <string name="permission_usage_access">Доступ к статистике использования</string>
-    <string name="permission_usage_access_desc">Позволяет определять, какое приложение активно, для автоостановки.</string>
     <string name="permission_overlay_desc">Требуется для отображения счётчика FPS и полноэкранной вспышки уведомлений поверх других приложений.</string>
     <string name="pn_actions_title">Действия</string>
     <string name="pn_add_body_keyword_optional">Добавить ключевое слово текста (необязательно)</string>
@@ -909,7 +904,6 @@
     <string name="per_app_width_button">Задать ширину для приложения</string>
     <string name="per_app_width_desc">Выберите наименьшую ширину в dp для отдельных приложений — то же значение, что на экране наименьшей ширины. Она применяется автоматически при открытии приложения и возвращается обратно при выходе.</string>
     <string name="per_app_width_disclaimer">В Android нет встроенной плотности для отдельных приложений. Функция переключает плотность экрана, пока выбранное приложение на переднем плане, поэтому при переключении возможны короткое мерцание или перезапуск приложения.</string>
-    <string name="per_app_width_needs_usage_access">Функции нужен доступ к статистике использования, чтобы определять активное приложение.</string>
     <string name="per_app_width_status_active">Своя ширина активна для %1$d прил.</string>
     <string name="per_app_width_status_paused">Настройки сохранены, но служба приостановлена до выдачи разрешений</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -937,7 +931,6 @@
     <string name="per_app_refresh_rate">Частота обновления для приложений</string>
     <string name="per_app_refresh_rate_desc">Выберите частоту обновления для отдельных приложений. Она применяется при открытии приложения и отменяется при выходе из него.</string>
     <string name="per_app_refresh_rate_dialog_desc">Выберите частоту, поддерживаемую этим экраном.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">Для частоты обновления по приложениям нужен доступ к статистике использования, чтобы определить активное приложение.</string>
     <string name="per_app_refresh_rate_status_active">Частота обновления для приложений активна для %1$d прил.</string>
     <string name="per_app_refresh_rate_status_paused">Переопределения сохранены, но служба приостановлена до предоставления разрешений</string>
     <string name="per_app_refresh_rate_none">Системная частота</string>
@@ -1215,8 +1208,7 @@
     <string name="app_watcher_channel_desc">Отображается, пока функции для отдельных приложений отслеживают активное приложение</string>
     <string name="app_watcher_notif_title">Функции для приложений активны</string>
     <string name="app_watcher_notif_text">Отслеживание активного приложения для %1$d функц.</string>
-    <string name="app_watcher_notif_text_waiting">Ожидание Shizuku и доступа к статистике использования</string>
-    <string name="app_threading_needs_usage_access">Для потоков по приложениям нужен доступ к статистике использования, чтобы определять запуск настроенного приложения.</string>
+    <string name="app_watcher_notif_text_waiting">Ожидание Shizuku</string>
     <string name="app_threading_status_active">Наблюдатель активен для %1$d прил.</string>
     <string name="app_threading_status_paused">Настройки сохранены, но наблюдатель приостановлен до предоставления разрешений</string>
     <string name="app_threading_priority_denied">Это устройство не позволяет повышать приоритет потоков через Shizuku, поэтому высокий приоритет не применяется.</string>

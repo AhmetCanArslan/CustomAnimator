@@ -73,13 +73,10 @@
     <string name="apps_closed_count">تم إغلاق %1$d تطبيق</string>
     <string name="auto_force_stop">الإيقاف القسري التلقائي للتطبيقات</string>
     <string name="auto_force_stop_desc">إيقاف التطبيقات المحددة قسريًا فور مغادرتها الواجهة الأمامية</string>
-    <string name="auto_force_stop_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>
-    <string name="open_usage_access_settings">فتح إعدادات الوصول إلى الاستخدام</string>
     <string name="auto_force_stop_status_active">الإيقاف القسري التلقائي نشط لـ %1$d تطبيق</string>
     <string name="auto_force_stop_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="auto_permission_disabler">معطّل الأذونات التلقائي</string>
     <string name="auto_permission_disabler_desc">إلغاء أذونات التطبيقات المحددة فور مغادرتها الواجهة الأمامية، واستعادتها عند إعادة فتحها</string>
-    <string name="auto_permission_disabler_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف مغادرة التطبيقات للواجهة الأمامية.</string>
     <string name="auto_permission_disabler_status_active">معطّل الأذونات التلقائي نشط لـ %1$d تطبيق</string>
     <string name="auto_permission_disabler_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
@@ -594,8 +591,6 @@
     <string name="permission_shizuku_ready">متصل. يمكن منح الوصول إلى الإعدادات الآمنة بدون كمبيوتر.</string>
     <string name="permission_shizuku_unavailable">لا يعمل. ابدأ شيزوكو، أو امنح الوصول إلى الإعدادات الآمنة عبر ADB بدلاً من ذلك.</string>
     <string name="permission_secure_settings_desc">مطلوب لتغيير مقاييس الرسوم المتحركة وكثافة الشاشة والشاشة الدائمة.</string>
-    <string name="permission_usage_access">الوصول إلى الاستخدام</string>
-    <string name="permission_usage_access_desc">يسمح للتطبيق بمعرفة التطبيق الموجود في الواجهة الأمامية، للإيقاف القسري التلقائي.</string>
     <string name="permission_overlay_desc">مطلوب لرسم عداد FPS ووميض الإشعار بملء الشاشة فوق التطبيقات الأخرى.</string>
 
     <!-- PrimeNotify -->
@@ -966,7 +961,6 @@
     <string name="per_app_width_button">ضبط أصغر عرض لكل تطبيق</string>
     <string name="per_app_width_desc">اختر أصغر عرض بوحدة dp لكل تطبيق على حدة، بنفس القيمة الموجودة في شاشة أصغر عرض. يُطبَّق تلقائيًا عند فتح التطبيق ويُلغى عند مغادرته.</string>
     <string name="per_app_width_disclaimer">لا توجد كثافة أصلية لكل تطبيق في أندرويد. يعمل هذا بتبديل كثافة الشاشة أثناء وجود التطبيق المحدد في الواجهة الأمامية، لذلك قد يحدث وميض قصير أو إعادة تشغيل للتطبيق عند التبديل.</string>
-    <string name="per_app_width_needs_usage_access">تتطلب هذه الميزة إذن الوصول إلى الاستخدام لاكتشاف التطبيق الموجود في الواجهة الأمامية.</string>
     <string name="per_app_width_status_active">العرض لكل تطبيق نشط لـ %1$d تطبيق</string>
     <string name="per_app_width_status_paused">تم حفظ الإعدادات، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -994,7 +988,6 @@
     <string name="per_app_refresh_rate">معدل التحديث لكل تطبيق</string>
     <string name="per_app_refresh_rate_desc">اختر معدل تحديث لكل تطبيق على حدة. يُطبَّق عند فتح التطبيق ويُعاد للوضع السابق عند مغادرته.</string>
     <string name="per_app_refresh_rate_dialog_desc">اختر معدلًا تدعمه هذه الشاشة.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">يحتاج معدل التحديث لكل تطبيق إلى إذن الوصول إلى الاستخدام لمعرفة التطبيق الموجود في الواجهة الأمامية.</string>
     <string name="per_app_refresh_rate_status_active">معدل التحديث لكل تطبيق نشط لـ %1$d تطبيق</string>
     <string name="per_app_refresh_rate_status_paused">تم حفظ الإعدادات، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="per_app_refresh_rate_none">معدل النظام</string>
@@ -1253,8 +1246,7 @@
     <string name="app_watcher_channel_desc">يظهر أثناء مراقبة الميزات الخاصة بكل تطبيق للتطبيق الموجود في الواجهة الأمامية</string>
     <string name="app_watcher_notif_title">ميزات كل تطبيق نشطة</string>
     <string name="app_watcher_notif_text">تتم مراقبة التطبيق في الواجهة الأمامية من أجل %1$d ميزة</string>
-    <string name="app_watcher_notif_text_waiting">بانتظار شيزوكو والوصول إلى الاستخدام</string>
-    <string name="app_threading_needs_usage_access">تحتاج ميزة الخيوط لكل تطبيق إلى إذن الوصول إلى الاستخدام لاكتشاف فتح التطبيق المُعدّ.</string>
+    <string name="app_watcher_notif_text_waiting">بانتظار شيزوكو</string>
     <string name="app_threading_status_active">المراقب نشط لـ %1$d تطبيق</string>
     <string name="app_threading_status_paused">تم حفظ الإعدادات، لكن المراقب متوقف مؤقتًا حتى تُمنح الأذونات</string>
     <string name="app_threading_priority_denied">لا يسمح هذا الجهاز برفع أولوية الخيوط عبر شيزوكو، لذلك لا يتم تطبيق الأولوية العالية.</string>

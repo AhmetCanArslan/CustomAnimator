@@ -77,13 +77,10 @@
     <string name="apps_closed_count">Closed %1$d apps</string>
     <string name="auto_force_stop">Auto Force-Stop Apps</string>
     <string name="auto_force_stop_desc">Force-stop selected apps the instant they leave the foreground</string>
-    <string name="auto_force_stop_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
-    <string name="open_usage_access_settings">Open Usage Access Settings</string>
     <string name="auto_force_stop_status_active">Auto force-stop active for %1$d app(s)</string>
     <string name="auto_force_stop_status_paused">Selection saved, but service is paused until permissions are granted</string>
     <string name="auto_permission_disabler">Auto Permission Disabler</string>
     <string name="auto_permission_disabler_desc">Revoke selected apps\' permissions the instant they leave the foreground, restore them when reopened</string>
-    <string name="auto_permission_disabler_needs_usage_access">This feature needs Usage Access to detect when apps leave the foreground.</string>
     <string name="auto_permission_disabler_status_active">Auto permission disabler active for %1$d app(s)</string>
     <string name="auto_permission_disabler_status_paused">Selection saved, but service is paused until permissions are granted</string>
     <string name="no_apps_found">No apps found</string>
@@ -601,8 +598,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="permission_shizuku_ready">Connected. Secure settings can be granted without a computer.</string>
     <string name="permission_shizuku_unavailable">Not running. Start Shizuku, or grant secure settings over ADB instead.</string>
     <string name="permission_secure_settings_desc">Required to change animation scales, screen density and always-on display.</string>
-    <string name="permission_usage_access">Usage access</string>
-    <string name="permission_usage_access_desc">Lets the app tell which app is in the foreground, for auto force-stop.</string>
     <string name="permission_overlay_desc">Required to draw the FPS counter and the full-screen notification flash over other apps.</string>
 
     <!-- PrimeNotify -->
@@ -969,7 +964,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="per_app_width_button">Set per-app smallest width</string>
     <string name="per_app_width_desc">Pick a smallest width in dp for individual apps, the same value as on the Smallest Width screen. It is applied automatically when the app opens and reverted when you leave it.</string>
     <string name="per_app_width_disclaimer">Android has no native per-app density. This works by switching the screen density while the selected app is in the foreground, so a short flicker or app restart can happen on switch.</string>
-    <string name="per_app_width_needs_usage_access">This feature needs Usage Access to detect which app is in the foreground.</string>
     <string name="per_app_width_status_active">Per-app width active for %1$d app(s)</string>
     <string name="per_app_width_status_paused">Overrides saved, but the service is paused until permissions are granted</string>
     <string name="per_app_width_value">%1$d dp</string>
@@ -997,7 +991,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="per_app_refresh_rate">Per-App Refresh Rate</string>
     <string name="per_app_refresh_rate_desc">Pick a refresh rate for individual apps. It is applied when the app opens and reverted when you leave it.</string>
     <string name="per_app_refresh_rate_dialog_desc">Choose a rate supported by this display.</string>
-    <string name="per_app_refresh_rate_needs_usage_access">Per-app refresh rate needs Usage Access to detect which app is in the foreground.</string>
     <string name="per_app_refresh_rate_status_active">Per-app refresh rate active for %1$d app(s)</string>
     <string name="per_app_refresh_rate_status_paused">Overrides saved, but the service is paused until permissions are granted</string>
     <string name="per_app_refresh_rate_none">System rate</string>
@@ -1323,11 +1316,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="app_watcher_channel_desc">Shows while per-app features are watching which app is in the foreground</string>
     <string name="app_watcher_notif_title">Per-app features active</string>
     <string name="app_watcher_notif_text">Watching the foreground app for %1$d feature(s)</string>
-    <string name="app_watcher_notif_text_waiting">Waiting for Shizuku and Usage Access</string>
+    <string name="app_watcher_notif_text_waiting">Waiting for Shizuku</string>
     <string name="app_threading">Per-app threading</string>
     <string name="app_threading_desc">Pin apps to CPU clusters and change their scheduling priority.</string>
     <string name="app_threading_disclaimer">Settings are applied to the running process and its threads. A background watcher re-applies them every time a configured app comes to the foreground.</string>
-    <string name="app_threading_needs_usage_access">Per-app threading needs Usage Access to detect when a configured app opens.</string>
     <string name="app_threading_status_active">Watcher active for %1$d app(s)</string>
     <string name="app_threading_status_paused">Settings saved, but the watcher is paused until permissions are granted</string>
     <string name="app_threading_priority_denied">This device does not allow raising thread priority through Shizuku, so High priority is not being applied.</string>

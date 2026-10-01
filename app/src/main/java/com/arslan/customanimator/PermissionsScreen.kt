@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.QueryStats
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.*
@@ -60,7 +59,6 @@ import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
-import com.arslan.customanimator.utils.UsageAccessHelper
 import com.arslan.customanimator.utils.LocalShizukuAvailable
 
 private val GrantedGreen: Color
@@ -70,7 +68,6 @@ private val GrantedGreen: Color
 enum class AppPermission {
     SHIZUKU,
     SECURE_SETTINGS,
-    USAGE_ACCESS,
     NOTIFICATION_ACCESS,
     POST_NOTIFICATIONS,
     CAMERA_FLASH,
@@ -92,8 +89,6 @@ fun isPermissionGranted(context: Context, permission: AppPermission): Boolean = 
 
     AppPermission.SECURE_SETTINGS ->
         ShizukuHelper.hasWriteSecureSettingsPermission(context)
-
-    AppPermission.USAGE_ACCESS -> UsageAccessHelper.hasUsageAccess(context)
 
     AppPermission.NOTIFICATION_ACCESS ->
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
@@ -165,13 +160,6 @@ private fun systemAccessEntries(context: Context, isShizukuAvailable: Boolean): 
             title = stringResource(R.string.pn_permission_secure_settings),
             description = stringResource(R.string.permission_secure_settings_desc),
             granted = isPermissionGranted(context, AppPermission.SECURE_SETTINGS)
-        ),
-        PermissionEntry(
-            permission = AppPermission.USAGE_ACCESS,
-            icon = Icons.Filled.QueryStats,
-            title = stringResource(R.string.permission_usage_access),
-            description = stringResource(R.string.permission_usage_access_desc),
-            granted = isPermissionGranted(context, AppPermission.USAGE_ACCESS)
         )
     )
 }
@@ -286,19 +274,6 @@ fun PermissionsScreen(
                     ).show()
                 } else {
                     showAdbDialog = true
-                }
-            }
-
-            AppPermission.USAGE_ACCESS -> {
-                if (UsageAccessHelper.grantUsageAccess(context)) {
-                    refreshKey++
-                    Toast.makeText(
-                        context,
-                        resources.getString(R.string.action_succeeded),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    UsageAccessHelper.openUsageAccessSettings(context)
                 }
             }
 

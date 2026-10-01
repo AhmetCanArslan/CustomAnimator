@@ -3,8 +3,6 @@ package com.arslan.customanimator.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
-import android.app.usage.UsageEvents
-import android.app.usage.UsageStatsManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -25,13 +23,14 @@ import com.arslan.customanimator.service.watcher.PerAppRefreshRateWatcher
 import com.arslan.customanimator.service.watcher.PerAppWidthWatcher
 import com.arslan.customanimator.service.watcher.PermissionDisablerWatcher
 import com.arslan.customanimator.utils.ShizukuHelper
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import rikka.shizuku.Shizuku
 
 class ForegroundAppWatcherService : Service() {
 
@@ -39,9 +38,8 @@ class ForegroundAppWatcherService : Service() {
         private const val TAG = "ForegroundAppWatcher"
         private const val CHANNEL_ID = "foreground_app_watcher_channel"
         private const val NOTIF_ID = 4201
-        private const val POLL_INTERVAL_MS = 1000L
-        private const val IDLE_POLL_INTERVAL_MS = 5000L
-        private const val ACTIVITY_STOPPED = 23
+        private const val RECONNECT_BASE_DELAY_MS = 2000L
+        private const val MAX_RECONNECT_ATTEMPTS = 5
 
         private val LEGACY_CHANNEL_IDS = listOf(
             "auto_force_stop_channel",
@@ -79,25 +77,46 @@ class ForegroundAppWatcherService : Service() {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
-    private var pollingJob: Job? = null
+    private val eventDispatcher = Dispatchers.Default.limitedParallelism(1)
 
     @Volatile
-    private var isIdle = false
+    private var listening = false
 
     @Volatile
     private var screenOn = true
 
     @Volatile
-    private var selfGrantAttempted = false
-
-    @Volatile
     private var activeWatchers: List<AppVisibilityWatcher> = emptyList()
+
+    private lateinit var tracker: AppVisibilityTracker
+    private lateinit var monitor: AppMonitorConnection
+
+    private val reconnectBackoff = ReconnectBackoff(RECONNECT_BASE_DELAY_MS, MAX_RECONNECT_ATTEMPTS)
+    private var reconnectJob: Job? = null
+
+    private val foregroundListener = object : IForegroundAppListener.Stub() {
+        override fun onForegroundActivitiesChanged(pid: Int, packages: Array<String>?, foreground: Boolean) {
+            handleEvent { tracker.onForegroundActivitiesChanged(pid, packages.orEmpty().toSet(), foreground) }
+        }
+
+        override fun onProcessDied(pid: Int) {
+            handleEvent { tracker.onProcessDied(pid) }
+        }
+    }
+
+    private val binderReceivedListener = Shizuku.OnBinderReceivedListener { startMonitoring() }
+    private val binderDeadListener = Shizuku.OnBinderDeadListener {
+        monitor.disconnect()
+        onListeningChanged(false)
+    }
+    private val permissionResultListener =
+        Shizuku.OnRequestPermissionResultListener { _, _ -> startMonitoring() }
 
     private val screenReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
-                Intent.ACTION_SCREEN_ON -> resumePolling()
-                Intent.ACTION_SCREEN_OFF -> suspendPolling()
+                Intent.ACTION_SCREEN_ON -> onScreenOn()
+                Intent.ACTION_SCREEN_OFF -> onScreenOff()
             }
         }
     }
@@ -109,6 +128,8 @@ class ForegroundAppWatcherService : Service() {
         deleteLegacyChannels()
         createNotificationChannel()
         refreshWatchers()
+        tracker = AppVisibilityTracker(packageName)
+        monitor = AppMonitorConnection(this, foregroundListener, ::onListeningChanged, ::onConnectionLost)
         screenOn = (getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive
         registerReceiver(
             screenReceiver,
@@ -117,7 +138,13 @@ class ForegroundAppWatcherService : Service() {
                 addAction(Intent.ACTION_SCREEN_OFF)
             }
         )
+        Shizuku.addBinderReceivedListener(binderReceivedListener)
+        Shizuku.addBinderDeadListener(binderDeadListener)
+        Shizuku.addRequestPermissionResultListener(permissionResultListener)
         startForeground(NOTIF_ID, buildNotification())
+        scope.launch(eventDispatcher) {
+            watchers.forEach { it.recoverStaleState(applicationContext) }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -129,23 +156,100 @@ class ForegroundAppWatcherService : Service() {
         }
 
         refreshNotification()
-
-        if (screenOn) resumePolling()
+        startMonitoring()
 
         return START_STICKY
     }
 
-    private fun resumePolling() {
-        screenOn = true
-        if (pollingJob?.isActive == true) return
-        pollingJob = scope.launch { pollLoop() }
+    private fun startMonitoring() {
+        if (activeWatchers.isEmpty()) return
+        if (!ShizukuHelper.hasShizukuPermission()) {
+            onListeningChanged(false)
+            return
+        }
+        monitor.connect()
     }
 
-    private fun suspendPolling() {
+    private fun onConnectionLost() {
+        onListeningChanged(false)
+        scheduleReconnect()
+    }
+
+    private fun scheduleReconnect() {
+        if (reconnectJob?.isActive == true) return
+        val delayMs = reconnectBackoff.nextDelayMs()
+        if (delayMs == null) {
+            Log.d(TAG, "Foreground monitor lost, giving up until the next trigger")
+            return
+        }
+        Log.d(TAG, "Foreground monitor lost, reconnecting in ${delayMs}ms")
+        reconnectJob = scope.launch(Dispatchers.Main) {
+            delay(delayMs)
+            startMonitoring()
+        }
+    }
+
+    private fun onListeningChanged(isListening: Boolean) {
+        val changed = listening != isListening
+        listening = isListening
+        if (isListening) {
+            reconnectBackoff.reset()
+            reconnectJob?.cancel()
+        }
+        if (!isListening) {
+            scope.launch(eventDispatcher) {
+                tracker.reset()
+                stopWatchers()
+            }
+        }
+        if (changed) {
+            Log.d(TAG, "Foreground monitor listening=$isListening")
+            refreshNotification()
+        }
+    }
+
+    private fun onScreenOn() {
+        screenOn = true
+        scope.launch(eventDispatcher) { reassertVisible(activeWatchers, emptySet()) }
+        startMonitoring()
+    }
+
+    private fun onScreenOff() {
         screenOn = false
-        pollingJob?.cancel()
-        pollingJob = null
+        scope.launch(eventDispatcher) { stopWatchers() }
+    }
+
+    private fun stopWatchers() {
         watchers.forEach { it.onWatchStopped(applicationContext) }
+    }
+
+    private fun handleEvent(update: () -> List<VisibilityChange>) {
+        scope.launch(eventDispatcher) {
+            val changes = update()
+            if (!screenOn) return@launch
+            val watchersNow = activeWatchers
+            changes.forEach { dispatch(watchersNow, it) }
+            if (changes.any { !it.foreground }) {
+                val justForegrounded = changes.filter { it.foreground }.map { it.packageName }.toSet()
+                reassertVisible(watchersNow, justForegrounded)
+            }
+        }
+    }
+
+    private fun reassertVisible(watchersNow: List<AppVisibilityWatcher>, skip: Set<String>) {
+        (tracker.visiblePackages() - skip).forEach {
+            dispatch(watchersNow, VisibilityChange(it, foreground = true))
+        }
+    }
+
+    private fun dispatch(watchersNow: List<AppVisibilityWatcher>, change: VisibilityChange) {
+        watchersNow.forEach {
+            if (change.foreground) {
+                it.onAppForegrounded(applicationContext, change.packageName, scope)
+            } else {
+                it.onAppBackgrounded(applicationContext, change.packageName, scope)
+            }
+        }
     }
 
     private fun refreshWatchers() {
@@ -160,132 +264,6 @@ class ForegroundAppWatcherService : Service() {
             Log.d(TAG, "Notification permission not granted, skipping notification refresh")
         }
     }
-
-    private suspend fun pollLoop() {
-        val usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val visibleActivities = mutableMapOf<String, MutableSet<String>>()
-        var lastEventTime = System.currentTimeMillis() - POLL_INTERVAL_MS
-
-        while (true) {
-            delay(if (isIdle) IDLE_POLL_INTERVAL_MS else POLL_INTERVAL_MS)
-
-            val watchersNow = activeWatchers
-            if (watchersNow.isEmpty()) {
-                Log.d(TAG, "All watchers disabled, stopping service")
-                stopSelf()
-                return
-            }
-
-            val hasShizuku = ShizukuHelper.hasShizukuPermission()
-            var hasUsageAccess = UsageAccessHelper.hasUsageAccess(applicationContext)
-            if (hasShizuku && !selfGrantAttempted && !hasUsageAccess) {
-                selfGrantAttempted = true
-                val granted = UsageAccessHelper.grantUsageAccess(applicationContext)
-                hasUsageAccess = UsageAccessHelper.hasUsageAccess(applicationContext)
-                Log.d(TAG, "Self-granted usage access success=$granted")
-            }
-
-            if (!hasShizuku || !hasUsageAccess) {
-                if (!isIdle) {
-                    Log.d(TAG, "Prerequisites missing, idling until they come back")
-                    isIdle = true
-                    watchersNow.forEach { it.onWatchStopped(applicationContext) }
-                    refreshNotification()
-                }
-                visibleActivities.clear()
-                lastEventTime = System.currentTimeMillis()
-                continue
-            }
-
-            if (isIdle) {
-                Log.d(TAG, "Prerequisites restored, resuming watch")
-                isIdle = false
-                visibleActivities.clear()
-                lastEventTime = System.currentTimeMillis()
-                refreshNotification()
-            }
-
-            val now = System.currentTimeMillis()
-            val transitions = try {
-                queryVisibilityTransitions(usageStatsManager, lastEventTime, now)
-            } catch (e: SecurityException) {
-                Log.d(TAG, "Usage access revoked, idling until it is granted again")
-                isIdle = true
-                watchersNow.forEach { it.onWatchStopped(applicationContext) }
-                refreshNotification()
-                visibleActivities.clear()
-                lastEventTime = System.currentTimeMillis()
-                continue
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to read usage events", e)
-                lastEventTime = now
-                continue
-            }
-            lastEventTime = now
-
-            for (transition in transitions) {
-                val packageName = transition.packageName
-                if (packageName == applicationContext.packageName) continue
-
-                if (transition.visible) {
-                    val wasVisible = visibleActivities[packageName]?.isNotEmpty() == true
-                    visibleActivities.getOrPut(packageName) { mutableSetOf() }.add(transition.className)
-                    if (!wasVisible) {
-                        watchersNow.forEach {
-                            it.onAppForegrounded(applicationContext, packageName, scope)
-                        }
-                    }
-                    continue
-                }
-
-                val activities = visibleActivities[packageName] ?: continue
-                activities.remove(transition.className)
-                if (activities.isEmpty()) {
-                    visibleActivities.remove(packageName)
-                    watchersNow.forEach {
-                        it.onAppBackgrounded(applicationContext, packageName, scope)
-                    }
-                }
-            }
-
-            watchersNow.forEach { it.onTick(applicationContext, scope) }
-        }
-    }
-
-    private data class VisibilityTransition(
-        val packageName: String,
-        val className: String,
-        val visible: Boolean
-    )
-
-    private fun queryVisibilityTransitions(
-        usageStatsManager: UsageStatsManager,
-        beginTime: Long,
-        endTime: Long
-    ): List<VisibilityTransition> {
-        val events = usageStatsManager.queryEvents(beginTime, endTime)
-        val transitions = mutableListOf<VisibilityTransition>()
-        val event = UsageEvents.Event()
-        while (events.hasNextEvent()) {
-            events.getNextEvent(event)
-            when (event.eventType) {
-                UsageEvents.Event.MOVE_TO_FOREGROUND ->
-                    transitions.add(VisibilityTransition(event.packageName, activityKey(event), true))
-
-                ACTIVITY_STOPPED ->
-                    transitions.add(VisibilityTransition(event.packageName, activityKey(event), false))
-
-                UsageEvents.Event.MOVE_TO_BACKGROUND ->
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-                        transitions.add(VisibilityTransition(event.packageName, activityKey(event), false))
-                    }
-            }
-        }
-        return transitions
-    }
-
-    private fun activityKey(event: UsageEvents.Event): String =
-        event.className ?: event.packageName
 
     private fun deleteLegacyChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -319,7 +297,7 @@ class ForegroundAppWatcherService : Service() {
             openAppIntent,
             android.app.PendingIntent.FLAG_IMMUTABLE
         )
-        val text = if (isIdle) {
+        val text = if (!listening) {
             getString(R.string.app_watcher_notif_text_waiting)
         } else {
             getString(R.string.app_watcher_notif_text, activeWatchers.size)
@@ -334,13 +312,16 @@ class ForegroundAppWatcherService : Service() {
     }
 
     override fun onDestroy() {
-        pollingJob?.cancel()
+        Shizuku.removeBinderReceivedListener(binderReceivedListener)
+        Shizuku.removeBinderDeadListener(binderDeadListener)
+        Shizuku.removeRequestPermissionResultListener(permissionResultListener)
+        monitor.disconnect()
         try {
             unregisterReceiver(screenReceiver)
         } catch (e: IllegalArgumentException) {
             Log.d(TAG, "Screen receiver already unregistered")
         }
-        watchers.forEach { it.onWatchStopped(applicationContext) }
+        runBlocking(eventDispatcher) { stopWatchers() }
         job.cancel()
         super.onDestroy()
     }

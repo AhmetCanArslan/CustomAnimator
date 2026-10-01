@@ -31,7 +31,6 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PerAppRefreshRateManager
 import com.arslan.customanimator.utils.RefreshRateManager
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,7 +59,6 @@ fun RefreshRateScreen(
     var isLoading by remember { mutableStateOf(true) }
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
-    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var editingApp by remember { mutableStateOf<InstalledAppInfo?>(null) }
 
     val filteredApps by remember(apps, searchQuery, showSelectedOnly, overrides) {
@@ -286,19 +284,9 @@ fun RefreshRateScreen(
                 )
             }
 
-            if (!hasUsageAccess) {
-                item {
-                    WarningCard(
-                        message = stringResource(R.string.per_app_refresh_rate_needs_usage_access),
-                        actionLabel = stringResource(R.string.open_usage_access_settings),
-                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
-                    )
-                }
-            }
-
             item(key = "per_app_status") {
                 Text(
-                    text = if (overrides.isNotEmpty() && hasShizukuPermission && hasUsageAccess) {
+                    text = if (overrides.isNotEmpty() && hasShizukuPermission) {
                         stringResource(R.string.per_app_refresh_rate_status_active, overrides.size)
                     } else if (overrides.isNotEmpty()) {
                         stringResource(R.string.per_app_refresh_rate_status_paused)

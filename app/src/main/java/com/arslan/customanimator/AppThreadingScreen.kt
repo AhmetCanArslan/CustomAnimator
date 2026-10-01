@@ -29,7 +29,6 @@ import com.arslan.customanimator.utils.CpuTopology
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ThreadAffinityMode
 import com.arslan.customanimator.utils.ThreadPriority
-import com.arslan.customanimator.utils.UsageAccessHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,7 +52,6 @@ fun AppThreadingScreen(
     var searchQuery by remember { mutableStateOf("") }
     var showSelectedOnly by remember { mutableStateOf(false) }
     var coreSummary by remember { mutableStateOf<Triple<Int, Int, Int>?>(null) }
-    var hasUsageAccess by rememberUsageAccessState(hasShizukuPermission)
     var priorityDenied by remember { mutableStateOf(false) }
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
@@ -154,20 +152,10 @@ fun AppThreadingScreen(
                 }
             }
 
-            if (!hasUsageAccess) {
-                item {
-                    WarningCard(
-                        message = stringResource(R.string.app_threading_needs_usage_access),
-                        actionLabel = stringResource(R.string.open_usage_access_settings),
-                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
-                    )
-                }
-            }
-
             if (configs.isNotEmpty()) {
                 item {
                     Text(
-                        text = if (hasShizukuPermission && hasUsageAccess) {
+                        text = if (hasShizukuPermission) {
                             stringResource(R.string.app_threading_status_active, configs.size)
                         } else {
                             stringResource(R.string.app_threading_status_paused)

@@ -7,6 +7,7 @@ class PerAppWidthManager(context: Context) {
 
     private val appContext = context.applicationContext
     private val sharedPreferences = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val stateStore = appContext.getSharedPreferences(STATE_PREFS_NAME, Context.MODE_PRIVATE)
 
     init {
         migrateLegacyDpiOverrides()
@@ -45,6 +46,22 @@ class PerAppWidthManager(context: Context) {
 
     fun clearAll() = persist(emptyMap())
 
+    fun recordBaseline(density: Int?) {
+        stateStore.edit()
+            .putBoolean(KEY_APPLIED, true)
+            .putInt(KEY_BASELINE_DENSITY, density ?: NO_DENSITY)
+            .commit()
+    }
+
+    fun hasRecordedBaseline(): Boolean = stateStore.getBoolean(KEY_APPLIED, false)
+
+    fun recordedBaseline(): Int? =
+        stateStore.getInt(KEY_BASELINE_DENSITY, NO_DENSITY).takeIf { it != NO_DENSITY }
+
+    fun clearRecordedBaseline() {
+        stateStore.edit().clear().commit()
+    }
+
     private fun persist(overrides: Map<String, Int>) {
         val json = JSONObject()
         overrides.forEach { (packageName, widthDp) -> json.put(packageName, widthDp) }
@@ -82,6 +99,10 @@ class PerAppWidthManager(context: Context) {
         private const val PREFS_NAME = "per_app_width"
         private const val LEGACY_PREFS_NAME = "per_app_dpi"
         private const val KEY_OVERRIDES = "overrides"
+        private const val STATE_PREFS_NAME = "per_app_width_state"
+        private const val KEY_APPLIED = "applied"
+        private const val KEY_BASELINE_DENSITY = "baseline_density"
+        private const val NO_DENSITY = -1
         const val MIN_WIDTH = SettingsManager.MIN_SMALLEST_WIDTH
         const val MAX_WIDTH = SettingsManager.MAX_SMALLEST_WIDTH
     }

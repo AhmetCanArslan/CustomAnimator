@@ -18,7 +18,7 @@ object PermissionDisablerWatcher : AppVisibilityWatcher {
     @Volatile
     private var selectedPackages: Set<String> = emptySet()
 
-    private val pendingRevokes = mutableMapOf<String, Long>()
+    private val pendingRevokes = DelayedPackageActions(BACKGROUND_GRACE_MS)
 
     override val isEnabled: Boolean
         get() = selectedPackages.isNotEmpty()
@@ -28,7 +28,7 @@ object PermissionDisablerWatcher : AppVisibilityWatcher {
     }
 
     override fun onAppForegrounded(context: Context, packageName: String, scope: CoroutineScope) {
-        synchronized(pendingRevokes) { pendingRevokes.remove(packageName) }
+        pendingRevokes.cancel(packageName)
         if (packageName !in selectedPackages) return
         val appContext = context.applicationContext
         scope.launch(Dispatchers.IO) { regrantPermissionsForPackage(appContext, packageName) }
@@ -36,33 +36,13 @@ object PermissionDisablerWatcher : AppVisibilityWatcher {
 
     override fun onAppBackgrounded(context: Context, packageName: String, scope: CoroutineScope) {
         if (packageName !in selectedPackages) return
-        synchronized(pendingRevokes) {
-            if (packageName !in pendingRevokes) {
-                pendingRevokes[packageName] = System.currentTimeMillis()
-            }
-        }
-    }
-
-    override fun onTick(context: Context, scope: CoroutineScope) {
-        if (synchronized(pendingRevokes) { pendingRevokes.isEmpty() }) return
-        val now = System.currentTimeMillis()
-        val due = synchronized(pendingRevokes) {
-            val expired = pendingRevokes.filter { now - it.value >= BACKGROUND_GRACE_MS }.keys.toList()
-            expired.forEach { pendingRevokes.remove(it) }
-            expired
-        }
         val appContext = context.applicationContext
-        for (packageName in due) {
-            if (packageName !in selectedPackages) continue
-            scope.launch(Dispatchers.IO) { revokePermissionsForPackage(appContext, packageName) }
+        pendingRevokes.schedule(packageName, scope) {
+            if (packageName in selectedPackages) revokePermissionsForPackage(appContext, packageName)
         }
     }
 
-    override fun onWatchStopped(context: Context) = clearPending()
-
-    private fun clearPending() {
-        synchronized(pendingRevokes) { pendingRevokes.clear() }
-    }
+    override fun onWatchStopped(context: Context) = pendingRevokes.cancelAll()
 
     private fun revokePermissionsForPackage(context: Context, packageName: String) {
         val granted = DangerousPermissionsHelper.getGrantedDangerousPermissions(context, packageName)

@@ -7,6 +7,8 @@ class PerAppRefreshRateManager(context: Context) {
 
     private val sharedPreferences =
         context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val stateStore =
+        context.applicationContext.getSharedPreferences(STATE_PREFS_NAME, Context.MODE_PRIVATE)
 
     fun getOverrides(): Map<String, Float> {
         return try {
@@ -41,6 +43,24 @@ class PerAppRefreshRateManager(context: Context) {
 
     fun clearAll() = persist(emptyMap())
 
+    fun recordBaseline(minRate: Float?, peakRate: Float?) {
+        stateStore.edit()
+            .putBoolean(KEY_APPLIED, true)
+            .putFloat(KEY_BASELINE_MIN, minRate ?: Float.NaN)
+            .putFloat(KEY_BASELINE_PEAK, peakRate ?: Float.NaN)
+            .commit()
+    }
+
+    fun hasRecordedBaseline(): Boolean = stateStore.getBoolean(KEY_APPLIED, false)
+
+    fun recordedBaselineMin(): Float? = stateStore.getFloat(KEY_BASELINE_MIN, Float.NaN).takeUnless { it.isNaN() }
+
+    fun recordedBaselinePeak(): Float? = stateStore.getFloat(KEY_BASELINE_PEAK, Float.NaN).takeUnless { it.isNaN() }
+
+    fun clearRecordedBaseline() {
+        stateStore.edit().clear().commit()
+    }
+
     private fun persist(overrides: Map<String, Float>) {
         val json = JSONObject()
         overrides.forEach { (packageName, rate) -> json.put(packageName, rate.toDouble()) }
@@ -50,6 +70,10 @@ class PerAppRefreshRateManager(context: Context) {
     companion object {
         private const val PREFS_NAME = "per_app_refresh_rate"
         private const val KEY_OVERRIDES = "overrides"
+        private const val STATE_PREFS_NAME = "per_app_refresh_rate_state"
+        private const val KEY_APPLIED = "applied"
+        private const val KEY_BASELINE_MIN = "baseline_min"
+        private const val KEY_BASELINE_PEAK = "baseline_peak"
         const val MIN_RATE = 24f
         const val MAX_RATE = 240f
     }
