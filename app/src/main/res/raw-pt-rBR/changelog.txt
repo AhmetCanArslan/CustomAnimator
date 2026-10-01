@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Os recursos por app (Forçar parada automática, Desativador de permissões, largura, taxa de atualização e threads por app) não precisam mais de Acesso ao uso: o app em primeiro plano agora é detectado pelo Shizuku, na hora e sem polling.
+- Otimizador: nova Lista de exclusão para apps que Fechar apps em segundo plano e o Turbinar nunca devem forçar a parada, confirmação antes de fechar apps ou limpar caches e contagem de apps fechados.
+- As notificações de captura de tela agora podem sumir sozinhas depois do tempo que você escolher.
+- Alterar o nome da operadora ficou mais confiável.
+- Menos anúncios: no máximo 2 anúncios em tela cheia por dia, com pelo menos 20 minutos entre eles; se não houver anúncio premiado disponível, o recurso é liberado de graça.
+- Forçar renderização por GPU removido dos ajustes HWUI, pois não tem efeito nas versões atuais do Android.
+- Correções: valores de menor largura mais precisos e os blocos de Configurações rápidas atualizam assim que o Shizuku conecta.
+
 ## 189 - 3.6
 - Debloater (Ferramentas): liste todos os apps pré-instalados e remova, desative ou restaure para este usuário, com níveis de risco, proteção para apps críticos do sistema, exportação de APK e Restaurar tudo com um toque.
 - Lista de pacotes da comunidade (opcional): baixe a lista da Universal Debloater Alliance para descrições e classificações de risco mais detalhadas.

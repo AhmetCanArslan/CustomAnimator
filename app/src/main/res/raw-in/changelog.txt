@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Fitur per aplikasi (Paksa Berhenti Otomatis, Penonaktif Izin, lebar, kecepatan refresh, dan threading per aplikasi) tidak lagi memerlukan Akses Penggunaan — aplikasi di latar depan kini dideteksi lewat Shizuku, seketika dan tanpa polling.
+- Optimizer: Daftar Pengecualian baru untuk aplikasi yang tidak boleh dihentikan paksa oleh Tutup Aplikasi Latar Belakang dan Performance Booster, konfirmasi sebelum menutup aplikasi atau membersihkan cache, serta jumlah aplikasi yang ditutup.
+- Notifikasi tangkapan layar kini bisa hilang otomatis setelah jeda yang kamu pilih.
+- Mengubah nama operator kini lebih andal.
+- Lebih sedikit iklan: maksimal 2 iklan layar penuh per hari dengan jeda minimal 20 menit; jika iklan berhadiah tidak tersedia, fitur dibuka gratis.
+- Paksa rendering GPU dihapus dari tweak HWUI karena tidak berpengaruh di versi Android saat ini.
+- Perbaikan: nilai lebar terkecil lebih akurat, dan tile Setelan Cepat langsung diperbarui begitu Shizuku terhubung.
+
 ## 189 - 3.6
 - Debloater (Alat): tampilkan semua aplikasi bawaan lalu hapus, nonaktifkan, atau pulihkan untuk pengguna ini — dengan tingkat risiko, perlindungan untuk aplikasi sistem penting, ekspor APK, dan Pulihkan semua dalam satu ketukan.
 - Daftar paket komunitas (opsional): unduh daftar Universal Debloater Alliance untuk deskripsi dan penilaian risiko yang lebih lengkap.

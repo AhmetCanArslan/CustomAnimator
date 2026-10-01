@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Le funzioni per app (Arresto forzato automatico, Disattivazione permessi, larghezza, frequenza di aggiornamento e threading per app) non richiedono più l'Accesso all'utilizzo: l'app in primo piano ora viene rilevata tramite Shizuku, all'istante e senza polling.
+- Ottimizzatore: nuovo Elenco esclusioni per le app che Chiudi app in background e Potenziamento non devono mai arrestare, conferma prima di chiudere le app o svuotare la cache e conteggio delle app chiuse.
+- Le notifiche degli screenshot ora possono chiudersi da sole dopo il ritardo che scegli.
+- La modifica del nome dell'operatore è più affidabile.
+- Meno annunci: al massimo 2 annunci a schermo intero al giorno, ad almeno 20 minuti di distanza; se non c'è un annuncio con premio disponibile, la funzione si sblocca gratis.
+- Rimosso Forza rendering GPU dalle impostazioni HWUI, perché non ha effetto sulle versioni attuali di Android.
+- Correzioni: valori di larghezza minima più precisi e i riquadri delle Impostazioni rapide si aggiornano non appena Shizuku si connette.
+
 ## 189 - 3.6
 - Debloater (Strumenti): elenca tutte le app preinstallate e rimuovile, disattivale o ripristinale per questo utente, con livelli di rischio, protezione per le app di sistema critiche, esportazione APK e Ripristina tutto con un tocco.
 - Elenco pacchetti della community (opzionale): scarica l'elenco della Universal Debloater Alliance per descrizioni e valutazioni di rischio più dettagliate.

@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Per-app features (Auto Force-Stop, Permission Disabler, per-app width, refresh rate and threading) no longer need Usage Access — the foreground app is now detected through Shizuku, instantly and without polling.
+- Optimizer: new Exclusion List for apps that Close Background Apps and Performance Booster should never force-stop, confirmation before closing apps or clearing caches, and a count of closed apps.
+- Screenshot notifications can now dismiss themselves automatically after a delay you choose.
+- Carrier name changes are more reliable.
+- Fewer ads: full-screen ads are limited to 2 per day, at least 20 minutes apart; if no rewarded ad is available, the feature unlocks for free.
+- Force GPU rendering removed from HWUI tweaks, as it has no effect on current Android versions.
+- Fixes: more accurate smallest width values, and Quick Settings tiles update as soon as Shizuku connects.
+
 ## 189 - 3.6
 - Debloater (Tools): list every preinstalled app and remove, disable or restore it for this user — with risk levels, protection for critical system apps, APK export and one-tap Restore all.
 - Optional community package list: download the Universal Debloater Alliance list for more detailed descriptions and risk ratings.

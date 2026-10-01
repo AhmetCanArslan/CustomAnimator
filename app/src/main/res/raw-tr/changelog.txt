@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Uygulamaya özel özellikler (Otomatik Durdurma, İzin Devre Dışı Bırakıcı, uygulamaya özel genişlik, yenileme hızı ve iş parçacığı) artık Kullanım Erişimi gerektirmiyor — ön plandaki uygulama artık Shizuku üzerinden, anında ve sürekli sorgulama yapmadan algılanıyor.
+- Optimize Edici: Arka Plan Uygulamalarını Kapat ve Performans Artırıcı'nın asla durdurmayacağı uygulamalar için yeni Hariç Tutma Listesi, uygulamaları kapatmadan veya önbelleği temizlemeden önce onay ve kapatılan uygulama sayısı.
+- Ekran görüntüsü bildirimleri artık seçtiğin süre sonunda kendiliğinden kapanabiliyor.
+- Operatör adı değiştirme daha güvenilir.
+- Daha az reklam: tam ekran reklamlar günde en fazla 2 ve en az 20 dakika arayla; ödüllü reklam yoksa özellik ücretsiz açılıyor.
+- Güncel Android sürümlerinde etkisi olmadığı için GPU oluşturmayı zorla, HWUI ayarlarından kaldırıldı.
+- Düzeltmeler: daha doğru en küçük genişlik değerleri; Hızlı Ayarlar kartları Shizuku bağlanır bağlanmaz güncelleniyor.
+
 ## 189 - 3.6
 - Debloater (Araçlar): önyüklü uygulamaları listele; bu kullanıcı için kaldır, devre dışı bırak veya geri yükle — risk seviyeleri, kritik sistem uygulamaları için koruma, APK dışa aktarma ve tek dokunuşla Tümünü geri yükle.
 - İsteğe bağlı topluluk paket listesi: daha ayrıntılı açıklamalar ve risk değerlendirmeleri için Universal Debloater Alliance listesini indir.

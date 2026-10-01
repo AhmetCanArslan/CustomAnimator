@@ -1,3 +1,12 @@
+## 190 - 3.7
+- Hindi na kailangan ng Usage Access ang mga per-app feature (Auto Force-Stop, Permission Disabler, per-app width, refresh rate at threading) — natutukoy na ang app sa foreground sa pamamagitan ng Shizuku, agad-agad at walang polling.
+- Optimizer: bagong Exclusion List para sa mga app na hindi kailanman ifo-force-stop ng Close Background Apps at Performance Booster, kumpirmasyon bago magsara ng app o maglinis ng cache, at bilang ng mga naisarang app.
+- Puwede nang kusang mawala ang screenshot notification pagkatapos ng delay na pinili mo.
+- Mas maaasahan na ang pagpalit ng carrier name.
+- Mas kaunting ad: hanggang 2 full-screen ad lang bawat araw, may pagitang hindi bababa sa 20 minuto; kapag walang rewarded ad, libre nang mabubuksan ang feature.
+- Inalis ang Force GPU rendering sa HWUI tweaks dahil wala na itong epekto sa kasalukuyang Android.
+- Mga ayos: mas tumpak na smallest width, at agad nag-a-update ang Quick Settings tiles kapag kumonekta ang Shizuku.
+
 ## 189 - 3.6
 - Debloater (Mga Tool): ilista ang lahat ng preinstalled na app at alisin, i-disable, o ibalik ang mga ito para sa user na ito — may mga antas ng panganib, proteksyon para sa mahahalagang system app, pag-export ng APK, at Ibalik lahat sa isang tap.
 - Opsyonal na listahan ng mga package mula sa komunidad: i-download ang listahan ng Universal Debloater Alliance para sa mas detalyadong paglalarawan at antas ng panganib.
