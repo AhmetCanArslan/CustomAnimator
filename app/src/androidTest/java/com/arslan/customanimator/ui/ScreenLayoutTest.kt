@@ -32,6 +32,7 @@ import com.arslan.customanimator.QsTilesScreen
 import com.arslan.customanimator.R
 import com.arslan.customanimator.ScreenshotActionsScreen
 import com.arslan.customanimator.SettingsScreen
+import com.arslan.customanimator.ShortcutsScreen
 import com.arslan.customanimator.SetupGuideScreen
 import com.arslan.customanimator.SoundTileScreen
 import com.arslan.customanimator.SystemMeterScreenContent
@@ -102,6 +103,11 @@ class ScreenLayoutTest {
     }
 
     @Test
+    fun shortcutsScreenFitsSmallPhones() = screenFits(R.string.shortcuts) {
+        ShortcutsScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
     fun autoForceStopScreenFitsSmallPhones() = screenFits(R.string.auto_force_stop) {
         AutoForceStopScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
     }
@@ -147,6 +153,7 @@ class ScreenLayoutTest {
             onNavigateToQsTiles = {},
             onNavigateToScreenshotActions = {},
             onNavigateToDebloater = {},
+            onNavigateToShortcuts = {},
             onNavigateToCompileBooster = {},
             onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},

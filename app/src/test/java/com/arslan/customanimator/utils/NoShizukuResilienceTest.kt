@@ -10,6 +10,8 @@ import org.junit.Before
 import org.junit.Test
 import com.arslan.customanimator.data.DebloatAppInfo
 import com.arslan.customanimator.data.DebloatState
+import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.data.ShortcutType
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -35,6 +37,23 @@ class NoShizukuResilienceTest {
         val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("echo", "hello"))
         assertFalse(result.isSuccess)
         assertTrue(result.exitCode != 0)
+    }
+
+    @Test
+    fun shizukuShortcutsRefuseToLaunch() {
+        val command = ShortcutEntry(id = "command", type = ShortcutType.COMMAND, label = "Command", command = "echo hello")
+        val activity = ShortcutEntry(
+            id = "activity",
+            type = ShortcutType.ACTIVITY,
+            label = "Activity",
+            packageName = "com.example",
+            activityName = "com.example.Hidden",
+            viaShizuku = true
+        )
+
+        assertFalse(ShizukuHelper.isRunningAsRoot())
+        assertFalse(ShortcutMaker.launch(context, command))
+        assertFalse(ShortcutMaker.launch(context, activity))
     }
 
     @Test

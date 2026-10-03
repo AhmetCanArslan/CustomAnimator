@@ -57,6 +57,14 @@ object ShizukuHelper {
         return isPermissionGranted()
     }
 
+    fun isRunningAsRoot(): Boolean {
+        return try {
+            hasShizukuPermission() && Shizuku.getUid() == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
     private fun isPermissionGranted(): Boolean {
         return try {
             Shizuku.pingBinder() && Shizuku.checkSelfPermission() == 0

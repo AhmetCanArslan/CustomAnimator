@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.DeleteSweep
@@ -59,6 +60,7 @@ fun ToolsScreenContent(
     onNavigateToCarrierName: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
     onNavigateToDebloater: () -> Unit,
+    onNavigateToShortcuts: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -141,6 +143,13 @@ fun ToolsScreenContent(
                     shape = AppShapes.card
                 ) {
                     Column {
+                        NavigationRow(
+                            icon = Icons.Filled.AddToHomeScreen,
+                            title = stringResource(R.string.shortcuts),
+                            description = stringResource(R.string.shortcuts_desc),
+                            onClick = onNavigateToShortcuts
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
                             icon = Icons.Filled.Screenshot,
                             title = stringResource(R.string.screenshot_actions),

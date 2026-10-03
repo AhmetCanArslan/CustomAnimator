@@ -1,7 +1,11 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.content.ComponentName
+import android.graphics.Bitmap
 import androidx.test.core.app.ApplicationProvider
+import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.ui.theme.ThemeMode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -151,5 +155,48 @@ class PrefsManagersTest {
     @Test
     fun backupRejectsGarbage() {
         assertFalse(BackupManager.importFromJson(context, "definitely not json"))
+    }
+
+    @Test
+    fun shortcutsRoundTripUpdateAndDelete() {
+        val icon = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        val entry = ShortcutEntry(
+            id = "photo",
+            type = ShortcutType.FILE,
+            label = "Holiday",
+            uri = "content://media/1",
+            mimeType = "image/jpeg"
+        )
+
+        ShortcutStore.save(context, entry, icon)
+        assertEquals(listOf(entry), ShortcutStore.getAll(context))
+        assertEquals(8, ShortcutStore.loadIcon(context, "photo")?.width)
+
+        val reassigned = entry.copy(packageName = "com.example.gallery", activityName = "com.example.gallery.View")
+        ShortcutStore.update(context, reassigned)
+        assertEquals(reassigned, ShortcutStore.get(context, "photo"))
+
+        ShortcutStore.delete(context, "photo")
+        assertTrue(ShortcutStore.getAll(context).isEmpty())
+        assertNull(ShortcutStore.loadIcon(context, "photo"))
+    }
+
+    @Test
+    fun shortcutDefaultHandlerIsRememberedPerFileType() {
+        val gallery = ComponentName("com.example.gallery", "com.example.gallery.View")
+        assertNull(ShortcutStore.getDefaultHandler(context, "image/jpeg"))
+
+        ShortcutStore.setDefaultHandler(context, "image/jpeg", gallery)
+        assertEquals(gallery, ShortcutStore.getDefaultHandler(context, "image/jpeg"))
+        assertNull(ShortcutStore.getDefaultHandler(context, "application/pdf"))
+
+        ShortcutStore.setDefaultHandler(context, "image/jpeg", null)
+        assertNull(ShortcutStore.getDefaultHandler(context, "image/jpeg"))
+    }
+
+    @Test
+    fun shortcutLinksGetASchemeOnlyWhenMissing() {
+        assertEquals("https://example.com", ShortcutMaker.normalizeLink(" example.com "))
+        assertEquals("myapp://open", ShortcutMaker.normalizeLink("myapp://open"))
     }
 }

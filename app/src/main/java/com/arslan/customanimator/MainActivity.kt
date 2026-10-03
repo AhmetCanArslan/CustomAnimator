@@ -197,7 +197,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, SHORTCUTS
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -240,6 +240,7 @@ private val SUB_SCREEN_PARENTS = mapOf(
 
 private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.DEBLOATER to HomeTab.TOOLS,
+    HomeScreen.SHORTCUTS to HomeTab.TOOLS,
     HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
     HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
     HomeScreen.APP_THREADING to HomeTab.TOOLS,
@@ -317,6 +318,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val shortcutsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -636,6 +638,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = debloaterListState
         )
+    } else if (targetScreen == HomeScreen.SHORTCUTS) {
+        ShortcutsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = shortcutsListState
+        )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -852,6 +859,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
+            onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = toolsListState
