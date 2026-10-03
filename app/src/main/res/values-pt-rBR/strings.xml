@@ -1607,4 +1607,9 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_launch_failed">Não foi possível abrir este atalho</string>
     <string name="shortcut_pin_unsupported">Seu launcher não oferece suporte a atalhos fixados. O atalho foi salvo no app.</string>
     <string name="shortcut_file_not_persistable">Este arquivo não pode ser mantido como atalho. Escolha-o em outro local.</string>
+    <string name="shortcut_edit">Editar</string>
+    <string name="shortcut_edit_title">Editar atalho</string>
+    <string name="shortcut_change_icon">Trocar ícone</string>
+    <string name="shortcut_icon_builtin">Integrados</string>
+    <string name="shortcut_icon_packs_hint">Os pacotes de ícones instalados aparecem aqui como abas extras.</string>
 </resources>

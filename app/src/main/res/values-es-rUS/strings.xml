@@ -1607,4 +1607,9 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_launch_failed">No se pudo abrir este acceso directo</string>
     <string name="shortcut_pin_unsupported">Tu launcher no admite accesos directos fijados. El acceso directo se guardó en la app.</string>
     <string name="shortcut_file_not_persistable">Este archivo no se puede conservar como acceso directo. Elígelo desde otra ubicación.</string>
+    <string name="shortcut_edit">Editar</string>
+    <string name="shortcut_edit_title">Editar acceso directo</string>
+    <string name="shortcut_change_icon">Cambiar ícono</string>
+    <string name="shortcut_icon_builtin">Integrados</string>
+    <string name="shortcut_icon_packs_hint">Los paquetes de íconos instalados aparecen aquí como pestañas adicionales.</string>
 </resources>

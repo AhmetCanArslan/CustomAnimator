@@ -1609,4 +1609,9 @@
     <string name="shortcut_launch_failed">Не удалось открыть этот ярлык</string>
     <string name="shortcut_pin_unsupported">Ваш лаунчер не поддерживает закреплённые ярлыки. Ярлык сохранён в приложении.</string>
     <string name="shortcut_file_not_persistable">Этот файл нельзя сохранить как ярлык. Выберите его из другого места.</string>
+    <string name="shortcut_edit">Изменить</string>
+    <string name="shortcut_edit_title">Изменить ярлык</string>
+    <string name="shortcut_change_icon">Сменить значок</string>
+    <string name="shortcut_icon_builtin">Встроенные</string>
+    <string name="shortcut_icon_packs_hint">Установленные наборы значков появляются здесь как дополнительные вкладки.</string>
 </resources>

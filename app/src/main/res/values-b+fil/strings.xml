@@ -1607,4 +1607,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_launch_failed">Hindi mabuksan ang shortcut na ito</string>
     <string name="shortcut_pin_unsupported">Hindi sinusuportahan ng launcher mo ang mga naka-pin na shortcut. Na-save ang shortcut sa app.</string>
     <string name="shortcut_file_not_persistable">Hindi maitatabi ang file na ito bilang shortcut. Piliin ito mula sa ibang lokasyon.</string>
+    <string name="shortcut_edit">I-edit</string>
+    <string name="shortcut_edit_title">I-edit ang shortcut</string>
+    <string name="shortcut_change_icon">Palitan ang icon</string>
+    <string name="shortcut_icon_builtin">Built-in</string>
+    <string name="shortcut_icon_packs_hint">Lalabas dito bilang mga dagdag na tab ang mga naka-install na icon pack.</string>
 </resources>

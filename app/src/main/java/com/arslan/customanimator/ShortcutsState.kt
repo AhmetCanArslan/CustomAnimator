@@ -35,7 +35,7 @@ internal sealed interface ShortcutStep {
         val defaultHandler: ComponentName?,
         val editing: Boolean
     ) : ShortcutStep
-    data class Confirm(val entry: ShortcutEntry, val icon: Bitmap) : ShortcutStep
+    data class Confirm(val entry: ShortcutEntry, val icon: Bitmap, val editing: Boolean = false) : ShortcutStep
 }
 
 internal class ShortcutsState(private val context: Context, private val scope: CoroutineScope) {
@@ -146,16 +146,26 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         }
     }
 
-    fun confirm(entry: ShortcutEntry) {
-        val icon = (step as? ShortcutStep.Confirm)?.icon ?: return
+    fun edit(entry: ShortcutEntry) {
+        val icon = icons[entry.id] ?: return
+        step = ShortcutStep.Confirm(entry, icon, editing = true)
+    }
+
+    fun confirm(entry: ShortcutEntry, icon: Bitmap) {
+        val current = step as? ShortcutStep.Confirm ?: return
         step = ShortcutStep.Idle
         scope.launch {
-            val pinned = withContext(Dispatchers.IO) {
+            val placed = withContext(Dispatchers.IO) {
                 ShortcutStore.save(context, entry, icon)
-                ShortcutMaker.pin(context, entry, icon)
+                if (current.editing) {
+                    ShortcutMaker.updatePinned(context, entry, icon)
+                    true
+                } else {
+                    ShortcutMaker.pin(context, entry, icon)
+                }
             }
             refresh()
-            if (!pinned) toast(R.string.shortcut_pin_unsupported)
+            if (!placed) toast(R.string.shortcut_pin_unsupported)
         }
     }
 

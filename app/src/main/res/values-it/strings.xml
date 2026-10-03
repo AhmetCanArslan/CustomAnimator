@@ -1627,4 +1627,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_launch_failed">Impossibile aprire questa scorciatoia</string>
     <string name="shortcut_pin_unsupported">Il tuo launcher non supporta le scorciatoie fissate. La scorciatoia è stata salvata nella app.</string>
     <string name="shortcut_file_not_persistable">Questo file non può essere conservato come scorciatoia. Selezionalo da una posizione diversa.</string>
+    <string name="shortcut_edit">Modifica</string>
+    <string name="shortcut_edit_title">Modifica scorciatoia</string>
+    <string name="shortcut_change_icon">Cambia icona</string>
+    <string name="shortcut_icon_builtin">Integrate</string>
+    <string name="shortcut_icon_packs_hint">I pacchetti di icone installati compaiono qui come schede aggiuntive.</string>
 </resources>

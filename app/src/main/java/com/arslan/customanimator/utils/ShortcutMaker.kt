@@ -120,11 +120,25 @@ object ShortcutMaker {
         return bitmap
     }
 
-    fun glyphIcon(context: Context, type: ShortcutType): Bitmap {
+    val glyphColors: List<Int> = listOf(
+        0xFF5B5FC7.toInt(),
+        0xFF8E4EC6.toInt(),
+        0xFF3B6EA8.toInt(),
+        0xFF2E7D6B.toInt(),
+        0xFF37474F.toInt(),
+        0xFFC2410C.toInt(),
+        0xFFB3261E.toInt(),
+        0xFF1F1F1F.toInt()
+    )
+
+    fun glyphIcon(context: Context, type: ShortcutType): Bitmap =
+        glyphIcon(context, glyphRes(type), glyphColor(type))
+
+    fun glyphIcon(context: Context, drawableRes: Int, color: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(ICON_PX, ICON_PX, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
-        canvas.drawColor(glyphColor(type))
-        ContextCompat.getDrawable(context, glyphRes(type))?.mutate()?.let { glyph ->
+        canvas.drawColor(color)
+        ContextCompat.getDrawable(context, drawableRes)?.mutate()?.let { glyph ->
             glyph.setTint(Color.WHITE)
             drawInset(canvas, glyph, GLYPH_INSET)
         }
@@ -142,14 +156,16 @@ object ShortcutMaker {
     fun pin(context: Context, entry: ShortcutEntry, icon: Bitmap): Boolean {
         return try {
             if (!ShortcutManagerCompat.isRequestPinShortcutSupported(context)) return false
-            val shortcut = ShortcutInfoCompat.Builder(context, entry.id)
-                .setShortLabel(entry.label)
-                .setIcon(IconCompat.createWithAdaptiveBitmap(icon))
-                .setIntent(launcherIntent(context, entry.id))
-                .build()
-            ShortcutManagerCompat.requestPinShortcut(context, shortcut, null)
+            ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo(context, entry, icon), null)
         } catch (e: Exception) {
             false
+        }
+    }
+
+    fun updatePinned(context: Context, entry: ShortcutEntry, icon: Bitmap) {
+        try {
+            ShortcutManagerCompat.updateShortcuts(context, listOf(shortcutInfo(context, entry, icon)))
+        } catch (e: Exception) {
         }
     }
 
@@ -175,6 +191,15 @@ object ShortcutMaker {
 
     fun failureMessageRes(entry: ShortcutEntry): Int =
         if (entry.needsShizuku) R.string.action_failed else R.string.shortcut_launch_failed
+
+    private fun shortcutInfo(context: Context, entry: ShortcutEntry, icon: Bitmap): ShortcutInfoCompat {
+        val shortcutIcon = if (entry.legacyIcon) IconCompat.createWithBitmap(icon) else IconCompat.createWithAdaptiveBitmap(icon)
+        return ShortcutInfoCompat.Builder(context, entry.id)
+            .setShortLabel(entry.label)
+            .setIcon(shortcutIcon)
+            .setIntent(launcherIntent(context, entry.id))
+            .build()
+    }
 
     private fun launcherIntent(context: Context, id: String): Intent =
         Intent(context, ShortcutLaunchActivity::class.java)
@@ -226,13 +251,7 @@ object ShortcutMaker {
         ShortcutType.COMMAND -> R.drawable.ic_tile_terminal
     }
 
-    private fun glyphColor(type: ShortcutType): Int = when (type) {
-        ShortcutType.APP -> 0xFF5B5FC7.toInt()
-        ShortcutType.ACTIVITY -> 0xFF8E4EC6.toInt()
-        ShortcutType.FILE -> 0xFF3B6EA8.toInt()
-        ShortcutType.LINK -> 0xFF2E7D6B.toInt()
-        ShortcutType.COMMAND -> 0xFF37474F.toInt()
-    }
+    private fun glyphColor(type: ShortcutType): Int = glyphColors[type.ordinal]
 
     private fun drawInset(canvas: Canvas, drawable: Drawable, fraction: Float) {
         val inset = (ICON_PX * fraction).toInt()

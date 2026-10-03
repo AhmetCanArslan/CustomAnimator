@@ -1643,4 +1643,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_launch_failed">Could not open this shortcut</string>
     <string name="shortcut_pin_unsupported">Your launcher does not support pinned shortcuts. The shortcut was saved in the app.</string>
     <string name="shortcut_file_not_persistable">This file cannot be kept as a shortcut. Pick it from a different location.</string>
+    <string name="shortcut_edit">Edit</string>
+    <string name="shortcut_edit_title">Edit shortcut</string>
+    <string name="shortcut_change_icon">Change icon</string>
+    <string name="shortcut_icon_builtin">Built-in</string>
+    <string name="shortcut_icon_packs_hint">Installed icon packs show up here as extra tabs.</string>
 </resources>

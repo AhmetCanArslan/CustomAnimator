@@ -1,11 +1,13 @@
 package com.arslan.customanimator
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
@@ -22,6 +24,7 @@ import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutActivityInfo
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutHandlerInfo
+import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.StatusPill
@@ -95,7 +98,7 @@ private fun PickerSheet(
 }
 
 @Composable
-private fun PickerSearchField(query: String, onQueryChange: (String) -> Unit, placeholder: String) {
+internal fun PickerSearchField(query: String, onQueryChange: (String) -> Unit, placeholder: String) {
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -145,7 +148,7 @@ private fun PickerRow(
 }
 
 @Composable
-private fun PickerMessage(text: String) {
+internal fun PickerMessage(text: String) {
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
@@ -286,21 +289,49 @@ private fun HandlerPickerSheet(
 @Composable
 private fun ConfirmShortcutDialog(
     step: ShortcutStep.Confirm,
-    onConfirm: (ShortcutEntry) -> Unit,
+    onConfirm: (ShortcutEntry, Bitmap) -> Unit,
     onDismiss: () -> Unit
 ) {
     val entry = step.entry
     var label by remember(entry.id) { mutableStateOf(entry.label) }
-    var value by remember(entry.id) { mutableStateOf("") }
+    var value by remember(entry.id) { mutableStateOf(entry.inputValue()) }
+    var icon by remember(entry.id) { mutableStateOf(ShortcutIconImage(step.icon, entry.legacyIcon)) }
+    var showIconPicker by remember(entry.id) { mutableStateOf(false) }
     val valueLabelRes = entry.valueLabelRes()
     val isValid = label.isNotBlank() && (valueLabelRes == null || value.isNotBlank())
 
+    if (showIconPicker) {
+        ShortcutIconPickerSheet(
+            targetPackage = entry.packageName,
+            onPick = {
+                icon = it
+                showIconPicker = false
+            },
+            onDismiss = { showIconPicker = false }
+        )
+        return
+    }
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        icon = { ShortcutIcon(bitmap = step.icon, modifier = Modifier.size(64.dp)) },
-        title = { Text(stringResource(R.string.shortcut_new_title)) },
+        icon = {
+            ShortcutIcon(
+                bitmap = icon.bitmap,
+                legacy = icon.legacy,
+                modifier = Modifier
+                    .size(72.dp)
+                    .clip(CircleShape)
+                    .clickable { showIconPicker = true }
+            )
+        },
+        title = {
+            Text(stringResource(if (step.editing) R.string.shortcut_edit_title else R.string.shortcut_new_title))
+        },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedButton(onClick = { showIconPicker = true }, modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.shortcut_change_icon))
+                }
                 OutlinedTextField(
                     value = label,
                     onValueChange = { label = it },
@@ -321,8 +352,11 @@ private fun ConfirmShortcutDialog(
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(entry.withInput(label, value)) }, enabled = isValid) {
-                Text(stringResource(R.string.shortcut_add_to_home))
+            Button(
+                onClick = { onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap) },
+                enabled = isValid
+            ) {
+                Text(stringResource(if (step.editing) R.string.save else R.string.shortcut_add_to_home))
             }
         },
         dismissButton = {
@@ -341,6 +375,12 @@ private fun ShortcutActivityInfo.isLaunchable(hasShizukuPermission: Boolean, isR
 
 private fun ShortcutEntry.selectedHandler() =
     packageName?.let { owner -> activityName?.let { android.content.ComponentName(owner, it) } }
+
+private fun ShortcutEntry.inputValue(): String = when (type) {
+    ShortcutType.LINK -> uri
+    ShortcutType.COMMAND -> command
+    else -> null
+}.orEmpty()
 
 private fun ShortcutEntry.valueLabelRes(): Int? = when (type) {
     ShortcutType.LINK -> R.string.shortcut_link_field

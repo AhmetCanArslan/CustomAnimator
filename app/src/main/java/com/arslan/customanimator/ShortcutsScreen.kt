@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
@@ -175,6 +176,7 @@ fun ShortcutsScreen(
                         entry = entry,
                         icon = state.icons[entry.id],
                         onLaunch = { state.launch(entry) },
+                        onEdit = { state.edit(entry) },
                         onPin = { state.pinAgain(entry) },
                         onChangeHandler = { state.changeHandler(entry) },
                         onDelete = { state.delete(entry) }
@@ -277,6 +279,7 @@ private fun ShortcutRow(
     entry: ShortcutEntry,
     icon: Bitmap?,
     onLaunch: () -> Unit,
+    onEdit: () -> Unit,
     onPin: () -> Unit,
     onChangeHandler: () -> Unit,
     onDelete: () -> Unit
@@ -286,7 +289,7 @@ private fun ShortcutRow(
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ShortcutIcon(bitmap = icon, modifier = Modifier.size(48.dp))
+            ShortcutIcon(bitmap = icon, legacy = entry.legacyIcon, modifier = Modifier.size(48.dp))
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(text = entry.label, style = MaterialTheme.typography.titleMedium)
                 Text(
@@ -303,6 +306,7 @@ private fun ShortcutRow(
             ShortcutRowMenu(
                 showChangeHandler = entry.type == ShortcutType.FILE,
                 onLaunch = onLaunch,
+                onEdit = onEdit,
                 onPin = onPin,
                 onChangeHandler = onChangeHandler,
                 onDelete = onDelete
@@ -315,6 +319,7 @@ private fun ShortcutRow(
 private fun ShortcutRowMenu(
     showChangeHandler: Boolean,
     onLaunch: () -> Unit,
+    onEdit: () -> Unit,
     onPin: () -> Unit,
     onChangeHandler: () -> Unit,
     onDelete: () -> Unit
@@ -333,6 +338,7 @@ private fun ShortcutRowMenu(
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             ShortcutMenuItem(Icons.Filled.PlayArrow, R.string.shortcut_launch) { select(onLaunch) }
+            ShortcutMenuItem(Icons.Filled.Edit, R.string.shortcut_edit) { select(onEdit) }
             ShortcutMenuItem(Icons.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
             if (showChangeHandler) {
                 ShortcutMenuItem(Icons.AutoMirrored.Filled.OpenInNew, R.string.shortcut_change_app) {
@@ -354,14 +360,18 @@ private fun ShortcutMenuItem(icon: ImageVector, labelRes: Int, onClick: () -> Un
 }
 
 @Composable
-internal fun ShortcutIcon(bitmap: Bitmap?, modifier: Modifier = Modifier) {
+internal fun ShortcutIcon(bitmap: Bitmap?, modifier: Modifier = Modifier, legacy: Boolean = false) {
+    val image = remember(bitmap) { bitmap?.asImageBitmap() }
+    if (image != null && legacy) {
+        Image(bitmap = image, contentDescription = null, modifier = modifier)
+        return
+    }
     Box(
         modifier = modifier
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.surfaceContainerHighest)
     ) {
-        if (bitmap != null) {
-            val image = remember(bitmap) { bitmap.asImageBitmap() }
+        if (image != null) {
             Image(
                 bitmap = image,
                 contentDescription = null,

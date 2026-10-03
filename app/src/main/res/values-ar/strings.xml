@@ -1647,4 +1647,9 @@
     <string name="shortcut_launch_failed">تعذّر فتح هذا الاختصار</string>
     <string name="shortcut_pin_unsupported">المشغّل لديك لا يدعم الاختصارات المثبّتة. تم حفظ الاختصار في التطبيق.</string>
     <string name="shortcut_file_not_persistable">لا يمكن الاحتفاظ بهذا الملف كاختصار. اختره من موقع آخر.</string>
+    <string name="shortcut_edit">تعديل</string>
+    <string name="shortcut_edit_title">تعديل الاختصار</string>
+    <string name="shortcut_change_icon">تغيير الأيقونة</string>
+    <string name="shortcut_icon_builtin">مضمّنة</string>
+    <string name="shortcut_icon_packs_hint">تظهر حزم الأيقونات المثبّتة هنا كعلامات تبويب إضافية.</string>
 </resources>

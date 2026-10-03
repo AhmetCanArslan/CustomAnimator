@@ -1615,4 +1615,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_launch_failed">Bu kısayol açılamadı</string>
     <string name="shortcut_pin_unsupported">Başlatıcınız sabitlenmiş kısayolları desteklemiyor. Kısayol uygulamaya kaydedildi.</string>
     <string name="shortcut_file_not_persistable">Bu dosya kısayol olarak saklanamıyor. Farklı bir konumdan seçin.</string>
+    <string name="shortcut_edit">Düzenle</string>
+    <string name="shortcut_edit_title">Kısayolu düzenle</string>
+    <string name="shortcut_change_icon">Simgeyi değiştir</string>
+    <string name="shortcut_icon_builtin">Yerleşik</string>
+    <string name="shortcut_icon_packs_hint">Yüklü simge paketleri burada ek sekmeler olarak görünür.</string>
 </resources>

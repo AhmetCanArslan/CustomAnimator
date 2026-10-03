@@ -1607,4 +1607,9 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_launch_failed">Tidak dapat membuka pintasan ini</string>
     <string name="shortcut_pin_unsupported">Launcher Anda tidak mendukung pintasan tersemat. Pintasan disimpan di aplikasi.</string>
     <string name="shortcut_file_not_persistable">File ini tidak dapat disimpan sebagai pintasan. Pilih dari lokasi lain.</string>
+    <string name="shortcut_edit">Edit</string>
+    <string name="shortcut_edit_title">Edit pintasan</string>
+    <string name="shortcut_change_icon">Ganti ikon</string>
+    <string name="shortcut_icon_builtin">Bawaan</string>
+    <string name="shortcut_icon_packs_hint">Paket ikon yang terpasang muncul di sini sebagai tab tambahan.</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.arslan.customanimator.data
 
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
 enum class ShortcutType {
@@ -15,7 +16,8 @@ data class ShortcutEntry(
     val uri: String? = null,
     val mimeType: String? = null,
     val command: String? = null,
-    val viaShizuku: Boolean = false
+    val viaShizuku: Boolean = false,
+    val legacyIcon: Boolean = false
 ) {
     val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND
 }
@@ -40,4 +42,14 @@ data class ShortcutHandlerInfo(
 data class ShortcutFileInfo(
     val name: String,
     val mimeType: String?
+)
+
+data class ShortcutIconPack(
+    val packageName: String,
+    val label: String
+)
+
+class ShortcutIconImage(
+    val bitmap: Bitmap,
+    val legacy: Boolean = false
 )
