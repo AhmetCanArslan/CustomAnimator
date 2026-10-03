@@ -876,6 +876,7 @@ Durasi Animator: %3$.2f</string>
     <string name="profile_section_width">Lebar layar</string>
     <string name="profile_section_battery">Baterai</string>
     <string name="profile_section_developer">Pengembang</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Ubin Setelan Cepat</string>
     <string name="profile_include_animation">Sertakan skala animasi</string>
     <string name="profile_include_animation_desc">Atur skala jendela, transisi, dan animator saat profil ini dijalankan.</string>
@@ -885,6 +886,10 @@ Durasi Animator: %3$.2f</string>
     <string name="profile_include_battery_desc">Terapkan preset penghemat dan Doze serta batasan latar belakang.</string>
     <string name="profile_include_developer">Sertakan pengaturan pengembang</string>
     <string name="profile_include_developer_desc">Pilih pengalih pengembang yang akan dipaksa aktif atau nonaktif oleh profil ini.</string>
+    <string name="profile_include_commands">Jalankan perintah terminal</string>
+    <string name="profile_include_commands_desc">Jalankan perintah shell melalui Shizuku setelah setelan lainnya diterapkan.</string>
+    <string name="profile_commands_label">Perintah</string>
+    <string name="profile_commands_helper">Satu perintah per baris. Setiap baris dijalankan terpisah secara berurutan.</string>
     <string name="profile_width_reset">Kembalikan lebar bawaan</string>
     <string name="profile_width_reset_desc">Pulihkan kepadatan bawaan perangkat, bukan nilai tetap.</string>
     <string name="profile_width_dp">Lebar terkecil (dp)</string>

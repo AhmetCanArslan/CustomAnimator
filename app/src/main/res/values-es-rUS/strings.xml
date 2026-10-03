@@ -876,6 +876,7 @@ Duración del Animador: %3$.2f</string>
     <string name="profile_section_width">Ancho de pantalla</string>
     <string name="profile_section_battery">Batería</string>
     <string name="profile_section_developer">Desarrollador</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Mosaico de Ajustes rápidos</string>
     <string name="profile_include_animation">Incluir escalas de animación</string>
     <string name="profile_include_animation_desc">Establece las escalas de ventana, transición y animador al ejecutar este perfil.</string>
@@ -885,6 +886,10 @@ Duración del Animador: %3$.2f</string>
     <string name="profile_include_battery_desc">Aplica presets de ahorro y Doze, además de límites en segundo plano.</string>
     <string name="profile_include_developer">Incluir ajustes de desarrollador</string>
     <string name="profile_include_developer_desc">Elige qué opciones de desarrollador este perfil activará o desactivará.</string>
+    <string name="profile_include_commands">Ejecutar comandos de terminal</string>
+    <string name="profile_include_commands_desc">Ejecuta comandos de shell mediante Shizuku después de aplicar los demás ajustes.</string>
+    <string name="profile_commands_label">Comandos</string>
+    <string name="profile_commands_helper">Un comando por línea. Cada línea se ejecuta por separado y en orden.</string>
     <string name="profile_width_reset">Restablecer ancho original</string>
     <string name="profile_width_reset_desc">Restaura la densidad predeterminada del dispositivo en lugar de un valor fijo.</string>
     <string name="profile_width_dp">Ancho mínimo (dp)</string>

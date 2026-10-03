@@ -40,6 +40,7 @@ data class Profile(
     val smallestWidthDp: Int? = null,
     val battery: ProfileBattery? = null,
     val developer: Map<String, Boolean> = emptyMap(),
+    val commands: List<String> = emptyList(),
     val tile: ProfileTileConfig? = null
 ) {
     val actionCount: Int
@@ -57,5 +58,6 @@ data class Profile(
                     b.policy.size +
                     b.toggles.size
             } ?: 0) +
-            developer.size
+            developer.size +
+            commands.size
 }

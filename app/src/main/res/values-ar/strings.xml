@@ -930,6 +930,7 @@
     <string name="profile_section_width">عرض الشاشة</string>
     <string name="profile_section_battery">البطارية</string>
     <string name="profile_section_developer">المطور</string>
+    <string name="profile_section_terminal">الطرفية</string>
     <string name="profile_section_tile">مربع الإعدادات السريعة</string>
     <string name="profile_include_animation">تضمين مقاييس الرسوم المتحركة</string>
     <string name="profile_include_animation_desc">ضبط مقاييس النافذة والانتقال والمدة عند تشغيل هذا الملف الشخصي.</string>
@@ -939,6 +940,10 @@
     <string name="profile_include_battery_desc">تطبيق إعدادات التوفير و Doze المسبقة بالإضافة إلى حدود الخلفية.</string>
     <string name="profile_include_developer">تضمين إعدادات المطور</string>
     <string name="profile_include_developer_desc">اختر مفاتيح المطور التي يفرضها هذا الملف الشخصي تشغيلًا أو إيقافًا.</string>
+    <string name="profile_include_commands">تشغيل أوامر الطرفية</string>
+    <string name="profile_include_commands_desc">شغّل أوامر shell عبر Shizuku بعد تطبيق الإعدادات الأخرى.</string>
+    <string name="profile_commands_label">الأوامر</string>
+    <string name="profile_commands_helper">أمر واحد في كل سطر. يُشغَّل كل سطر على حدة وبالترتيب.</string>
     <string name="profile_width_reset">إعادة تعيين العرض إلى القيمة الأصلية</string>
     <string name="profile_width_reset_desc">استعادة كثافة الجهاز الافتراضية بدلاً من قيمة ثابتة.</string>
     <string name="profile_width_dp">أصغر عرض (dp)</string>

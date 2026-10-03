@@ -876,6 +876,7 @@ Duração do Animador: %3$.2f</string>
     <string name="profile_section_width">Largura da tela</string>
     <string name="profile_section_battery">Bateria</string>
     <string name="profile_section_developer">Desenvolvedor</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Bloco de Configurações rápidas</string>
     <string name="profile_include_animation">Incluir escalas de animação</string>
     <string name="profile_include_animation_desc">Define as escalas de janela, transição e animador quando este perfil é executado.</string>
@@ -885,6 +886,10 @@ Duração do Animador: %3$.2f</string>
     <string name="profile_include_battery_desc">Aplica predefinições de economia e Doze, além dos limites em segundo plano.</string>
     <string name="profile_include_developer">Incluir configurações do desenvolvedor</string>
     <string name="profile_include_developer_desc">Escolha quais opções do desenvolvedor este perfil deve ativar ou desativar.</string>
+    <string name="profile_include_commands">Executar comandos do terminal</string>
+    <string name="profile_include_commands_desc">Executa comandos de shell pelo Shizuku depois de aplicar as outras configurações.</string>
+    <string name="profile_commands_label">Comandos</string>
+    <string name="profile_commands_helper">Um comando por linha. Cada linha é executada separadamente, em ordem.</string>
     <string name="profile_width_reset">Restaurar largura padrão</string>
     <string name="profile_width_reset_desc">Restaura a densidade padrão do dispositivo em vez de um valor fixo.</string>
     <string name="profile_width_dp">Menor largura (dp)</string>

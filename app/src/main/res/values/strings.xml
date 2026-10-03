@@ -937,6 +937,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="profile_section_width">Screen width</string>
     <string name="profile_section_battery">Battery</string>
     <string name="profile_section_developer">Developer</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Quick Settings tile</string>
     <string name="profile_include_animation">Include animation scales</string>
     <string name="profile_include_animation_desc">Set window, transition and animator scales when this profile runs.</string>
@@ -946,6 +947,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="profile_include_battery_desc">Apply saver and doze presets plus background limits.</string>
     <string name="profile_include_developer">Include developer settings</string>
     <string name="profile_include_developer_desc">Pick which developer toggles this profile forces on or off.</string>
+    <string name="profile_include_commands">Run terminal commands</string>
+    <string name="profile_include_commands_desc">Run shell commands through Shizuku after the other settings are applied.</string>
+    <string name="profile_commands_label">Commands</string>
+    <string name="profile_commands_helper">One command per line. Each line runs separately, in order.</string>
     <string name="profile_width_reset">Reset to stock width</string>
     <string name="profile_width_reset_desc">Restore the device default density instead of a fixed value.</string>
     <string name="profile_width_dp">Smallest width (dp)</string>

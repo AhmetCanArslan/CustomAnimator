@@ -876,6 +876,7 @@
     <string name="profile_section_width">Ширина экрана</string>
     <string name="profile_section_battery">Батарея</string>
     <string name="profile_section_developer">Для разработчиков</string>
+    <string name="profile_section_terminal">Терминал</string>
     <string name="profile_section_tile">Плитка быстрых настроек</string>
     <string name="profile_include_animation">Добавить масштабы анимации</string>
     <string name="profile_include_animation_desc">Установить масштабы окна, переходов и аниматора при запуске профиля.</string>
@@ -885,6 +886,10 @@
     <string name="profile_include_battery_desc">Применить пресеты энергосбережения и Doze, а также фоновые ограничения.</string>
     <string name="profile_include_developer">Добавить настройки разработчика</string>
     <string name="profile_include_developer_desc">Выберите переключатели разработчика, которые профиль должен включать или отключать.</string>
+    <string name="profile_include_commands">Выполнять команды терминала</string>
+    <string name="profile_include_commands_desc">Выполняет shell-команды через Shizuku после применения остальных настроек.</string>
+    <string name="profile_commands_label">Команды</string>
+    <string name="profile_commands_helper">По одной команде в строке. Каждая строка выполняется отдельно, по порядку.</string>
     <string name="profile_width_reset">Вернуть стандартную ширину</string>
     <string name="profile_width_reset_desc">Восстановить стандартную плотность устройства вместо фиксированного значения.</string>
     <string name="profile_width_dp">Минимальная ширина (dp)</string>

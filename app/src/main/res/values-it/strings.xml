@@ -896,6 +896,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="profile_section_width">Larghezza schermo</string>
     <string name="profile_section_battery">Batteria</string>
     <string name="profile_section_developer">Sviluppatore</string>
+    <string name="profile_section_terminal">Terminale</string>
     <string name="profile_section_tile">Riquadro Impostazioni rapide</string>
     <string name="profile_include_animation">Includi scale animazione</string>
     <string name="profile_include_animation_desc">Imposta le scale di finestra, transizione e animatore quando il profilo viene eseguito.</string>
@@ -905,6 +906,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="profile_include_battery_desc">Applica preset di risparmio e Doze, oltre ai limiti in background.</string>
     <string name="profile_include_developer">Includi impostazioni sviluppatore</string>
     <string name="profile_include_developer_desc">Scegli quali opzioni sviluppatore questo profilo deve attivare o disattivare.</string>
+    <string name="profile_include_commands">Esegui comandi del terminale</string>
+    <string name="profile_include_commands_desc">Esegue comandi shell tramite Shizuku dopo aver applicato le altre impostazioni.</string>
+    <string name="profile_commands_label">Comandi</string>
+    <string name="profile_commands_helper">Un comando per riga. Ogni riga viene eseguita separatamente, in ordine.</string>
     <string name="profile_width_reset">Ripristina larghezza standard</string>
     <string name="profile_width_reset_desc">Ripristina la densità predefinita del dispositivo invece di un valore fisso.</string>
     <string name="profile_width_dp">Larghezza minima (dp)</string>

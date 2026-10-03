@@ -134,6 +134,9 @@ class ProfileManager(context: Context) {
                 profile.developer.forEach { (key, value) -> put(key, value) }
             })
         }
+        if (profile.commands.isNotEmpty()) {
+            put("commands", JSONArray(profile.commands))
+        }
         profile.tile?.let { tile ->
             put("tile", JSONObject().apply {
                 put("slot", tile.slot)
@@ -199,6 +202,7 @@ class ProfileManager(context: Context) {
             smallestWidthDp = if (json.has("smallestWidthDp")) json.optInt("smallestWidthDp") else null,
             battery = battery,
             developer = developer,
+            commands = json.optJSONArray("commands")?.let { readStringList(it) } ?: emptyList(),
             tile = tile
         )
     }
@@ -212,6 +216,9 @@ class ProfileManager(context: Context) {
         }
         return map
     }
+
+    private fun readStringList(json: JSONArray): List<String> =
+        (0 until json.length()).map { json.optString(it) }.filter { it.isNotBlank() }
 
     private fun readStringMap(json: JSONObject): Map<String, String> {
         val map = mutableMapOf<String, String>()

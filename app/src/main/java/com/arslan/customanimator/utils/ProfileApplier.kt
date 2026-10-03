@@ -50,6 +50,10 @@ object ProfileApplier {
             record(runCatching { action.write(appContext, value) }.getOrDefault(false))
         }
 
+        profile.commands.forEach { command ->
+            record(ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", command)).isSuccess)
+        }
+
         return Result(applied, failed)
     }
 

@@ -884,6 +884,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="profile_section_width">Ekran genişliği</string>
     <string name="profile_section_battery">Pil</string>
     <string name="profile_section_developer">Geliştirici</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Hızlı Ayarlar kutucuğu</string>
     <string name="profile_include_animation">Animasyon ölçeklerini dahil et</string>
     <string name="profile_include_animation_desc">Profil çalıştığında pencere, geçiş ve animatör ölçeklerini ayarla.</string>
@@ -893,6 +894,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="profile_include_battery_desc">Pil tasarrufu ve Doze ön ayarlarını, ayrıca arka plan kısıtlamalarını uygula.</string>
     <string name="profile_include_developer">Geliştirici ayarlarını dahil et</string>
     <string name="profile_include_developer_desc">Profilin açıp kapatacağı geliştirici seçeneklerini seç.</string>
+    <string name="profile_include_commands">Terminal komutları çalıştır</string>
+    <string name="profile_include_commands_desc">Diğer ayarlar uygulandıktan sonra Shizuku üzerinden kabuk komutları çalıştırır.</string>
+    <string name="profile_commands_label">Komutlar</string>
+    <string name="profile_commands_helper">Her satıra bir komut. Her satır sırayla, ayrı ayrı çalıştırılır.</string>
     <string name="profile_width_reset">Standart genişliğe dön</string>
     <string name="profile_width_reset_desc">Sabit bir değer yerine cihazın varsayılan yoğunluğunu geri yükle.</string>
     <string name="profile_width_dp">En küçük genişlik (dp)</string>

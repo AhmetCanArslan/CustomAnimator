@@ -60,6 +60,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -175,6 +177,9 @@ fun ProfileEditorScreen(
         }
     }
 
+    var commandsEnabled by remember { mutableStateOf(existing?.commands?.isNotEmpty() == true) }
+    var commandsText by remember { mutableStateOf(existing?.commands?.joinToString("\n") ?: "") }
+
     var tileLabel by remember { mutableStateOf(existing?.tile?.label ?: "") }
     var tileToast by remember { mutableStateOf(existing?.tile?.showToast ?: true) }
     var tileCollapse by remember { mutableStateOf(existing?.tile?.collapsePanel ?: true) }
@@ -227,6 +232,7 @@ fun ProfileEditorScreen(
             },
             battery = battery,
             developer = if (developerEnabled) devToggles.toMap() else emptyMap(),
+            commands = if (commandsEnabled) parseProfileCommands(commandsText) else emptyList(),
             tile = tileSlot?.let { slot ->
                 ProfileTileConfig(
                     slot = slot,
@@ -664,6 +670,30 @@ fun ProfileEditorScreen(
                 }
             }
 
+            item { SectionHeader(title = stringResource(R.string.profile_section_terminal)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_commands),
+                    description = stringResource(R.string.profile_include_commands_desc),
+                    enabled = commandsEnabled,
+                    onEnabledChange = { commandsEnabled = it }
+                ) {
+                    OutlinedTextField(
+                        value = commandsText,
+                        onValueChange = { commandsText = it },
+                        label = { Text(stringResource(R.string.profile_commands_label)) },
+                        supportingText = { Text(stringResource(R.string.profile_commands_helper)) },
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.None,
+                            autoCorrectEnabled = false
+                        ),
+                        minLines = 3,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
             item { SectionHeader(title = stringResource(R.string.profile_section_tile)) }
             item {
                 AppCard {
@@ -715,6 +745,9 @@ fun ProfileEditorScreen(
         )
     }
 }
+
+private fun parseProfileCommands(text: String): List<String> =
+    text.lines().map { it.trim() }.filter { it.isNotEmpty() }
 
 @Composable
 private fun SectionCard(

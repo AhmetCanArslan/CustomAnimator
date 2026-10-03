@@ -876,6 +876,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="profile_section_width">Lapad ng screen</string>
     <string name="profile_section_battery">Baterya</string>
     <string name="profile_section_developer">Developer</string>
+    <string name="profile_section_terminal">Terminal</string>
     <string name="profile_section_tile">Quick Settings tile</string>
     <string name="profile_include_animation">Isama ang animation scales</string>
     <string name="profile_include_animation_desc">Itakda ang window, transition, at animator scales kapag pinatakbo ang profile.</string>
@@ -885,6 +886,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="profile_include_battery_desc">Ilapat ang saver at Doze preset pati ang mga limitasyon sa background.</string>
     <string name="profile_include_developer">Isama ang mga setting ng developer</string>
     <string name="profile_include_developer_desc">Piliin kung aling developer toggle ang io-on o io-off ng profile.</string>
+    <string name="profile_include_commands">Magpatakbo ng mga terminal command</string>
+    <string name="profile_include_commands_desc">Patakbuhin ang mga shell command sa Shizuku pagkatapos mailapat ang ibang setting.</string>
+    <string name="profile_commands_label">Mga command</string>
+    <string name="profile_commands_helper">Isang command bawat linya. Hiwalay at sunod-sunod na tumatakbo ang bawat linya.</string>
     <string name="profile_width_reset">Ibalik sa orihinal na lapad</string>
     <string name="profile_width_reset_desc">Ibalik ang default density ng device sa halip na gumamit ng fixed value.</string>
     <string name="profile_width_dp">Smallest width (dp)</string>
