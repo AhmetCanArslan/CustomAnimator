@@ -1583,6 +1583,8 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Abre un documento con la app que elijas</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Abre una imagen en la galería que elijas</string>
+    <string name="shortcut_tile_folder">Carpeta</string>
+    <string name="shortcut_tile_folder_desc">Abre una carpeta en el administrador de archivos que elijas</string>
     <string name="shortcut_tile_link">Enlace</string>
     <string name="shortcut_tile_link_desc">Abre un sitio web o un enlace profundo</string>
     <string name="shortcut_tile_command">Comando</string>

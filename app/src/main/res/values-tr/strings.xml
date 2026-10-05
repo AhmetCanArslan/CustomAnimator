@@ -1591,6 +1591,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Bir belgeyi seçtiğiniz uygulamayla açın</string>
     <string name="shortcut_tile_photo">Fotoğraf</string>
     <string name="shortcut_tile_photo_desc">Bir resmi seçtiğiniz galeride açın</string>
+    <string name="shortcut_tile_folder">Klasör</string>
+    <string name="shortcut_tile_folder_desc">Bir klasörü seçtiğiniz dosya yöneticisiyle açın</string>
     <string name="shortcut_tile_link">Bağlantı</string>
     <string name="shortcut_tile_link_desc">Bir web sitesi veya derin bağlantı açın</string>
     <string name="shortcut_tile_command">Komut</string>

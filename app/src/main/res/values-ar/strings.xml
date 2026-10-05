@@ -1623,6 +1623,8 @@
     <string name="shortcut_tile_file_desc">افتح مستندًا بالتطبيق الذي تختاره</string>
     <string name="shortcut_tile_photo">صورة</string>
     <string name="shortcut_tile_photo_desc">افتح صورة في المعرض الذي تختاره</string>
+    <string name="shortcut_tile_folder">مجلد</string>
+    <string name="shortcut_tile_folder_desc">افتح مجلدًا في مدير الملفات الذي تختاره</string>
     <string name="shortcut_tile_link">رابط</string>
     <string name="shortcut_tile_link_desc">افتح موقع ويب أو رابطًا عميقًا</string>
     <string name="shortcut_tile_command">أمر</string>

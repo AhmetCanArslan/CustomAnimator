@@ -1585,6 +1585,8 @@
     <string name="shortcut_tile_file_desc">Открыть документ в выбранном приложении</string>
     <string name="shortcut_tile_photo">Фото</string>
     <string name="shortcut_tile_photo_desc">Открыть изображение в выбранной галерее</string>
+    <string name="shortcut_tile_folder">Папка</string>
+    <string name="shortcut_tile_folder_desc">Открыть папку в выбранном файловом менеджере</string>
     <string name="shortcut_tile_link">Ссылка</string>
     <string name="shortcut_tile_link_desc">Открыть сайт или глубокую ссылку</string>
     <string name="shortcut_tile_command">Команда</string>

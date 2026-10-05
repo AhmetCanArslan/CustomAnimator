@@ -1583,6 +1583,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Buksan ang dokumento gamit ang app na pipiliin mo</string>
     <string name="shortcut_tile_photo">Larawan</string>
     <string name="shortcut_tile_photo_desc">Buksan ang larawan sa gallery na pipiliin mo</string>
+    <string name="shortcut_tile_folder">Folder</string>
+    <string name="shortcut_tile_folder_desc">Buksan ang folder sa file manager na pipiliin mo</string>
     <string name="shortcut_tile_link">Link</string>
     <string name="shortcut_tile_link_desc">Magbukas ng website o deep link</string>
     <string name="shortcut_tile_command">Command</string>

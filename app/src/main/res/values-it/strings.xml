@@ -1603,6 +1603,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_tile_file_desc">Apri un documento con la app che scegli</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Apri una immagine nella galleria che scegli</string>
+    <string name="shortcut_tile_folder">Cartella</string>
+    <string name="shortcut_tile_folder_desc">Apri una cartella nel gestore file che scegli</string>
     <string name="shortcut_tile_link">Link</string>
     <string name="shortcut_tile_link_desc">Apri un sito web o un deep link</string>
     <string name="shortcut_tile_command">Comando</string>

@@ -1583,6 +1583,8 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Buka dokumen dengan aplikasi pilihan Anda</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Buka gambar di galeri pilihan Anda</string>
+    <string name="shortcut_tile_folder">Folder</string>
+    <string name="shortcut_tile_folder_desc">Buka folder di pengelola file pilihan Anda</string>
     <string name="shortcut_tile_link">Tautan</string>
     <string name="shortcut_tile_link_desc">Buka situs web atau deep link</string>
     <string name="shortcut_tile_command">Perintah</string>
