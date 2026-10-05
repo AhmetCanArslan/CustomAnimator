@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
@@ -299,6 +300,10 @@ private fun ConfirmShortcutDialog(
     var showIconPicker by remember(entry.id) { mutableStateOf(false) }
     val valueLabelRes = entry.valueLabelRes()
     val isValid = label.isNotBlank() && (valueLabelRes == null || value.isNotBlank())
+    val context = LocalContext.current
+    val isAdFree by rememberIsAdFree()
+    val needsAd = !step.editing && !isAdFree
+    val save = { onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap) }
 
     if (showIconPicker) {
         ShortcutIconPickerSheet(
@@ -354,10 +359,10 @@ private fun ConfirmShortcutDialog(
         },
         confirmButton = {
             Button(
-                onClick = { onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap) },
+                onClick = { if (needsAd) requestReward(context) { save() } else save() },
                 enabled = isValid
             ) {
-                Text(stringResource(if (step.editing) R.string.save else R.string.shortcut_add_to_home))
+                Text(stringResource(confirmLabelRes(step.editing, needsAd)))
             }
         },
         dismissButton = {
@@ -366,6 +371,12 @@ private fun ConfirmShortcutDialog(
             }
         }
     )
+}
+
+private fun confirmLabelRes(editing: Boolean, needsAd: Boolean): Int = when {
+    editing -> R.string.save
+    needsAd -> R.string.shortcut_watch_ad_add
+    else -> R.string.shortcut_add_to_home
 }
 
 private fun ShortcutActivityInfo.isLaunchable(hasShizukuPermission: Boolean, isRoot: Boolean): Boolean = when {
