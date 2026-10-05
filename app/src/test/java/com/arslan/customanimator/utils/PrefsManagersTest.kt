@@ -3,6 +3,7 @@ package com.arslan.customanimator.utils
 import android.content.Context
 import android.content.ComponentName
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.test.core.app.ApplicationProvider
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
@@ -212,5 +213,14 @@ class PrefsManagersTest {
     fun shortcutLinksGetASchemeOnlyWhenMissing() {
         assertEquals("https://example.com", ShortcutMaker.normalizeLink(" example.com "))
         assertEquals("myapp://open", ShortcutMaker.normalizeLink("myapp://open"))
+    }
+
+    @Test
+    fun shortcutFoldersPointAtTheDocumentBehindThePickedTree() {
+        val tree = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3ADownload")
+        assertEquals(
+            "content://com.android.externalstorage.documents/document/primary%3ADownload",
+            ShortcutMaker.folderUri(tree).toString()
+        )
     }
 }
