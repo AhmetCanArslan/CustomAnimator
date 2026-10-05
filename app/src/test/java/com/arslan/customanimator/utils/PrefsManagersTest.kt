@@ -1,10 +1,12 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.ComponentName
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.test.core.app.ApplicationProvider
+import com.arslan.customanimator.data.SharedItem
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.ui.theme.ThemeMode
@@ -226,6 +228,15 @@ class PrefsManagersTest {
 
         SaveToDeviceManager.setDefaultFolder(context, null)
         assertNull(SaveToDeviceManager.getDefaultFolder(context))
+    }
+
+    @Test
+    fun saveToDeviceReadsSharedTextAndIgnoresFileUris() {
+        val text = Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_TEXT, "hello")
+        assertEquals(listOf(SharedItem(text = "hello")), SaveToDeviceManager.sharedItems(text))
+
+        val file = Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_STREAM, Uri.parse("file:///data/data/secret"))
+        assertTrue(SaveToDeviceManager.sharedItems(file).isEmpty())
     }
 
     @Test
