@@ -26,6 +26,7 @@ object ScreenshotActions {
     fun copyToClipboard(context: Context, item: ScreenshotItem): Boolean {
         return try {
             val dir = File(context.cacheDir, "clipboard").apply { mkdirs() }
+            dir.listFiles()?.forEach { it.delete() }
             val copy = File(dir, item.name.ifEmpty { "screenshot_${item.id}.png" })
             context.contentResolver.openInputStream(item.uri)?.use { input ->
                 copy.outputStream().use { output -> input.copyTo(output) }
