@@ -87,7 +87,7 @@ object Billing {
             .getBoolean(KEY_AD_FREE, false)
 
         if (client != null) {
-            queryPurchases()
+            refresh(appContext)
             return
         }
 
@@ -99,6 +99,15 @@ object Billing {
             .build()
 
         connect(appContext)
+    }
+
+    private fun refresh(context: Context) {
+        if (client?.isReady != true) {
+            connect(context)
+            return
+        }
+        if (productDetails == null) queryProductDetails()
+        queryPurchases()
     }
 
     private fun connect(context: Context) {
