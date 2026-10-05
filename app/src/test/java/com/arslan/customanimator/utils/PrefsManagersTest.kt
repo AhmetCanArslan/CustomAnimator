@@ -216,6 +216,19 @@ class PrefsManagersTest {
     }
 
     @Test
+    fun saveToDeviceAsksUntilAFolderIsChosen() {
+        val folder = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3ADocuments%2FSaved")
+        assertNull(SaveToDeviceManager.getDefaultFolder(context))
+
+        SaveToDeviceManager.setDefaultFolder(context, folder)
+        assertEquals(folder, SaveToDeviceManager.getDefaultFolder(context))
+        assertEquals("Documents/Saved", SaveToDeviceManager.folderLabel(folder))
+
+        SaveToDeviceManager.setDefaultFolder(context, null)
+        assertNull(SaveToDeviceManager.getDefaultFolder(context))
+    }
+
+    @Test
     fun shortcutFoldersPointAtTheDocumentBehindThePickedTree() {
         val tree = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3ADownload")
         assertEquals(
