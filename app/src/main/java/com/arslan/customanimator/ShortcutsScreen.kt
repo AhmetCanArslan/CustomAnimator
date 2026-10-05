@@ -79,6 +79,10 @@ fun ShortcutsScreen(
         uri?.let(state::onFilePicked)
     }
 
+    LaunchedEffect(Unit) {
+        RewardedAds.preload(context)
+    }
+
     LaunchedEffect(hasShizukuPermission) {
         state.load(hasShizukuPermission)
     }
