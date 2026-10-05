@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
@@ -60,6 +61,7 @@ private enum class ShortcutTile(val icon: ImageVector, val titleRes: Int, val de
     ACTIVITY(Icons.AutoMirrored.Filled.Launch, R.string.shortcut_tile_activity, R.string.shortcut_tile_activity_desc),
     FILE(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.shortcut_tile_file, R.string.shortcut_tile_file_desc),
     PHOTO(Icons.Filled.Image, R.string.shortcut_tile_photo, R.string.shortcut_tile_photo_desc),
+    FOLDER(Icons.Filled.Folder, R.string.shortcut_tile_folder, R.string.shortcut_tile_folder_desc),
     LINK(Icons.Filled.Link, R.string.shortcut_tile_link, R.string.shortcut_tile_link_desc),
     COMMAND(Icons.Filled.Terminal, R.string.shortcut_tile_command, R.string.shortcut_tile_command_desc)
 }
@@ -80,6 +82,10 @@ fun ShortcutsScreen(
         uri?.let(state::onFilePicked)
     }
 
+    val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        uri?.let(state::onFolderPicked)
+    }
+
     LaunchedEffect(Unit) {
         RewardedAds.preload(context)
     }
@@ -94,6 +100,7 @@ fun ShortcutsScreen(
             ShortcutTile.ACTIVITY -> state.startAppPicker(forActivity = true)
             ShortcutTile.FILE -> filePicker.launch(arrayOf(ANY_MIME))
             ShortcutTile.PHOTO -> filePicker.launch(arrayOf(IMAGE_MIME))
+            ShortcutTile.FOLDER -> folderPicker.launch(null)
             ShortcutTile.LINK -> state.startBlank(ShortcutType.LINK)
             ShortcutTile.COMMAND -> if (hasShizukuPermission) state.startBlank(ShortcutType.COMMAND) else openSetup()
         }
@@ -309,7 +316,7 @@ private fun ShortcutRow(
                 }
             }
             ShortcutRowMenu(
-                showChangeHandler = entry.type == ShortcutType.FILE,
+                showChangeHandler = entry.type == ShortcutType.FILE || entry.type == ShortcutType.FOLDER,
                 onLaunch = onLaunch,
                 onEdit = onEdit,
                 onPin = onPin,
