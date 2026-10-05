@@ -47,7 +47,10 @@ object Billing {
     private var client: BillingClient? = null
     private var productDetails: ProductDetails? = null
     private var reconnectDelayMs = 1_000L
+    private var productRetryDelayMs = 1_000L
     private var isConnecting = false
+
+    private val productRetry = Runnable { if (productDetails == null) queryProductDetails() }
 
     private var purchaseListener: ((PurchaseResult) -> Unit)? = null
 
@@ -141,8 +144,15 @@ object Billing {
         mainHandler.postDelayed({ connect(context) }, delay)
     }
 
+    private fun scheduleProductRetry() {
+        val delay = productRetryDelayMs
+        productRetryDelayMs = (productRetryDelayMs * 2).coerceAtMost(MAX_RECONNECT_DELAY_MS)
+        mainHandler.postDelayed(productRetry, delay)
+    }
+
     private fun queryProductDetails() {
         val billing = client ?: return
+        mainHandler.removeCallbacks(productRetry)
         val params = QueryProductDetailsParams.newBuilder()
             .setProductList(
                 listOf(
@@ -157,8 +167,10 @@ object Billing {
         billing.queryProductDetailsAsync(params) { result, details ->
             if (result.responseCode != BillingClient.BillingResponseCode.OK) {
                 Log.w(TAG, "Product query failed: ${result.responseCode} ${result.debugMessage}")
+                scheduleProductRetry()
                 return@queryProductDetailsAsync
             }
+            productRetryDelayMs = 1_000L
             val product = details.productDetailsList
                 .firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
             productDetails = product
