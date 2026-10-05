@@ -825,7 +825,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             transitionSpec = {
                 horizontalPagerTransition(targetState.ordinal > initialState.ordinal)
             },
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .imePadding(),
             label = "tab transition"
         ) { targetTab ->
         if (targetTab == HomeTab.TERMINAL) {
