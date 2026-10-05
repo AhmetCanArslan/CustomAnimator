@@ -1592,6 +1592,7 @@
     <string name="shortcut_more_options">Другие параметры</string>
     <string name="shortcut_launch">Запустить</string>
     <string name="shortcut_add_to_home">Добавить на главный экран</string>
+    <string name="shortcut_watch_ad_add">Посмотреть рекламу и добавить</string>
     <string name="shortcut_change_app">Сменить приложение</string>
     <string name="shortcut_pick_app">Выберите приложение</string>
     <string name="shortcut_search_activities">Поиск активностей</string>

@@ -1610,6 +1610,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_more_options">Altre opzioni</string>
     <string name="shortcut_launch">Avvia</string>
     <string name="shortcut_add_to_home">Aggiungi alla schermata Home</string>
+    <string name="shortcut_watch_ad_add">Guarda annuncio e aggiungi</string>
     <string name="shortcut_change_app">Cambia app</string>
     <string name="shortcut_pick_app">Scegli una app</string>
     <string name="shortcut_search_activities">Cerca attività</string>

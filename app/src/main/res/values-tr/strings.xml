@@ -1598,6 +1598,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_more_options">Diğer seçenekler</string>
     <string name="shortcut_launch">Başlat</string>
     <string name="shortcut_add_to_home">Ana ekrana ekle</string>
+    <string name="shortcut_watch_ad_add">Reklam izle ve ekle</string>
     <string name="shortcut_change_app">Uygulamayı değiştir</string>
     <string name="shortcut_pick_app">Bir uygulama seçin</string>
     <string name="shortcut_search_activities">Aktivite ara</string>

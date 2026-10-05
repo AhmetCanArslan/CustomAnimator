@@ -1630,6 +1630,7 @@
     <string name="shortcut_more_options">خيارات أخرى</string>
     <string name="shortcut_launch">تشغيل</string>
     <string name="shortcut_add_to_home">إضافة إلى الشاشة الرئيسية</string>
+    <string name="shortcut_watch_ad_add">شاهد إعلانًا وأضِف</string>
     <string name="shortcut_change_app">تغيير التطبيق</string>
     <string name="shortcut_pick_app">اختر تطبيقًا</string>
     <string name="shortcut_search_activities">ابحث في الأنشطة</string>

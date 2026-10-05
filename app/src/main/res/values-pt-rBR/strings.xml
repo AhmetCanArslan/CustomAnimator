@@ -1590,6 +1590,7 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_more_options">Mais opções</string>
     <string name="shortcut_launch">Abrir</string>
     <string name="shortcut_add_to_home">Adicionar à tela inicial</string>
+    <string name="shortcut_watch_ad_add">Ver anúncio e adicionar</string>
     <string name="shortcut_change_app">Trocar app</string>
     <string name="shortcut_pick_app">Escolha um app</string>
     <string name="shortcut_search_activities">Pesquisar atividades</string>
