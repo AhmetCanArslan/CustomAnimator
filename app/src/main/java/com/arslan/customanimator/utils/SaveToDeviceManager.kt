@@ -74,6 +74,19 @@ object SaveToDeviceManager {
         }
     }
 
+    fun saveInto(context: Context, folder: Uri, items: List<SharedItem>): Boolean {
+        val parent = DocumentsContract.buildDocumentUriUsingTree(folder, DocumentsContract.getTreeDocumentId(folder))
+        return items.count { item ->
+            val file = describe(context, item)
+            val target = try {
+                DocumentsContract.createDocument(context.contentResolver, parent, file.mimeType.orEmpty(), file.name)
+            } catch (e: Exception) {
+                null
+            }
+            target != null && saveTo(context, target, item)
+        } == items.size
+    }
+
     private fun open(context: Context, item: SharedItem): InputStream? {
         val stream = item.stream ?: return item.text?.byteInputStream()
         return context.contentResolver.openInputStream(stream)
