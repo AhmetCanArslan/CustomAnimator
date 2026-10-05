@@ -1,9 +1,12 @@
 package com.arslan.customanimator.utils
 
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.DocumentsContract
+import androidx.core.content.IntentCompat
+import com.arslan.customanimator.data.SharedItem
 
 object SaveToDeviceManager {
     private const val PREFS_NAME = "save_to_device_prefs"
@@ -34,5 +37,18 @@ object SaveToDeviceManager {
     fun folderLabel(folder: Uri): String {
         val documentId = DocumentsContract.getTreeDocumentId(folder)
         return documentId.substringAfter(':').ifEmpty { documentId }
+    }
+
+    fun sharedItems(intent: Intent): List<SharedItem> {
+        val streams = if (intent.action == Intent.ACTION_SEND_MULTIPLE) {
+            IntentCompat.getParcelableArrayListExtra(intent, Intent.EXTRA_STREAM, Uri::class.java).orEmpty()
+        } else {
+            listOfNotNull(IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java))
+        }
+        val items = streams
+            .filter { it.scheme == ContentResolver.SCHEME_CONTENT }
+            .map { SharedItem(stream = it) }
+        if (streams.isNotEmpty()) return items
+        return listOfNotNull(intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.let { SharedItem(text = it.toString()) })
     }
 }
