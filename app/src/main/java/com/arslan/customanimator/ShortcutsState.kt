@@ -117,7 +117,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
 
     fun onFilePicked(uri: Uri) {
         scope.launch {
-            val picked = withContext(Dispatchers.IO) { handlerStepFor(uri) }
+            val picked = withContext(Dispatchers.IO) { fileEntry(uri)?.let { handlerStepFor(it, editing = false) } }
             if (picked == null) {
                 toast(R.string.shortcut_file_not_persistable)
             } else {
@@ -186,14 +186,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
 
     fun changeHandler(entry: ShortcutEntry) {
         scope.launch {
-            step = withContext(Dispatchers.IO) {
-                ShortcutStep.PickHandler(
-                    entry = entry,
-                    handlers = ShortcutMaker.listHandlers(context, entry),
-                    defaultHandler = ShortcutStore.getDefaultHandler(context, entry.mimeType),
-                    editing = true
-                )
-            }
+            step = withContext(Dispatchers.IO) { handlerStepFor(entry, editing = true) }
         }
     }
 
@@ -215,27 +208,40 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         icons = loadedIcons
     }
 
-    private fun handlerStepFor(uri: Uri): ShortcutStep.PickHandler? {
+    private fun fileEntry(uri: Uri): ShortcutEntry? {
         try {
             context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         } catch (e: Exception) {
             return null
         }
         val file = ShortcutMaker.describeFile(context, uri)
-        val entry = ShortcutEntry(
+        return ShortcutEntry(
             id = newId(),
             type = ShortcutType.FILE,
             label = file.name,
             uri = uri.toString(),
             mimeType = file.mimeType
         )
-        return ShortcutStep.PickHandler(
-            entry = entry,
-            handlers = ShortcutMaker.listHandlers(context, entry),
-            defaultHandler = ShortcutStore.getDefaultHandler(context, file.mimeType),
-            editing = false
+    }
+
+    private fun folderEntry(treeUri: Uri): ShortcutEntry {
+        val folder = ShortcutMaker.describeFolder(context, treeUri)
+        return ShortcutEntry(
+            id = newId(),
+            type = ShortcutType.FOLDER,
+            label = folder.name,
+            uri = ShortcutMaker.folderUri(treeUri).toString(),
+            mimeType = folder.mimeType
         )
     }
+
+    private fun handlerStepFor(entry: ShortcutEntry, editing: Boolean): ShortcutStep.PickHandler =
+        ShortcutStep.PickHandler(
+            entry = entry,
+            handlers = ShortcutMaker.listHandlers(context, entry),
+            defaultHandler = ShortcutStore.getDefaultHandler(context, entry.mimeType),
+            editing = editing
+        )
 
     private fun iconOf(drawable: Drawable?, type: ShortcutType): Bitmap =
         drawable?.let(ShortcutMaker::drawableIcon) ?: ShortcutMaker.glyphIcon(context, type)
