@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutInfoCompat
@@ -69,6 +70,15 @@ object ShortcutMaker {
             mimeType = context.contentResolver.getType(uri)
         )
     }
+
+    fun describeFolder(context: Context, treeUri: Uri): ShortcutFileInfo {
+        val documentId = DocumentsContract.getTreeDocumentId(treeUri)
+        val folder = describeFile(context, DocumentsContract.buildDocumentUriUsingTree(treeUri, documentId))
+        return folder.copy(mimeType = DocumentsContract.Document.MIME_TYPE_DIR)
+    }
+
+    fun folderUri(treeUri: Uri): Uri =
+        DocumentsContract.buildDocumentUri(treeUri.authority, DocumentsContract.getTreeDocumentId(treeUri))
 
     fun listHandlers(context: Context, entry: ShortcutEntry): List<ShortcutHandlerInfo> {
         val packageManager = context.packageManager
