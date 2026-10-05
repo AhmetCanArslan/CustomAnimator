@@ -1619,6 +1619,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_tile_file_desc">Open a document with the app you choose</string>
     <string name="shortcut_tile_photo">Photo</string>
     <string name="shortcut_tile_photo_desc">Open a picture in the gallery you choose</string>
+    <string name="shortcut_tile_folder">Folder</string>
+    <string name="shortcut_tile_folder_desc">Open a folder in the file manager you choose</string>
     <string name="shortcut_tile_link">Link</string>
     <string name="shortcut_tile_link_desc">Open a website or deep link</string>
     <string name="shortcut_tile_command">Command</string>
