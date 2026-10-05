@@ -150,6 +150,8 @@ fun ToolsScreenContent(
                             onClick = onNavigateToShortcuts
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        SaveToDeviceRow()
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
                             icon = Icons.Filled.Screenshot,
                             title = stringResource(R.string.screenshot_actions),
