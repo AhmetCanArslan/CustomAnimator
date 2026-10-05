@@ -1,6 +1,7 @@
 package com.arslan.customanimator
 
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -394,6 +395,7 @@ private fun ShortcutEntry.typeLabelRes(): Int = when (type) {
     ShortcutType.FILE -> R.string.shortcut_tile_file
     ShortcutType.LINK -> R.string.shortcut_tile_link
     ShortcutType.COMMAND -> R.string.shortcut_tile_command
+    ShortcutType.FOLDER -> R.string.shortcut_tile_folder
 }
 
 private fun ShortcutEntry.target(): String = when (type) {
@@ -402,4 +404,5 @@ private fun ShortcutEntry.target(): String = when (type) {
     ShortcutType.FILE -> mimeType
     ShortcutType.LINK -> uri
     ShortcutType.COMMAND -> command
+    ShortcutType.FOLDER -> uri?.let { Uri.parse(it).lastPathSegment }
 }.orEmpty()

@@ -150,7 +150,7 @@ object ShortcutMaker {
         if (uri != null && entry.mimeType?.startsWith(IMAGE_MIME_PREFIX) == true) {
             thumbnailIcon(context, uri)?.let { return it }
         }
-        return handlerIcon?.let(::drawableIcon) ?: glyphIcon(context, ShortcutType.FILE)
+        return handlerIcon?.let(::drawableIcon) ?: glyphIcon(context, entry.type)
     }
 
     fun pin(context: Context, entry: ShortcutEntry, icon: Bitmap): Boolean {
@@ -209,17 +209,17 @@ object ShortcutMaker {
     private fun targetIntent(context: Context, entry: ShortcutEntry): Intent? = when (entry.type) {
         ShortcutType.APP -> entry.packageName?.let { context.packageManager.getLaunchIntentForPackage(it) }
         ShortcutType.ACTIVITY -> component(entry)?.let { Intent().setComponent(it) }
-        ShortcutType.FILE, ShortcutType.LINK -> viewIntent(entry)
+        ShortcutType.FILE, ShortcutType.FOLDER, ShortcutType.LINK -> viewIntent(entry)
         ShortcutType.COMMAND -> null
     }
 
     private fun viewIntent(entry: ShortcutEntry): Intent {
         val uri = Uri.parse(entry.uri.orEmpty())
         val intent = Intent(Intent.ACTION_VIEW)
-        if (entry.type == ShortcutType.FILE) {
-            intent.setDataAndType(uri, entry.mimeType).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        } else {
-            intent.setData(uri)
+        when (entry.type) {
+            ShortcutType.FILE -> intent.setDataAndType(uri, entry.mimeType).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            ShortcutType.FOLDER -> intent.setDataAndType(uri, entry.mimeType)
+            else -> intent.setData(uri)
         }
         return intent.setComponent(component(entry))
     }
@@ -249,6 +249,7 @@ object ShortcutMaker {
         ShortcutType.FILE -> R.drawable.ic_tile_folder_open
         ShortcutType.LINK -> R.drawable.ic_tile_public
         ShortcutType.COMMAND -> R.drawable.ic_tile_terminal
+        ShortcutType.FOLDER -> R.drawable.ic_tile_folder
     }
 
     private fun glyphColor(type: ShortcutType): Int = glyphColors[type.ordinal]

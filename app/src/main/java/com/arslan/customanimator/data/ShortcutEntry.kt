@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
 enum class ShortcutType {
-    APP, ACTIVITY, FILE, LINK, COMMAND
+    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER
 }
 
 data class ShortcutEntry(
