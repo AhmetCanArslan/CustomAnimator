@@ -195,11 +195,19 @@ fun GameModeScreenContent(
             }
 
             item {
+                GameModeListSwitch(
+                    editingExclusions = editingExclusions,
+                    onEditingExclusionsChange = { editingExclusions = it }
+                )
+            }
+
+            item {
                 Text(
-                    text = if (selectedGames.isEmpty()) {
-                        stringResource(R.string.game_mode_select_games)
-                    } else {
-                        stringResource(R.string.game_mode_games_count, selectedGames.size)
+                    text = when {
+                        editingExclusions && excludedApps.isEmpty() -> stringResource(R.string.game_mode_select_excluded)
+                        editingExclusions -> stringResource(R.string.game_mode_excluded_count, excludedApps.size)
+                        selectedGames.isEmpty() -> stringResource(R.string.game_mode_select_games)
+                        else -> stringResource(R.string.game_mode_games_count, selectedGames.size)
                     },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -252,4 +260,24 @@ fun GameModeScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GameModeListSwitch(editingExclusions: Boolean, onEditingExclusionsChange: (Boolean) -> Unit) {
+    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+        val options = listOf(
+            false to R.string.game_mode_list_games,
+            true to R.string.game_mode_list_excluded
+        )
+        options.forEachIndexed { index, (exclusions, labelRes) ->
+            SegmentedButton(
+                selected = editingExclusions == exclusions,
+                onClick = { onEditingExclusionsChange(exclusions) },
+                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
+            ) {
+                Text(stringResource(labelRes))
+            }
+        }
+    }
 }
