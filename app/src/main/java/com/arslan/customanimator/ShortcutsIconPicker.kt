@@ -43,6 +43,7 @@ private const val BUILT_IN_SOURCE = ""
 @Composable
 internal fun ShortcutIconPickerSheet(
     targetPackage: String?,
+    current: ShortcutIconImage,
     onPick: (ShortcutIconImage) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -51,6 +52,8 @@ internal fun ShortcutIconPickerSheet(
     var source by remember { mutableStateOf(BUILT_IN_SOURCE) }
     var query by remember { mutableStateOf("") }
     var color by remember { mutableIntStateOf(ShortcutMaker.glyphColors.first()) }
+    var builtInKey by remember { mutableStateOf<String?>(null) }
+    var preview by remember { mutableStateOf(current) }
 
     val packs by produceState(initialValue = emptyList<ShortcutIconPack>()) {
         value = withContext(Dispatchers.IO) { ShortcutIconPacks.listPacks(context) }
@@ -62,18 +65,18 @@ internal fun ShortcutIconPickerSheet(
         }
     }
 
-    val pickBuiltIn: (String) -> Unit = { key ->
-        coroutineScope.launch {
-            onPick(
-                withContext(Dispatchers.IO) {
-                    ShortcutIconImage(ShortcutMaker.glyphIcon(context, TerminalTileIcons.resFor(key), color))
-                }
-            )
+    LaunchedEffect(builtInKey, color) {
+        val key = builtInKey ?: return@LaunchedEffect
+        preview = withContext(Dispatchers.IO) {
+            ShortcutIconImage(ShortcutMaker.glyphIcon(context, TerminalTileIcons.resFor(key), color))
         }
     }
     val pickFromPack: (String) -> Unit = { name ->
         coroutineScope.launch {
-            withContext(Dispatchers.IO) { ShortcutIconPacks.loadIcon(context, source, name) }?.let(onPick)
+            withContext(Dispatchers.IO) { ShortcutIconPacks.loadIcon(context, source, name) }?.let {
+                builtInKey = null
+                preview = it
+            }
         }
     }
 
@@ -88,6 +91,8 @@ internal fun ShortcutIconPickerSheet(
                 style = MaterialTheme.typography.headlineSmall
             )
             Spacer(modifier = Modifier.height(12.dp))
+            IconPreviewRow(preview = preview, onUse = { onPick(preview) })
+            Spacer(modifier = Modifier.height(12.dp))
             IconSourceChips(
                 packs = packs,
                 selected = source,
@@ -101,10 +106,24 @@ internal fun ShortcutIconPickerSheet(
             if (source == BUILT_IN_SOURCE) {
                 IconColorRow(selected = color, onSelect = { color = it })
                 Spacer(modifier = Modifier.height(12.dp))
-                BuiltInIconGrid(query = query, onPick = pickBuiltIn)
+                BuiltInIconGrid(query = query, selected = builtInKey, onPick = { builtInKey = it })
             } else {
                 PackIconGrid(packageName = source, names = packIcons, query = query, onPick = pickFromPack)
             }
+        }
+    }
+}
+
+@Composable
+private fun IconPreviewRow(preview: ShortcutIconImage, onUse: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ShortcutIcon(bitmap = preview.bitmap, legacy = preview.legacy, modifier = Modifier.size(64.dp))
+        Button(onClick = onUse) {
+            Text(stringResource(R.string.shortcut_icon_use))
         }
     }
 }
@@ -171,7 +190,7 @@ private fun IconGrid(content: LazyGridScope.() -> Unit) {
 }
 
 @Composable
-private fun BuiltInIconGrid(query: String, onPick: (String) -> Unit) {
+private fun BuiltInIconGrid(query: String, selected: String?, onPick: (String) -> Unit) {
     val keys = remember(query) {
         val normalised = query.trim().lowercase().replace(' ', '_')
         TerminalTileIcons.keys.filter { it.contains(normalised) }
@@ -182,7 +201,7 @@ private fun BuiltInIconGrid(query: String, onPick: (String) -> Unit) {
     }
     IconGrid {
         items(keys, key = { it }) { key ->
-            TileIconCell(iconKey = key, selected = false, onClick = { onPick(key) })
+            TileIconCell(iconKey = key, selected = key == selected, onClick = { onPick(key) })
         }
     }
 }

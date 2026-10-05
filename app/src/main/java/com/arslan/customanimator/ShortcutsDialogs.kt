@@ -303,6 +303,7 @@ private fun ConfirmShortcutDialog(
     if (showIconPicker) {
         ShortcutIconPickerSheet(
             targetPackage = entry.packageName,
+            current = icon,
             onPick = {
                 icon = it
                 showIconPicker = false
