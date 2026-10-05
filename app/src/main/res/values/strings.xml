@@ -1143,6 +1143,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="game_mode_target_count">%1$d apps will be restricted</string>
     <string name="game_mode_select_games">Pick your games below</string>
     <string name="game_mode_games_count">%1$d games selected</string>
+    <string name="game_mode_list_games">Games</string>
+    <string name="game_mode_list_excluded">Excluded</string>
+    <string name="game_mode_select_excluded">Pick apps that should keep working in the background</string>
+    <string name="game_mode_excluded_count">%1$d apps excluded from restrictions</string>
     <string name="game_mode_turn_on">Turn on Game Mode</string>
     <string name="game_mode_turn_off">Turn off Game Mode</string>
     <string name="game_mode_widget_turn_on">Turn on</string>
