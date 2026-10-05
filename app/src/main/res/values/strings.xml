@@ -1626,6 +1626,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_more_options">More options</string>
     <string name="shortcut_launch">Launch</string>
     <string name="shortcut_add_to_home">Add to home screen</string>
+    <string name="shortcut_watch_ad_add">Watch ad &amp; add</string>
     <string name="shortcut_change_app">Change app</string>
     <string name="shortcut_pick_app">Choose an app</string>
     <string name="shortcut_search_activities">Search activities</string>
