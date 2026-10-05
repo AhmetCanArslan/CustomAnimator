@@ -1655,5 +1655,6 @@
     <string name="shortcut_edit_title">تعديل الاختصار</string>
     <string name="shortcut_change_icon">تغيير الأيقونة</string>
     <string name="shortcut_icon_builtin">مضمّنة</string>
+    <string name="shortcut_icon_use">استخدام الأيقونة</string>
     <string name="shortcut_icon_packs_hint">تظهر حزم الأيقونات المثبّتة هنا كعلامات تبويب إضافية.</string>
 </resources>

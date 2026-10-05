@@ -1615,5 +1615,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_edit_title">I-edit ang shortcut</string>
     <string name="shortcut_change_icon">Palitan ang icon</string>
     <string name="shortcut_icon_builtin">Built-in</string>
+    <string name="shortcut_icon_use">Gamitin ang icon</string>
     <string name="shortcut_icon_packs_hint">Lalabas dito bilang mga dagdag na tab ang mga naka-install na icon pack.</string>
 </resources>

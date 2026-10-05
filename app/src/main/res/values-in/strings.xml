@@ -1615,5 +1615,6 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_edit_title">Edit pintasan</string>
     <string name="shortcut_change_icon">Ganti ikon</string>
     <string name="shortcut_icon_builtin">Bawaan</string>
+    <string name="shortcut_icon_use">Gunakan ikon</string>
     <string name="shortcut_icon_packs_hint">Paket ikon yang terpasang muncul di sini sebagai tab tambahan.</string>
 </resources>

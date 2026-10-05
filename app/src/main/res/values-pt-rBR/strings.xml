@@ -1615,5 +1615,6 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_edit_title">Editar atalho</string>
     <string name="shortcut_change_icon">Trocar ícone</string>
     <string name="shortcut_icon_builtin">Integrados</string>
+    <string name="shortcut_icon_use">Usar ícone</string>
     <string name="shortcut_icon_packs_hint">Os pacotes de ícones instalados aparecem aqui como abas extras.</string>
 </resources>

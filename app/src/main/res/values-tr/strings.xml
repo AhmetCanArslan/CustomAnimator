@@ -1623,5 +1623,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_edit_title">Kısayolu düzenle</string>
     <string name="shortcut_change_icon">Simgeyi değiştir</string>
     <string name="shortcut_icon_builtin">Yerleşik</string>
+    <string name="shortcut_icon_use">Simgeyi kullan</string>
     <string name="shortcut_icon_packs_hint">Yüklü simge paketleri burada ek sekmeler olarak görünür.</string>
 </resources>

@@ -1635,5 +1635,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_edit_title">Modifica scorciatoia</string>
     <string name="shortcut_change_icon">Cambia icona</string>
     <string name="shortcut_icon_builtin">Integrate</string>
+    <string name="shortcut_icon_use">Usa icona</string>
     <string name="shortcut_icon_packs_hint">I pacchetti di icone installati compaiono qui come schede aggiuntive.</string>
 </resources>
