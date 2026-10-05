@@ -45,6 +45,8 @@ fun GameModeScreenContent(
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedGames by remember { mutableStateOf(manager.getSelectedPackages()) }
     var excludedApps by remember { mutableStateOf(exclusionManager.getSelectedPackages()) }
+    var editingExclusions by remember { mutableStateOf(false) }
+    val listedPackages = if (editingExclusions) excludedApps else selectedGames
     var isLoading by remember { mutableStateOf(true) }
     var isBusy by remember { mutableStateOf(false) }
     var isActive by remember { mutableStateOf(GameModeController.isActive(context)) }
@@ -57,7 +59,7 @@ fun GameModeScreenContent(
 
     var showSelectedOnly by remember { mutableStateOf(false) }
 
-    val filteredApps by remember(apps, searchQuery, showSelectedOnly, selectedGames) {
+    val filteredApps by remember(apps, searchQuery, showSelectedOnly, listedPackages) {
         derivedStateOf {
             apps
                 .filter {
@@ -65,7 +67,7 @@ fun GameModeScreenContent(
                         it.label.contains(searchQuery, ignoreCase = true) ||
                         it.packageName.contains(searchQuery, ignoreCase = true)
                 }
-                .filter { !showSelectedOnly || selectedGames.contains(it.packageName) }
+                .filter { !showSelectedOnly || listedPackages.contains(it.packageName) }
         }
     }
 
@@ -234,8 +236,14 @@ fun GameModeScreenContent(
                 items(filteredApps, key = { it.packageName }) { app ->
                     AppRow(
                         app = app,
-                        checked = selectedGames.contains(app.packageName),
-                        onCheckedChange = { selectedGames = manager.togglePackage(app.packageName) }
+                        checked = listedPackages.contains(app.packageName),
+                        onCheckedChange = {
+                            if (editingExclusions) {
+                                excludedApps = exclusionManager.togglePackage(app.packageName)
+                            } else {
+                                selectedGames = manager.togglePackage(app.packageName)
+                            }
+                        }
                     )
                 }
             }
