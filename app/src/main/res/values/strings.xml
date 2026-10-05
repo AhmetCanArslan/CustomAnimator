@@ -1619,6 +1619,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_tile_file_desc">Open a document with the app you choose</string>
     <string name="shortcut_tile_photo">Photo</string>
     <string name="shortcut_tile_photo_desc">Open a picture in the gallery you choose</string>
+    <string name="share_actions">Action</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="save_to_device">Save on device</string>
     <string name="save_to_device_desc">Share anything to this app to keep a copy on your device. Pick a folder to save there automatically, or get asked where to save each time.</string>
     <string name="save_to_device_ask">Ask every time</string>
