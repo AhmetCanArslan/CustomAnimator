@@ -1585,6 +1585,13 @@
     <string name="shortcut_tile_file_desc">Открыть документ в выбранном приложении</string>
     <string name="shortcut_tile_photo">Фото</string>
     <string name="shortcut_tile_photo_desc">Открыть изображение в выбранной галерее</string>
+    <string name="save_to_device">Сохранить на устройстве</string>
+    <string name="save_to_device_desc">Поделитесь чем угодно с этим приложением, чтобы сохранить копию на устройстве. Выберите папку для автоматического сохранения или указывайте место каждый раз.</string>
+    <string name="save_to_device_ask">Спрашивать каждый раз</string>
+    <string name="save_to_device_choose_folder">Выбрать папку</string>
+    <string name="save_to_device_location">Место сохранения: %1$s</string>
+    <string name="save_to_device_done">Сохранено на устройстве</string>
+    <string name="save_to_device_failed">Не удалось сохранить</string>
     <string name="shortcut_tile_folder">Папка</string>
     <string name="shortcut_tile_folder_desc">Открыть папку в выбранном файловом менеджере</string>
     <string name="shortcut_tile_link">Ссылка</string>

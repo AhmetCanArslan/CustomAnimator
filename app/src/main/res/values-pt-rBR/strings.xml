@@ -1583,6 +1583,13 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Abra um documento com o app que você escolher</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Abra uma imagem na galeria que você escolher</string>
+    <string name="save_to_device">Salvar no dispositivo</string>
+    <string name="save_to_device_desc">Compartilhe qualquer coisa com este app para manter uma cópia no dispositivo. Escolha uma pasta para salvar nela automaticamente ou decida onde salvar a cada vez.</string>
+    <string name="save_to_device_ask">Perguntar sempre</string>
+    <string name="save_to_device_choose_folder">Escolher pasta</string>
+    <string name="save_to_device_location">Local: %1$s</string>
+    <string name="save_to_device_done">Salvo no dispositivo</string>
+    <string name="save_to_device_failed">Não foi possível salvar</string>
     <string name="shortcut_tile_folder">Pasta</string>
     <string name="shortcut_tile_folder_desc">Abra uma pasta no gerenciador de arquivos que você escolher</string>
     <string name="shortcut_tile_link">Link</string>
