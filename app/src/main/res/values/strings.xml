@@ -1604,7 +1604,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="debloater_empty">No apps match this filter.</string>
     <string name="debloater_result">%1$d done, %2$d failed.</string>
     <string name="shortcuts">Shortcuts</string>
-    <string name="shortcuts_desc">Put apps, hidden activities, files, photos, links and commands on your home screen.</string>
+    <string name="shortcuts_desc">Put apps, hidden activities, files, folders, photos, links and commands on your home screen.</string>
     <string name="shortcuts_hero_title">Shortcut maker</string>
     <string name="shortcuts_shizuku_ready">Shizuku ready</string>
     <string name="shortcuts_shizuku_optional">Works without Shizuku</string>
