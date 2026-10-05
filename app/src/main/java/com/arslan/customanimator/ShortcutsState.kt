@@ -126,6 +126,12 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         }
     }
 
+    fun onFolderPicked(treeUri: Uri) {
+        scope.launch {
+            step = withContext(Dispatchers.IO) { handlerStepFor(folderEntry(treeUri), editing = false) }
+        }
+    }
+
     fun onHandlerPicked(handler: ShortcutHandlerInfo?, remember: Boolean) {
         val current = step as? ShortcutStep.PickHandler ?: return
         val entry = current.entry.copy(packageName = handler?.packageName, activityName = handler?.activityName)
