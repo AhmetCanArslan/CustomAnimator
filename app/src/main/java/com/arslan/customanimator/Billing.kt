@@ -171,6 +171,9 @@ object Billing {
                 return@queryProductDetailsAsync
             }
             productRetryDelayMs = 1_000L
+            details.unfetchedProductList.forEach { unfetched ->
+                Log.w(TAG, "Product not fetched: ${unfetched.productId} status ${unfetched.statusCode}")
+            }
             val product = details.productDetailsList
                 .firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
             productDetails = product
