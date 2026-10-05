@@ -1100,6 +1100,10 @@ Duración del Animador: %3$.2f</string>
     <string name="game_mode_target_count">Se restringirán %1$d apps</string>
     <string name="game_mode_select_games">Elige tus juegos abajo</string>
     <string name="game_mode_games_count">%1$d juegos seleccionados</string>
+    <string name="game_mode_list_games">Juegos</string>
+    <string name="game_mode_list_excluded">Excluidas</string>
+    <string name="game_mode_select_excluded">Elige las apps que deben seguir funcionando en segundo plano</string>
+    <string name="game_mode_excluded_count">%1$d apps excluidas de las restricciones</string>
     <string name="game_mode_turn_on">Activar Modo juego</string>
     <string name="game_mode_turn_off">Desactivar Modo juego</string>
     <string name="game_mode_widget_turn_on">Activar</string>

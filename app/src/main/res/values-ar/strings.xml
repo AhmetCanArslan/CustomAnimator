@@ -1140,6 +1140,10 @@
     <string name="game_mode_target_count">سيتم تقييد %1$d تطبيق</string>
     <string name="game_mode_select_games">اختر ألعابك أدناه</string>
     <string name="game_mode_games_count">تم اختيار %1$d لعبة</string>
+    <string name="game_mode_list_games">الألعاب</string>
+    <string name="game_mode_list_excluded">المستثناة</string>
+    <string name="game_mode_select_excluded">اختر التطبيقات التي يجب أن تواصل العمل في الخلفية</string>
+    <string name="game_mode_excluded_count">%1$d تطبيقات مستثناة من القيود</string>
     <string name="game_mode_turn_on">تشغيل وضع الألعاب</string>
     <string name="game_mode_turn_off">إيقاف وضع الألعاب</string>
     <string name="game_mode_widget_turn_on">تشغيل</string>

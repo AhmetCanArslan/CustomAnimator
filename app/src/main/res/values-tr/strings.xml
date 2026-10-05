@@ -1108,6 +1108,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_target_count">%1$d uygulama kısıtlanacak</string>
     <string name="game_mode_select_games">Oyunlarınızı aşağıdan seçin</string>
     <string name="game_mode_games_count">%1$d oyun seçildi</string>
+    <string name="game_mode_list_games">Oyunlar</string>
+    <string name="game_mode_list_excluded">Hariç tutulanlar</string>
+    <string name="game_mode_select_excluded">Arka planda çalışmaya devam etmesi gereken uygulamaları seçin</string>
+    <string name="game_mode_excluded_count">%1$d uygulama kısıtlamalardan hariç tutuldu</string>
     <string name="game_mode_turn_on">Oyun Modunu aç</string>
     <string name="game_mode_turn_off">Oyun Modunu kapat</string>
     <string name="game_mode_widget_turn_on">Aç</string>

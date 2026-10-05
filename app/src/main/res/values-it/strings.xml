@@ -1120,6 +1120,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_target_count">%1$d app verranno limitate</string>
     <string name="game_mode_select_games">Scegli i tuoi giochi qui sotto</string>
     <string name="game_mode_games_count">%1$d giochi selezionati</string>
+    <string name="game_mode_list_games">Giochi</string>
+    <string name="game_mode_list_excluded">Escluse</string>
+    <string name="game_mode_select_excluded">Scegli le app che devono continuare a funzionare in background</string>
+    <string name="game_mode_excluded_count">%1$d app escluse dalle restrizioni</string>
     <string name="game_mode_turn_on">Attiva Modalità gioco</string>
     <string name="game_mode_turn_off">Disattiva Modalità gioco</string>
     <string name="game_mode_widget_turn_on">Attiva</string>

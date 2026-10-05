@@ -1102,6 +1102,10 @@
     <string name="game_mode_target_count">Будет ограничено приложений: %1$d</string>
     <string name="game_mode_select_games">Выберите свои игры ниже</string>
     <string name="game_mode_games_count">Выбрано игр: %1$d</string>
+    <string name="game_mode_list_games">Игры</string>
+    <string name="game_mode_list_excluded">Исключения</string>
+    <string name="game_mode_select_excluded">Выберите приложения, которые должны продолжать работать в фоне</string>
+    <string name="game_mode_excluded_count">Исключено из ограничений: %1$d</string>
     <string name="game_mode_turn_on">Включить игровой режим</string>
     <string name="game_mode_turn_off">Выключить игровой режим</string>
     <string name="game_mode_widget_turn_on">Включить</string>

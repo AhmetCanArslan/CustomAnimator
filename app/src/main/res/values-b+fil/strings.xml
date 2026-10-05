@@ -1100,6 +1100,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_target_count">%1$d na app ang lilimitahan</string>
     <string name="game_mode_select_games">Piliin ang iyong mga laro sa ibaba</string>
     <string name="game_mode_games_count">%1$d na laro ang napili</string>
+    <string name="game_mode_list_games">Mga laro</string>
+    <string name="game_mode_list_excluded">Hindi kasama</string>
+    <string name="game_mode_select_excluded">Piliin ang mga app na dapat patuloy na gumana sa background</string>
+    <string name="game_mode_excluded_count">%1$d app ang hindi kasama sa mga paghihigpit</string>
     <string name="game_mode_turn_on">I-on ang Game Mode</string>
     <string name="game_mode_turn_off">I-off ang Game Mode</string>
     <string name="game_mode_widget_turn_on">I-on</string>

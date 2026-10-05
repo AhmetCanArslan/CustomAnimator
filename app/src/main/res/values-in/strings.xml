@@ -1100,6 +1100,10 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_target_count">%1$d aplikasi akan dibatasi</string>
     <string name="game_mode_select_games">Pilih game Anda di bawah</string>
     <string name="game_mode_games_count">%1$d game dipilih</string>
+    <string name="game_mode_list_games">Game</string>
+    <string name="game_mode_list_excluded">Dikecualikan</string>
+    <string name="game_mode_select_excluded">Pilih aplikasi yang harus tetap berjalan di latar belakang</string>
+    <string name="game_mode_excluded_count">%1$d aplikasi dikecualikan dari pembatasan</string>
     <string name="game_mode_turn_on">Aktifkan Mode Game</string>
     <string name="game_mode_turn_off">Nonaktifkan Mode Game</string>
     <string name="game_mode_widget_turn_on">Aktifkan</string>
