@@ -1583,6 +1583,8 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Buka dokumen dengan aplikasi pilihan Anda</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Buka gambar di galeri pilihan Anda</string>
+    <string name="share_actions">Tindakan</string>
+    <string name="copy_to_clipboard">Salin ke papan klip</string>
     <string name="save_to_device">Simpan di perangkat</string>
     <string name="save_to_device_desc">Bagikan apa pun ke aplikasi ini untuk menyimpan salinannya di perangkat. Pilih folder agar otomatis disimpan di sana, atau pilih lokasinya setiap kali.</string>
     <string name="save_to_device_ask">Selalu tanya</string>

@@ -1583,6 +1583,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Buksan ang dokumento gamit ang app na pipiliin mo</string>
     <string name="shortcut_tile_photo">Larawan</string>
     <string name="shortcut_tile_photo_desc">Buksan ang larawan sa gallery na pipiliin mo</string>
+    <string name="share_actions">Aksyon</string>
+    <string name="copy_to_clipboard">Kopyahin sa clipboard</string>
     <string name="save_to_device">I-save sa device</string>
     <string name="save_to_device_desc">Mag-share ng kahit ano sa app na ito para magtabi ng kopya sa device mo. Pumili ng folder para awtomatikong i-save doon, o tanungin ka kung saan sa bawat pagkakataon.</string>
     <string name="save_to_device_ask">Itanong palagi</string>

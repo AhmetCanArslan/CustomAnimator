@@ -1591,6 +1591,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_tile_file_desc">Bir belgeyi seçtiğiniz uygulamayla açın</string>
     <string name="shortcut_tile_photo">Fotoğraf</string>
     <string name="shortcut_tile_photo_desc">Bir resmi seçtiğiniz galeride açın</string>
+    <string name="share_actions">İşlem</string>
+    <string name="copy_to_clipboard">Panoya kopyala</string>
     <string name="save_to_device">Cihaza kaydet</string>
     <string name="save_to_device_desc">Bir kopyasını cihazınızda saklamak için herhangi bir şeyi bu uygulamayla paylaşın. Otomatik kaydedilecek bir klasör seçin ya da her seferinde nereye kaydedileceğini belirleyin.</string>
     <string name="save_to_device_ask">Her seferinde sor</string>

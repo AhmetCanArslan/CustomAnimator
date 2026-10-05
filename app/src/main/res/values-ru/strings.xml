@@ -1585,6 +1585,8 @@
     <string name="shortcut_tile_file_desc">Открыть документ в выбранном приложении</string>
     <string name="shortcut_tile_photo">Фото</string>
     <string name="shortcut_tile_photo_desc">Открыть изображение в выбранной галерее</string>
+    <string name="share_actions">Действие</string>
+    <string name="copy_to_clipboard">Копировать в буфер обмена</string>
     <string name="save_to_device">Сохранить на устройстве</string>
     <string name="save_to_device_desc">Поделитесь чем угодно с этим приложением, чтобы сохранить копию на устройстве. Выберите папку для автоматического сохранения или указывайте место каждый раз.</string>
     <string name="save_to_device_ask">Спрашивать каждый раз</string>

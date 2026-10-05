@@ -1603,6 +1603,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_tile_file_desc">Apri un documento con la app che scegli</string>
     <string name="shortcut_tile_photo">Foto</string>
     <string name="shortcut_tile_photo_desc">Apri una immagine nella galleria che scegli</string>
+    <string name="share_actions">Azione</string>
+    <string name="copy_to_clipboard">Copia negli appunti</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="save_to_device_desc">Condividi qualsiasi cosa con questa app per conservarne una copia sul dispositivo. Scegli una cartella per salvare lì automaticamente oppure decidi ogni volta dove salvare.</string>
     <string name="save_to_device_ask">Chiedi ogni volta</string>

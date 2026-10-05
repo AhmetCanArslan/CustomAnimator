@@ -1623,6 +1623,8 @@
     <string name="shortcut_tile_file_desc">افتح مستندًا بالتطبيق الذي تختاره</string>
     <string name="shortcut_tile_photo">صورة</string>
     <string name="shortcut_tile_photo_desc">افتح صورة في المعرض الذي تختاره</string>
+    <string name="share_actions">إجراء</string>
+    <string name="copy_to_clipboard">نسخ إلى الحافظة</string>
     <string name="save_to_device">حفظ على الجهاز</string>
     <string name="save_to_device_desc">شارك أي شيء مع هذا التطبيق للاحتفاظ بنسخة على جهازك. اختر مجلدًا للحفظ فيه تلقائيًا، أو اختر مكان الحفظ في كل مرة.</string>
     <string name="save_to_device_ask">السؤال في كل مرة</string>
