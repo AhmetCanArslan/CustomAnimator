@@ -1651,5 +1651,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_edit_title">Edit shortcut</string>
     <string name="shortcut_change_icon">Change icon</string>
     <string name="shortcut_icon_builtin">Built-in</string>
+    <string name="shortcut_icon_use">Use icon</string>
     <string name="shortcut_icon_packs_hint">Installed icon packs show up here as extra tabs.</string>
 </resources>
