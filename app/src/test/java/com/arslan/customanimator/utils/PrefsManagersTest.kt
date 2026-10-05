@@ -48,6 +48,20 @@ class PrefsManagersTest {
     }
 
     @Test
+    fun gameModeExclusionsAreStoredApartFromGames() {
+        GameModeManager(context).setSelectedPackages(setOf("com.example.game"))
+        val exclusions = GameModeExclusionManager(context)
+        exclusions.setSelectedPackages(setOf("com.example.messenger"))
+
+        assertEquals(setOf("com.example.messenger"), exclusions.getSelectedPackages())
+        assertEquals(setOf("com.example.game"), GameModeManager(context).getSelectedPackages())
+        assertFalse(
+            GameModeTargets.resolve(context, setOf("com.example.game"), exclusions.getSelectedPackages())
+                .contains("com.example.messenger")
+        )
+    }
+
+    @Test
     fun selectedAppsNeverKeepOwnPackage() {
         val manager = GameModeManager(context)
         manager.setSelectedPackages(setOf(context.packageName, "com.example.app"))
