@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.GameModeController
+import com.arslan.customanimator.utils.GameModeExclusionManager
 import com.arslan.customanimator.utils.GameModeManager
 import com.arslan.customanimator.utils.GameModeTargets
 import com.arslan.customanimator.utils.InstalledAppsProvider
@@ -38,10 +39,12 @@ fun GameModeScreenContent(
     val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val manager = remember { GameModeManager(context) }
+    val exclusionManager = remember { GameModeExclusionManager(context) }
     val coroutineScope = rememberCoroutineScope()
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedGames by remember { mutableStateOf(manager.getSelectedPackages()) }
+    var excludedApps by remember { mutableStateOf(exclusionManager.getSelectedPackages()) }
     var isLoading by remember { mutableStateOf(true) }
     var isBusy by remember { mutableStateOf(false) }
     var isActive by remember { mutableStateOf(GameModeController.isActive(context)) }
@@ -71,10 +74,10 @@ fun GameModeScreenContent(
         isLoading = false
     }
 
-    LaunchedEffect(selectedGames, isLoading) {
+    LaunchedEffect(selectedGames, excludedApps, isLoading) {
         if (!isLoading) {
             targetCount = withContext(Dispatchers.IO) {
-                GameModeTargets.resolve(context, selectedGames).size
+                GameModeTargets.resolve(context, selectedGames, excludedApps).size
             }
         }
     }

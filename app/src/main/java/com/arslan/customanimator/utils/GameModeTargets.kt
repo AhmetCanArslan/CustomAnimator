@@ -16,8 +16,8 @@ object GameModeTargets {
         "voice_interaction_service"
     )
 
-    fun resolve(context: Context, games: Set<String>): List<String> {
-        val protectedPackages = protectedPackages(context) + games
+    fun resolve(context: Context, games: Set<String>, excluded: Set<String>): List<String> {
+        val protectedPackages = protectedPackages(context) + games + excluded
         return InstalledAppsProvider.getLaunchableApps(context)
             .filterNot { it.isSystemApp }
             .map { it.packageName }

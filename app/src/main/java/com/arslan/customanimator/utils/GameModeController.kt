@@ -48,7 +48,8 @@ object GameModeController {
 
         val resolver = appContext.contentResolver
         val games = GameModeManager(appContext).getSelectedPackages()
-        val targets = GameModeTargets.resolve(appContext, games)
+        val excluded = GameModeExclusionManager(appContext).getSelectedPackages()
+        val targets = GameModeTargets.resolve(appContext, games, excluded)
 
         var restricted = 0
         fun record(success: Boolean) {
