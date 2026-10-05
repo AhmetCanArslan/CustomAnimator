@@ -7,10 +7,15 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.core.content.IntentCompat
 import com.arslan.customanimator.data.SharedItem
+import com.arslan.customanimator.data.ShortcutFileInfo
+import java.io.InputStream
 
 object SaveToDeviceManager {
     private const val PREFS_NAME = "save_to_device_prefs"
     private const val KEY_FOLDER = "default_folder"
+    private const val TEXT_MIME = "text/plain"
+    private const val TEXT_FILE_NAME = "Shared text.txt"
+    private const val UNKNOWN_MIME = "application/octet-stream"
     private const val FOLDER_PERMISSIONS =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
@@ -50,5 +55,27 @@ object SaveToDeviceManager {
             .map { SharedItem(stream = it) }
         if (streams.isNotEmpty()) return items
         return listOfNotNull(intent.getCharSequenceExtra(Intent.EXTRA_TEXT)?.let { SharedItem(text = it.toString()) })
+    }
+
+    fun describe(context: Context, item: SharedItem): ShortcutFileInfo {
+        val stream = item.stream ?: return ShortcutFileInfo(TEXT_FILE_NAME, TEXT_MIME)
+        val file = ShortcutMaker.describeFile(context, stream)
+        return file.copy(mimeType = file.mimeType ?: UNKNOWN_MIME)
+    }
+
+    fun saveTo(context: Context, target: Uri, item: SharedItem): Boolean {
+        return try {
+            val copied = context.contentResolver.openOutputStream(target)?.use { output ->
+                open(context, item)?.use { input -> input.copyTo(output) }
+            }
+            copied != null
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun open(context: Context, item: SharedItem): InputStream? {
+        val stream = item.stream ?: return item.text?.byteInputStream()
+        return context.contentResolver.openInputStream(stream)
     }
 }
