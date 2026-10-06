@@ -494,6 +494,8 @@ Duración del Animador: %3$.2f</string>
     <string name="otp_copier_desc">Copia automáticamente los códigos de verificación de las notificaciones</string>
     <string name="otp_copier_enable">Copiar códigos automáticamente</string>
     <string name="otp_copier_enable_desc">Pone el código en el portapapeles en cuanto llega su notificación</string>
+    <string name="otp_copier_toast">Mostrar un mensaje al copiar</string>
+    <string name="otp_copier_toast_desc">Muestra un aviso breve con el código copiado</string>
     <string name="otp_copier_needs_access">Leer los códigos de verificación requiere acceso a las notificaciones.</string>
     <string name="otp_copier_sensitive">Notificaciones sensibles</string>
     <string name="otp_copier_sensitive_desc">Android 15 y versiones posteriores ocultan los códigos de verificación a los lectores de notificaciones hasta que se concede esto</string>

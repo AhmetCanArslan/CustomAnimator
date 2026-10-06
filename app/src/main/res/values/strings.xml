@@ -43,6 +43,8 @@
     <string name="otp_copier_desc">Copy verification codes from notifications automatically</string>
     <string name="otp_copier_enable">Copy codes automatically</string>
     <string name="otp_copier_enable_desc">Puts the code on the clipboard as soon as its notification arrives</string>
+    <string name="otp_copier_toast">Show a message when copied</string>
+    <string name="otp_copier_toast_desc">Shows a short toast with the copied code</string>
     <string name="otp_copier_needs_access">Reading verification codes needs notification access.</string>
     <string name="otp_copier_sensitive">Sensitive notifications</string>
     <string name="otp_copier_sensitive_desc">Android 15 and newer hide verification codes from notification listeners until this is granted</string>

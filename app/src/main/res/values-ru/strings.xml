@@ -494,6 +494,8 @@
     <string name="otp_copier_desc">Автоматически копирует коды подтверждения из уведомлений</string>
     <string name="otp_copier_enable">Копировать коды автоматически</string>
     <string name="otp_copier_enable_desc">Помещает код в буфер обмена, как только приходит уведомление</string>
+    <string name="otp_copier_toast">Показывать сообщение при копировании</string>
+    <string name="otp_copier_toast_desc">Показывает короткое уведомление со скопированным кодом</string>
     <string name="otp_copier_needs_access">Для чтения кодов подтверждения нужен доступ к уведомлениям.</string>
     <string name="otp_copier_sensitive">Конфиденциальные уведомления</string>
     <string name="otp_copier_sensitive_desc">Android 15 и новее скрывает коды подтверждения от слушателей уведомлений, пока не выдано это разрешение</string>

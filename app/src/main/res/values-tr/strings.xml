@@ -494,6 +494,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="otp_copier_desc">Bildirimlerdeki doğrulama kodlarını otomatik kopyalar</string>
     <string name="otp_copier_enable">Kodları otomatik kopyala</string>
     <string name="otp_copier_enable_desc">Bildirim gelir gelmez kodu panoya koyar</string>
+    <string name="otp_copier_toast">Kopyalanınca mesaj göster</string>
+    <string name="otp_copier_toast_desc">Kopyalanan kodu kısa bir bildirimle gösterir</string>
     <string name="otp_copier_needs_access">Doğrulama kodlarını okumak için bildirim erişimi gerekir.</string>
     <string name="otp_copier_sensitive">Hassas bildirimler</string>
     <string name="otp_copier_sensitive_desc">Android 15 ve sonrası, bu izin verilene kadar doğrulama kodlarını bildirim dinleyicilerinden gizler</string>

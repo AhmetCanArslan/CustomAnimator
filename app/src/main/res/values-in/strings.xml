@@ -494,6 +494,8 @@ Durasi Animator: %3$.2f</string>
     <string name="otp_copier_desc">Menyalin kode verifikasi dari notifikasi secara otomatis</string>
     <string name="otp_copier_enable">Salin kode secara otomatis</string>
     <string name="otp_copier_enable_desc">Menaruh kode di papan klip begitu notifikasinya tiba</string>
+    <string name="otp_copier_toast">Tampilkan pesan saat disalin</string>
+    <string name="otp_copier_toast_desc">Menampilkan pesan singkat berisi kode yang disalin</string>
     <string name="otp_copier_needs_access">Membaca kode verifikasi memerlukan akses notifikasi.</string>
     <string name="otp_copier_sensitive">Notifikasi sensitif</string>
     <string name="otp_copier_sensitive_desc">Android 15 dan yang lebih baru menyembunyikan kode verifikasi dari pendengar notifikasi sampai izin ini diberikan</string>

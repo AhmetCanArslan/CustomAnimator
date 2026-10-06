@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.shadows.ShadowToast
 
 @RunWith(RobolectricTestRunner::class)
 class OtpCopierManagerTest {
@@ -113,6 +114,20 @@ class OtpCopierManagerTest {
         OtpCopierManager.setEnabled(context, true)
         OtpCopierManager.onNotification(context, "enabled", "Bank\nYour code is 333444")
         assertEquals("333444", clipboardText())
+    }
+
+    @Test
+    fun toastIsOnByDefaultAndCanBeTurnedOff() {
+        OtpCopierManager.setEnabled(context, true)
+        assertTrue(OtpCopierManager.isToastEnabled(context))
+        OtpCopierManager.onNotification(context, "toast-on", "Your code is 555666")
+        assertEquals("Code copied: 555666", ShadowToast.getTextOfLatestToast())
+        ShadowToast.reset()
+        OtpCopierManager.setToastEnabled(context, false)
+        OtpCopierManager.onNotification(context, "toast-off", "Your code is 777888")
+        assertEquals("777888", clipboardText())
+        assertNull(ShadowToast.getLatestToast())
+        OtpCopierManager.setToastEnabled(context, true)
     }
 
     @Test

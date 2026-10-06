@@ -12,6 +12,7 @@ object OtpCopierManager {
 
     private const val PREFS_NAME = "otp_copier_prefs"
     private const val KEY_ENABLED = "enabled"
+    private const val KEY_SHOW_TOAST = "show_toast"
     private const val KEY_KEYWORDS = "keywords"
     private const val KEY_PATTERNS = "patterns"
     private const val ENTRY_SEPARATOR = "\n"
@@ -36,6 +37,12 @@ object OtpCopierManager {
 
     fun setEnabled(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_ENABLED, enabled).apply()
+    }
+
+    fun isToastEnabled(context: Context): Boolean = prefs(context).getBoolean(KEY_SHOW_TOAST, true)
+
+    fun setToastEnabled(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean(KEY_SHOW_TOAST, enabled).apply()
     }
 
     fun getKeywords(context: Context): List<String> =
@@ -131,6 +138,7 @@ object OtpCopierManager {
     private fun copy(context: Context, code: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText(CLIP_LABEL, code))
+        if (!isToastEnabled(context)) return
         Toast.makeText(context, context.getString(R.string.otp_copier_copied, code), Toast.LENGTH_SHORT).show()
     }
 }

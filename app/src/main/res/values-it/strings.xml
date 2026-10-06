@@ -514,6 +514,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="otp_copier_desc">Copia automaticamente i codici di verifica dalle notifiche</string>
     <string name="otp_copier_enable">Copia i codici automaticamente</string>
     <string name="otp_copier_enable_desc">Mette il codice negli appunti appena arriva la notifica</string>
+    <string name="otp_copier_toast">Mostra un messaggio alla copia</string>
+    <string name="otp_copier_toast_desc">Mostra un breve avviso con il codice copiato</string>
     <string name="otp_copier_needs_access">La lettura dei codici di verifica richiede l\'accesso alle notifiche.</string>
     <string name="otp_copier_sensitive">Notifiche sensibili</string>
     <string name="otp_copier_sensitive_desc">Android 15 e versioni successive nascondono i codici di verifica ai lettori di notifiche finché non viene concesso</string>

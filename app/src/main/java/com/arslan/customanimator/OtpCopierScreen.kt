@@ -15,6 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -32,6 +33,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.DividerSoft
 import com.arslan.customanimator.ui.components.ExpandableCard
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.components.SettingRow
@@ -59,6 +61,7 @@ fun OtpCopierScreen(
 
     var hasNotificationAccess by remember { mutableStateOf(OtpCopierManager.hasNotificationAccess(context)) }
     var isEnabled by remember { mutableStateOf(OtpCopierManager.isEnabled(context)) }
+    var isToastEnabled by remember { mutableStateOf(OtpCopierManager.isToastEnabled(context)) }
     var enableAfterAccess by remember { mutableStateOf(false) }
     var hasSensitiveAccess by remember { mutableStateOf<Boolean?>(null) }
     var keywords by remember { mutableStateOf(OtpCopierManager.getKeywords(context)) }
@@ -131,6 +134,8 @@ fun OtpCopierScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .imePadding()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -141,7 +146,12 @@ fun OtpCopierScreen(
                     onEnabledChange = { newValue ->
                         if (newValue && !hasNotificationAccess) requestNotificationAccess() else setEnabled(newValue)
                     },
-                    onRequestAccess = requestNotificationAccess
+                    onRequestAccess = requestNotificationAccess,
+                    isToastEnabled = isToastEnabled,
+                    onToastEnabledChange = { newValue ->
+                        isToastEnabled = newValue
+                        OtpCopierManager.setToastEnabled(context, newValue)
+                    }
                 )
             }
 
@@ -227,7 +237,9 @@ private fun OtpSwitchCard(
     isEnabled: Boolean,
     hasNotificationAccess: Boolean,
     onEnabledChange: (Boolean) -> Unit,
-    onRequestAccess: () -> Unit
+    onRequestAccess: () -> Unit,
+    isToastEnabled: Boolean,
+    onToastEnabledChange: (Boolean) -> Unit
 ) {
     AppCard(contentPadding = 16.dp, highlighted = isEnabled) {
         ToggleRow(
@@ -248,7 +260,16 @@ private fun OtpSwitchCard(
             Button(onClick = onRequestAccess, modifier = Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.grant), maxLines = 1)
             }
+            Spacer(modifier = Modifier.height(8.dp))
         }
+        DividerSoft()
+        ToggleRow(
+            title = stringResource(R.string.otp_copier_toast),
+            subtitle = stringResource(R.string.otp_copier_toast_desc),
+            icon = Icons.Filled.Notifications,
+            checked = isToastEnabled,
+            onCheckedChange = onToastEnabledChange
+        )
     }
 }
 
