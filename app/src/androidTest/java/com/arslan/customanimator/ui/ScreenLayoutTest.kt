@@ -14,6 +14,7 @@ import com.arslan.customanimator.BatteryScreenContent
 import com.arslan.customanimator.CloseAppsExclusionsScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
+import com.arslan.customanimator.OtpCopierScreen
 import com.arslan.customanimator.DebloaterScreen
 import com.arslan.customanimator.StatusBarIconsScreen
 import com.arslan.customanimator.CompileBoosterScreenContent
@@ -160,6 +161,7 @@ class ScreenLayoutTest {
             onNavigateToHotspotManager = {},
             onNavigateToAlarmRevealer = {},
             onNavigateToCarrierName = {},
+            onNavigateToOtpCopier = {},
             onNavigateToStatusBarIcons = {}
         )
     }
@@ -203,6 +205,11 @@ class ScreenLayoutTest {
     @Test
     fun carrierNameScreenFitsSmallPhones() = screenFits(R.string.carrier_name) {
         CarrierNameScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun otpCopierScreenFitsSmallPhones() = screenFits(R.string.otp_copier) {
+        OtpCopierScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test

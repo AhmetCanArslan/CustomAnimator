@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.PlaylistRemove
@@ -58,6 +59,7 @@ fun ToolsScreenContent(
     onNavigateToHotspotManager: () -> Unit,
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
+    onNavigateToOtpCopier: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
     onNavigateToDebloater: () -> Unit,
     onNavigateToShortcuts: () -> Unit,
@@ -157,6 +159,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.screenshot_actions),
                             description = stringResource(R.string.screenshot_actions_desc),
                             onClick = onNavigateToScreenshotActions
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.Password,
+                            title = stringResource(R.string.otp_copier),
+                            description = stringResource(R.string.otp_copier_desc),
+                            onClick = onNavigateToOtpCopier
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(

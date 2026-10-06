@@ -19,7 +19,8 @@ object BackupManager {
         "auto_permission_disabler_state",
         "close_apps_exclusions",
         "fps_overlay_prefs",
-        "compile_booster_prefs"
+        "compile_booster_prefs",
+        "otp_copier_prefs"
     )
 
     fun exportToJson(context: Context): String {

@@ -30,6 +30,7 @@ import com.arslan.customanimator.notify.data.ScreenFlashColor
 import com.arslan.customanimator.notify.data.WidgetNotification
 import com.arslan.customanimator.notify.data.WidgetNotificationStore
 import com.arslan.customanimator.notify.widget.NotificationWidgetProvider
+import com.arslan.customanimator.utils.OtpCopierManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -88,6 +89,10 @@ class NotifyListenerService : NotificationListenerService() {
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
         val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
         val bodyRaw = bigText.ifBlank { text }
+
+        if (packageName != this.packageName) {
+            OtpCopierManager.onNotification(this, sbn.key, "$title\n$bodyRaw")
+        }
 
         val isOwnServiceNotification = packageName == this.packageName &&
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&

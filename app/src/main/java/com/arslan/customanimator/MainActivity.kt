@@ -195,7 +195,7 @@ enum class HomeTab {
 enum class HomeScreen {
     MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
-    WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
+    WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, SHORTCUTS
 }
@@ -250,6 +250,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.HOTSPOT_MANAGER to HomeTab.TOOLS,
     HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
     HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
+    HomeScreen.OTP_COPIER to HomeTab.TOOLS,
     HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
@@ -336,6 +337,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val hotspotManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val otpCopierListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -707,6 +709,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = carrierNameListState
         )
+    } else if (targetScreen == HomeScreen.OTP_COPIER) {
+        OtpCopierScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = otpCopierListState
+        )
     } else if (targetScreen == HomeScreen.STATUS_BAR_ICONS) {
         StatusBarIconsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -859,6 +866,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
             onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
+            onNavigateToOtpCopier = { currentScreen = HomeScreen.OTP_COPIER },
             onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
