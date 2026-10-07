@@ -31,7 +31,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
@@ -781,15 +780,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.NOTIFY_HOME) {
         SubScreen(
             title = stringResource(R.string.pn_title),
-            onBack = { currentScreen = HomeScreen.MAIN },
-            actions = {
-                IconButton(onClick = { currentScreen = HomeScreen.NOTIFY_LOGGING }) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = stringResource(R.string.pn_nav_logging)
-                    )
-                }
-            }
+            onBack = { currentScreen = HomeScreen.MAIN }
         ) {
             NotifyHomeSection(
                 onNavigateToRules = { currentScreen = HomeScreen.NOTIFY_RULES },
