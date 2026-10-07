@@ -28,8 +28,15 @@ object OtpCopierManager {
     private const val SENSITIVE_OP_ALLOWED = "allow"
     private const val CLIP_LABEL = "OTP"
 
+    private const val MAX_COMPILED_PATTERNS = 32
+
     @Volatile
     private var lastCopied: String? = null
+
+    @Volatile
+    private var keywordMatcher: Pair<List<String>, Regex>? = null
+
+    private val compiledPatterns = java.util.concurrent.ConcurrentHashMap<String, Regex>()
 
     private fun prefs(context: Context) =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -140,7 +147,13 @@ object OtpCopierManager {
         prefs(context).edit().putString(key, entries.joinToString(ENTRY_SEPARATOR)).apply()
     }
 
-    private fun compile(pattern: String): Regex? = runCatching { Regex(pattern) }.getOrNull()
+    private fun compile(pattern: String): Regex? {
+        compiledPatterns[pattern]?.let { return it }
+        val regex = runCatching { Regex(pattern) }.getOrNull() ?: return null
+        if (compiledPatterns.size >= MAX_COMPILED_PATTERNS) compiledPatterns.clear()
+        compiledPatterns[pattern] = regex
+        return regex
+    }
 
     private fun firstGroupOrMatch(match: MatchResult): String =
         match.groupValues.drop(1).firstOrNull { it.isNotEmpty() } ?: match.value
@@ -157,10 +170,17 @@ object OtpCopierManager {
 
     private fun matchKeywords(keywords: List<String>, text: String): String? {
         if (keywords.isEmpty()) return null
+        return keywordRegex(keywords).find(foldTurkishI(text))?.let(::firstGroupOrMatch)
+    }
+
+    private fun keywordRegex(keywords: List<String>): Regex {
+        val current = keywordMatcher
+        if (current != null && current.first == keywords) return current.second
         val words = keywords.joinToString("|") { Regex.escape(foldTurkishI(it)) }
         val keyword = "(?<!\\p{L})(?:$words)"
         val regex = Regex("(?iu)$keyword\\p{L}*\\D{0,40}?$CODE|$CODE\\D{0,40}?$keyword")
-        return regex.find(foldTurkishI(text))?.let(::firstGroupOrMatch)
+        keywordMatcher = keywords.toList() to regex
+        return regex
     }
 
     private fun copy(context: Context, code: String) {
