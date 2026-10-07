@@ -652,7 +652,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Saat ini semua notifikasi dari aplikasi ini dibisukan. Tambahkan pola judul atau isi di bawah untuk mempersempit aturan.</string>
     <string name="pn_ignored_edit_app_scope">Cakupan aplikasi: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Aturan ini hanya berlaku untuk notifikasi dari aplikasi ini.</string>
-    <string name="pn_ignore_scope_note">Mengabaikan hanya menyembunyikan notifikasi dari riwayat dalam aplikasi. Ini tidak memblokir notifikasinya sendiri atau memengaruhi fitur aplikasi lainnya.</string>
+    <string name="pn_ignore_scope_note">Notifikasi yang difilter disembunyikan dari riwayat dalam aplikasi dan tidak memicu aturan Anda. Aktifkan Hapus notifikasi agar juga ditutup dari panel notifikasi. Notifikasi yang sedang berlangsung tidak dapat dihapus.</string>
     <string name="pn_ignored_edit_cd">Edit aturan bisu</string>
     <string name="pn_ignored_edit_dialog_title">Edit aturan bisu</string>
     <string name="pn_ignored_edit_match_body">Pola isi</string>
@@ -660,7 +660,13 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_ignored_label_body">Isi:</string>
     <string name="pn_ignored_label_title">Judul:</string>
     <string name="pn_ignored_notifications_empty">Belum ada notifikasi yang diabaikan.\nAbaikan notifikasi dari log untuk menyembunyikannya di masa depan.</string>
-    <string name="pn_ignored_notifications_title">Notifikasi yang diabaikan</string>
+    <string name="pn_filters">Filter</string>
+    <string name="pn_filters_desc">%1$d filter, %2$d menghapus notifikasi</string>
+    <string name="pn_filter_add">Tambah filter</string>
+    <string name="pn_filter_pick_app">Pilih aplikasi</string>
+    <string name="pn_filter_block">Hapus notifikasi</string>
+    <string name="pn_filter_block_desc">Menutup notifikasi yang cocok dari panel notifikasi</string>
+    <string name="pn_ignored_notifications_title">Filter notifikasi</string>
     <string name="pn_ignored_restore_cd">Pulihkan notifikasi</string>
     <string name="pn_ignored_restore_confirm">Berhenti mengabaikan</string>
     <string name="pn_ignored_restore_confirm_title">Berhenti mengabaikan?</string>

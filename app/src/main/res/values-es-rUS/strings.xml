@@ -652,7 +652,7 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_ignored_edit_app_only_hint">Ahora se silencian todas las notificaciones de esta app. Agrega abajo un patrón de título o cuerpo para acotar la regla.</string>
     <string name="pn_ignored_edit_app_scope">Alcance de la app: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Esta regla solo se aplica a las notificaciones de esta app.</string>
-    <string name="pn_ignore_scope_note">Ignorar solo oculta las notificaciones del historial dentro de la app. No bloquea la notificación en sí ni afecta otras funciones de la app.</string>
+    <string name="pn_ignore_scope_note">Las notificaciones filtradas se ocultan del historial de la app y no activan tus reglas. Activa Quitar notificación para descartarlas también del panel de notificaciones. Las notificaciones persistentes no se pueden quitar.</string>
     <string name="pn_ignored_edit_cd">Editar regla de silencio</string>
     <string name="pn_ignored_edit_dialog_title">Editar regla de silencio</string>
     <string name="pn_ignored_edit_match_body">Patrón del cuerpo</string>
@@ -660,7 +660,13 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_ignored_label_body">Cuerpo:</string>
     <string name="pn_ignored_label_title">Título:</string>
     <string name="pn_ignored_notifications_empty">Aún no hay notificaciones ignoradas.\nIgnora una notificación desde los registros para suprimirla en el futuro.</string>
-    <string name="pn_ignored_notifications_title">Notificaciones ignoradas</string>
+    <string name="pn_filters">Filtros</string>
+    <string name="pn_filters_desc">%1$d filtros, %2$d quitan notificaciones</string>
+    <string name="pn_filter_add">Agregar filtro</string>
+    <string name="pn_filter_pick_app">Elige una app</string>
+    <string name="pn_filter_block">Quitar notificación</string>
+    <string name="pn_filter_block_desc">Descarta del panel las notificaciones que coinciden</string>
+    <string name="pn_ignored_notifications_title">Filtros de notificaciones</string>
     <string name="pn_ignored_restore_cd">Restaurar notificación</string>
     <string name="pn_ignored_restore_confirm">Dejar de ignorar</string>
     <string name="pn_ignored_restore_confirm_title">¿Dejar de ignorar?</string>

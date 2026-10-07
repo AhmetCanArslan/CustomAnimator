@@ -652,7 +652,7 @@
     <string name="pn_ignored_edit_app_only_hint">Сейчас заглушаются все уведомления этого приложения. Добавьте ниже шаблон заголовка или текста, чтобы сузить правило.</string>
     <string name="pn_ignored_edit_app_scope">Область приложения: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Это правило применяется только к уведомлениям этого приложения.</string>
-    <string name="pn_ignore_scope_note">Игнорирование только скрывает уведомления из истории в приложении. Оно не блокирует само уведомление и не влияет на другие функции приложения.</string>
+    <string name="pn_ignore_scope_note">Отфильтрованные уведомления скрываются из истории в приложении и не запускают правила. Включите «Убирать уведомление», чтобы они удалялись и из шторки. Постоянные уведомления убрать нельзя.</string>
     <string name="pn_ignored_edit_cd">Изменить правило заглушения</string>
     <string name="pn_ignored_edit_dialog_title">Изменить правило заглушения</string>
     <string name="pn_ignored_edit_match_body">Шаблон текста</string>
@@ -660,7 +660,13 @@
     <string name="pn_ignored_label_body">Текст:</string>
     <string name="pn_ignored_label_title">Заголовок:</string>
     <string name="pn_ignored_notifications_empty">Пока нет игнорируемых уведомлений.\nИгнорируйте уведомление из журнала, чтобы скрывать его в будущем.</string>
-    <string name="pn_ignored_notifications_title">Игнорируемые уведомления</string>
+    <string name="pn_filters">Фильтры</string>
+    <string name="pn_filters_desc">Фильтров: %1$d, убирают уведомления: %2$d</string>
+    <string name="pn_filter_add">Добавить фильтр</string>
+    <string name="pn_filter_pick_app">Выберите приложение</string>
+    <string name="pn_filter_block">Убирать уведомление</string>
+    <string name="pn_filter_block_desc">Удаляет подходящие уведомления из шторки</string>
+    <string name="pn_ignored_notifications_title">Фильтры уведомлений</string>
     <string name="pn_ignored_restore_cd">Восстановить уведомление</string>
     <string name="pn_ignored_restore_confirm">Не игнорировать</string>
     <string name="pn_ignored_restore_confirm_title">Прекратить игнорирование?</string>

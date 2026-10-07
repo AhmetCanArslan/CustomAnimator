@@ -695,7 +695,7 @@
     <string name="pn_ignored_edit_app_only_hint">يتم حاليًا كتم جميع إشعارات هذا التطبيق. أضف نمط عنوان أو نص أدناه لتضييق القاعدة على إشعارات محددة.</string>
     <string name="pn_ignored_edit_app_scope">نطاق التطبيق: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">تنطبق هذه القاعدة فقط على إشعارات هذا التطبيق.</string>
-    <string name="pn_ignore_scope_note">التجاهل يخفي الإشعارات فقط من سجل التطبيق. لا يحجب الإشعار نفسه ولا يؤثر على ميزات التطبيق الأخرى.</string>
+    <string name="pn_ignore_scope_note">تُخفى الإشعارات المفلترة من سجل التطبيق ولا تشغّل قواعدك. فعّل «إزالة الإشعار» لحذفها أيضًا من لوحة الإشعارات. لا يمكن إزالة الإشعارات المستمرة.</string>
     <string name="pn_ignored_edit_cd">تعديل قاعدة الكتم</string>
     <string name="pn_ignored_edit_dialog_title">تعديل قاعدة الكتم</string>
     <string name="pn_ignored_edit_match_body">نمط النص</string>
@@ -704,7 +704,13 @@
     <string name="pn_ignored_label_title">العنوان:</string>
     <string name="pn_ignored_notifications_empty">لا توجد إشعارات متجاهلة بعد.
 تجاهل إشعارًا من السجلات لكتمه في المستقبل.</string>
-    <string name="pn_ignored_notifications_title">الإشعارات المتجاهلة</string>
+    <string name="pn_filters">الفلاتر</string>
+    <string name="pn_filters_desc">%1$d فلاتر، %2$d منها تزيل الإشعارات</string>
+    <string name="pn_filter_add">إضافة فلتر</string>
+    <string name="pn_filter_pick_app">اختر تطبيقًا</string>
+    <string name="pn_filter_block">إزالة الإشعار</string>
+    <string name="pn_filter_block_desc">يحذف الإشعارات المطابقة من لوحة الإشعارات</string>
+    <string name="pn_ignored_notifications_title">فلاتر الإشعارات</string>
     <string name="pn_ignored_restore_cd">استعادة الإشعار</string>
     <string name="pn_ignored_restore_confirm">إيقاف التجاهل</string>
     <string name="pn_ignored_restore_confirm_title">إيقاف التجاهل؟</string>

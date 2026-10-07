@@ -672,7 +672,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_ignored_edit_app_only_hint">Al momento vengono silenziate tutte le notifiche di questa app. Aggiungi sotto un pattern di titolo o corpo per restringere la regola.</string>
     <string name="pn_ignored_edit_app_scope">Ambito app: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">Questa regola vale solo per le notifiche di questa app.</string>
-    <string name="pn_ignore_scope_note">Ignorare nasconde le notifiche solo dalla cronologia nell\'app. Non blocca la notifica stessa né influisce sulle altre funzioni dell\'app.</string>
+    <string name="pn_ignore_scope_note">Le notifiche filtrate vengono nascoste dalla cronologia nell\'app e non attivano le regole. Attiva Rimuovi notifica per eliminarle anche dall\'area notifiche. Le notifiche permanenti non possono essere rimosse.</string>
     <string name="pn_ignored_edit_cd">Modifica regola di silenziamento</string>
     <string name="pn_ignored_edit_dialog_title">Modifica regola di silenziamento</string>
     <string name="pn_ignored_edit_match_body">Pattern del corpo</string>
@@ -680,7 +680,13 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_ignored_label_body">Corpo:</string>
     <string name="pn_ignored_label_title">Titolo:</string>
     <string name="pn_ignored_notifications_empty">Nessuna notifica ignorata.\nIgnora una notifica dai registri per sopprimerla in futuro.</string>
-    <string name="pn_ignored_notifications_title">Notifiche ignorate</string>
+    <string name="pn_filters">Filtri</string>
+    <string name="pn_filters_desc">%1$d filtri, %2$d rimuovono le notifiche</string>
+    <string name="pn_filter_add">Aggiungi filtro</string>
+    <string name="pn_filter_pick_app">Scegli un\'app</string>
+    <string name="pn_filter_block">Rimuovi notifica</string>
+    <string name="pn_filter_block_desc">Elimina dall\'area notifiche quelle corrispondenti</string>
+    <string name="pn_ignored_notifications_title">Filtri notifiche</string>
     <string name="pn_ignored_restore_cd">Ripristina notifica</string>
     <string name="pn_ignored_restore_confirm">Smetti di ignorare</string>
     <string name="pn_ignored_restore_confirm_title">Smettere di ignorare?</string>
