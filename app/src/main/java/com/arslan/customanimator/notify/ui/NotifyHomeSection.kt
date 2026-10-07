@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -21,7 +22,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -48,6 +48,8 @@ import com.arslan.customanimator.hasAllNotifyPermissions
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.service.isPrimeNotifyServiceEnabled
 import com.arslan.customanimator.notify.service.setPrimeNotifyServiceEnabled
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ToggleRow
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import kotlinx.coroutines.launch
 
@@ -87,48 +89,26 @@ fun NotifyHomeSection(
             .fillMaxSize()
             .padding(horizontal = 16.dp, vertical = 12.dp)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (isServiceActive) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.pn_service_title),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = if (isServiceActive) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Text(
-                            text = if (isServiceActive) stringResource(R.string.pn_service_active) else stringResource(R.string.pn_service_disabled),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = if (isServiceActive) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
-                        )
+        AppCard(contentPadding = 16.dp, highlighted = isServiceActive) {
+            ToggleRow(
+                title = stringResource(R.string.pn_service_title),
+                subtitle = stringResource(
+                    if (isServiceActive) R.string.pn_service_active_desc else R.string.pn_service_disabled_desc
+                ),
+                icon = Icons.Filled.Notifications,
+                checked = isServiceActive,
+                onCheckedChange = {
+                    if (it && !allPermissionsGranted) {
+                        showPermissionDialog = true
+                    } else {
+                        isServiceActive = it
+                        setPrimeNotifyServiceEnabled(context, it)
                     }
-                    Switch(
-                        checked = isServiceActive,
-                        onCheckedChange = {
-                            if (it && !allPermissionsGranted) {
-                                showPermissionDialog = true
-                            } else {
-                                isServiceActive = it
-                                setPrimeNotifyServiceEnabled(context, it)
-                            }
-                        }
-                    )
                 }
-            }
+            )
+        }
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
