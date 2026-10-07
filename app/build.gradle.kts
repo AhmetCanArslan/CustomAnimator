@@ -97,6 +97,19 @@ android {
     androidResources {
         localeFilters += listOf("en", "ar", "fil", "es", "es-rUS", "in", "it", "pt", "pt-rBR", "ru", "tr")
     }
+    packaging {
+        resources {
+            excludes += setOf(
+                "kotlin/**",
+                "kotlin-tooling-metadata.json",
+                "DebugProbesKt.bin",
+                "META-INF/*.version",
+                "META-INF/**/*.version",
+                "META-INF/**/LICENSE.txt",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
 }
 
 kotlin {
