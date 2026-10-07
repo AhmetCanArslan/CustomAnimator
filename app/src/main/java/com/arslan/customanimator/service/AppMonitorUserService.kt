@@ -13,6 +13,23 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
 
     private var registered = false
 
+    private val activityManager: Any by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Class.forName("android.app.ActivityManager").getMethod("getService").invoke(null)
+        } else {
+            Class.forName("android.app.ActivityManagerNative").getMethod("getDefault").invoke(null)
+        } ?: error("activity manager unavailable")
+    }
+
+    private val packageManager: Any by lazy {
+        Class.forName("android.app.ActivityThread").getMethod("getPackageManager").invoke(null)
+            ?: error("package manager unavailable")
+    }
+
+    private val packagesForUidMethod by lazy {
+        packageManager.javaClass.getMethod("getPackagesForUid", Int::class.javaPrimitiveType)
+    }
+
     private val observer = object : IProcessObserver.Stub() {
         override fun onForegroundActivitiesChanged(pid: Int, uid: Int, foregroundActivities: Boolean) {
             deliver { it.onForegroundActivitiesChanged(pid, packagesForUid(uid), foregroundActivities) }
@@ -45,9 +62,9 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
         this.listener = listener
         if (!registered) {
             try {
-                activityManager().javaClass
+                activityManager.javaClass
                     .getMethod("registerProcessObserver", IProcessObserver::class.java)
-                    .invoke(activityManager(), observer)
+                    .invoke(activityManager, observer)
                 registered = true
             } catch (e: Throwable) {
                 Log.e(TAG, "registerProcessObserver failed", e)
@@ -62,9 +79,9 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
         try {
             val topState = ActivityManager::class.java.getField("PROCESS_STATE_TOP").getInt(null)
             val processStateField = ActivityManager.RunningAppProcessInfo::class.java.getField("processState")
-            val processes = activityManager().javaClass
+            val processes = activityManager.javaClass
                 .getMethod("getRunningAppProcesses")
-                .invoke(activityManager()) as? List<*> ?: return
+                .invoke(activityManager) as? List<*> ?: return
             processes
                 .filterIsInstance<ActivityManager.RunningAppProcessInfo>()
                 .filter { processStateField.getInt(it) == topState }
@@ -80,9 +97,9 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
     private fun unregister() {
         if (!registered) return
         runCatching {
-            activityManager().javaClass
+            activityManager.javaClass
                 .getMethod("unregisterProcessObserver", IProcessObserver::class.java)
-                .invoke(activityManager(), observer)
+                .invoke(activityManager, observer)
         }
         registered = false
     }
@@ -99,25 +116,12 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
 
     private fun packagesForUid(uid: Int): Array<String> {
         return try {
-            val packageManager = Class.forName("android.app.ActivityThread")
-                .getMethod("getPackageManager")
-                .invoke(null)
             @Suppress("UNCHECKED_CAST")
-            packageManager.javaClass
-                .getMethod("getPackagesForUid", Int::class.javaPrimitiveType)
-                .invoke(packageManager, uid) as? Array<String> ?: emptyArray()
+            packagesForUidMethod.invoke(packageManager, uid) as? Array<String> ?: emptyArray()
         } catch (e: Throwable) {
             Log.e(TAG, "getPackagesForUid failed for uid=$uid", e)
             emptyArray()
         }
-    }
-
-    private fun activityManager(): Any {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Class.forName("android.app.ActivityManager").getMethod("getService").invoke(null)
-        } else {
-            Class.forName("android.app.ActivityManagerNative").getMethod("getDefault").invoke(null)
-        } ?: error("activity manager unavailable")
     }
 
     private companion object {
