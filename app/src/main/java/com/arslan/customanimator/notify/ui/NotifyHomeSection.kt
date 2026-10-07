@@ -4,15 +4,13 @@ import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.History
@@ -29,8 +27,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -54,7 +52,10 @@ import com.arslan.customanimator.ui.components.DividerSoft
 import com.arslan.customanimator.ui.components.SettingRow
 import com.arslan.customanimator.ui.components.ToggleRow
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+private const val TEST_NOTIFICATION_DELAY_SECONDS = 4
 
 @Composable
 fun NotifyHomeSection(
@@ -66,6 +67,7 @@ fun NotifyHomeSection(
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
     var refreshState by remember { mutableIntStateOf(0) }
 
     DisposableEffect(lifecycleOwner) {
@@ -86,8 +88,6 @@ fun NotifyHomeSection(
 
     var isServiceActive by remember { mutableStateOf(isPrimeNotifyServiceEnabled(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
-
-    val notificationScope = remember { kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.Main + kotlinx.coroutines.SupervisorJob()) }
     var remainingSeconds by remember { mutableIntStateOf(0) }
 
     Column(
@@ -143,40 +143,29 @@ fun NotifyHomeSection(
             )
         }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    if (remainingSeconds == 0) {
-                        notificationScope.launch {
-                            remainingSeconds = 4
-                            while (remainingSeconds > 0) {
-                                kotlinx.coroutines.delay(1000)
-                                remainingSeconds--
-                            }
-                            sendTestNotification(context)
-                        }
-                    }
+        AppCard(contentPadding = 16.dp) {
+            SettingRow(
+                title = stringResource(R.string.pn_send_test_notification),
+                subtitle = if (remainingSeconds > 0) {
+                    stringResource(R.string.pn_sending_in_seconds, remainingSeconds)
+                } else {
+                    stringResource(R.string.pn_send_test_notification_desc)
                 },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = remainingSeconds == 0
-            ) {
-                Text(stringResource(R.string.pn_send_test_notification))
-            }
-
-            if (remainingSeconds > 0) {
-                Text(
-                    text = stringResource(R.string.pn_sending_in_seconds, remainingSeconds),
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = 8.dp, bottom = 24.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            } else {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+                icon = Icons.AutoMirrored.Filled.Send,
+                enabled = remainingSeconds == 0,
+                onClick = {
+                    coroutineScope.launch {
+                        remainingSeconds = TEST_NOTIFICATION_DELAY_SECONDS
+                        while (remainingSeconds > 0) {
+                            delay(1000)
+                            remainingSeconds--
+                        }
+                        sendTestNotification(context)
+                    }
+                }
+            )
         }
+    }
 
     if (showPermissionDialog) {
         AlertDialog(
