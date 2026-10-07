@@ -1,22 +1,28 @@
 package com.arslan.customanimator.notify.data
 
 import android.content.Context
+import com.arslan.customanimator.utils.ParsedPref
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class IgnoreManager(context: Context) {
 
     private val prefs = context.getSharedPreferences("prime_notify_ignore", Context.MODE_PRIVATE)
-    private val gson = Gson()
     private val KEY = "ignore_rules"
 
-    fun getRules(): List<IgnoreRule> {
-        val json = prefs.getString(KEY, null) ?: return emptyList()
-        return try {
-            val type = object : TypeToken<List<IgnoreRule>>() {}.type
-            gson.fromJson<List<IgnoreRule>>(json, type) ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
+    fun getRules(): List<IgnoreRule> = ruleSet().all
+
+    fun rulesFor(packageName: String): List<IgnoreRule> = ruleSet().byPackage[packageName].orEmpty()
+
+    private fun ruleSet(): RuleSet {
+        val json = prefs.getString(KEY, null) ?: return RuleSet.EMPTY
+        return parsedRules.get(json) {
+            try {
+                val type = object : TypeToken<List<IgnoreRule>>() {}.type
+                RuleSet(gson.fromJson<List<IgnoreRule>>(it, type) ?: emptyList())
+            } catch (e: Exception) {
+                RuleSet.EMPTY
+            }
         }
     }
 
@@ -55,4 +61,17 @@ class IgnoreManager(context: Context) {
 
     fun isIgnored(packageName: String, title: String, body: String): Boolean =
         IgnoreMatcher.isIgnored(getRules(), packageName, title, body)
+
+    private class RuleSet(val all: List<IgnoreRule>) {
+        val byPackage: Map<String, List<IgnoreRule>> by lazy { all.groupBy { it.packageName } }
+
+        companion object {
+            val EMPTY = RuleSet(emptyList())
+        }
+    }
+
+    private companion object {
+        val gson = Gson()
+        val parsedRules = ParsedPref<RuleSet>()
+    }
 }
