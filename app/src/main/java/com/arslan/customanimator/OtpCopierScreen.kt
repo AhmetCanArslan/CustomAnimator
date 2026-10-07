@@ -199,6 +199,29 @@ fun OtpCopierScreen(
                 )
             }
 
+            item {
+                SectionHeader(
+                    title = stringResource(R.string.otp_copier_excludes),
+                    subtitle = stringResource(R.string.otp_copier_excludes_desc)
+                )
+            }
+
+            item {
+                OtpWordsCard(
+                    words = excludes,
+                    emptyText = stringResource(R.string.otp_copier_excludes_empty),
+                    inputLabel = stringResource(R.string.otp_copier_exclude_add),
+                    onAdd = {
+                        OtpCopierManager.addExclude(context, it)
+                        excludes = OtpCopierManager.getExcludes(context)
+                    },
+                    onRemove = {
+                        OtpCopierManager.removeExclude(context, it)
+                        excludes = OtpCopierManager.getExcludes(context)
+                    }
+                )
+            }
+
             item { SectionHeader(title = stringResource(R.string.otp_copier_try)) }
 
             item { OtpTestCard(keywords = keywords, patterns = patterns, excludes = excludes) }
