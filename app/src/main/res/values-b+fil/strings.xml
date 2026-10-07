@@ -509,6 +509,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="otp_copier_add">Idagdag</string>
     <string name="otp_copier_keywords_empty">Wala pang salita. Magdagdag sa ibaba.</string>
     <string name="otp_copier_pattern_invalid">Hindi valid ang regex na ito</string>
+    <string name="otp_copier_excludes">Mga hindi kasamang salita</string>
+    <string name="otp_copier_excludes_desc">Hindi kailanman kinokopya ang mga mensaheng may alinman sa mga salitang ito</string>
+    <string name="otp_copier_exclude_add">Bagong hindi kasamang salita</string>
+    <string name="otp_copier_excludes_empty">Wala pang hindi kasama. Magdagdag ng salita para laktawan ang mga mensaheng mayroon nito.</string>
     <string name="otp_copier_try">Subukan</string>
     <string name="otp_copier_test">Test na mensahe</string>
     <string name="otp_copier_test_result">Nakitang code: %1$s</string>

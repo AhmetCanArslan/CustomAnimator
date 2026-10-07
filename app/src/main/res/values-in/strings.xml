@@ -509,6 +509,10 @@ Durasi Animator: %3$.2f</string>
     <string name="otp_copier_add">Tambah</string>
     <string name="otp_copier_keywords_empty">Belum ada kata. Tambahkan di bawah.</string>
     <string name="otp_copier_pattern_invalid">Regex ini tidak valid</string>
+    <string name="otp_copier_excludes">Kata yang dikecualikan</string>
+    <string name="otp_copier_excludes_desc">Pesan yang berisi salah satu kata ini tidak pernah disalin</string>
+    <string name="otp_copier_exclude_add">Kata pengecualian baru</string>
+    <string name="otp_copier_excludes_empty">Belum ada pengecualian. Tambahkan kata untuk melewati pesan yang memuatnya.</string>
     <string name="otp_copier_try">Coba</string>
     <string name="otp_copier_test">Pesan uji</string>
     <string name="otp_copier_test_result">Kode terdeteksi: %1$s</string>

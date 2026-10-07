@@ -509,6 +509,10 @@ Duração do Animador: %3$.2f</string>
     <string name="otp_copier_add">Adicionar</string>
     <string name="otp_copier_keywords_empty">Nenhuma palavra ainda. Adicione uma abaixo.</string>
     <string name="otp_copier_pattern_invalid">Esta regex não é válida</string>
+    <string name="otp_copier_excludes">Palavras excluídas</string>
+    <string name="otp_copier_excludes_desc">Mensagens que contêm qualquer uma destas palavras nunca são copiadas</string>
+    <string name="otp_copier_exclude_add">Nova palavra excluída</string>
+    <string name="otp_copier_excludes_empty">Nada excluído ainda. Adicione uma palavra para ignorar as mensagens que a contêm.</string>
     <string name="otp_copier_try">Experimente</string>
     <string name="otp_copier_test">Mensagem de teste</string>
     <string name="otp_copier_test_result">Código detectado: %1$s</string>

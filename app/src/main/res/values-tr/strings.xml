@@ -509,6 +509,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="otp_copier_add">Ekle</string>
     <string name="otp_copier_keywords_empty">Henüz kelime yok. Aşağıdan ekleyin.</string>
     <string name="otp_copier_pattern_invalid">Bu regex geçerli değil</string>
+    <string name="otp_copier_excludes">Hariç tutulan kelimeler</string>
+    <string name="otp_copier_excludes_desc">Bu kelimelerden birini içeren mesajlar hiç kopyalanmaz</string>
+    <string name="otp_copier_exclude_add">Yeni hariç tutulan kelime</string>
+    <string name="otp_copier_excludes_empty">Henüz hariç tutulan yok. İçeren mesajları atlamak için kelime ekleyin.</string>
     <string name="otp_copier_try">Dene</string>
     <string name="otp_copier_test">Test mesajı</string>
     <string name="otp_copier_test_result">Bulunan kod: %1$s</string>

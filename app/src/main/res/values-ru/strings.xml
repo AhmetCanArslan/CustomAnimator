@@ -509,6 +509,10 @@
     <string name="otp_copier_add">Добавить</string>
     <string name="otp_copier_keywords_empty">Слов пока нет. Добавьте ниже.</string>
     <string name="otp_copier_pattern_invalid">Это регулярное выражение некорректно</string>
+    <string name="otp_copier_excludes">Исключённые слова</string>
+    <string name="otp_copier_excludes_desc">Сообщения с любым из этих слов никогда не копируются</string>
+    <string name="otp_copier_exclude_add">Новое исключённое слово</string>
+    <string name="otp_copier_excludes_empty">Исключений пока нет. Добавьте слово, чтобы пропускать сообщения с ним.</string>
     <string name="otp_copier_try">Проверить</string>
     <string name="otp_copier_test">Тестовое сообщение</string>
     <string name="otp_copier_test_result">Найденный код: %1$s</string>

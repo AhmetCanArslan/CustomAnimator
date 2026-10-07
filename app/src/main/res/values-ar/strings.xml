@@ -54,6 +54,10 @@
     <string name="otp_copier_add">إضافة</string>
     <string name="otp_copier_keywords_empty">لا توجد كلمات بعد. أضف واحدة أدناه.</string>
     <string name="otp_copier_pattern_invalid">هذا التعبير النمطي غير صالح</string>
+    <string name="otp_copier_excludes">الكلمات المستثناة</string>
+    <string name="otp_copier_excludes_desc">الرسائل التي تحتوي على أي من هذه الكلمات لا تُنسخ أبدًا</string>
+    <string name="otp_copier_exclude_add">كلمة مستثناة جديدة</string>
+    <string name="otp_copier_excludes_empty">لا توجد استثناءات بعد. أضف كلمة لتخطي الرسائل التي تحتويها.</string>
     <string name="otp_copier_try">جرّب</string>
     <string name="otp_copier_test">رسالة اختبار</string>
     <string name="otp_copier_test_result">الرمز المكتشف: %1$s</string>

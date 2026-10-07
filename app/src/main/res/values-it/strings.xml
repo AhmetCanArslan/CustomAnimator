@@ -529,6 +529,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="otp_copier_add">Aggiungi</string>
     <string name="otp_copier_keywords_empty">Ancora nessuna parola. Aggiungine una qui sotto.</string>
     <string name="otp_copier_pattern_invalid">Questa regex non è valida</string>
+    <string name="otp_copier_excludes">Parole escluse</string>
+    <string name="otp_copier_excludes_desc">I messaggi che contengono una di queste parole non vengono mai copiati</string>
+    <string name="otp_copier_exclude_add">Nuova parola esclusa</string>
+    <string name="otp_copier_excludes_empty">Ancora nessuna esclusione. Aggiungi una parola per saltare i messaggi che la contengono.</string>
     <string name="otp_copier_try">Provalo</string>
     <string name="otp_copier_test">Messaggio di prova</string>
     <string name="otp_copier_test_result">Codice rilevato: %1$s</string>
