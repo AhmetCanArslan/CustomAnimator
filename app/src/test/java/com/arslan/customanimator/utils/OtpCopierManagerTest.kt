@@ -31,6 +31,29 @@ class OtpCopierManagerTest {
         OtpCopierManager.setEnabled(context, false)
         OtpCopierManager.resetKeywords(context)
         OtpCopierManager.getPatterns(context).forEach { OtpCopierManager.removePattern(context, it) }
+        OtpCopierManager.getExcludes(context).forEach { OtpCopierManager.removeExclude(context, it) }
+    }
+
+    @Test
+    fun excludedWordsSkipTheMessageEvenWhenACodeMatches() {
+        val keywords = OtpCopierManager.DEFAULT_KEYWORDS
+        val text = "KAMPANYA! İndirim kodu 482913 ile alışveriş yapın"
+        assertEquals("482913", OtpCopierManager.extractCode(keywords, emptyList(), emptyList(), text))
+        assertNull(OtpCopierManager.extractCode(keywords, emptyList(), listOf("kampanya"), text))
+        assertNull(OtpCopierManager.extractCode(keywords, listOf("\\d{6}"), listOf("indirim"), text))
+        assertEquals("111222", OtpCopierManager.extractCode(keywords, emptyList(), listOf("kampanya"), "Your code is 111222"))
+    }
+
+    @Test
+    fun excludesRoundTripAndApplyToNotifications() {
+        assertTrue(OtpCopierManager.addExclude(context, " promo "))
+        assertFalse(OtpCopierManager.addExclude(context, "PROMO"))
+        assertEquals(listOf("promo"), OtpCopierManager.getExcludes(context))
+        OtpCopierManager.setEnabled(context, true)
+        OtpCopierManager.onNotification(context, "excluded", "Promo code 909090 for you")
+        assertNull(clipboardText())
+        OtpCopierManager.removeExclude(context, "promo")
+        assertTrue(OtpCopierManager.getExcludes(context).isEmpty())
     }
 
     @Test
