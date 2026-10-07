@@ -702,7 +702,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_ignored_edit_app_only_hint">Currently muting all notifications from this app. Add a header or body pattern below to narrow the rule to specific notifications.</string>
     <string name="pn_ignored_edit_app_scope">App scope: %1$s</string>
     <string name="pn_ignored_edit_app_scope_hint">This rule applies only to notifications from this app.</string>
-    <string name="pn_ignore_scope_note">Ignoring only hides notifications from the in-app history. It does not block the notification itself or affect other app features.</string>
+    <string name="pn_ignore_scope_note">Filtered notifications are hidden from the in-app history and skip your rules. Turn on Remove notification to also dismiss them from the notification shade. Ongoing notifications cannot be removed.</string>
     <string name="pn_ignored_edit_cd">Edit mute rule</string>
     <string name="pn_ignored_edit_dialog_title">Edit Mute Rule</string>
     <string name="pn_ignored_edit_match_body">Body pattern</string>
@@ -717,7 +717,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_filter_pick_app">Choose an app</string>
     <string name="pn_filter_block">Remove notification</string>
     <string name="pn_filter_block_desc">Dismisses matching notifications from the notification shade</string>
-    <string name="pn_ignored_notifications_title">Ignored Notifications</string>
+    <string name="pn_ignored_notifications_title">Notification Filters</string>
     <string name="pn_ignored_restore_cd">Restore notification</string>
     <string name="pn_ignored_restore_confirm">Stop Ignoring</string>
     <string name="pn_ignored_restore_confirm_title">Stop ignoring?</string>
