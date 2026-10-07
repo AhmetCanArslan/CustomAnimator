@@ -353,6 +353,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var profilesRefreshToken by rememberSaveable { mutableIntStateOf(0) }
     var editingRuleId by rememberSaveable { mutableStateOf<String?>(null) }
     var notifyRuleReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_RULES) }
+    var notifyIgnoredReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_LOGGING) }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     var terminalCommand by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -533,7 +534,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
 
     val notifyBack: () -> Unit = {
         when (currentScreen) {
-            HomeScreen.NOTIFY_IGNORED -> currentScreen = HomeScreen.NOTIFY_LOGGING
+            HomeScreen.NOTIFY_IGNORED -> currentScreen = notifyIgnoredReturnScreen
             HomeScreen.NOTIFY_ADD_EDIT_RULE -> currentScreen = notifyRuleReturnScreen
             HomeScreen.NOTIFY_CREATE_PATTERN -> currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
             else -> currentScreen = HomeScreen.NOTIFY_HOME
@@ -757,7 +758,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     } else if (targetScreen == HomeScreen.NOTIFY_LOGGING) {
         LoggingSection(
             onNavigateBack = notifyBack,
-            onNavigateToIgnored = { currentScreen = HomeScreen.NOTIFY_IGNORED },
+            onNavigateToIgnored = {
+                notifyIgnoredReturnScreen = HomeScreen.NOTIFY_LOGGING
+                currentScreen = HomeScreen.NOTIFY_IGNORED
+            },
             onNavigateToAddEditRule = {
                 editingRuleId = null
                 notifyRuleReturnScreen = HomeScreen.NOTIFY_LOGGING
@@ -789,6 +793,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         ) {
             NotifyHomeSection(
                 onNavigateToRules = { currentScreen = HomeScreen.NOTIFY_RULES },
+                onNavigateToFilters = {
+                    notifyIgnoredReturnScreen = HomeScreen.NOTIFY_HOME
+                    currentScreen = HomeScreen.NOTIFY_IGNORED
+                },
+                onNavigateToHistory = { currentScreen = HomeScreen.NOTIFY_LOGGING },
                 onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
             )
         }
