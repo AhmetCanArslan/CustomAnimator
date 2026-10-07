@@ -184,8 +184,10 @@ fun OtpCopierScreen(
             }
 
             item {
-                OtpKeywordsCard(
-                    keywords = keywords,
+                OtpWordsCard(
+                    words = keywords,
+                    emptyText = stringResource(R.string.otp_copier_keywords_empty),
+                    inputLabel = stringResource(R.string.otp_copier_keyword_add),
                     onAdd = {
                         OtpCopierManager.addKeyword(context, it)
                         keywords = OtpCopierManager.getKeywords(context)
@@ -305,25 +307,27 @@ private fun OtpSensitiveAccessCard(
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-private fun OtpKeywordsCard(
-    keywords: List<String>,
+private fun OtpWordsCard(
+    words: List<String>,
+    emptyText: String,
+    inputLabel: String,
     onAdd: (String) -> Unit,
     onRemove: (String) -> Unit
 ) {
     AppCard(contentPadding = 16.dp) {
-        if (keywords.isEmpty()) {
+        if (words.isEmpty()) {
             Text(
-                text = stringResource(R.string.otp_copier_keywords_empty),
+                text = emptyText,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            keywords.forEach { keyword ->
+            words.forEach { word ->
                 InputChip(
                     selected = false,
-                    onClick = { onRemove(keyword) },
-                    label = { Text(keyword) },
+                    onClick = { onRemove(word) },
+                    label = { Text(word) },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Filled.Close,
@@ -336,9 +340,9 @@ private fun OtpKeywordsCard(
         }
         Spacer(modifier = Modifier.height(8.dp))
         OtpAddField(
-            label = stringResource(R.string.otp_copier_keyword_add),
+            label = inputLabel,
             errorText = null,
-            isValid = { word -> keywords.none { it.equals(word.trim(), ignoreCase = true) } },
+            isValid = { word -> words.none { it.equals(word.trim(), ignoreCase = true) } },
             onAdd = onAdd
         )
     }
