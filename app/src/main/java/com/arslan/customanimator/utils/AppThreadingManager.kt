@@ -196,15 +196,15 @@ object CpuTopology {
 
     private fun readMaxFrequencies(): List<Long> {
         val count = Runtime.getRuntime().availableProcessors()
-        val frequencies = mutableListOf<Long>()
-        for (index in 0 until count) {
-            val result = ShizukuHelper.executeShellCommandWithOutput(
-                arrayOf("cat", "/sys/devices/system/cpu/cpu$index/cpufreq/cpuinfo_max_freq")
-            )
-            val frequency = result.output.trim().toLongOrNull()
-            if (!result.isSuccess || frequency == null || frequency <= 0L) return emptyList()
-            frequencies.add(frequency)
-        }
+        val paths = (0 until count).map { "/sys/devices/system/cpu/cpu$it/cpufreq/cpuinfo_max_freq" }
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("cat", *paths.toTypedArray()))
+        if (!result.isSuccess) return emptyList()
+        val frequencies = result.output.lineSequence()
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+            .map { it.toLongOrNull() ?: 0L }
+            .toList()
+        if (frequencies.size != count || frequencies.any { it <= 0L }) return emptyList()
         return frequencies
     }
 }
