@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,19 +45,23 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.R
 import com.arslan.customanimator.hasAllNotifyPermissions
+import com.arslan.customanimator.notify.data.IgnoreManager
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.service.isPrimeNotifyServiceEnabled
 import com.arslan.customanimator.notify.service.setPrimeNotifyServiceEnabled
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.DividerSoft
+import com.arslan.customanimator.ui.components.SettingRow
 import com.arslan.customanimator.ui.components.ToggleRow
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotifyHomeSection(
     modifier: Modifier = Modifier,
     onNavigateToRules: () -> Unit = {},
+    onNavigateToFilters: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {},
     onNavigateToPermissions: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -77,6 +81,8 @@ fun NotifyHomeSection(
     }
 
     val allPermissionsGranted = remember(refreshState) { hasAllNotifyPermissions(context) }
+    val ruleCount = remember(refreshState) { RulesManager(context).getRules().size }
+    val filters = remember(refreshState) { IgnoreManager(context).getRules() }
 
     var isServiceActive by remember { mutableStateOf(isPrimeNotifyServiceEnabled(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
@@ -110,42 +116,32 @@ fun NotifyHomeSection(
             )
         }
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = onNavigateToRules,
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.pn_rules),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        val ruleCount = remember(refreshState) {
-                            RulesManager(context).getRules().size
-                        }
-                        Text(
-                            text = stringResource(R.string.pn_rules_count, ruleCount),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = stringResource(R.string.settings),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
+        AppCard(contentPadding = 16.dp) {
+            NotifyNavigationRow(
+                icon = Icons.Filled.Bolt,
+                title = stringResource(R.string.pn_rules),
+                subtitle = stringResource(R.string.pn_rules_desc, ruleCount),
+                onClick = onNavigateToRules
+            )
+            DividerSoft()
+            NotifyNavigationRow(
+                icon = Icons.Filled.FilterAlt,
+                title = stringResource(R.string.pn_filters),
+                subtitle = stringResource(
+                    R.string.pn_filters_desc,
+                    filters.size,
+                    filters.count { it.blocksNotification }
+                ),
+                onClick = onNavigateToFilters
+            )
+            DividerSoft()
+            NotifyNavigationRow(
+                icon = Icons.Filled.History,
+                title = stringResource(R.string.pn_nav_logging),
+                subtitle = stringResource(R.string.pn_history_desc),
+                onClick = onNavigateToHistory
+            )
+        }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -210,6 +206,28 @@ fun NotifyHomeSection(
             }
         )
     }
+}
+
+@Composable
+private fun NotifyNavigationRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
+    SettingRow(
+        title = title,
+        subtitle = subtitle,
+        icon = icon,
+        onClick = onClick,
+        trailing = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    )
 }
 
 @Preview(showBackground = true)
