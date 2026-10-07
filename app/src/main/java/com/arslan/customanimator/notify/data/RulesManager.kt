@@ -11,7 +11,6 @@ class RulesManager(private val context: Context) {
 
     private val CUSTOM_PATTERNS_KEY = "custom_patterns_list"
     private val HAS_PROXIMITY_SENSOR_KEY = "has_proximity_sensor"
-    private val RULE_THROTTLE_KEY = "rule_throttle_"
 
     fun hasProximitySensor(): Boolean {
         if (!prefs.contains(HAS_PROXIMITY_SENSOR_KEY)) {
@@ -107,12 +106,16 @@ class RulesManager(private val context: Context) {
     }
 
     fun shouldThrottleRule(ruleId: String): Boolean {
-        val lastExecution = prefs.getLong("$RULE_THROTTLE_KEY$ruleId", 0L)
-        val currentTime = System.currentTimeMillis()
-        return (currentTime - lastExecution) < 10000L
+        val lastExecution = lastExecutions[ruleId] ?: return false
+        return (System.currentTimeMillis() - lastExecution) < THROTTLE_WINDOW_MS
     }
 
     fun updateRuleExecutionTime(ruleId: String) {
-        prefs.edit().putLong("$RULE_THROTTLE_KEY$ruleId", System.currentTimeMillis()).apply()
+        lastExecutions[ruleId] = System.currentTimeMillis()
+    }
+
+    private companion object {
+        const val THROTTLE_WINDOW_MS = 10000L
+        val lastExecutions = java.util.concurrent.ConcurrentHashMap<String, Long>()
     }
 }
