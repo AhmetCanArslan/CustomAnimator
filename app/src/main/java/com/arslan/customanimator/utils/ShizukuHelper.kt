@@ -33,6 +33,15 @@ object ShizukuHelper {
 
     private val startupBinder = CountDownLatch(1)
 
+    private val newProcessMethod: Method by lazy {
+        Shizuku::class.java.getDeclaredMethod(
+            "newProcess",
+            Array<String>::class.java,
+            Array<String>::class.java,
+            String::class.java
+        ).apply { isAccessible = true }
+    }
+
     init {
         try {
             Shizuku.addBinderReceivedListenerSticky { startupBinder.countDown() }
@@ -177,14 +186,6 @@ object ShizukuHelper {
                 return false
             }
 
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
-            )
-            newProcessMethod.isAccessible = true
-
             @Suppress("UNCHECKED_CAST")
             val process = newProcessMethod.invoke(
                 null,
@@ -209,14 +210,6 @@ object ShizukuHelper {
                 Log.d(TAG, "Shizuku permission not granted for command: ${command.joinToString(" ")}")
                 return ShellResult(-1, "Shizuku permission not granted")
             }
-
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
-            )
-            newProcessMethod.isAccessible = true
 
             val process = newProcessMethod.invoke(null, command, null, null) as Any
 
