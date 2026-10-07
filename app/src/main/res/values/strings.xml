@@ -711,6 +711,12 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_ignored_label_title">Title:</string>
     <string name="pn_ignored_notifications_empty">No ignored notifications yet.
 Ignore a notification from the logs to suppress it in the future.</string>
+    <string name="pn_filters">Filters</string>
+    <string name="pn_filters_desc">%1$d filters, %2$d removing notifications</string>
+    <string name="pn_filter_add">Add filter</string>
+    <string name="pn_filter_pick_app">Choose an app</string>
+    <string name="pn_filter_block">Remove notification</string>
+    <string name="pn_filter_block_desc">Dismisses matching notifications from the notification shade</string>
     <string name="pn_ignored_notifications_title">Ignored Notifications</string>
     <string name="pn_ignored_restore_cd">Restore notification</string>
     <string name="pn_ignored_restore_confirm">Stop Ignoring</string>
