@@ -686,6 +686,11 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_filter_pick_app">Scegli un\'app</string>
     <string name="pn_filter_block">Rimuovi notifica</string>
     <string name="pn_filter_block_desc">Elimina dall\'area notifiche quelle corrispondenti</string>
+    <string name="pn_rules_desc">%1$d regole che usano il flash, attivano lo schermo o alimentano i widget</string>
+    <string name="pn_history_desc">Tutto ciò che è arrivato, con silenziamento in un tocco</string>
+    <string name="pn_service_active_desc">Attivo. Regole e filtri sono in esecuzione</string>
+    <string name="pn_service_disabled_desc">Disattivato. Regole e filtri sono in pausa</string>
+    <string name="pn_send_test_notification_desc">Verifica che le regole reagiscano</string>
     <string name="pn_ignored_notifications_title">Filtri notifiche</string>
     <string name="pn_ignored_restore_cd">Ripristina notifica</string>
     <string name="pn_ignored_restore_confirm">Smetti di ignorare</string>

@@ -666,6 +666,11 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_filter_pick_app">Pilih aplikasi</string>
     <string name="pn_filter_block">Hapus notifikasi</string>
     <string name="pn_filter_block_desc">Menutup notifikasi yang cocok dari panel notifikasi</string>
+    <string name="pn_rules_desc">%1$d aturan yang menyalakan flash, membangunkan layar, atau mengisi widget</string>
+    <string name="pn_history_desc">Semua yang masuk, bisukan dengan sekali ketuk</string>
+    <string name="pn_service_active_desc">Aktif. Aturan dan filter berjalan</string>
+    <string name="pn_service_disabled_desc">Mati. Aturan dan filter dijeda</string>
+    <string name="pn_send_test_notification_desc">Memeriksa apakah aturan Anda bereaksi</string>
     <string name="pn_ignored_notifications_title">Filter notifikasi</string>
     <string name="pn_ignored_restore_cd">Pulihkan notifikasi</string>
     <string name="pn_ignored_restore_confirm">Berhenti mengabaikan</string>

@@ -666,6 +666,11 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_filter_pick_app">Pumili ng app</string>
     <string name="pn_filter_block">Alisin ang notification</string>
     <string name="pn_filter_block_desc">Inaalis sa notification shade ang mga tumutugmang notification</string>
+    <string name="pn_rules_desc">%1$d rule na nagpapa-flash, gumigising sa screen o nagpapakain sa widget</string>
+    <string name="pn_history_desc">Lahat ng dumating, i-mute sa isang tap</string>
+    <string name="pn_service_active_desc">Aktibo. Tumatakbo ang mga rule at filter</string>
+    <string name="pn_service_disabled_desc">Naka-off. Naka-pause ang mga rule at filter</string>
+    <string name="pn_send_test_notification_desc">Sinusuri kung tumutugon ang mga rule mo</string>
     <string name="pn_ignored_notifications_title">Mga filter ng notification</string>
     <string name="pn_ignored_restore_cd">Ibalik ang notification</string>
     <string name="pn_ignored_restore_confirm">Huwag nang balewalain</string>

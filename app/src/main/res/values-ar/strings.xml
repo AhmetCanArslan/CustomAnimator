@@ -710,6 +710,11 @@
     <string name="pn_filter_pick_app">اختر تطبيقًا</string>
     <string name="pn_filter_block">إزالة الإشعار</string>
     <string name="pn_filter_block_desc">يحذف الإشعارات المطابقة من لوحة الإشعارات</string>
+    <string name="pn_rules_desc">%1$d قواعد تشغّل الفلاش أو توقظ الشاشة أو تغذّي الأدوات</string>
+    <string name="pn_history_desc">كل ما وصل، مع كتم بنقرة واحدة</string>
+    <string name="pn_service_active_desc">مفعّل. القواعد والفلاتر تعمل</string>
+    <string name="pn_service_disabled_desc">متوقف. القواعد والفلاتر متوقفة مؤقتًا</string>
+    <string name="pn_send_test_notification_desc">يتحقق من استجابة قواعدك</string>
     <string name="pn_ignored_notifications_title">فلاتر الإشعارات</string>
     <string name="pn_ignored_restore_cd">استعادة الإشعار</string>
     <string name="pn_ignored_restore_confirm">إيقاف التجاهل</string>

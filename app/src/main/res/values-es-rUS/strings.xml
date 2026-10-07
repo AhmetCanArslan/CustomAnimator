@@ -666,6 +666,11 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_filter_pick_app">Elige una app</string>
     <string name="pn_filter_block">Quitar notificación</string>
     <string name="pn_filter_block_desc">Descarta del panel las notificaciones que coinciden</string>
+    <string name="pn_rules_desc">%1$d reglas que encienden el flash, activan la pantalla o alimentan widgets</string>
+    <string name="pn_history_desc">Todo lo que llegó, con silencio en un toque</string>
+    <string name="pn_service_active_desc">Activo. Las reglas y los filtros están funcionando</string>
+    <string name="pn_service_disabled_desc">Apagado. Las reglas y los filtros están en pausa</string>
+    <string name="pn_send_test_notification_desc">Comprueba que tus reglas reaccionan</string>
     <string name="pn_ignored_notifications_title">Filtros de notificaciones</string>
     <string name="pn_ignored_restore_cd">Restaurar notificación</string>
     <string name="pn_ignored_restore_confirm">Dejar de ignorar</string>

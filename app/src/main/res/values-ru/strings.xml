@@ -666,6 +666,11 @@
     <string name="pn_filter_pick_app">Выберите приложение</string>
     <string name="pn_filter_block">Убирать уведомление</string>
     <string name="pn_filter_block_desc">Удаляет подходящие уведомления из шторки</string>
+    <string name="pn_rules_desc">Правил: %1$d. Вспышка, включение экрана и виджеты</string>
+    <string name="pn_history_desc">Всё, что пришло, с отключением в одно касание</string>
+    <string name="pn_service_active_desc">Включено. Правила и фильтры работают</string>
+    <string name="pn_service_disabled_desc">Выключено. Правила и фильтры приостановлены</string>
+    <string name="pn_send_test_notification_desc">Проверяет, что правила срабатывают</string>
     <string name="pn_ignored_notifications_title">Фильтры уведомлений</string>
     <string name="pn_ignored_restore_cd">Восстановить уведомление</string>
     <string name="pn_ignored_restore_confirm">Не игнорировать</string>
