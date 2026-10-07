@@ -19,9 +19,11 @@ import androidx.core.app.ServiceCompat
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.FlashPattern
 import com.arslan.customanimator.notify.data.IgnoreManager
+import com.arslan.customanimator.notify.data.IgnoreMatcher
 import com.arslan.customanimator.notify.data.LoggingManager
 import com.arslan.customanimator.notify.data.LoggingPreferences
 import com.arslan.customanimator.notify.data.MatchedRuleInfo
+import com.arslan.customanimator.notify.data.RuleAction
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.NotificationGate
 import com.arslan.customanimator.notify.data.RuleMatcher
@@ -38,6 +40,17 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class NotifyListenerService : NotificationListenerService() {
+
+    private class PostedNotification(
+        val packageName: String,
+        val title: String,
+        val text: String,
+        val bigText: String,
+    ) {
+        val body: String = bigText.ifBlank { text }
+    }
+
+    private class RingerState(val isVibration: Boolean, val isSilent: Boolean, val isDND: Boolean)
 
     private lateinit var rulesManager: RulesManager
     private lateinit var ignoreManager: IgnoreManager
@@ -80,66 +93,58 @@ class NotifyListenerService : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
-        if (sbn == null) return
+        if (sbn != null) handlePosted(sbn)
+        super.onNotificationPosted(sbn)
+    }
 
-        val packageName = sbn.packageName
+    private fun handlePosted(sbn: StatusBarNotification) {
         val extras = sbn.notification.extras
+        val posted = PostedNotification(
+            packageName = sbn.packageName,
+            title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: "",
+            text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: "",
+            bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: "",
+        )
+        val isOwnPackage = posted.packageName == packageName
 
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
-        val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString() ?: ""
-        val bigText = extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString() ?: ""
-        val bodyRaw = bigText.ifBlank { text }
-
-        if (packageName != this.packageName) {
-            OtpCopierManager.onNotification(this, sbn.key, "$title\n$bodyRaw")
+        if (!isOwnPackage && OtpCopierManager.isEnabled(this)) {
+            OtpCopierManager.onNotification(this, sbn.key, "${posted.title}\n${posted.body}")
         }
-
-        val isOwnServiceNotification = packageName == this.packageName &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-            sbn.notification.channelId == PERSISTENT_CHANNEL_ID
 
         val shouldProcess = NotificationGate.shouldProcess(
             isServiceEnabled = isPrimeNotifyServiceEnabled(this),
-            isOwnServiceNotification = isOwnServiceNotification,
+            isOwnServiceNotification = isOwnPackage && isPersistentChannel(sbn),
         )
-        if (!shouldProcess) {
-            super.onNotificationPosted(sbn)
-            return
+        if (!shouldProcess) return
+
+        val ignoredBy = ignoreManager.rulesFor(posted.packageName).filter {
+            IgnoreMatcher.matches(it, posted.packageName, posted.title, posted.body)
         }
+        if (ignoredBy.isNotEmpty()) return
 
-        if (ignoreManager.isIgnored(packageName, title, bodyRaw)) {
-            super.onNotificationPosted(sbn)
-            return
-        }
+        logNotification(posted, runRules(posted))
+    }
 
-        val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val ringerMode = am.ringerMode
-        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val interruptionFilter = nm.currentInterruptionFilter
+    private fun isPersistentChannel(sbn: StatusBarNotification): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && sbn.notification.channelId == PERSISTENT_CHANNEL_ID
 
-        val isVibration = ringerMode == AudioManager.RINGER_MODE_VIBRATE
-        val isSilent = ringerMode == AudioManager.RINGER_MODE_SILENT
-        val isDND = interruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
+    private fun runRules(posted: PostedNotification): List<MatchedRuleInfo> {
+        val candidates = rulesManager.enabledRulesFor(posted.packageName)
+        if (candidates.isEmpty()) return emptyList()
 
-        val allLoggedRules = mutableListOf<MatchedRuleInfo>()
+        val content = RuleMatcher.Content(posted.title, posted.text, posted.bigText)
+        val ringer by lazy(LazyThreadSafetyMode.NONE) { readRingerState() }
+        val matched = ArrayList<MatchedRuleInfo>()
 
-        val appName = try {
-            packageManager.getApplicationLabel(
-                packageManager.getApplicationInfo(packageName, 0)
-            ).toString()
-        } catch (e: PackageManager.NameNotFoundException) {
-            packageName
-        }
-
-        for (rule in rulesManager.getRules().filter { it.isEnabled }) {
-            if (!RuleMatcher.matches(rule, packageName, title, text, bigText)) continue
+        for (rule in candidates) {
+            if (!RuleMatcher.matchesKeywords(rule, content)) continue
 
             val shouldExecute = RuleMatcher.shouldExecute(
                 rule = rule,
                 isThrottled = rulesManager.shouldThrottleRule(rule.id),
-                isVibration = isVibration,
-                isSilent = isSilent,
-                isDND = isDND,
+                isVibration = ringer.isVibration,
+                isSilent = ringer.isSilent,
+                isDND = ringer.isDND,
             )
 
             if (shouldExecute) rulesManager.updateRuleExecutionTime(rule.id)
@@ -147,50 +152,8 @@ class NotifyListenerService : NotificationListenerService() {
             val ruleLabel = buildRuleLabel(rule.appNames, rule.keywords, rule.titleKeywords, rule.bodyKeywords)
 
             for (action in rule.actions) {
-                if (shouldExecute) {
-                    when (action.type) {
-                        RuleType.FLASH -> {
-                            val customPattern = action.customPatternId?.let { id ->
-                                rulesManager.getCustomPatterns().find { it.id == id }
-                            }
-                            if (customPattern != null) {
-                                flashManager.executeCustomPattern(customPattern.intervals)
-                            } else {
-                                flashManager.executePattern(action.flashPattern ?: FlashPattern.HEARTBEAT)
-                            }
-                        }
-                        RuleType.WAKE_UP -> {
-                            screenWakeManager.wakeScreen(
-                                durationSeconds = action.screenDurationSeconds ?: 10,
-                                pocketModeEnabled = action.pocketModeEnabled ?: true,
-                            )
-                        }
-                        RuleType.AOD -> {
-                            aodManager.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
-                        }
-                        RuleType.FLASH_SCREEN -> {
-                            val color = ScreenFlashColor.fromName(action.screenFlashColor)
-                            screenFlashManager.triggerFlash(
-                                color = color,
-                                durationSeconds = action.screenFlashDurationSeconds ?: 5,
-                            )
-                        }
-                        RuleType.WIDGET -> {
-                            val item = WidgetNotification(
-                                packageName = packageName,
-                                appName = appName,
-                                title = title,
-                                body = if (action.widgetKeepBody != false) bodyRaw else "",
-                                ruleId = rule.id,
-                            )
-                            ioScope.launch {
-                                WidgetNotificationStore.add(applicationContext, item)
-                                WidgetNotificationStore.notifyWidgets(applicationContext)
-                            }
-                        }
-                    }
-                }
-                allLoggedRules.add(
+                if (shouldExecute) execute(action, rule.id, posted)
+                matched.add(
                     MatchedRuleInfo(
                         ruleId = rule.id,
                         ruleName = ruleLabel,
@@ -200,34 +163,96 @@ class NotifyListenerService : NotificationListenerService() {
                 )
             }
         }
+        return matched
+    }
 
+    private fun readRingerState(): RingerState {
+        val ringerMode = (getSystemService(Context.AUDIO_SERVICE) as AudioManager).ringerMode
+        val interruptionFilter =
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).currentInterruptionFilter
+        return RingerState(
+            isVibration = ringerMode == AudioManager.RINGER_MODE_VIBRATE,
+            isSilent = ringerMode == AudioManager.RINGER_MODE_SILENT,
+            isDND = interruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL,
+        )
+    }
+
+    private fun execute(action: RuleAction, ruleId: String, posted: PostedNotification) {
+        when (action.type) {
+            RuleType.FLASH -> flash(action)
+            RuleType.WAKE_UP -> screenWakeManager.wakeScreen(
+                durationSeconds = action.screenDurationSeconds ?: 10,
+                pocketModeEnabled = action.pocketModeEnabled ?: true,
+            )
+            RuleType.AOD -> aodManager.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
+            RuleType.FLASH_SCREEN -> screenFlashManager.triggerFlash(
+                color = ScreenFlashColor.fromName(action.screenFlashColor),
+                durationSeconds = action.screenFlashDurationSeconds ?: 5,
+            )
+            RuleType.WIDGET -> addToWidget(action, ruleId, posted)
+        }
+    }
+
+    private fun flash(action: RuleAction) {
+        val customPattern = action.customPatternId?.let { id ->
+            rulesManager.getCustomPatterns().find { it.id == id }
+        }
+        if (customPattern != null) {
+            flashManager.executeCustomPattern(customPattern.intervals)
+        } else {
+            flashManager.executePattern(action.flashPattern ?: FlashPattern.HEARTBEAT)
+        }
+    }
+
+    private fun addToWidget(action: RuleAction, ruleId: String, posted: PostedNotification) {
+        val timestamp = System.currentTimeMillis()
+        ioScope.launch {
+            val item = WidgetNotification(
+                timestamp = timestamp,
+                packageName = posted.packageName,
+                appName = appLabel(posted.packageName),
+                title = posted.title,
+                body = if (action.widgetKeepBody != false) posted.body else "",
+                ruleId = ruleId,
+            )
+            WidgetNotificationStore.add(applicationContext, item)
+            WidgetNotificationStore.notifyWidgets(applicationContext)
+        }
+    }
+
+    private fun logNotification(posted: PostedNotification, matchedRules: List<MatchedRuleInfo>) {
         val now = System.currentTimeMillis()
-        val shouldPurge = loggingPreferences.autoDeleteDays > 0 &&
-            now - lastPurgeTime > 24 * 60 * 60 * 1000L
-        if (shouldPurge) lastPurgeTime = now
         val retentionDays = loggingPreferences.autoDeleteDays
+        val shouldPurge = retentionDays > 0 && now - lastPurgeTime > PURGE_INTERVAL_MS
+        if (shouldPurge) lastPurgeTime = now
         ioScope.launch {
             if (shouldPurge) loggingManager.purgeOlderThan(retentionDays)
             loggingManager.logNotification(
-                packageName = packageName,
-                appName = appName,
-                title = title,
-                body = bodyRaw,
-                matchedRules = allLoggedRules,
+                packageName = posted.packageName,
+                appName = appLabel(posted.packageName),
+                title = posted.title,
+                body = posted.body,
+                matchedRules = matchedRules,
             )
         }
-
-        super.onNotificationPosted(sbn)
     }
+
+    private fun appLabel(packageName: String): String =
+        try {
+            packageManager.getApplicationLabel(
+                packageManager.getApplicationInfo(packageName, 0)
+            ).toString()
+        } catch (e: PackageManager.NameNotFoundException) {
+            packageName
+        }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
         if (sbn != null && isPrimeNotifyServiceEnabled(this)) {
-            val matched = rulesManager.getRules().filter { it.isEnabled }.firstOrNull { rule ->
-                rule.packageNames.contains(sbn.packageName) &&
-                    rule.actions.any { it.type == RuleType.AOD && it.aodDurationSeconds == -1 }
+            val hasPersistentAod = rulesManager.enabledRulesFor(sbn.packageName).any { rule ->
+                rule.actions.any { it.type == RuleType.AOD && it.aodDurationSeconds == -1 }
             }
-            if (matched != null) aodManager.stopAodForReason(-1)
+            if (hasPersistentAod) aodManager.stopAodForReason(-1)
         }
     }
 
@@ -314,5 +339,6 @@ class NotifyListenerService : NotificationListenerService() {
         private const val PERSISTENT_CHANNEL_ID = "notify_listener_channel"
         private const val PERSISTENT_CHANNEL_GROUP_ID = "notify_listener_service_group"
         private const val PERSISTENT_NOTIFICATION_ID = 4501
+        private const val PURGE_INTERVAL_MS = 24 * 60 * 60 * 1000L
     }
 }
