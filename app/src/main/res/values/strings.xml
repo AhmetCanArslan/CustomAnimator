@@ -717,6 +717,11 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_filter_pick_app">Choose an app</string>
     <string name="pn_filter_block">Remove notification</string>
     <string name="pn_filter_block_desc">Dismisses matching notifications from the notification shade</string>
+    <string name="pn_rules_desc">%1$d rules that flash, wake the screen or feed widgets</string>
+    <string name="pn_history_desc">Everything that arrived, with one-tap mute</string>
+    <string name="pn_service_active_desc">Active. Rules and filters are running</string>
+    <string name="pn_service_disabled_desc">Off. Rules and filters are paused</string>
+    <string name="pn_send_test_notification_desc">Checks that your rules react</string>
     <string name="pn_ignored_notifications_title">Notification Filters</string>
     <string name="pn_ignored_restore_cd">Restore notification</string>
     <string name="pn_ignored_restore_confirm">Stop Ignoring</string>
