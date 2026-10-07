@@ -32,3 +32,8 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.conscrypt.**
 -dontwarn org.openjsse.**
+
+-assumenosideeffects class android.util.Log {
+    public static int v(...);
+    public static int d(...);
+}
