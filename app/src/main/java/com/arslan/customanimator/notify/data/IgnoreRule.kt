@@ -33,5 +33,8 @@ data class IgnoreRule(
     val matchValue2: String? = null,
 
     @SerializedName("isRegex2")
-    val isRegex2: Boolean = false
+    val isRegex2: Boolean = false,
+
+    @SerializedName("blocksNotification")
+    val blocksNotification: Boolean = false
 ) : Parcelable
