@@ -38,6 +38,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 
 class NotifyListenerService : NotificationListenerService() {
 
@@ -60,6 +61,7 @@ class NotifyListenerService : NotificationListenerService() {
     private lateinit var screenFlashManager: ScreenFlashManager
     private lateinit var loggingManager: LoggingManager
     private lateinit var loggingPreferences: LoggingPreferences
+    private val appLabels = ConcurrentHashMap<String, String>()
     private var lastPurgeTime = 0L
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
@@ -78,6 +80,7 @@ class NotifyListenerService : NotificationListenerService() {
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
+        appLabels.clear()
         NotificationWidgetProvider.updateAll(this)
         WidgetNotificationStore.notifyWidgets(this)
     }
@@ -237,14 +240,18 @@ class NotifyListenerService : NotificationListenerService() {
         }
     }
 
-    private fun appLabel(packageName: String): String =
-        try {
+    private fun appLabel(packageName: String): String {
+        appLabels[packageName]?.let { return it }
+        val label = try {
             packageManager.getApplicationLabel(
                 packageManager.getApplicationInfo(packageName, 0)
             ).toString()
         } catch (e: PackageManager.NameNotFoundException) {
-            packageName
+            return packageName
         }
+        appLabels[packageName] = label
+        return label
+    }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {
         super.onNotificationRemoved(sbn)
