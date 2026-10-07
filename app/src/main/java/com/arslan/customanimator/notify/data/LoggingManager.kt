@@ -4,12 +4,20 @@ import android.content.Context
 import androidx.annotation.Keep
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Keep
 class LoggingManager private constructor(context: Context) {
 
     private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var pendingPersist: Job? = null
 
     private val entries: MutableList<LogEntry> by lazy { loadFromPrefs() }
 
@@ -35,7 +43,7 @@ class LoggingManager private constructor(context: Context) {
         while (entries.size > MAX_ENTRIES) {
             entries.removeAt(0)
         }
-        persist()
+        schedulePersist()
     }
 
     @Synchronized
@@ -78,7 +86,27 @@ class LoggingManager private constructor(context: Context) {
         return false
     }
 
+    private fun schedulePersist() {
+        if (pendingPersist?.isActive == true) return
+        pendingPersist = scope.launch {
+            delay(PERSIST_DELAY_MS)
+            flush()
+        }
+    }
+
+    @Synchronized
+    private fun flush() {
+        pendingPersist = null
+        write()
+    }
+
     private fun persist() {
+        pendingPersist?.cancel()
+        pendingPersist = null
+        write()
+    }
+
+    private fun write() {
         val json = gson.toJson(entries)
         prefs.edit().putString(LOG_ENTRIES_KEY, json).apply()
     }
@@ -98,6 +126,7 @@ class LoggingManager private constructor(context: Context) {
         private const val LOG_ENTRIES_KEY = "log_entries_list"
         private const val MAX_ENTRIES = 500
         private const val DEDUP_WINDOW_MS = 3_000L
+        private const val PERSIST_DELAY_MS = 2_000L
 
         @Volatile
         private var instance: LoggingManager? = null
