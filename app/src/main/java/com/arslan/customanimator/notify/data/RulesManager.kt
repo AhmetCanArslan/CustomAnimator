@@ -1,13 +1,13 @@
 package com.arslan.customanimator.notify.data
 
 import android.content.Context
+import com.arslan.customanimator.utils.ParsedPref
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class RulesManager(private val context: Context) {
 
     private val prefs = context.getSharedPreferences("prime_notify_rules", Context.MODE_PRIVATE)
-    private val gson = Gson()
 
     private val CUSTOM_PATTERNS_KEY = "custom_patterns_list"
     private val HAS_PROXIMITY_SENSOR_KEY = "has_proximity_sensor"
@@ -22,11 +22,13 @@ class RulesManager(private val context: Context) {
 
     fun getCustomPatterns(): List<CustomPattern> {
         val json = prefs.getString(CUSTOM_PATTERNS_KEY, null) ?: return emptyList()
-        return try {
-            val listType = object : TypeToken<List<CustomPattern>>() {}.type
-            gson.fromJson<List<CustomPattern>>(json, listType) ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
+        return parsedPatterns.get(json) {
+            try {
+                val listType = object : TypeToken<List<CustomPattern>>() {}.type
+                gson.fromJson<List<CustomPattern>>(it, listType) ?: emptyList()
+            } catch (e: Exception) {
+                emptyList()
+            }
         }
     }
 
@@ -45,20 +47,27 @@ class RulesManager(private val context: Context) {
 
     private val NOTIFICATION_RULES_KEY = "notification_rules_list"
 
-    fun getRules(): List<NotificationRule> {
-        val json = prefs.getString(NOTIFICATION_RULES_KEY, null) ?: return emptyList()
-        val stored = try {
-            val type = object : com.google.gson.reflect.TypeToken<List<NotificationRule>>() {}.type
-            gson.fromJson<List<NotificationRule>>(json, type) ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
-        }
+    fun getRules(): List<NotificationRule> = ruleSet().all
 
-        val sanitized = sanitize(stored)
-        if (sanitized != stored) {
-            prefs.edit().putString(NOTIFICATION_RULES_KEY, gson.toJson(sanitized)).apply()
+    fun enabledRulesFor(packageName: String): List<NotificationRule> =
+        ruleSet().enabledByPackage[packageName].orEmpty()
+
+    private fun ruleSet(): RuleSet {
+        val json = prefs.getString(NOTIFICATION_RULES_KEY, null) ?: return RuleSet.EMPTY
+        return parsedRules.get(json) {
+            val stored = try {
+                val type = object : TypeToken<List<NotificationRule>>() {}.type
+                gson.fromJson<List<NotificationRule>>(it, type) ?: emptyList()
+            } catch (e: Exception) {
+                emptyList()
+            }
+
+            val sanitized = sanitize(stored)
+            if (sanitized != stored) {
+                prefs.edit().putString(NOTIFICATION_RULES_KEY, gson.toJson(sanitized)).apply()
+            }
+            RuleSet(sanitized)
         }
-        return sanitized
     }
 
     private fun sanitize(rules: List<NotificationRule?>?): List<NotificationRule> {
@@ -114,8 +123,27 @@ class RulesManager(private val context: Context) {
         lastExecutions[ruleId] = System.currentTimeMillis()
     }
 
+    private class RuleSet(val all: List<NotificationRule>) {
+        val enabledByPackage: Map<String, List<NotificationRule>> by lazy {
+            val index = HashMap<String, MutableList<NotificationRule>>()
+            all.forEach { rule ->
+                if (rule.isEnabled) {
+                    rule.packageNames.distinct().forEach { index.getOrPut(it) { ArrayList() }.add(rule) }
+                }
+            }
+            index
+        }
+
+        companion object {
+            val EMPTY = RuleSet(emptyList())
+        }
+    }
+
     private companion object {
         const val THROTTLE_WINDOW_MS = 10000L
+        val gson = Gson()
+        val parsedRules = ParsedPref<RuleSet>()
+        val parsedPatterns = ParsedPref<List<CustomPattern>>()
         val lastExecutions = java.util.concurrent.ConcurrentHashMap<String, Long>()
     }
 }
