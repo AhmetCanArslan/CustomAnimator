@@ -15,6 +15,7 @@ object OtpCopierManager {
     private const val KEY_SHOW_TOAST = "show_toast"
     private const val KEY_KEYWORDS = "keywords"
     private const val KEY_PATTERNS = "patterns"
+    private const val KEY_EXCLUDES = "excludes"
     private const val ENTRY_SEPARATOR = "\n"
 
     val DEFAULT_KEYWORDS = listOf(
@@ -77,6 +78,21 @@ object OtpCopierManager {
 
     fun removePattern(context: Context, pattern: String) {
         writeEntries(context, KEY_PATTERNS, getPatterns(context) - pattern)
+    }
+
+    fun getExcludes(context: Context): List<String> =
+        readEntries(context, KEY_EXCLUDES) ?: emptyList()
+
+    fun addExclude(context: Context, exclude: String): Boolean {
+        val word = exclude.trim()
+        val current = getExcludes(context)
+        if (word.isEmpty() || current.any { it.equals(word, ignoreCase = true) }) return false
+        writeEntries(context, KEY_EXCLUDES, current + word)
+        return true
+    }
+
+    fun removeExclude(context: Context, exclude: String) {
+        writeEntries(context, KEY_EXCLUDES, getExcludes(context) - exclude)
     }
 
     fun isValidPattern(pattern: String): Boolean = pattern.isNotBlank() && compile(pattern) != null
