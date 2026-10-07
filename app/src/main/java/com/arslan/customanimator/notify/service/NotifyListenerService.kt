@@ -55,12 +55,12 @@ class NotifyListenerService : NotificationListenerService() {
 
     private lateinit var rulesManager: RulesManager
     private lateinit var ignoreManager: IgnoreManager
-    private lateinit var flashManager: FlashManager
-    private lateinit var screenWakeManager: ScreenWakeManager
-    private lateinit var aodManager: AodManager
-    private lateinit var screenFlashManager: ScreenFlashManager
     private lateinit var loggingManager: LoggingManager
     private lateinit var loggingPreferences: LoggingPreferences
+    private val flashManager = lazy { FlashManager(this) }
+    private val screenWakeManager = lazy { ScreenWakeManager(this) }
+    private val aodManager = lazy { AodManager(this) }
+    private val screenFlashManager = lazy { ScreenFlashManager(this) }
     private val appLabels = ConcurrentHashMap<String, String>()
     private var lastPurgeTime = 0L
     private val ioScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -69,10 +69,6 @@ class NotifyListenerService : NotificationListenerService() {
         super.onCreate()
         rulesManager = RulesManager(this)
         ignoreManager = IgnoreManager(this)
-        flashManager = FlashManager(this)
-        screenWakeManager = ScreenWakeManager(this)
-        aodManager = AodManager(this)
-        screenFlashManager = ScreenFlashManager(this)
         loggingManager = LoggingManager.getInstance(this)
         loggingPreferences = LoggingPreferences(this)
         startPersistentNotification()
@@ -87,10 +83,10 @@ class NotifyListenerService : NotificationListenerService() {
 
     override fun onDestroy() {
         ioScope.cancel()
-        flashManager.stop()
-        screenWakeManager.stop()
-        aodManager.stop()
-        screenFlashManager.stop()
+        if (flashManager.isInitialized()) flashManager.value.stop()
+        if (screenWakeManager.isInitialized()) screenWakeManager.value.stop()
+        if (aodManager.isInitialized()) aodManager.value.stop()
+        if (screenFlashManager.isInitialized()) screenFlashManager.value.stop()
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
     }
@@ -183,12 +179,12 @@ class NotifyListenerService : NotificationListenerService() {
     private fun execute(action: RuleAction, ruleId: String, posted: PostedNotification) {
         when (action.type) {
             RuleType.FLASH -> flash(action)
-            RuleType.WAKE_UP -> screenWakeManager.wakeScreen(
+            RuleType.WAKE_UP -> screenWakeManager.value.wakeScreen(
                 durationSeconds = action.screenDurationSeconds ?: 10,
                 pocketModeEnabled = action.pocketModeEnabled ?: true,
             )
-            RuleType.AOD -> aodManager.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
-            RuleType.FLASH_SCREEN -> screenFlashManager.triggerFlash(
+            RuleType.AOD -> aodManager.value.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
+            RuleType.FLASH_SCREEN -> screenFlashManager.value.triggerFlash(
                 color = ScreenFlashColor.fromName(action.screenFlashColor),
                 durationSeconds = action.screenFlashDurationSeconds ?: 5,
             )
@@ -201,9 +197,9 @@ class NotifyListenerService : NotificationListenerService() {
             rulesManager.getCustomPatterns().find { it.id == id }
         }
         if (customPattern != null) {
-            flashManager.executeCustomPattern(customPattern.intervals)
+            flashManager.value.executeCustomPattern(customPattern.intervals)
         } else {
-            flashManager.executePattern(action.flashPattern ?: FlashPattern.HEARTBEAT)
+            flashManager.value.executePattern(action.flashPattern ?: FlashPattern.HEARTBEAT)
         }
     }
 
@@ -259,7 +255,7 @@ class NotifyListenerService : NotificationListenerService() {
             val hasPersistentAod = rulesManager.enabledRulesFor(sbn.packageName).any { rule ->
                 rule.actions.any { it.type == RuleType.AOD && it.aodDurationSeconds == -1 }
             }
-            if (hasPersistentAod) aodManager.stopAodForReason(-1)
+            if (hasPersistentAod) aodManager.value.stopAodForReason(-1)
         }
     }
 
