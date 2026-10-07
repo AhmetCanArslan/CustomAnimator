@@ -186,16 +186,7 @@ object ShizukuHelper {
                 return false
             }
 
-            @Suppress("UNCHECKED_CAST")
-            val process = newProcessMethod.invoke(
-                null,
-                command,
-                null,
-                null
-            ) as Any
-
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val result = waitForMethod.invoke(process) as Int
+            val result = newProcess(command).waitFor()
             Log.d(TAG, "Shizuku command result=$result, cmd=${command.joinToString(" ")}")
             result == 0
         } catch (e: Exception) {
@@ -211,19 +202,15 @@ object ShizukuHelper {
                 return ShellResult(-1, "Shizuku permission not granted")
             }
 
-            val process = newProcessMethod.invoke(null, command, null, null) as Any
+            val process = newProcess(command)
 
-            val stdout = readStreamMethod(process, "getInputStream")
-            val stderr = readStreamMethod(process, "getErrorStream")
-
-            val lines = mutableListOf<String>()
-            val stdoutThread = drainInto(stdout, lines)
-            val stderrThread = drainInto(stderr, lines)
-            stdoutThread.join()
+            val lines = ArrayDeque<String>()
+            val stderrThread = Thread { drainInto(process.errorStream, lines) }
+            stderrThread.start()
+            drainInto(process.inputStream, lines)
             stderrThread.join()
 
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val exitCode = waitForMethod.invoke(process) as Int
+            val exitCode = process.waitFor()
 
             Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
             ShellResult(exitCode, truncate(lines))
@@ -233,36 +220,24 @@ object ShizukuHelper {
         }
     }
 
-    private fun readStreamMethod(process: Any, name: String): InputStream? {
-        return try {
-            val method = process.javaClass.getDeclaredMethod(name)
-            method.isAccessible = true
-            method.invoke(process) as? InputStream
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to obtain $name from Shizuku process", e)
-            null
-        }
-    }
+    private fun newProcess(command: Array<String>): java.lang.Process =
+        newProcessMethod.invoke(null, command, null, null) as java.lang.Process
 
-    private fun drainInto(stream: InputStream?, sink: MutableList<String>): Thread {
-        val thread = Thread {
-            if (stream == null) return@Thread
-            try {
-                BufferedReader(InputStreamReader(stream)).use { reader ->
-                    while (true) {
-                        val line = reader.readLine() ?: break
-                        synchronized(sink) {
-                            sink.add(line)
-                            if (sink.size > MAX_OUTPUT_LINES) sink.removeAt(0)
-                        }
+    private fun drainInto(stream: InputStream?, sink: ArrayDeque<String>) {
+        if (stream == null) return
+        try {
+            BufferedReader(InputStreamReader(stream)).use { reader ->
+                while (true) {
+                    val line = reader.readLine() ?: break
+                    synchronized(sink) {
+                        sink.addLast(line)
+                        if (sink.size > MAX_OUTPUT_LINES) sink.removeFirst()
                     }
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed reading Shizuku process stream", e)
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed reading Shizuku process stream", e)
         }
-        thread.start()
-        return thread
     }
 
     private fun truncate(lines: List<String>): String {
