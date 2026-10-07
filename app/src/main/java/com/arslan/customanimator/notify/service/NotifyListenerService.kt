@@ -119,7 +119,10 @@ class NotifyListenerService : NotificationListenerService() {
         val ignoredBy = ignoreManager.rulesFor(posted.packageName).filter {
             IgnoreMatcher.matches(it, posted.packageName, posted.title, posted.body)
         }
-        if (ignoredBy.isNotEmpty()) return
+        if (ignoredBy.isNotEmpty()) {
+            if (ignoredBy.any { it.blocksNotification }) cancelNotification(sbn.key)
+            return
+        }
 
         logNotification(posted, runRules(posted))
     }
