@@ -28,6 +28,15 @@ class IgnoredNotificationsViewModel(application: Application) : AndroidViewModel
         refresh()
     }
 
+    fun addRule(rule: IgnoreRule) {
+        viewModelScope.launch(Dispatchers.IO) {
+            ignoreManager.addRule(rule)
+            val updated = ignoreManager.getRules()
+            withContext(Dispatchers.Main) { _rules.value = updated }
+            rebuildIconCache(updated)
+        }
+    }
+
     fun removeRule(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             ignoreManager.removeRule(id)

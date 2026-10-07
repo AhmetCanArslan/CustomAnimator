@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
@@ -32,6 +33,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,6 +54,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -59,6 +62,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.R
+import com.arslan.customanimator.notify.data.AppItem
+import com.arslan.customanimator.notify.data.AppListManager
+import com.arslan.customanimator.notify.data.AppRow
 import com.arslan.customanimator.notify.data.IgnoreRule
 import com.arslan.customanimator.notify.data.IgnoreType
 
@@ -72,11 +78,19 @@ fun IgnoredNotificationsSection(
     val iconCache by viewModel.iconCache.collectAsState()
     var confirmRemoveRule by remember { mutableStateOf<IgnoreRule?>(null) }
     var editingRule by remember { mutableStateOf<IgnoreRule?>(null) }
+    var showAppPicker by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) { viewModel.refresh() }
 
     Scaffold(
         bottomBar = { BannerAdView() },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { showAppPicker = true },
+                icon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
+                text = { Text(stringResource(R.string.pn_filter_add), maxLines = 1) }
+            )
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -131,8 +145,10 @@ fun IgnoredNotificationsSection(
                     .padding(innerPadding),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                    horizontal = 12.dp,
-                    vertical = 8.dp
+                    start = 12.dp,
+                    end = 12.dp,
+                    top = 8.dp,
+                    bottom = 88.dp
                 )
             ) {
                 item {
@@ -160,6 +176,24 @@ fun IgnoredNotificationsSection(
                 }
             }
         }
+    }
+
+    if (showAppPicker) {
+        FilterAppPickerDialog(
+            onDismiss = { showAppPicker = false },
+            onPick = { app ->
+                showAppPicker = false
+                val existing = rules.firstOrNull { it.type == IgnoreType.APP && it.packageName == app.packageName }
+                val rule = existing ?: IgnoreRule(
+                    type = IgnoreType.APP,
+                    packageName = app.packageName,
+                    appName = app.name,
+                    blocksNotification = true
+                )
+                if (existing == null) viewModel.addRule(rule)
+                editingRule = rule
+            }
+        )
     }
 
     editingRule?.let { rule ->
@@ -420,6 +454,51 @@ internal fun FilterBlockRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit
         Spacer(modifier = Modifier.width(8.dp))
         Switch(checked = checked, onCheckedChange = onCheckedChange)
     }
+}
+
+@Composable
+private fun FilterAppPickerDialog(onDismiss: () -> Unit, onPick: (AppItem) -> Unit) {
+    val context = LocalContext.current
+    val installedApps by AppListManager.installedApps.collectAsState()
+    var query by remember { mutableStateOf("") }
+    val visibleApps = remember(installedApps, query) {
+        installedApps.filter { it.name.contains(query.trim(), ignoreCase = true) }
+    }
+
+    LaunchedEffect(Unit) { AppListManager.initialize(context) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(R.string.pn_filter_pick_app),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    label = { Text(stringResource(R.string.search_apps)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                LazyColumn(modifier = Modifier.fillMaxWidth().height(320.dp)) {
+                    items(visibleApps, key = { it.packageName }) { app ->
+                        AppRow(app = app, onClick = { onPick(app) })
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    )
 }
 
 @Composable
