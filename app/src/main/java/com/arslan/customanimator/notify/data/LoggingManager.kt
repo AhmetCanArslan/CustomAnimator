@@ -22,11 +22,7 @@ class LoggingManager private constructor(context: Context) {
         matchedRules: List<MatchedRuleInfo>
     ) {
         val now = System.currentTimeMillis()
-        val isDuplicate = entries.any { e ->
-            e.packageName == packageName && e.title == title && e.body == body &&
-                (now - e.timestamp) < DEDUP_WINDOW_MS
-        }
-        if (isDuplicate) return
+        if (isRecentDuplicate(now, packageName, title, body)) return
 
         val entry = LogEntry(
             packageName = packageName,
@@ -71,6 +67,15 @@ class LoggingManager private constructor(context: Context) {
         val before = entries.size
         entries.removeAll { it.timestamp < cutoff }
         if (entries.size != before) persist()
+    }
+
+    private fun isRecentDuplicate(now: Long, packageName: String, title: String, body: String): Boolean {
+        for (index in entries.indices.reversed()) {
+            val entry = entries[index]
+            if (now - entry.timestamp >= DEDUP_WINDOW_MS) return false
+            if (entry.packageName == packageName && entry.title == title && entry.body == body) return true
+        }
+        return false
     }
 
     private fun persist() {
