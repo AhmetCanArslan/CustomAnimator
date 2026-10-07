@@ -732,15 +732,12 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_rule_trigger_conflict_body">Pemicu ini tumpang tindih dengan aturan aktif. Keduanya bisa berjalan untuk notifikasi yang sama:</string>
     <string name="pn_rule_trigger_conflict_title">Aturan tumpang tindih</string>
     <string name="pn_rules">Aturan</string>
-    <string name="pn_rules_count">%1$d aturan</string>
     <string name="pn_save_pattern">Simpan pola</string>
     <string name="pn_screen_duration">Durasi layar menyala</string>
     <string name="pn_search_apps">Cari aplikasi…</string>
     <string name="pn_selected">Dipilih</string>
     <string name="pn_send_test_notification">Kirim notifikasi uji</string>
     <string name="pn_sending_in_seconds">Mengirim dalam %1$d detik...</string>
-    <string name="pn_service_active">Aktif</string>
-    <string name="pn_service_disabled">Nonaktif</string>
     <string name="pn_service_title">Pendengar notifikasi</string>
     <string name="pn_silence">Senyap</string>
     <string name="pn_start">Mulai</string>

@@ -795,15 +795,12 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_rule_trigger_conflict_body">This trigger overlaps with existing active rules. Both may fire for the same notification:</string>
     <string name="pn_rule_trigger_conflict_title">Overlapping Rule</string>
     <string name="pn_rules">Rules</string>
-    <string name="pn_rules_count">%1$d rules</string>
     <string name="pn_save_pattern">Save Pattern</string>
     <string name="pn_screen_duration">Screen Duration</string>
     <string name="pn_search_apps">Search apps…</string>
     <string name="pn_selected">Selected</string>
     <string name="pn_send_test_notification">Send Test Notification</string>
     <string name="pn_sending_in_seconds">Sending in %1$d seconds...</string>
-    <string name="pn_service_active">Active</string>
-    <string name="pn_service_disabled">Disabled</string>
     <string name="pn_service_title">Notification Listener</string>
     <string name="pn_silence">Silence</string>
     <string name="pn_start">Start</string>

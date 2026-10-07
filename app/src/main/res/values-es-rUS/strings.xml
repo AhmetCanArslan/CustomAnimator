@@ -732,15 +732,12 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_rule_trigger_conflict_body">Este activador se superpone con reglas activas: ambas podrían dispararse con la misma notificación:</string>
     <string name="pn_rule_trigger_conflict_title">Regla superpuesta</string>
     <string name="pn_rules">Reglas</string>
-    <string name="pn_rules_count">%1$d reglas</string>
     <string name="pn_save_pattern">Guardar patrón</string>
     <string name="pn_screen_duration">Duración de pantalla encendida</string>
     <string name="pn_search_apps">Buscar apps…</string>
     <string name="pn_selected">Seleccionadas</string>
     <string name="pn_send_test_notification">Enviar notificación de prueba</string>
     <string name="pn_sending_in_seconds">Enviando en %1$d segundos...</string>
-    <string name="pn_service_active">Activo</string>
-    <string name="pn_service_disabled">Desactivado</string>
     <string name="pn_service_title">Detector de notificaciones</string>
     <string name="pn_silence">Silencio</string>
     <string name="pn_start">Iniciar</string>

@@ -752,15 +752,12 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_rule_trigger_conflict_body">Questo trigger si sovrappone a regole attive esistenti: entrambe potrebbero attivarsi per la stessa notifica:</string>
     <string name="pn_rule_trigger_conflict_title">Regola sovrapposta</string>
     <string name="pn_rules">Regole</string>
-    <string name="pn_rules_count">%1$d regole</string>
     <string name="pn_save_pattern">Salva pattern</string>
     <string name="pn_screen_duration">Durata accensione schermo</string>
     <string name="pn_search_apps">Cerca app…</string>
     <string name="pn_selected">Selezionate</string>
     <string name="pn_send_test_notification">Invia notifica di test</string>
     <string name="pn_sending_in_seconds">Invio tra %1$d secondi...</string>
-    <string name="pn_service_active">Attivo</string>
-    <string name="pn_service_disabled">Disattivato</string>
     <string name="pn_service_title">Listener delle notifiche</string>
     <string name="pn_silence">Silenzio</string>
     <string name="pn_start">Avvia</string>

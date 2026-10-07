@@ -732,15 +732,12 @@
     <string name="pn_rule_trigger_conflict_body">Этот триггер пересекается с активными правилами. Оба могут сработать для одного уведомления:</string>
     <string name="pn_rule_trigger_conflict_title">Пересекающееся правило</string>
     <string name="pn_rules">Правила</string>
-    <string name="pn_rules_count">Правил: %1$d</string>
     <string name="pn_save_pattern">Сохранить шаблон</string>
     <string name="pn_screen_duration">Длительность подсветки экрана</string>
     <string name="pn_search_apps">Поиск приложений…</string>
     <string name="pn_selected">Выбрано</string>
     <string name="pn_send_test_notification">Отправить тестовое уведомление</string>
     <string name="pn_sending_in_seconds">Отправка через %1$d с...</string>
-    <string name="pn_service_active">Активна</string>
-    <string name="pn_service_disabled">Отключена</string>
     <string name="pn_service_title">Слушатель уведомлений</string>
     <string name="pn_silence">Тишина</string>
     <string name="pn_start">Старт</string>

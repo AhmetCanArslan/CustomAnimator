@@ -732,15 +732,12 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_rule_trigger_conflict_body">Nag-o-overlap ang trigger na ito sa mga aktibong rule. Pareho silang maaaring tumakbo sa iisang notification:</string>
     <string name="pn_rule_trigger_conflict_title">Nag-o-overlap na rule</string>
     <string name="pn_rules">Mga rule</string>
-    <string name="pn_rules_count">%1$d na rule</string>
     <string name="pn_save_pattern">I-save ang pattern</string>
     <string name="pn_screen_duration">Tagal ng pagbukas ng screen</string>
     <string name="pn_search_apps">Maghanap ng app…</string>
     <string name="pn_selected">Napili</string>
     <string name="pn_send_test_notification">Magpadala ng test notification</string>
     <string name="pn_sending_in_seconds">Ipapadala sa %1$d segundo...</string>
-    <string name="pn_service_active">Aktibo</string>
-    <string name="pn_service_disabled">Naka-off</string>
     <string name="pn_service_title">Notification listener</string>
     <string name="pn_silence">I-silent</string>
     <string name="pn_start">Simulan</string>

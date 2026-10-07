@@ -732,15 +732,12 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_rule_trigger_conflict_body">Bu tetikleyici mevcut etkin kurallarla çakışıyor. Aynı bildirim için ikisi de çalışabilir:</string>
     <string name="pn_rule_trigger_conflict_title">Çakışan Kural</string>
     <string name="pn_rules">Kurallar</string>
-    <string name="pn_rules_count">%1$d kural</string>
     <string name="pn_save_pattern">Deseni Kaydet</string>
     <string name="pn_screen_duration">Ekran Süresi</string>
     <string name="pn_search_apps">Uygulamalarda ara…</string>
     <string name="pn_selected">Seçildi</string>
     <string name="pn_send_test_notification">Test Bildirimi Gönder</string>
     <string name="pn_sending_in_seconds">%1$d saniye içinde gönderiliyor...</string>
-    <string name="pn_service_active">Etkin</string>
-    <string name="pn_service_disabled">Devre dışı</string>
     <string name="pn_service_title">Bildirim Dinleyici</string>
     <string name="pn_silence">Sessiz</string>
     <string name="pn_start">Başlat</string>

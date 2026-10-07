@@ -732,15 +732,12 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_rule_trigger_conflict_body">Este gatilho se sobrepõe a regras ativas. As duas podem disparar para a mesma notificação:</string>
     <string name="pn_rule_trigger_conflict_title">Regra sobreposta</string>
     <string name="pn_rules">Regras</string>
-    <string name="pn_rules_count">%1$d regras</string>
     <string name="pn_save_pattern">Salvar padrão</string>
     <string name="pn_screen_duration">Tempo de tela acesa</string>
     <string name="pn_search_apps">Pesquisar apps…</string>
     <string name="pn_selected">Selecionados</string>
     <string name="pn_send_test_notification">Enviar notificação de teste</string>
     <string name="pn_sending_in_seconds">Enviando em %1$d segundos...</string>
-    <string name="pn_service_active">Ativo</string>
-    <string name="pn_service_disabled">Desativado</string>
     <string name="pn_service_title">Detector de notificações</string>
     <string name="pn_silence">Silêncio</string>
     <string name="pn_start">Iniciar</string>

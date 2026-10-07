@@ -777,15 +777,12 @@
     <string name="pn_rule_trigger_conflict_body">يتداخل هذا المشغّل مع قواعد نشطة موجودة. قد يُنفَّذ كلاهما لنفس الإشعار:</string>
     <string name="pn_rule_trigger_conflict_title">قاعدة متداخلة</string>
     <string name="pn_rules">القواعد</string>
-    <string name="pn_rules_count">%1$d قاعدة</string>
     <string name="pn_save_pattern">حفظ النمط</string>
     <string name="pn_screen_duration">مدة إضاءة الشاشة</string>
     <string name="pn_search_apps">ابحث في التطبيقات…</string>
     <string name="pn_selected">محدد</string>
     <string name="pn_send_test_notification">إرسال إشعار اختبار</string>
     <string name="pn_sending_in_seconds">جارٍ الإرسال خلال %1$d ثانية...</string>
-    <string name="pn_service_active">نشط</string>
-    <string name="pn_service_disabled">معطل</string>
     <string name="pn_service_title">مستمع الإشعارات</string>
     <string name="pn_silence">كتم</string>
     <string name="pn_start">بدء</string>
