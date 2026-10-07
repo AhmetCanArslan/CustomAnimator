@@ -64,6 +64,23 @@ class NotificationMatchingTest {
     }
 
     @Test
+    fun onlyFiltersMarkedAsBlockingRemoveTheNotification() {
+        val muted = IgnoreRule(type = IgnoreType.APP, packageName = "com.example.chat")
+        val blocking = IgnoreRule(
+            type = IgnoreType.TITLE,
+            packageName = "com.example.shop",
+            matchValue = "sale",
+            blocksNotification = true
+        )
+        val rules = listOf(muted, blocking)
+        assertTrue(IgnoreMatcher.isIgnored(rules, "com.example.chat", "hello", ""))
+        assertFalse(IgnoreMatcher.blocks(rules, "com.example.chat", "hello", ""))
+        assertTrue(IgnoreMatcher.blocks(rules, "com.example.shop", "Big SALE today", ""))
+        assertFalse(IgnoreMatcher.blocks(rules, "com.example.shop", "Your order shipped", ""))
+        assertFalse(IgnoreMatcher.blocks(emptyList(), "com.example.shop", "sale", ""))
+    }
+
+    @Test
     fun ignoreRulesCoverAppTitleBodyAndCombinations() {
         val appRule = IgnoreRule(type = IgnoreType.APP, packageName = "com.example.chat")
         assertTrue(IgnoreMatcher.isIgnored(listOf(appRule), "com.example.chat", "anything", "anything"))

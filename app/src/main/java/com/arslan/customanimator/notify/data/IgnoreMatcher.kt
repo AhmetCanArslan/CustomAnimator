@@ -9,6 +9,13 @@ object IgnoreMatcher {
         body: String,
     ): Boolean = rules.any { matches(it, packageName, title, body) }
 
+    fun blocks(
+        rules: List<IgnoreRule>,
+        packageName: String,
+        title: String,
+        body: String,
+    ): Boolean = rules.any { it.blocksNotification && matches(it, packageName, title, body) }
+
     fun matches(
         rule: IgnoreRule,
         packageName: String,
