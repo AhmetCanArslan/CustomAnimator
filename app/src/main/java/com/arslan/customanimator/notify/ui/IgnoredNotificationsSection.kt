@@ -154,7 +154,8 @@ fun IgnoredNotificationsSection(
                         rule = rule,
                         icon = iconCache[rule.packageName],
                         onEditClick = { editingRule = rule },
-                        onRestoreClick = { confirmRemoveRule = rule }
+                        onRestoreClick = { confirmRemoveRule = rule },
+                        onBlockChange = { viewModel.updateRule(rule.copy(blocksNotification = it)) }
                     )
                 }
             }
@@ -219,7 +220,8 @@ private fun IgnoredRuleItem(
     rule: IgnoreRule,
     icon: ImageBitmap?,
     onEditClick: () -> Unit,
-    onRestoreClick: () -> Unit
+    onRestoreClick: () -> Unit,
+    onBlockChange: (Boolean) -> Unit
 ) {
     val appDisplayName = rule.appName?.ifBlank { null } ?: rule.packageName
 
@@ -387,7 +389,36 @@ private fun IgnoredRuleItem(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(4.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+            FilterBlockRow(checked = rule.blocksNotification, onCheckedChange = onBlockChange)
         }
+    }
+}
+
+@Composable
+internal fun FilterBlockRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onCheckedChange(!checked) }
+            .padding(vertical = 4.dp)
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.pn_filter_block),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = stringResource(R.string.pn_filter_block_desc),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Switch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }
 
