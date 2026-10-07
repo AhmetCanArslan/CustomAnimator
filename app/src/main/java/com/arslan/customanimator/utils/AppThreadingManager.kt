@@ -123,7 +123,7 @@ class AppThreadingManager(context: Context) {
         if (!result.isSuccess) return emptyList()
         return result.output.lineSequence()
             .mapNotNull { line ->
-                val parts = line.trim().split(Regex("\\s+"), limit = 2)
+                val parts = line.trim().split(WHITESPACE, limit = 2)
                 if (parts.size < 2) return@mapNotNull null
                 val pid = parts[0].toIntOrNull() ?: return@mapNotNull null
                 val process = parts[1]
@@ -140,6 +140,7 @@ class AppThreadingManager(context: Context) {
         const val KEY_CONFIGS = "configs"
         const val FIELD_AFFINITY = "affinity"
         const val FIELD_PRIORITY = "priority"
+        val WHITESPACE = Regex("\\s+")
     }
 }
 

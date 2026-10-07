@@ -500,7 +500,7 @@ class HotspotUserService : IHotspotUserService.Stub {
         File("/proc/net/arp").takeIf { it.canRead() }?.readLines().orEmpty()
             .drop(1)
             .mapNotNull { line ->
-                val parts = line.trim().split(Regex("\\s+"))
+                val parts = line.trim().split(WHITESPACE)
                 if (parts.size < 6) return@mapNotNull null
                 val ip = parts[0]
                 val flags = parts[2]
@@ -521,7 +521,7 @@ class HotspotUserService : IHotspotUserService.Stub {
     private fun dhcpLeases(): Map<String, Pair<String, String?>> = runCatching {
         val map = mutableMapOf<String, Pair<String, String?>>()
         LEASE_FILES.map(::File).firstOrNull { it.canRead() }?.readLines()?.forEach { line ->
-            val parts = line.trim().split(Regex("\\s+"))
+            val parts = line.trim().split(WHITESPACE)
             if (parts.size < 4) return@forEach
             val mac = parts[1].lowercase()
             val ip = parts[2]
@@ -563,6 +563,7 @@ class HotspotUserService : IHotspotUserService.Stub {
     private data class ClientRecord(val mac: String, val ip: String?, val hostname: String?)
 
     private companion object {
+        val WHITESPACE = Regex("\\s+")
         const val TAG = "HotspotUserService"
         const val SHELL_PACKAGE = "com.android.shell"
         const val ATTRIBUTION_SOURCE_KEY = "EXTRA_PARAM_KEY_ATTRIBUTION_SOURCE"
