@@ -34,8 +34,6 @@ object Billing {
     private const val PREFS = "custom_animator_billing"
     private const val KEY_AD_FREE = "ad_free"
 
-    private const val MAX_RECONNECT_DELAY_MS = 60_000L
-
     private val _isAdFree = MutableStateFlow(false)
     val isAdFree: StateFlow<Boolean> = _isAdFree.asStateFlow()
 
@@ -44,41 +42,31 @@ object Billing {
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    private var appContextRef: Context? = null
     private var client: BillingClient? = null
-    private var productDetails: ProductDetails? = null
-    private var reconnectDelayMs = 1_000L
-    private var productRetryDelayMs = 1_000L
+    private var holds = 0
     private var isConnecting = false
-
-    private val productRetry = Runnable { if (productDetails == null) queryProductDetails() }
+    private var isChecking = false
+    private var isPurchaseFlowOpen = false
+    private val waiting = mutableListOf<Waiter>()
 
     private var purchaseListener: ((PurchaseResult) -> Unit)? = null
 
     enum class PurchaseResult { PURCHASED, PENDING, CANCELLED, ERROR }
 
+    private class Waiter(val onReady: (BillingClient) -> Unit, val onFailed: () -> Unit)
+
     private val purchasesUpdatedListener = PurchasesUpdatedListener { result, purchases ->
-        when (result.responseCode) {
-            BillingClient.BillingResponseCode.OK -> {
-                val handled = purchases.orEmpty().map { handlePurchase(it) }
-                val outcome = when {
-                    handled.any { it == PurchaseResult.PURCHASED } -> PurchaseResult.PURCHASED
-                    handled.any { it == PurchaseResult.PENDING } -> PurchaseResult.PENDING
-                    else -> PurchaseResult.ERROR
-                }
-                notify(outcome)
-            }
+        mainHandler.post { onPurchasesUpdated(result, purchases.orEmpty()) }
+    }
 
-            BillingClient.BillingResponseCode.USER_CANCELED -> notify(PurchaseResult.CANCELLED)
+    private val connectionListener = object : BillingClientStateListener {
+        override fun onBillingSetupFinished(result: BillingResult) {
+            mainHandler.post { onSetupFinished(result) }
+        }
 
-            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                queryPurchases()
-                notify(PurchaseResult.PURCHASED)
-            }
-
-            else -> {
-                Log.w(TAG, "Purchase update failed: ${result.responseCode} ${result.debugMessage}")
-                notify(PurchaseResult.ERROR)
-            }
+        override fun onBillingServiceDisconnected() {
+            mainHandler.post { onDisconnected() }
         }
     }
 
@@ -88,71 +76,112 @@ object Billing {
         _isAdFree.value = appContext
             .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             .getBoolean(KEY_AD_FREE, false)
+        if (!isChecking) queryPurchases()
+    }
 
-        if (client != null) {
-            refresh(appContext)
+    fun queryPurchases(onDone: ((Boolean) -> Unit)? = null) {
+        isChecking = true
+        acquire(
+            onReady = { billing ->
+                if (_price.value == null) loadProduct(billing) { }
+                loadPurchases(billing) {
+                    isChecking = false
+                    onDone?.invoke(_isAdFree.value)
+                }
+                release()
+            },
+            onFailed = {
+                isChecking = false
+                onDone?.invoke(_isAdFree.value)
+            }
+        )
+    }
+
+    fun launchPurchase(activity: Activity, onResult: (PurchaseResult) -> Unit) {
+        appContextRef = activity.applicationContext
+        purchaseListener = onResult
+        acquire(
+            onReady = { billing ->
+                loadProduct(billing) { product -> startPurchaseFlow(activity, billing, product) }
+                release()
+            },
+            onFailed = { notify(PurchaseResult.ERROR) }
+        )
+    }
+
+    private fun acquire(onReady: (BillingClient) -> Unit, onFailed: () -> Unit) {
+        holds++
+        val current = client
+        if (current != null && current.isReady) {
+            onReady(current)
             return
         }
-
-        client = BillingClient.newBuilder(appContext)
+        waiting.add(Waiter(onReady, onFailed))
+        if (isConnecting) return
+        val context = appContextRef
+        if (context == null) {
+            failWaiting()
+            return
+        }
+        current?.endConnection()
+        isConnecting = true
+        val billing = BillingClient.newBuilder(context)
             .setListener(purchasesUpdatedListener)
             .enablePendingPurchases(
                 PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
             )
             .build()
-
-        connect(appContext)
+        client = billing
+        billing.startConnection(connectionListener)
     }
 
-    private fun refresh(context: Context) {
-        if (client?.isReady != true) {
-            connect(context)
+    private fun hold() {
+        holds++
+    }
+
+    private fun release() {
+        holds--
+        if (holds > 0) return
+        holds = 0
+        isConnecting = false
+        client?.endConnection()
+        client = null
+    }
+
+    private fun onSetupFinished(result: BillingResult) {
+        isConnecting = false
+        val billing = client
+        if (billing == null || result.responseCode != BillingClient.BillingResponseCode.OK) {
+            Log.w(TAG, "Setup failed: ${result.responseCode} ${result.debugMessage}")
+            failWaiting()
             return
         }
-        if (productDetails == null) queryProductDetails()
-        queryPurchases()
+        val ready = waiting.toList()
+        waiting.clear()
+        ready.forEach { it.onReady(billing) }
     }
 
-    private fun connect(context: Context) {
-        val billing = client ?: return
-        if (isConnecting || billing.isReady) return
-        isConnecting = true
-
-        billing.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(result: BillingResult) {
-                isConnecting = false
-                if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                    reconnectDelayMs = 1_000L
-                    queryProductDetails()
-                    queryPurchases()
-                } else {
-                    Log.w(TAG, "Setup failed: ${result.responseCode} ${result.debugMessage}")
-                    scheduleReconnect(context)
-                }
-            }
-
-            override fun onBillingServiceDisconnected() {
-                isConnecting = false
-                scheduleReconnect(context)
-            }
-        })
+    private fun onDisconnected() {
+        isConnecting = false
+        failWaiting()
+        if (isPurchaseFlowOpen) {
+            isPurchaseFlowOpen = false
+            notify(PurchaseResult.ERROR)
+            release()
+        }
     }
 
-    private fun scheduleReconnect(context: Context) {
-        val delay = reconnectDelayMs
-        reconnectDelayMs = (reconnectDelayMs * 2).coerceAtMost(MAX_RECONNECT_DELAY_MS)
-        mainHandler.postDelayed({ connect(context) }, delay)
+    private fun failWaiting() {
+        val failed = waiting.toList()
+        waiting.clear()
+        failed.forEach {
+            it.onFailed()
+            release()
+        }
     }
 
-    private fun scheduleProductRetry() {
-        val delay = productRetryDelayMs
-        productRetryDelayMs = (productRetryDelayMs * 2).coerceAtMost(MAX_RECONNECT_DELAY_MS)
-        mainHandler.postDelayed(productRetry, delay)
-    }
-
-    private fun queryProductDetails() {
-        val billing = client ?: return
-        mainHandler.removeCallbacks(productRetry)
+    private fun loadProduct(billing: BillingClient, onLoaded: (ProductDetails?) -> Unit) {
+        hold()
         val params = QueryProductDetailsParams.newBuilder()
             .setProductList(
                 listOf(
@@ -165,105 +194,53 @@ object Billing {
             .build()
 
         billing.queryProductDetailsAsync(params) { result, details ->
-            if (result.responseCode != BillingClient.BillingResponseCode.OK) {
-                Log.w(TAG, "Product query failed: ${result.responseCode} ${result.debugMessage}")
-                scheduleProductRetry()
-                return@queryProductDetailsAsync
+            mainHandler.post {
+                val product = if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                    details.productDetailsList.firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
+                } else {
+                    Log.w(TAG, "Product query failed: ${result.responseCode} ${result.debugMessage}")
+                    null
+                }
+                product?.oneTimeOffer()?.formattedPrice?.let { _price.value = it }
+                onLoaded(product)
+                release()
             }
-            productRetryDelayMs = 1_000L
-            details.unfetchedProductList.forEach { unfetched ->
-                Log.w(TAG, "Product not fetched: ${unfetched.productId} status ${unfetched.statusCode}")
-            }
-            val product = details.productDetailsList
-                .firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
-            productDetails = product
-            _price.value = product?.oneTimeOffer()?.formattedPrice
         }
     }
 
-    fun queryPurchases(onDone: ((Boolean) -> Unit)? = null) {
-        val billing = client
-        if (billing == null || !billing.isReady) {
-            onDone?.let { mainHandler.post { it(_isAdFree.value) } }
-            return
-        }
-
+    private fun loadPurchases(billing: BillingClient, onLoaded: () -> Unit) {
+        hold()
         val params = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
             .build()
 
         billing.queryPurchasesAsync(params) { result, purchases ->
-            if (result.responseCode != BillingClient.BillingResponseCode.OK) {
-                Log.w(TAG, "Purchase query failed: ${result.responseCode} ${result.debugMessage}")
-                onDone?.invoke(_isAdFree.value)
-                return@queryPurchasesAsync
-            }
-            val owned = purchases.any { purchase ->
-                purchase.products.contains(REMOVE_ADS_PRODUCT_ID) &&
-                    purchase.purchaseState == Purchase.PurchaseState.PURCHASED
-            }
-            purchases.forEach { handlePurchase(it) }
-            if (!owned) setAdFree(false)
-            onDone?.invoke(_isAdFree.value)
-        }
-    }
-
-    private fun handlePurchase(purchase: Purchase): PurchaseResult {
-        if (!purchase.products.contains(REMOVE_ADS_PRODUCT_ID)) return PurchaseResult.ERROR
-
-        return when (purchase.purchaseState) {
-            Purchase.PurchaseState.PURCHASED -> {
-                setAdFree(true)
-                if (!purchase.isAcknowledged) acknowledge(purchase)
-                PurchaseResult.PURCHASED
-            }
-
-            Purchase.PurchaseState.PENDING -> PurchaseResult.PENDING
-
-            else -> PurchaseResult.ERROR
-        }
-    }
-
-    private fun acknowledge(purchase: Purchase) {
-        val billing = client ?: return
-        val params = AcknowledgePurchaseParams.newBuilder()
-            .setPurchaseToken(purchase.purchaseToken)
-            .build()
-        billing.acknowledgePurchase(params) { result ->
-            if (result.responseCode != BillingClient.BillingResponseCode.OK) {
-                Log.w(TAG, "Acknowledge failed: ${result.responseCode} ${result.debugMessage}")
+            mainHandler.post {
+                if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                    applyOwnedPurchases(billing, purchases)
+                } else {
+                    Log.w(TAG, "Purchase query failed: ${result.responseCode} ${result.debugMessage}")
+                }
+                onLoaded()
+                release()
             }
         }
     }
 
-    private fun setAdFree(value: Boolean) {
-        if (_isAdFree.value == value) return
-        _isAdFree.value = value
-        appContextRef?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            ?.edit()
-            ?.putBoolean(KEY_AD_FREE, value)
-            ?.apply()
+    private fun applyOwnedPurchases(billing: BillingClient, purchases: List<Purchase>) {
+        val owned = purchases.any { purchase ->
+            purchase.products.contains(REMOVE_ADS_PRODUCT_ID) &&
+                purchase.purchaseState == Purchase.PurchaseState.PURCHASED
+        }
+        purchases.forEach { handlePurchase(billing, it) }
+        if (!owned) setAdFree(false)
     }
 
-    private var appContextRef: Context? = null
-
-    fun launchPurchase(activity: Activity, onResult: (PurchaseResult) -> Unit) {
-        val billing = client
-        val product = productDetails
-
-        if (billing == null || !billing.isReady) {
-            init(activity)
-            onResult(PurchaseResult.ERROR)
-            return
-        }
+    private fun startPurchaseFlow(activity: Activity, billing: BillingClient, product: ProductDetails?) {
         if (product == null) {
-            queryProductDetails()
-            onResult(PurchaseResult.ERROR)
+            notify(PurchaseResult.ERROR)
             return
         }
-
-        purchaseListener = onResult
-
         val params = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(
                 listOf(
@@ -281,7 +258,80 @@ object Billing {
         if (result.responseCode != BillingClient.BillingResponseCode.OK) {
             Log.w(TAG, "Launch failed: ${result.responseCode} ${result.debugMessage}")
             notify(PurchaseResult.ERROR)
+            return
         }
+        isPurchaseFlowOpen = true
+        hold()
+    }
+
+    private fun onPurchasesUpdated(result: BillingResult, purchases: List<Purchase>) {
+        val billing = client
+        val outcome = when (result.responseCode) {
+            BillingClient.BillingResponseCode.OK -> purchaseOutcome(billing, purchases)
+            BillingClient.BillingResponseCode.USER_CANCELED -> PurchaseResult.CANCELLED
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
+                billing?.let { loadPurchases(it) { } }
+                PurchaseResult.PURCHASED
+            }
+            else -> {
+                Log.w(TAG, "Purchase update failed: ${result.responseCode} ${result.debugMessage}")
+                PurchaseResult.ERROR
+            }
+        }
+        notify(outcome)
+        if (isPurchaseFlowOpen) {
+            isPurchaseFlowOpen = false
+            release()
+        }
+    }
+
+    private fun purchaseOutcome(billing: BillingClient?, purchases: List<Purchase>): PurchaseResult {
+        val handled = purchases.map { handlePurchase(billing, it) }
+        return when {
+            handled.any { it == PurchaseResult.PURCHASED } -> PurchaseResult.PURCHASED
+            handled.any { it == PurchaseResult.PENDING } -> PurchaseResult.PENDING
+            else -> PurchaseResult.ERROR
+        }
+    }
+
+    private fun handlePurchase(billing: BillingClient?, purchase: Purchase): PurchaseResult {
+        if (!purchase.products.contains(REMOVE_ADS_PRODUCT_ID)) return PurchaseResult.ERROR
+
+        return when (purchase.purchaseState) {
+            Purchase.PurchaseState.PURCHASED -> {
+                setAdFree(true)
+                if (!purchase.isAcknowledged && billing != null) acknowledge(billing, purchase)
+                PurchaseResult.PURCHASED
+            }
+
+            Purchase.PurchaseState.PENDING -> PurchaseResult.PENDING
+
+            else -> PurchaseResult.ERROR
+        }
+    }
+
+    private fun acknowledge(billing: BillingClient, purchase: Purchase) {
+        hold()
+        val params = AcknowledgePurchaseParams.newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+            .build()
+        billing.acknowledgePurchase(params) { result ->
+            mainHandler.post {
+                if (result.responseCode != BillingClient.BillingResponseCode.OK) {
+                    Log.w(TAG, "Acknowledge failed: ${result.responseCode} ${result.debugMessage}")
+                }
+                release()
+            }
+        }
+    }
+
+    private fun setAdFree(value: Boolean) {
+        if (_isAdFree.value == value) return
+        _isAdFree.value = value
+        appContextRef?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            ?.edit()
+            ?.putBoolean(KEY_AD_FREE, value)
+            ?.apply()
     }
 
     private fun notify(result: PurchaseResult) {
