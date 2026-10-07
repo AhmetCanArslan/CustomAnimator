@@ -25,8 +25,6 @@
 -keep class rikka.shizuku.** { *; }
 -keep class moe.shizuku.** { *; }
 
--keep class * extends androidx.room.RoomDatabase { void <init>(); }
-
 -keep class * extends com.google.gson.reflect.TypeToken
 -keep class * implements com.google.gson.TypeAdapter
 -keep class com.google.gson.reflect.TypeToken { *; }
