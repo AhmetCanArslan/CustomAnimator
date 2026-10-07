@@ -336,13 +336,14 @@ fun LoggingSection(
         IgnoreDialog(
             entry = entry,
             onDismiss = { ignoreTarget = null },
-            onSave = { titlePattern, titleIsRegex, bodyPattern, bodyIsRegex ->
+            onSave = { titlePattern, titleIsRegex, bodyPattern, bodyIsRegex, blocksNotification ->
                 viewModel.ignoreFromDialog(
                     entry = entry,
                     titlePattern = titlePattern,
                     titleIsRegex = titleIsRegex,
                     bodyPattern = bodyPattern,
-                    bodyIsRegex = bodyIsRegex
+                    bodyIsRegex = bodyIsRegex,
+                    blocksNotification = blocksNotification
                 )
                 maybeShowInterstitial(context)
                 ignoreTarget = null
@@ -724,7 +725,8 @@ private fun IgnoreDialog(
         titlePattern: String?,
         titleIsRegex: Boolean,
         bodyPattern: String?,
-        bodyIsRegex: Boolean
+        bodyIsRegex: Boolean,
+        blocksNotification: Boolean
     ) -> Unit
 ) {
     val hasTitle = entry.title.isNotBlank()
@@ -737,6 +739,7 @@ private fun IgnoreDialog(
     var titleIsRegex by remember { mutableStateOf(false) }
     var bodyText by remember { mutableStateOf(initialBody) }
     var bodyIsRegex by remember { mutableStateOf(false) }
+    var blocksNotification by remember { mutableStateOf(false) }
 
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -938,6 +941,11 @@ private fun IgnoreDialog(
                     }
                 }
 
+                FilterBlockRow(
+                    checked = blocksNotification,
+                    onCheckedChange = { blocksNotification = it }
+                )
+
                 errorMessage?.let { msg ->
                     Text(
                         text = msg,
@@ -967,7 +975,8 @@ private fun IgnoreDialog(
                     if (useTitleFilter) titleText.trim() else null,
                     titleIsRegex,
                     if (useBodyFilter) bodyText.trim() else null,
-                    bodyIsRegex
+                    bodyIsRegex,
+                    blocksNotification
                 )
             }) {
                 Text(stringResource(R.string.pn_ignore_dialog_save))

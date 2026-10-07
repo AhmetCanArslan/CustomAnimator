@@ -139,7 +139,8 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         titlePattern: String?,
         titleIsRegex: Boolean,
         bodyPattern: String?,
-        bodyIsRegex: Boolean
+        bodyIsRegex: Boolean,
+        blocksNotification: Boolean
     ) {
         viewModelScope.launch(Dispatchers.IO) {
             if (titlePattern == null && bodyPattern == null) {
@@ -147,7 +148,8 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
                     IgnoreRule(
                         type = IgnoreType.APP,
                         packageName = entry.packageName,
-                        appName = entry.appName
+                        appName = entry.appName,
+                        blocksNotification = blocksNotification
                     )
                 )
                 return@launch
@@ -158,6 +160,7 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
                         type = IgnoreType.TITLE_AND_BODY,
                         packageName = entry.packageName,
                         appName = entry.appName,
+                        blocksNotification = blocksNotification,
                         matchValue = titlePattern,
                         isRegex = titleIsRegex,
                         matchValue2 = bodyPattern,
@@ -172,6 +175,7 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
                         type = IgnoreType.TITLE,
                         packageName = entry.packageName,
                         appName = entry.appName,
+                        blocksNotification = blocksNotification,
                         matchValue = titlePattern,
                         isRegex = titleIsRegex
                     )
@@ -183,6 +187,7 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
                         type = IgnoreType.BODY,
                         packageName = entry.packageName,
                         appName = entry.appName,
+                        blocksNotification = blocksNotification,
                         matchValue = bodyPattern,
                         isRegex = bodyIsRegex
                     )
