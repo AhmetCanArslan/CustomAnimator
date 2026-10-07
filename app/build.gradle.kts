@@ -94,6 +94,9 @@ android {
         buildConfig = true
         aidl = true
     }
+    androidResources {
+        localeFilters += listOf("en", "ar", "fil", "es", "es-rUS", "in", "it", "pt", "pt-rBR", "ru", "tr")
+    }
 }
 
 kotlin {
