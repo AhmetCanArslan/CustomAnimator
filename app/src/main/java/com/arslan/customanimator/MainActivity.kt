@@ -116,6 +116,7 @@ import com.arslan.customanimator.utils.ShizukuState
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.lifecycleScope
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.arslan.customanimator.R
 
@@ -126,15 +127,8 @@ class MainActivity : ComponentActivity() {
         initBilling(this)
         initAds(this)
 
-        ForegroundAppWatcherService.sync(this)
-
         AppListManager.initialize(this)
-        RulesManager(this).hasProximitySensor()
-
-        TerminalTileSlots.sync(this, TerminalPresetManager(this))
-        ToggleTileSlots.sync(this, ToggleTileManager(this))
-        WidthTileSlots.sync(this, WidthPresetManager(this))
-        AnimationTileSlots.sync(this, PresetManager(this))
+        syncBackgroundState()
 
         ShizukuState.start(this)
 
@@ -175,6 +169,18 @@ class MainActivity : ComponentActivity() {
                 }
                 }
             }
+        }
+    }
+
+    private fun syncBackgroundState() {
+        val appContext = applicationContext
+        lifecycleScope.launch(Dispatchers.IO) {
+            ForegroundAppWatcherService.sync(appContext)
+            RulesManager(appContext).hasProximitySensor()
+            TerminalTileSlots.sync(appContext, TerminalPresetManager(appContext))
+            ToggleTileSlots.sync(appContext, ToggleTileManager(appContext))
+            WidthTileSlots.sync(appContext, WidthPresetManager(appContext))
+            AnimationTileSlots.sync(appContext, PresetManager(appContext))
         }
     }
 
