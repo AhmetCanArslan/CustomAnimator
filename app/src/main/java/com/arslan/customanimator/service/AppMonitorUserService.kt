@@ -13,6 +13,8 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
 
     private var registered = false
 
+    private val foregroundPids = HashSet<Int>()
+
     private val activityManager: Any by lazy {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Class.forName("android.app.ActivityManager").getMethod("getService").invoke(null)
@@ -32,6 +34,7 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
 
     private val observer = object : IProcessObserver.Stub() {
         override fun onForegroundActivitiesChanged(pid: Int, uid: Int, foregroundActivities: Boolean) {
+            if (!trackForeground(pid, foregroundActivities)) return
             deliver { it.onForegroundActivitiesChanged(pid, packagesForUid(uid), foregroundActivities) }
         }
 
@@ -48,6 +51,7 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
         ) = Unit
 
         override fun onProcessDied(pid: Int, uid: Int) {
+            if (!trackForeground(pid, false)) return
             deliver { it.onProcessDied(pid) }
         }
     }
@@ -60,6 +64,7 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
     @Synchronized
     override fun setListener(listener: IForegroundAppListener?): Boolean {
         this.listener = listener
+        synchronized(foregroundPids) { foregroundPids.clear() }
         if (!registered) {
             try {
                 activityManager.javaClass
@@ -86,6 +91,7 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
                 .filterIsInstance<ActivityManager.RunningAppProcessInfo>()
                 .filter { processStateField.getInt(it) == topState }
                 .forEach { info ->
+                    trackForeground(info.pid, true)
                     deliver { it.onForegroundActivitiesChanged(info.pid, packagesForUid(info.uid), true) }
                 }
         } catch (e: Throwable) {
@@ -113,6 +119,16 @@ class AppMonitorUserService : IAppMonitorUserService.Stub() {
             listener = null
         }
     }
+
+    private fun trackForeground(pid: Int, foreground: Boolean): Boolean =
+        synchronized(foregroundPids) {
+            if (foreground) {
+                foregroundPids.add(pid)
+                true
+            } else {
+                foregroundPids.remove(pid)
+            }
+        }
 
     private fun packagesForUid(uid: Int): Array<String> {
         return try {

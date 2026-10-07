@@ -68,6 +68,6 @@ class AppMonitorConnection(
 
     private companion object {
         const val TAG = "AppMonitorConnection"
-        const val SERVICE_VERSION = 1
+        const val SERVICE_VERSION = 2
     }
 }
