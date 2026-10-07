@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Context
 import androidx.annotation.Keep
 import com.arslan.customanimator.notify.widget.NotificationWidgetProvider
+import com.arslan.customanimator.utils.ParsedPref
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.UUID
@@ -28,6 +29,7 @@ object WidgetNotificationStore {
     private const val DEDUP_WINDOW_MS = 3000L
 
     private val gson = Gson()
+    private val parsedItems = ParsedPref<List<WidgetNotification>>()
 
     private fun prefs(context: Context) =
         context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -35,14 +37,16 @@ object WidgetNotificationStore {
     @Synchronized
     fun getAll(context: Context): List<WidgetNotification> {
         val json = prefs(context).getString(ITEMS_KEY, null) ?: return emptyList()
-        return try {
-            val type = object : TypeToken<List<WidgetNotification>>() {}.type
-            gson.fromJson<List<WidgetNotification>>(json, type)
-                ?.filterNotNull()
-                ?.map { it.sanitized() }
-                ?: emptyList()
-        } catch (_: Exception) {
-            emptyList()
+        return parsedItems.get(json) {
+            try {
+                val type = object : TypeToken<List<WidgetNotification>>() {}.type
+                gson.fromJson<List<WidgetNotification>>(it, type)
+                    ?.filterNotNull()
+                    ?.map { item -> item.sanitized() }
+                    ?: emptyList()
+            } catch (_: Exception) {
+                emptyList()
+            }
         }
     }
 
