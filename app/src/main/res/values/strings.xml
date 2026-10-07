@@ -58,6 +58,10 @@
     <string name="otp_copier_add">Add</string>
     <string name="otp_copier_keywords_empty">No keywords yet. Add one below.</string>
     <string name="otp_copier_pattern_invalid">This regex is not valid</string>
+    <string name="otp_copier_excludes">Excluded words</string>
+    <string name="otp_copier_excludes_desc">Messages containing any of these words are never copied</string>
+    <string name="otp_copier_exclude_add">New excluded word</string>
+    <string name="otp_copier_excludes_empty">Nothing excluded yet. Add a word to skip messages that contain it.</string>
     <string name="otp_copier_try">Try it</string>
     <string name="otp_copier_test">Test message</string>
     <string name="otp_copier_test_result">Detected code: %1$s</string>
