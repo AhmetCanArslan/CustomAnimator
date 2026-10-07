@@ -97,8 +97,15 @@ object OtpCopierManager {
 
     fun isValidPattern(pattern: String): Boolean = pattern.isNotBlank() && compile(pattern) != null
 
-    fun extractCode(keywords: List<String>, patterns: List<String>, text: String): String? =
-        patterns.firstNotNullOfOrNull { matchPattern(it, text) } ?: matchKeywords(keywords, text)
+    fun extractCode(
+        keywords: List<String>,
+        patterns: List<String>,
+        excludes: List<String>,
+        text: String
+    ): String? {
+        if (isExcluded(excludes, text)) return null
+        return patterns.firstNotNullOfOrNull { matchPattern(it, text) } ?: matchKeywords(keywords, text)
+    }
 
     fun hasNotificationAccess(context: Context): Boolean =
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
@@ -119,7 +126,7 @@ object OtpCopierManager {
 
     fun onNotification(context: Context, key: String, text: String) {
         if (!isEnabled(context)) return
-        val code = extractCode(getKeywords(context), getPatterns(context), text) ?: return
+        val code = extractCode(getKeywords(context), getPatterns(context), getExcludes(context), text) ?: return
         val signature = "$key:$code"
         if (signature == lastCopied) return
         lastCopied = signature
@@ -142,6 +149,11 @@ object OtpCopierManager {
         compile(pattern)?.find(text)?.let(::firstGroupOrMatch)
 
     private fun foldTurkishI(text: String): String = text.replace('İ', 'I').replace('ı', 'i')
+
+    private fun isExcluded(excludes: List<String>, text: String): Boolean {
+        val folded = foldTurkishI(text)
+        return excludes.any { folded.contains(foldTurkishI(it), ignoreCase = true) }
+    }
 
     private fun matchKeywords(keywords: List<String>, text: String): String? {
         if (keywords.isEmpty()) return null

@@ -18,7 +18,7 @@ class OtpCopierManagerTest {
 
     private lateinit var context: Context
 
-    private fun extract(text: String) = OtpCopierManager.extractCode(OtpCopierManager.DEFAULT_KEYWORDS, emptyList(), text)
+    private fun extract(text: String) = OtpCopierManager.extractCode(OtpCopierManager.DEFAULT_KEYWORDS, emptyList(), emptyList(), text)
 
     private fun clipboardText(): String? {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -60,9 +60,9 @@ class OtpCopierManagerTest {
     @Test
     fun customPatternCopiesFirstGroupOrWholeMatch() {
         val text = "token AB12 expires soon"
-        assertEquals("AB12", OtpCopierManager.extractCode(emptyList(), listOf("token ([A-Z0-9]{4})"), text))
-        assertEquals("991", OtpCopierManager.extractCode(emptyList(), listOf("(", "\\d{3}"), "pick 991"))
-        assertNull(OtpCopierManager.extractCode(emptyList(), emptyList(), "code 123456"))
+        assertEquals("AB12", OtpCopierManager.extractCode(emptyList(), listOf("token ([A-Z0-9]{4})"), emptyList(), text))
+        assertEquals("991", OtpCopierManager.extractCode(emptyList(), listOf("(", "\\d{3}"), emptyList(), "pick 991"))
+        assertNull(OtpCopierManager.extractCode(emptyList(), emptyList(), emptyList(), "code 123456"))
     }
 
     @Test
@@ -72,7 +72,7 @@ class OtpCopierManagerTest {
         assertFalse(OtpCopierManager.addKeyword(context, "JETON"))
         assertFalse(OtpCopierManager.addKeyword(context, " "))
         val keywords = OtpCopierManager.getKeywords(context)
-        assertEquals("482913", OtpCopierManager.extractCode(keywords, emptyList(), "Jeton: 482913"))
+        assertEquals("482913", OtpCopierManager.extractCode(keywords, emptyList(), emptyList(), "Jeton: 482913"))
         OtpCopierManager.removeKeyword(context, "jeton")
         assertFalse("jeton" in OtpCopierManager.getKeywords(context))
         OtpCopierManager.removeKeyword(context, "code")
@@ -82,8 +82,8 @@ class OtpCopierManagerTest {
 
     @Test
     fun keywordsAreMatchedLiterally() {
-        assertEquals("4821", OtpCopierManager.extractCode(listOf("a.b"), emptyList(), "a.b 4821"))
-        assertNull(OtpCopierManager.extractCode(listOf("a.b"), emptyList(), "axb 4821"))
+        assertEquals("4821", OtpCopierManager.extractCode(listOf("a.b"), emptyList(), emptyList(), "a.b 4821"))
+        assertNull(OtpCopierManager.extractCode(listOf("a.b"), emptyList(), emptyList(), "axb 4821"))
     }
 
     @Test

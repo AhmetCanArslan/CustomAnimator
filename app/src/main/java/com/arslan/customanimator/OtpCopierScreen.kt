@@ -66,6 +66,7 @@ fun OtpCopierScreen(
     var hasSensitiveAccess by remember { mutableStateOf<Boolean?>(null) }
     var keywords by remember { mutableStateOf(OtpCopierManager.getKeywords(context)) }
     var patterns by remember { mutableStateOf(OtpCopierManager.getPatterns(context)) }
+    var excludes by remember { mutableStateOf(OtpCopierManager.getExcludes(context)) }
 
     val setEnabled: (Boolean) -> Unit = { newValue ->
         isEnabled = newValue
@@ -198,7 +199,7 @@ fun OtpCopierScreen(
 
             item { SectionHeader(title = stringResource(R.string.otp_copier_try)) }
 
-            item { OtpTestCard(keywords = keywords, patterns = patterns) }
+            item { OtpTestCard(keywords = keywords, patterns = patterns, excludes = excludes) }
 
             item {
                 OtpPatternsCard(
@@ -435,7 +436,7 @@ private fun OtpAddField(
 }
 
 @Composable
-private fun OtpTestCard(keywords: List<String>, patterns: List<String>) {
+private fun OtpTestCard(keywords: List<String>, patterns: List<String>, excludes: List<String>) {
     var sample by remember { mutableStateOf("") }
 
     AppCard(contentPadding = 16.dp) {
@@ -448,7 +449,7 @@ private fun OtpTestCard(keywords: List<String>, patterns: List<String>) {
         )
         if (sample.isNotBlank()) {
             Spacer(modifier = Modifier.height(12.dp))
-            OtpTestResult(code = OtpCopierManager.extractCode(keywords, patterns, sample))
+            OtpTestResult(code = OtpCopierManager.extractCode(keywords, patterns, excludes, sample))
         }
     }
 }
