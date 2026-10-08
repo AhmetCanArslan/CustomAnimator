@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.PlaylistRemove
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.ScreenLockRotation
@@ -61,6 +62,7 @@ fun ToolsScreenContent(
     onNavigateToCarrierName: () -> Unit,
     onNavigateToOtpCopier: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
+    onNavigateToButtonRemapper: () -> Unit,
     onNavigateToDebloater: () -> Unit,
     onNavigateToShortcuts: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
@@ -340,6 +342,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.status_bar_icons),
                             description = stringResource(R.string.status_bar_icons_desc),
                             onClick = onNavigateToStatusBarIcons
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.PowerSettingsNew,
+                            title = stringResource(R.string.button_remapper),
+                            description = stringResource(R.string.button_remapper_desc),
+                            onClick = onNavigateToButtonRemapper
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         ActionRow(

@@ -202,7 +202,8 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, SHORTCUTS
+    COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, SHORTCUTS,
+    BUTTON_REMAPPER
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -257,6 +258,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
     HomeScreen.OTP_COPIER to HomeTab.TOOLS,
     HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
+    HomeScreen.BUTTON_REMAPPER to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
@@ -344,6 +346,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val otpCopierListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val buttonRemapperListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -715,6 +718,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = carrierNameListState
         )
+    } else if (targetScreen == HomeScreen.BUTTON_REMAPPER) {
+        ButtonRemapperScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = buttonRemapperListState
+        )
     } else if (targetScreen == HomeScreen.OTP_COPIER) {
         OtpCopierScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -874,6 +882,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
             onNavigateToOtpCopier = { currentScreen = HomeScreen.OTP_COPIER },
             onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
+            onNavigateToButtonRemapper = { currentScreen = HomeScreen.BUTTON_REMAPPER },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
             onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },

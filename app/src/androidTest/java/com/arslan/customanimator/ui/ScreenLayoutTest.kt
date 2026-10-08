@@ -162,7 +162,8 @@ class ScreenLayoutTest {
             onNavigateToAlarmRevealer = {},
             onNavigateToCarrierName = {},
             onNavigateToOtpCopier = {},
-            onNavigateToStatusBarIcons = {}
+            onNavigateToStatusBarIcons = {},
+            onNavigateToButtonRemapper = {}
         )
     }
 
