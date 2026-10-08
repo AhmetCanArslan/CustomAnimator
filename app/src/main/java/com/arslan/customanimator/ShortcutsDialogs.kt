@@ -67,7 +67,7 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PickerSheet(
+internal fun PickerSheet(
     title: String,
     subtitle: String?,
     onDismiss: () -> Unit,
@@ -114,7 +114,7 @@ internal fun PickerSearchField(query: String, onQueryChange: (String) -> Unit, p
 }
 
 @Composable
-private fun PickerRow(
+internal fun PickerRow(
     title: String,
     subtitle: String,
     onClick: () -> Unit,
@@ -138,11 +138,13 @@ private fun PickerRow(
         leading()
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall)
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            if (subtitle.isNotEmpty()) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
         trailing?.invoke()
     }
@@ -159,7 +161,7 @@ internal fun PickerMessage(text: String) {
 }
 
 @Composable
-private fun AppPickerSheet(
+internal fun AppPickerSheet(
     apps: List<InstalledAppInfo>,
     onPick: (InstalledAppInfo) -> Unit,
     onDismiss: () -> Unit
