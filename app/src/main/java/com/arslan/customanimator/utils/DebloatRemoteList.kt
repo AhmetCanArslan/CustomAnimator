@@ -19,6 +19,7 @@ object DebloatRemoteList {
     private const val KEY_COUNT = "entry_count"
     private const val TIMEOUT_MS = 30_000
     private const val MAX_BYTES = 16L * 1024 * 1024
+    private const val REFRESH_INTERVAL_MS = 7L * 24 * 60 * 60 * 1000
 
     data class Entry(
         val risk: DebloatCatalog.Risk,
@@ -35,6 +36,11 @@ object DebloatRemoteList {
     fun updatedAtMs(context: Context): Long = prefs(context).getLong(KEY_UPDATED_AT, 0L)
 
     fun entryCount(context: Context): Int = prefs(context).getInt(KEY_COUNT, 0)
+
+    fun isStale(context: Context): Boolean {
+        if (!isAvailable(context)) return true
+        return System.currentTimeMillis() - updatedAtMs(context) > REFRESH_INTERVAL_MS
+    }
 
     fun clear(context: Context) {
         file(context).delete()

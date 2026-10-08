@@ -18,8 +18,6 @@ object DebloatManager {
     private const val ICON_CACHE_SIZE = 150
     private const val EXPORT_DIR = "CustomAnimator"
 
-    private val SYSTEM_PARTITIONS = listOf("/system/", "/system_ext/", "/product/", "/vendor/", "/apex/", "/odm/")
-
     private val iconCache: MutableMap<String, Drawable> = Collections.synchronizedMap(
         object : LinkedHashMap<String, Drawable>(0, 0.75f, true) {
             override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Drawable>): Boolean {
@@ -34,7 +32,8 @@ object DebloatManager {
         val paths = listPackagePaths()
         val installed = listPackages(arrayOf("pm", "list", "packages", "--user", USER))
         val disabled = listPackages(arrayOf("pm", "list", "packages", "-d", "--user", USER))
-        if (paths.isEmpty() || installed.isEmpty()) return emptyList()
+        val system = listPackages(arrayOf("pm", "list", "packages", "-s", "-u", "--user", USER))
+        if (paths.isEmpty() || installed.isEmpty() || system.isEmpty()) return emptyList()
 
         val blocked = DebloatCatalog.protectedPackages(context)
         val visible = visibleApps(context)
@@ -45,7 +44,7 @@ object DebloatManager {
             .filter { it != context.packageName }
             .map { packageName ->
                 val installedApp = visible[packageName]
-                val sources = Sources(stored, remote, installed, disabled, blocked)
+                val sources = Sources(stored, remote, installed, disabled, system, blocked)
                 if (installedApp != null) {
                     fromInstalled(context, installedApp, paths[packageName], sources)
                 } else {
@@ -210,6 +209,7 @@ object DebloatManager {
         val remote: Map<String, DebloatRemoteList.Entry>,
         val installed: Set<String>,
         val disabled: Set<String>,
+        val system: Set<String>,
         val blocked: Set<String>
     )
 
@@ -225,7 +225,6 @@ object DebloatManager {
             label = loadLabel(packageManager, appInfo),
             icon = loadInstalledIcon(packageManager, appInfo),
             apkPath = apkPath,
-            isSystemApp = hasSystemFlag(appInfo),
             protection = DebloatCatalog.Protection(appInfo.packageName, appInfo.uid, appInfo.flags, null),
             sources = sources
         )
@@ -247,7 +246,6 @@ object DebloatManager {
             label = label,
             icon = null,
             apkPath = apkPath,
-            isSystemApp = archiveApp?.let { hasSystemFlag(it) } ?: isOnSystemPartition(apkPath),
             protection = DebloatCatalog.Protection(
                 packageName = packageName,
                 uid = -1,
@@ -263,11 +261,11 @@ object DebloatManager {
         label: String,
         icon: Drawable?,
         apkPath: String?,
-        isSystemApp: Boolean,
         protection: DebloatCatalog.Protection,
         sources: Sources
     ): DebloatAppInfo {
         val remoteEntry = sources.remote[packageName]
+        val isSystemApp = sources.system.contains(packageName)
         val entry = DebloatCatalog.classify(packageName, isSystemApp)
         return DebloatAppInfo(
             packageName = packageName,
@@ -298,20 +296,10 @@ object DebloatManager {
         return archive
     }
 
-    private fun isOnSystemPartition(apkPath: String?): Boolean {
-        if (apkPath == null) return false
-        return SYSTEM_PARTITIONS.any { apkPath.startsWith(it) }
-    }
-
     private fun stateOf(packageName: String, installed: Set<String>, disabled: Set<String>): DebloatState {
         if (disabled.contains(packageName)) return DebloatState.DISABLED
         if (installed.contains(packageName)) return DebloatState.ACTIVE
         return DebloatState.REMOVED
-    }
-
-    private fun hasSystemFlag(appInfo: ApplicationInfo): Boolean {
-        val systemFlags = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
-        return (appInfo.flags and systemFlags) != 0
     }
 
     private fun loadLabel(packageManager: PackageManager, appInfo: ApplicationInfo): String {

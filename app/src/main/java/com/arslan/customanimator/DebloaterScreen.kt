@@ -95,6 +95,17 @@ fun DebloaterScreen(
         reload()
     }
 
+    LaunchedEffect(Unit) {
+        val count = withContext(Dispatchers.IO) {
+            if (DebloatRemoteList.isStale(context)) DebloatRemoteList.download(context) else 0
+        }
+        if (count > 0) {
+            listCount = DebloatRemoteList.entryCount(context)
+            listUpdatedAt = DebloatRemoteList.updatedAtMs(context)
+            reload()
+        }
+    }
+
     val visibleApps by remember(apps, searchQuery, filters) {
         derivedStateOf { filterApps(apps, searchQuery, filters) }
     }
