@@ -7,7 +7,7 @@ import com.arslan.customanimator.data.InstalledAppInfo
 
 object DeveloperOptionsManager {
 
-    private fun putGlobalInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
+    internal fun putGlobalInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = ShizukuHelper.executeShellCommand(arrayOf("settings", "put", "global", key, value.toString()))
             if (success) return true
@@ -19,7 +19,7 @@ object DeveloperOptionsManager {
         }
     }
 
-    private fun putGlobalString(context: Context, contentResolver: ContentResolver, key: String, value: String?): Boolean {
+    internal fun putGlobalString(context: Context, contentResolver: ContentResolver, key: String, value: String?): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = if (value == null) {
                 ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "global", key))
