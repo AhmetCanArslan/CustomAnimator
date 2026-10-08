@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutIconPack
+import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.ui.components.TileIconCell
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ShortcutIconPacks
@@ -43,6 +44,7 @@ private const val BUILT_IN_SOURCE = ""
 @Composable
 internal fun ShortcutIconPickerSheet(
     targetPackage: String?,
+    type: ShortcutType,
     current: ShortcutIconImage,
     onPick: (ShortcutIconImage) -> Unit,
     onDismiss: () -> Unit
@@ -53,6 +55,7 @@ internal fun ShortcutIconPickerSheet(
     var query by remember { mutableStateOf("") }
     var color by remember { mutableIntStateOf(ShortcutMaker.glyphColors.first()) }
     var builtInKey by remember { mutableStateOf<String?>(null) }
+    var glyphRes by remember { mutableStateOf<Int?>(null) }
     var preview by remember { mutableStateOf(current) }
 
     val packs by produceState(initialValue = emptyList<ShortcutIconPack>()) {
@@ -65,16 +68,25 @@ internal fun ShortcutIconPickerSheet(
         }
     }
 
-    LaunchedEffect(builtInKey, color) {
-        val key = builtInKey ?: return@LaunchedEffect
+    LaunchedEffect(glyphRes, color) {
+        val glyph = glyphRes ?: return@LaunchedEffect
         preview = withContext(Dispatchers.IO) {
-            ShortcutIconImage(ShortcutMaker.glyphIcon(context, TerminalTileIcons.resFor(key), color))
+            ShortcutIconImage(ShortcutMaker.glyphIcon(context, glyph, color))
         }
+    }
+    val pickColor: (Int) -> Unit = { picked ->
+        color = picked
+        glyphRes = glyphRes ?: ShortcutMaker.glyphRes(type)
+    }
+    val pickBuiltIn: (String) -> Unit = { key ->
+        builtInKey = key
+        glyphRes = TerminalTileIcons.resFor(key)
     }
     val pickFromPack: (String) -> Unit = { name ->
         coroutineScope.launch {
             withContext(Dispatchers.IO) { ShortcutIconPacks.loadIcon(context, source, name) }?.let {
                 builtInKey = null
+                glyphRes = null
                 preview = it
             }
         }
@@ -104,9 +116,9 @@ internal fun ShortcutIconPickerSheet(
             Spacer(modifier = Modifier.height(8.dp))
             PickerSearchField(query, { query = it }, stringResource(R.string.terminal_tile_icon_search))
             if (source == BUILT_IN_SOURCE) {
-                IconColorRow(selected = color, onSelect = { color = it })
+                IconColorRow(selected = color, onSelect = pickColor)
                 Spacer(modifier = Modifier.height(12.dp))
-                BuiltInIconGrid(query = query, selected = builtInKey, onPick = { builtInKey = it })
+                BuiltInIconGrid(query = query, selected = builtInKey, onPick = pickBuiltIn)
             } else {
                 PackIconGrid(packageName = source, names = packIcons, query = query, onPick = pickFromPack)
             }

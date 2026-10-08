@@ -310,6 +310,7 @@ private fun ConfirmShortcutDialog(
     if (showIconPicker) {
         ShortcutIconPickerSheet(
             targetPackage = entry.packageName,
+            type = entry.type,
             current = icon,
             onPick = {
                 icon = it

@@ -253,7 +253,7 @@ object ShortcutMaker {
         return result.isSuccess && !result.output.contains("Error") && !result.output.contains("Exception")
     }
 
-    private fun glyphRes(type: ShortcutType): Int = when (type) {
+    fun glyphRes(type: ShortcutType): Int = when (type) {
         ShortcutType.APP -> R.drawable.ic_tile_apps
         ShortcutType.ACTIVITY -> R.drawable.ic_tile_launch
         ShortcutType.FILE -> R.drawable.ic_tile_folder_open
