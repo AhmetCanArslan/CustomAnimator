@@ -31,6 +31,7 @@ object SystemResetManager {
         val clockSeconds = DeveloperOptionsManager.setClockSeconds(context, contentResolver, false)
         val dontKeepActivities = DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, false)
         val bgLimit = DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, false)
+        val powerLongPress = ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
 
         val angle = DeveloperOptionsManager.clearAngleDriverSelections(context, contentResolver)
         val permissions = regrantRevokedPermissions(context)
@@ -39,7 +40,7 @@ object SystemResetManager {
             animationScales = scales,
             density = density,
             rotation = rotation,
-            tweaks = fancyIme && clockSeconds && dontKeepActivities && bgLimit,
+            tweaks = fancyIme && clockSeconds && dontKeepActivities && bgLimit && powerLongPress,
             angle = angle,
             permissions = permissions
         )
