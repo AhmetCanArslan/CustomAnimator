@@ -26,6 +26,16 @@
     <string name="dont_keep_activities_desc">تدمير كل نشاط بمجرد مغادرة المستخدم له</string>
     <string name="limit_background_processes">تحديد العمليات في الخلفية</string>
     <string name="limit_background_processes_desc">إبقاء تطبيق واحد مخزّن في الخلفية على الأكثر</string>
+    <string name="button_action_quick">إجراءات سريعة</string>
+    <string name="button_action_flashlight">المصباح</string>
+    <string name="button_action_screenshot">التقاط لقطة شاشة</string>
+    <string name="button_action_play_pause">تشغيل الوسائط أو إيقافها مؤقتًا</string>
+    <string name="button_action_next_track">المقطع التالي</string>
+    <string name="button_action_previous_track">المقطع السابق</string>
+    <string name="button_action_notifications">فتح الإشعارات</string>
+    <string name="button_action_quick_settings">فتح الإعدادات السريعة</string>
+    <string name="button_action_recent_apps">التطبيقات الأخيرة</string>
+    <string name="button_action_free_memory">تحرير الذاكرة</string>
     <string name="carrier_name">اسم المشغّل</string>
     <string name="carrier_name_desc">عرض اسم مشغّل مخصص في شريط الحالة وشاشة القفل</string>
     <string name="carrier_name_current">الاسم الحالي: %1$s</string>
