@@ -13,6 +13,7 @@ import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.RequiresApi
 import com.arslan.customanimator.data.AppShortcutInfo
 import com.arslan.customanimator.data.ShortcutIconImage
+import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.service.IShortcutUserService
 import com.arslan.customanimator.service.ShortcutUserService
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -27,7 +28,7 @@ object AppShortcutManager {
 
     private const val TAG = "AppShortcutManager"
     private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 2
+    private const val SERVICE_VERSION = 3
 
     private val lock = Mutex()
     private var service: IShortcutUserService? = null
@@ -37,6 +38,11 @@ object AppShortcutManager {
 
     suspend fun listShortcuts(context: Context, packageName: String): List<AppShortcutInfo>? =
         withService(context) { parseShortcuts(it.getShortcutsJson(packageName)) }
+
+    suspend fun warmUp(context: Context) {
+        if (ShortcutStore.getAll(context).none { it.type == ShortcutType.APP_SHORTCUT }) return
+        withService(context) { it.asBinder().pingBinder() }
+    }
 
     suspend fun start(context: Context, packageName: String, shortcutId: String): Boolean {
         val shortcutIntent = withService(context) { it.getShortcutIntent(packageName, shortcutId) } ?: return false
@@ -103,7 +109,7 @@ object AppShortcutManager {
         val args = Shizuku.UserServiceArgs(
             ComponentName(context.packageName, ShortcutUserService::class.java.name)
         )
-            .daemon(false)
+            .daemon(true)
             .processNameSuffix("shortcut")
             .debuggable(false)
             .version(SERVICE_VERSION)

@@ -79,6 +79,7 @@ object ShizukuState {
         if (!ShizukuHelper.hasShizukuPermission() && !ShizukuHelper.hasShizukuBeenRequested(context)) {
             requestPermission(context)
         }
+        scope.launch { AppShortcutManager.warmUp(context) }
     }
 
     private fun grantSecureSettings(context: Context) {
