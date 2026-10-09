@@ -1661,6 +1661,7 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_command_desc">Jalankan perintah shell melalui Shizuku</string>
     <string name="shortcut_more_options">Opsi lainnya</string>
     <string name="shortcut_launch">Luncurkan</string>
+    <string name="shortcut_test">Uji</string>
     <string name="shortcut_add_to_home">Tambahkan ke layar utama</string>
     <string name="shortcut_watch_ad_add">Tonton iklan &amp; tambahkan</string>
     <string name="shortcut_change_app">Ganti aplikasi</string>

@@ -1661,6 +1661,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_tile_command_desc">Magpatakbo ng shell command gamit ang Shizuku</string>
     <string name="shortcut_more_options">Higit pang opsyon</string>
     <string name="shortcut_launch">Ilunsad</string>
+    <string name="shortcut_test">Subukan</string>
     <string name="shortcut_add_to_home">Idagdag sa home screen</string>
     <string name="shortcut_watch_ad_add">Manood ng ad at idagdag</string>
     <string name="shortcut_change_app">Palitan ang app</string>

@@ -1661,6 +1661,7 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_tile_command_desc">Execute um comando de shell pelo Shizuku</string>
     <string name="shortcut_more_options">Mais opções</string>
     <string name="shortcut_launch">Abrir</string>
+    <string name="shortcut_test">Testar</string>
     <string name="shortcut_add_to_home">Adicionar à tela inicial</string>
     <string name="shortcut_watch_ad_add">Ver anúncio e adicionar</string>
     <string name="shortcut_change_app">Trocar app</string>

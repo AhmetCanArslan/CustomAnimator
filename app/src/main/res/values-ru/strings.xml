@@ -1663,6 +1663,7 @@
     <string name="shortcut_tile_command_desc">Выполнить команду оболочки через Shizuku</string>
     <string name="shortcut_more_options">Другие параметры</string>
     <string name="shortcut_launch">Запустить</string>
+    <string name="shortcut_test">Проверить</string>
     <string name="shortcut_add_to_home">Добавить на главный экран</string>
     <string name="shortcut_watch_ad_add">Посмотреть рекламу и добавить</string>
     <string name="shortcut_change_app">Сменить приложение</string>

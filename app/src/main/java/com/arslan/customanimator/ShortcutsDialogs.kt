@@ -66,6 +66,7 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
         is ShortcutStep.Confirm -> ConfirmShortcutDialog(
             step = step,
             onConfirm = state::confirm,
+            onTest = state::launch,
             onDismiss = state::dismiss
         )
     }
@@ -326,6 +327,7 @@ private fun HandlerPickerSheet(
 private fun ConfirmShortcutDialog(
     step: ShortcutStep.Confirm,
     onConfirm: (ShortcutEntry, Bitmap) -> Unit,
+    onTest: (ShortcutEntry) -> Unit,
     onDismiss: () -> Unit
 ) {
     val entry = step.entry
@@ -402,6 +404,9 @@ private fun ConfirmShortcutDialog(
             }
         },
         dismissButton = {
+            TextButton(onClick = { onTest(entry.withInput(label, value)) }, enabled = isValid) {
+                Text(stringResource(R.string.shortcut_test))
+            }
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }
