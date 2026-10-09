@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.data.AppShortcutInfo
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutActivityInfo
 import com.arslan.customanimator.data.ShortcutEntry
@@ -50,6 +51,11 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
             hasShizukuPermission = hasShizukuPermission,
             isRoot = state.isRoot,
             onPick = { activity -> state.onActivityPicked(step.app, activity) },
+            onDismiss = state::dismiss
+        )
+        is ShortcutStep.PickAppShortcut -> AppShortcutPickerSheet(
+            step = step,
+            onPick = { shortcut -> state.onAppShortcutPicked(step.app, shortcut, step.icons[shortcut.id]) },
             onDismiss = state::dismiss
         )
         is ShortcutStep.PickHandler -> HandlerPickerSheet(
@@ -234,6 +240,33 @@ private fun ActivityAccessPill(activity: ShortcutActivityInfo) {
         StatusPill(text = stringResource(R.string.shortcut_pill_root), tone = StatusTone.WARNING)
     } else if (activity.needsShizuku) {
         StatusPill(text = stringResource(R.string.shortcut_pill_shizuku), tone = StatusTone.INFO)
+    }
+}
+
+@Composable
+private fun AppShortcutPickerSheet(
+    step: ShortcutStep.PickAppShortcut,
+    onPick: (AppShortcutInfo) -> Unit,
+    onDismiss: () -> Unit
+) {
+    PickerSheet(
+        title = step.app.label,
+        subtitle = stringResource(R.string.shortcut_app_shortcut_note),
+        onDismiss = onDismiss
+    ) {
+        if (step.shortcuts.isEmpty()) {
+            item { PickerMessage(stringResource(R.string.shortcut_no_app_shortcuts)) }
+        }
+        items(step.shortcuts, key = { it.id }) { shortcut ->
+            PickerRow(title = shortcut.label, subtitle = shortcut.id, onClick = { onPick(shortcut) }) {
+                val icon = step.icons[shortcut.id]
+                if (icon == null) {
+                    AppIcon(icon = step.app.icon, modifier = Modifier.size(40.dp))
+                } else {
+                    ShortcutIcon(bitmap = icon.bitmap, legacy = icon.legacy, modifier = Modifier.size(40.dp))
+                }
+            }
+        }
     }
 }
 

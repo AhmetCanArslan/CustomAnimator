@@ -1644,6 +1644,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_tile_app_desc">Yüklü herhangi bir uygulamayı açın</string>
     <string name="shortcut_tile_activity">Aktivite</string>
     <string name="shortcut_tile_activity_desc">Bir uygulamanın içindeki ekrana doğrudan gidin</string>
+    <string name="shortcut_tile_app_shortcut">Uygulama kısayolu</string>
+    <string name="shortcut_tile_app_shortcut_desc">Uygulamanın uzun basınca sunduğu bir işlemi çalıştırın</string>
+    <string name="shortcut_app_shortcut_note">Bunlar, simgesine uzun bastığınızda uygulamanın gösterdiği kısayollardır. Shizuku üzerinden başlatılırlar.</string>
+    <string name="shortcut_no_app_shortcuts">Bu uygulama kısayol sunmuyor</string>
     <string name="shortcut_tile_file">Dosya</string>
     <string name="shortcut_tile_file_desc">Bir belgeyi seçtiğiniz uygulamayla açın</string>
     <string name="shortcut_tile_photo">Fotoğraf</string>

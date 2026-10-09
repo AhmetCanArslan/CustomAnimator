@@ -14,6 +14,7 @@ import com.arslan.customanimator.data.DebloatRisk
 import com.arslan.customanimator.data.DebloatState
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
+import kotlinx.coroutines.runBlocking
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
@@ -54,8 +55,17 @@ class NoShizukuResilienceTest {
         )
 
         assertFalse(ShizukuHelper.isRunningAsRoot())
-        assertFalse(ShortcutMaker.launch(context, command))
-        assertFalse(ShortcutMaker.launch(context, activity))
+        val appShortcut = ShortcutEntry(
+            id = "appShortcut",
+            type = ShortcutType.APP_SHORTCUT,
+            label = "App shortcut",
+            packageName = "com.example",
+            shortcutId = "compose"
+        )
+        assertFalse(runBlocking { ShortcutMaker.launch(context, command) })
+        assertFalse(runBlocking { ShortcutMaker.launch(context, activity) })
+        assertFalse(runBlocking { ShortcutMaker.launch(context, appShortcut) })
+        assertNull(runBlocking { AppShortcutManager.listShortcuts(context, "com.example") })
     }
 
     @Test

@@ -10,11 +10,14 @@ import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.arslan.customanimator.data.AppShortcutInfo
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutActivityInfo
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutHandlerInfo
+import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
+import com.arslan.customanimator.utils.AppShortcutManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShortcutMaker
@@ -25,10 +28,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
+internal enum class AppPickTarget { APP, ACTIVITY, APP_SHORTCUT }
+
 internal sealed interface ShortcutStep {
     data object Idle : ShortcutStep
-    data class PickApp(val forActivity: Boolean) : ShortcutStep
+    data class PickApp(val target: AppPickTarget) : ShortcutStep
     data class PickActivity(val app: InstalledAppInfo, val activities: List<ShortcutActivityInfo>) : ShortcutStep
+    data class PickAppShortcut(
+        val app: InstalledAppInfo,
+        val shortcuts: List<AppShortcutInfo>,
+        val icons: Map<String, ShortcutIconImage>
+    ) : ShortcutStep
     data class PickHandler(
         val entry: ShortcutEntry,
         val handlers: List<ShortcutHandlerInfo>,
@@ -63,8 +73,8 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         step = ShortcutStep.Idle
     }
 
-    fun startAppPicker(forActivity: Boolean) {
-        step = ShortcutStep.PickApp(forActivity)
+    fun startAppPicker(target: AppPickTarget) {
+        step = ShortcutStep.PickApp(target)
         if (apps.isNotEmpty()) return
         scope.launch {
             apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
@@ -81,20 +91,31 @@ internal class ShortcutsState(private val context: Context, private val scope: C
     fun onAppPicked(app: InstalledAppInfo) {
         val current = step as? ShortcutStep.PickApp ?: return
         scope.launch {
-            step = if (current.forActivity) {
-                ShortcutStep.PickActivity(
-                    app,
-                    withContext(Dispatchers.IO) { ShortcutMaker.listActivities(context, app.packageName) }
-                )
-            } else {
-                val entry = ShortcutEntry(
-                    id = newId(),
-                    type = ShortcutType.APP,
-                    label = app.label,
-                    packageName = app.packageName
-                )
-                ShortcutStep.Confirm(entry, withContext(Dispatchers.IO) { iconOf(app.icon, ShortcutType.APP) })
+            val next = withContext(Dispatchers.IO) {
+                when (current.target) {
+                    AppPickTarget.APP -> appStep(app)
+                    AppPickTarget.ACTIVITY ->
+                        ShortcutStep.PickActivity(app, ShortcutMaker.listActivities(context, app.packageName))
+                    AppPickTarget.APP_SHORTCUT -> appShortcutStep(app)
+                }
             }
+            if (next == null) toast(R.string.action_failed)
+            step = next ?: ShortcutStep.Idle
+        }
+    }
+
+    fun onAppShortcutPicked(app: InstalledAppInfo, shortcut: AppShortcutInfo, icon: ShortcutIconImage?) {
+        val entry = ShortcutEntry(
+            id = newId(),
+            type = ShortcutType.APP_SHORTCUT,
+            label = shortcut.label,
+            packageName = app.packageName,
+            shortcutId = shortcut.id,
+            legacyIcon = icon?.legacy ?: false
+        )
+        scope.launch {
+            val bitmap = icon?.bitmap ?: withContext(Dispatchers.IO) { iconOf(app.icon, ShortcutType.APP_SHORTCUT) }
+            step = ShortcutStep.Confirm(entry, bitmap)
         }
     }
 
@@ -212,6 +233,24 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         }
         shortcuts = loaded
         icons = loadedIcons
+    }
+
+    private fun appStep(app: InstalledAppInfo): ShortcutStep {
+        val entry = ShortcutEntry(
+            id = newId(),
+            type = ShortcutType.APP,
+            label = app.label,
+            packageName = app.packageName
+        )
+        return ShortcutStep.Confirm(entry, iconOf(app.icon, ShortcutType.APP))
+    }
+
+    private suspend fun appShortcutStep(app: InstalledAppInfo): ShortcutStep? {
+        val shortcuts = AppShortcutManager.listShortcuts(context, app.packageName) ?: return null
+        val icons = shortcuts.mapNotNull { shortcut ->
+            AppShortcutManager.loadIcon(context, app.packageName, shortcut)?.let { shortcut.id to it }
+        }.toMap()
+        return ShortcutStep.PickAppShortcut(app, shortcuts, icons)
     }
 
     private fun fileEntry(uri: Uri): ShortcutEntry? {

@@ -1636,6 +1636,10 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_app_desc">Buka aplikasi terpasang mana pun</string>
     <string name="shortcut_tile_activity">Aktivitas</string>
     <string name="shortcut_tile_activity_desc">Langsung menuju layar di dalam aplikasi</string>
+    <string name="shortcut_tile_app_shortcut">Pintasan aplikasi</string>
+    <string name="shortcut_tile_app_shortcut_desc">Jalankan tindakan yang ditawarkan aplikasi saat ditekan lama</string>
+    <string name="shortcut_app_shortcut_note">Ini adalah pintasan yang ditampilkan aplikasi saat ikonnya ditekan lama. Pintasan dimulai melalui Shizuku.</string>
+    <string name="shortcut_no_app_shortcuts">Aplikasi ini tidak menawarkan pintasan</string>
     <string name="shortcut_tile_file">File</string>
     <string name="shortcut_tile_file_desc">Buka dokumen dengan aplikasi pilihan Anda</string>
     <string name="shortcut_tile_photo">Foto</string>

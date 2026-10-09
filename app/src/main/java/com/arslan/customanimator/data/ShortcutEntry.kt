@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
 enum class ShortcutType {
-    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER
+    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER, APP_SHORTCUT
 }
 
 data class ShortcutEntry(
@@ -17,9 +17,11 @@ data class ShortcutEntry(
     val mimeType: String? = null,
     val command: String? = null,
     val viaShizuku: Boolean = false,
-    val legacyIcon: Boolean = false
+    val legacyIcon: Boolean = false,
+    val shortcutId: String? = null
 ) {
-    val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND
+    val needsShizuku: Boolean
+        get() = viaShizuku || type == ShortcutType.COMMAND || type == ShortcutType.APP_SHORTCUT
 }
 
 data class ShortcutActivityInfo(
@@ -31,6 +33,14 @@ data class ShortcutActivityInfo(
     val needsRoot: Boolean get() = !exported
     val needsShizuku: Boolean get() = !exported || permission != null
 }
+
+data class AppShortcutInfo(
+    val id: String,
+    val label: String,
+    val iconResId: Int,
+    val hasIconFile: Boolean,
+    val adaptiveIcon: Boolean
+)
 
 data class ShortcutHandlerInfo(
     val packageName: String,

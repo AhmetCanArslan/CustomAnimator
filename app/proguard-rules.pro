@@ -7,6 +7,7 @@
 -keep class com.arslan.customanimator.service.WifiUserService { *; }
 -keep class com.arslan.customanimator.service.HotspotUserService { *; }
 -keep class com.arslan.customanimator.service.CarrierUserService { *; }
+-keep class com.arslan.customanimator.service.ShortcutUserService { *; }
 -keep class com.arslan.customanimator.service.AppMonitorUserService { *; }
 -keep class com.arslan.customanimator.service.AppMonitorUserService$* { *; }
 -keep interface com.arslan.customanimator.service.IWifiUserService { *; }
@@ -15,6 +16,8 @@
 -keep class com.arslan.customanimator.service.IWifiUserService$* { *; }
 -keep class com.arslan.customanimator.service.IHotspotUserService$* { *; }
 -keep class com.arslan.customanimator.service.ICarrierUserService$* { *; }
+-keep interface com.arslan.customanimator.service.IShortcutUserService { *; }
+-keep class com.arslan.customanimator.service.IShortcutUserService$* { *; }
 -keep interface com.arslan.customanimator.service.IAppMonitorUserService { *; }
 -keep class com.arslan.customanimator.service.IAppMonitorUserService$* { *; }
 -keep interface com.arslan.customanimator.service.IForegroundAppListener { *; }

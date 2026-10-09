@@ -1636,6 +1636,10 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_tile_app_desc">Abra qualquer app instalado</string>
     <string name="shortcut_tile_activity">Atividade</string>
     <string name="shortcut_tile_activity_desc">Vá direto para uma tela dentro de um app</string>
+    <string name="shortcut_tile_app_shortcut">Atalho do app</string>
+    <string name="shortcut_tile_app_shortcut_desc">Execute uma ação que o app oferece ao tocar e segurar</string>
+    <string name="shortcut_app_shortcut_note">Estes são os atalhos que o app mostra quando você toca e segura o ícone dele. Eles são iniciados pelo Shizuku.</string>
+    <string name="shortcut_no_app_shortcuts">Este app não oferece atalhos</string>
     <string name="shortcut_tile_file">Arquivo</string>
     <string name="shortcut_tile_file_desc">Abra um documento com o app que você escolher</string>
     <string name="shortcut_tile_photo">Foto</string>

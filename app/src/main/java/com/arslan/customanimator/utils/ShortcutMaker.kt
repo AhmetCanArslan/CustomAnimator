@@ -187,7 +187,8 @@ object ShortcutMaker {
         }
     }
 
-    fun launch(context: Context, entry: ShortcutEntry): Boolean {
+    suspend fun launch(context: Context, entry: ShortcutEntry): Boolean {
+        if (entry.type == ShortcutType.APP_SHORTCUT) return startAppShortcut(context, entry)
         if (entry.type == ShortcutType.COMMAND) return runCommand(entry)
         if (entry.viaShizuku) return startThroughShizuku(entry)
         val intent = targetIntent(context, entry) ?: return false
@@ -220,7 +221,7 @@ object ShortcutMaker {
         ShortcutType.APP -> entry.packageName?.let { context.packageManager.getLaunchIntentForPackage(it) }
         ShortcutType.ACTIVITY -> component(entry)?.let { Intent().setComponent(it) }
         ShortcutType.FILE, ShortcutType.FOLDER, ShortcutType.LINK -> viewIntent(entry)
-        ShortcutType.COMMAND -> null
+        ShortcutType.COMMAND, ShortcutType.APP_SHORTCUT -> null
     }
 
     private fun viewIntent(entry: ShortcutEntry): Intent {
@@ -245,6 +246,12 @@ object ShortcutMaker {
         return ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", command)).isSuccess
     }
 
+    private suspend fun startAppShortcut(context: Context, entry: ShortcutEntry): Boolean {
+        val packageName = entry.packageName ?: return false
+        val shortcutId = entry.shortcutId ?: return false
+        return AppShortcutManager.start(context, packageName, shortcutId)
+    }
+
     private fun startThroughShizuku(entry: ShortcutEntry): Boolean {
         val target = component(entry) ?: return false
         val result = ShizukuHelper.executeShellCommandWithOutput(
@@ -260,6 +267,7 @@ object ShortcutMaker {
         ShortcutType.LINK -> R.drawable.ic_tile_public
         ShortcutType.COMMAND -> R.drawable.ic_tile_terminal
         ShortcutType.FOLDER -> R.drawable.ic_tile_folder
+        ShortcutType.APP_SHORTCUT -> R.drawable.ic_tile_touch_app
     }
 
     private fun glyphColor(type: ShortcutType): Int = glyphColors[type.ordinal]

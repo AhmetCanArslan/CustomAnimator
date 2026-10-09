@@ -1636,6 +1636,10 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_tile_app_desc">Abre cualquier app instalada</string>
     <string name="shortcut_tile_activity">Actividad</string>
     <string name="shortcut_tile_activity_desc">Ve directo a una pantalla dentro de una app</string>
+    <string name="shortcut_tile_app_shortcut">Acceso directo de app</string>
+    <string name="shortcut_tile_app_shortcut_desc">Ejecuta una acción que la app ofrece al mantener presionado</string>
+    <string name="shortcut_app_shortcut_note">Estos son los accesos directos que la app muestra al mantener presionado su ícono. Se inician mediante Shizuku.</string>
+    <string name="shortcut_no_app_shortcuts">Esta app no ofrece accesos directos</string>
     <string name="shortcut_tile_file">Archivo</string>
     <string name="shortcut_tile_file_desc">Abre un documento con la app que elijas</string>
     <string name="shortcut_tile_photo">Foto</string>

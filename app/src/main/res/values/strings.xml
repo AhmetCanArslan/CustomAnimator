@@ -1672,6 +1672,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_tile_app_desc">Open any installed app</string>
     <string name="shortcut_tile_activity">Activity</string>
     <string name="shortcut_tile_activity_desc">Jump straight to a screen inside an app</string>
+    <string name="shortcut_tile_app_shortcut">App shortcut</string>
+    <string name="shortcut_tile_app_shortcut_desc">Run an action an app offers on long press</string>
+    <string name="shortcut_app_shortcut_note">These are the shortcuts the app shows when you long press its icon. They start through Shizuku.</string>
+    <string name="shortcut_no_app_shortcuts">This app offers no shortcuts</string>
     <string name="shortcut_tile_file">File</string>
     <string name="shortcut_tile_file_desc">Open a document with the app you choose</string>
     <string name="shortcut_tile_photo">Photo</string>

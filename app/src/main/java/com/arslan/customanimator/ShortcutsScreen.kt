@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Terminal
+import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,6 +50,7 @@ import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
+import com.arslan.customanimator.utils.AppShortcutManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private const val ADAPTIVE_ICON_ZOOM = 1.5f
@@ -56,14 +58,25 @@ private const val DISABLED_TILE_ALPHA = 0.5f
 private const val IMAGE_MIME = "image/*"
 private const val ANY_MIME = "*/*"
 
-private enum class ShortcutTile(val icon: ImageVector, val titleRes: Int, val descriptionRes: Int) {
+private enum class ShortcutTile(
+    val icon: ImageVector,
+    val titleRes: Int,
+    val descriptionRes: Int,
+    val needsShizuku: Boolean = false
+) {
     APP(Icons.Filled.Apps, R.string.shortcut_tile_app, R.string.shortcut_tile_app_desc),
     ACTIVITY(Icons.AutoMirrored.Filled.Launch, R.string.shortcut_tile_activity, R.string.shortcut_tile_activity_desc),
+    APP_SHORTCUT(
+        Icons.Filled.TouchApp,
+        R.string.shortcut_tile_app_shortcut,
+        R.string.shortcut_tile_app_shortcut_desc,
+        needsShizuku = true
+    ),
     FILE(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.shortcut_tile_file, R.string.shortcut_tile_file_desc),
     PHOTO(Icons.Filled.Image, R.string.shortcut_tile_photo, R.string.shortcut_tile_photo_desc),
     FOLDER(Icons.Filled.Folder, R.string.shortcut_tile_folder, R.string.shortcut_tile_folder_desc),
     LINK(Icons.Filled.Link, R.string.shortcut_tile_link, R.string.shortcut_tile_link_desc),
-    COMMAND(Icons.Filled.Terminal, R.string.shortcut_tile_command, R.string.shortcut_tile_command_desc)
+    COMMAND(Icons.Filled.Terminal, R.string.shortcut_tile_command, R.string.shortcut_tile_command_desc, needsShizuku = true)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,10 +107,16 @@ fun ShortcutsScreen(
         state.load(hasShizukuPermission)
     }
 
+    val tiles = remember {
+        ShortcutTile.entries.filter { it != ShortcutTile.APP_SHORTCUT || AppShortcutManager.isSupported() }
+    }
+
     val onTileClick: (ShortcutTile) -> Unit = { tile ->
         when (tile) {
-            ShortcutTile.APP -> state.startAppPicker(forActivity = false)
-            ShortcutTile.ACTIVITY -> state.startAppPicker(forActivity = true)
+            ShortcutTile.APP -> state.startAppPicker(AppPickTarget.APP)
+            ShortcutTile.ACTIVITY -> state.startAppPicker(AppPickTarget.ACTIVITY)
+            ShortcutTile.APP_SHORTCUT ->
+                if (hasShizukuPermission) state.startAppPicker(AppPickTarget.APP_SHORTCUT) else openSetup()
             ShortcutTile.FILE -> filePicker.launch(arrayOf(ANY_MIME))
             ShortcutTile.PHOTO -> filePicker.launch(arrayOf(IMAGE_MIME))
             ShortcutTile.FOLDER -> folderPicker.launch(null)
@@ -155,7 +174,7 @@ fun ShortcutsScreen(
                 SectionHeader(title = stringResource(R.string.shortcuts_create))
             }
 
-            items(ShortcutTile.entries.chunked(2), key = { row -> row.first().name }) { row ->
+            items(tiles.chunked(2), key = { row -> row.first().name }) { row ->
                 ShortcutTileRow(
                     tiles = row,
                     hasShizukuPermission = hasShizukuPermission,
@@ -220,7 +239,7 @@ private fun ShortcutTileRow(
         tiles.forEach { tile ->
             ShortcutTileCard(
                 tile = tile,
-                enabled = tile != ShortcutTile.COMMAND || hasShizukuPermission,
+                enabled = !tile.needsShizuku || hasShizukuPermission,
                 onClick = { onClick(tile) },
                 modifier = Modifier
                     .weight(1f)
@@ -403,10 +422,11 @@ private fun ShortcutEntry.typeLabelRes(): Int = when (type) {
     ShortcutType.LINK -> R.string.shortcut_tile_link
     ShortcutType.COMMAND -> R.string.shortcut_tile_command
     ShortcutType.FOLDER -> R.string.shortcut_tile_folder
+    ShortcutType.APP_SHORTCUT -> R.string.shortcut_tile_app_shortcut
 }
 
 private fun ShortcutEntry.target(): String = when (type) {
-    ShortcutType.APP -> packageName
+    ShortcutType.APP, ShortcutType.APP_SHORTCUT -> packageName
     ShortcutType.ACTIVITY -> activityName?.substringAfterLast('.')
     ShortcutType.FILE -> mimeType
     ShortcutType.LINK -> uri
