@@ -112,8 +112,6 @@ class ShortcutUserService : IShortcutUserService.Stub() {
         const val LAUNCHER_APPS_SERVICE = "launcherapps"
         const val SHELL_PACKAGE = "com.android.shell"
         const val QUERY_FLAGS = LauncherApps.ShortcutQuery.FLAG_MATCH_DYNAMIC or
-            LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST or
-            LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED or
-            LauncherApps.ShortcutQuery.FLAG_MATCH_PINNED_BY_ANY_LAUNCHER
+            LauncherApps.ShortcutQuery.FLAG_MATCH_MANIFEST
     }
 }
