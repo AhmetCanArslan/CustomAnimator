@@ -1,8 +1,10 @@
 package com.arslan.customanimator.service;
 
+import android.app.PendingIntent;
+
 interface IShortcutUserService {
     void destroy() = 16777114;
     String getShortcutsJson(String packageName) = 1;
     ParcelFileDescriptor openShortcutIcon(String packageName, String shortcutId) = 2;
-    String startShortcut(String packageName, String shortcutId) = 3;
+    PendingIntent getShortcutIntent(String packageName, String shortcutId) = 3;
 }

@@ -1,5 +1,6 @@
 package com.arslan.customanimator.service
 
+import android.app.PendingIntent
 import android.content.pm.LauncherApps
 import android.content.pm.ShortcutInfo
 import android.os.Build
@@ -11,7 +12,7 @@ import androidx.annotation.RequiresApi
 import org.json.JSONArray
 import org.json.JSONObject
 
-@RequiresApi(Build.VERSION_CODES.R)
+@RequiresApi(Build.VERSION_CODES.S)
 class ShortcutUserService : IShortcutUserService.Stub() {
 
     private val launcherApps: Any by lazy {
@@ -49,9 +50,14 @@ class ShortcutUserService : IShortcutUserService.Stub() {
         }
     }
 
-    override fun startShortcut(packageName: String, shortcutId: String): String = respond {
-        val started = call("startShortcut", SHELL_PACKAGE, packageName, null, shortcutId, null, null, userId)
-        check(started == true) { "shortcut was not started" }
+    override fun getShortcutIntent(packageName: String, shortcutId: String): PendingIntent? {
+        return try {
+            call("getShortcutIntent", SHELL_PACKAGE, packageName, shortcutId, null, Process.myUserHandle())
+                as? PendingIntent
+        } catch (e: Throwable) {
+            Log.e(TAG, "getShortcutIntent failed", e)
+            null
+        }
     }
 
     private fun queryShortcuts(packageName: String): List<ShortcutInfo> {

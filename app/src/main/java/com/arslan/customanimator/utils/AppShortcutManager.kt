@@ -1,5 +1,7 @@
 package com.arslan.customanimator.utils
 
+import android.app.ActivityOptions
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.ServiceConnection
@@ -25,19 +27,34 @@ object AppShortcutManager {
 
     private const val TAG = "AppShortcutManager"
     private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 1
+    private const val SERVICE_VERSION = 2
 
     private val lock = Mutex()
     private var service: IShortcutUserService? = null
 
-    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.R)
-    fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+    @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
+    fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     suspend fun listShortcuts(context: Context, packageName: String): List<AppShortcutInfo>? =
         withService(context) { parseShortcuts(it.getShortcutsJson(packageName)) }
 
-    suspend fun start(context: Context, packageName: String, shortcutId: String): Boolean =
-        withService(context) { isSuccess(it.startShortcut(packageName, shortcutId)) } ?: false
+    suspend fun start(context: Context, packageName: String, shortcutId: String): Boolean {
+        val shortcutIntent = withService(context) { it.getShortcutIntent(packageName, shortcutId) } ?: return false
+        return try {
+            shortcutIntent.send(context, 0, null, null, null, null, senderOptions().toBundle())
+            true
+        } catch (e: PendingIntent.CanceledException) {
+            false
+        }
+    }
+
+    private fun senderOptions(): ActivityOptions {
+        val options = ActivityOptions.makeBasic()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            options.pendingIntentBackgroundActivityStartMode = ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
+        }
+        return options
+    }
 
     suspend fun loadIcon(context: Context, packageName: String, shortcut: AppShortcutInfo): ShortcutIconImage? {
         if (shortcut.hasIconFile) return withService(context) { fileIcon(it, packageName, shortcut) }
@@ -77,7 +94,7 @@ object AppShortcutManager {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
+    @RequiresApi(Build.VERSION_CODES.S)
     private suspend fun obtainService(context: Context): IShortcutUserService? {
         service?.let { cached ->
             if (runCatching { cached.asBinder().pingBinder() }.getOrDefault(false)) return cached
@@ -121,9 +138,6 @@ object AppShortcutManager {
                 if (continuation.isActive) continuation.resume(null)
             }
         }
-
-    private fun isSuccess(json: String): Boolean =
-        runCatching { JSONObject(json).optBoolean("success", false) }.getOrDefault(false)
 
     internal fun parseShortcuts(json: String): List<AppShortcutInfo>? = runCatching {
         val root = JSONObject(json)
