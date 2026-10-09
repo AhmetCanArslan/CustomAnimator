@@ -1640,7 +1640,7 @@
     <string name="shortcut_tile_activity_desc">Перейти сразу к экрану внутри приложения</string>
     <string name="shortcut_tile_app_shortcut">Ярлык приложения</string>
     <string name="shortcut_tile_app_shortcut_desc">Выполнить действие, которое приложение предлагает при долгом нажатии</string>
-    <string name="shortcut_app_shortcut_note">Это ярлыки, которые приложение показывает при долгом нажатии на его значок. Они запускаются через Shizuku.</string>
+    <string name="shortcut_app_shortcut_note">Ярлыки, которые это приложение показывает при долгом нажатии на его значок. Ярлыки с пометкой Shizuku закрыты внутри приложения и запускаются через Shizuku, поэтому они видны, только пока Shizuku работает.</string>
     <string name="shortcut_no_app_shortcuts">Это приложение не предлагает ярлыков</string>
     <string name="shortcut_tile_file">Файл</string>
     <string name="shortcut_tile_file_desc">Открыть документ в выбранном приложении</string>

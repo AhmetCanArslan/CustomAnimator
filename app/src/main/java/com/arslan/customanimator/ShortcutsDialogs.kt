@@ -259,7 +259,16 @@ private fun AppShortcutPickerSheet(
             item { PickerMessage(stringResource(R.string.shortcut_no_app_shortcuts)) }
         }
         items(step.shortcuts, key = { it.id }) { shortcut ->
-            PickerRow(title = shortcut.label, subtitle = shortcut.id, onClick = { onPick(shortcut) }) {
+            PickerRow(
+                title = shortcut.label,
+                subtitle = shortcut.id,
+                onClick = { onPick(shortcut) },
+                trailing = {
+                    if (shortcut.needsShizuku) {
+                        StatusPill(text = stringResource(R.string.shortcut_pill_shizuku), tone = StatusTone.INFO)
+                    }
+                }
+            ) {
                 val icon = step.icons[shortcut.id]
                 if (icon == null) {
                     AppIcon(icon = step.app.icon, modifier = Modifier.size(40.dp))

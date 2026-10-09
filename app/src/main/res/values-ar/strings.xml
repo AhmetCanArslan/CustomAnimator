@@ -1678,7 +1678,7 @@
     <string name="shortcut_tile_activity_desc">انتقل مباشرة إلى شاشة داخل تطبيق</string>
     <string name="shortcut_tile_app_shortcut">اختصار تطبيق</string>
     <string name="shortcut_tile_app_shortcut_desc">شغّل إجراءً يعرضه التطبيق عند الضغط المطوّل</string>
-    <string name="shortcut_app_shortcut_note">هذه هي الاختصارات التي يعرضها التطبيق عند الضغط المطوّل على أيقونته. تُشغَّل عبر Shizuku.</string>
+    <string name="shortcut_app_shortcut_note">الاختصارات التي يعرضها هذا التطبيق عند الضغط المطوّل على أيقونته. التي تحمل علامة Shizuku خاصة بالتطبيق وتُشغَّل عبر Shizuku، لذلك لا تظهر إلا أثناء تشغيل Shizuku.</string>
     <string name="shortcut_no_app_shortcuts">لا يوفّر هذا التطبيق أي اختصارات</string>
     <string name="shortcut_tile_file">ملف</string>
     <string name="shortcut_tile_file_desc">افتح مستندًا بالتطبيق الذي تختاره</string>

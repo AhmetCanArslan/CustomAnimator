@@ -1638,7 +1638,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_tile_activity_desc">Dumiretso sa isang screen sa loob ng app</string>
     <string name="shortcut_tile_app_shortcut">Shortcut ng app</string>
     <string name="shortcut_tile_app_shortcut_desc">Patakbuhin ang aksyong iniaalok ng app kapag pinindot nang matagal</string>
-    <string name="shortcut_app_shortcut_note">Ito ang mga shortcut na ipinapakita ng app kapag pinindot mo nang matagal ang icon nito. Sinisimulan ang mga ito gamit ang Shizuku.</string>
+    <string name="shortcut_app_shortcut_note">Ang mga shortcut na ipinapakita ng app na ito kapag pinindot mo nang matagal ang icon nito. Ang may markang Shizuku ay pribado sa app at sinisimulan gamit ang Shizuku, kaya nakalista lang ang mga ito habang tumatakbo ang Shizuku.</string>
     <string name="shortcut_no_app_shortcuts">Walang iniaalok na shortcut ang app na ito</string>
     <string name="shortcut_tile_file">File</string>
     <string name="shortcut_tile_file_desc">Buksan ang dokumento gamit ang app na pipiliin mo</string>

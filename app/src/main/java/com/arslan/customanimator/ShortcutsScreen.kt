@@ -50,7 +50,6 @@ import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
-import com.arslan.customanimator.utils.AppShortcutManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
 
 private const val ADAPTIVE_ICON_ZOOM = 1.5f
@@ -69,8 +68,7 @@ private enum class ShortcutTile(
     APP_SHORTCUT(
         Icons.Filled.TouchApp,
         R.string.shortcut_tile_app_shortcut,
-        R.string.shortcut_tile_app_shortcut_desc,
-        needsShizuku = true
+        R.string.shortcut_tile_app_shortcut_desc
     ),
     FILE(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.shortcut_tile_file, R.string.shortcut_tile_file_desc),
     PHOTO(Icons.Filled.Image, R.string.shortcut_tile_photo, R.string.shortcut_tile_photo_desc),
@@ -107,16 +105,11 @@ fun ShortcutsScreen(
         state.load(hasShizukuPermission)
     }
 
-    val tiles = remember {
-        ShortcutTile.entries.filter { it != ShortcutTile.APP_SHORTCUT || AppShortcutManager.isSupported() }
-    }
-
     val onTileClick: (ShortcutTile) -> Unit = { tile ->
         when (tile) {
             ShortcutTile.APP -> state.startAppPicker(AppPickTarget.APP)
             ShortcutTile.ACTIVITY -> state.startAppPicker(AppPickTarget.ACTIVITY)
-            ShortcutTile.APP_SHORTCUT ->
-                if (hasShizukuPermission) state.startAppPicker(AppPickTarget.APP_SHORTCUT) else openSetup()
+            ShortcutTile.APP_SHORTCUT -> state.startAppPicker(AppPickTarget.APP_SHORTCUT)
             ShortcutTile.FILE -> filePicker.launch(arrayOf(ANY_MIME))
             ShortcutTile.PHOTO -> filePicker.launch(arrayOf(IMAGE_MIME))
             ShortcutTile.FOLDER -> folderPicker.launch(null)
@@ -174,7 +167,7 @@ fun ShortcutsScreen(
                 SectionHeader(title = stringResource(R.string.shortcuts_create))
             }
 
-            items(tiles.chunked(2), key = { row -> row.first().name }) { row ->
+            items(ShortcutTile.entries.chunked(2), key = { row -> row.first().name }) { row ->
                 ShortcutTileRow(
                     tiles = row,
                     hasShizukuPermission = hasShizukuPermission,

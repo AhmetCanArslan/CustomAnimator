@@ -91,7 +91,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
     fun onAppPicked(app: InstalledAppInfo) {
         val current = step as? ShortcutStep.PickApp ?: return
         scope.launch {
-            val next = withContext(Dispatchers.IO) {
+            val next: ShortcutStep = withContext(Dispatchers.IO) {
                 when (current.target) {
                     AppPickTarget.APP -> appStep(app)
                     AppPickTarget.ACTIVITY ->
@@ -99,8 +99,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
                     AppPickTarget.APP_SHORTCUT -> appShortcutStep(app)
                 }
             }
-            if (next == null) toast(R.string.action_failed)
-            step = next ?: ShortcutStep.Idle
+            step = next
         }
     }
 
@@ -111,6 +110,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
             label = shortcut.label,
             packageName = app.packageName,
             shortcutId = shortcut.id,
+            viaShizuku = shortcut.needsShizuku,
             legacyIcon = icon?.legacy ?: false
         )
         scope.launch {
@@ -245,8 +245,8 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         return ShortcutStep.Confirm(entry, iconOf(app.icon, ShortcutType.APP))
     }
 
-    private suspend fun appShortcutStep(app: InstalledAppInfo): ShortcutStep? {
-        val shortcuts = AppShortcutManager.listShortcuts(context, app.packageName) ?: return null
+    private suspend fun appShortcutStep(app: InstalledAppInfo): ShortcutStep {
+        val shortcuts = AppShortcutManager.listShortcuts(context, app.packageName)
         val icons = shortcuts.mapNotNull { shortcut ->
             AppShortcutManager.loadIcon(context, app.packageName, shortcut)?.let { shortcut.id to it }
         }.toMap()

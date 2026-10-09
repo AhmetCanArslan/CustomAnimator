@@ -1658,7 +1658,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_tile_activity_desc">Vai direttamente a una schermata dentro una app</string>
     <string name="shortcut_tile_app_shortcut">Scorciatoia dell\'app</string>
     <string name="shortcut_tile_app_shortcut_desc">Esegui un\'azione che l\'app offre con la pressione prolungata</string>
-    <string name="shortcut_app_shortcut_note">Queste sono le scorciatoie che l\'app mostra tenendo premuta la sua icona. Vengono avviate tramite Shizuku.</string>
+    <string name="shortcut_app_shortcut_note">Le scorciatoie che questa app mostra tenendo premuta la sua icona. Quelle contrassegnate con Shizuku sono private dell\'app e vengono avviate tramite Shizuku, quindi compaiono solo mentre Shizuku è in esecuzione.</string>
     <string name="shortcut_no_app_shortcuts">Questa app non offre scorciatoie</string>
     <string name="shortcut_tile_file">File</string>
     <string name="shortcut_tile_file_desc">Apri un documento con la app che scegli</string>
