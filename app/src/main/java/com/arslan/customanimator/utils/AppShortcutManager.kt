@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import com.arslan.customanimator.data.AppShortcutInfo
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
+import com.arslan.customanimator.data.StaticShortcut
 import com.arslan.customanimator.service.IShortcutUserService
 import com.arslan.customanimator.service.ShortcutUserService
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -28,7 +29,7 @@ object AppShortcutManager {
 
     private const val TAG = "AppShortcutManager"
     private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 3
+    private const val SERVICE_VERSION = 4
 
     private val lock = Mutex()
     private var service: IShortcutUserService? = null
@@ -36,8 +37,21 @@ object AppShortcutManager {
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
     fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
-    suspend fun listShortcuts(context: Context, packageName: String): List<AppShortcutInfo>? =
-        withService(context) { parseShortcuts(it.getShortcutsJson(packageName)) }
+    suspend fun listShortcuts(context: Context, packageName: String): List<AppShortcutInfo> {
+        val local = StaticShortcuts.find(context, packageName).map { shortcut ->
+            AppShortcutInfo(
+                id = shortcut.id,
+                label = shortcut.label,
+                iconResId = shortcut.iconResId,
+                hasIconFile = false,
+                adaptiveIcon = false,
+                needsShizuku = false
+            )
+        }
+        val localIds = local.map { it.id }.toSet()
+        val remote = withService(context) { parseShortcuts(it.getShortcutsJson(packageName)) }.orEmpty()
+        return local + remote.filterNot { it.id in localIds }
+    }
 
     suspend fun warmUp(context: Context) {
         if (ShortcutStore.getAll(context).none { it.type == ShortcutType.APP_SHORTCUT }) return
@@ -45,11 +59,22 @@ object AppShortcutManager {
     }
 
     suspend fun start(context: Context, packageName: String, shortcutId: String): Boolean {
+        val local = StaticShortcuts.find(context, packageName).firstOrNull { it.id == shortcutId }
+        if (local != null) return startLocal(context, local)
         val shortcutIntent = withService(context) { it.getShortcutIntent(packageName, shortcutId) } ?: return false
         return try {
             shortcutIntent.send(context, 0, null, null, null, null, senderOptions().toBundle())
             true
         } catch (e: PendingIntent.CanceledException) {
+            false
+        }
+    }
+
+    private fun startLocal(context: Context, shortcut: StaticShortcut): Boolean {
+        return try {
+            context.startActivities(shortcut.intents.toTypedArray())
+            true
+        } catch (e: Exception) {
             false
         }
     }

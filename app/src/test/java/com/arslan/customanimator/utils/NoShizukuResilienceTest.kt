@@ -65,7 +65,7 @@ class NoShizukuResilienceTest {
         assertFalse(runBlocking { ShortcutMaker.launch(context, command) })
         assertFalse(runBlocking { ShortcutMaker.launch(context, activity) })
         assertFalse(runBlocking { ShortcutMaker.launch(context, appShortcut) })
-        assertNull(runBlocking { AppShortcutManager.listShortcuts(context, "com.example") })
+        assertTrue(runBlocking { AppShortcutManager.listShortcuts(context, "com.example") }.isEmpty())
     }
 
     @Test
