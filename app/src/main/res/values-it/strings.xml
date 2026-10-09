@@ -1594,10 +1594,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="debloater_list_title">Elenco pacchetti della community</string>
     <string name="debloater_list_missing">Non ancora scaricato. I livelli di rischio compaiono dopo il download.</string>
     <string name="debloater_list_ready">%1$d pacchetti, aggiornato il %2$s</string>
-    <string name="debloater_list_download">Scarica</string>
-    <string name="debloater_list_menu">Elenco pacchetti della community</string>
-    <string name="debloater_list_update">Aggiorna</string>
-    <string name="debloater_list_done">Elenco aggiornato: %1$d pacchetti.</string>
     <string name="debloater_list_failed">Impossibile scaricare l\'elenco.</string>
     <string name="debloater_list_credit">Dati dei pacchetti da Universal Debloater Alliance, usati con licenza LGPL-3.0.</string>
     <string name="debloater_restore_all">Ripristina tutto</string>

@@ -1574,10 +1574,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="debloater_list_title">Listahan ng package ng komunidad</string>
     <string name="debloater_list_missing">Hindi pa na-download. Lalabas ang mga risk level kapag na-download na ito.</string>
     <string name="debloater_list_ready">%1$d na package, na-update noong %2$s</string>
-    <string name="debloater_list_download">I-download</string>
-    <string name="debloater_list_menu">Listahan ng package ng komunidad</string>
-    <string name="debloater_list_update">I-update</string>
-    <string name="debloater_list_done">Na-update ang listahan: %1$d na package.</string>
     <string name="debloater_list_failed">Hindi ma-download ang listahan.</string>
     <string name="debloater_list_credit">Galing sa Universal Debloater Alliance ang package data, ginagamit sa ilalim ng LGPL-3.0.</string>
     <string name="debloater_restore_all">Ibalik lahat</string>

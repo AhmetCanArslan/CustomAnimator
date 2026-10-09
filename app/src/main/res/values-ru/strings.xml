@@ -1576,10 +1576,6 @@
     <string name="debloater_list_title">Список пакетов сообщества</string>
     <string name="debloater_list_missing">Ещё не загружен. Уровни риска появятся после загрузки.</string>
     <string name="debloater_list_ready">Пакетов: %1$d, обновлён %2$s</string>
-    <string name="debloater_list_download">Загрузить</string>
-    <string name="debloater_list_menu">Список пакетов сообщества</string>
-    <string name="debloater_list_update">Обновить</string>
-    <string name="debloater_list_done">Список обновлён. Пакетов: %1$d.</string>
     <string name="debloater_list_failed">Не удалось загрузить список.</string>
     <string name="debloater_list_credit">Данные о пакетах от Universal Debloater Alliance, используются по лицензии LGPL-3.0.</string>
     <string name="debloater_restore_all">Восстановить всё</string>

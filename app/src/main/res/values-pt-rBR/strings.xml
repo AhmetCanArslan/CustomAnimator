@@ -1574,10 +1574,6 @@ Duração do Animador: %3$.2f</string>
     <string name="debloater_list_title">Lista de pacotes da comunidade</string>
     <string name="debloater_list_missing">Ainda não baixada. Os níveis de risco aparecem depois do download.</string>
     <string name="debloater_list_ready">%1$d pacotes, atualizada em %2$s</string>
-    <string name="debloater_list_download">Baixar</string>
-    <string name="debloater_list_menu">Lista de pacotes da comunidade</string>
-    <string name="debloater_list_update">Atualizar</string>
-    <string name="debloater_list_done">Lista atualizada: %1$d pacotes.</string>
     <string name="debloater_list_failed">Não foi possível baixar a lista.</string>
     <string name="debloater_list_credit">Dados de pacotes da Universal Debloater Alliance, usados sob LGPL-3.0.</string>
     <string name="debloater_restore_all">Restaurar tudo</string>

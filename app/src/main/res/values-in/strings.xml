@@ -1574,10 +1574,6 @@ Durasi Animator: %3$.2f</string>
     <string name="debloater_list_title">Daftar paket komunitas</string>
     <string name="debloater_list_missing">Belum diunduh. Tingkat risiko muncul setelah daftar diunduh.</string>
     <string name="debloater_list_ready">%1$d paket, diperbarui %2$s</string>
-    <string name="debloater_list_download">Unduh</string>
-    <string name="debloater_list_menu">Daftar paket komunitas</string>
-    <string name="debloater_list_update">Perbarui</string>
-    <string name="debloater_list_done">Daftar diperbarui: %1$d paket.</string>
     <string name="debloater_list_failed">Tidak bisa mengunduh daftar.</string>
     <string name="debloater_list_credit">Data paket dari Universal Debloater Alliance, digunakan di bawah LGPL-3.0.</string>
     <string name="debloater_restore_all">Pulihkan semua</string>

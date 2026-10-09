@@ -1613,10 +1613,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="debloater_list_title">Community package list</string>
     <string name="debloater_list_missing">Not downloaded yet. Risk levels appear once it is downloaded.</string>
     <string name="debloater_list_ready">%1$d packages, updated %2$s</string>
-    <string name="debloater_list_download">Download</string>
-    <string name="debloater_list_menu">Community package list</string>
-    <string name="debloater_list_update">Update</string>
-    <string name="debloater_list_done">List updated: %1$d packages.</string>
     <string name="debloater_list_failed">Could not download the list.</string>
     <string name="debloater_list_credit">Package data from the Universal Debloater Alliance, used under LGPL-3.0.</string>
     <string name="debloater_restore_all">Restore all</string>

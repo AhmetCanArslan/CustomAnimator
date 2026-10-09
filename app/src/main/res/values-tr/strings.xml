@@ -1582,10 +1582,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="debloater_list_title">Topluluk paket listesi</string>
     <string name="debloater_list_missing">Henüz indirilmedi. Risk seviyeleri liste indirilince görünür.</string>
     <string name="debloater_list_ready">%1$d paket, %2$s tarihinde güncellendi</string>
-    <string name="debloater_list_download">İndir</string>
-    <string name="debloater_list_menu">Topluluk paket listesi</string>
-    <string name="debloater_list_update">Güncelle</string>
-    <string name="debloater_list_done">Liste güncellendi: %1$d paket.</string>
     <string name="debloater_list_failed">Liste indirilemedi.</string>
     <string name="debloater_list_credit">Paket verisi Universal Debloater Alliance kaynaklıdır, LGPL-3.0 altında kullanılır.</string>
     <string name="debloater_restore_all">Tümünü geri yükle</string>

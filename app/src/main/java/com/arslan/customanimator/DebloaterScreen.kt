@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.CloudDownload
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
@@ -35,13 +32,10 @@ import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.DebloatManager
 import com.arslan.customanimator.utils.DebloatRemoteList
-import com.arslan.customanimator.utils.InfoNoticeManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
-
-private const val DEBLOAT_LIST_DISMISS_KEY = "debloater_list_card"
 
 private data class DebloatFilters(
     val risk: DebloatRisk? = null,
@@ -80,7 +74,7 @@ fun DebloaterScreen(
     var confirmRestoreAll by remember { mutableStateOf(false) }
     var listCount by remember { mutableIntStateOf(DebloatRemoteList.entryCount(context)) }
     var listUpdatedAt by remember { mutableLongStateOf(DebloatRemoteList.updatedAtMs(context)) }
-    val listCardVisible = rememberInfoNoticeVisible(DEBLOAT_LIST_DISMISS_KEY)
+    var listFailed by remember { mutableStateOf(false) }
 
     val reload: suspend () -> Unit = {
         val loaded = withContext(Dispatchers.IO) { DebloatManager.loadApps(context) }
@@ -98,6 +92,7 @@ fun DebloaterScreen(
 
     LaunchedEffect(Unit) {
         val count = withContext(Dispatchers.IO) { DebloatRemoteList.download(context) }
+        listFailed = count == 0
         if (count > 0) {
             listCount = DebloatRemoteList.entryCount(context)
             listUpdatedAt = DebloatRemoteList.updatedAtMs(context)
@@ -116,26 +111,6 @@ fun DebloaterScreen(
             reload()
             isWorking = false
             reportResult(context, done, targets.size)
-        }
-    }
-
-    val updateList: () -> Unit = {
-        scope.launch {
-            isWorking = true
-            val count = withContext(Dispatchers.IO) { DebloatRemoteList.download(context) }
-            listCount = DebloatRemoteList.entryCount(context)
-            listUpdatedAt = DebloatRemoteList.updatedAtMs(context)
-            if (count > 0) reload()
-            isWorking = false
-            android.widget.Toast.makeText(
-                context,
-                if (count > 0) {
-                    resources.getString(R.string.debloater_list_done, count)
-                } else {
-                    resources.getString(R.string.debloater_list_failed)
-                },
-                android.widget.Toast.LENGTH_LONG
-            ).show()
         }
     }
 
@@ -181,16 +156,6 @@ fun DebloaterScreen(
                             contentDescription = stringResource(R.string.back)
                         )
                     }
-                },
-                actions = {
-                    DebloatOverflowMenu(
-                        enabled = !isWorking,
-                        onUpdateList = {
-                            InfoNoticeManager.restore(context, DEBLOAT_LIST_DISMISS_KEY)
-                            listCardVisible.value = true
-                            updateList()
-                        }
-                    )
                 }
             )
         },
@@ -251,19 +216,8 @@ fun DebloaterScreen(
                 )
             }
 
-            if (listCardVisible.value) {
-                item(key = "list") {
-                    DebloatListCard(
-                        entryCount = listCount,
-                        updatedAtMs = listUpdatedAt,
-                        enabled = !isWorking,
-                        onUpdate = updateList,
-                        onDismiss = {
-                            InfoNoticeManager.dismiss(context, DEBLOAT_LIST_DISMISS_KEY)
-                            listCardVisible.value = false
-                        }
-                    )
-                }
+            item(key = "list") {
+                DebloatListCard(entryCount = listCount, updatedAtMs = listUpdatedAt, failed = listFailed)
             }
 
             item(key = "search") {
@@ -496,41 +450,18 @@ private fun DebloatSummaryCard(changedCount: Int, enabled: Boolean, onRestoreAll
 }
 
 @Composable
-private fun DebloatOverflowMenu(enabled: Boolean, onUpdateList: () -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    IconButton(onClick = { expanded = true }) {
-        Icon(
-            imageVector = Icons.Filled.MoreVert,
-            contentDescription = stringResource(R.string.pn_cd_more_options)
-        )
-    }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-        DropdownMenuItem(
-            enabled = enabled,
-            text = { Text(stringResource(R.string.debloater_list_menu)) },
-            leadingIcon = { Icon(Icons.Filled.CloudDownload, contentDescription = null) },
-            onClick = {
-                expanded = false
-                onUpdateList()
-            }
-        )
-    }
-}
-
-@Composable
-private fun DebloatListCard(
-    entryCount: Int,
-    updatedAtMs: Long,
-    enabled: Boolean,
-    onUpdate: () -> Unit,
-    onDismiss: () -> Unit
-) {
+private fun DebloatListCard(entryCount: Int, updatedAtMs: Long, failed: Boolean) {
     val formatted = remember(updatedAtMs) {
         if (updatedAtMs <= 0L) {
             ""
         } else {
             java.text.DateFormat.getDateInstance().format(java.util.Date(updatedAtMs))
         }
+    }
+    val status = when {
+        entryCount > 0 -> stringResource(R.string.debloater_list_ready, entryCount, formatted)
+        failed -> stringResource(R.string.debloater_list_failed)
+        else -> stringResource(R.string.debloater_list_missing)
     }
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
@@ -539,50 +470,26 @@ private fun DebloatListCard(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.debloater_list_title),
-                    style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.weight(1f)
-                )
-                IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp)) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(R.string.close),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
             Text(
-                text = if (entryCount > 0) {
-                    stringResource(R.string.debloater_list_ready, entryCount, formatted)
-                } else {
-                    stringResource(R.string.debloater_list_missing)
-                },
+                text = stringResource(R.string.debloater_list_title),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = status,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = if (entryCount == 0 && failed) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
             )
             Text(
                 text = stringResource(R.string.debloater_list_credit),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            FilledTonalButton(onClick = onUpdate, enabled = enabled) {
-                Icon(
-                    imageVector = Icons.Filled.CloudDownload,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    stringResource(
-                        if (entryCount > 0) R.string.debloater_list_update else R.string.debloater_list_download
-                    )
-                )
-            }
         }
     }
 }
