@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Environment
 import com.arslan.customanimator.data.DebloatAppInfo
+import com.arslan.customanimator.data.DebloatRisk
 import com.arslan.customanimator.data.DebloatState
 import java.io.File
 import java.util.Collections
@@ -35,7 +36,7 @@ object DebloatManager {
         val system = listPackages(arrayOf("pm", "list", "packages", "-s", "-u", "--user", USER))
         if (paths.isEmpty() || installed.isEmpty() || system.isEmpty()) return emptyList()
 
-        val blocked = DebloatCatalog.protectedPackages(context)
+        val blocked = DebloatProtection.protectedPackages(context)
         val visible = visibleApps(context)
         val stored = DebloatStore(context).all().associateBy { it.packageName }
         val remote = DebloatRemoteList.load(context, paths.keys)
@@ -225,7 +226,7 @@ object DebloatManager {
             label = loadLabel(packageManager, appInfo),
             icon = loadInstalledIcon(packageManager, appInfo),
             apkPath = apkPath,
-            protection = DebloatCatalog.Protection(appInfo.packageName, appInfo.uid, appInfo.flags, null),
+            protection = DebloatProtection.Target(appInfo.packageName, appInfo.uid, appInfo.flags, null),
             sources = sources
         )
     }
@@ -246,7 +247,7 @@ object DebloatManager {
             label = label,
             icon = null,
             apkPath = apkPath,
-            protection = DebloatCatalog.Protection(
+            protection = DebloatProtection.Target(
                 packageName = packageName,
                 uid = -1,
                 flags = archiveApp?.flags ?: 0,
@@ -261,12 +262,11 @@ object DebloatManager {
         label: String,
         icon: Drawable?,
         apkPath: String?,
-        protection: DebloatCatalog.Protection,
+        protection: DebloatProtection.Target,
         sources: Sources
     ): DebloatAppInfo {
         val remoteEntry = sources.remote[packageName]
         val isSystemApp = sources.system.contains(packageName)
-        val entry = DebloatCatalog.classify(packageName, isSystemApp)
         return DebloatAppInfo(
             packageName = packageName,
             label = label,
@@ -274,9 +274,10 @@ object DebloatManager {
             apkPath = apkPath,
             isSystemApp = isSystemApp,
             state = stateOf(packageName, sources.installed, sources.disabled),
-            risk = remoteEntry?.risk ?: entry.risk,
-            group = remoteEntry?.group ?: entry.group,
-            isProtected = DebloatCatalog.isProtected(protection, sources.blocked),
+            risk = remoteEntry?.risk ?: DebloatRisk.UNSAFE.takeIf { isSystemApp },
+            group = remoteEntry?.group,
+            isProtected = remoteEntry?.risk == DebloatRisk.UNSAFE ||
+                DebloatProtection.isProtected(protection, sources.blocked),
             isRestorable = isSystemApp,
             isChangedByApp = sources.stored.containsKey(packageName),
             description = remoteEntry?.description

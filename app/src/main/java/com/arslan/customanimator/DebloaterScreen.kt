@@ -27,11 +27,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.arslan.customanimator.data.DebloatAppInfo
+import com.arslan.customanimator.data.DebloatGroup
+import com.arslan.customanimator.data.DebloatRisk
 import com.arslan.customanimator.data.DebloatState
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.theme.AppShapes
-import com.arslan.customanimator.utils.DebloatCatalog
 import com.arslan.customanimator.utils.DebloatManager
 import com.arslan.customanimator.utils.DebloatRemoteList
 import com.arslan.customanimator.utils.InfoNoticeManager
@@ -43,7 +44,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 private const val DEBLOAT_LIST_DISMISS_KEY = "debloater_list_card"
 
 private data class DebloatFilters(
-    val risk: DebloatCatalog.Risk? = null,
+    val risk: DebloatRisk? = null,
     val state: DebloatState? = null,
     val showSystem: Boolean = true,
     val hideProtected: Boolean = false,
@@ -96,9 +97,7 @@ fun DebloaterScreen(
     }
 
     LaunchedEffect(Unit) {
-        val count = withContext(Dispatchers.IO) {
-            if (DebloatRemoteList.isStale(context)) DebloatRemoteList.download(context) else 0
-        }
+        val count = withContext(Dispatchers.IO) { DebloatRemoteList.download(context) }
         if (count > 0) {
             listCount = DebloatRemoteList.entryCount(context)
             listUpdatedAt = DebloatRemoteList.updatedAtMs(context)
@@ -599,7 +598,7 @@ private fun DebloatFilterRows(filters: DebloatFilters, onChange: (DebloatFilters
                     label = { Text(stringResource(R.string.debloater_filter_all)) }
                 )
             }
-            items(DebloatCatalog.Risk.entries.toList()) { risk ->
+            items(DebloatRisk.entries.toList()) { risk ->
                 FilterChip(
                     selected = filters.risk == risk,
                     onClick = { onChange(filters.copy(risk = risk)) },
@@ -702,10 +701,12 @@ private fun DebloatRow(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    StatusPill(text = stringResource(riskLabel(app.risk)), tone = riskTone(app.risk))
-                    if (app.state != DebloatState.ACTIVE) {
-                        StatusPill(text = stringResource(stateLabel(app.state)), tone = StatusTone.WARNING)
+                if (app.risk != null || app.state != DebloatState.ACTIVE) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        app.risk?.let { StatusPill(text = stringResource(riskLabel(it)), tone = riskTone(it)) }
+                        if (app.state != DebloatState.ACTIVE) {
+                            StatusPill(text = stringResource(stateLabel(app.state)), tone = StatusTone.WARNING)
+                        }
                     }
                 }
             }
@@ -777,18 +778,22 @@ private fun DebloatDetailBody(app: DebloatAppInfo, onExport: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            StatusPill(text = stringResource(riskLabel(app.risk)), tone = riskTone(app.risk))
+            app.risk?.let { StatusPill(text = stringResource(riskLabel(it)), tone = riskTone(it)) }
             StatusPill(text = stringResource(stateLabel(app.state)), tone = stateTone(app.state))
             if (app.isSystemApp) {
                 StatusPill(text = stringResource(R.string.debloater_system_app), tone = StatusTone.NEUTRAL)
             }
         }
-        Text(text = stringResource(riskDescription(app.risk)), style = MaterialTheme.typography.bodyMedium)
-        Text(
-            text = app.description ?: stringResource(groupDescription(app.group)),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        app.risk?.let {
+            Text(text = stringResource(riskDescription(it)), style = MaterialTheme.typography.bodyMedium)
+        }
+        (app.description ?: app.group?.let { stringResource(groupDescription(it)) })?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
         OutlinedButton(onClick = onExport, modifier = Modifier.fillMaxWidth()) {
             Icon(
                 imageVector = Icons.Filled.Save,
@@ -842,7 +847,7 @@ private fun DebloatConfirmDialog(
                         stringResource(R.string.debloater_confirm_remove_message)
                     }
                 )
-                if (apps.any { it.risk == DebloatCatalog.Risk.UNSAFE }) {
+                if (apps.any { it.risk == DebloatRisk.UNSAFE }) {
                     Text(
                         text = stringResource(R.string.debloater_confirm_unsafe),
                         color = MaterialTheme.colorScheme.error
@@ -883,25 +888,25 @@ private fun DebloatConfirmDialog(
     )
 }
 
-private fun riskLabel(risk: DebloatCatalog.Risk): Int = when (risk) {
-    DebloatCatalog.Risk.RECOMMENDED -> R.string.debloater_risk_recommended
-    DebloatCatalog.Risk.ADVANCED -> R.string.debloater_risk_advanced
-    DebloatCatalog.Risk.EXPERT -> R.string.debloater_risk_expert
-    DebloatCatalog.Risk.UNSAFE -> R.string.debloater_risk_unsafe
+private fun riskLabel(risk: DebloatRisk): Int = when (risk) {
+    DebloatRisk.RECOMMENDED -> R.string.debloater_risk_recommended
+    DebloatRisk.ADVANCED -> R.string.debloater_risk_advanced
+    DebloatRisk.EXPERT -> R.string.debloater_risk_expert
+    DebloatRisk.UNSAFE -> R.string.debloater_risk_unsafe
 }
 
-private fun riskDescription(risk: DebloatCatalog.Risk): Int = when (risk) {
-    DebloatCatalog.Risk.RECOMMENDED -> R.string.debloater_risk_recommended_desc
-    DebloatCatalog.Risk.ADVANCED -> R.string.debloater_risk_advanced_desc
-    DebloatCatalog.Risk.EXPERT -> R.string.debloater_risk_expert_desc
-    DebloatCatalog.Risk.UNSAFE -> R.string.debloater_risk_unsafe_desc
+private fun riskDescription(risk: DebloatRisk): Int = when (risk) {
+    DebloatRisk.RECOMMENDED -> R.string.debloater_risk_recommended_desc
+    DebloatRisk.ADVANCED -> R.string.debloater_risk_advanced_desc
+    DebloatRisk.EXPERT -> R.string.debloater_risk_expert_desc
+    DebloatRisk.UNSAFE -> R.string.debloater_risk_unsafe_desc
 }
 
-private fun riskTone(risk: DebloatCatalog.Risk): StatusTone = when (risk) {
-    DebloatCatalog.Risk.RECOMMENDED -> StatusTone.ACTIVE
-    DebloatCatalog.Risk.ADVANCED -> StatusTone.INFO
-    DebloatCatalog.Risk.EXPERT -> StatusTone.WARNING
-    DebloatCatalog.Risk.UNSAFE -> StatusTone.DANGER
+private fun riskTone(risk: DebloatRisk): StatusTone = when (risk) {
+    DebloatRisk.RECOMMENDED -> StatusTone.ACTIVE
+    DebloatRisk.ADVANCED -> StatusTone.INFO
+    DebloatRisk.EXPERT -> StatusTone.WARNING
+    DebloatRisk.UNSAFE -> StatusTone.DANGER
 }
 
 private fun stateLabel(state: DebloatState): Int = when (state) {
@@ -916,21 +921,10 @@ private fun stateTone(state: DebloatState): StatusTone = when (state) {
     DebloatState.REMOVED -> StatusTone.DANGER
 }
 
-private fun groupDescription(group: DebloatCatalog.Group): Int = when (group) {
-    DebloatCatalog.Group.GOOGLE -> R.string.debloater_group_google
-    DebloatCatalog.Group.ASSISTANT -> R.string.debloater_group_assistant
-    DebloatCatalog.Group.OEM -> R.string.debloater_group_oem
-    DebloatCatalog.Group.CARRIER -> R.string.debloater_group_carrier
-    DebloatCatalog.Group.ADS -> R.string.debloater_group_ads
-    DebloatCatalog.Group.DIAGNOSTICS -> R.string.debloater_group_diagnostics
-    DebloatCatalog.Group.PRINTING -> R.string.debloater_group_printing
-    DebloatCatalog.Group.AR -> R.string.debloater_group_ar
-    DebloatCatalog.Group.ACCESSIBILITY -> R.string.debloater_group_accessibility
-    DebloatCatalog.Group.BACKUP -> R.string.debloater_group_backup
-    DebloatCatalog.Group.PARTNER -> R.string.debloater_group_partner
-    DebloatCatalog.Group.THEMES -> R.string.debloater_group_themes
-    DebloatCatalog.Group.BROWSER -> R.string.debloater_group_browser
-    DebloatCatalog.Group.MEDIA -> R.string.debloater_group_media
-    DebloatCatalog.Group.PAYMENT -> R.string.debloater_group_payment
-    DebloatCatalog.Group.SYSTEM -> R.string.debloater_group_system
+private fun groupDescription(group: DebloatGroup): Int = when (group) {
+    DebloatGroup.GOOGLE -> R.string.debloater_group_google
+    DebloatGroup.OEM -> R.string.debloater_group_oem
+    DebloatGroup.CARRIER -> R.string.debloater_group_carrier
+    DebloatGroup.PARTNER -> R.string.debloater_group_partner
+    DebloatGroup.SYSTEM -> R.string.debloater_group_system
 }

@@ -2,6 +2,8 @@ package com.arslan.customanimator.utils
 
 import android.content.Context
 import android.util.Log
+import com.arslan.customanimator.data.DebloatGroup
+import com.arslan.customanimator.data.DebloatRisk
 import org.json.JSONObject
 import java.io.File
 import java.net.HttpURLConnection
@@ -19,11 +21,10 @@ object DebloatRemoteList {
     private const val KEY_COUNT = "entry_count"
     private const val TIMEOUT_MS = 30_000
     private const val MAX_BYTES = 16L * 1024 * 1024
-    private const val REFRESH_INTERVAL_MS = 7L * 24 * 60 * 60 * 1000
 
     data class Entry(
-        val risk: DebloatCatalog.Risk,
-        val group: DebloatCatalog.Group,
+        val risk: DebloatRisk,
+        val group: DebloatGroup,
         val description: String?
     )
 
@@ -36,11 +37,6 @@ object DebloatRemoteList {
     fun updatedAtMs(context: Context): Long = prefs(context).getLong(KEY_UPDATED_AT, 0L)
 
     fun entryCount(context: Context): Int = prefs(context).getInt(KEY_COUNT, 0)
-
-    fun isStale(context: Context): Boolean {
-        if (!isAvailable(context)) return true
-        return System.currentTimeMillis() - updatedAtMs(context) > REFRESH_INTERVAL_MS
-    }
 
     fun clear(context: Context) {
         file(context).delete()
@@ -122,19 +118,19 @@ object DebloatRemoteList {
         }
     }
 
-    private fun riskOf(removal: String?): DebloatCatalog.Risk? = when (removal) {
-        "Recommended" -> DebloatCatalog.Risk.RECOMMENDED
-        "Advanced" -> DebloatCatalog.Risk.ADVANCED
-        "Expert" -> DebloatCatalog.Risk.EXPERT
-        "Unsafe" -> DebloatCatalog.Risk.UNSAFE
+    private fun riskOf(removal: String?): DebloatRisk? = when (removal) {
+        "Recommended" -> DebloatRisk.RECOMMENDED
+        "Advanced" -> DebloatRisk.ADVANCED
+        "Expert" -> DebloatRisk.EXPERT
+        "Unsafe" -> DebloatRisk.UNSAFE
         else -> null
     }
 
-    private fun groupOf(list: String?): DebloatCatalog.Group = when (list) {
-        "Google" -> DebloatCatalog.Group.GOOGLE
-        "Aosp" -> DebloatCatalog.Group.SYSTEM
-        "Carrier" -> DebloatCatalog.Group.CARRIER
-        "Oem" -> DebloatCatalog.Group.OEM
-        else -> DebloatCatalog.Group.PARTNER
+    private fun groupOf(list: String?): DebloatGroup = when (list) {
+        "Google" -> DebloatGroup.GOOGLE
+        "Aosp" -> DebloatGroup.SYSTEM
+        "Carrier" -> DebloatGroup.CARRIER
+        "Oem" -> DebloatGroup.OEM
+        else -> DebloatGroup.PARTNER
     }
 }

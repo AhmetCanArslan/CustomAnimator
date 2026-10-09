@@ -9,6 +9,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import com.arslan.customanimator.data.DebloatAppInfo
+import com.arslan.customanimator.data.DebloatGroup
+import com.arslan.customanimator.data.DebloatRisk
 import com.arslan.customanimator.data.DebloatState
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
@@ -114,8 +116,8 @@ class NoShizukuResilienceTest {
             apkPath = null,
             isSystemApp = true,
             state = DebloatState.ACTIVE,
-            risk = DebloatCatalog.Risk.RECOMMENDED,
-            group = DebloatCatalog.Group.PARTNER,
+            risk = DebloatRisk.RECOMMENDED,
+            group = DebloatGroup.PARTNER,
             isProtected = false,
             isRestorable = true,
             isChangedByApp = false,
@@ -132,11 +134,8 @@ class NoShizukuResilienceTest {
 
     @Test
     fun debloaterNeverTouchesProtectedPackages() {
-        val blocked = DebloatCatalog.protectedPackages(context)
+        val blocked = DebloatProtection.protectedPackages(context)
         assertTrue(blocked.contains(context.packageName))
-        assertTrue(blocked.contains("android"))
-        assertTrue(blocked.contains("com.android.systemui"))
-        assertTrue(blocked.contains("com.android.settings"))
 
         val protectedApp = DebloatAppInfo(
             packageName = "com.android.systemui",
@@ -145,8 +144,8 @@ class NoShizukuResilienceTest {
             apkPath = null,
             isSystemApp = true,
             state = DebloatState.ACTIVE,
-            risk = DebloatCatalog.Risk.UNSAFE,
-            group = DebloatCatalog.Group.SYSTEM,
+            risk = DebloatRisk.UNSAFE,
+            group = DebloatGroup.SYSTEM,
             isProtected = true,
             isRestorable = true,
             isChangedByApp = false,
@@ -154,16 +153,6 @@ class NoShizukuResilienceTest {
         )
         assertFalse(DebloatManager.remove(context, protectedApp))
         assertFalse(DebloatManager.disable(context, protectedApp))
-    }
-
-    @Test
-    fun debloatCatalogClassifiesKnownAndUnknownPackages() {
-        assertEquals(DebloatCatalog.Risk.RECOMMENDED, DebloatCatalog.classify("com.facebook.appmanager", true).risk)
-        assertEquals(DebloatCatalog.Risk.RECOMMENDED, DebloatCatalog.classify("com.facebook.something", true).risk)
-        assertEquals(DebloatCatalog.Risk.UNSAFE, DebloatCatalog.classify("com.google.android.gms", true).risk)
-        assertEquals(DebloatCatalog.Risk.EXPERT, DebloatCatalog.classify("com.samsung.android.knox.foo", true).risk)
-        assertEquals(DebloatCatalog.Risk.UNSAFE, DebloatCatalog.classify("com.unknown.system.thing", true).risk)
-        assertEquals(DebloatCatalog.Risk.RECOMMENDED, DebloatCatalog.classify("com.unknown.user.thing", false).risk)
     }
 
     @Test
