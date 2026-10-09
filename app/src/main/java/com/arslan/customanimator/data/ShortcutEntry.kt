@@ -1,5 +1,6 @@
 package com.arslan.customanimator.data
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
@@ -20,8 +21,7 @@ data class ShortcutEntry(
     val legacyIcon: Boolean = false,
     val shortcutId: String? = null
 ) {
-    val needsShizuku: Boolean
-        get() = viaShizuku || type == ShortcutType.COMMAND || type == ShortcutType.APP_SHORTCUT
+    val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND
 }
 
 data class ShortcutActivityInfo(
@@ -39,7 +39,15 @@ data class AppShortcutInfo(
     val label: String,
     val iconResId: Int,
     val hasIconFile: Boolean,
-    val adaptiveIcon: Boolean
+    val adaptiveIcon: Boolean,
+    val needsShizuku: Boolean = true
+)
+
+data class StaticShortcut(
+    val id: String,
+    val label: String,
+    val iconResId: Int,
+    val intents: List<Intent>
 )
 
 data class ShortcutHandlerInfo(
