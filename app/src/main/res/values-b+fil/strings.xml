@@ -1201,9 +1201,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_cancel">Kanselahin</string>
     <string name="boost_cancelled">Kinansela ang optimization</string>
     <string name="boost_running_label">Ino-optimize…</string>
-    <string name="boost_ad_title">May suporta ng ad</string>
-    <string name="boost_premium_title">Naka-unlock ang Premium</string>
-    <string name="boost_premium_desc">Walang limitasyong pag-optimize, walang ad</string>
     <string name="boost_ad_reward_denied">Tapusin ang ad para ma-unlock ang pag-optimize</string>
     <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
     <string name="optimizer_clean_watch_ad">Manood ng ad at maglinis</string>
@@ -1216,9 +1213,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="game_mode_fixed_performance">Naka-on ang fixed performance mode habang bukas ang Game Mode.</string>
     <string name="reward_free_unlock">Walang available na ad ngayon, kaya libre ito ngayong beses</string>
     <string name="reward_unlock_denied">Tapusin ang ad para ma-unlock ito nang 3 minuto</string>
-    <string name="reward_gate_watch">Manood ng ad</string>
-    <string name="reward_gate_unlocked_title">Naka-unlock</string>
-    <string name="reward_gate_unlocked_desc">Available pa nang %1$d:%2$02d</string>
     <string name="game_mode_ad_desc">Manood ng maikling ad para i-on ang game mode</string>
     <string name="game_mode_select_games_first">Pumili muna ng kahit isang laro</string>
     <string name="compile_booster_ad_desc">Manood ng maikling ad para magsimulang mag-compile</string>

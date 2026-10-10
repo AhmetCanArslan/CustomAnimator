@@ -1201,9 +1201,6 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_cancel">Batal</string>
     <string name="boost_cancelled">Optimalisasi dibatalkan</string>
     <string name="boost_running_label">Mengoptimalkan…</string>
-    <string name="boost_ad_title">Didukung iklan</string>
-    <string name="boost_premium_title">Premium aktif</string>
-    <string name="boost_premium_desc">Optimalisasi tanpa batas, tanpa iklan</string>
     <string name="boost_ad_reward_denied">Selesaikan iklan untuk membuka optimalisasi</string>
     <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
     <string name="optimizer_clean_watch_ad">Tonton iklan &amp; bersihkan</string>
@@ -1216,9 +1213,6 @@ Durasi Animator: %3$.2f</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>
     <string name="reward_free_unlock">Tidak ada iklan yang tersedia saat ini, jadi kali ini gratis</string>
     <string name="reward_unlock_denied">Selesaikan iklan untuk membuka ini selama 3 menit</string>
-    <string name="reward_gate_watch">Tonton iklan</string>
-    <string name="reward_gate_unlocked_title">Terbuka</string>
-    <string name="reward_gate_unlocked_desc">Tersedia %1$d:%2$02d lagi</string>
     <string name="game_mode_ad_desc">Tonton iklan singkat untuk menyalakan mode game</string>
     <string name="game_mode_select_games_first">Pilih setidaknya satu game dulu</string>
     <string name="compile_booster_ad_desc">Tonton iklan singkat untuk mulai mengompilasi</string>

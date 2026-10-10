@@ -1221,9 +1221,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_cancel">Annulla</string>
     <string name="boost_cancelled">Ottimizzazione annullata</string>
     <string name="boost_running_label">Ottimizzazione…</string>
-    <string name="boost_ad_title">Con annunci</string>
-    <string name="boost_premium_title">Premium sbloccato</string>
-    <string name="boost_premium_desc">Ottimizzazioni illimitate, senza annunci</string>
     <string name="boost_ad_reward_denied">Completa l’annuncio per sbloccare l’ottimizzazione</string>
     <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
     <string name="optimizer_clean_watch_ad">Guarda annuncio e pulisci</string>
@@ -1236,9 +1233,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="game_mode_fixed_performance">La modalità prestazioni fisse è attiva mentre la Modalità Gioco è accesa.</string>
     <string name="reward_free_unlock">Nessun annuncio disponibile al momento, quindi questa volta è gratis</string>
     <string name="reward_unlock_denied">Completa l\'annuncio per sbloccarlo per 3 minuti</string>
-    <string name="reward_gate_watch">Guarda annuncio</string>
-    <string name="reward_gate_unlocked_title">Sbloccato</string>
-    <string name="reward_gate_unlocked_desc">Disponibile ancora per %1$d:%2$02d</string>
     <string name="game_mode_ad_desc">Guarda un breve annuncio per attivare la modalità gioco</string>
     <string name="game_mode_select_games_first">Seleziona prima almeno un gioco</string>
     <string name="compile_booster_ad_desc">Guarda un breve annuncio per avviare la compilazione</string>

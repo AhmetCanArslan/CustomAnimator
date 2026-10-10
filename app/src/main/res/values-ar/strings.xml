@@ -1241,9 +1241,6 @@
     <string name="boost_cancel">إلغاء</string>
     <string name="boost_cancelled">تم إلغاء التحسين</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
-    <string name="boost_ad_title">مدعوم بالإعلانات</string>
-    <string name="boost_premium_title">النسخة المدفوعة مفعّلة</string>
-    <string name="boost_premium_desc">تحسينات غير محدودة وبدون إعلانات</string>
     <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
     <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
     <string name="optimizer_clean_watch_ad">شاهد إعلانًا ونظّف</string>
@@ -1256,9 +1253,6 @@
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
     <string name="reward_free_unlock">لا يوجد إعلان متاح الآن، لذا هذه المرة مجانية</string>
     <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>
-    <string name="reward_gate_watch">مشاهدة إعلان</string>
-    <string name="reward_gate_unlocked_title">مفتوح</string>
-    <string name="reward_gate_unlocked_desc">متاح لمدة %1$d:%2$02d أخرى</string>
     <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
     <string name="compile_booster_ad_desc">شاهد إعلانًا قصيرًا لبدء التجميع</string>

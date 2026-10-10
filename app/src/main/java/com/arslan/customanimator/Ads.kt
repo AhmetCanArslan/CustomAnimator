@@ -36,7 +36,6 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
-import com.arslan.customanimator.utils.SettingsManager
 import java.util.Calendar
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -577,34 +576,6 @@ fun preloadInterstitial(context: Context) = InterstitialAds.preload(context)
 fun isPrivacyOptionsRequired(): Boolean = AdsConsent.isPrivacyOptionsRequired()
 
 fun showPrivacyOptions(activity: Activity) = AdsConsent.showPrivacyOptions(activity)
-
-object RewardUnlock {
-    private const val SESSION_MS = 3 * 60 * 1000L
-    private val until = mutableMapOf<String, Long>()
-
-    fun isUnlocked(key: String): Boolean =
-        isAdFreeNow() || (until[key] ?: 0L) > android.os.SystemClock.elapsedRealtime()
-
-    fun grant(key: String) {
-        until[key] = android.os.SystemClock.elapsedRealtime() + SESSION_MS
-    }
-
-    fun remainingSeconds(key: String): Int {
-        val left = (until[key] ?: 0L) - android.os.SystemClock.elapsedRealtime()
-        return if (left > 0) ((left + 999) / 1000).toInt() else 0
-    }
-}
-
-fun requestRewardUnlock(context: Context, key: String, onUnlocked: () -> Unit) {
-    if (RewardUnlock.isUnlocked(key)) {
-        onUnlocked()
-        return
-    }
-    requestReward(context) {
-        RewardUnlock.grant(key)
-        onUnlocked()
-    }
-}
 
 fun requestReward(context: Context, onRewarded: () -> Unit) {
     RewardedAds.show(context) { result ->

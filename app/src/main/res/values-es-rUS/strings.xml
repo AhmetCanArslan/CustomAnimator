@@ -1201,9 +1201,6 @@ Duración del Animador: %3$.2f</string>
     <string name="boost_cancel">Cancelar</string>
     <string name="boost_cancelled">Optimización cancelada</string>
     <string name="boost_running_label">Optimizando…</string>
-    <string name="boost_ad_title">Con anuncios</string>
-    <string name="boost_premium_title">Premium desbloqueado</string>
-    <string name="boost_premium_desc">Optimizaciones ilimitadas, sin anuncios</string>
     <string name="boost_ad_reward_denied">Termina el anuncio para desbloquear la optimización</string>
     <string name="boost_watch_ad">Ver anuncio y optimizar</string>
     <string name="optimizer_clean_watch_ad">Ver anuncio y limpiar</string>
@@ -1216,9 +1213,6 @@ Duración del Animador: %3$.2f</string>
     <string name="game_mode_fixed_performance">El modo de rendimiento fijo se activa mientras el Modo Juego está encendido.</string>
     <string name="reward_free_unlock">No hay anuncios disponibles ahora, así que esta vez es gratis</string>
     <string name="reward_unlock_denied">Termina el anuncio para desbloquear esto por 3 minutos</string>
-    <string name="reward_gate_watch">Ver anuncio</string>
-    <string name="reward_gate_unlocked_title">Desbloqueado</string>
-    <string name="reward_gate_unlocked_desc">Disponible por %1$d:%2$02d más</string>
     <string name="game_mode_ad_desc">Mira un anuncio corto para activar el modo juego</string>
     <string name="game_mode_select_games_first">Selecciona al menos un juego primero</string>
     <string name="compile_booster_ad_desc">Mira un anuncio corto para empezar a compilar</string>

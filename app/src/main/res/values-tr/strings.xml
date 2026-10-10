@@ -1209,9 +1209,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_cancel">İptal</string>
     <string name="boost_cancelled">Optimizasyon iptal edildi</string>
     <string name="boost_running_label">Optimize ediliyor…</string>
-    <string name="boost_ad_title">Reklam destekli</string>
-    <string name="boost_premium_title">Premium etkin</string>
-    <string name="boost_premium_desc">Sınırsız optimizasyon, reklam yok</string>
     <string name="boost_ad_reward_denied">Optimizasyonu açmak için reklamı sonuna kadar izleyin</string>
     <string name="boost_watch_ad">Reklam izle ve optimize et</string>
     <string name="optimizer_clean_watch_ad">Reklam izle ve temizle</string>
@@ -1224,9 +1221,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
     <string name="reward_free_unlock">Şu an gösterilecek reklam yok, bu seferlik ücretsiz</string>
     <string name="reward_unlock_denied">Bunu 3 dakikalığına açmak için reklamı sonuna kadar izleyin</string>
-    <string name="reward_gate_watch">Reklam izle</string>
-    <string name="reward_gate_unlocked_title">Açıldı</string>
-    <string name="reward_gate_unlocked_desc">Kalan süre: %1$d:%2$02d</string>
     <string name="game_mode_ad_desc">Oyun modunu açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_select_games_first">Önce en az bir oyun seçin</string>
     <string name="compile_booster_ad_desc">Derlemeyi başlatmak için kısa bir reklam izleyin</string>

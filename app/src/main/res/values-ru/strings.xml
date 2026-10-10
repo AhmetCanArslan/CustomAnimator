@@ -1203,9 +1203,6 @@
     <string name="boost_cancel">Отмена</string>
     <string name="boost_cancelled">Оптимизация отменена</string>
     <string name="boost_running_label">Оптимизация…</string>
-    <string name="boost_ad_title">С рекламой</string>
-    <string name="boost_premium_title">Premium активирован</string>
-    <string name="boost_premium_desc">Неограниченные оптимизации, без рекламы</string>
     <string name="boost_ad_reward_denied">Досмотрите рекламу, чтобы разблокировать оптимизацию</string>
     <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
     <string name="optimizer_clean_watch_ad">Реклама и очистка</string>
@@ -1218,9 +1215,6 @@
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
     <string name="reward_free_unlock">Сейчас нет доступной рекламы, поэтому в этот раз бесплатно</string>
     <string name="reward_unlock_denied">Досмотрите рекламу, чтобы открыть это на 3 минуты</string>
-    <string name="reward_gate_watch">Смотреть рекламу</string>
-    <string name="reward_gate_unlocked_title">Открыто</string>
-    <string name="reward_gate_unlocked_desc">Доступно ещё %1$d:%2$02d</string>
     <string name="game_mode_ad_desc">Посмотрите короткую рекламу, чтобы включить игровой режим</string>
     <string name="game_mode_select_games_first">Сначала выберите хотя бы одну игру</string>
     <string name="compile_booster_ad_desc">Посмотрите короткую рекламу, чтобы начать компиляцию</string>
