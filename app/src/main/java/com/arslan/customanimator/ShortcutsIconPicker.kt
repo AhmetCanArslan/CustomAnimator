@@ -94,10 +94,15 @@ internal fun ShortcutIconPickerSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         shape = AppShapes.sheet,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ) {
-        Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .imePadding()
+        ) {
             Text(
                 text = stringResource(R.string.terminal_tile_icon_picker_title),
                 style = MaterialTheme.typography.headlineSmall
