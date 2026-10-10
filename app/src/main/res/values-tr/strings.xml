@@ -1690,4 +1690,16 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_icon_builtin">Yerleşik</string>
     <string name="shortcut_icon_use">Simgeyi kullan</string>
     <string name="shortcut_icon_packs_hint">Yüklü simge paketleri burada ek sekmeler olarak görünür.</string>
+    <string name="apk_extractor">APK Çıkarıcı</string>
+    <string name="apk_extractor_desc">Yüklü bir uygulamanın APK dosyasını kaydedin</string>
+    <string name="apk_extractor_info">APK dosyasını Download/CustomAnimator klasörüne kaydetmek için bir uygulamaya dokunun. Bölünmüş APK olarak yüklenen uygulamalarda önce biçimi seçersiniz: tek bir .apks dosyası, yalnızca temel APK veya ayrı APK dosyaları.</string>
+    <string name="apk_extractor_format_hint">Bu uygulama bölünmüş APK olarak yüklenmiş. Nasıl kaydedileceğini seçin.</string>
+    <string name="apk_extractor_format_bundle">Tek .apks dosyası</string>
+    <string name="apk_extractor_format_bundle_desc">Tüm parçalar, SAI gibi yükleyicilerin açabildiği tek bir arşivde.</string>
+    <string name="apk_extractor_format_base">Yalnızca temel APK</string>
+    <string name="apk_extractor_format_base_desc">Parçalar olmadan tek bir .apk dosyası. Tek başına yüklenmeyebilir.</string>
+    <string name="apk_extractor_format_separate">Ayrı APK dosyaları</string>
+    <string name="apk_extractor_format_separate_desc">Her parça, uygulamanın adını taşıyan bir klasörde ayrı bir .apk olarak.</string>
+    <string name="apk_extractor_saving">Kaydediliyor…</string>
+    <string name="apk_extractor_failed">APK kaydedilemedi.</string>
 </resources>

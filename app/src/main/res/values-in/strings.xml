@@ -1682,4 +1682,16 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_icon_builtin">Bawaan</string>
     <string name="shortcut_icon_use">Gunakan ikon</string>
     <string name="shortcut_icon_packs_hint">Paket ikon yang terpasang muncul di sini sebagai tab tambahan.</string>
+    <string name="apk_extractor">Pengekstrak APK</string>
+    <string name="apk_extractor_desc">Simpan APK dari aplikasi terinstal</string>
+    <string name="apk_extractor_info">Ketuk aplikasi untuk menyimpan APK-nya ke Download/CustomAnimator. Untuk aplikasi yang diinstal sebagai APK terpisah, pilih formatnya dulu: satu file .apks, hanya APK dasar, atau file APK terpisah.</string>
+    <string name="apk_extractor_format_hint">Aplikasi ini diinstal sebagai APK terpisah. Pilih cara menyimpannya.</string>
+    <string name="apk_extractor_format_bundle">Satu file .apks</string>
+    <string name="apk_extractor_format_bundle_desc">Semua bagian dalam satu arsip yang dapat dibuka penginstal seperti SAI.</string>
+    <string name="apk_extractor_format_base">Hanya APK dasar</string>
+    <string name="apk_extractor_format_base_desc">Satu file .apk tanpa bagian lainnya. Mungkin tidak dapat diinstal sendiri.</string>
+    <string name="apk_extractor_format_separate">File APK terpisah</string>
+    <string name="apk_extractor_format_separate_desc">Setiap bagian sebagai .apk tersendiri di dalam folder dengan nama aplikasi.</string>
+    <string name="apk_extractor_saving">Menyimpan…</string>
+    <string name="apk_extractor_failed">Tidak dapat menyimpan APK.</string>
 </resources>

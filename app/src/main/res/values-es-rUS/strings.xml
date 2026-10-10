@@ -1682,4 +1682,16 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_icon_builtin">Integrados</string>
     <string name="shortcut_icon_use">Usar ícono</string>
     <string name="shortcut_icon_packs_hint">Los paquetes de íconos instalados aparecen aquí como pestañas adicionales.</string>
+    <string name="apk_extractor">Extractor de APK</string>
+    <string name="apk_extractor_desc">Guarda el APK de una app instalada</string>
+    <string name="apk_extractor_info">Toca una app para guardar su APK en Download/CustomAnimator. En las apps instaladas como APK divididos primero eliges el formato: un solo archivo .apks, solo el APK base o archivos APK separados.</string>
+    <string name="apk_extractor_format_hint">Esta app está instalada como APK divididos. Elige cómo guardarla.</string>
+    <string name="apk_extractor_format_bundle">Un solo archivo .apks</string>
+    <string name="apk_extractor_format_bundle_desc">Todas las partes en un archivo que instaladores como SAI pueden abrir.</string>
+    <string name="apk_extractor_format_base">Solo el APK base</string>
+    <string name="apk_extractor_format_base_desc">Un archivo .apk sin las partes. Es posible que no se instale por sí solo.</string>
+    <string name="apk_extractor_format_separate">Archivos APK separados</string>
+    <string name="apk_extractor_format_separate_desc">Cada parte como un .apk propio dentro de una carpeta con el nombre de la app.</string>
+    <string name="apk_extractor_saving">Guardando…</string>
+    <string name="apk_extractor_failed">No se pudo guardar el APK.</string>
 </resources>

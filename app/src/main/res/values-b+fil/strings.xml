@@ -1682,4 +1682,16 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_icon_builtin">Built-in</string>
     <string name="shortcut_icon_use">Gamitin ang icon</string>
     <string name="shortcut_icon_packs_hint">Lalabas dito bilang mga dagdag na tab ang mga naka-install na icon pack.</string>
+    <string name="apk_extractor">Pang-extract ng APK</string>
+    <string name="apk_extractor_desc">I-save ang APK ng naka-install na app</string>
+    <string name="apk_extractor_info">I-tap ang app para i-save ang APK nito sa Download/CustomAnimator. Para sa mga app na naka-install bilang split APK, pipiliin mo muna ang format: isang .apks file, base APK lang, o magkakahiwalay na APK file.</string>
+    <string name="apk_extractor_format_hint">Naka-install ang app na ito bilang split APK. Piliin kung paano ito ise-save.</string>
+    <string name="apk_extractor_format_bundle">Isang .apks file</string>
+    <string name="apk_extractor_format_bundle_desc">Lahat ng split sa isang archive na nabubuksan ng mga installer tulad ng SAI.</string>
+    <string name="apk_extractor_format_base">Base APK lang</string>
+    <string name="apk_extractor_format_base_desc">Isang .apk file na walang mga split. Maaaring hindi ito ma-install nang mag-isa.</string>
+    <string name="apk_extractor_format_separate">Magkakahiwalay na APK file</string>
+    <string name="apk_extractor_format_separate_desc">Bawat split bilang sariling .apk sa loob ng folder na nakapangalan sa app.</string>
+    <string name="apk_extractor_saving">Sine-save…</string>
+    <string name="apk_extractor_failed">Hindi ma-save ang APK.</string>
 </resources>

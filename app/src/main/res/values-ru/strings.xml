@@ -1684,4 +1684,16 @@
     <string name="shortcut_icon_builtin">Встроенные</string>
     <string name="shortcut_icon_use">Использовать значок</string>
     <string name="shortcut_icon_packs_hint">Установленные наборы значков появляются здесь как дополнительные вкладки.</string>
+    <string name="apk_extractor">Извлечение APK</string>
+    <string name="apk_extractor_desc">Сохраните APK установленного приложения</string>
+    <string name="apk_extractor_info">Нажмите на приложение, чтобы сохранить его APK в Download/CustomAnimator. Для приложений, установленных как разделённые APK, сначала выбирается формат: один файл .apks, только базовый APK или отдельные файлы APK.</string>
+    <string name="apk_extractor_format_hint">Это приложение установлено как разделённые APK. Выберите, как его сохранить.</string>
+    <string name="apk_extractor_format_bundle">Один файл .apks</string>
+    <string name="apk_extractor_format_bundle_desc">Все части в одном архиве, который открывают установщики вроде SAI.</string>
+    <string name="apk_extractor_format_base">Только базовый APK</string>
+    <string name="apk_extractor_format_base_desc">Один файл .apk без частей. Может не установиться сам по себе.</string>
+    <string name="apk_extractor_format_separate">Отдельные файлы APK</string>
+    <string name="apk_extractor_format_separate_desc">Каждая часть отдельным файлом .apk в папке с названием приложения.</string>
+    <string name="apk_extractor_saving">Сохранение…</string>
+    <string name="apk_extractor_failed">Не удалось сохранить APK.</string>
 </resources>

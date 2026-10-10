@@ -1702,4 +1702,16 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_icon_builtin">Integrate</string>
     <string name="shortcut_icon_use">Usa icona</string>
     <string name="shortcut_icon_packs_hint">I pacchetti di icone installati compaiono qui come schede aggiuntive.</string>
+    <string name="apk_extractor">Estrattore APK</string>
+    <string name="apk_extractor_desc">Salva l’APK di un’app installata</string>
+    <string name="apk_extractor_info">Tocca un’app per salvare il suo APK in Download/CustomAnimator. Per le app installate come APK divisi scegli prima il formato: un unico file .apks, solo l’APK di base o file APK separati.</string>
+    <string name="apk_extractor_format_hint">Questa app è installata come APK divisi. Scegli come salvarla.</string>
+    <string name="apk_extractor_format_bundle">Un unico file .apks</string>
+    <string name="apk_extractor_format_bundle_desc">Tutte le parti in un archivio che installer come SAI possono aprire.</string>
+    <string name="apk_extractor_format_base">Solo l’APK di base</string>
+    <string name="apk_extractor_format_base_desc">Un file .apk senza le parti. Potrebbe non installarsi da solo.</string>
+    <string name="apk_extractor_format_separate">File APK separati</string>
+    <string name="apk_extractor_format_separate_desc">Ogni parte come .apk a sé in una cartella con il nome dell’app.</string>
+    <string name="apk_extractor_saving">Salvataggio…</string>
+    <string name="apk_extractor_failed">Impossibile salvare l’APK.</string>
 </resources>

@@ -1718,4 +1718,18 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_icon_builtin">Built-in</string>
     <string name="shortcut_icon_use">Use icon</string>
     <string name="shortcut_icon_packs_hint">Installed icon packs show up here as extra tabs.</string>
+    <string name="apk_extractor">APK Extractor</string>
+    <string name="apk_extractor_desc">Save the APK of an installed app</string>
+    <string name="apk_extractor_info">Tap an app to save its APK to Download/CustomAnimator. For apps installed as split APKs you pick the format first: one .apks file, the base APK only, or separate APK files.</string>
+    <string name="apk_extractor_format_hint">This app is installed as split APKs. Choose how to save it.</string>
+    <string name="apk_extractor_format_bundle">Single .apks file</string>
+    <string name="apk_extractor_format_bundle_desc">Every split in one archive, which installers such as SAI can open.</string>
+    <string name="apk_extractor_format_base">Base APK only</string>
+    <string name="apk_extractor_format_base_desc">One .apk file without the splits. It may not install on its own.</string>
+    <string name="apk_extractor_format_separate">Separate APK files</string>
+    <string name="apk_extractor_format_separate_desc">Every split as its own .apk inside a folder named after the app.</string>
+    <string name="apk_extractor_saving">Saving…</string>
+    <string name="apk_extractor_failed">Could not save the APK.</string>
+    <string name="apk_extractor_row" translatable="false">%1$s · %2$s</string>
+    <string name="apk_extractor_row_split" translatable="false">%1$s · %2$s · Split APK</string>
 </resources>

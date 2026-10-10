@@ -1722,4 +1722,16 @@
     <string name="shortcut_icon_builtin">مضمّنة</string>
     <string name="shortcut_icon_use">استخدام الأيقونة</string>
     <string name="shortcut_icon_packs_hint">تظهر حزم الأيقونات المثبّتة هنا كعلامات تبويب إضافية.</string>
+    <string name="apk_extractor">مستخرج APK</string>
+    <string name="apk_extractor_desc">احفظ ملف APK لتطبيق مثبت</string>
+    <string name="apk_extractor_info">انقر على تطبيق لحفظ ملف APK الخاص به في Download/CustomAnimator. في التطبيقات المثبتة كملفات APK مقسّمة تختار الصيغة أولاً: ملف .apks واحد، أو ملف APK الأساسي فقط، أو ملفات APK منفصلة.</string>
+    <string name="apk_extractor_format_hint">هذا التطبيق مثبت كملفات APK مقسّمة. اختر طريقة حفظه.</string>
+    <string name="apk_extractor_format_bundle">ملف .apks واحد</string>
+    <string name="apk_extractor_format_bundle_desc">كل الأجزاء في أرشيف واحد يمكن فتحه بمثبّتات مثل SAI.</string>
+    <string name="apk_extractor_format_base">ملف APK الأساسي فقط</string>
+    <string name="apk_extractor_format_base_desc">ملف .apk واحد بدون الأجزاء. قد لا يمكن تثبيته بمفرده.</string>
+    <string name="apk_extractor_format_separate">ملفات APK منفصلة</string>
+    <string name="apk_extractor_format_separate_desc">كل جزء كملف .apk مستقل داخل مجلد يحمل اسم التطبيق.</string>
+    <string name="apk_extractor_saving">جارٍ الحفظ…</string>
+    <string name="apk_extractor_failed">تعذّر حفظ ملف APK.</string>
 </resources>
