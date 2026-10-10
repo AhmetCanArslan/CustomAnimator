@@ -138,7 +138,32 @@ object ShortcutMaker {
         0xFF37474F.toInt(),
         0xFFC2410C.toInt(),
         0xFFB3261E.toInt(),
-        0xFF1F1F1F.toInt()
+        0xFF1F1F1F.toInt(),
+        0xFFE91E63.toInt(),
+        0xFFD81B60.toInt(),
+        0xFFAD1457.toInt(),
+        0xFF9C27B0.toInt(),
+        0xFF673AB7.toInt(),
+        0xFF3F51B5.toInt(),
+        0xFF1E88E5.toInt(),
+        0xFF0288D1.toInt(),
+        0xFF0097A7.toInt(),
+        0xFF00897B.toInt(),
+        0xFF2E7D32.toInt(),
+        0xFF43A047.toInt(),
+        0xFF7CB342.toInt(),
+        0xFFC0CA33.toInt(),
+        0xFFF9A825.toInt(),
+        0xFFFFB300.toInt(),
+        0xFFFB8C00.toInt(),
+        0xFFF4511E.toInt(),
+        0xFFE53935.toInt(),
+        0xFF6D4C41.toInt(),
+        0xFF8D6E63.toInt(),
+        0xFF757575.toInt(),
+        0xFF546E7A.toInt(),
+        0xFF263238.toInt(),
+        0xFF000000.toInt()
     )
 
     fun glyphIcon(context: Context, type: ShortcutType): Bitmap =
@@ -278,7 +303,7 @@ object ShortcutMaker {
         drawable.draw(canvas)
     }
 
-    private fun thumbnailIcon(context: Context, uri: Uri): Bitmap? {
+    fun thumbnailIcon(context: Context, uri: Uri): Bitmap? {
         val source = decodeSampled(context, uri) ?: return null
         val bitmap = Bitmap.createBitmap(ICON_PX, ICON_PX, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)

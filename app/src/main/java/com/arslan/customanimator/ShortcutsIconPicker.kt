@@ -184,12 +184,12 @@ private fun IconSourceChips(packs: List<ShortcutIconPack>, selected: String, onS
 }
 
 @Composable
-private fun IconColorRow(selected: Int, onSelect: (Int) -> Unit) {
+internal fun IconColorRow(selected: Int, onSelect: (Int) -> Unit, colors: List<Int> = ShortcutMaker.glyphColors) {
     Row(
         modifier = Modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        ShortcutMaker.glyphColors.forEach { color ->
+        colors.forEach { color ->
             Box(
                 modifier = Modifier
                     .size(36.dp)

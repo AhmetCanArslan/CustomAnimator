@@ -267,7 +267,7 @@ private fun RemapOptionRow(
 }
 
 @Composable
-private fun UnsupportedCard(text: String) {
+internal fun UnsupportedCard(text: String) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
