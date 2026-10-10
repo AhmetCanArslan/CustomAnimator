@@ -257,6 +257,15 @@ Tagal ng Animator: %3$.2f</string>
     <string name="terminal_tile_cat_security">Seguridad</string>
     <string name="terminal_tile_cat_actions">Mga aksyon</string>
     <string name="terminal_tile_cat_labels">Mga label</string>
+    <string name="terminal_tile_cat_people">Mga tao</string>
+    <string name="terminal_tile_cat_communication">Komunikasyon</string>
+    <string name="terminal_tile_cat_places">Mga lugar at paglalakbay</string>
+    <string name="terminal_tile_cat_home">Bahay at mga device</string>
+    <string name="terminal_tile_cat_media">Musika at larawan</string>
+    <string name="terminal_tile_cat_files">Mga file at dokumento</string>
+    <string name="terminal_tile_cat_nature">Kalikasan at panahon</string>
+    <string name="terminal_tile_cat_shopping">Pamimili at pera</string>
+    <string name="terminal_tile_cat_food">Pagkain, kalusugan at sports</string>
     <string name="terminal_tile_toast">Magpakita ng mensahe ng resulta</string>
     <string name="terminal_tile_toast_description">Kumpirmahin kapag natapos ang command, kasama ang exit code.</string>
     <string name="terminal_tile_collapse">Isara ang Quick Settings</string>

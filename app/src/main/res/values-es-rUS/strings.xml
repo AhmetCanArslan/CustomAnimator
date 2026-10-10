@@ -257,6 +257,15 @@ Duración del Animador: %3$.2f</string>
     <string name="terminal_tile_cat_security">Seguridad</string>
     <string name="terminal_tile_cat_actions">Acciones</string>
     <string name="terminal_tile_cat_labels">Etiquetas</string>
+    <string name="terminal_tile_cat_people">Personas</string>
+    <string name="terminal_tile_cat_communication">Comunicación</string>
+    <string name="terminal_tile_cat_places">Lugares y viajes</string>
+    <string name="terminal_tile_cat_home">Hogar y dispositivos</string>
+    <string name="terminal_tile_cat_media">Música y fotos</string>
+    <string name="terminal_tile_cat_files">Archivos y documentos</string>
+    <string name="terminal_tile_cat_nature">Naturaleza y clima</string>
+    <string name="terminal_tile_cat_shopping">Compras y dinero</string>
+    <string name="terminal_tile_cat_food">Comida, salud y deporte</string>
     <string name="terminal_tile_toast">Mostrar aviso de resultado</string>
     <string name="terminal_tile_toast_description">Confirmar cuando el comando termine, con su código de salida.</string>
     <string name="terminal_tile_collapse">Cerrar Ajustes rápidos</string>

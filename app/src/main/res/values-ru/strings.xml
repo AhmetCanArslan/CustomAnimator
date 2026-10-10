@@ -257,6 +257,15 @@
     <string name="terminal_tile_cat_security">Безопасность</string>
     <string name="terminal_tile_cat_actions">Действия</string>
     <string name="terminal_tile_cat_labels">Метки</string>
+    <string name="terminal_tile_cat_people">Люди</string>
+    <string name="terminal_tile_cat_communication">Общение</string>
+    <string name="terminal_tile_cat_places">Места и путешествия</string>
+    <string name="terminal_tile_cat_home">Дом и устройства</string>
+    <string name="terminal_tile_cat_media">Музыка и фото</string>
+    <string name="terminal_tile_cat_files">Файлы и документы</string>
+    <string name="terminal_tile_cat_nature">Природа и погода</string>
+    <string name="terminal_tile_cat_shopping">Покупки и деньги</string>
+    <string name="terminal_tile_cat_food">Еда, здоровье и спорт</string>
     <string name="terminal_tile_toast">Показывать уведомление о результате</string>
     <string name="terminal_tile_toast_description">Сообщать о завершении команды и коде выхода.</string>
     <string name="terminal_tile_collapse">Свернуть быстрые настройки</string>

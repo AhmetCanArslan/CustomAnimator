@@ -257,6 +257,15 @@ Durasi Animator: %3$.2f</string>
     <string name="terminal_tile_cat_security">Keamanan</string>
     <string name="terminal_tile_cat_actions">Tindakan</string>
     <string name="terminal_tile_cat_labels">Label</string>
+    <string name="terminal_tile_cat_people">Orang</string>
+    <string name="terminal_tile_cat_communication">Komunikasi</string>
+    <string name="terminal_tile_cat_places">Tempat &amp; perjalanan</string>
+    <string name="terminal_tile_cat_home">Rumah &amp; perangkat</string>
+    <string name="terminal_tile_cat_media">Musik &amp; foto</string>
+    <string name="terminal_tile_cat_files">File &amp; dokumen</string>
+    <string name="terminal_tile_cat_nature">Alam &amp; cuaca</string>
+    <string name="terminal_tile_cat_shopping">Belanja &amp; uang</string>
+    <string name="terminal_tile_cat_food">Makanan, kesehatan &amp; olahraga</string>
     <string name="terminal_tile_toast">Tampilkan pesan hasil</string>
     <string name="terminal_tile_toast_description">Konfirmasi saat perintah selesai, beserta kode keluarnya.</string>
     <string name="terminal_tile_collapse">Tutup Setelan Cepat</string>

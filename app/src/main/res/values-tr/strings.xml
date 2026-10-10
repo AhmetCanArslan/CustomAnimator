@@ -257,6 +257,15 @@ Animatör Süresi: %3$.2f</string>
     <string name="terminal_tile_cat_security">Güvenlik</string>
     <string name="terminal_tile_cat_actions">Eylemler</string>
     <string name="terminal_tile_cat_labels">Etiketler</string>
+    <string name="terminal_tile_cat_people">Kişiler</string>
+    <string name="terminal_tile_cat_communication">İletişim</string>
+    <string name="terminal_tile_cat_places">Yerler ve seyahat</string>
+    <string name="terminal_tile_cat_home">Ev ve cihazlar</string>
+    <string name="terminal_tile_cat_media">Müzik ve fotoğraf</string>
+    <string name="terminal_tile_cat_files">Dosyalar ve belgeler</string>
+    <string name="terminal_tile_cat_nature">Doğa ve hava durumu</string>
+    <string name="terminal_tile_cat_shopping">Alışveriş ve para</string>
+    <string name="terminal_tile_cat_food">Yemek, sağlık ve spor</string>
     <string name="terminal_tile_toast">Sonuç bildirimi göster</string>
     <string name="terminal_tile_toast_description">Komut bittiğinde çıkış koduyla birlikte bildir.</string>
     <string name="terminal_tile_collapse">Hızlı Ayarlar\'ı kapat</string>

@@ -321,6 +321,15 @@
     <string name="terminal_tile_cat_security">الأمان</string>
     <string name="terminal_tile_cat_actions">إجراءات</string>
     <string name="terminal_tile_cat_labels">تسميات</string>
+    <string name="terminal_tile_cat_people">الأشخاص</string>
+    <string name="terminal_tile_cat_communication">التواصل</string>
+    <string name="terminal_tile_cat_places">الأماكن والسفر</string>
+    <string name="terminal_tile_cat_home">المنزل والأجهزة</string>
+    <string name="terminal_tile_cat_media">الموسيقى والصور</string>
+    <string name="terminal_tile_cat_files">الملفات والمستندات</string>
+    <string name="terminal_tile_cat_nature">الطبيعة والطقس</string>
+    <string name="terminal_tile_cat_shopping">التسوق والمال</string>
+    <string name="terminal_tile_cat_food">الطعام والصحة والرياضة</string>
     <string name="terminal_tile_toast">إظهار رسالة النتيجة</string>
     <string name="terminal_tile_toast_description">تأكيد عند انتهاء الأمر، مع رمز الخروج.</string>
     <string name="terminal_tile_collapse">طي الإعدادات السريعة</string>

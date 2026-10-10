@@ -325,6 +325,15 @@ Animator Duration: %3$.2f</string>
     <string name="terminal_tile_cat_security">Security</string>
     <string name="terminal_tile_cat_actions">Actions</string>
     <string name="terminal_tile_cat_labels">Labels</string>
+    <string name="terminal_tile_cat_people">People</string>
+    <string name="terminal_tile_cat_communication">Communication</string>
+    <string name="terminal_tile_cat_places">Places &amp; travel</string>
+    <string name="terminal_tile_cat_home">Home &amp; devices</string>
+    <string name="terminal_tile_cat_media">Music &amp; photo</string>
+    <string name="terminal_tile_cat_files">Files &amp; documents</string>
+    <string name="terminal_tile_cat_nature">Nature &amp; weather</string>
+    <string name="terminal_tile_cat_shopping">Shopping &amp; money</string>
+    <string name="terminal_tile_cat_food">Food, health &amp; sport</string>
     <string name="terminal_tile_toast">Show result toast</string>
     <string name="terminal_tile_toast_description">Confirm when the command finishes, with its exit code.</string>
     <string name="terminal_tile_collapse">Collapse Quick Settings</string>
