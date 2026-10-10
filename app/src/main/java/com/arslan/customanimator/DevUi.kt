@@ -466,3 +466,20 @@ internal fun RotationSelector(
         }
     }
 }
+
+@Composable
+internal fun BusyDialog(message: String) {
+    AlertDialog(
+        onDismissRequest = {},
+        confirmButton = {},
+        text = {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(28.dp))
+                Text(message)
+            }
+        }
+    )
+}
