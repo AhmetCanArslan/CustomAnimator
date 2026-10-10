@@ -4,12 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,14 +15,10 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.utils.DeveloperOptionsManager
-import com.arslan.customanimator.utils.InstalledAppsProvider
-import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,27 +43,11 @@ fun GraphicsApiOverrideScreen(
     val coroutineScope = rememberCoroutineScope()
     val actionsEnabled = hasShizukuPermission || hasWriteSecureSettings
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var searchQuery by remember { mutableStateOf("") }
     var selections by remember {
         mutableStateOf(DeveloperOptionsManager.getAngleDriverSelections(contentResolver))
     }
 
-    val filteredApps by remember(apps, searchQuery) {
-        derivedStateOf {
-            apps.filter {
-                searchQuery.isBlank() ||
-                    it.label.contains(searchQuery, ignoreCase = true) ||
-                    it.packageName.contains(searchQuery, ignoreCase = true)
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        isLoading = false
-    }
+    val appList = rememberAppListState()
 
     val onDriverSelected: (String, String?) -> Unit = { packageName, driver ->
         val previous = selections
@@ -141,40 +118,13 @@ fun GraphicsApiOverrideScreen(
                 )
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showFilterCheckbox = false
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    DriverSelectionRow(
-                        app = app,
-                        selectedDriver = selections[app.packageName],
-                        enabled = actionsEnabled,
-                        onDriverSelected = { driver -> onDriverSelected(app.packageName, driver) }
-                    )
-                }
+            appList(appList) { app ->
+                DriverSelectionRow(
+                    app = app,
+                    selectedDriver = selections[app.packageName],
+                    enabled = actionsEnabled,
+                    onDriverSelected = { driver -> onDriverSelected(app.packageName, driver) }
+                )
             }
 
             item {
