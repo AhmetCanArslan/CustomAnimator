@@ -84,56 +84,6 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun ignoreEntry(entry: LogEntry, type: IgnoreType) {
-        val rule = when (type) {
-            IgnoreType.APP -> IgnoreRule(
-                type = IgnoreType.APP,
-                packageName = entry.packageName,
-                appName = entry.appName
-            )
-            IgnoreType.TITLE -> IgnoreRule(
-                type = IgnoreType.TITLE,
-                packageName = entry.packageName,
-                appName = entry.appName,
-                matchValue = entry.title
-            )
-            IgnoreType.BODY -> IgnoreRule(
-                type = IgnoreType.BODY,
-                packageName = entry.packageName,
-                appName = entry.appName,
-                matchValue = entry.body
-            )
-            IgnoreType.TITLE_AND_BODY -> IgnoreRule(
-                type = IgnoreType.TITLE_AND_BODY,
-                packageName = entry.packageName,
-                appName = entry.appName,
-                matchValue = entry.title,
-                matchValue2 = entry.body
-            )
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            ignoreManager.addRule(rule)
-        }
-    }
-
-    fun ignoreEntryWithPattern(
-        entry: LogEntry,
-        type: IgnoreType,
-        pattern: String,
-        isRegex: Boolean
-    ) {
-        val rule = IgnoreRule(
-            type = type,
-            packageName = entry.packageName,
-            appName = entry.appName,
-            matchValue = pattern,
-            isRegex = isRegex
-        )
-        viewModelScope.launch(Dispatchers.IO) {
-            ignoreManager.addRule(rule)
-        }
-    }
-
     fun ignoreFromDialog(
         entry: LogEntry,
         titlePattern: String?,
