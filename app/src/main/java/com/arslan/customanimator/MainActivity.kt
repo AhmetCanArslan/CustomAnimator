@@ -128,6 +128,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CustomAnimatorTheme {
                 ProvideShizukuState {
+                PreloadInstalledApps()
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     var showOnboarding by rememberSaveable {
                         mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
