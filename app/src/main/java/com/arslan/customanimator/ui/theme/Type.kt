@@ -122,14 +122,6 @@ val MonoNumeralLarge = TextStyle(
     letterSpacing = (-0.5).sp
 )
 
-val MonoNumeralMedium = TextStyle(
-    fontFamily = FontFamily.Monospace,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 16.sp,
-    lineHeight = 22.sp,
-    letterSpacing = 0.sp
-)
-
 val MonoBody = TextStyle(
     fontFamily = FontFamily.Monospace,
     fontWeight = FontWeight.Normal,

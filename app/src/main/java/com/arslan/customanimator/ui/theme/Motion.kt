@@ -20,15 +20,12 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.IntOffset
 
 object Motion {
     val emphasizedEasing = CubicBezierEasing(0.2f, 0f, 0f, 1f)
-    val standardEasing = CubicBezierEasing(0.2f, 0f, 0f, 1f)
-    val decelerateEasing = CubicBezierEasing(0.05f, 0.7f, 0.1f, 1f)
 
     const val durationFast = 150
     const val durationMedium = 280
@@ -44,18 +41,11 @@ object Motion {
         stiffness = Spring.StiffnessMedium
     )
 
-    fun <T> gentle(): SpringSpec<T> = spring(
-        dampingRatio = Spring.DampingRatioNoBouncy,
-        stiffness = Spring.StiffnessMediumLow
-    )
-
     fun offsetSpring(): FiniteAnimationSpec<IntOffset> = spring(
         dampingRatio = 0.8f,
         stiffness = Spring.StiffnessMediumLow
     )
 
-    fun emphasized(durationMillis: Int = durationMedium) =
-        tween<Float>(durationMillis = durationMillis, easing = emphasizedEasing)
 }
 
 fun AnimatedContentTransitionScope<*>.horizontalPagerTransition(forward: Boolean): ContentTransform {
@@ -89,6 +79,3 @@ fun Modifier.pressScale(
     )
     return this.scale(scale)
 }
-
-@Composable
-fun rememberInteraction(): MutableInteractionSource = remember { MutableInteractionSource() }

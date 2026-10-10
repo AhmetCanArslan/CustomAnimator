@@ -14,9 +14,6 @@ val Shapes = Shapes(
 
 object AppShapes {
     val card = RoundedCornerShape(24.dp)
-    val cardTop = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 6.dp, bottomEnd = 6.dp)
-    val cardMiddle = RoundedCornerShape(6.dp)
-    val cardBottom = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp, bottomStart = 24.dp, bottomEnd = 24.dp)
     val chip = RoundedCornerShape(50)
     val field = RoundedCornerShape(18.dp)
     val sheet = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
