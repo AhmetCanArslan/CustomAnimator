@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -26,7 +25,6 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.AppThreadingConfig
 import com.arslan.customanimator.utils.AppThreadingManager
 import com.arslan.customanimator.utils.CpuTopology
-import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ThreadAffinityMode
 import com.arslan.customanimator.utils.ThreadPriority
 import kotlinx.coroutines.Dispatchers
@@ -46,11 +44,7 @@ fun AppThreadingScreen(
     val coroutineScope = rememberCoroutineScope()
     val manager = remember { AppThreadingManager(context) }
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var configs by remember { mutableStateOf(manager.getConfigs()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var searchQuery by remember { mutableStateOf("") }
-    var showSelectedOnly by remember { mutableStateOf(false) }
     var coreSummary by remember { mutableStateOf<Triple<Int, Int, Int>?>(null) }
     var priorityDenied by remember { mutableStateOf(false) }
 
@@ -72,25 +66,14 @@ fun AppThreadingScreen(
     }
 
     LaunchedEffect(hasShizukuPermission) {
-        apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
         if (hasShizukuPermission) {
             coreSummary = withContext(Dispatchers.IO) {
                 Triple(CpuTopology.coreCount, CpuTopology.bigCoreCount(), CpuTopology.littleCoreCount())
             }
         }
-        isLoading = false
     }
 
-    val filteredApps by remember(apps, searchQuery, showSelectedOnly, configs) {
-        derivedStateOf {
-            apps.filter { app ->
-                (!showSelectedOnly || configs.containsKey(app.packageName)) &&
-                    (searchQuery.isBlank() ||
-                        app.label.contains(searchQuery, ignoreCase = true) ||
-                        app.packageName.contains(searchQuery, ignoreCase = true))
-            }
-        }
-    }
+    val appList = rememberAppListState(selectedPackages = configs.keys)
 
     val updateConfig: (String, AppThreadingConfig) -> Unit = { packageName, config ->
         configs = if (config.isDefault) configs - packageName else configs + (packageName to config)
@@ -192,41 +175,13 @@ fun AppThreadingScreen(
                 }
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showSelectedOnly = showSelectedOnly,
-                        onShowSelectedOnlyChange = { showSelectedOnly = it }
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    ThreadingRow(
-                        app = app,
-                        config = configs[app.packageName] ?: AppThreadingConfig(),
-                        enabled = hasShizukuPermission,
-                        onConfigChange = { config -> updateConfig(app.packageName, config) }
-                    )
-                }
+            appList(appList) { app ->
+                ThreadingRow(
+                    app = app,
+                    config = configs[app.packageName] ?: AppThreadingConfig(),
+                    enabled = hasShizukuPermission,
+                    onConfigChange = { config -> updateConfig(app.packageName, config) }
+                )
             }
 
             item {
