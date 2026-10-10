@@ -246,7 +246,6 @@ Durata animatore: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s applicato</string>
     <string name="preset_tile_toast_applied_unverified">%1$s applicato. Se non è cambiato nulla, connetti Shizuku</string>
     <string name="preset_tile_toast_failed">Impossibile applicare %1$s</string>
-    <string name="preset_tile_enable_description">Applica questo preset dal pannello Impostazioni rapide.</string>
     <string name="preset_tile_number_description">Il riquadro mostra questo valore al posto di un\'icona.</string>
     <string name="preset_tile_toast_description">Conferma sullo schermo quando il preset viene applicato.</string>
     <string name="preset_tile_collapse_description">Chiudi il pannello appena il preset viene applicato.</string>
@@ -654,14 +653,11 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_body_keywords_format">Corpo: %1$s</string>
     <string name="pn_cd_add">Aggiungi</string>
     <string name="pn_cd_back">Torna indietro</string>
-    <string name="pn_cd_check_item">Seleziona %1$s</string>
     <string name="pn_cd_clear_search">Cancella ricerca</string>
     <string name="pn_cd_edit">Modifica</string>
     <string name="pn_cd_more_options">Altre opzioni</string>
     <string name="pn_cd_remove">Rimuovi</string>
-    <string name="pn_cd_settings_for">Impostazioni per %1$s</string>
     <string name="pn_cd_swap_apps">Scambia app</string>
-    <string name="pn_cd_uncheck_item">Deseleziona %1$s</string>
     <string name="pn_command_copied">Comando copiato negli appunti</string>
     <string name="pn_confirm_delete_pattern">Vuoi eliminare il pattern \'%1$s\'?\nLe regole che lo usano torneranno al valore predefinito.</string>
     <string name="pn_confirm_delete_rule">Vuoi eliminare questa regola?</string>
@@ -1317,15 +1313,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="app_threading_priority_use_normal">Passa a Normale</string>
     <string name="qs_tiles">Riquadri Impostazioni rapide</string>
     <string name="qs_tiles_desc">Tutti i riquadri offerti da questa app, in un unico posto</string>
-    <string name="qs_tiles_slots_used">%1$d di %2$d slot riquadro usati</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku non è connesso</string>
     <string name="qs_tiles_needs_shizuku_desc">I riquadri restano non disponibili finché Shizuku non è in esecuzione. Tocca per aprire la guida.</string>
-    <string name="qs_tiles_active_section">Riquadri attivi</string>
-    <string name="qs_tiles_active_section_desc">Tocca un riquadro per modificarne i comandi</string>
-    <string name="qs_tiles_empty">Nessun riquadro. Attiva un interruttore qui sotto per occupare uno slot.</string>
     <string name="qs_tiles_add_custom">Aggiungi interruttore personalizzato</string>
     <string name="qs_tiles_no_free_slot">Tutti gli slot sono occupati. Rimuovine prima uno.</string>
-    <string name="qs_tiles_slot_label">Slot riquadro %1$d</string>
     <string name="qs_tiles_add_to_panel">Aggiungi al pannello</string>
     <string name="qs_tiles_remove">Rimuovi</string>
     <string name="qs_tiles_dialog_new">Nuovo riquadro interruttore</string>
@@ -1430,8 +1421,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="qs_tiles_group_terminal">Preset terminale</string>
     <string name="qs_tiles_group_profile">Profilo</string>
     <string name="qs_tiles_builtin_sound_desc">Cambia la modalità audio dal pannello</string>
-    <string name="qs_tiles_builtin_section">Riquadri dell\'app</string>
-    <string name="qs_tiles_builtin_section_desc">Riquadri delle funzioni inclusi nell\'app</string>
     <string name="qs_tiles_builtin_unsupported">Su questa versione di Android aggiungili dalla schermata di modifica delle Impostazioni rapide.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Cattura lo schermo e copialo negli appunti</string>
     <string name="qs_tiles_builtin_game_mode_desc">Attiva o disattiva la modalità gioco</string>

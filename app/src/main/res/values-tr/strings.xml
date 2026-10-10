@@ -280,7 +280,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s uygulandı</string>
     <string name="preset_tile_toast_applied_unverified">%1$s uygulandı. Bir şey değişmediyse Shizuku bağlayın</string>
     <string name="preset_tile_toast_failed">%1$s uygulanamadı</string>
-    <string name="preset_tile_enable_description">Bu ön ayarı Hızlı Ayarlar panelinden uygulayın.</string>
     <string name="preset_tile_number_description">Kutucuk simge yerine bu değeri gösterir.</string>
     <string name="preset_tile_toast_description">Ön ayar uygulandığında ekranda bildir.</string>
     <string name="preset_tile_collapse_description">Ön ayar uygulanır uygulanmaz paneli kapat.</string>
@@ -634,14 +633,11 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_body_keywords_format">Gövde: %1$s</string>
     <string name="pn_cd_add">Ekle</string>
     <string name="pn_cd_back">Geri git</string>
-    <string name="pn_cd_check_item">%1$s öğesini işaretle</string>
     <string name="pn_cd_clear_search">Aramayı temizle</string>
     <string name="pn_cd_edit">Düzenle</string>
     <string name="pn_cd_more_options">Diğer seçenekler</string>
     <string name="pn_cd_remove">Kaldır</string>
-    <string name="pn_cd_settings_for">%1$s ayarları</string>
     <string name="pn_cd_swap_apps">Uygulamaları Değiştir</string>
-    <string name="pn_cd_uncheck_item">%1$s öğesinin işaretini kaldır</string>
     <string name="pn_command_copied">Komut panoya kopyalandı</string>
     <string name="pn_confirm_delete_pattern">\'%1$s\' desenini silmek istediğinizden emin misiniz?\nBu deseni kullanan kurallar varsayılana döner.</string>
     <string name="pn_confirm_delete_rule">Bu kuralı silmek istediğinizden emin misiniz?</string>
@@ -1305,15 +1301,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="app_threading_priority_use_normal">Normal\'e geç</string>
     <string name="qs_tiles">Hızlı Ayarlar kutucukları</string>
     <string name="qs_tiles_desc">Bu uygulamanın sunduğu tüm kutucuklar tek bir yerde</string>
-    <string name="qs_tiles_slots_used">%1$d / %2$d kutucuk yuvası kullanıldı</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku bağlı değil</string>
     <string name="qs_tiles_needs_shizuku_desc">Shizuku çalışmadan kutucuklar kullanılamaz. Kurulum kılavuzunu açmak için dokunun.</string>
-    <string name="qs_tiles_active_section">Etkin kutucuklar</string>
-    <string name="qs_tiles_active_section_desc">Komutlarını düzenlemek için bir kutucuğa dokunun</string>
-    <string name="qs_tiles_empty">Henüz kutucuk yok. Bir yuva almak için aşağıdan bir anahtarı açın.</string>
     <string name="qs_tiles_add_custom">Özel geçiş ekle</string>
     <string name="qs_tiles_no_free_slot">Tüm yuvalar dolu. Önce birini kaldırın.</string>
-    <string name="qs_tiles_slot_label">Kutucuk yuvası %1$d</string>
     <string name="qs_tiles_add_to_panel">Panele ekle</string>
     <string name="qs_tiles_remove">Kaldır</string>
     <string name="qs_tiles_dialog_new">Yeni geçiş kutucuğu</string>
@@ -1418,8 +1409,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="qs_tiles_group_terminal">Terminal komutu</string>
     <string name="qs_tiles_group_profile">Profil</string>
     <string name="qs_tiles_builtin_sound_desc">Ses modunu panelden değiştir</string>
-    <string name="qs_tiles_builtin_section">Uygulama kutucukları</string>
-    <string name="qs_tiles_builtin_section_desc">Uygulamayla gelen özellik kutucukları</string>
     <string name="qs_tiles_builtin_unsupported">Bu Android sürümünde bu kutucukları Hızlı Ayarlar düzenleme ekranından ekleyin.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Ekran görüntüsü al ve panoya kopyala</string>
     <string name="qs_tiles_builtin_game_mode_desc">Oyun modunu aç veya kapat</string>

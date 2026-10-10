@@ -346,7 +346,6 @@
     <string name="preset_tile_toast_applied">تم تطبيق %1$s</string>
     <string name="preset_tile_toast_applied_unverified">تم تطبيق %1$s. إذا لم يتغير شيء، قم بتوصيل شيزوكو</string>
     <string name="preset_tile_toast_failed">تعذر تطبيق %1$s</string>
-    <string name="preset_tile_enable_description">تطبيق هذا الإعداد المسبق من لوحة الإعدادات السريعة.</string>
     <string name="preset_tile_number_description">يعرض المربع هذه القيمة بدلاً من أيقونة.</string>
     <string name="preset_tile_toast_description">تأكيد على الشاشة عند تطبيق الإعداد المسبق.</string>
     <string name="preset_tile_collapse_description">إغلاق اللوحة فور تطبيق الإعداد المسبق.</string>
@@ -677,14 +676,11 @@
     <string name="pn_body_keywords_format">النص: %1$s</string>
     <string name="pn_cd_add">إضافة</string>
     <string name="pn_cd_back">تنقل للخلف</string>
-    <string name="pn_cd_check_item">تحديد %1$s</string>
     <string name="pn_cd_clear_search">مسح البحث</string>
     <string name="pn_cd_edit">تعديل</string>
     <string name="pn_cd_more_options">خيارات إضافية</string>
     <string name="pn_cd_remove">إزالة</string>
-    <string name="pn_cd_settings_for">الإعدادات لـ %1$s</string>
     <string name="pn_cd_swap_apps">تبديل التطبيقات</string>
-    <string name="pn_cd_uncheck_item">إلغاء تحديد %1$s</string>
     <string name="pn_command_copied">تم نسخ الأمر إلى الحافظة</string>
     <string name="pn_confirm_delete_pattern">هل أنت متأكد من رغبتك في حذف النمط \'%1$s\'؟\nأي قواعد تستخدمه ستعود إلى الافتراضي.</string>
     <string name="pn_confirm_delete_rule">هل أنت متأكد من رغبتك في حذف هذه القاعدة؟</string>
@@ -1337,15 +1333,10 @@
     <string name="app_threading_priority_use_normal">التبديل إلى عادي</string>
     <string name="qs_tiles">مربعات الإعدادات السريعة</string>
     <string name="qs_tiles_desc">كل المربعات التي يوفرها هذا التطبيق في مكان واحد</string>
-    <string name="qs_tiles_slots_used">تم استخدام %1$d من %2$d خانة</string>
     <string name="qs_tiles_needs_shizuku_title">شيزوكو غير متصل</string>
     <string name="qs_tiles_needs_shizuku_desc">تبقى المربعات غير متاحة حتى يعمل شيزوكو. اضغط لفتح دليل الإعداد.</string>
-    <string name="qs_tiles_active_section">المربعات النشطة</string>
-    <string name="qs_tiles_active_section_desc">اضغط على مربع لتعديل أوامره</string>
-    <string name="qs_tiles_empty">لا توجد مربعات بعد. فعّل مفتاحًا بالأسفل لحجز خانة.</string>
     <string name="qs_tiles_add_custom">إضافة مفتاح مخصص</string>
     <string name="qs_tiles_no_free_slot">كل الخانات مستخدمة. أزل واحدة أولًا.</string>
-    <string name="qs_tiles_slot_label">خانة المربع %1$d</string>
     <string name="qs_tiles_add_to_panel">إضافة إلى اللوحة</string>
     <string name="qs_tiles_remove">إزالة</string>
     <string name="qs_tiles_dialog_new">مربع تبديل جديد</string>
@@ -1450,8 +1441,6 @@
     <string name="qs_tiles_group_terminal">إعداد مسبق للطرفية</string>
     <string name="qs_tiles_group_profile">ملف شخصي</string>
     <string name="qs_tiles_builtin_sound_desc">غيّر وضع الصوت من اللوحة</string>
-    <string name="qs_tiles_builtin_section">مربعات التطبيق</string>
-    <string name="qs_tiles_builtin_section_desc">مربعات الميزات المضمّنة في التطبيق</string>
     <string name="qs_tiles_builtin_unsupported">في هذا الإصدار من أندرويد أضفها من شاشة تحرير الإعدادات السريعة.</string>
     <string name="qs_tiles_builtin_screenshot_desc">التقاط لقطة شاشة ونسخها إلى الحافظة</string>
     <string name="qs_tiles_builtin_game_mode_desc">تشغيل وضع الألعاب أو إيقافه</string>

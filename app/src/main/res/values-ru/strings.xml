@@ -280,7 +280,6 @@
     <string name="preset_tile_toast_applied">%1$s применено</string>
     <string name="preset_tile_toast_applied_unverified">%1$s применено. Если ничего не изменилось, подключите Shizuku</string>
     <string name="preset_tile_toast_failed">Не удалось применить %1$s</string>
-    <string name="preset_tile_enable_description">Применяйте этот пресет из панели быстрых настроек.</string>
     <string name="preset_tile_number_description">Плитка показывает это значение вместо значка.</string>
     <string name="preset_tile_toast_description">Сообщать на экране, когда пресет применён.</string>
     <string name="preset_tile_collapse_description">Закрывать панель сразу после применения пресета.</string>
@@ -634,14 +633,11 @@
     <string name="pn_body_keywords_format">Текст: %1$s</string>
     <string name="pn_cd_add">Добавить</string>
     <string name="pn_cd_back">Назад</string>
-    <string name="pn_cd_check_item">Выбрать %1$s</string>
     <string name="pn_cd_clear_search">Очистить поиск</string>
     <string name="pn_cd_edit">Изменить</string>
     <string name="pn_cd_more_options">Другие параметры</string>
     <string name="pn_cd_remove">Удалить</string>
-    <string name="pn_cd_settings_for">Настройки для %1$s</string>
     <string name="pn_cd_swap_apps">Поменять приложения</string>
-    <string name="pn_cd_uncheck_item">Снять выбор с %1$s</string>
     <string name="pn_command_copied">Команда скопирована в буфер обмена</string>
     <string name="pn_confirm_delete_pattern">Удалить шаблон \'%1$s\'?\nПравила, использующие его, вернутся к значению по умолчанию.</string>
     <string name="pn_confirm_delete_rule">Удалить это правило?</string>
@@ -1299,15 +1295,10 @@
     <string name="app_threading_priority_use_normal">Переключить на обычный</string>
     <string name="qs_tiles">Плитки быстрых настроек</string>
     <string name="qs_tiles_desc">Все плитки приложения в одном месте</string>
-    <string name="qs_tiles_slots_used">Использовано %1$d из %2$d слотов</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku не подключён</string>
     <string name="qs_tiles_needs_shizuku_desc">Плитки недоступны, пока не запущен Shizuku. Нажмите, чтобы открыть руководство по настройке.</string>
-    <string name="qs_tiles_active_section">Активные плитки</string>
-    <string name="qs_tiles_active_section_desc">Нажмите плитку, чтобы изменить её команды</string>
-    <string name="qs_tiles_empty">Плиток пока нет. Включите переключатель ниже, чтобы занять слот.</string>
     <string name="qs_tiles_add_custom">Добавить свой переключатель</string>
     <string name="qs_tiles_no_free_slot">Все слоты заняты. Сначала удалите один.</string>
-    <string name="qs_tiles_slot_label">Слот плитки %1$d</string>
     <string name="qs_tiles_add_to_panel">Добавить на панель</string>
     <string name="qs_tiles_remove">Удалить</string>
     <string name="qs_tiles_dialog_new">Новая плитка-переключатель</string>
@@ -1412,8 +1403,6 @@
     <string name="qs_tiles_group_terminal">Команда терминала</string>
     <string name="qs_tiles_group_profile">Профиль</string>
     <string name="qs_tiles_builtin_sound_desc">Менять режим звука с панели</string>
-    <string name="qs_tiles_builtin_section">Плитки приложения</string>
-    <string name="qs_tiles_builtin_section_desc">Плитки функций, встроенные в приложение</string>
     <string name="qs_tiles_builtin_unsupported">В этой версии Android добавьте их на экране редактирования быстрых настроек.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Сделать скриншот и скопировать в буфер обмена</string>
     <string name="qs_tiles_builtin_game_mode_desc">Включить или выключить игровой режим</string>

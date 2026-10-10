@@ -350,7 +350,6 @@ Animator Duration: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s applied</string>
     <string name="preset_tile_toast_applied_unverified">%1$s applied. If nothing changed, connect Shizuku</string>
     <string name="preset_tile_toast_failed">%1$s could not be applied</string>
-    <string name="preset_tile_enable_description">Apply this preset from the Quick Settings panel.</string>
     <string name="preset_tile_number_description">The tile shows this value instead of an icon.</string>
     <string name="preset_tile_toast_description">Confirm on the screen when the preset is applied.</string>
     <string name="preset_tile_collapse_description">Close the panel as soon as the preset is applied.</string>
@@ -684,14 +683,11 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_body_keywords_format">Body: %1$s</string>
     <string name="pn_cd_add">Add</string>
     <string name="pn_cd_back">Navigate back</string>
-    <string name="pn_cd_check_item">Check %1$s</string>
     <string name="pn_cd_clear_search">Clear search</string>
     <string name="pn_cd_edit">Edit</string>
     <string name="pn_cd_more_options">More options</string>
     <string name="pn_cd_remove">Remove</string>
-    <string name="pn_cd_settings_for">Settings for %1$s</string>
     <string name="pn_cd_swap_apps">Swap Apps</string>
-    <string name="pn_cd_uncheck_item">Uncheck %1$s</string>
     <string name="pn_command_copied">Command copied to clipboard</string>
     <string name="pn_confirm_delete_pattern">Are you sure you want to delete pattern \'%1$s\'?\nAny rules using it will reset to default.</string>
     <string name="pn_confirm_delete_rule">Are you sure you want to delete this rule?</string>
@@ -1431,15 +1427,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="qs_tiles_group_width">Width preset</string>
     <string name="qs_tiles_group_terminal">Terminal preset</string>
     <string name="qs_tiles_group_profile">Profile</string>
-    <string name="qs_tiles_slots_used">%1$d of %2$d tile slots used</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku is not connected</string>
     <string name="qs_tiles_needs_shizuku_desc">Tiles stay unavailable until Shizuku is running. Tap to open the setup guide.</string>
-    <string name="qs_tiles_active_section">Active tiles</string>
-    <string name="qs_tiles_active_section_desc">Tap a tile to edit its commands</string>
-    <string name="qs_tiles_empty">No tiles yet. Switch on a toggle below to claim a tile slot.</string>
     <string name="qs_tiles_add_custom">Add custom toggle</string>
     <string name="qs_tiles_no_free_slot">All tile slots are in use. Remove one first.</string>
-    <string name="qs_tiles_slot_label">Tile slot %1$d</string>
     <string name="qs_tiles_add_to_panel">Add to panel</string>
     <string name="qs_tiles_remove">Remove</string>
     <string name="qs_tiles_dialog_new">New toggle tile</string>
@@ -1453,8 +1444,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="qs_tiles_pick_icon">Choose icon</string>
     <string name="qs_tiles_collapse_panel">Collapse Quick Settings after tap</string>
     <string name="qs_tiles_show_toast">Show a toast after tap</string>
-    <string name="qs_tiles_builtin_section">App tiles</string>
-    <string name="qs_tiles_builtin_section_desc">Feature tiles that ship with the app</string>
     <string name="qs_tiles_builtin_unsupported">Add these from the Quick Settings edit screen on this Android version.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Take a screenshot and copy it to the clipboard</string>
     <string name="qs_tiles_builtin_game_mode_desc">Switch game mode on or off</string>

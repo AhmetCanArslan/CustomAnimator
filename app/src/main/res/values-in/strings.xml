@@ -280,7 +280,6 @@ Durasi Animator: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s diterapkan</string>
     <string name="preset_tile_toast_applied_unverified">%1$s diterapkan. Jika tidak ada perubahan, hubungkan Shizuku</string>
     <string name="preset_tile_toast_failed">%1$s tidak dapat diterapkan</string>
-    <string name="preset_tile_enable_description">Terapkan preset ini dari panel Setelan Cepat.</string>
     <string name="preset_tile_number_description">Ubin menampilkan nilai ini alih-alih ikon.</string>
     <string name="preset_tile_toast_description">Konfirmasi di layar saat preset diterapkan.</string>
     <string name="preset_tile_collapse_description">Tutup panel begitu preset diterapkan.</string>
@@ -634,14 +633,11 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_body_keywords_format">Isi: %1$s</string>
     <string name="pn_cd_add">Tambah</string>
     <string name="pn_cd_back">Kembali</string>
-    <string name="pn_cd_check_item">Centang %1$s</string>
     <string name="pn_cd_clear_search">Hapus pencarian</string>
     <string name="pn_cd_edit">Edit</string>
     <string name="pn_cd_more_options">Opsi lainnya</string>
     <string name="pn_cd_remove">Hapus</string>
-    <string name="pn_cd_settings_for">Setelan untuk %1$s</string>
     <string name="pn_cd_swap_apps">Tukar aplikasi</string>
-    <string name="pn_cd_uncheck_item">Hapus centang %1$s</string>
     <string name="pn_command_copied">Perintah disalin ke papan klip</string>
     <string name="pn_confirm_delete_pattern">Yakin ingin menghapus pola \'%1$s\'?\nAturan yang memakainya akan kembali ke default.</string>
     <string name="pn_confirm_delete_rule">Yakin ingin menghapus aturan ini?</string>
@@ -1297,15 +1293,10 @@ Durasi Animator: %3$.2f</string>
     <string name="app_threading_priority_use_normal">Ubah ke Normal</string>
     <string name="qs_tiles">Ubin Setelan Cepat</string>
     <string name="qs_tiles_desc">Semua ubin yang ditawarkan aplikasi ini, di satu tempat</string>
-    <string name="qs_tiles_slots_used">%1$d dari %2$d slot ubin terpakai</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku tidak terhubung</string>
     <string name="qs_tiles_needs_shizuku_desc">Ubin tetap tidak tersedia sampai Shizuku berjalan. Ketuk untuk membuka panduan penyiapan.</string>
-    <string name="qs_tiles_active_section">Ubin aktif</string>
-    <string name="qs_tiles_active_section_desc">Ketuk ubin untuk mengedit perintahnya</string>
-    <string name="qs_tiles_empty">Belum ada ubin. Nyalakan sakelar di bawah untuk mengambil slot.</string>
     <string name="qs_tiles_add_custom">Tambah sakelar khusus</string>
     <string name="qs_tiles_no_free_slot">Semua slot terpakai. Hapus satu dulu.</string>
-    <string name="qs_tiles_slot_label">Slot ubin %1$d</string>
     <string name="qs_tiles_add_to_panel">Tambahkan ke panel</string>
     <string name="qs_tiles_remove">Hapus</string>
     <string name="qs_tiles_dialog_new">Ubin sakelar baru</string>
@@ -1410,8 +1401,6 @@ Durasi Animator: %3$.2f</string>
     <string name="qs_tiles_group_terminal">Preset terminal</string>
     <string name="qs_tiles_group_profile">Profil</string>
     <string name="qs_tiles_builtin_sound_desc">Ubah mode suara dari panel</string>
-    <string name="qs_tiles_builtin_section">Ubin aplikasi</string>
-    <string name="qs_tiles_builtin_section_desc">Ubin fitur bawaan aplikasi</string>
     <string name="qs_tiles_builtin_unsupported">Di versi Android ini, tambahkan lewat layar edit Setelan Cepat.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Ambil tangkapan layar dan salin ke papan klip</string>
     <string name="qs_tiles_builtin_game_mode_desc">Nyalakan atau matikan mode game</string>

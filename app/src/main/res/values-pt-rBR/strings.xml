@@ -280,7 +280,6 @@ Duração do Animador: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s aplicado</string>
     <string name="preset_tile_toast_applied_unverified">%1$s aplicado. Se nada mudou, conecte o Shizuku</string>
     <string name="preset_tile_toast_failed">Não foi possível aplicar %1$s</string>
-    <string name="preset_tile_enable_description">Aplique esta predefinição pelo painel de Configurações Rápidas.</string>
     <string name="preset_tile_number_description">O bloco mostra este valor em vez de um ícone.</string>
     <string name="preset_tile_toast_description">Confirmar na tela quando a predefinição for aplicada.</string>
     <string name="preset_tile_collapse_description">Fechar o painel assim que a predefinição for aplicada.</string>
@@ -634,14 +633,11 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_body_keywords_format">Corpo: %1$s</string>
     <string name="pn_cd_add">Adicionar</string>
     <string name="pn_cd_back">Voltar</string>
-    <string name="pn_cd_check_item">Marcar %1$s</string>
     <string name="pn_cd_clear_search">Limpar pesquisa</string>
     <string name="pn_cd_edit">Editar</string>
     <string name="pn_cd_more_options">Mais opções</string>
     <string name="pn_cd_remove">Remover</string>
-    <string name="pn_cd_settings_for">Configurações de %1$s</string>
     <string name="pn_cd_swap_apps">Trocar apps</string>
-    <string name="pn_cd_uncheck_item">Desmarcar %1$s</string>
     <string name="pn_command_copied">Comando copiado para a área de transferência</string>
     <string name="pn_confirm_delete_pattern">Deseja excluir o padrão \'%1$s\'?\nAs regras que o usam voltarão ao padrão.</string>
     <string name="pn_confirm_delete_rule">Deseja excluir esta regra?</string>
@@ -1297,15 +1293,10 @@ Duração do Animador: %3$.2f</string>
     <string name="app_threading_priority_use_normal">Mudar para Normal</string>
     <string name="qs_tiles">Blocos das Configurações rápidas</string>
     <string name="qs_tiles_desc">Todos os blocos que este app oferece, em um só lugar</string>
-    <string name="qs_tiles_slots_used">%1$d de %2$d espaços de bloco usados</string>
     <string name="qs_tiles_needs_shizuku_title">O Shizuku não está conectado</string>
     <string name="qs_tiles_needs_shizuku_desc">Os blocos ficam indisponíveis até o Shizuku estar em execução. Toque para abrir o guia de configuração.</string>
-    <string name="qs_tiles_active_section">Blocos ativos</string>
-    <string name="qs_tiles_active_section_desc">Toque em um bloco para editar seus comandos</string>
-    <string name="qs_tiles_empty">Ainda não há blocos. Ative um alternador abaixo para ocupar um espaço.</string>
     <string name="qs_tiles_add_custom">Adicionar alternador personalizado</string>
     <string name="qs_tiles_no_free_slot">Todos os espaços estão em uso. Remova um primeiro.</string>
-    <string name="qs_tiles_slot_label">Espaço de bloco %1$d</string>
     <string name="qs_tiles_add_to_panel">Adicionar ao painel</string>
     <string name="qs_tiles_remove">Remover</string>
     <string name="qs_tiles_dialog_new">Novo bloco alternador</string>
@@ -1410,8 +1401,6 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_tiles_group_terminal">Predefinição do terminal</string>
     <string name="qs_tiles_group_profile">Perfil</string>
     <string name="qs_tiles_builtin_sound_desc">Mude o modo de som pelo painel</string>
-    <string name="qs_tiles_builtin_section">Blocos do app</string>
-    <string name="qs_tiles_builtin_section_desc">Blocos de recursos que vêm com o app</string>
     <string name="qs_tiles_builtin_unsupported">Nesta versão do Android, adicione pela tela de edição das Configurações rápidas.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Tire uma captura e copie para a área de transferência</string>
     <string name="qs_tiles_builtin_game_mode_desc">Ative ou desative o modo jogo</string>

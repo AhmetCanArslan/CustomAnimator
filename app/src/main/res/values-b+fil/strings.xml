@@ -280,7 +280,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="preset_tile_toast_applied">Nailapat ang %1$s</string>
     <string name="preset_tile_toast_applied_unverified">Nailapat ang %1$s. Kung walang nagbago, ikonekta ang Shizuku</string>
     <string name="preset_tile_toast_failed">Hindi mailapat ang %1$s</string>
-    <string name="preset_tile_enable_description">Ilapat ang preset na ito mula sa panel ng Quick Settings.</string>
     <string name="preset_tile_number_description">Ipinapakita ng tile ang halagang ito sa halip na icon.</string>
     <string name="preset_tile_toast_description">Kumpirmahin sa screen kapag nailapat ang preset.</string>
     <string name="preset_tile_collapse_description">Isara ang panel kapag nailapat ang preset.</string>
@@ -634,14 +633,11 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_body_keywords_format">Body: %1$s</string>
     <string name="pn_cd_add">Idagdag</string>
     <string name="pn_cd_back">Bumalik</string>
-    <string name="pn_cd_check_item">Lagyan ng check ang %1$s</string>
     <string name="pn_cd_clear_search">I-clear ang paghahanap</string>
     <string name="pn_cd_edit">I-edit</string>
     <string name="pn_cd_more_options">Higit pang opsyon</string>
     <string name="pn_cd_remove">Alisin</string>
-    <string name="pn_cd_settings_for">Mga setting para sa %1$s</string>
     <string name="pn_cd_swap_apps">Palitan ang mga app</string>
-    <string name="pn_cd_uncheck_item">Alisin ang check sa %1$s</string>
     <string name="pn_command_copied">Nakopya ang command sa clipboard</string>
     <string name="pn_confirm_delete_pattern">Sigurado ka bang tatanggalin ang pattern na \'%1$s\'?\nBabalik sa default ang mga rule na gumagamit nito.</string>
     <string name="pn_confirm_delete_rule">Sigurado ka bang tatanggalin ang rule na ito?</string>
@@ -1297,15 +1293,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="app_threading_priority_use_normal">Gawing Normal</string>
     <string name="qs_tiles">Mga Quick Settings Tile</string>
     <string name="qs_tiles_desc">Lahat ng tile na inaalok ng app na ito, sa iisang lugar</string>
-    <string name="qs_tiles_slots_used">%1$d sa %2$d na slot ng tile ang ginamit</string>
     <string name="qs_tiles_needs_shizuku_title">Hindi konektado ang Shizuku</string>
     <string name="qs_tiles_needs_shizuku_desc">Mananatiling hindi available ang mga tile hangga\'t hindi tumatakbo ang Shizuku. I-tap para buksan ang gabay sa setup.</string>
-    <string name="qs_tiles_active_section">Mga aktibong tile</string>
-    <string name="qs_tiles_active_section_desc">I-tap ang tile para i-edit ang mga command nito</string>
-    <string name="qs_tiles_empty">Wala pang tile. I-on ang isang toggle sa ibaba para kumuha ng slot.</string>
     <string name="qs_tiles_add_custom">Magdagdag ng custom na toggle</string>
     <string name="qs_tiles_no_free_slot">Puno na ang lahat ng slot. Mag-alis muna ng isa.</string>
-    <string name="qs_tiles_slot_label">Tile slot %1$d</string>
     <string name="qs_tiles_add_to_panel">Idagdag sa panel</string>
     <string name="qs_tiles_remove">Alisin</string>
     <string name="qs_tiles_dialog_new">Bagong toggle tile</string>
@@ -1410,8 +1401,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="qs_tiles_group_terminal">Preset ng terminal</string>
     <string name="qs_tiles_group_profile">Profile</string>
     <string name="qs_tiles_builtin_sound_desc">Palitan ang sound mode mula sa panel</string>
-    <string name="qs_tiles_builtin_section">Mga tile ng app</string>
-    <string name="qs_tiles_builtin_section_desc">Mga tile ng feature na kasama sa app</string>
     <string name="qs_tiles_builtin_unsupported">Sa bersyong ito ng Android, idagdag ang mga ito sa edit screen ng Quick Settings.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Kumuha ng screenshot at kopyahin sa clipboard</string>
     <string name="qs_tiles_builtin_game_mode_desc">I-on o i-off ang game mode</string>

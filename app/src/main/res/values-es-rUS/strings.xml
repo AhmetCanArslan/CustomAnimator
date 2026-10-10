@@ -280,7 +280,6 @@ Duración del Animador: %3$.2f</string>
     <string name="preset_tile_toast_applied">%1$s aplicado</string>
     <string name="preset_tile_toast_applied_unverified">%1$s aplicado. Si nada cambió, conecta Shizuku</string>
     <string name="preset_tile_toast_failed">No se pudo aplicar %1$s</string>
-    <string name="preset_tile_enable_description">Aplica este preajuste desde el panel de Ajustes rápidos.</string>
     <string name="preset_tile_number_description">El mosaico muestra este valor en lugar de un icono.</string>
     <string name="preset_tile_toast_description">Confirmar en pantalla cuando se aplique el preajuste.</string>
     <string name="preset_tile_collapse_description">Cerrar el panel en cuanto se aplique el preajuste.</string>
@@ -634,14 +633,11 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_body_keywords_format">Cuerpo: %1$s</string>
     <string name="pn_cd_add">Agregar</string>
     <string name="pn_cd_back">Volver</string>
-    <string name="pn_cd_check_item">Seleccionar %1$s</string>
     <string name="pn_cd_clear_search">Borrar búsqueda</string>
     <string name="pn_cd_edit">Editar</string>
     <string name="pn_cd_more_options">Más opciones</string>
     <string name="pn_cd_remove">Quitar</string>
-    <string name="pn_cd_settings_for">Ajustes de %1$s</string>
     <string name="pn_cd_swap_apps">Intercambiar apps</string>
-    <string name="pn_cd_uncheck_item">Deseleccionar %1$s</string>
     <string name="pn_command_copied">Comando copiado al portapapeles</string>
     <string name="pn_confirm_delete_pattern">¿Seguro que quieres eliminar el patrón \'%1$s\'?\nLas reglas que lo usen volverán al valor predeterminado.</string>
     <string name="pn_confirm_delete_rule">¿Seguro que quieres eliminar esta regla?</string>
@@ -1297,15 +1293,10 @@ Duración del Animador: %3$.2f</string>
     <string name="app_threading_priority_use_normal">Cambiar a Normal</string>
     <string name="qs_tiles">Mosaicos de Ajustes rápidos</string>
     <string name="qs_tiles_desc">Todos los mosaicos que ofrece esta app, en un solo lugar</string>
-    <string name="qs_tiles_slots_used">%1$d de %2$d espacios usados</string>
     <string name="qs_tiles_needs_shizuku_title">Shizuku no está conectado</string>
     <string name="qs_tiles_needs_shizuku_desc">Los mosaicos no estarán disponibles hasta que Shizuku esté en ejecución. Toca para abrir la guía de configuración.</string>
-    <string name="qs_tiles_active_section">Mosaicos activos</string>
-    <string name="qs_tiles_active_section_desc">Toca un mosaico para editar sus comandos</string>
-    <string name="qs_tiles_empty">Aún no hay mosaicos. Activa un interruptor abajo para ocupar un espacio.</string>
     <string name="qs_tiles_add_custom">Agregar interruptor personalizado</string>
     <string name="qs_tiles_no_free_slot">Todos los espacios están ocupados. Elimina uno primero.</string>
-    <string name="qs_tiles_slot_label">Espacio de mosaico %1$d</string>
     <string name="qs_tiles_add_to_panel">Agregar al panel</string>
     <string name="qs_tiles_remove">Eliminar</string>
     <string name="qs_tiles_dialog_new">Nuevo mosaico de interruptor</string>
@@ -1410,8 +1401,6 @@ Duración del Animador: %3$.2f</string>
     <string name="qs_tiles_group_terminal">Preajuste de terminal</string>
     <string name="qs_tiles_group_profile">Perfil</string>
     <string name="qs_tiles_builtin_sound_desc">Cambia el modo de sonido desde el panel</string>
-    <string name="qs_tiles_builtin_section">Mosaicos de la app</string>
-    <string name="qs_tiles_builtin_section_desc">Mosaicos de funciones incluidos en la app</string>
     <string name="qs_tiles_builtin_unsupported">En esta versión de Android, agrégalos desde la pantalla de edición de Ajustes rápidos.</string>
     <string name="qs_tiles_builtin_screenshot_desc">Toma una captura y cópiala al portapapeles</string>
     <string name="qs_tiles_builtin_game_mode_desc">Activa o desactiva el modo juego</string>
