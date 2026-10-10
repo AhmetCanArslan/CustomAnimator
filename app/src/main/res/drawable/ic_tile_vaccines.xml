@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/white"
+        android:pathData="M11,5.5 H8 V4 h.5 c.55,0,1,-.45,1,-1 s-.45,-1,-1,-1 h-3 c-.55,0,-1,.45,-1,1 s.45,1,1,1 H6 v1.5 H3 c-.55,0,-1,.45,-1,1 s.45,1,1,1 V15 c0,1.1,.9,2,2,2 h1 v4 l2,1.5 V17 h1 c1.1,0,2,-.9,2,-2 V7.5 c.55,0,1,-.45,1,-1 s-.45,-1,-1,-1 Z M9,9 H7.25 c-.41,0,-.75,.34,-.75,.75 s.34,.75,.75,.75 H9 V12 H7.25 c-.41,0,-.75,.34,-.75,.75 s.34,.75,.75,.75 H9 V15 H5 V7.5 h4 V9 Z m10.5,1.5 V10 c.55,0,1,-.45,1,-1 s-.45,-1,-1,-1 h-5 c-.55,0,-1,.45,-1,1 s.45,1,1,1 v.5 c0,.5,-1.5,1.16,-1.5,3 V20 c0,1.1,.9,2,2,2 h4 c1.1,0,2,-.9,2,-2 v-6.5 c0,-1.84,-1.5,-2.5,-1.5,-3 Z m-3,0 V10 h1 v.5 c0,1.6,1.5,2,1.5,3 v.5 h-4 v-.5 c0,-1,1.5,-1.4,1.5,-3 Z M15,20 v-1.5 h4 V20 h-4 Z" />
+</vector>
