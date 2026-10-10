@@ -14,7 +14,6 @@ object RefreshRateManager {
     const val KEY_PEAK_REFRESH_RATE = "peak_refresh_rate"
 
     private const val NO_RATE = -1f
-    private const val RATE_TOLERANCE = 0.5f
 
     fun getSupportedRates(context: Context): List<Float> {
         val display = defaultDisplay(context) ?: return emptyList()
@@ -53,9 +52,6 @@ object RefreshRateManager {
         val peakRestored = setPeakRate(peak)
         return minRestored && peakRestored
     }
-
-    fun isSupportedRate(context: Context, rate: Float): Boolean =
-        getSupportedRates(context).any { abs(it - rate) <= RATE_TOLERANCE }
 
     fun formatRate(rate: Float): String =
         if (abs(rate - rate.roundToInt()) < 0.05f) rate.roundToInt().toString() else String.format("%.1f", rate)

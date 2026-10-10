@@ -27,9 +27,6 @@ class ToggleTileManager(context: Context) {
 
     fun getTileForSlot(slot: Int): ToggleTile? = getTiles().firstOrNull { it.slot == slot }
 
-    fun getTileForPreset(presetKey: String): ToggleTile? =
-        getTiles().firstOrNull { it.presetKey == presetKey && presetKey != ToggleTilePresets.CUSTOM_KEY }
-
     fun firstFreeSlot(excludingId: String? = null): Int? {
         val taken = getTiles().filter { it.id != excludingId }.map { it.slot }.toSet()
         return (0 until MAX_TILE_SLOTS).firstOrNull { it !in taken }

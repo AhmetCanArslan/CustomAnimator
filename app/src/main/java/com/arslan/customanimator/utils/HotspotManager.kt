@@ -262,5 +262,4 @@ object HotspotManager {
         put("allowed", JSONArray().apply { config.allowedDevices.forEach { put(it) } })
     }
 
-    fun configFromJson(json: JSONObject): HotspotConfig = decodeConfig(json)
 }

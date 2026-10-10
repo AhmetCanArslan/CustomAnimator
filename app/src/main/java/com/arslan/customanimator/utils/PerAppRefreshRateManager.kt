@@ -29,8 +29,6 @@ class PerAppRefreshRateManager(context: Context) {
         }
     }
 
-    fun getRate(packageName: String): Float? = getOverrides()[packageName]
-
     fun setRate(packageName: String, rate: Float?) {
         val current = getOverrides().toMutableMap()
         if (rate == null || rate !in MIN_RATE..MAX_RATE) {

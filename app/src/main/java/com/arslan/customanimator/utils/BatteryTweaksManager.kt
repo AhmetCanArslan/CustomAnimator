@@ -16,8 +16,6 @@ object BatteryTweaksManager {
     const val KEY_STICKY_AUTO_DISABLE_ENABLED = "low_power_sticky_auto_disable_enabled"
     const val KEY_STICKY_AUTO_DISABLE_LEVEL = "low_power_sticky_auto_disable_level"
     const val KEY_AUTOMATIC_POWER_SAVE_MODE = "automatic_power_save_mode"
-    const val KEY_DYNAMIC_POWER_SAVINGS_ENABLED = "dynamic_power_savings_enabled"
-    const val KEY_DYNAMIC_POWER_SAVINGS_THRESHOLD = "dynamic_power_savings_disable_threshold"
 
     const val KEY_BATTERY_SAVER_CONSTANTS = "battery_saver_constants"
     const val KEY_DEVICE_IDLE_CONSTANTS = "device_idle_constants"
@@ -328,8 +326,4 @@ object BatteryTweaksManager {
             arrayOf("cmd", "power", "set-fixed-performance-mode-enabled", enabled.toString())
         )
 
-    fun setDozeEnabled(enabled: Boolean): Boolean =
-        ShizukuHelper.executeShellCommand(
-            arrayOf("cmd", "deviceidle", if (enabled) "enable" else "disable", "all")
-        )
 }

@@ -72,9 +72,6 @@ object StatusBarIconsManager {
         return raw.orEmpty().split(',').map { it.trim() }.filter { it.isNotEmpty() }.toSet()
     }
 
-    fun isSlotHidden(contentResolver: ContentResolver, slot: String): Boolean =
-        slot in getHiddenSlots(contentResolver)
-
     fun setSlotHidden(
         contentResolver: ContentResolver,
         slot: String,

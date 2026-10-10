@@ -10,8 +10,6 @@ import android.service.quicksettings.TileService
 
 abstract class TileSlotPool(private val slotClasses: List<Class<out TileService>>) {
 
-    val slotCount: Int get() = slotClasses.size
-
     fun componentFor(context: Context, slot: Int): ComponentName =
         ComponentName(context.applicationContext, slotClasses[slot])
 

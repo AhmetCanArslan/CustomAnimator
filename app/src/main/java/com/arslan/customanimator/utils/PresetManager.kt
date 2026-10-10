@@ -1,7 +1,6 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
-import androidx.compose.runtime.mutableStateOf
 import com.arslan.customanimator.data.AnimatorPreset
 import com.arslan.customanimator.data.PresetTileConfig
 import org.json.JSONArray
@@ -44,29 +43,6 @@ class PresetManager(context: Context) {
         } catch (e: Exception) {
             e.printStackTrace()
             false
-        }
-    }
-    
-    fun getPreset(id: String): AnimatorPreset? {
-        return try {
-            val presets = getAllPresetsJson()
-            for (i in 0 until presets.length()) {
-                val json = presets.getJSONObject(i)
-                if (json.getString("id") == id) {
-                    return AnimatorPreset(
-                        id = json.getString("id"),
-                        name = json.getString("name"),
-                        windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
-                        transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
-                        animatorDurationScale = json.getString("animatorDurationScale").toFloat(),
-                        tile = PresetTileJson.read(json)
-                    )
-                }
-            }
-            null
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
     
