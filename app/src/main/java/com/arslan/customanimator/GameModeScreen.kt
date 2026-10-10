@@ -4,26 +4,19 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.GameModeController
 import com.arslan.customanimator.utils.GameModeExclusionManager
 import com.arslan.customanimator.utils.GameModeManager
 import com.arslan.customanimator.utils.GameModeTargets
-import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,42 +35,23 @@ fun GameModeScreenContent(
     val exclusionManager = remember { GameModeExclusionManager(context) }
     val coroutineScope = rememberCoroutineScope()
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedGames by remember { mutableStateOf(manager.getSelectedPackages()) }
     var excludedApps by remember { mutableStateOf(exclusionManager.getSelectedPackages()) }
     var editingExclusions by remember { mutableStateOf(false) }
     val listedPackages = if (editingExclusions) excludedApps else selectedGames
-    var isLoading by remember { mutableStateOf(true) }
     var isBusy by remember { mutableStateOf(false) }
     var isActive by remember { mutableStateOf(GameModeController.isActive(context)) }
     var targetCount by remember { mutableStateOf(0) }
-    var searchQuery by remember { mutableStateOf("") }
     val isAdFree by rememberIsAdFree()
 
     LaunchedEffect(Unit) { RewardedAds.prepare(context) }
 
 
-    var showSelectedOnly by remember { mutableStateOf(false) }
 
-    val filteredApps by remember(apps, searchQuery, showSelectedOnly, listedPackages) {
-        derivedStateOf {
-            apps
-                .filter {
-                    searchQuery.isBlank() ||
-                        it.label.contains(searchQuery, ignoreCase = true) ||
-                        it.packageName.contains(searchQuery, ignoreCase = true)
-                }
-                .filter { !showSelectedOnly || listedPackages.contains(it.packageName) }
-        }
-    }
+    val appList = rememberAppListState(selectedPackages = listedPackages)
 
-    LaunchedEffect(Unit) {
-        apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        isLoading = false
-    }
-
-    LaunchedEffect(selectedGames, excludedApps, isLoading) {
-        if (!isLoading) {
+    LaunchedEffect(selectedGames, excludedApps, appList.isLoading) {
+        if (!appList.isLoading) {
             targetCount = withContext(Dispatchers.IO) {
                 GameModeTargets.resolve(context, selectedGames, excludedApps).size
             }
@@ -214,46 +188,18 @@ fun GameModeScreenContent(
                 )
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showSelectedOnly = showSelectedOnly,
-                        onShowSelectedOnlyChange = { showSelectedOnly = it }
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    AppRow(
-                        app = app,
-                        checked = listedPackages.contains(app.packageName),
-                        onCheckedChange = {
-                            if (editingExclusions) {
-                                excludedApps = exclusionManager.togglePackage(app.packageName)
-                            } else {
-                                selectedGames = manager.togglePackage(app.packageName)
-                            }
+            appList(appList) { app ->
+                AppRow(
+                    app = app,
+                    checked = listedPackages.contains(app.packageName),
+                    onCheckedChange = {
+                        if (editingExclusions) {
+                            excludedApps = exclusionManager.togglePackage(app.packageName)
+                        } else {
+                            selectedGames = manager.togglePackage(app.packageName)
                         }
-                    )
-                }
+                    }
+                )
             }
 
             item {
