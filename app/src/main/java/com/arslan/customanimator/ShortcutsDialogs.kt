@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -42,7 +41,6 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
     when (val step = state.step) {
         ShortcutStep.Idle -> Unit
         is ShortcutStep.PickApp -> AppPickerSheet(
-            apps = state.apps,
             onPick = state::onAppPicked,
             onDismiss = state::dismiss
         )
@@ -111,21 +109,6 @@ internal fun PickerSheet(
 }
 
 @Composable
-internal fun PickerSearchField(query: String, onQueryChange: (String) -> Unit, placeholder: String) {
-    OutlinedTextField(
-        value = query,
-        onValueChange = onQueryChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp),
-        placeholder = { Text(placeholder) },
-        leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) },
-        singleLine = true,
-        shape = AppShapes.field
-    )
-}
-
-@Composable
 internal fun PickerRow(
     title: String,
     subtitle: String,
@@ -174,28 +157,12 @@ internal fun PickerMessage(text: String) {
 
 @Composable
 internal fun AppPickerSheet(
-    apps: List<InstalledAppInfo>,
     onPick: (InstalledAppInfo) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var query by remember { mutableStateOf("") }
-    val filtered = remember(apps, query) {
-        apps.filter { it.label.contains(query, ignoreCase = true) || it.packageName.contains(query, ignoreCase = true) }
-    }
+    val appList = rememberAppListState()
     PickerSheet(title = stringResource(R.string.shortcut_pick_app), subtitle = null, onDismiss = onDismiss) {
-        item {
-            PickerSearchField(query, { query = it }, stringResource(R.string.search_apps))
-        }
-        if (apps.isEmpty()) {
-            item {
-                Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-        } else if (filtered.isEmpty()) {
-            item { PickerMessage(stringResource(R.string.no_apps_found)) }
-        }
-        items(filtered, key = { it.packageName }) { app ->
+        appList(appList) { app ->
             PickerRow(title = app.label, subtitle = app.packageName, onClick = { onPick(app) }) {
                 AppIcon(icon = app.icon, modifier = Modifier.size(40.dp))
             }
@@ -221,7 +188,12 @@ private fun ActivityPickerSheet(
         onDismiss = onDismiss
     ) {
         item {
-            PickerSearchField(query, { query = it }, stringResource(R.string.shortcut_search_activities))
+            AppSearchBar(
+                searchQuery = query,
+                onSearchQueryChange = { query = it },
+                showFilterCheckbox = false,
+                placeholder = stringResource(R.string.shortcut_search_activities)
+            )
         }
         if (filtered.isEmpty()) {
             item { PickerMessage(stringResource(R.string.shortcut_no_activities)) }

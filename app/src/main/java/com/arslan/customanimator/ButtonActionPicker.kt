@@ -25,7 +25,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,21 +32,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ButtonAction
 import com.arslan.customanimator.utils.ButtonActions
-import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.TerminalTileIcons
 import com.arslan.customanimator.utils.ToggleTilePresets
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 internal enum class ButtonActionPickerStep { HIDDEN, ACTIONS, APPS, COMMAND }
 
@@ -58,15 +52,7 @@ internal fun ButtonActionPicker(
     onStepChange: (ButtonActionPickerStep) -> Unit,
     onPicked: (ButtonAction) -> Unit
 ) {
-    val context = LocalContext.current
-    var apps by remember { mutableStateOf(emptyList<InstalledAppInfo>()) }
     val dismiss = { onStepChange(ButtonActionPickerStep.HIDDEN) }
-
-    LaunchedEffect(step) {
-        if (step == ButtonActionPickerStep.APPS && apps.isEmpty()) {
-            apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        }
-    }
 
     when (step) {
         ButtonActionPickerStep.HIDDEN -> Unit
@@ -77,7 +63,6 @@ internal fun ButtonActionPicker(
             onDismiss = dismiss
         )
         ButtonActionPickerStep.APPS -> AppPickerSheet(
-            apps = apps,
             onPick = { app -> onPicked(ButtonAction(ButtonAction.Type.APP, app.packageName)) },
             onDismiss = dismiss
         )

@@ -18,7 +18,6 @@ import com.arslan.customanimator.data.ShortcutHandlerInfo
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.utils.AppShortcutManager
-import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShortcutMaker
 import com.arslan.customanimator.utils.ShortcutStore
@@ -53,8 +52,6 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         private set
     var icons by mutableStateOf<Map<String, Bitmap>>(emptyMap())
         private set
-    var apps by mutableStateOf<List<InstalledAppInfo>>(emptyList())
-        private set
     var isLoading by mutableStateOf(true)
         private set
     var isRoot by mutableStateOf(false)
@@ -75,10 +72,6 @@ internal class ShortcutsState(private val context: Context, private val scope: C
 
     fun startAppPicker(target: AppPickTarget) {
         step = ShortcutStep.PickApp(target)
-        if (apps.isNotEmpty()) return
-        scope.launch {
-            apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        }
     }
 
     fun startBlank(type: ShortcutType) {
