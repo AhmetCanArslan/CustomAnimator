@@ -143,6 +143,20 @@ class NoShizukuResilienceTest {
     }
 
     @Test
+    fun iconChangerRefusesToInstallOrExportWithoutShizuku() {
+        val layer = android.graphics.Bitmap.createBitmap(8, 8, android.graphics.Bitmap.Config.ARGB_8888)
+        val steps = mutableListOf<IconChangerManager.Step>()
+
+        val outcome = IconChangerManager.changeIcon(context, "com.example.app", layer, 0, steps::add)
+
+        assertEquals(IconChangerManager.Outcome.NO_SHIZUKU, outcome)
+        assertEquals(IconChangerManager.Outcome.NO_SHIZUKU, IconChangerManager.installBlocker(context, "com.example.app"))
+        assertTrue(steps.isEmpty())
+        assertNull(IconChangerManager.exportApk(context, "com.example.app", layer, 0))
+        assertFalse(IconChangerManager.keepsData(context, "com.example.app"))
+    }
+
+    @Test
     fun debloaterNeverTouchesProtectedPackages() {
         val blocked = DebloatProtection.protectedPackages(context)
         assertTrue(blocked.contains(context.packageName))
