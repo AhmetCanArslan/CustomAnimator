@@ -198,7 +198,7 @@ enum class HomeScreen {
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     COMPILE_BOOSTER, AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, SHORTCUTS,
-    BUTTON_REMAPPER
+    BUTTON_REMAPPER, APK_EXTRACTOR
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -254,6 +254,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.OTP_COPIER to HomeTab.TOOLS,
     HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
     HomeScreen.BUTTON_REMAPPER to HomeTab.TOOLS,
+    HomeScreen.APK_EXTRACTOR to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
@@ -342,6 +343,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val otpCopierListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val buttonRemapperListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val apkExtractorListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -649,6 +651,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = shortcutsListState
         )
+    } else if (targetScreen == HomeScreen.APK_EXTRACTOR) {
+        ApkExtractorScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = apkExtractorListState
+        )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -881,6 +888,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
             onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },
+            onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },
             onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = toolsListState

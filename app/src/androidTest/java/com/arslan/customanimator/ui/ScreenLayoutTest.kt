@@ -6,6 +6,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.arslan.customanimator.AlarmRevealerScreen
+import com.arslan.customanimator.ApkExtractorScreen
 import com.arslan.customanimator.AppThreadingScreen
 import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
@@ -109,6 +110,11 @@ class ScreenLayoutTest {
     }
 
     @Test
+    fun apkExtractorScreenFitsSmallPhones() = screenFits(R.string.apk_extractor) {
+        ApkExtractorScreen(onBack = {})
+    }
+
+    @Test
     fun autoForceStopScreenFitsSmallPhones() = screenFits(R.string.auto_force_stop) {
         AutoForceStopScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
     }
@@ -155,6 +161,7 @@ class ScreenLayoutTest {
             onNavigateToScreenshotActions = {},
             onNavigateToDebloater = {},
             onNavigateToShortcuts = {},
+            onNavigateToApkExtractor = {},
             onNavigateToCompileBooster = {},
             onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},
