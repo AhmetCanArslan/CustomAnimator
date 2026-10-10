@@ -24,7 +24,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
+import com.arslan.customanimator.utils.AppIconBitmaps
 import com.arslan.customanimator.utils.AutoForceStopManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.Dispatchers
@@ -335,14 +335,14 @@ fun AppIcon(icon: Drawable?, modifier: Modifier = Modifier) {
         Box(modifier = modifier)
         return
     }
-    val bitmap = remember(icon) {
-        val width = icon.intrinsicWidth.coerceAtLeast(1)
-        val height = icon.intrinsicHeight.coerceAtLeast(1)
-        val bmp = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bmp)
-        icon.setBounds(0, 0, canvas.width, canvas.height)
-        icon.draw(canvas)
-        bmp.asImageBitmap()
+    var bitmap by remember(icon) { mutableStateOf(AppIconBitmaps.cached(icon)) }
+    LaunchedEffect(icon) {
+        if (bitmap == null) bitmap = AppIconBitmaps.load(icon)
     }
-    Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
+    val image = bitmap
+    if (image == null) {
+        Box(modifier = modifier)
+    } else {
+        Image(bitmap = image, contentDescription = null, modifier = modifier)
+    }
 }
