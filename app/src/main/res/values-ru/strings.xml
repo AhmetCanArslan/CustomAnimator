@@ -951,7 +951,6 @@
     <string name="profile_name">Название профиля</string>
     <string name="profile_icon">Значок профиля</string>
     <string name="profile_icon_change">Изменить значок</string>
-    <string name="profile_icon_search">Поиск значков</string>
     <string name="profile_no_change">Без изменений</string>
     <string name="profile_section_animation">Анимация</string>
     <string name="profile_section_width">Ширина экрана</string>

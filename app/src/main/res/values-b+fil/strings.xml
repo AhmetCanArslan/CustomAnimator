@@ -951,7 +951,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="profile_name">Pangalan ng profile</string>
     <string name="profile_icon">Icon ng profile</string>
     <string name="profile_icon_change">Palitan ang icon</string>
-    <string name="profile_icon_search">Maghanap ng icon</string>
     <string name="profile_no_change">Walang pagbabago</string>
     <string name="profile_section_animation">Animation</string>
     <string name="profile_section_width">Lapad ng screen</string>

@@ -1005,7 +1005,6 @@
     <string name="profile_name">اسم الملف الشخصي</string>
     <string name="profile_icon">أيقونة الملف الشخصي</string>
     <string name="profile_icon_change">تغيير الأيقونة</string>
-    <string name="profile_icon_search">ابحث في الأيقونات</string>
     <string name="profile_no_change">بدون تغيير</string>
     <string name="profile_section_animation">الرسوم المتحركة</string>
     <string name="profile_section_width">عرض الشاشة</string>

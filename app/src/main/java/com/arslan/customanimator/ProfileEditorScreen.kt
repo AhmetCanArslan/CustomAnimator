@@ -2,7 +2,6 @@ package com.arslan.customanimator
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,9 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -28,7 +24,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -65,13 +60,14 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.data.Profile
 import com.arslan.customanimator.data.ProfileAnimation
 import com.arslan.customanimator.data.ProfileBattery
 import com.arslan.customanimator.data.ProfileTileConfig
-import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.SectionHeader
+import com.arslan.customanimator.ui.components.TileIconPickerDialog
 import com.arslan.customanimator.utils.BatteryTweaksManager
 import com.arslan.customanimator.utils.ProfileActions
 import com.arslan.customanimator.utils.ProfileManager
@@ -735,13 +731,14 @@ fun ProfileEditorScreen(
     }
 
     if (showIconPicker) {
-        ProfileIconPickerDialog(
+        TileIconPickerDialog(
             selectedKey = iconKey,
             onDismiss = { showIconPicker = false },
-            onSelected = {
+            onSelect = {
                 iconKey = it
                 showIconPicker = false
-            }
+            },
+            title = stringResource(R.string.profile_icon)
         )
     }
 }
@@ -1034,89 +1031,5 @@ private fun InlineChoiceDropdown(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ProfileIconPickerDialog(
-    selectedKey: String,
-    onDismiss: () -> Unit,
-    onSelected: (String) -> Unit
-) {
-    var query by remember { mutableStateOf("") }
-    val normalised = query.trim().lowercase(Locale.US)
-    val keys = remember(normalised) {
-        if (normalised.isEmpty()) {
-            TerminalTileIcons.keys
-        } else {
-            TerminalTileIcons.keys.filter { it.contains(normalised) }
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.profile_icon)) },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = query,
-                    onValueChange = { query = it },
-                    label = { Text(stringResource(R.string.profile_icon_search)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(12.dp))
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(56.dp),
-                    modifier = Modifier.heightIn(max = 320.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(keys, key = { it }) { key ->
-                        ProfileIconCell(
-                            iconKey = key,
-                            selected = key == selectedKey,
-                            onClick = { onSelected(key) }
-                        )
-                    }
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
-        }
-    )
-}
-
-@Composable
-private fun ProfileIconCell(iconKey: String, selected: Boolean, onClick: () -> Unit) {
-    val background = if (selected) {
-        MaterialTheme.colorScheme.primaryContainer
-    } else {
-        MaterialTheme.colorScheme.surfaceContainerHighest
-    }
-    Box(
-        modifier = Modifier
-            .size(52.dp)
-            .clip(CircleShape)
-            .background(background)
-            .border(
-                width = if (selected) 2.dp else 0.dp,
-                color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                shape = CircleShape
-            )
-            .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
-    ) {
-        Icon(
-            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
-            contentDescription = iconKey,
-            tint = if (selected) {
-                MaterialTheme.colorScheme.onPrimaryContainer
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant
-            },
-            modifier = Modifier.size(24.dp)
-        )
     }
 }

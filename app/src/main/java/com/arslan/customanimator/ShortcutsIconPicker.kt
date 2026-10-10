@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutIconPack
 import com.arslan.customanimator.data.ShortcutType
-import com.arslan.customanimator.ui.components.TileIconCell
+import com.arslan.customanimator.ui.components.TileIconGrid
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ShortcutIconPacks
 import com.arslan.customanimator.utils.ShortcutMaker
@@ -119,11 +119,22 @@ internal fun ShortcutIconPickerSheet(
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
-            PickerSearchField(query, { query = it }, stringResource(R.string.terminal_tile_icon_search))
+            AppSearchBar(
+                searchQuery = query,
+                onSearchQueryChange = { query = it },
+                showFilterCheckbox = false,
+                placeholder = stringResource(R.string.terminal_tile_icon_search)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             if (source == BUILT_IN_SOURCE) {
                 IconColorRow(selected = color, onSelect = pickColor)
                 Spacer(modifier = Modifier.height(12.dp))
-                BuiltInIconGrid(query = query, selected = builtInKey, onPick = pickBuiltIn)
+                TileIconGrid(
+                    query = query,
+                    selectedKey = builtInKey,
+                    onSelect = pickBuiltIn,
+                    contentPadding = PaddingValues(bottom = 24.dp)
+                )
             } else {
                 PackIconGrid(packageName = source, names = packIcons, query = query, onPick = pickFromPack)
             }
@@ -204,23 +215,6 @@ private fun IconGrid(content: LazyGridScope.() -> Unit) {
         contentPadding = PaddingValues(bottom = 24.dp),
         content = content
     )
-}
-
-@Composable
-private fun BuiltInIconGrid(query: String, selected: String?, onPick: (String) -> Unit) {
-    val keys = remember(query) {
-        val normalised = query.trim().lowercase().replace(' ', '_')
-        TerminalTileIcons.keys.filter { it.contains(normalised) }
-    }
-    if (keys.isEmpty()) {
-        PickerMessage(stringResource(R.string.terminal_tile_icon_none))
-        return
-    }
-    IconGrid {
-        items(keys, key = { it }) { key ->
-            TileIconCell(iconKey = key, selected = key == selected, onClick = { onPick(key) })
-        }
-    }
 }
 
 @Composable

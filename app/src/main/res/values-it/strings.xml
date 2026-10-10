@@ -971,7 +971,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="profile_name">Nome profilo</string>
     <string name="profile_icon">Icona profilo</string>
     <string name="profile_icon_change">Cambia icona</string>
-    <string name="profile_icon_search">Cerca icone</string>
     <string name="profile_no_change">Nessuna modifica</string>
     <string name="profile_section_animation">Animazione</string>
     <string name="profile_section_width">Larghezza schermo</string>

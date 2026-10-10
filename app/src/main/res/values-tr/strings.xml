@@ -959,7 +959,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="profile_name">Profil adı</string>
     <string name="profile_icon">Profil simgesi</string>
     <string name="profile_icon_change">Simgeyi değiştir</string>
-    <string name="profile_icon_search">Simge ara</string>
     <string name="profile_no_change">Değişiklik yok</string>
     <string name="profile_section_animation">Animasyon</string>
     <string name="profile_section_width">Ekran genişliği</string>

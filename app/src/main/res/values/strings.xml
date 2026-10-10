@@ -1012,7 +1012,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="profile_name">Profile name</string>
     <string name="profile_icon">Profile icon</string>
     <string name="profile_icon_change">Change icon</string>
-    <string name="profile_icon_search">Search icons</string>
     <string name="profile_no_change">No change</string>
     <string name="profile_section_animation">Animation</string>
     <string name="profile_section_width">Screen width</string>

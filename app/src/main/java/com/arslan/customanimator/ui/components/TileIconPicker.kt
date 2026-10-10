@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,21 +47,14 @@ import com.arslan.customanimator.utils.TerminalTileIcons
 fun TileIconPickerDialog(
     selectedKey: String,
     onDismiss: () -> Unit,
-    onSelect: (String) -> Unit
+    onSelect: (String) -> Unit,
+    title: String = stringResource(R.string.terminal_tile_icon_picker_title)
 ) {
     var query by remember { mutableStateOf("") }
-    val normalisedQuery = query.trim().lowercase().replace(' ', '_')
-    val matches = remember(normalisedQuery) {
-        if (normalisedQuery.isEmpty()) {
-            emptyList()
-        } else {
-            TerminalTileIcons.keys.filter { it.contains(normalisedQuery) }
-        }
-    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.terminal_tile_icon_picker_title)) },
+        title = { Text(title) },
         text = {
             Column {
                 OutlinedTextField(
@@ -72,53 +66,12 @@ fun TileIconPickerDialog(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(12.dp))
-
-                if (normalisedQuery.isNotEmpty() && matches.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.terminal_tile_icon_none),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Adaptive(minSize = 56.dp),
-                        modifier = Modifier.heightIn(min = 200.dp, max = 340.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        if (normalisedQuery.isEmpty()) {
-                            TerminalTileIcons.categories.forEach { category ->
-                                item(
-                                    key = "header-${category.titleRes}",
-                                    span = { GridItemSpan(maxLineSpan) }
-                                ) {
-                                    Text(
-                                        text = stringResource(category.titleRes),
-                                        style = MaterialTheme.typography.labelMedium,
-                                        letterSpacing = 0.5.sp,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.padding(top = 4.dp)
-                                    )
-                                }
-                                items(category.keys, key = { it }) { key ->
-                                    TileIconCell(
-                                        iconKey = key,
-                                        selected = key == selectedKey,
-                                        onClick = { onSelect(key) }
-                                    )
-                                }
-                            }
-                        } else {
-                            items(matches, key = { it }) { key ->
-                                TileIconCell(
-                                    iconKey = key,
-                                    selected = key == selectedKey,
-                                    onClick = { onSelect(key) }
-                                )
-                            }
-                        }
-                    }
-                }
+                TileIconGrid(
+                    query = query,
+                    selectedKey = selectedKey,
+                    onSelect = onSelect,
+                    modifier = Modifier.heightIn(min = 200.dp, max = 340.dp)
+                )
             }
         },
         confirmButton = {
@@ -127,6 +80,54 @@ fun TileIconPickerDialog(
             }
         }
     )
+}
+
+@Composable
+fun TileIconGrid(
+    query: String,
+    selectedKey: String?,
+    onSelect: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues()
+) {
+    val matches = remember(query) { TerminalTileIcons.search(query) }
+    if (matches != null && matches.isEmpty()) {
+        Text(
+            text = stringResource(R.string.terminal_tile_icon_none),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(vertical = 16.dp)
+        )
+        return
+    }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 56.dp),
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = contentPadding
+    ) {
+        if (matches != null) {
+            items(matches, key = { it }) { key ->
+                TileIconCell(iconKey = key, selected = key == selectedKey, onClick = { onSelect(key) })
+            }
+            return@LazyVerticalGrid
+        }
+        TerminalTileIcons.categories.forEach { category ->
+            item(key = "header-${category.titleRes}", span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = stringResource(category.titleRes),
+                    style = MaterialTheme.typography.labelMedium,
+                    letterSpacing = 0.5.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(top = 4.dp)
+                )
+            }
+            items(category.keys, key = { it }) { key ->
+                TileIconCell(iconKey = key, selected = key == selectedKey, onClick = { onSelect(key) })
+            }
+        }
+    }
 }
 
 @Composable

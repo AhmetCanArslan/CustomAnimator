@@ -951,7 +951,6 @@ Duración del Animador: %3$.2f</string>
     <string name="profile_name">Nombre del perfil</string>
     <string name="profile_icon">Icono del perfil</string>
     <string name="profile_icon_change">Cambiar icono</string>
-    <string name="profile_icon_search">Buscar iconos</string>
     <string name="profile_no_change">Sin cambios</string>
     <string name="profile_section_animation">Animación</string>
     <string name="profile_section_width">Ancho de pantalla</string>

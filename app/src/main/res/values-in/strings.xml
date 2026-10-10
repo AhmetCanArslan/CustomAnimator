@@ -951,7 +951,6 @@ Durasi Animator: %3$.2f</string>
     <string name="profile_name">Nama profil</string>
     <string name="profile_icon">Ikon profil</string>
     <string name="profile_icon_change">Ubah ikon</string>
-    <string name="profile_icon_search">Cari ikon</string>
     <string name="profile_no_change">Tidak ada perubahan</string>
     <string name="profile_section_animation">Animasi</string>
     <string name="profile_section_width">Lebar layar</string>
