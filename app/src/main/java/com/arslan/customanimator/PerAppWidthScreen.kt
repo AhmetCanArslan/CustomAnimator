@@ -33,6 +33,7 @@ import com.arslan.customanimator.utils.PerAppWidthManager
 import com.arslan.customanimator.utils.SettingsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import com.arslan.customanimator.utils.LocalShizukuPermission
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +46,7 @@ fun PerAppWidthScreen(
     val context = LocalContext.current
     val openSetup = LocalOpenSetupGuide.current
     val manager = remember { PerAppWidthManager(context) }
+    val coroutineScope = rememberCoroutineScope()
 
     var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var overrides by remember { mutableStateOf(manager.getOverrides()) }
@@ -95,6 +97,7 @@ fun PerAppWidthScreen(
             }
         }
         ForegroundAppWatcherService.sync(context)
+        coroutineScope.launch(Dispatchers.IO) { manager.syncResizeOverrides() }
     }
 
     editingApp?.let { app ->

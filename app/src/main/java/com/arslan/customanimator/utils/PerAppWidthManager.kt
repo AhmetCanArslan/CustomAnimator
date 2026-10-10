@@ -1,6 +1,7 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.os.Build
 import org.json.JSONObject
 
 class PerAppWidthManager(context: Context) {
@@ -32,8 +33,6 @@ class PerAppWidthManager(context: Context) {
         }
     }
 
-    fun getWidth(packageName: String): Int? = getOverrides()[packageName]
-
     fun setWidth(packageName: String, widthDp: Int?) {
         val current = getOverrides().toMutableMap()
         if (widthDp == null || widthDp !in MIN_WIDTH..MAX_WIDTH) {
@@ -59,8 +58,25 @@ class PerAppWidthManager(context: Context) {
         stateStore.getInt(KEY_BASELINE_DENSITY, NO_DENSITY).takeIf { it != NO_DENSITY }
 
     fun clearRecordedBaseline() {
-        stateStore.edit().clear().commit()
+        stateStore.edit().remove(KEY_APPLIED).remove(KEY_BASELINE_DENSITY).commit()
     }
+
+    fun resizablePackages(): Set<String> = stateStore.getStringSet(KEY_RESIZABLE_PACKAGES, emptySet()).orEmpty()
+
+    fun syncResizeOverrides() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
+        synchronized(RESIZE_LOCK) {
+            val wanted = getOverrides().keys
+            val applied = resizablePackages()
+            val added = (wanted - applied).filter { runCompat(COMPAT_ENABLE, it) }
+            val removed = (applied - wanted).filter { runCompat(COMPAT_RESET, it) }
+            if (added.isEmpty() && removed.isEmpty()) return
+            stateStore.edit().putStringSet(KEY_RESIZABLE_PACKAGES, applied + added - removed.toSet()).commit()
+        }
+    }
+
+    private fun runCompat(action: String, packageName: String): Boolean =
+        ShizukuHelper.executeShellCommandWithOutput(arrayOf("am", "compat", action, FORCE_RESIZE_CHANGE, packageName)).isSuccess
 
     private fun persist(overrides: Map<String, Int>) {
         val json = JSONObject()
@@ -103,6 +119,11 @@ class PerAppWidthManager(context: Context) {
         private const val KEY_APPLIED = "applied"
         private const val KEY_BASELINE_DENSITY = "baseline_density"
         private const val NO_DENSITY = -1
+        private const val KEY_RESIZABLE_PACKAGES = "resizable_packages"
+        private const val FORCE_RESIZE_CHANGE = "FORCE_RESIZE_APP"
+        private const val COMPAT_ENABLE = "enable"
+        private const val COMPAT_RESET = "reset"
+        private val RESIZE_LOCK = Any()
         const val MIN_WIDTH = SettingsManager.MIN_SMALLEST_WIDTH
         const val MAX_WIDTH = SettingsManager.MAX_SMALLEST_WIDTH
     }

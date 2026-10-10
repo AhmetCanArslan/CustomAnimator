@@ -289,6 +289,17 @@ class ForegroundAppWatcherBehaviorTest {
     }
 
     @Test
+    fun perAppWidthMarksNothingResizableWithoutShizuku() {
+        val manager = PerAppWidthManager(context)
+        manager.setWidth(target, 700)
+
+        manager.syncResizeOverrides()
+        PerAppWidthWatcher.recoverStaleState(context)
+
+        assertTrue(manager.resizablePackages().isEmpty())
+    }
+
+    @Test
     fun perAppWidthRecoveryIsANoOpWithoutARecordedBaseline() {
         Settings.Secure.putString(context.contentResolver, "display_density_forced", "420")
         PerAppWidthWatcher.recoverStaleState(context)

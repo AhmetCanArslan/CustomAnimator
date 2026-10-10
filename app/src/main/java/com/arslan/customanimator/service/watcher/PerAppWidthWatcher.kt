@@ -51,8 +51,9 @@ object PerAppWidthWatcher : AppVisibilityWatcher {
     override fun onWatchStopped(context: Context) = restoreBaseline(context)
 
     override fun recoverStaleState(context: Context) {
-        if (appliedPackage != null) return
         val manager = PerAppWidthManager(context)
+        manager.syncResizeOverrides()
+        if (appliedPackage != null) return
         if (!manager.hasRecordedBaseline()) return
         val baseline = manager.recordedBaseline()
         val success = SettingsManager.applyDensity(context.contentResolver, baseline)
