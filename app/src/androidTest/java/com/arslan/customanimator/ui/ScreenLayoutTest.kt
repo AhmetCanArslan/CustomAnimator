@@ -25,6 +25,7 @@ import com.arslan.customanimator.GameModeScreenContent
 import com.arslan.customanimator.GraphicsApiOverrideScreen
 import com.arslan.customanimator.HotspotManagerScreen
 import com.arslan.customanimator.HwuiTweaksScreen
+import com.arslan.customanimator.IconChangerScreen
 import com.arslan.customanimator.OnboardingScreen
 import com.arslan.customanimator.PerAppWidthScreen
 import com.arslan.customanimator.PermissionsScreen
@@ -115,6 +116,11 @@ class ScreenLayoutTest {
     }
 
     @Test
+    fun iconChangerScreenFitsSmallPhones() = screenFits(R.string.icon_changer) {
+        IconChangerScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
     fun autoForceStopScreenFitsSmallPhones() = screenFits(R.string.auto_force_stop) {
         AutoForceStopScreen(onBack = {}, isShizukuAvailable = false, hasShizukuPermission = false)
     }
@@ -161,6 +167,7 @@ class ScreenLayoutTest {
             onNavigateToScreenshotActions = {},
             onNavigateToDebloater = {},
             onNavigateToShortcuts = {},
+            onNavigateToIconChanger = {},
             onNavigateToApkExtractor = {},
             onNavigateToCompileBooster = {},
             onNavigateToAutoActions = {},

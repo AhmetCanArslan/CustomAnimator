@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Unarchive
@@ -66,6 +67,7 @@ fun ToolsScreenContent(
     onNavigateToButtonRemapper: () -> Unit,
     onNavigateToDebloater: () -> Unit,
     onNavigateToShortcuts: () -> Unit,
+    onNavigateToIconChanger: () -> Unit,
     onNavigateToApkExtractor: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
@@ -154,6 +156,13 @@ fun ToolsScreenContent(
                             title = stringResource(R.string.shortcuts),
                             description = stringResource(R.string.shortcuts_desc),
                             onClick = onNavigateToShortcuts
+                        )
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        NavigationRow(
+                            icon = Icons.Filled.AppShortcut,
+                            title = stringResource(R.string.icon_changer),
+                            description = stringResource(R.string.icon_changer_desc),
+                            onClick = onNavigateToIconChanger
                         )
                         HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                         NavigationRow(
