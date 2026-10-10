@@ -1,17 +1,11 @@
 package com.arslan.customanimator.screenshot
 
 import android.content.Context
-import android.os.Environment
-import java.io.File
 
 class ScreenshotPrefs(context: Context) {
 
     private val sp = context.applicationContext
         .getSharedPreferences(NAME, Context.MODE_PRIVATE)
-
-    var watchedPath: String
-        get() = sp.getString(KEY_PATH, defaultScreenshotsPath()) ?: defaultScreenshotsPath()
-        set(value) = sp.edit().putString(KEY_PATH, value).apply()
 
     var notificationDelaySeconds: Int
         get() = sp.getInt(KEY_DELAY, DEFAULT_DELAY)
@@ -63,7 +57,6 @@ class ScreenshotPrefs(context: Context) {
 
     companion object {
         private const val NAME = "screenshot_actions_prefs"
-        private const val KEY_PATH = "watched_path"
         private const val KEY_DELAY = "notification_delay_seconds"
         private const val KEY_AUTO_DISMISS = "notification_auto_dismiss_seconds"
         private const val KEY_ENABLED = "watcher_enabled"
@@ -91,10 +84,5 @@ class ScreenshotPrefs(context: Context) {
         const val DEFAULT_OVERLAY_Y = 54
         const val OVERLAY_POSITION_MAX = 400
 
-        fun defaultScreenshotsPath(): String {
-            val pictures = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            return File(pictures, "Screenshots").absolutePath
-        }
     }
 }
