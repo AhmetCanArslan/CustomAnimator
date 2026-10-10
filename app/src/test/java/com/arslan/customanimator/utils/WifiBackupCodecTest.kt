@@ -3,7 +3,6 @@ package com.arslan.customanimator.utils
 import com.arslan.customanimator.data.WifiNetwork
 import com.arslan.customanimator.data.WifiSecurity
 import java.util.zip.GZIPInputStream
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

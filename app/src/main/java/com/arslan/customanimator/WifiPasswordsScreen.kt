@@ -35,15 +35,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.WifiNetwork
 import com.arslan.customanimator.data.WifiSecurity
 import com.arslan.customanimator.utils.QrCodeRenderer
-import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.WifiBackupCodec
 import com.arslan.customanimator.utils.WifiConfigReader
 import kotlinx.coroutines.Dispatchers

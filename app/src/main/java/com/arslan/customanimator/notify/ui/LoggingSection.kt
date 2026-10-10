@@ -66,7 +66,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -75,12 +74,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
-import com.arslan.customanimator.notify.data.IgnoreType
 import com.arslan.customanimator.notify.data.LogEntry
 import com.arslan.customanimator.notify.data.MatchedRuleInfo
 import com.arslan.customanimator.notify.data.RuleType

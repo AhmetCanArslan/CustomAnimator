@@ -12,7 +12,6 @@ import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
 import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuProvider
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
