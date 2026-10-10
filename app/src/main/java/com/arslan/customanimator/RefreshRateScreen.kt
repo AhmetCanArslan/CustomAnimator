@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
-import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.PerAppRefreshRateManager
 import com.arslan.customanimator.utils.RefreshRateManager
 import kotlinx.coroutines.Dispatchers
@@ -54,33 +52,16 @@ fun RefreshRateScreen(
     var minRate by remember { mutableStateOf<Float?>(null) }
     var peakRate by remember { mutableStateOf<Float?>(null) }
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var overrides by remember { mutableStateOf(manager.getOverrides()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var searchQuery by remember { mutableStateOf("") }
-    var showSelectedOnly by remember { mutableStateOf(false) }
     var editingApp by remember { mutableStateOf<InstalledAppInfo?>(null) }
 
-    val filteredApps by remember(apps, searchQuery, showSelectedOnly, overrides) {
-        derivedStateOf {
-            apps
-                .filter {
-                    searchQuery.isBlank() ||
-                        it.label.contains(searchQuery, ignoreCase = true) ||
-                        it.packageName.contains(searchQuery, ignoreCase = true)
-                }
-                .filter { !showSelectedOnly || overrides.containsKey(it.packageName) }
-        }
-    }
+    val appList = rememberAppListState(selectedPackages = overrides.keys)
 
     LaunchedEffect(hasShizukuPermission) {
-        val loadedApps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
         val loadedMin = withContext(Dispatchers.IO) { RefreshRateManager.getMinRate(context.contentResolver) }
         val loadedPeak = withContext(Dispatchers.IO) { RefreshRateManager.getPeakRate(context.contentResolver) }
-        apps = loadedApps
         minRate = loadedMin
         peakRate = loadedPeak
-        isLoading = false
     }
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -298,45 +279,17 @@ fun RefreshRateScreen(
                 )
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item(key = "search") {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showSelectedOnly = showSelectedOnly,
-                        onShowSelectedOnlyChange = { showSelectedOnly = it }
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+            appList(appList) { app ->
+                PerAppRefreshRateRow(
+                    app = app,
+                    rate = overrides[app.packageName],
+                    onClick = { editingApp = app },
+                    onClear = {
+                        manager.setRate(app.packageName, null)
+                        overrides = manager.getOverrides()
+                        syncServiceState()
                     }
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    PerAppRefreshRateRow(
-                        app = app,
-                        rate = overrides[app.packageName],
-                        onClick = { editingApp = app },
-                        onClear = {
-                            manager.setRate(app.packageName, null)
-                            overrides = manager.getOverrides()
-                            syncServiceState()
-                        }
-                    )
-                }
+                )
             }
 
             item {
