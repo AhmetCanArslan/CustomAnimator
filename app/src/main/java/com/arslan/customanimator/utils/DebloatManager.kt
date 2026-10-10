@@ -17,7 +17,6 @@ object DebloatManager {
 
     private const val USER = "0"
     private const val ICON_CACHE_SIZE = 150
-    private const val EXPORT_DIR = "CustomAnimator"
 
     private val iconCache: MutableMap<String, Drawable> = Collections.synchronizedMap(
         object : LinkedHashMap<String, Drawable>(0, 0.75f, true) {
@@ -79,7 +78,7 @@ object DebloatManager {
 
         val root = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            EXPORT_DIR
+            InstalledAppsProvider.EXPORT_DIR
         )
         val singleFile = sources.size == 1
         val destination = if (singleFile) {
