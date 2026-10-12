@@ -1,11 +1,7 @@
 package com.arslan.customanimator
 
 import androidx.compose.foundation.BorderStroke
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.layout.*
@@ -29,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import com.arslan.customanimator.data.BatteryTweak
 import com.arslan.customanimator.service.BatteryAlertService
 import com.arslan.customanimator.utils.BatteryAlertPrefs
@@ -120,19 +115,7 @@ fun BatteryScreenContent(
     var alertHighLevel by remember { mutableIntStateOf(alertPrefs.highLevel) }
     var alertRepeat by remember { mutableStateOf(alertPrefs.repeatAlerts) }
 
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { }
-
-    fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
+    val requestNotificationPermission = rememberNotificationPermissionRequest()
 
     val policySupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 

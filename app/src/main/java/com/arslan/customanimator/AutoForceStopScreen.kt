@@ -1,11 +1,6 @@
 package com.arslan.customanimator
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -50,20 +45,10 @@ fun AutoForceStopScreen(
     var selectedPackages by remember { mutableStateOf(manager.getSelectedPackages()) }
     val appList = rememberAppListState(selectedPackages = selectedPackages)
 
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { }
+    val requestNotificationPermission = rememberNotificationPermissionRequest()
 
     val syncServiceState: () -> Unit = {
-        if (selectedPackages.isNotEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                androidx.core.content.ContextCompat.checkSelfPermission(
-                    context, Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+        if (selectedPackages.isNotEmpty()) requestNotificationPermission()
         ForegroundAppWatcherService.sync(context)
     }
 

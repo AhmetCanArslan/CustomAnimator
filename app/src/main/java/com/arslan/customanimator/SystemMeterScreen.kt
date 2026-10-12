@@ -1,8 +1,5 @@
 package com.arslan.customanimator
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -108,19 +105,7 @@ fun SystemMeterScreenContent(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { }
-
-    val requestNotificationsIfNeeded: () -> Unit = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            androidx.core.content.ContextCompat.checkSelfPermission(
-                context, Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
+    val requestNotificationsIfNeeded = rememberNotificationPermissionRequest()
 
     val startMeter: () -> Unit = {
         FpsOverlayManager.setEnabled(context, true)

@@ -1,10 +1,5 @@
 package com.arslan.customanimator
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -48,20 +43,10 @@ fun AppThreadingScreen(
     var coreSummary by remember { mutableStateOf<Triple<Int, Int, Int>?>(null) }
     var priorityDenied by remember { mutableStateOf(false) }
 
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { }
+    val requestNotificationPermission = rememberNotificationPermissionRequest()
 
     val syncServiceState: (Boolean) -> Unit = { hasConfigs ->
-        if (hasConfigs) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                androidx.core.content.ContextCompat.checkSelfPermission(
-                    context, Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
+        if (hasConfigs) requestNotificationPermission()
         ForegroundAppWatcherService.sync(context)
     }
 
