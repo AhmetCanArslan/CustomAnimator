@@ -611,7 +611,8 @@ Duração do Animador: %3$.2f</string>
     <string name="permissions_summary_partial_desc">Alguns recursos ficam desativados até você conceder estas permissões.</string>
     <string name="permissions_section_system">Acesso ao sistema</string>
     <string name="permissions_section_notifications">Notificações</string>
-    <string name="permissions_section_hardware">Hardware</string>
+    <string name="permissions_section_other">Outros</string>
+    <string name="permission_images_desc">Necessário para encontrar, copiar e excluir novas capturas de tela.</string>
     <string name="permissions_footer_note">O acesso às configurações protegidas não pode ser concedido dentro do app. Use o Shizuku se ele estiver em execução, ou o comando ADB único.</string>
     <string name="permission_optional">opcional</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -756,8 +757,6 @@ Duração do Animador: %3$.2f</string>
     <string name="pn_no_rules_configured">Nenhuma regra configurada.\nToque em + para adicionar uma.</string>
     <string name="pn_notification_persistent_text">Monitorando notificações em segundo plano</string>
     <string name="pn_pattern_name">Nome do padrão</string>
-    <string name="pn_permission_camera_flash">Câmera / flash</string>
-    <string name="pn_permission_camera_flash_desc">Acesso ao flash da câmera para executar padrões</string>
     <string name="pn_permission_granted">Concedida</string>
     <string name="pn_permission_notification_access">Acesso a notificações</string>
     <string name="pn_permission_notification_access_desc">Acesso a notificações para detectar determinadas notificações</string>

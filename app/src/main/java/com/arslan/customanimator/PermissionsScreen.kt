@@ -23,7 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BatteryFull
-import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.NotificationsActive
@@ -57,6 +57,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
+import com.arslan.customanimator.screenshot.ScreenshotPermissions
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
 import com.arslan.customanimator.utils.LocalShizukuAvailable
@@ -70,9 +71,9 @@ enum class AppPermission {
     SECURE_SETTINGS,
     NOTIFICATION_ACCESS,
     POST_NOTIFICATIONS,
-    CAMERA_FLASH,
     OVERLAY,
-    BATTERY_UNRESTRICTED
+    BATTERY_UNRESTRICTED,
+    IMAGES
 }
 
 data class PermissionEntry(
@@ -100,17 +101,13 @@ fun isPermissionGranted(context: Context, permission: AppPermission): Boolean = 
                 Manifest.permission.POST_NOTIFICATIONS
             ) == PackageManager.PERMISSION_GRANTED
 
-    AppPermission.CAMERA_FLASH ->
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-
     AppPermission.OVERLAY -> Settings.canDrawOverlays(context)
 
     AppPermission.BATTERY_UNRESTRICTED ->
         context.getSystemService(PowerManager::class.java)
             ?.isIgnoringBatteryOptimizations(context.packageName) == true
+
+    AppPermission.IMAGES -> ScreenshotPermissions.hasImagesPermission(context)
 }
 
 private val NOTIFY_BASE_REQUIRED = listOf(
@@ -127,7 +124,6 @@ fun notifyRequiredPermissions(context: Context): List<AppPermission> {
         .toSet()
 
     val extras = buildList {
-        if (RuleType.FLASH in actionTypes) add(AppPermission.CAMERA_FLASH)
         if (RuleType.FLASH_SCREEN in actionTypes) add(AppPermission.OVERLAY)
         if (RuleType.AOD in actionTypes) add(AppPermission.SECURE_SETTINGS)
     }
@@ -135,81 +131,193 @@ fun notifyRequiredPermissions(context: Context): List<AppPermission> {
     return NOTIFY_BASE_REQUIRED + extras
 }
 
-fun hasAllNotifyPermissions(context: Context): Boolean =
-    notifyRequiredPermissions(context).all { isPermissionGranted(context, it) }
+val SCREENSHOT_PERMISSIONS = listOf(
+    AppPermission.IMAGES,
+    AppPermission.POST_NOTIFICATIONS,
+    AppPermission.OVERLAY
+)
 
-@Composable
-private fun systemAccessEntries(context: Context, isShizukuAvailable: Boolean): List<PermissionEntry> {
-    val shizukuGranted = isPermissionGranted(context, AppPermission.SHIZUKU)
-    return listOf(
-        PermissionEntry(
-            permission = AppPermission.SHIZUKU,
-            icon = Icons.Filled.Terminal,
-            title = stringResource(R.string.permission_shizuku),
-            description = when {
-                !isShizukuAvailable -> stringResource(R.string.permission_shizuku_unavailable)
-                shizukuGranted -> stringResource(R.string.permission_shizuku_ready)
-                else -> stringResource(R.string.permission_shizuku_desc)
-            },
-            granted = shizukuGranted,
-            optional = true
-        ),
-        PermissionEntry(
-            permission = AppPermission.SECURE_SETTINGS,
-            icon = Icons.Filled.Security,
-            title = stringResource(R.string.pn_permission_secure_settings),
-            description = stringResource(R.string.permission_secure_settings_desc),
-            granted = isPermissionGranted(context, AppPermission.SECURE_SETTINGS)
-        )
-    )
+private val SYSTEM_PERMISSIONS = listOf(AppPermission.SHIZUKU, AppPermission.SECURE_SETTINGS)
+
+private val NOTIFICATION_PERMISSIONS = listOf(
+    AppPermission.NOTIFICATION_ACCESS,
+    AppPermission.POST_NOTIFICATIONS
+)
+
+private val OTHER_PERMISSIONS = listOf(
+    AppPermission.OVERLAY,
+    AppPermission.BATTERY_UNRESTRICTED,
+    AppPermission.IMAGES
+)
+
+private val PERMISSION_ICONS = mapOf(
+    AppPermission.SHIZUKU to Icons.Filled.Terminal,
+    AppPermission.SECURE_SETTINGS to Icons.Filled.Security,
+    AppPermission.NOTIFICATION_ACCESS to Icons.Filled.NotificationsActive,
+    AppPermission.POST_NOTIFICATIONS to Icons.Filled.Notifications,
+    AppPermission.OVERLAY to Icons.Filled.Layers,
+    AppPermission.BATTERY_UNRESTRICTED to Icons.Filled.BatteryFull,
+    AppPermission.IMAGES to Icons.Filled.Image
+)
+
+private val PERMISSION_TITLES = mapOf(
+    AppPermission.SHIZUKU to R.string.permission_shizuku,
+    AppPermission.SECURE_SETTINGS to R.string.pn_permission_secure_settings,
+    AppPermission.NOTIFICATION_ACCESS to R.string.pn_permission_notification_access,
+    AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications,
+    AppPermission.OVERLAY to R.string.pn_permission_overlay_title,
+    AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background,
+    AppPermission.IMAGES to R.string.screenshot_perm_images
+)
+
+private val PERMISSION_DESCRIPTIONS = mapOf(
+    AppPermission.SHIZUKU to R.string.permission_shizuku_desc,
+    AppPermission.SECURE_SETTINGS to R.string.permission_secure_settings_desc,
+    AppPermission.NOTIFICATION_ACCESS to R.string.pn_permission_notification_access_desc,
+    AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications_desc,
+    AppPermission.OVERLAY to R.string.permission_overlay_desc,
+    AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background_desc,
+    AppPermission.IMAGES to R.string.permission_images_desc
+)
+
+private fun descriptionOf(permission: AppPermission, granted: Boolean, isShizukuAvailable: Boolean): Int = when {
+    permission != AppPermission.SHIZUKU -> PERMISSION_DESCRIPTIONS.getValue(permission)
+    !isShizukuAvailable -> R.string.permission_shizuku_unavailable
+    granted -> R.string.permission_shizuku_ready
+    else -> R.string.permission_shizuku_desc
 }
 
 @Composable
-private fun notificationEntries(context: Context): List<PermissionEntry> = listOf(
-    PermissionEntry(
-        permission = AppPermission.NOTIFICATION_ACCESS,
-        icon = Icons.Filled.NotificationsActive,
-        title = stringResource(R.string.pn_permission_notification_access),
-        description = stringResource(R.string.pn_permission_notification_access_desc),
-        granted = isPermissionGranted(context, AppPermission.NOTIFICATION_ACCESS)
-    ),
-    PermissionEntry(
-        permission = AppPermission.POST_NOTIFICATIONS,
-        icon = Icons.Filled.Notifications,
-        title = stringResource(R.string.pn_permission_post_notifications),
-        description = stringResource(R.string.pn_permission_post_notifications_desc),
-        granted = isPermissionGranted(context, AppPermission.POST_NOTIFICATIONS)
-    )
-)
+fun permissionEntries(
+    permissions: List<AppPermission>,
+    optional: Set<AppPermission> = emptySet(),
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current
+): List<PermissionEntry> {
+    val context = LocalContext.current
+    return permissions.map { permission ->
+        val granted = isPermissionGranted(context, permission)
+        PermissionEntry(
+            permission = permission,
+            icon = PERMISSION_ICONS.getValue(permission),
+            title = stringResource(PERMISSION_TITLES.getValue(permission)),
+            description = stringResource(descriptionOf(permission, granted, isShizukuAvailable)),
+            granted = granted,
+            optional = permission in optional
+        )
+    }
+}
 
 @Composable
-private fun hardwareEntries(context: Context): List<PermissionEntry> {
-    val required = notifyRequiredPermissions(context)
-    return listOf(
-        PermissionEntry(
-            permission = AppPermission.CAMERA_FLASH,
-            icon = Icons.Filled.CameraAlt,
-            title = stringResource(R.string.pn_permission_camera_flash),
-            description = stringResource(R.string.pn_permission_camera_flash_desc),
-            granted = isPermissionGranted(context, AppPermission.CAMERA_FLASH),
-            optional = AppPermission.CAMERA_FLASH !in required
-        ),
-        PermissionEntry(
-            permission = AppPermission.OVERLAY,
-            icon = Icons.Filled.Layers,
-            title = stringResource(R.string.pn_permission_overlay_title),
-            description = stringResource(R.string.permission_overlay_desc),
-            granted = isPermissionGranted(context, AppPermission.OVERLAY),
-            optional = AppPermission.OVERLAY !in required
-        ),
-        PermissionEntry(
-            permission = AppPermission.BATTERY_UNRESTRICTED,
-            icon = Icons.Filled.BatteryFull,
-            title = stringResource(R.string.pn_permission_run_background),
-            description = stringResource(R.string.pn_permission_run_background_desc),
-            granted = isPermissionGranted(context, AppPermission.BATTERY_UNRESTRICTED)
+fun rememberPermissionRefresh(): MutableIntState {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val refresh = remember { mutableIntStateOf(0) }
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) refresh.intValue++
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+    return refresh
+}
+
+@Composable
+fun rememberNotificationPermissionRequest(): () -> Unit {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { }
+    return {
+        if (!isPermissionGranted(context, AppPermission.POST_NOTIFICATIONS)) {
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+}
+
+private fun requestShizuku(context: Context, isShizukuAvailable: Boolean) {
+    if (isShizukuAvailable) {
+        ShizukuState.requestPermission(context)
+    } else {
+        Toast.makeText(context, R.string.permission_shizuku_unavailable, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private fun grantSecureSettings(context: Context): Boolean {
+    val granted = ShizukuHelper.hasShizukuPermission() && ShizukuHelper.grantWriteSecureSettingsPermission(context)
+    if (granted) {
+        ShizukuState.refresh()
+        Toast.makeText(context, R.string.action_succeeded, Toast.LENGTH_SHORT).show()
+    }
+    return granted
+}
+
+private fun settingsIntentOf(context: Context, permission: AppPermission): Intent {
+    if (permission == AppPermission.NOTIFICATION_ACCESS) {
+        return Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+    }
+    val action = if (permission == AppPermission.OVERLAY) {
+        Settings.ACTION_MANAGE_OVERLAY_PERMISSION
+    } else {
+        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+    }
+    return Intent(action, Uri.parse("package:${context.packageName}"))
+}
+
+@Composable
+fun rememberPermissionRequester(
+    onChanged: () -> Unit,
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current
+): (AppPermission) -> Unit {
+    val context = LocalContext.current
+    var showAdbDialog by remember { mutableStateOf(false) }
+
+    val settingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { onChanged() }
+
+    val notificationsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { onChanged() }
+
+    val imagesLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        onChanged()
+        if (!granted) {
+            runCatching { context.startActivity(ScreenshotPermissions.appSettingsIntent(context)) }
+        }
+    }
+
+    if (showAdbDialog) {
+        AdbGrantDialog(
+            onDismiss = { showAdbDialog = false },
+            onConfirm = {
+                showAdbDialog = false
+                onChanged()
+            }
         )
-    )
+    }
+
+    return { permission ->
+        when (permission) {
+            AppPermission.SHIZUKU -> requestShizuku(context, isShizukuAvailable)
+
+            AppPermission.SECURE_SETTINGS -> {
+                if (grantSecureSettings(context)) onChanged() else showAdbDialog = true
+            }
+
+            AppPermission.POST_NOTIFICATIONS -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    notificationsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+
+            AppPermission.IMAGES -> imagesLauncher.launch(ScreenshotPermissions.imagesPermission)
+
+            AppPermission.NOTIFICATION_ACCESS,
+            AppPermission.OVERLAY,
+            AppPermission.BATTERY_UNRESTRICTED ->
+                settingsLauncher.launch(settingsIntentOf(context, permission))
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -220,90 +328,25 @@ fun PermissionsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
-    val resources = LocalResources.current
-    val lifecycleOwner = LocalLifecycleOwner.current
-    var refreshKey by remember { mutableIntStateOf(0) }
-    var showAdbDialog by remember { mutableStateOf(false) }
+    val refresh = rememberPermissionRefresh()
+    val onGrant = rememberPermissionRequester(
+        onChanged = { refresh.intValue++ },
+        isShizukuAvailable = isShizukuAvailable
+    )
 
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) refreshKey++
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    val notifyRequired = notifyRequiredPermissions(context)
+    val systemEntries = key(refresh.intValue) {
+        permissionEntries(SYSTEM_PERMISSIONS, setOf(AppPermission.SHIZUKU), isShizukuAvailable)
     }
-
-    val settingsLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { refreshKey++ }
-
-    val requestPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { refreshKey++ }
-
-    val systemEntries = key(refreshKey) { systemAccessEntries(context, isShizukuAvailable) }
-    val notificationItems = key(refreshKey) { notificationEntries(context) }
-    val hardwareItems = key(refreshKey) { hardwareEntries(context) }
-    val allEntries = systemEntries + notificationItems + hardwareItems
+    val notificationItems = key(refresh.intValue) { permissionEntries(NOTIFICATION_PERMISSIONS) }
+    val otherItems = key(refresh.intValue) {
+        permissionEntries(
+            OTHER_PERMISSIONS,
+            setOfNotNull(AppPermission.IMAGES, AppPermission.OVERLAY.takeIf { it !in notifyRequired })
+        )
+    }
+    val allEntries = systemEntries + notificationItems + otherItems
     val grantedCount = allEntries.count { it.granted }
-
-    val onGrant: (AppPermission) -> Unit = { permission ->
-        when (permission) {
-            AppPermission.SHIZUKU -> {
-                if (isShizukuAvailable) {
-                    ShizukuState.requestPermission(context)
-                } else {
-                    Toast.makeText(
-                        context,
-                        resources.getString(R.string.permission_shizuku_unavailable),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            AppPermission.SECURE_SETTINGS -> {
-                val grantedViaShizuku = ShizukuHelper.hasShizukuPermission() &&
-                    ShizukuHelper.grantWriteSecureSettingsPermission(context)
-                if (grantedViaShizuku) {
-                    refreshKey++
-                    ShizukuState.refresh()
-                    Toast.makeText(
-                        context,
-                        resources.getString(R.string.action_succeeded),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    showAdbDialog = true
-                }
-            }
-
-            AppPermission.NOTIFICATION_ACCESS ->
-                settingsLauncher.launch(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-
-            AppPermission.POST_NOTIFICATIONS -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
-            }
-
-            AppPermission.CAMERA_FLASH ->
-                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-
-            AppPermission.OVERLAY -> settingsLauncher.launch(
-                Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:${context.packageName}")
-                )
-            )
-
-            AppPermission.BATTERY_UNRESTRICTED -> settingsLauncher.launch(
-                Intent(
-                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-                    Uri.parse("package:${context.packageName}")
-                )
-            )
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -366,8 +409,8 @@ fun PermissionsScreen(
             }
             item {
                 PermissionSection(
-                    title = stringResource(R.string.permissions_section_hardware),
-                    entries = hardwareItems,
+                    title = stringResource(R.string.permissions_section_other),
+                    entries = otherItems,
                     onGrant = onGrant
                 )
             }
@@ -380,16 +423,6 @@ fun PermissionsScreen(
                 )
             }
         }
-    }
-
-    if (showAdbDialog) {
-        AdbGrantDialog(
-            onDismiss = { showAdbDialog = false },
-            onConfirm = {
-                showAdbDialog = false
-                refreshKey++
-            }
-        )
     }
 }
 
@@ -440,7 +473,7 @@ private fun PermissionsSummary(granted: Int, total: Int) {
 }
 
 @Composable
-private fun PermissionSection(
+fun PermissionSection(
     title: String,
     entries: List<PermissionEntry>,
     onGrant: (AppPermission) -> Unit

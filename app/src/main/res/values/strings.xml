@@ -659,7 +659,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="permissions_summary_partial_desc">Some features stay disabled until these are granted.</string>
     <string name="permissions_section_system">System access</string>
     <string name="permissions_section_notifications">Notifications</string>
-    <string name="permissions_section_hardware">Hardware</string>
+    <string name="permissions_section_other">Other</string>
+    <string name="permission_images_desc">Needed to find, copy and delete new screenshots.</string>
     <string name="permissions_footer_note">Secure settings cannot be granted from inside the app. Use Shizuku if it is running, or the one-time ADB command.</string>
     <string name="permission_optional">optional</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -808,8 +809,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_no_rules_configured">No rules configured.\nTap + to add a new rule.</string>
     <string name="pn_notification_persistent_text">Monitoring notifications in the background</string>
     <string name="pn_pattern_name">Pattern Name</string>
-    <string name="pn_permission_camera_flash">Camera / Flash</string>
-    <string name="pn_permission_camera_flash_desc">Camera-flash access to run flash patterns</string>
     <string name="pn_permission_granted">Granted</string>
     <string name="pn_permission_notification_access">Notification Access</string>
     <string name="pn_permission_notification_access_desc">Notification access to detect certain notifications</string>

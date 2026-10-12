@@ -652,7 +652,8 @@
     <string name="permissions_summary_partial_desc">تبقى بعض الميزات معطلة حتى يتم منح هذه الأذونات.</string>
     <string name="permissions_section_system">الوصول إلى النظام</string>
     <string name="permissions_section_notifications">الإشعارات</string>
-    <string name="permissions_section_hardware">الأجهزة</string>
+    <string name="permissions_section_other">أخرى</string>
+    <string name="permission_images_desc">مطلوب للعثور على لقطات الشاشة الجديدة ونسخها وحذفها.</string>
     <string name="permissions_footer_note">لا يمكن منح الوصول إلى الإعدادات الآمنة من داخل التطبيق. استخدم شيزوكو إذا كان يعمل، أو أمر ADB لمرة واحدة.</string>
     <string name="permission_optional">اختياري</string>
     <string name="permission_shizuku">شيزوكو</string>
@@ -801,8 +802,6 @@
     <string name="pn_no_rules_configured">لا توجد قواعد مهيأة.\nاضغط + لإضافة قاعدة جديدة.</string>
     <string name="pn_notification_persistent_text">مراقبة الإشعارات في الخلفية</string>
     <string name="pn_pattern_name">اسم النمط</string>
-    <string name="pn_permission_camera_flash">الكاميرا / الفلاش</string>
-    <string name="pn_permission_camera_flash_desc">الوصول إلى فلاش الكاميرا لتشغيل أنماط الوميض</string>
     <string name="pn_permission_granted">ممنوح</string>
     <string name="pn_permission_notification_access">الوصول إلى الإشعارات</string>
     <string name="pn_permission_notification_access_desc">الوصول إلى الإشعارات لاكتشاف إشعارات معينة</string>

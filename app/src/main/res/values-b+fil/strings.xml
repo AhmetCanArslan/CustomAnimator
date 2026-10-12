@@ -611,7 +611,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="permissions_summary_partial_desc">May mga feature na mananatiling naka-off hangga\'t hindi naibibigay ang mga ito.</string>
     <string name="permissions_section_system">Access sa system</string>
     <string name="permissions_section_notifications">Mga notification</string>
-    <string name="permissions_section_hardware">Hardware</string>
+    <string name="permissions_section_other">Iba pa</string>
+    <string name="permission_images_desc">Kailangan para mahanap, makopya at ma-delete ang mga bagong screenshot.</string>
     <string name="permissions_footer_note">Hindi maibibigay ang access sa secure settings mula sa loob ng app. Gamitin ang Shizuku kung tumatakbo ito, o ang isahang ADB command.</string>
     <string name="permission_optional">opsyonal</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -756,8 +757,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_no_rules_configured">Walang naka-set na rule.\nI-tap ang + para magdagdag.</string>
     <string name="pn_notification_persistent_text">Minomonitor ang mga notification sa background</string>
     <string name="pn_pattern_name">Pangalan ng pattern</string>
-    <string name="pn_permission_camera_flash">Camera / Flash</string>
-    <string name="pn_permission_camera_flash_desc">Access sa camera flash para patakbuhin ang mga flash pattern</string>
     <string name="pn_permission_granted">Naibigay</string>
     <string name="pn_permission_notification_access">Access sa notification</string>
     <string name="pn_permission_notification_access_desc">Access sa notification para matukoy ang ilang notification</string>

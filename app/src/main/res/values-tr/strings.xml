@@ -611,7 +611,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="permissions_summary_partial_desc">Bu izinler verilene kadar bazı özellikler devre dışı kalır.</string>
     <string name="permissions_section_system">Sistem erişimi</string>
     <string name="permissions_section_notifications">Bildirimler</string>
-    <string name="permissions_section_hardware">Donanım</string>
+    <string name="permissions_section_other">Diğer</string>
+    <string name="permission_images_desc">Yeni ekran görüntülerini bulmak, kopyalamak ve silmek için gerekir.</string>
     <string name="permissions_footer_note">Güvenli ayarlar uygulama içinden verilemez. Çalışıyorsa Shizuku\'yu kullanın ya da tek seferlik ADB komutunu çalıştırın.</string>
     <string name="permission_optional">isteğe bağlı</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -756,8 +757,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_no_rules_configured">Yapılandırılmış kural yok.\nYeni kural eklemek için + simgesine dokunun.</string>
     <string name="pn_notification_persistent_text">Bildirimler arka planda izleniyor</string>
     <string name="pn_pattern_name">Desen Adı</string>
-    <string name="pn_permission_camera_flash">Kamera / Flaş</string>
-    <string name="pn_permission_camera_flash_desc">Flaş desenlerini çalıştırmak için kamera flaşı erişimi</string>
     <string name="pn_permission_granted">Verildi</string>
     <string name="pn_permission_notification_access">Bildirim Erişimi</string>
     <string name="pn_permission_notification_access_desc">Belirli bildirimleri algılamak için bildirim erişimi</string>

@@ -611,7 +611,8 @@
     <string name="permissions_summary_partial_desc">Некоторые функции отключены, пока эти разрешения не предоставлены.</string>
     <string name="permissions_section_system">Системный доступ</string>
     <string name="permissions_section_notifications">Уведомления</string>
-    <string name="permissions_section_hardware">Оборудование</string>
+    <string name="permissions_section_other">Другое</string>
+    <string name="permission_images_desc">Нужно, чтобы находить, копировать и удалять новые скриншоты.</string>
     <string name="permissions_footer_note">Доступ к защищённым настройкам нельзя выдать из самого приложения. Используйте Shizuku, если он запущен, или разовую команду ADB.</string>
     <string name="permission_optional">необязательно</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -756,8 +757,6 @@
     <string name="pn_no_rules_configured">Правил пока нет.\nНажмите +, чтобы добавить правило.</string>
     <string name="pn_notification_persistent_text">Отслеживание уведомлений в фоне</string>
     <string name="pn_pattern_name">Название шаблона</string>
-    <string name="pn_permission_camera_flash">Камера / вспышка</string>
-    <string name="pn_permission_camera_flash_desc">Доступ к вспышке камеры для воспроизведения шаблонов</string>
     <string name="pn_permission_granted">Предоставлено</string>
     <string name="pn_permission_notification_access">Доступ к уведомлениям</string>
     <string name="pn_permission_notification_access_desc">Доступ к уведомлениям для обнаружения нужных уведомлений</string>

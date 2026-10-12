@@ -631,7 +631,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="permissions_summary_partial_desc">Alcune funzioni restano disattivate finché non concedi queste autorizzazioni.</string>
     <string name="permissions_section_system">Accesso al sistema</string>
     <string name="permissions_section_notifications">Notifiche</string>
-    <string name="permissions_section_hardware">Hardware</string>
+    <string name="permissions_section_other">Altro</string>
+    <string name="permission_images_desc">Necessario per trovare, copiare ed eliminare i nuovi screenshot.</string>
     <string name="permissions_footer_note">L\'accesso alle impostazioni protette non può essere concesso dall\'app stessa. Usa Shizuku se è in esecuzione, oppure il comando ADB una tantum.</string>
     <string name="permission_optional">facoltativa</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -776,8 +777,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_no_rules_configured">Nessuna regola configurata.\nTocca + per aggiungerne una.</string>
     <string name="pn_notification_persistent_text">Monitoraggio delle notifiche in background</string>
     <string name="pn_pattern_name">Nome del pattern</string>
-    <string name="pn_permission_camera_flash">Fotocamera / flash</string>
-    <string name="pn_permission_camera_flash_desc">Accesso al flash della fotocamera per riprodurre i pattern</string>
     <string name="pn_permission_granted">Concessa</string>
     <string name="pn_permission_notification_access">Accesso alle notifiche</string>
     <string name="pn_permission_notification_access_desc">Accesso alle notifiche per rilevare determinate notifiche</string>
