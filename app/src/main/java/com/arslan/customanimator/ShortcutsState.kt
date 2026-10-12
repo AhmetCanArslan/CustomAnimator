@@ -107,7 +107,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
             legacyIcon = icon?.legacy ?: false
         )
         scope.launch {
-            val bitmap = icon?.bitmap ?: withContext(Dispatchers.IO) { iconOf(app.icon, ShortcutType.APP_SHORTCUT) }
+            val bitmap = icon?.bitmap ?: withContext(Dispatchers.IO) { iconOf(ShortcutMaker.appIcon(context, app.packageName), ShortcutType.APP_SHORTCUT) }
             step = ShortcutStep.Confirm(entry, bitmap)
         }
     }
@@ -235,7 +235,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
             label = app.label,
             packageName = app.packageName
         )
-        return ShortcutStep.Confirm(entry, iconOf(app.icon, ShortcutType.APP))
+        return ShortcutStep.Confirm(entry, iconOf(ShortcutMaker.appIcon(context, app.packageName), ShortcutType.APP))
     }
 
     private suspend fun appShortcutStep(app: InstalledAppInfo): ShortcutStep {

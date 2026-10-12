@@ -209,7 +209,7 @@ private fun ThreadingRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
+                AppIcon(packageName = app.packageName, modifier = Modifier.size(36.dp))
                 Text(
                     text = app.label,
                     style = MaterialTheme.typography.labelLarge,

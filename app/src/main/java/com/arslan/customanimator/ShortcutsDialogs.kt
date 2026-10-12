@@ -164,7 +164,7 @@ internal fun AppPickerSheet(
     PickerSheet(title = stringResource(R.string.shortcut_pick_app), subtitle = null, onDismiss = onDismiss) {
         appList(appList) { app ->
             PickerRow(title = app.label, subtitle = app.packageName, onClick = { onPick(app) }) {
-                AppIcon(icon = app.icon, modifier = Modifier.size(40.dp))
+                AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
             }
         }
     }
@@ -206,7 +206,7 @@ private fun ActivityPickerSheet(
                 onClick = { onPick(activity) },
                 trailing = { ActivityAccessPill(activity) }
             ) {
-                AppIcon(icon = step.app.icon, modifier = Modifier.size(40.dp))
+                AppIcon(packageName = step.app.packageName, modifier = Modifier.size(40.dp))
             }
         }
     }
@@ -248,7 +248,7 @@ private fun AppShortcutPickerSheet(
             ) {
                 val icon = step.icons[shortcut.id]
                 if (icon == null) {
-                    AppIcon(icon = step.app.icon, modifier = Modifier.size(40.dp))
+                    AppIcon(packageName = step.app.packageName, modifier = Modifier.size(40.dp))
                 } else {
                     ShortcutIcon(bitmap = icon.bitmap, legacy = icon.legacy, modifier = Modifier.size(40.dp))
                 }

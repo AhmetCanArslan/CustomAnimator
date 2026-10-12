@@ -58,9 +58,14 @@ internal class IconChangerState(private val context: Context, private val scope:
 
     fun onAppPicked(picked: InstalledAppInfo) {
         sheet = IconChangerSheet.NONE
-        app = picked
-        image = picked.icon?.let { ShortcutIconImage(ShortcutMaker.drawableIcon(it)) }
-        imageChanged = false
+        scope.launch {
+            val icon = withContext(Dispatchers.IO) {
+                ShortcutMaker.appIcon(context, picked.packageName)?.let(ShortcutMaker::drawableIcon)
+            }
+            app = picked
+            image = icon?.let(::ShortcutIconImage)
+            imageChanged = false
+        }
     }
 
     fun onIconPicked(picked: ShortcutIconImage) {

@@ -55,7 +55,7 @@ class AppListState internal constructor(private val include: (InstalledAppInfo) 
     suspend fun reload(context: Context) {
         val fresh = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
         if (loaded == null) {
-            fresh.filter(include).take(PREWARMED_ICONS).forEach { app -> app.icon?.let { AppIconBitmaps.load(it) } }
+            fresh.filter(include).take(PREWARMED_ICONS).forEach { app -> AppIconBitmaps.load(context, app.packageName) }
         }
         loaded = fresh
     }

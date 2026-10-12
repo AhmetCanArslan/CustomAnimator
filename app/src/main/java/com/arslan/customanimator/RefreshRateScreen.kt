@@ -372,7 +372,7 @@ private fun PerAppRefreshRateRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
+            AppIcon(packageName = app.packageName, modifier = Modifier.size(36.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = app.label,

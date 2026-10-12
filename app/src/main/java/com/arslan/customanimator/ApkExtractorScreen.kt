@@ -169,7 +169,7 @@ private fun ApkExtractorRow(app: InstalledAppInfo, onClick: () -> Unit) {
         subtitle = details?.let { apkDetails(it) } ?: app.packageName,
         onClick = onClick
     ) {
-        AppIcon(icon = app.icon, modifier = Modifier.size(40.dp))
+        AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
     }
 }
 

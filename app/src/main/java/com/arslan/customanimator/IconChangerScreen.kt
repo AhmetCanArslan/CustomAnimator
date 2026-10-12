@@ -162,7 +162,7 @@ private fun IconChangerAppList(
 
         appList(appList) { app ->
             PickerRow(title = app.label, subtitle = app.packageName, onClick = { onPick(app) }) {
-                AppIcon(icon = app.icon, modifier = Modifier.size(40.dp))
+                AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
             }
         }
 
@@ -226,7 +226,7 @@ private fun IconChangerAppCard(app: InstalledAppInfo, onClick: () -> Unit) {
         shape = AppShapes.card
     ) {
         PickerRow(title = app.label, subtitle = app.packageName, onClick = onClick) {
-            AppIcon(icon = app.icon, modifier = Modifier.size(40.dp))
+            AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
         }
     }
 }
@@ -249,7 +249,7 @@ private fun IconChangerDesignCard(
                 horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppIcon(icon = app.icon, modifier = Modifier.size(64.dp))
+                AppIcon(packageName = app.packageName, modifier = Modifier.size(64.dp))
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
