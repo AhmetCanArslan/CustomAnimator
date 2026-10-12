@@ -1078,6 +1078,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="screenshot_toast_not_found">Walang nakitang kamakailang screenshot</string>
     <string name="screenshot_delete_note">Humihingi ang Android ng kumpirmasyon sa bawat pagbura. Kaya hindi kailangan ng app ang restricted na All-files na pahintulot.</string>
     <string name="screenshot_toast_copied_deleted">Nakopya sa clipboard at nabura</string>
+    <string name="screenshot_toast_trashed">Inilipat sa basurahan ang screenshot</string>
+    <string name="screenshot_toast_copied_trashed">Nakopya sa clipboard at inilipat sa basurahan</string>
+    <string name="screenshot_toast_trash_failed">Hindi mailipat sa basurahan ang screenshot</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Kailangan ng Shizuku para ilipat sa basurahan ang mga screenshot</string>
     <string name="hotspot_manager">Tagapamahala ng Hotspot</string>
     <string name="hotspot_manager_desc">Kontrolin ang Wi-Fi hotspot, mga kliyente at advanced na setting ng access point</string>
     <string name="hotspot_needs_shizuku">Kailangan ng Shizuku access para basahin at baguhin ang mga setting ng hotspot.</string>

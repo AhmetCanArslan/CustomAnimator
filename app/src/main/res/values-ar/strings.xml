@@ -1137,6 +1137,10 @@
     <string name="screenshot_toast_not_found">لم يتم العثور على لقطة شاشة حديثة</string>
     <string name="screenshot_delete_note">يطلب أندرويد تأكيد كل عملية حذف. وبذلك لا يحتاج التطبيق إلى إذن الوصول إلى جميع الملفات المقيّد.</string>
     <string name="screenshot_toast_copied_deleted">تم النسخ إلى الحافظة والحذف</string>
+    <string name="screenshot_toast_trashed">تم نقل لقطة الشاشة إلى سلة المهملات</string>
+    <string name="screenshot_toast_copied_trashed">تم النسخ إلى الحافظة والنقل إلى سلة المهملات</string>
+    <string name="screenshot_toast_trash_failed">تعذر نقل لقطة الشاشة إلى سلة المهملات</string>
+    <string name="screenshot_toast_trash_needs_shizuku">نقل لقطات الشاشة إلى سلة المهملات يتطلب Shizuku</string>
 
     <string name="hotspot_manager">مدير نقطة الاتصال</string>
     <string name="hotspot_manager_desc">التحكم في نقطة اتصال Wi-Fi والعملاء وإعدادات نقطة الوصول المتقدمة</string>

@@ -1078,6 +1078,10 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_toast_not_found">Tidak ada tangkapan layar terbaru</string>
     <string name="screenshot_delete_note">Android meminta konfirmasi untuk setiap penghapusan. Dengan begitu aplikasi tidak perlu izin akses semua berkas yang dibatasi.</string>
     <string name="screenshot_toast_copied_deleted">Disalin ke papan klip dan dihapus</string>
+    <string name="screenshot_toast_trashed">Tangkapan layar dipindahkan ke sampah</string>
+    <string name="screenshot_toast_copied_trashed">Disalin ke papan klip dan dipindahkan ke sampah</string>
+    <string name="screenshot_toast_trash_failed">Tidak dapat memindahkan tangkapan layar ke sampah</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Memindahkan tangkapan layar ke sampah memerlukan Shizuku</string>
     <string name="hotspot_manager">Pengelola Hotspot</string>
     <string name="hotspot_manager_desc">Kendalikan hotspot Wi-Fi, klien, dan setelan titik akses lanjutan</string>
     <string name="hotspot_needs_shizuku">Akses Shizuku diperlukan untuk membaca dan mengubah setelan hotspot.</string>

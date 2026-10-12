@@ -1098,6 +1098,10 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_toast_not_found">Nessuno screenshot recente trovato</string>
     <string name="screenshot_delete_note">Android chiede conferma per ogni eliminazione. Così l\'app non ha bisogno dell\'autorizzazione limitata a tutti i file.</string>
     <string name="screenshot_toast_copied_deleted">Copiato negli appunti ed eliminato</string>
+    <string name="screenshot_toast_trashed">Screenshot spostato nel cestino</string>
+    <string name="screenshot_toast_copied_trashed">Copiato negli appunti e spostato nel cestino</string>
+    <string name="screenshot_toast_trash_failed">Impossibile spostare lo screenshot nel cestino</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Per spostare gli screenshot nel cestino serve Shizuku</string>
     <string name="hotspot_manager">Gestione hotspot</string>
     <string name="hotspot_manager_desc">Controlla l\'hotspot Wi-Fi, i client e le impostazioni avanzate del punto di accesso</string>
     <string name="hotspot_needs_shizuku">Serve l\'accesso a Shizuku per leggere e modificare le impostazioni dell\'hotspot.</string>

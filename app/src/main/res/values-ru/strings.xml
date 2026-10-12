@@ -1080,6 +1080,10 @@
     <string name="screenshot_toast_not_found">Свежих скриншотов не найдено</string>
     <string name="screenshot_delete_note">Android запрашивает подтверждение каждого удаления. Благодаря этому приложению не нужно разрешение на доступ ко всем файлам.</string>
     <string name="screenshot_toast_copied_deleted">Скопировано в буфер обмена и удалено</string>
+    <string name="screenshot_toast_trashed">Скриншот перемещён в корзину</string>
+    <string name="screenshot_toast_copied_trashed">Скопировано в буфер обмена и перемещено в корзину</string>
+    <string name="screenshot_toast_trash_failed">Не удалось переместить скриншот в корзину</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Для перемещения скриншотов в корзину нужен Shizuku</string>
     <string name="hotspot_manager">Менеджер точки доступа</string>
     <string name="hotspot_manager_desc">Управление Wi-Fi точкой доступа, клиентами и расширенными настройками</string>
     <string name="hotspot_needs_shizuku">Для чтения и изменения настроек точки доступа нужен доступ Shizuku.</string>

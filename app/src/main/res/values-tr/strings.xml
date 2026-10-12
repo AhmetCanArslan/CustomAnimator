@@ -1086,6 +1086,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_toast_not_found">Yakın zamanlı ekran görüntüsü bulunamadı</string>
     <string name="screenshot_delete_note">Android her silme için onay ister. Bu sayede uygulama kısıtlı Tüm dosyalar iznine ihtiyaç duymaz.</string>
     <string name="screenshot_toast_copied_deleted">Panoya kopyalandı ve silindi</string>
+    <string name="screenshot_toast_trashed">Ekran görüntüsü çöp kutusuna taşındı</string>
+    <string name="screenshot_toast_copied_trashed">Panoya kopyalandı ve çöp kutusuna taşındı</string>
+    <string name="screenshot_toast_trash_failed">Ekran görüntüsü çöp kutusuna taşınamadı</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Ekran görüntülerini çöp kutusuna taşımak için Shizuku gerekir</string>
     <string name="hotspot_manager">Hotspot Yöneticisi</string>
     <string name="hotspot_manager_desc">Wi-Fi hotspot\'unu, bağlı cihazları ve gelişmiş erişim noktası ayarlarını yönet</string>
     <string name="hotspot_needs_shizuku">Hotspot ayarlarını okumak ve değiştirmek için Shizuku erişimi gerekli.</string>

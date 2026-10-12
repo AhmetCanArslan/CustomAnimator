@@ -1140,6 +1140,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_toast_not_found">No recent screenshot found</string>
     <string name="screenshot_delete_note">Android asks you to confirm each deletion. This keeps the app free of the restricted All-files permission.</string>
     <string name="screenshot_toast_copied_deleted">Copied to clipboard and deleted</string>
+    <string name="screenshot_toast_trashed">Screenshot moved to trash</string>
+    <string name="screenshot_toast_copied_trashed">Copied to clipboard and moved to trash</string>
+    <string name="screenshot_toast_trash_failed">Could not move the screenshot to trash</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Moving screenshots to trash needs Shizuku</string>
 
     <string name="hotspot_manager">Hotspot Manager</string>
     <string name="hotspot_manager_desc">Control the Wi-Fi hotspot, clients and advanced access point settings</string>

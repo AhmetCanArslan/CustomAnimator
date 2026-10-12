@@ -1078,6 +1078,10 @@ Duração do Animador: %3$.2f</string>
     <string name="screenshot_toast_not_found">Nenhuma captura recente encontrada</string>
     <string name="screenshot_delete_note">O Android pede confirmação a cada exclusão. Assim o app não precisa da permissão restrita de todos os arquivos.</string>
     <string name="screenshot_toast_copied_deleted">Copiada para a área de transferência e excluída</string>
+    <string name="screenshot_toast_trashed">Captura movida para a lixeira</string>
+    <string name="screenshot_toast_copied_trashed">Copiada para a área de transferência e movida para a lixeira</string>
+    <string name="screenshot_toast_trash_failed">Não foi possível mover a captura para a lixeira</string>
+    <string name="screenshot_toast_trash_needs_shizuku">Mover capturas para a lixeira requer o Shizuku</string>
     <string name="hotspot_manager">Gerenciador de roteador</string>
     <string name="hotspot_manager_desc">Controle o roteador Wi-Fi, os clientes e as configurações avançadas do ponto de acesso</string>
     <string name="hotspot_needs_shizuku">É necessário acesso ao Shizuku para ler e alterar as configurações do roteador.</string>
