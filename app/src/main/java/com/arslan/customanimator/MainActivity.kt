@@ -11,11 +11,6 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -265,6 +260,14 @@ private val SUB_SCREEN_TABS = mapOf(
 
 private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
 
+private val DEFAULT_RETURN_SCREENS = mapOf(
+    HomeScreen.SETUP_GUIDE to HomeScreen.MAIN,
+    HomeScreen.PROFILES to HomeScreen.MAIN,
+    HomeScreen.PERMISSIONS to HomeScreen.SETTINGS
+)
+
+private val BANNERLESS_SCREENS = setOf(HomeScreen.PROFILES, HomeScreen.PROFILE_EDITOR)
+
 private fun HomeScreen.navDepth(): Int = when (this) {
     HomeScreen.MAIN -> 0
     HomeScreen.SETTINGS, HomeScreen.SETUP_GUIDE, HomeScreen.PROFILES, HomeScreen.PER_APP_WIDTH -> 1
@@ -315,7 +318,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
     val setupGuideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val openSetupGuide: () -> Unit = { currentScreen = HomeScreen.SETUP_GUIDE }
+    var returnScreens by rememberSaveable { mutableStateOf(DEFAULT_RETURN_SCREENS) }
+    val openRemembering: (HomeScreen) -> Unit = { destination ->
+        if (currentScreen != destination) {
+            returnScreens = returnScreens + (destination to currentScreen)
+            currentScreen = destination
+        }
+    }
+    val returnFromCurrent: () -> Unit = {
+        currentScreen = returnScreens.getValue(currentScreen)
+    }
+    val openSetupGuide: () -> Unit = { openRemembering(HomeScreen.SETUP_GUIDE) }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -554,20 +567,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     BackHandler(enabled = currentScreen in ROOT_LEVEL_SCREENS) {
         currentScreen = HomeScreen.MAIN
     }
-    BackHandler(enabled = currentScreen == HomeScreen.PROFILES) {
-        currentScreen = HomeScreen.MAIN
-    }
+    BackHandler(enabled = currentScreen in DEFAULT_RETURN_SCREENS, onBack = returnFromCurrent)
     BackHandler(enabled = currentScreen == HomeScreen.PROFILE_EDITOR) {
         currentScreen = HomeScreen.PROFILES
     }
-    BackHandler(enabled = currentScreen == HomeScreen.SETUP_GUIDE) {
-        currentScreen = HomeScreen.MAIN
-    }
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS) {
         currentScreen = HomeScreen.MAIN
-    }
-    BackHandler(enabled = currentScreen == HomeScreen.PERMISSIONS) {
-        currentScreen = HomeScreen.SETTINGS
     }
     BackHandler(enabled = currentScreen in NOTIFY_SCREENS) { notifyBack() }
     BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
@@ -583,29 +588,24 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     AnimatedContent(
         targetState = currentScreen,
         transitionSpec = {
-            val forward = if (targetState.navDepth() != initialState.navDepth()) {
-                targetState.navDepth() > initialState.navDepth()
-            } else {
-                targetState.ordinal > initialState.ordinal
+            val forward = when {
+                returnScreens[targetState] == initialState -> true
+                returnScreens[initialState] == targetState -> false
+                targetState.navDepth() != initialState.navDepth() -> targetState.navDepth() > initialState.navDepth()
+                else -> targetState.ordinal > initialState.ordinal
             }
-            if (forward) {
-                (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
-                    (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
-            } else {
-                (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
-                    (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
-            }
+            horizontalPagerTransition(forward)
         },
         label = "screen transition"
     ) { targetScreen ->
     if (targetScreen == HomeScreen.SETTINGS) {
         SettingsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
-            onNavigateToPermissions = { currentScreen = HomeScreen.PERMISSIONS }
+            onNavigateToPermissions = { openRemembering(HomeScreen.PERMISSIONS) }
         )
     } else if (targetScreen == HomeScreen.PROFILES) {
         ProfilesScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
+            onBack = returnFromCurrent,
             onCreate = {
                 editingProfileId = null
                 currentScreen = HomeScreen.PROFILE_EDITOR
@@ -706,7 +706,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = qsTilesListState,
             onOpenTab = { tab -> backToTab(tab) },
-            onOpenProfiles = { currentScreen = HomeScreen.PROFILES },
+            onOpenProfiles = { openRemembering(HomeScreen.PROFILES) },
             onOpenSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
             onOpenScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS }
         )
@@ -757,12 +757,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.SETUP_GUIDE) {
         SetupGuideScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
+            onBack = returnFromCurrent,
             listState = setupGuideListState
         )
     } else if (targetScreen == HomeScreen.PERMISSIONS) {
         PermissionsScreen(
-            onBack = { currentScreen = HomeScreen.SETTINGS },
+            onBack = returnFromCurrent,
             listState = permissionsListState
         )
     } else if (targetScreen == HomeScreen.NOTIFY_RULES) {
@@ -831,7 +831,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onOpenNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
                 onOpenProfiles = {
                     profilesRefreshToken++
-                    currentScreen = HomeScreen.PROFILES
+                    openRemembering(HomeScreen.PROFILES)
                 },
                 onOpenSettings = { currentScreen = HomeScreen.SETTINGS }
             )
