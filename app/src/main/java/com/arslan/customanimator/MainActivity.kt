@@ -71,7 +71,6 @@ import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
-import com.arslan.customanimator.notify.data.AppListManager
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.ui.AddEditRuleSection
 import com.arslan.customanimator.notify.ui.CreatePatternSection
@@ -120,7 +119,6 @@ class MainActivity : ComponentActivity() {
         initBilling(this)
         initAds(this)
 
-        AppListManager.initialize(this)
         syncBackgroundState()
 
         ShizukuState.start(this)

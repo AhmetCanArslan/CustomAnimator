@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.arslan.customanimator.notify.data.AppListManager
 import com.arslan.customanimator.notify.data.IgnoreManager
+import com.arslan.customanimator.utils.AppIconBitmaps
 import com.arslan.customanimator.notify.data.IgnoreRule
 import com.arslan.customanimator.notify.data.IgnoreType
 import com.arslan.customanimator.notify.data.LogEntry
@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -48,17 +46,6 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         }
 
         refreshLogs()
-
-        viewModelScope.launch {
-            AppListManager.installedApps
-                .map { it.isNotEmpty() }
-                .distinctUntilChanged()
-                .collectLatest { loaded ->
-                    if (loaded) {
-                        rebuildIconCache()
-                    }
-                }
-        }
 
         viewModelScope.launch {
             combine(_rawLogs, _searchQuery) { raw, query ->
@@ -188,16 +175,9 @@ class LoggingViewModel(application: Application) : AndroidViewModel(application)
         return raw
     }
 
-    private suspend fun rebuildIconCache() {
-        val currentLogs = _rawLogs.value
-        if (currentLogs.isEmpty()) return
-        val icons = withContext(Dispatchers.IO) { buildIconCache(currentLogs) }
-        _iconCache.value = icons
-    }
-
-    private fun buildIconCache(logs: List<LogEntry>): Map<String, ImageBitmap?> {
+    private suspend fun buildIconCache(logs: List<LogEntry>): Map<String, ImageBitmap?> {
         val packages = HashSet<String>(logs.size)
         for (entry in logs) packages.add(entry.packageName)
-        return packages.associateWith { AppListManager.getIconForPackage(it) }
+        return packages.associateWith { AppIconBitmaps.load(getApplication(), it) }
     }
 }

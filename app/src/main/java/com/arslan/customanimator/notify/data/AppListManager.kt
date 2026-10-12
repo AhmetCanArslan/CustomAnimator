@@ -4,16 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Build
-import java.io.File
-import java.io.FileOutputStream
-import java.util.concurrent.ConcurrentHashMap
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,8 +21,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -39,7 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.AppIcon
 import com.arslan.customanimator.R
+import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -50,15 +41,12 @@ import kotlinx.coroutines.launch
 
 data class AppItem(
     val name: String,
-    val packageName: String,
-    val icon: ImageBitmap? = null
+    val packageName: String
 )
 
 object AppListManager {
     private val _installedApps = MutableStateFlow<List<AppItem>>(emptyList())
     val installedApps: StateFlow<List<AppItem>> = _installedApps.asStateFlow()
-
-    private val iconIndex = ConcurrentHashMap<String, ImageBitmap>()
 
     @Volatile
     private var appContext: Context? = null
@@ -91,60 +79,12 @@ object AppListManager {
 
     private fun refreshInstalledApps(ctx: Context) {
         applicationScope.launch {
-            val pm = ctx.packageManager
-            val iconDir = File(ctx.cacheDir, ICON_CACHE_DIR).also { it.mkdirs() }
-
-            val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-            val packages = try {
-                pm.queryIntentActivities(launcherIntent, 0)
-                    .mapNotNull { it.activityInfo?.applicationInfo }
-                    .distinctBy { it.packageName }
-            } catch (_: Exception) { emptyList() }
-
-            val updateTimes: Map<String, Long> = packages.mapNotNull { appInfo ->
-                try {
-                    appInfo.packageName to pm.getPackageInfo(appInfo.packageName, 0).lastUpdateTime
-                } catch (_: Exception) { null }
-            }.toMap()
-
-            val phase1Apps = packages.map { appInfo ->
-                val icon = loadIconFromDisk(iconDir, appInfo.packageName)
-                if (icon != null) iconIndex[appInfo.packageName] = icon
-                AppItem(
-                    name = pm.getApplicationLabel(appInfo).toString(),
-                    packageName = appInfo.packageName,
-                    icon = icon
-                )
-            }.sortedBy { it.name.lowercase() }
-
-            val packageSet = phase1Apps.mapTo(HashSet(phase1Apps.size)) { it.packageName }
-            for (knownPkg in iconIndex.keys) {
-                if (knownPkg !in packageSet) iconIndex.remove(knownPkg)
-            }
-
-            _installedApps.value = phase1Apps
-
-            val mutableApps = ArrayList(phase1Apps)
-            var changed = false
-
-            for (i in mutableApps.indices) {
-                val app = mutableApps[i]
-                val iconFile = File(iconDir, iconFileName(app.packageName))
-                val updateTime = updateTimes[app.packageName] ?: 0L
-                if (iconFile.exists() && iconFile.lastModified() >= updateTime && app.icon != null) continue
-
-                val bitmap = try {
-                    drawableToBitmap(pm.getApplicationIcon(app.packageName))
-                } catch (_: Exception) { null } ?: continue
-
-                saveIconToDisk(bitmap, iconFile)
-                val img = bitmap.asImageBitmap()
-                iconIndex[app.packageName] = img
-                mutableApps[i] = app.copy(icon = img)
-                changed = true
-            }
-
-            if (changed) _installedApps.value = ArrayList(mutableApps)
+            val ownApp = AppItem(
+                name = ctx.applicationInfo.loadLabel(ctx.packageManager).toString(),
+                packageName = ctx.packageName
+            )
+            val otherApps = InstalledAppsProvider.getLaunchableApps(ctx).map { AppItem(it.label, it.packageName) }
+            _installedApps.value = (otherApps + ownApp).sortedBy { it.name.lowercase() }
         }
     }
 
@@ -171,90 +111,6 @@ object AppListManager {
             receiverRegistered = true
         }
     }
-
-    fun getIconForPackage(packageName: String): ImageBitmap? {
-        iconIndex[packageName]?.let { return it }
-
-        val ctx = appContext ?: return null
-        val iconDir = File(ctx.cacheDir, ICON_CACHE_DIR)
-        val iconFile = File(iconDir, iconFileName(packageName))
-
-        if (iconFile.exists()) {
-            try {
-                val bmp = decodeIconFile(iconFile)
-                if (bmp != null) {
-                    val img = bmp.asImageBitmap()
-                    iconIndex[packageName] = img
-                    return img
-                }
-            } catch (_: Exception) {}
-        }
-
-        return try {
-            val bitmap = drawableToBitmap(ctx.packageManager.getApplicationIcon(packageName))
-            iconDir.mkdirs()
-            saveIconToDisk(bitmap, iconFile)
-            val img = bitmap.asImageBitmap()
-            iconIndex[packageName] = img
-            img
-        } catch (_: Exception) { null }
-    }
-
-    private fun loadIconFromDisk(iconDir: File, packageName: String): ImageBitmap? = try {
-        val file = File(iconDir, iconFileName(packageName))
-        if (!file.exists()) null
-        else decodeIconFile(file)?.asImageBitmap()
-    } catch (_: Exception) { null }
-
-    private fun decodeIconFile(file: File): Bitmap? {
-        val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        BitmapFactory.decodeFile(file.absolutePath, bounds)
-        val options = BitmapFactory.Options().apply {
-            inSampleSize = iconSampleSize(bounds.outWidth, bounds.outHeight)
-        }
-        return BitmapFactory.decodeFile(file.absolutePath, options)
-    }
-
-    private fun iconSampleSize(width: Int, height: Int): Int {
-        var sample = 1
-        while (width / (sample * 2) >= ICON_SIZE_PX && height / (sample * 2) >= ICON_SIZE_PX) {
-            sample *= 2
-        }
-        return sample
-    }
-
-    private fun saveIconToDisk(bitmap: Bitmap, file: File) {
-        try {
-            file.parentFile?.mkdirs()
-            FileOutputStream(file).use { out ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
-            }
-        } catch (_: Exception) {}
-    }
-
-    private fun iconFileName(packageName: String) = "${packageName.replace('/', '_')}.png"
-
-    private const val ICON_CACHE_DIR = "app_icons"
-    private const val ICON_SIZE_PX = 48
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val rawBitmap = if (drawable is BitmapDrawable && drawable.bitmap != null) {
-            drawable.bitmap
-        } else {
-            val width = if (drawable.intrinsicWidth > 0) drawable.intrinsicWidth else 1
-            val height = if (drawable.intrinsicHeight > 0) drawable.intrinsicHeight else 1
-            val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bmp)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            bmp
-        }
-        return if (rawBitmap.width > ICON_SIZE_PX || rawBitmap.height > ICON_SIZE_PX) {
-            Bitmap.createScaledBitmap(rawBitmap, ICON_SIZE_PX, ICON_SIZE_PX, true)
-        } else {
-            rawBitmap
-        }
-    }
 }
 
 @Composable
@@ -273,16 +129,7 @@ fun AppRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        val icon = app.icon
-        if (icon != null) {
-            Image(
-                bitmap = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp)
-            )
-        } else {
-            Spacer(modifier = Modifier.size(24.dp))
-        }
+        AppIcon(packageName = app.packageName, modifier = Modifier.size(24.dp))
         Text(
             text = app.name,
             style = MaterialTheme.typography.bodyMedium,

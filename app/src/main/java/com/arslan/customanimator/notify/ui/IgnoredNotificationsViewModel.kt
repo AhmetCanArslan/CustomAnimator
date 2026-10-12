@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.arslan.customanimator.notify.data.AppListManager
 import com.arslan.customanimator.notify.data.IgnoreManager
+import com.arslan.customanimator.utils.AppIconBitmaps
 import com.arslan.customanimator.notify.data.IgnoreRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,7 +73,7 @@ class IgnoredNotificationsViewModel(application: Application) : AndroidViewModel
         }
         val icons = withContext(Dispatchers.IO) {
             rules.map { it.packageName }.toHashSet()
-                .associateWith { AppListManager.getIconForPackage(it) }
+                .associateWith { AppIconBitmaps.load(getApplication(), it) }
         }
         withContext(Dispatchers.Main) { _iconCache.value = icons }
     }
