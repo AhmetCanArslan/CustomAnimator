@@ -23,6 +23,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -259,6 +260,16 @@ fun AppRow(
 }
 
 @Composable
+fun AppIcon(packageName: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    var bitmap by remember(packageName) { mutableStateOf(AppIconBitmaps.cached(packageName)) }
+    LaunchedEffect(packageName) {
+        if (bitmap == null) bitmap = AppIconBitmaps.load(context, packageName)
+    }
+    AppIconImage(bitmap, modifier)
+}
+
+@Composable
 fun AppIcon(icon: Drawable?, modifier: Modifier = Modifier) {
     if (icon == null) {
         Box(modifier = modifier)
@@ -268,10 +279,14 @@ fun AppIcon(icon: Drawable?, modifier: Modifier = Modifier) {
     LaunchedEffect(icon) {
         if (bitmap == null) bitmap = AppIconBitmaps.load(icon)
     }
-    val image = bitmap
-    if (image == null) {
+    AppIconImage(bitmap, modifier)
+}
+
+@Composable
+private fun AppIconImage(bitmap: ImageBitmap?, modifier: Modifier) {
+    if (bitmap == null) {
         Box(modifier = modifier)
     } else {
-        Image(bitmap = image, contentDescription = null, modifier = modifier)
+        Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
     }
 }
