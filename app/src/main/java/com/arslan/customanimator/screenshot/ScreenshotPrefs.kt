@@ -47,6 +47,10 @@ class ScreenshotPrefs(context: Context) {
         get() = sp.getInt(KEY_OVERLAY_TIMEOUT, DEFAULT_OVERLAY_TIMEOUT)
         set(value) = sp.edit().putInt(KEY_OVERLAY_TIMEOUT, value).apply()
 
+    var showConfirmationToasts: Boolean
+        get() = sp.getBoolean(KEY_CONFIRMATION_TOASTS, true)
+        set(value) = sp.edit().putBoolean(KEY_CONFIRMATION_TOASTS, value).apply()
+
     var overlayX: Int
         get() = sp.getInt(KEY_OVERLAY_X, DEFAULT_OVERLAY_X)
         set(value) = sp.edit().putInt(KEY_OVERLAY_X, value).apply()
@@ -67,6 +71,7 @@ class ScreenshotPrefs(context: Context) {
         private const val KEY_OVERLAY_COPY = "overlay_show_copy"
         private const val KEY_OVERLAY_DELETE = "overlay_show_delete"
         private const val KEY_OVERLAY_TIMEOUT = "overlay_timeout_seconds"
+        private const val KEY_CONFIRMATION_TOASTS = "show_confirmation_toasts"
         private const val KEY_OVERLAY_X = "overlay_x"
         private const val KEY_OVERLAY_Y = "overlay_y"
 
