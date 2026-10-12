@@ -13,15 +13,21 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.PersistableBundle
+import android.os.Process
 import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import com.arslan.customanimator.utils.ShizukuHelper
 import java.io.File
 
 data class ScreenshotItem(val id: Long, val uri: Uri, val name: String, val dateAdded: Long)
 
+enum class ScreenshotTrashResult { TRASHED, NO_SHIZUKU, FAILED }
+
 object ScreenshotActions {
 
     private const val PREVIEW_MAX_EDGE = 1024
+    private const val PER_USER_RANGE = 100000
 
     fun copyToClipboard(context: Context, item: ScreenshotItem): Boolean {
         return try {
@@ -60,11 +66,15 @@ object ScreenshotActions {
 
     fun newestScreenshot(context: Context): ScreenshotItem? = query(context, limitToNewest = true)
 
+    fun targetOf(context: Context, mediaId: Long): ScreenshotItem? =
+        if (mediaId >= 0) itemFor(context, mediaId) else latestScreenshot(context)
+
     fun itemFor(context: Context, id: Long): ScreenshotItem? {
         val uri = ContentUris.withAppendedId(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             id
         )
+        val (selection, args) = screenshotSelection()
         return runCatching {
             context.contentResolver.query(
                 uri,
@@ -73,7 +83,7 @@ object ScreenshotActions {
                     MediaStore.Images.Media.DISPLAY_NAME,
                     MediaStore.Images.Media.DATE_ADDED
                 ),
-                null, null, null
+                selection, args, null
             )?.use { c ->
                 if (c.moveToFirst()) {
                     ScreenshotItem(
@@ -95,17 +105,7 @@ object ScreenshotActions {
             MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATE_ADDED
         )
-        val selection: String
-        val args: Array<String>
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ? OR " +
-                "${MediaStore.Images.Media.DISPLAY_NAME} LIKE ?"
-            args = arrayOf("%Screenshots%", "%creenshot%")
-        } else {
-            @Suppress("DEPRECATION")
-            selection = "${MediaStore.Images.Media.DATA} LIKE ?"
-            args = arrayOf("%Screenshot%")
-        }
+        val (selection, args) = screenshotSelection()
         val sort = "${MediaStore.Images.Media.DATE_ADDED} DESC"
         return runCatching {
             context.contentResolver.query(
@@ -127,18 +127,44 @@ object ScreenshotActions {
         }.getOrNull().takeIf { limitToNewest || it != null }
     }
 
-    /**
-     * Deletes without any user prompt when the app owns the entry or is running
-     * on a pre-scoped-storage system. Returns the [IntentSender] the caller must
-     * launch when the system requires the user to confirm.
-     */
-    fun deleteOrRequest(context: Context, item: ScreenshotItem): IntentSender? {
+    private fun screenshotSelection(): Pair<String, Array<String>> {
+        val names = arrayOf("%Screenshots%", "%creenshot%")
+        val byName = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ? OR " +
+            "${MediaStore.Images.Media.DISPLAY_NAME} LIKE ?"
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            return MediaStore.createDeleteRequest(
-                context.contentResolver,
-                listOf(item.uri)
-            ).intentSender
+            return "($byName) AND ${MediaStore.MediaColumns.IS_TRASHED} = 0" to names
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return byName to names
+        }
+        @Suppress("DEPRECATION")
+        return "${MediaStore.Images.Media.DATA} LIKE ?" to arrayOf("%Screenshot%")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    fun moveToTrash(context: Context, item: ScreenshotItem): ScreenshotTrashResult {
+        if (!ShizukuHelper.hasShizukuPermission()) return ScreenshotTrashResult.NO_SHIZUKU
+        val target = itemFor(context, item.id) ?: return ScreenshotTrashResult.FAILED
+        ShizukuHelper.executeShellCommand(trashCommand(target.id))
+        return if (itemFor(context, target.id) == null) {
+            ScreenshotTrashResult.TRASHED
+        } else {
+            ScreenshotTrashResult.FAILED
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    internal fun trashCommand(id: Long): Array<String> {
+        require(id > 0)
+        return arrayOf(
+            "content", "update",
+            "--user", (Process.myUid() / PER_USER_RANGE).toString(),
+            "--uri", ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id).toString(),
+            "--bind", "${MediaStore.MediaColumns.IS_TRASHED}:i:1"
+        )
+    }
+
+    fun deleteOrRequest(context: Context, item: ScreenshotItem): IntentSender? {
         return try {
             context.contentResolver.delete(item.uri, null, null)
             null
