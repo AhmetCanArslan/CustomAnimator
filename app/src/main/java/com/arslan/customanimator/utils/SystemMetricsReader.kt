@@ -26,18 +26,33 @@ object SystemMetricsReader {
     private fun readFile(path: String): String? =
         runCatching { File(path).readText().trim() }.getOrNull()?.takeIf { it.isNotEmpty() }
 
-    fun cpuFreqMhz(): Int? {
-        val policyFreqs = CPU_FREQ_POLICY_DIR.listFiles()
+    private val policyFreqPaths: List<String> by lazy {
+        CPU_FREQ_POLICY_DIR.listFiles()
             ?.filter { it.name.startsWith("policy") }
-            ?.mapNotNull { readFile(File(it, "scaling_cur_freq").absolutePath)?.toLongOrNull() }
+            ?.map { File(it, "scaling_cur_freq").absolutePath }
             ?: emptyList()
-        val freqs = if (policyFreqs.isNotEmpty()) {
-            policyFreqs
-        } else {
-            (0 until Runtime.getRuntime().availableProcessors()).mapNotNull {
-                readFile("/sys/devices/system/cpu/cpu$it/cpufreq/scaling_cur_freq")?.toLongOrNull()
-            }
+    }
+
+    private val coreFreqPaths: List<String> by lazy {
+        (0 until Runtime.getRuntime().availableProcessors()).map {
+            "/sys/devices/system/cpu/cpu$it/cpufreq/scaling_cur_freq"
         }
+    }
+
+    private val cpuTempPath: String? by lazy {
+        THERMAL_DIR.listFiles()
+            ?.filter { it.name.startsWith("thermal_zone") }
+            ?.firstOrNull { zone ->
+                val type = readFile(File(zone, "type").absolutePath)?.lowercase() ?: return@firstOrNull false
+                CPU_ZONE_KEYWORDS.any { type.contains(it) }
+            }
+            ?.let { File(it, "temp").absolutePath }
+    }
+
+    private fun readFreqs(paths: List<String>): List<Long> = paths.mapNotNull { readFile(it)?.toLongOrNull() }
+
+    fun cpuFreqMhz(): Int? {
+        val freqs = readFreqs(policyFreqPaths).ifEmpty { readFreqs(coreFreqPaths) }
         val max = freqs.maxOrNull() ?: return null
         return (max / 1000L).toInt()
     }
@@ -52,27 +67,22 @@ object SystemMetricsReader {
     }
 
     fun cpuTempC(): Int? {
-        val zones = THERMAL_DIR.listFiles()?.filter { it.name.startsWith("thermal_zone") } ?: return null
-        val matching = zones.firstOrNull { zone ->
-            val type = readFile(File(zone, "type").absolutePath)?.lowercase() ?: return@firstOrNull false
-            CPU_ZONE_KEYWORDS.any { type.contains(it) }
-        } ?: return null
-        val raw = readFile(File(matching, "temp").absolutePath)?.toLongOrNull() ?: return null
+        val raw = cpuTempPath?.let(::readFile)?.toLongOrNull() ?: return null
         return if (raw > 1000L) (raw / 1000L).toInt() else raw.toInt()
     }
 
-    private fun batteryIntent(context: Context): Intent? =
+    fun batteryStatus(context: Context): Intent? =
         context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
 
-    fun batteryTempC(context: Context): Int? {
-        val tenths = batteryIntent(context)
+    fun batteryTempC(status: Intent?): Int? {
+        val tenths = status
             ?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, Int.MIN_VALUE)
             ?.takeIf { it != Int.MIN_VALUE } ?: return null
         return (tenths / 10f).roundToInt()
     }
 
-    fun batteryLevel(context: Context): Int? {
-        val intent = batteryIntent(context) ?: return null
+    fun batteryLevel(status: Intent?): Int? {
+        val intent = status ?: return null
         val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
         if (level < 0 || scale <= 0) return null

@@ -4,14 +4,15 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
-import android.os.Looper
+import android.os.PowerManager
 import android.view.Choreographer
 import android.view.Gravity
 import android.view.MotionEvent
@@ -25,6 +26,14 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.SystemMeterMetric
 import com.arslan.customanimator.utils.SystemMetricsReader
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -55,11 +64,16 @@ class FpsOverlayService : Service() {
 
     private var currentFps = 0
     private var metrics: List<SystemMeterMetric> = emptyList()
-    private val handler = Handler(Looper.getMainLooper())
-    private val metricsRunnable = object : Runnable {
-        override fun run() {
-            renderOverlay()
-            handler.postDelayed(this, METRICS_INTERVAL_MS)
+    private var metricLines: Map<SystemMeterMetric, String> = emptyMap()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private var metricsJob: Job? = null
+
+    private val screenReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_SCREEN_ON -> restartMeasuring()
+                Intent.ACTION_SCREEN_OFF -> stopMeasuring()
+            }
         }
     }
 
@@ -70,6 +84,13 @@ class FpsOverlayService : Service() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         createNotificationChannel()
         startForeground(NOTIF_ID, buildNotification())
+        registerReceiver(
+            screenReceiver,
+            IntentFilter().apply {
+                addAction(Intent.ACTION_SCREEN_ON)
+                addAction(Intent.ACTION_SCREEN_OFF)
+            }
+        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -185,12 +206,26 @@ class FpsOverlayService : Service() {
     }
 
     private fun restartMeasuring() {
-        frameCallback?.let { Choreographer.getInstance().removeFrameCallback(it) }
-        frameCallback = null
-        handler.removeCallbacks(metricsRunnable)
+        stopMeasuring()
+        if (overlayView == null) return
+        if (!(getSystemService(Context.POWER_SERVICE) as PowerManager).isInteractive) return
         currentFps = 0
         if (metrics.contains(SystemMeterMetric.FPS)) startFpsMeasuring()
-        handler.post(metricsRunnable)
+        val polled = metrics - SystemMeterMetric.FPS
+        metricsJob = scope.launch {
+            while (true) {
+                metricLines = withContext(Dispatchers.IO) { readMetricLines(polled) }
+                renderOverlay()
+                delay(METRICS_INTERVAL_MS)
+            }
+        }
+    }
+
+    private fun stopMeasuring() {
+        frameCallback?.let { Choreographer.getInstance().removeFrameCallback(it) }
+        frameCallback = null
+        metricsJob?.cancel()
+        metricsJob = null
     }
 
     private fun startFpsMeasuring() {
@@ -220,12 +255,25 @@ class FpsOverlayService : Service() {
 
     private fun renderOverlay() {
         val view = overlayView ?: return
-        val lines = metrics.mapNotNull { metricLine(it) }
+        val lines = metrics.mapNotNull { metric ->
+            if (metric == SystemMeterMetric.FPS) {
+                getString(R.string.fps_overlay_value, currentFps)
+            } else {
+                metricLines[metric]
+            }
+        }
         view.text = lines.joinToString("\n")
     }
 
-    private fun metricLine(metric: SystemMeterMetric): String? = when (metric) {
-        SystemMeterMetric.FPS -> getString(R.string.fps_overlay_value, currentFps)
+    private fun readMetricLines(polled: List<SystemMeterMetric>): Map<SystemMeterMetric, String> {
+        val battery by lazy(LazyThreadSafetyMode.NONE) { SystemMetricsReader.batteryStatus(this) }
+        val lines = LinkedHashMap<SystemMeterMetric, String>()
+        polled.forEach { metric -> metricLine(metric) { battery }?.let { lines[metric] = it } }
+        return lines
+    }
+
+    private fun metricLine(metric: SystemMeterMetric, battery: () -> Intent?): String? = when (metric) {
+        SystemMeterMetric.FPS -> null
         SystemMeterMetric.CPU_FREQ ->
             SystemMetricsReader.cpuFreqMhz()?.let { getString(R.string.meter_value_cpu_freq, it) }
         SystemMeterMetric.CPU_TEMP ->
@@ -237,9 +285,9 @@ class FpsOverlayService : Service() {
                 getString(R.string.meter_value_ram, used, total)
             }
         SystemMeterMetric.BATTERY_LEVEL ->
-            SystemMetricsReader.batteryLevel(this)?.let { getString(R.string.meter_value_battery_level, it) }
+            SystemMetricsReader.batteryLevel(battery())?.let { getString(R.string.meter_value_battery_level, it) }
         SystemMeterMetric.BATTERY_TEMP ->
-            SystemMetricsReader.batteryTempC(this)?.let { getString(R.string.meter_value_battery_temp, it) }
+            SystemMetricsReader.batteryTempC(battery())?.let { getString(R.string.meter_value_battery_temp, it) }
         SystemMeterMetric.BATTERY_CURRENT ->
             SystemMetricsReader.batteryCurrentMa(this)?.let { getString(R.string.meter_value_battery_current, it) }
     }
@@ -278,9 +326,9 @@ class FpsOverlayService : Service() {
     }
 
     override fun onDestroy() {
-        frameCallback?.let { Choreographer.getInstance().removeFrameCallback(it) }
-        frameCallback = null
-        handler.removeCallbacks(metricsRunnable)
+        stopMeasuring()
+        scope.cancel()
+        runCatching { unregisterReceiver(screenReceiver) }
         overlayView?.let { view -> runCatching { windowManager.removeView(view) } }
         overlayView = null
         layoutParams = null
