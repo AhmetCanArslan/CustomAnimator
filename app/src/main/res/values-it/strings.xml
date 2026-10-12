@@ -783,8 +783,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_permission_overlay_title">Mostra sopra altre app</string>
     <string name="pn_permission_post_notifications">Invio di notifiche</string>
     <string name="pn_permission_post_notifications_desc">Consente all\'app di mostrare le proprie notifiche di stato e di test</string>
-    <string name="pn_permission_required_desc">Concedi tutte le autorizzazioni richieste nella schermata Autorizzazioni prima di avviare il servizio.</string>
-    <string name="pn_permission_required_title">Autorizzazioni necessarie</string>
     <string name="pn_permission_run_background">Esegui in background</string>
     <string name="pn_permission_run_background_desc">Impedisce al risparmio energetico di terminare il servizio</string>
     <string name="pn_permission_secure_settings">Impostazioni protette (AOD)</string>

@@ -815,8 +815,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_permission_overlay_title">Display Over Other Apps</string>
     <string name="pn_permission_post_notifications">Post Notifications</string>
     <string name="pn_permission_post_notifications_desc">Lets the app show its own status and test notifications</string>
-    <string name="pn_permission_required_desc">Grant every required permission on the Permissions screen before starting the service.</string>
-    <string name="pn_permission_required_title">Permissions Required</string>
     <string name="pn_permission_run_background">Run in Background</string>
     <string name="pn_permission_run_background_desc">Prevents service from being killed by battery saver</string>
     <string name="pn_permission_secure_settings">Secure Settings (AOD)</string>

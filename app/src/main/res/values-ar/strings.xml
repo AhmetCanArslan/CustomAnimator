@@ -808,8 +808,6 @@
     <string name="pn_permission_overlay_title">العرض فوق التطبيقات الأخرى</string>
     <string name="pn_permission_post_notifications">نشر الإشعارات</string>
     <string name="pn_permission_post_notifications_desc">يسمح للتطبيق بعرض إشعارات الحالة والاختبار الخاصة به</string>
-    <string name="pn_permission_required_desc">امنح كل إذن مطلوب على شاشة الأذونات قبل بدء الخدمة.</string>
-    <string name="pn_permission_required_title">أذونات مطلوبة</string>
     <string name="pn_permission_run_background">التشغيل في الخلفية</string>
     <string name="pn_permission_run_background_desc">يمنع توفير البطارية من إنهاء الخدمة</string>
     <string name="pn_permission_secure_settings">الإعدادات الآمنة (الشاشة الدائمة)</string>

@@ -763,8 +763,6 @@
     <string name="pn_permission_overlay_title">Поверх других приложений</string>
     <string name="pn_permission_post_notifications">Отправка уведомлений</string>
     <string name="pn_permission_post_notifications_desc">Позволяет приложению показывать свои статусные и тестовые уведомления</string>
-    <string name="pn_permission_required_desc">Предоставьте все необходимые разрешения на экране «Разрешения» перед запуском службы.</string>
-    <string name="pn_permission_required_title">Требуются разрешения</string>
     <string name="pn_permission_run_background">Работа в фоне</string>
     <string name="pn_permission_run_background_desc">Не даёт энергосбережению завершать службу</string>
     <string name="pn_permission_secure_settings">Защищённые настройки (AOD)</string>

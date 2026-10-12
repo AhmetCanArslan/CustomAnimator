@@ -15,15 +15,11 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,16 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.R
-import com.arslan.customanimator.hasAllNotifyPermissions
+import com.arslan.customanimator.PermissionSection
+import com.arslan.customanimator.notifyRequiredPermissions
+import com.arslan.customanimator.permissionEntries
+import com.arslan.customanimator.rememberPermissionRefresh
+import com.arslan.customanimator.rememberPermissionRequester
 import com.arslan.customanimator.notify.data.IgnoreManager
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.service.isPrimeNotifyServiceEnabled
@@ -62,32 +58,19 @@ fun NotifyHomeSection(
     modifier: Modifier = Modifier,
     onNavigateToRules: () -> Unit = {},
     onNavigateToFilters: () -> Unit = {},
-    onNavigateToHistory: () -> Unit = {},
-    onNavigateToPermissions: () -> Unit = {}
+    onNavigateToHistory: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
-    var refreshState by remember { mutableIntStateOf(0) }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                refreshState++
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-
-    val allPermissionsGranted = remember(refreshState) { hasAllNotifyPermissions(context) }
+    val refresh = rememberPermissionRefresh()
+    val refreshState = refresh.intValue
+    val requestPermission = rememberPermissionRequester(onChanged = { refresh.intValue++ })
+    val permissions = key(refreshState) { permissionEntries(notifyRequiredPermissions(context)) }
+    val allPermissionsGranted = permissions.all { it.granted }
     val ruleCount = remember(refreshState) { RulesManager(context).getRules().size }
     val filters = remember(refreshState) { IgnoreManager(context).getRules() }
 
     var isServiceActive by remember { mutableStateOf(isPrimeNotifyServiceEnabled(context)) }
-    var showPermissionDialog by remember { mutableStateOf(false) }
     var remainingSeconds by remember { mutableIntStateOf(0) }
 
     Column(
@@ -97,6 +80,14 @@ fun NotifyHomeSection(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        if (!allPermissionsGranted) {
+            PermissionSection(
+                title = stringResource(R.string.permissions_title),
+                entries = permissions,
+                onGrant = requestPermission
+            )
+        }
+
         AppCard(contentPadding = 16.dp, highlighted = isServiceActive) {
             ToggleRow(
                 title = stringResource(R.string.pn_service_title),
@@ -105,13 +96,10 @@ fun NotifyHomeSection(
                 ),
                 icon = Icons.Filled.Notifications,
                 checked = isServiceActive,
+                enabled = isServiceActive || allPermissionsGranted,
                 onCheckedChange = {
-                    if (it && !allPermissionsGranted) {
-                        showPermissionDialog = true
-                    } else {
-                        isServiceActive = it
-                        setPrimeNotifyServiceEnabled(context, it)
-                    }
+                    isServiceActive = it
+                    setPrimeNotifyServiceEnabled(context, it)
                 }
             )
         }
@@ -165,35 +153,6 @@ fun NotifyHomeSection(
                 }
             )
         }
-    }
-
-    if (showPermissionDialog) {
-        AlertDialog(
-            onDismissRequest = { showPermissionDialog = false },
-            title = {
-                Text(
-                    stringResource(R.string.pn_permission_required_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Text(stringResource(R.string.pn_permission_required_desc))
-            },
-            confirmButton = {
-                Button(onClick = {
-                    showPermissionDialog = false
-                    onNavigateToPermissions()
-                }) {
-                    Text(stringResource(R.string.permissions_title))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showPermissionDialog = false }) {
-                    Text(stringResource(R.string.close))
-                }
-            }
-        )
     }
 }
 

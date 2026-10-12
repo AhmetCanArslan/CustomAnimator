@@ -763,8 +763,6 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_permission_overlay_title">Mostrar sobre otras apps</string>
     <string name="pn_permission_post_notifications">Enviar notificaciones</string>
     <string name="pn_permission_post_notifications_desc">Permite que la app muestre sus propias notificaciones de estado y de prueba</string>
-    <string name="pn_permission_required_desc">Concede todos los permisos necesarios en la pantalla Permisos antes de iniciar el servicio.</string>
-    <string name="pn_permission_required_title">Permisos necesarios</string>
     <string name="pn_permission_run_background">Ejecutar en segundo plano</string>
     <string name="pn_permission_run_background_desc">Evita que el ahorro de batería cierre el servicio</string>
     <string name="pn_permission_secure_settings">Ajustes protegidos (AOD)</string>

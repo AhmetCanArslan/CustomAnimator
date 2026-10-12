@@ -763,8 +763,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_permission_overlay_title">Ipakita sa ibabaw ng ibang app</string>
     <string name="pn_permission_post_notifications">Magpadala ng notification</string>
     <string name="pn_permission_post_notifications_desc">Pinapayagan ang app na ipakita ang sarili nitong status at test notification</string>
-    <string name="pn_permission_required_desc">Ibigay ang lahat ng kinakailangang pahintulot sa screen na Mga pahintulot bago simulan ang serbisyo.</string>
-    <string name="pn_permission_required_title">Kailangan ng pahintulot</string>
     <string name="pn_permission_run_background">Patakbuhin sa background</string>
     <string name="pn_permission_run_background_desc">Pinipigilan ang battery saver na patayin ang serbisyo</string>
     <string name="pn_permission_secure_settings">Secure settings (AOD)</string>

@@ -763,8 +763,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_permission_overlay_title">Tampilkan di atas aplikasi lain</string>
     <string name="pn_permission_post_notifications">Kirim notifikasi</string>
     <string name="pn_permission_post_notifications_desc">Memungkinkan aplikasi menampilkan notifikasi status dan uji miliknya</string>
-    <string name="pn_permission_required_desc">Berikan semua izin yang diperlukan di layar Izin sebelum memulai layanan.</string>
-    <string name="pn_permission_required_title">Izin diperlukan</string>
     <string name="pn_permission_run_background">Jalankan di latar belakang</string>
     <string name="pn_permission_run_background_desc">Mencegah penghemat baterai menghentikan layanan</string>
     <string name="pn_permission_secure_settings">Setelan aman (AOD)</string>
