@@ -100,6 +100,12 @@ class LoggingManager private constructor(context: Context) {
         write()
     }
 
+    @Synchronized
+    fun flushPending() {
+        if (pendingPersist == null) return
+        persist()
+    }
+
     private fun persist() {
         pendingPersist?.cancel()
         pendingPersist = null
@@ -126,7 +132,7 @@ class LoggingManager private constructor(context: Context) {
         private const val LOG_ENTRIES_KEY = "log_entries_list"
         private const val MAX_ENTRIES = 500
         private const val DEDUP_WINDOW_MS = 3_000L
-        private const val PERSIST_DELAY_MS = 2_000L
+        private const val PERSIST_DELAY_MS = 20_000L
 
         @Volatile
         private var instance: LoggingManager? = null

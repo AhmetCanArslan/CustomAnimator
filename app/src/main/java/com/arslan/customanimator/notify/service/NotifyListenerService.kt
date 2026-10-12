@@ -83,6 +83,7 @@ class NotifyListenerService : NotificationListenerService() {
 
     override fun onDestroy() {
         ioScope.cancel()
+        loggingManager.flushPending()
         if (flashManager.isInitialized()) flashManager.value.stop()
         if (screenWakeManager.isInitialized()) screenWakeManager.value.stop()
         if (aodManager.isInitialized()) aodManager.value.stop()
