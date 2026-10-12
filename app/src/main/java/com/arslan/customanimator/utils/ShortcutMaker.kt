@@ -115,6 +115,14 @@ object ShortcutMaker {
         }
     }
 
+    fun appIcon(context: Context, packageName: String): Drawable? {
+        return try {
+            context.packageManager.getApplicationIcon(packageName)
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
+        }
+    }
+
     fun drawableIcon(drawable: Drawable): Bitmap {
         val bitmap = Bitmap.createBitmap(ICON_PX, ICON_PX, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
