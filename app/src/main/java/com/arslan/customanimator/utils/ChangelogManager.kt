@@ -49,6 +49,7 @@ object ChangelogManager {
 
     fun unseenReleases(context: Context): List<ChangelogRelease> {
         val lastSeen = SettingsManager.getLastSeenChangelogVersion(context)
+        if (lastSeen >= BuildConfig.VERSION_CODE) return emptyList()
         return readAll(context).filter { it.versionCode > lastSeen }
     }
 
