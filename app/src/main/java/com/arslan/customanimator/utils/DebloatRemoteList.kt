@@ -19,6 +19,7 @@ object DebloatRemoteList {
     private const val PREFS_NAME = "debloater_list"
     private const val KEY_UPDATED_AT = "updated_at"
     private const val KEY_COUNT = "entry_count"
+    private const val KEY_ETAG = "etag"
     private const val TIMEOUT_MS = 30_000
     private const val MAX_BYTES = 16L * 1024 * 1024
 
@@ -27,6 +28,15 @@ object DebloatRemoteList {
         val group: DebloatGroup,
         val description: String?
     )
+
+    enum class DownloadResult { UPDATED, UNCHANGED, FAILED }
+
+    private class Response(val body: String?, val etag: String?)
+
+    private class Loaded(val stamp: Long, val packages: Set<String>, val entries: Map<String, Entry>)
+
+    @Volatile
+    private var lastLoaded: Loaded? = null
 
     private fun file(context: Context) = File(context.filesDir, FILE_NAME)
 
@@ -41,29 +51,40 @@ object DebloatRemoteList {
     fun clear(context: Context) {
         file(context).delete()
         prefs(context).edit().clear().apply()
+        lastLoaded = null
     }
 
-    fun download(context: Context): Int {
-        val body = fetch() ?: return 0
+    fun download(context: Context): DownloadResult {
+        val knownEtag = prefs(context).getString(KEY_ETAG, null).takeIf { file(context).exists() }
+        val response = fetch(knownEtag) ?: return DownloadResult.FAILED
+        val body = response.body
+        if (body == null) {
+            prefs(context).edit().putLong(KEY_UPDATED_AT, System.currentTimeMillis()).apply()
+            return DownloadResult.UNCHANGED
+        }
         val parsed = try {
             JSONObject(body)
         } catch (e: Exception) {
             Log.e(TAG, "Downloaded list is not valid JSON", e)
-            return 0
+            return DownloadResult.FAILED
         }
-        if (parsed.length() == 0) return 0
+        if (parsed.length() == 0) return DownloadResult.FAILED
 
         file(context).writeText(body)
+        lastLoaded = null
         prefs(context).edit()
             .putLong(KEY_UPDATED_AT, System.currentTimeMillis())
             .putInt(KEY_COUNT, parsed.length())
+            .putString(KEY_ETAG, response.etag)
             .apply()
-        return parsed.length()
+        return DownloadResult.UPDATED
     }
 
     fun load(context: Context, packages: Set<String>): Map<String, Entry> {
         val source = file(context)
         if (!source.exists() || packages.isEmpty()) return emptyMap()
+        val stamp = source.lastModified()
+        lastLoaded?.takeIf { it.stamp == stamp && it.packages == packages }?.let { return it.entries }
         val root = try {
             JSONObject(source.readText())
         } catch (e: Exception) {
@@ -81,21 +102,27 @@ object DebloatRemoteList {
                 description = item.optString("description").takeIf { it.isNotBlank() }
             )
         }
+        lastLoaded = Loaded(stamp, packages, entries)
         return entries
     }
 
-    private fun fetch(): String? {
+    private fun fetch(knownEtag: String?): Response? {
         var connection: HttpURLConnection? = null
         return try {
             connection = (URL(SOURCE_URL).openConnection() as HttpURLConnection).apply {
                 connectTimeout = TIMEOUT_MS
                 readTimeout = TIMEOUT_MS
                 requestMethod = "GET"
+                knownEtag?.let { setRequestProperty("If-None-Match", it) }
+            }
+            if (connection.responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
+                return Response(null, knownEtag)
             }
             if (connection.responseCode != HttpURLConnection.HTTP_OK) {
                 Log.w(TAG, "Unexpected response: ${connection.responseCode}")
                 return null
             }
+            val etag = connection.getHeaderField("ETag")
             connection.inputStream.bufferedReader().use { reader ->
                 val builder = StringBuilder()
                 val buffer = CharArray(8192)
@@ -108,7 +135,7 @@ object DebloatRemoteList {
                         return null
                     }
                 }
-                builder.toString()
+                Response(builder.toString(), etag)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to download the package list", e)

@@ -91,13 +91,13 @@ fun DebloaterScreen(
     }
 
     LaunchedEffect(Unit) {
-        val count = withContext(Dispatchers.IO) { DebloatRemoteList.download(context) }
-        listFailed = count == 0
-        if (count > 0) {
+        val result = withContext(Dispatchers.IO) { DebloatRemoteList.download(context) }
+        listFailed = result == DebloatRemoteList.DownloadResult.FAILED
+        if (!listFailed) {
             listCount = DebloatRemoteList.entryCount(context)
             listUpdatedAt = DebloatRemoteList.updatedAtMs(context)
-            reload()
         }
+        if (result == DebloatRemoteList.DownloadResult.UPDATED) reload()
     }
 
     val visibleApps by remember(apps, searchQuery, filters) {
