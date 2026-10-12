@@ -122,7 +122,6 @@ class NoShizukuResilienceTest {
         val target = DebloatAppInfo(
             packageName = "com.example.bloat",
             label = "Bloat",
-            icon = null,
             apkPath = null,
             isSystemApp = true,
             state = DebloatState.ACTIVE,
@@ -164,7 +163,6 @@ class NoShizukuResilienceTest {
         val protectedApp = DebloatAppInfo(
             packageName = "com.android.systemui",
             label = "System UI",
-            icon = null,
             apkPath = null,
             isSystemApp = true,
             state = DebloatState.ACTIVE,

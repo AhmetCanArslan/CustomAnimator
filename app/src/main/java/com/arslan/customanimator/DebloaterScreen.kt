@@ -634,7 +634,7 @@ private fun DebloatRow(
 @Composable
 private fun DebloatAppIcon(app: DebloatAppInfo, modifier: Modifier) {
     val context = LocalContext.current
-    val icon by produceState(app.icon, app.packageName) {
+    val icon by produceState(DebloatManager.cachedIcon(app.packageName), app.packageName) {
         if (value == null) {
             value = withContext(Dispatchers.IO) { DebloatManager.loadIcon(context, app) }
         }

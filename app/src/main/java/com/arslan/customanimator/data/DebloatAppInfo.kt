@@ -1,6 +1,5 @@
 package com.arslan.customanimator.data
 
-import android.graphics.drawable.Drawable
 enum class DebloatState { ACTIVE, DISABLED, REMOVED }
 
 enum class DebloatRisk { RECOMMENDED, ADVANCED, EXPERT, UNSAFE }
@@ -10,7 +9,6 @@ enum class DebloatGroup { GOOGLE, OEM, CARRIER, PARTNER, SYSTEM }
 data class DebloatAppInfo(
     val packageName: String,
     val label: String,
-    val icon: Drawable?,
     val apkPath: String?,
     val isSystemApp: Boolean,
     val state: DebloatState,

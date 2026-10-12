@@ -54,18 +54,33 @@ object DebloatManager {
             .sortedBy { it.label.lowercase() }
     }
 
+    fun cachedIcon(packageName: String): Drawable? = iconCache[packageName]
+
     fun loadIcon(context: Context, app: DebloatAppInfo): Drawable? {
         iconCache[app.packageName]?.let { return it }
+        val icon = installedIcon(context, app.packageName) ?: archiveIcon(context, app)
+        icon?.let { iconCache[app.packageName] = it }
+        return icon
+    }
+
+    private fun installedIcon(context: Context, packageName: String): Drawable? {
+        val packageManager = context.packageManager
+        return try {
+            packageManager.getApplicationInfo(packageName, PackageManager.MATCH_UNINSTALLED_PACKAGES)
+                .loadIcon(packageManager)
+        } catch (e: PackageManager.NameNotFoundException) {
+            null
+        }
+    }
+
+    private fun archiveIcon(context: Context, app: DebloatAppInfo): Drawable? {
         val apkPath = app.apkPath ?: return null
-        val archive = archiveInfo(context, apkPath) ?: return null
-        val appInfo = archive.applicationInfo ?: return null
-        val icon = try {
+        val appInfo = archiveInfo(context, apkPath)?.applicationInfo ?: return null
+        return try {
             appInfo.loadIcon(context.packageManager)
         } catch (e: Exception) {
             null
         }
-        icon?.let { iconCache[app.packageName] = it }
-        return icon
     }
 
     fun exportApk(app: DebloatAppInfo): String? {
@@ -223,7 +238,6 @@ object DebloatManager {
         return buildAppInfo(
             packageName = appInfo.packageName,
             label = loadLabel(packageManager, appInfo),
-            icon = loadInstalledIcon(packageManager, appInfo),
             apkPath = apkPath,
             protection = DebloatProtection.Target(appInfo.packageName, appInfo.uid, appInfo.flags, null),
             sources = sources
@@ -244,7 +258,6 @@ object DebloatManager {
         return buildAppInfo(
             packageName = packageName,
             label = label,
-            icon = null,
             apkPath = apkPath,
             protection = DebloatProtection.Target(
                 packageName = packageName,
@@ -259,7 +272,6 @@ object DebloatManager {
     private fun buildAppInfo(
         packageName: String,
         label: String,
-        icon: Drawable?,
         apkPath: String?,
         protection: DebloatProtection.Target,
         sources: Sources
@@ -269,7 +281,6 @@ object DebloatManager {
         return DebloatAppInfo(
             packageName = packageName,
             label = label,
-            icon = icon,
             apkPath = apkPath,
             isSystemApp = isSystemApp,
             state = stateOf(packageName, sources.installed, sources.disabled),
@@ -308,11 +319,5 @@ object DebloatManager {
         } catch (e: Exception) {
             appInfo.packageName
         }
-    }
-
-    private fun loadInstalledIcon(packageManager: PackageManager, appInfo: ApplicationInfo) = try {
-        appInfo.loadIcon(packageManager)
-    } catch (e: Exception) {
-        null
     }
 }
