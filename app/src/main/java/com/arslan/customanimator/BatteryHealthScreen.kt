@@ -25,6 +25,9 @@ import com.arslan.customanimator.utils.BatteryHealthManager
 import com.arslan.customanimator.utils.BatteryHealthSnapshot
 import com.arslan.customanimator.utils.BatteryUsageManager
 import com.arslan.customanimator.utils.BatteryUsageSnapshot
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -166,17 +169,21 @@ fun BatteryHealthScreen(
     var snapshot by remember { mutableStateOf<BatteryHealthSnapshot?>(null) }
     var usage by remember { mutableStateOf<BatteryUsageSnapshot?>(null) }
 
-    LaunchedEffect(hasShizukuPermission) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(hasShizukuPermission, lifecycleOwner) {
         if (!hasShizukuPermission) return@LaunchedEffect
-        launch {
-            while (true) {
-                snapshot = withContext(Dispatchers.IO) { BatteryHealthManager.readSnapshot() }
-                delay(BATTERY_HEALTH_REFRESH_MS)
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                while (true) {
+                    snapshot = withContext(Dispatchers.IO) { BatteryHealthManager.readSnapshot() }
+                    delay(BATTERY_HEALTH_REFRESH_MS)
+                }
             }
-        }
-        while (true) {
-            usage = withContext(Dispatchers.IO) { BatteryUsageManager.readUsage(context) }
-            delay(BATTERY_USAGE_REFRESH_MS)
+            while (true) {
+                usage = withContext(Dispatchers.IO) { BatteryUsageManager.readUsage(context) }
+                delay(BATTERY_USAGE_REFRESH_MS)
+            }
         }
     }
 

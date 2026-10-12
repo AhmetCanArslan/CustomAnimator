@@ -43,6 +43,9 @@ import com.arslan.customanimator.data.WifiSecurity
 import com.arslan.customanimator.utils.QrCodeRenderer
 import com.arslan.customanimator.utils.WifiBackupCodec
 import com.arslan.customanimator.utils.WifiConfigReader
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -81,10 +84,14 @@ fun WifiPasswordsScreen(
 
     LaunchedEffect(hasShizukuPermission) { reload() }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            connectedSsid = withContext(Dispatchers.IO) { WifiConfigReader.getConnectedSsid(context) }
-            delay(CONNECTED_POLL_MS)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (true) {
+                connectedSsid = withContext(Dispatchers.IO) { WifiConfigReader.getConnectedSsid(context) }
+                delay(CONNECTED_POLL_MS)
+            }
         }
     }
 
