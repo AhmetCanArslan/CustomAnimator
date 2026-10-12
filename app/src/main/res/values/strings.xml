@@ -149,7 +149,6 @@
     <string name="auto_permission_disabler_status_paused">Selection saved, but service is paused until permissions are granted</string>
     <string name="no_apps_found">No apps found</string>
     <string name="compile_booster">Compile Booster</string>
-    <string name="compile_booster_desc">Force full AOT compilation of every installed app for faster startup and smoother performance</string>
     <string name="compile_booster_progress">Compiling… %1$d%%</string>
     <string name="compile_all_apps">Compile All Apps</string>
     <string name="compile_all_apps_desc">Compile every installed app when this profile is applied</string>
@@ -161,7 +160,6 @@
     <string name="compile_booster_notif_text">Preparing to compile apps…</string>
     <string name="compile_booster_notif_text_app">Compiling %1$s… %2$d%%</string>
     <string name="compile_filter_title">Compilation mode</string>
-    <string name="compile_filter_current">Mode: %1$s</string>
     <string name="compile_filter_everything">Everything</string>
     <string name="compile_filter_everything_desc">Strongest. Compiles all code ahead of time, including rarely used paths. Slowest and uses the most storage.</string>
     <string name="compile_filter_speed">Speed</string>
@@ -404,7 +402,6 @@ Animator Duration: %3$.2f</string>
     <string name="close_apps_exclusions">Exclusion List</string>
     <string name="close_apps_exclusions_desc">Pick apps that \"Close Background Apps\" and Performance Booster should never force-stop</string>
     <string name="close_apps_exclusions_count">%1$d app(s) excluded from being closed</string>
-    <string name="compile_all_apps_short">Compile</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Reset Rotation</string>
     <string name="reset_rotation_desc">Restores auto-rotate and clears the forced orientation override</string>
@@ -1254,7 +1251,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
     <string name="game_mode_ad_desc">Watch a short ad to turn on game mode</string>
     <string name="game_mode_select_games_first">Select at least one game first</string>
-    <string name="compile_booster_ad_desc">Watch a short ad to start compiling</string>
     <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
     <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="system_meter_title">System Meter</string>

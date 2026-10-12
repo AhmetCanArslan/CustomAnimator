@@ -46,7 +46,6 @@
     <string name="auto_permission_disabler_status_paused">Seçim kaydedildi, ancak izinler verilene kadar hizmet duraklatıldı</string>
     <string name="no_apps_found">Uygulama bulunamadı</string>
     <string name="compile_booster">Derleme Hızlandırıcı</string>
-    <string name="compile_booster_desc">Daha hızlı açılış ve daha akıcı performans için yüklü tüm uygulamaların tam AOT derlemesini zorlar</string>
     <string name="compile_booster_progress">Derleniyor… %1$d%%</string>
     <string name="compile_all_apps">Tüm Uygulamaları Derle</string>
     <string name="compile_all_apps_desc">Bu profil uygulandığında yüklü tüm uygulamaları derle</string>
@@ -58,7 +57,6 @@
     <string name="compile_booster_notif_text">Uygulamalar derlenmeye hazırlanıyor…</string>
     <string name="compile_booster_notif_text_app">Derleniyor: %1$s… %2$d%%</string>
     <string name="compile_filter_title">Derleme modu</string>
-    <string name="compile_filter_current">Mod: %1$s</string>
     <string name="compile_filter_everything">Her şey</string>
     <string name="compile_filter_everything_desc">En güçlü seçenek. Nadiren kullanılan yollar dahil tüm kodu önceden derler. En yavaş olan ve en çok depolama kullanan seçenek.</string>
     <string name="compile_filter_speed">Hız</string>
@@ -205,7 +203,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="rotation_reverse_portrait">Ters Dikey (180°)</string>
     <string name="rotation_landscape_270">Yatay (90° sağa)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">Derle</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Ekran Dönüşünü Sıfırla</string>
     <string name="reset_rotation_desc">Otomatik döndürmeyi geri getirir ve zorlanan yön ayarını kaldırır</string>
@@ -1219,7 +1216,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="reward_unlock_denied">Bunu 3 dakikalığına açmak için reklamı sonuna kadar izleyin</string>
     <string name="game_mode_ad_desc">Oyun modunu açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_select_games_first">Önce en az bir oyun seçin</string>
-    <string name="compile_booster_ad_desc">Derlemeyi başlatmak için kısa bir reklam izleyin</string>
     <string name="compile_all_apps_with_ad">Reklam izle ve derle</string>
     <string name="game_mode_turn_on_with_ad">Reklam izle ve aç</string>
     <string name="system_meter_title">Sistem Göstergesi</string>

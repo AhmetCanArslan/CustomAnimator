@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
@@ -361,74 +360,6 @@ internal fun ActionRow(
                 ) {
                     Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
                 }
-            }
-        }
-    }
-}
-
-@Composable
-internal fun CompileBoosterRow(
-    isRunning: Boolean,
-    percent: Int,
-    enabled: Boolean,
-    filterLabel: String,
-    onClick: () -> Unit,
-    onCancel: () -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isRunning) {
-                CircularProgressIndicator(
-                    progress = { percent / 100f },
-                    modifier = Modifier.size(20.dp),
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Filled.Bolt,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = stringResource(R.string.compile_booster), style = MaterialTheme.typography.titleSmall,)
-            Text(
-                text = if (isRunning) {
-                    stringResource(R.string.compile_booster_progress, percent)
-                } else {
-                    stringResource(R.string.compile_booster_desc)
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = stringResource(R.string.compile_filter_current, filterLabel),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
-        if (isRunning) {
-            Button(
-                onClick = onCancel,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-            ) {
-                Text(stringResource(R.string.cancel), style = MaterialTheme.typography.bodySmall, maxLines = 1)
-            }
-        } else {
-            Button(onClick = onClick, enabled = enabled) {
-                Text(stringResource(R.string.compile_all_apps_short), style = MaterialTheme.typography.bodySmall, maxLines = 1)
             }
         }
     }

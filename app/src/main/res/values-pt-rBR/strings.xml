@@ -46,7 +46,6 @@
     <string name="auto_permission_disabler_status_paused">Seleção salva, mas o serviço está pausado até que as permissões sejam concedidas</string>
     <string name="no_apps_found">Nenhum app encontrado</string>
     <string name="compile_booster">Otimizador de Compilação</string>
-    <string name="compile_booster_desc">Compilação AOT completa dos apps: abertura mais rápida e uso mais fluido</string>
     <string name="compile_booster_progress">Compilando… %1$d%%</string>
     <string name="compile_all_apps">Compilar Todos os Apps</string>
     <string name="compile_all_apps_desc">Compilar todos os aplicativos instalados quando este perfil for aplicado</string>
@@ -58,7 +57,6 @@
     <string name="compile_booster_notif_text">Preparando para compilar apps…</string>
     <string name="compile_booster_notif_text_app">Compilando %1$s… %2$d%%</string>
     <string name="compile_filter_title">Modo de compilação</string>
-    <string name="compile_filter_current">Modo: %1$s</string>
     <string name="compile_filter_everything">Tudo</string>
     <string name="compile_filter_everything_desc">O mais forte. Compila todo o código com antecedência, incluindo trechos pouco usados. É o mais lento e usa mais armazenamento.</string>
     <string name="compile_filter_speed">Velocidade</string>
@@ -205,7 +203,6 @@ Duração do Animador: %3$.2f</string>
     <string name="rotation_reverse_portrait">Retrato invertido (180°)</string>
     <string name="rotation_landscape_270">Paisagem (90° à direita)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">Compilar</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Redefinir Rotação</string>
     <string name="reset_rotation_desc">Restaura a rotação automática e remove a orientação forçada</string>
@@ -1211,7 +1208,6 @@ Duração do Animador: %3$.2f</string>
     <string name="reward_unlock_denied">Termine o anúncio para desbloquear isto por 3 minutos</string>
     <string name="game_mode_ad_desc">Assista a um anúncio curto para ligar o modo jogo</string>
     <string name="game_mode_select_games_first">Selecione pelo menos um jogo primeiro</string>
-    <string name="compile_booster_ad_desc">Assista a um anúncio curto para começar a compilar</string>
     <string name="compile_all_apps_with_ad">Ver anúncio e compilar</string>
     <string name="game_mode_turn_on_with_ad">Ver anúncio e ligar</string>
     <string name="system_meter_title">Medidor do sistema</string>

@@ -46,7 +46,6 @@
     <string name="auto_permission_disabler_status_paused">Na-save ang seleksyon, pero naka-pause ang serbisyo hangga\'t hindi pa ipinagkakaloob ang mga pahintulot</string>
     <string name="no_apps_found">Walang nahanap na app</string>
     <string name="compile_booster">Compile Booster</string>
-    <string name="compile_booster_desc">Puwersahang gawin ang buong AOT compilation ng bawat naka-install na app para sa mas mabilis na startup at mas maayos na performance</string>
     <string name="compile_booster_progress">Kinokompile… %1$d%%</string>
     <string name="compile_all_apps">Kompilehin ang Lahat ng App</string>
     <string name="compile_all_apps_desc">I-compile ang lahat ng naka-install na app kapag inilapat ang profile na ito</string>
@@ -58,7 +57,6 @@
     <string name="compile_booster_notif_text">Naghahanda para i-compile ang mga app…</string>
     <string name="compile_booster_notif_text_app">Kinokompile ang %1$s… %2$d%%</string>
     <string name="compile_filter_title">Mode ng compilation</string>
-    <string name="compile_filter_current">Mode: %1$s</string>
     <string name="compile_filter_everything">Lahat</string>
     <string name="compile_filter_everything_desc">Pinakamalakas. Ino-compile nang maaga ang lahat ng code, pati ang bihirang gamitin. Pinakamabagal at pinakamalaki ang gamit sa storage.</string>
     <string name="compile_filter_speed">Bilis</string>
@@ -205,7 +203,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="rotation_reverse_portrait">Baligtad na Patayo (180°)</string>
     <string name="rotation_landscape_270">Pahiga (90° kanan)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">I-compile</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">I-reset ang Pag-ikot</string>
     <string name="reset_rotation_desc">Ibinabalik ang auto-rotate at inaalis ang sapilitang oryentasyon</string>
@@ -1211,7 +1208,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="reward_unlock_denied">Tapusin ang ad para ma-unlock ito nang 3 minuto</string>
     <string name="game_mode_ad_desc">Manood ng maikling ad para i-on ang game mode</string>
     <string name="game_mode_select_games_first">Pumili muna ng kahit isang laro</string>
-    <string name="compile_booster_ad_desc">Manood ng maikling ad para magsimulang mag-compile</string>
     <string name="compile_all_apps_with_ad">Manood ng ad at i-compile</string>
     <string name="game_mode_turn_on_with_ad">Manood ng ad at i-on</string>
     <string name="system_meter_title">System Meter</string>

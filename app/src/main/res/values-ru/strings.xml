@@ -46,7 +46,6 @@
     <string name="auto_permission_disabler_status_paused">Выбор сохранён, но служба приостановлена до предоставления разрешений</string>
     <string name="no_apps_found">Приложения не найдены</string>
     <string name="compile_booster">Ускоритель компиляции</string>
-    <string name="compile_booster_desc">Принудительно выполняет полную AOT-компиляцию всех установленных приложений для более быстрого запуска и плавной работы</string>
     <string name="compile_booster_progress">Компиляция… %1$d%%</string>
     <string name="compile_all_apps">Скомпилировать все приложения</string>
     <string name="compile_all_apps_desc">Скомпилировать все установленные приложения при применении этого профиля</string>
@@ -58,7 +57,6 @@
     <string name="compile_booster_notif_text">Подготовка к компиляции приложений…</string>
     <string name="compile_booster_notif_text_app">Компиляция %1$s… %2$d%%</string>
     <string name="compile_filter_title">Режим компиляции</string>
-    <string name="compile_filter_current">Режим: %1$s</string>
     <string name="compile_filter_everything">Всё</string>
     <string name="compile_filter_everything_desc">Самый мощный режим. Заранее компилирует весь код, включая редко используемый. Самый медленный и занимает больше всего места.</string>
     <string name="compile_filter_speed">Скорость</string>
@@ -205,7 +203,6 @@
     <string name="rotation_reverse_portrait">Перевёрнутая портретная (180°)</string>
     <string name="rotation_landscape_270">Альбомная (90° вправо)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">Компилировать</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Сбросить поворот</string>
     <string name="reset_rotation_desc">Возвращает автоповорот и снимает принудительную ориентацию</string>
@@ -1213,7 +1210,6 @@
     <string name="reward_unlock_denied">Досмотрите рекламу, чтобы открыть это на 3 минуты</string>
     <string name="game_mode_ad_desc">Посмотрите короткую рекламу, чтобы включить игровой режим</string>
     <string name="game_mode_select_games_first">Сначала выберите хотя бы одну игру</string>
-    <string name="compile_booster_ad_desc">Посмотрите короткую рекламу, чтобы начать компиляцию</string>
     <string name="compile_all_apps_with_ad">Реклама и компиляция</string>
     <string name="game_mode_turn_on_with_ad">Реклама и включение</string>
     <string name="system_meter_title">Системный монитор</string>

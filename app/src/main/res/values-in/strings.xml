@@ -46,7 +46,6 @@
     <string name="auto_permission_disabler_status_paused">Pilihan disimpan, tetapi layanan dijeda hingga izin diberikan</string>
     <string name="no_apps_found">Tidak ada aplikasi ditemukan</string>
     <string name="compile_booster">Penguat Kompilasi</string>
-    <string name="compile_booster_desc">Paksa lakukan kompilasi AOT penuh pada setiap aplikasi terpasang untuk startup lebih cepat dan performa lebih lancar</string>
     <string name="compile_booster_progress">Mengompilasi… %1$d%%</string>
     <string name="compile_all_apps">Kompilasi Semua Aplikasi</string>
     <string name="compile_all_apps_desc">Kompilasi semua aplikasi yang terpasang saat profil ini diterapkan</string>
@@ -58,7 +57,6 @@
     <string name="compile_booster_notif_text">Mempersiapkan kompilasi aplikasi…</string>
     <string name="compile_booster_notif_text_app">Mengompilasi %1$s… %2$d%%</string>
     <string name="compile_filter_title">Mode kompilasi</string>
-    <string name="compile_filter_current">Mode: %1$s</string>
     <string name="compile_filter_everything">Semuanya</string>
     <string name="compile_filter_everything_desc">Paling kuat. Mengompilasi semua kode di awal, termasuk jalur yang jarang dipakai. Paling lambat dan paling banyak memakai penyimpanan.</string>
     <string name="compile_filter_speed">Kecepatan</string>
@@ -205,7 +203,6 @@ Durasi Animator: %3$.2f</string>
     <string name="rotation_reverse_portrait">Potret Terbalik (180°)</string>
     <string name="rotation_landscape_270">Lanskap (90° kanan)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">Kompilasi</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">Setel Ulang Rotasi</string>
     <string name="reset_rotation_desc">Mengembalikan rotasi otomatis dan menghapus orientasi yang dipaksakan</string>
@@ -1211,7 +1208,6 @@ Durasi Animator: %3$.2f</string>
     <string name="reward_unlock_denied">Selesaikan iklan untuk membuka ini selama 3 menit</string>
     <string name="game_mode_ad_desc">Tonton iklan singkat untuk menyalakan mode game</string>
     <string name="game_mode_select_games_first">Pilih setidaknya satu game dulu</string>
-    <string name="compile_booster_ad_desc">Tonton iklan singkat untuk mulai mengompilasi</string>
     <string name="compile_all_apps_with_ad">Tonton iklan &amp; kompilasi</string>
     <string name="game_mode_turn_on_with_ad">Tonton iklan &amp; nyalakan</string>
     <string name="system_meter_title">Meteran Sistem</string>

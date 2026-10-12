@@ -18,7 +18,6 @@ import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.OtpCopierScreen
 import com.arslan.customanimator.DebloaterScreen
 import com.arslan.customanimator.StatusBarIconsScreen
-import com.arslan.customanimator.CompileBoosterScreenContent
 import com.arslan.customanimator.DeveloperScreenContent
 import com.arslan.customanimator.DozeWhitelistScreen
 import com.arslan.customanimator.GameModeScreenContent
@@ -145,11 +144,6 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun compileBoosterScreenFitsSmallPhones() = screenFits {
-        CompileBoosterScreenContent(hasShizukuPermission = false)
-    }
-
-    @Test
     fun systemMeterScreenFitsSmallPhones() = screenFits {
         SystemMeterScreenContent()
     }
@@ -169,7 +163,6 @@ class ScreenLayoutTest {
             onNavigateToShortcuts = {},
             onNavigateToIconChanger = {},
             onNavigateToApkExtractor = {},
-            onNavigateToCompileBooster = {},
             onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},
             onNavigateToHotspotManager = {},

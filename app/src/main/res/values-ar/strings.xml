@@ -145,7 +145,6 @@
     <string name="auto_permission_disabler_status_paused">تم حفظ التحديد، لكن الخدمة متوقفة مؤقتًا حتى يتم منح الأذونات</string>
     <string name="no_apps_found">لم يتم العثور على تطبيقات</string>
     <string name="compile_booster">معزّز التجميع</string>
-    <string name="compile_booster_desc">فرض تجميع AOT كاملة لكل تطبيق مثبت لبدء أسرع وأداء أكثر سلاسة</string>
     <string name="compile_booster_progress">جارٍ التجميع… %1$d%%</string>
     <string name="compile_all_apps">تجميع جميع التطبيقات</string>
     <string name="compile_all_apps_desc">تجميع كل تطبيق مثبت عند تطبيق هذا الملف الشخصي</string>
@@ -157,7 +156,6 @@
     <string name="compile_booster_notif_text">جارٍ التحضير لتجميع التطبيقات…</string>
     <string name="compile_booster_notif_text_app">جارٍ تجميع %1$s… %2$d%%</string>
     <string name="compile_filter_title">وضع التجميع</string>
-    <string name="compile_filter_current">الوضع: %1$s</string>
     <string name="compile_filter_everything">كل شيء</string>
     <string name="compile_filter_everything_desc">الأقوى. يجمّع كل الكود مسبقًا، بما في ذلك المسارات نادرة الاستخدام. الأبطأ والأكثر استهلاكًا للتخزين.</string>
     <string name="compile_filter_speed">السرعة</string>
@@ -397,7 +395,6 @@
     <string name="rotation_reverse_portrait">عمودي معكوس (180°)</string>
     <string name="rotation_landscape_270">أفقي (90° يمين)</string>
     <!-- Close apps exclusions -->
-    <string name="compile_all_apps_short">تجميع</string>
     <!-- Rotation recovery -->
     <string name="reset_rotation">إعادة تعيين الدوران</string>
     <string name="reset_rotation_desc">يستعيد التدوير التلقائي ويمسح تجاوز الاتجاه المفروض</string>
@@ -1251,7 +1248,6 @@
     <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>
     <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
-    <string name="compile_booster_ad_desc">شاهد إعلانًا قصيرًا لبدء التجميع</string>
     <string name="compile_all_apps_with_ad">إعلان ثم تجميع</string>
     <string name="game_mode_turn_on_with_ad">إعلان ثم تشغيل</string>
     <string name="system_meter_title">مقياس النظام</string>
