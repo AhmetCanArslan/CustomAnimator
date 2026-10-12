@@ -12,6 +12,7 @@ import com.arslan.customanimator.data.DebloatRisk
 import com.arslan.customanimator.data.DebloatState
 import java.io.File
 import java.util.Collections
+import java.util.concurrent.ConcurrentHashMap
 
 object DebloatManager {
 
@@ -26,8 +27,19 @@ object DebloatManager {
         }
     )
 
+    private class ArchiveMeta(val label: String?, val flags: Int, val sharedUserId: String?)
+
+    private val archiveMetaCache = ConcurrentHashMap<String, ArchiveMeta>()
+    private var archiveMetaLocales: String? = null
+
     fun loadApps(context: Context): List<DebloatAppInfo> {
         if (!ShizukuHelper.hasShizukuPermission()) return emptyList()
+
+        val locales = context.resources.configuration.locales.toLanguageTags()
+        if (locales != archiveMetaLocales) {
+            archiveMetaCache.clear()
+            archiveMetaLocales = locales
+        }
 
         val paths = listPackagePaths()
         val installed = listPackages(arrayOf("pm", "list", "packages", "--user", USER))
@@ -250,9 +262,8 @@ object DebloatManager {
         apkPath: String?,
         sources: Sources
     ): DebloatAppInfo {
-        val archive = apkPath?.let { archiveInfo(context, it) }
-        val archiveApp = archive?.applicationInfo
-        val label = archiveApp?.let { loadLabel(context.packageManager, it) }
+        val archive = apkPath?.let { archiveMeta(context, it) }
+        val label = archive?.label
             ?: sources.stored[packageName]?.label
             ?: packageName
         return buildAppInfo(
@@ -262,7 +273,7 @@ object DebloatManager {
             protection = DebloatProtection.Target(
                 packageName = packageName,
                 uid = -1,
-                flags = archiveApp?.flags ?: 0,
+                flags = archive?.flags ?: 0,
                 sharedUserId = archive?.sharedUserId
             ),
             sources = sources
@@ -292,6 +303,17 @@ object DebloatManager {
             isChangedByApp = sources.stored.containsKey(packageName),
             description = remoteEntry?.description
         )
+    }
+
+    private fun archiveMeta(context: Context, apkPath: String): ArchiveMeta? {
+        archiveMetaCache[apkPath]?.let { return it }
+        val archive = archiveInfo(context, apkPath) ?: return null
+        val appInfo = archive.applicationInfo
+        return ArchiveMeta(
+            label = appInfo?.let { loadLabel(context.packageManager, it) },
+            flags = appInfo?.flags ?: 0,
+            sharedUserId = archive.sharedUserId
+        ).also { archiveMetaCache[apkPath] = it }
     }
 
     private fun archiveInfo(context: Context, apkPath: String): PackageInfo? {
