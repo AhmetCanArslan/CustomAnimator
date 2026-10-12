@@ -231,12 +231,10 @@ object FullScreenAdState {
 }
 
 @Composable
-fun BannerAdView(applyNavigationBarPadding: Boolean = true) {
+fun BannerAdView() {
     val isAdFree by rememberIsAdFree()
     if (isAdFree) {
-        if (applyNavigationBarPadding) {
-            Spacer(modifier = Modifier.fillMaxWidth().navigationBarsPadding())
-        }
+        Spacer(modifier = Modifier.fillMaxWidth().navigationBarsPadding())
         return
     }
 
@@ -265,9 +263,7 @@ fun BannerAdView(applyNavigationBarPadding: Boolean = true) {
         AndroidView(
             modifier = Modifier
                 .fillMaxWidth()
-                .then(
-                    if (applyNavigationBarPadding) Modifier.navigationBarsPadding() else Modifier
-                ),
+                .navigationBarsPadding(),
             factory = { context ->
                 val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
                 AdView(context).apply {

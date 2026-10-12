@@ -64,6 +64,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import com.arslan.customanimator.notify.data.RulesManager
@@ -584,9 +586,16 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
     CompositionLocalProvider(LocalOpenSetupGuide provides openSetupGuide) {
+    Column(modifier = Modifier.fillMaxSize()) {
     AnimatedContent(
         targetState = currentScreen,
+        modifier = Modifier
+            .weight(1f)
+            .consumeWindowInsets(PaddingValues(bottom = bottomBarHeight)),
         transitionSpec = {
             val forward = when {
                 returnScreens[targetState] == initialState -> true
@@ -836,12 +845,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onOpenSettings = { currentScreen = HomeScreen.SETTINGS }
             )
         },
-        bottomBar = {
-            Column(modifier = Modifier.navigationBarsPadding()) {
-                RemoveAdsPrompt()
-                BannerAdView(applyNavigationBarPadding = false)
-            }
-        }
+        bottomBar = { RemoveAdsPrompt() }
     ) { paddingValues ->
         AnimatedContent(
             targetState = selectedTab,
@@ -1808,6 +1812,14 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     }
     }
+    Box(
+        modifier = Modifier.onSizeChanged { size ->
+            bottomBarHeight = with(density) { size.height.toDp() }
+        }
+    ) {
+        if (currentScreen !in BANNERLESS_SCREENS) BannerAdView()
+    }
+    }
     }
 
     if (showPermissionDialog) {
@@ -2357,8 +2369,7 @@ private fun SubScreen(
                 },
                 actions = actions
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         Box(
             modifier = Modifier
