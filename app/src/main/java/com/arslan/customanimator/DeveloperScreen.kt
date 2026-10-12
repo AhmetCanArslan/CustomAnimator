@@ -118,8 +118,7 @@ fun DeveloperScreenContent(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .padding(16.dp)
         ) {
             if (!hasShizukuPermission) {
                 item {
@@ -127,6 +126,9 @@ fun DeveloperScreenContent(
                         message = stringResource(R.string.developer_needs_shizuku),
                         onOpenSetup = openSetup
                     )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
 
@@ -149,175 +151,176 @@ fun DeveloperScreenContent(
                         )
                     }
                 }
-            }
-
-            item {
-                DevSectionTitle(stringResource(R.string.developer_toggles))
-            }
-
-            item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
-                    Column {
-                        ToggleRow(
-                            icon = Icons.Filled.Usb,
-                            title = stringResource(R.string.usb_debugging),
-                            description = stringResource(R.string.usb_debugging_desc),
-                            checked = adbEnabled,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { adbEnabled = it },
-                                    { DeveloperOptionsManager.setAdbEnabled(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                            ToggleRow(
-                                icon = Icons.Filled.WifiTethering,
-                                title = stringResource(R.string.wireless_debugging),
-                                description = stringResource(R.string.wireless_debugging_desc),
-                                checked = adbWifiEnabled,
-                                enabled = secureToggleEnabled,
-                                onCheckedChange = { newValue ->
-                                    applyToggle(
-                                        newValue,
-                                        { adbWifiEnabled = it },
-                                        { DeveloperOptionsManager.setAdbWifiEnabled(context, contentResolver, newValue) }
-                                    )
-                                }
-                            )
-                        }
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.LayersClear,
-                            title = stringResource(R.string.dont_keep_activities),
-                            description = stringResource(R.string.dont_keep_activities_desc),
-                            checked = dontKeepActivities,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { dontKeepActivities = it },
-                                    { DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.Memory,
-                            title = stringResource(R.string.limit_background_processes),
-                            description = stringResource(R.string.limit_background_processes_desc),
-                            checked = limitBackgroundProcesses,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { limitBackgroundProcesses = it },
-                                    { DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.SensorsOff,
-                            title = stringResource(R.string.sensors_off),
-                            description = stringResource(R.string.sensors_off_desc),
-                            checked = sensorsOff,
-                            enabled = hasShizukuPermission,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { sensorsOff = it },
-                                    { DeveloperOptionsManager.setSensorsOff(newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.TouchApp,
-                            title = stringResource(R.string.show_taps),
-                            description = stringResource(R.string.show_taps_desc),
-                            checked = showTouches,
-                            enabled = systemToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { showTouches = it },
-                                    { DeveloperOptionsManager.setShowTouches(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.MyLocation,
-                            title = stringResource(R.string.pointer_location),
-                            description = stringResource(R.string.pointer_location_desc),
-                            checked = pointerLocation,
-                            enabled = systemToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { pointerLocation = it },
-                                    { DeveloperOptionsManager.setPointerLocation(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.BorderAll,
-                            title = stringResource(R.string.show_layout_bounds),
-                            description = stringResource(R.string.show_layout_bounds_desc),
-                            checked = layoutBounds,
-                            enabled = hasShizukuPermission,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { layoutBounds = it },
-                                    { DeveloperOptionsManager.setLayoutBounds(newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.BarChart,
-                            title = stringResource(R.string.gpu_profiling),
-                            description = stringResource(R.string.gpu_profiling_desc),
-                            checked = gpuProfiling,
-                            enabled = hasShizukuPermission,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { gpuProfiling = it },
-                                    { DeveloperOptionsManager.setGpuProfiling(newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.FormatTextdirectionRToL,
-                            title = stringResource(R.string.force_rtl),
-                            description = stringResource(R.string.force_rtl_desc),
-                            checked = forceRtl,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { forceRtl = it },
-                                    { DeveloperOptionsManager.setForceRtl(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        InfoNote(text = stringResource(R.string.developer_tiles_restart_note), dismissKey = "developer_tiles_restart")
-                    }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
 
+            cardSection(
+                R.string.developer_toggles,
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Usb,
+                        title = stringResource(R.string.usb_debugging),
+                        description = stringResource(R.string.usb_debugging_desc),
+                        checked = adbEnabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { adbEnabled = it },
+                                { DeveloperOptionsManager.setAdbEnabled(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            icon = Icons.Filled.WifiTethering,
+                            title = stringResource(R.string.wireless_debugging),
+                            description = stringResource(R.string.wireless_debugging_desc),
+                            checked = adbWifiEnabled,
+                            enabled = secureToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { adbWifiEnabled = it },
+                                    { DeveloperOptionsManager.setAdbWifiEnabled(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                    }
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.LayersClear,
+                        title = stringResource(R.string.dont_keep_activities),
+                        description = stringResource(R.string.dont_keep_activities_desc),
+                        checked = dontKeepActivities,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { dontKeepActivities = it },
+                                { DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Memory,
+                        title = stringResource(R.string.limit_background_processes),
+                        description = stringResource(R.string.limit_background_processes_desc),
+                        checked = limitBackgroundProcesses,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { limitBackgroundProcesses = it },
+                                { DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.SensorsOff,
+                        title = stringResource(R.string.sensors_off),
+                        description = stringResource(R.string.sensors_off_desc),
+                        checked = sensorsOff,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { sensorsOff = it },
+                                { DeveloperOptionsManager.setSensorsOff(newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.TouchApp,
+                        title = stringResource(R.string.show_taps),
+                        description = stringResource(R.string.show_taps_desc),
+                        checked = showTouches,
+                        enabled = systemToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { showTouches = it },
+                                { DeveloperOptionsManager.setShowTouches(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.MyLocation,
+                        title = stringResource(R.string.pointer_location),
+                        description = stringResource(R.string.pointer_location_desc),
+                        checked = pointerLocation,
+                        enabled = systemToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { pointerLocation = it },
+                                { DeveloperOptionsManager.setPointerLocation(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.BorderAll,
+                        title = stringResource(R.string.show_layout_bounds),
+                        description = stringResource(R.string.show_layout_bounds_desc),
+                        checked = layoutBounds,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { layoutBounds = it },
+                                { DeveloperOptionsManager.setLayoutBounds(newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.BarChart,
+                        title = stringResource(R.string.gpu_profiling),
+                        description = stringResource(R.string.gpu_profiling_desc),
+                        checked = gpuProfiling,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { gpuProfiling = it },
+                                { DeveloperOptionsManager.setGpuProfiling(newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.FormatTextdirectionRToL,
+                        title = stringResource(R.string.force_rtl),
+                        description = stringResource(R.string.force_rtl_desc),
+                        checked = forceRtl,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { forceRtl = it },
+                                { DeveloperOptionsManager.setForceRtl(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                    InfoNote(text = stringResource(R.string.developer_tiles_restart_note), dismissKey = "developer_tiles_restart")
+                }
+            )
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
