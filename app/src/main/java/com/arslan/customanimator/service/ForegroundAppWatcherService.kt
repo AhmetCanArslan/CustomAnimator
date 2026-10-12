@@ -29,7 +29,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import rikka.shizuku.Shizuku
 
 class ForegroundAppWatcherService : Service() {
@@ -47,6 +46,9 @@ class ForegroundAppWatcherService : Service() {
             "per_app_refresh_rate_channel",
             "app_threading_channel"
         )
+
+        private val eventDispatcher = Dispatchers.Default.limitedParallelism(1)
+        private val shutdownScope = CoroutineScope(SupervisorJob() + eventDispatcher)
 
         val watchers: List<AppVisibilityWatcher> = listOf(
             AutoForceStopWatcher,
@@ -77,7 +79,6 @@ class ForegroundAppWatcherService : Service() {
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
-    private val eventDispatcher = Dispatchers.Default.limitedParallelism(1)
 
     @Volatile
     private var listening = false
@@ -321,7 +322,8 @@ class ForegroundAppWatcherService : Service() {
         } catch (e: IllegalArgumentException) {
             Log.d(TAG, "Screen receiver already unregistered")
         }
-        runBlocking(eventDispatcher) { stopWatchers() }
+        val appContext = applicationContext
+        shutdownScope.launch { watchers.forEach { it.onWatchStopped(appContext) } }
         job.cancel()
         super.onDestroy()
     }
