@@ -15,6 +15,7 @@ import android.provider.MediaStore
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.screenshot.ScreenshotActionActivity
+import com.arslan.customanimator.screenshot.ScreenshotActionReceiver
 import com.arslan.customanimator.screenshot.ScreenshotActions
 import com.arslan.customanimator.screenshot.ScreenshotNotifier
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
@@ -129,6 +130,10 @@ class ScreenshotWatcherService : Service() {
     private fun startAction(action: String) {
         main.removeCallbacks(hideOverlay)
         overlay?.hide()
+        if (ScreenshotActionReceiver.handles(action)) {
+            sendBroadcast(ScreenshotActionReceiver.intent(applicationContext, action, -1L, -1))
+            return
+        }
         runCatching {
             startActivity(
                 ScreenshotActionActivity.intent(applicationContext, action, -1L, -1)

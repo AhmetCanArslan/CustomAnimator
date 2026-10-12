@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.ComponentActivity
@@ -47,20 +46,25 @@ class ScreenshotActionActivity : ComponentActivity() {
     private fun handle(intent: Intent) {
         val action = intent.action
         val notifId = intent.getIntExtra(EXTRA_NOTIF_ID, -1)
+        val id = intent.getLongExtra(EXTRA_MEDIA_ID, -1L)
+        if (action != null && ScreenshotActionReceiver.handles(action)) {
+            sendBroadcast(ScreenshotActionReceiver.intent(applicationContext, action, id, notifId))
+            finish()
+            overridePendingTransition(0, 0)
+            return
+        }
+
         if (notifId != -1) {
             NotificationManagerCompat.from(this).cancel(notifId)
         }
 
-        val id = intent.getLongExtra(EXTRA_MEDIA_ID, -1L)
-        val item = if (id >= 0) {
-            ScreenshotActions.itemFor(this, id)
-        } else if (action == ACTION_COPY) {
+        val item = if (id < 0 && action == ACTION_COPY) {
             ScreenshotActions.newestScreenshot(this)
         } else {
-            ScreenshotActions.latestScreenshot(this)
+            ScreenshotActions.targetOf(this, id)
         }
         if (item == null) {
-            Toast.makeText(this, R.string.screenshot_toast_not_found, Toast.LENGTH_SHORT).show()
+            ScreenshotToasts.show(this, R.string.screenshot_toast_not_found)
             finish()
             return
         }
@@ -91,7 +95,7 @@ class ScreenshotActionActivity : ComponentActivity() {
             deleted -> R.string.screenshot_toast_deleted
             else -> R.string.screenshot_toast_cancelled
         }
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        ScreenshotToasts.show(this, message)
         setResult(Activity.RESULT_OK)
         finish()
         overridePendingTransition(0, 0)

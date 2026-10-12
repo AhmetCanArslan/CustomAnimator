@@ -117,10 +117,13 @@ object ScreenshotNotifier {
         item: ScreenshotItem,
         notifId: Int
     ): PendingIntent {
-        val intent = ScreenshotActionActivity.intent(context, action, item.id, notifId).apply {
-            data = Uri.fromParts("screenshot", item.id.toString(), action)
-        }
+        val data = Uri.fromParts("screenshot", item.id.toString(), action)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        if (ScreenshotActionReceiver.handles(action)) {
+            val intent = ScreenshotActionReceiver.intent(context, action, item.id, notifId).apply { this.data = data }
+            return PendingIntent.getBroadcast(context, action.hashCode(), intent, flags)
+        }
+        val intent = ScreenshotActionActivity.intent(context, action, item.id, notifId).apply { this.data = data }
         return PendingIntent.getActivity(context, action.hashCode(), intent, flags)
     }
 }

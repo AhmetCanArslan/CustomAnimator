@@ -153,6 +153,10 @@
             android:noHistory="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <receiver
+            android:name=".screenshot.ScreenshotActionReceiver"
+            android:exported="false" />
+
         <activity
             android:name=".service.ShortcutLaunchActivity"
             android:exported="false"
