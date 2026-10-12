@@ -1,15 +1,19 @@
 package com.arslan.customanimator.utils
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 
 @RunWith(RobolectricTestRunner::class)
 class AppIconBitmapsTest {
@@ -47,5 +51,24 @@ class AppIconBitmapsTest {
         val loaded = runBlocking { AppIconBitmaps.load(drawable) }
         assertSame(loaded, AppIconBitmaps.cached(drawable))
         assertSame(loaded, runBlocking { AppIconBitmaps.load(drawable) })
+    }
+
+    @Test
+    fun unknownPackageHasNoIcon() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        assertNull(runBlocking { AppIconBitmaps.load(context, "com.example.missing") })
+        assertNull(AppIconBitmaps.cached("com.example.missing"))
+    }
+
+    @Test
+    fun packageIconIsServedFromTheCacheUntilEvicted() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        val packageName = "com.example.icon"
+        shadowOf(context.packageManager).setApplicationIcon(packageName, icon(64, 64))
+        val loaded = runBlocking { AppIconBitmaps.load(context, packageName) }
+        assertNotNull(loaded)
+        assertSame(loaded, AppIconBitmaps.cached(packageName))
+        AppIconBitmaps.evict(packageName)
+        assertNull(AppIconBitmaps.cached(packageName))
     }
 }
