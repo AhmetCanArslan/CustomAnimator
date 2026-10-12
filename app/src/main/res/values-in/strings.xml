@@ -1025,6 +1025,9 @@ Durasi Animator: %3$.2f</string>
     <string name="screenshot_section_permissions">Izin</string>
     <string name="screenshot_section_tile">Ubin Setelan Cepat</string>
     <string name="screenshot_section_about">Cara kerja penghapusan</string>
+    <string name="screenshot_section_feedback">Umpan balik</string>
+    <string name="screenshot_toast_switch">Tampilkan pesan konfirmasi</string>
+    <string name="screenshot_toast_switch_desc">Pesan singkat setelah screenshot disalin atau dihapus. Kesalahan selalu ditampilkan.</string>
     <string name="screenshot_group_buttons">Tombol</string>
     <string name="screenshot_group_timing">Waktu</string>
     <string name="screenshot_group_position">Posisi &amp; pratinjau</string>

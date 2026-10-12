@@ -1084,6 +1084,9 @@
     <string name="screenshot_section_permissions">الأذونات</string>
     <string name="screenshot_section_tile">مربع الإعدادات السريعة</string>
     <string name="screenshot_section_about">كيف يعمل الحذف</string>
+    <string name="screenshot_section_feedback">التنبيهات</string>
+    <string name="screenshot_toast_switch">إظهار رسائل التأكيد</string>
+    <string name="screenshot_toast_switch_desc">رسالة قصيرة بعد نسخ لقطة الشاشة أو حذفها. تظهر الأخطاء دائمًا.</string>
     <string name="screenshot_group_buttons">الأزرار</string>
     <string name="screenshot_group_timing">التوقيت</string>
     <string name="screenshot_group_position">الموضع والمعاينة</string>

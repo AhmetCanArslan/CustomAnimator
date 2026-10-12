@@ -1045,6 +1045,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_section_permissions">Autorizzazioni</string>
     <string name="screenshot_section_tile">Riquadro Impostazioni rapide</string>
     <string name="screenshot_section_about">Come funziona l\'eliminazione</string>
+    <string name="screenshot_section_feedback">Feedback</string>
+    <string name="screenshot_toast_switch">Mostra messaggi di conferma</string>
+    <string name="screenshot_toast_switch_desc">Breve messaggio dopo la copia o la rimozione di uno screenshot. Gli errori vengono sempre mostrati.</string>
     <string name="screenshot_group_buttons">Pulsanti</string>
     <string name="screenshot_group_timing">Tempi</string>
     <string name="screenshot_group_position">Posizione e anteprima</string>

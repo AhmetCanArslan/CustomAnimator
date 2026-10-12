@@ -17,6 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.*
@@ -71,6 +72,7 @@ fun ScreenshotActionsScreen(
     var overlayShowCopy by remember { mutableStateOf(prefs.overlayShowCopy) }
     var overlayShowDelete by remember { mutableStateOf(prefs.overlayShowDelete) }
     var overlayTimeout by remember { mutableIntStateOf(prefs.overlayTimeoutSeconds) }
+    var showConfirmationToasts by remember { mutableStateOf(prefs.showConfirmationToasts) }
     var overlayX by remember { mutableIntStateOf(prefs.overlayX) }
     var overlayY by remember { mutableIntStateOf(prefs.overlayY) }
 
@@ -189,6 +191,23 @@ fun ScreenshotActionsScreen(
                         icon = Icons.Filled.ContentCopy,
                         title = stringResource(R.string.screenshot_tile_label),
                         description = stringResource(R.string.screenshot_tile_hint)
+                    )
+                }
+            }
+
+            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_feedback)) }
+
+            item {
+                ScreenshotCard {
+                    ScreenshotToggleRow(
+                        icon = Icons.Filled.Info,
+                        title = stringResource(R.string.screenshot_toast_switch),
+                        description = stringResource(R.string.screenshot_toast_switch_desc),
+                        checked = showConfirmationToasts,
+                        onCheckedChange = {
+                            showConfirmationToasts = it
+                            prefs.showConfirmationToasts = it
+                        }
                     )
                 }
             }

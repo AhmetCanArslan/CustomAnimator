@@ -1027,6 +1027,9 @@
     <string name="screenshot_section_permissions">Разрешения</string>
     <string name="screenshot_section_tile">Плитка быстрых настроек</string>
     <string name="screenshot_section_about">Как работает удаление</string>
+    <string name="screenshot_section_feedback">Уведомления</string>
+    <string name="screenshot_toast_switch">Показывать сообщения подтверждения</string>
+    <string name="screenshot_toast_switch_desc">Короткое сообщение после копирования или удаления скриншота. Ошибки показываются всегда.</string>
     <string name="screenshot_group_buttons">Кнопки</string>
     <string name="screenshot_group_timing">Тайминги</string>
     <string name="screenshot_group_position">Положение и предпросмотр</string>

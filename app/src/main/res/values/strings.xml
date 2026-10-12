@@ -1087,6 +1087,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_section_permissions">Permissions</string>
     <string name="screenshot_section_tile">Quick Settings tile</string>
     <string name="screenshot_section_about">How deletion works</string>
+    <string name="screenshot_section_feedback">Feedback</string>
+    <string name="screenshot_toast_switch">Show confirmation messages</string>
+    <string name="screenshot_toast_switch_desc">Short message after a screenshot is copied or deleted. Errors are always shown.</string>
     <string name="screenshot_group_buttons">Buttons</string>
     <string name="screenshot_group_timing">Timing</string>
     <string name="screenshot_group_position">Position &amp; preview</string>

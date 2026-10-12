@@ -1025,6 +1025,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="screenshot_section_permissions">Mga pahintulot</string>
     <string name="screenshot_section_tile">Tile ng Quick Settings</string>
     <string name="screenshot_section_about">Paano gumagana ang pagbura</string>
+    <string name="screenshot_section_feedback">Feedback</string>
+    <string name="screenshot_toast_switch">Ipakita ang mga mensahe ng kumpirmasyon</string>
+    <string name="screenshot_toast_switch_desc">Maikling mensahe pagkatapos makopya o ma-delete ang screenshot. Laging ipinapakita ang mga error.</string>
     <string name="screenshot_group_buttons">Mga button</string>
     <string name="screenshot_group_timing">Timing</string>
     <string name="screenshot_group_position">Posisyon at preview</string>

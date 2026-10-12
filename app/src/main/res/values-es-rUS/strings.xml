@@ -1025,6 +1025,9 @@ Duración del Animador: %3$.2f</string>
     <string name="screenshot_section_permissions">Permisos</string>
     <string name="screenshot_section_tile">Mosaico de Ajustes rápidos</string>
     <string name="screenshot_section_about">Cómo funciona la eliminación</string>
+    <string name="screenshot_section_feedback">Avisos</string>
+    <string name="screenshot_toast_switch">Mostrar mensajes de confirmación</string>
+    <string name="screenshot_toast_switch_desc">Mensaje breve después de copiar o eliminar una captura. Los errores siempre se muestran.</string>
     <string name="screenshot_group_buttons">Botones</string>
     <string name="screenshot_group_timing">Tiempos</string>
     <string name="screenshot_group_position">Posición y vista previa</string>

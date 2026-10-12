@@ -1033,6 +1033,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_section_permissions">İzinler</string>
     <string name="screenshot_section_tile">Hızlı Ayarlar kutucuğu</string>
     <string name="screenshot_section_about">Silme nasıl çalışır</string>
+    <string name="screenshot_section_feedback">Geri bildirim</string>
+    <string name="screenshot_toast_switch">Onay mesajlarını göster</string>
+    <string name="screenshot_toast_switch_desc">Ekran görüntüsü kopyalandığında veya silindiğinde kısa bir mesaj gösterir. Hatalar her zaman gösterilir.</string>
     <string name="screenshot_group_buttons">Düğmeler</string>
     <string name="screenshot_group_timing">Zamanlama</string>
     <string name="screenshot_group_position">Konum ve önizleme</string>

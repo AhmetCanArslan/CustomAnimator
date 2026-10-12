@@ -1025,6 +1025,9 @@ Duração do Animador: %3$.2f</string>
     <string name="screenshot_section_permissions">Permissões</string>
     <string name="screenshot_section_tile">Bloco das Configurações rápidas</string>
     <string name="screenshot_section_about">Como a exclusão funciona</string>
+    <string name="screenshot_section_feedback">Feedback</string>
+    <string name="screenshot_toast_switch">Mostrar mensagens de confirmação</string>
+    <string name="screenshot_toast_switch_desc">Mensagem curta depois que uma captura é copiada ou excluída. Os erros são sempre exibidos.</string>
     <string name="screenshot_group_buttons">Botões</string>
     <string name="screenshot_group_timing">Tempo</string>
     <string name="screenshot_group_position">Posição e pré-visualização</string>
