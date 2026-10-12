@@ -3,6 +3,7 @@ package com.arslan.customanimator
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
@@ -15,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -32,6 +35,43 @@ internal fun DevSectionTitle(title: String) {
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(start = 4.dp)
     )
+}
+
+internal fun LazyListScope.cardSection(titleRes: Int, vararg rows: @Composable () -> Unit) {
+    item {
+        Column {
+            DevSectionTitle(stringResource(titleRes))
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+    cardRows(*rows)
+    item {
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+internal fun LazyListScope.cardRows(vararg rows: @Composable () -> Unit) {
+    items(rows.size) { index ->
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = cardRowShape(isFirst = index == 0, isLast = index == rows.lastIndex),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column {
+                if (index > 0) {
+                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                }
+                rows[index]()
+            }
+        }
+    }
+}
+
+private fun cardRowShape(isFirst: Boolean, isLast: Boolean): Shape = when {
+    isFirst && isLast -> AppShapes.card
+    isFirst -> AppShapes.cardTop
+    isLast -> AppShapes.cardBottom
+    else -> RectangleShape
 }
 
 @Composable
