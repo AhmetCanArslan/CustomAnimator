@@ -1753,4 +1753,41 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="apk_extractor_failed">Could not save the APK.</string>
     <string name="apk_extractor_row" translatable="false">%1$s · %2$s</string>
     <string name="apk_extractor_row_split" translatable="false">%1$s · %2$s · Split APK</string>
+    <string name="whatsapp_cleaner">WhatsApp Cleaner</string>
+    <string name="whatsapp_cleaner_desc">Delete old WhatsApp photos, videos and other media to free up space</string>
+    <string name="whatsapp_cleaner_info">Files are deleted from the WhatsApp media folder for good. Your chats stay, but deleted media can no longer be opened from them.</string>
+    <string name="whatsapp_cleaner_not_found">No WhatsApp media folder was found on this device.</string>
+    <string name="whatsapp_cleaner_empty">Nothing to clean here.</string>
+    <string name="whatsapp_cleaner_usage">%1$d files · %2$s</string>
+    <string name="whatsapp_cleaner_age_any">Any age</string>
+    <string name="whatsapp_cleaner_age_days">Older than %1$d days</string>
+    <string name="whatsapp_cleaner_media_types">Media types</string>
+    <string name="whatsapp_cleaner_part_received">Received</string>
+    <string name="whatsapp_cleaner_part_sent">Sent</string>
+    <string name="whatsapp_cleaner_part_private">Private</string>
+    <string name="whatsapp_cleaner_images">Images</string>
+    <string name="whatsapp_cleaner_videos">Videos</string>
+    <string name="whatsapp_cleaner_documents">Documents</string>
+    <string name="whatsapp_cleaner_audio">Audio</string>
+    <string name="whatsapp_cleaner_gifs">GIFs</string>
+    <string name="whatsapp_cleaner_voice_notes">Voice notes</string>
+    <string name="whatsapp_cleaner_video_notes">Video notes</string>
+    <string name="whatsapp_cleaner_statuses">Statuses</string>
+    <string name="whatsapp_cleaner_stickers">Stickers</string>
+    <string name="whatsapp_cleaner_wallpapers">Wallpapers</string>
+    <string name="whatsapp_cleaner_profile_photos">Profile photos</string>
+    <string name="whatsapp_cleaner_other_data">Other WhatsApp data</string>
+    <string name="whatsapp_cleaner_link_previews">Link previews</string>
+    <string name="whatsapp_cleaner_shared">Shared file copies</string>
+    <string name="whatsapp_cleaner_trash">Trash</string>
+    <string name="whatsapp_cleaner_thumbnails">Thumbnail cache</string>
+    <string name="whatsapp_cleaner_old_backups">Old chat backups</string>
+    <string name="whatsapp_cleaner_kind_archives">Archives</string>
+    <string name="whatsapp_cleaner_kind_other">Other</string>
+    <string name="whatsapp_cleaner_kind_pdf" translatable="false">PDF</string>
+    <string name="whatsapp_cleaner_kind_apk" translatable="false">APK</string>
+    <string name="whatsapp_cleaner_delete">Delete %1$s</string>
+    <string name="whatsapp_cleaner_confirm_title">Delete WhatsApp media?</string>
+    <string name="whatsapp_cleaner_confirm_message">%1$d files (%2$s) will be deleted permanently. This cannot be undone.</string>
+    <string name="whatsapp_cleaner_freed">%1$s freed</string>
 </resources>
