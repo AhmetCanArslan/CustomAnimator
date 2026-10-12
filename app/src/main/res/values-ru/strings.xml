@@ -1024,9 +1024,7 @@
     <string name="disable_rotation_suggestions_desc">Скрывает кнопку поворота, которая появляется при повороте устройства (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Действия со скриншотами</string>
     <string name="screenshot_actions_desc">Копируйте или удаляйте скриншот сразу после съёмки — из уведомления или плавающей кнопки</string>
-    <string name="screenshot_section_permissions">Разрешения</string>
     <string name="screenshot_section_tile">Плитка быстрых настроек</string>
-    <string name="screenshot_section_about">Как работает удаление</string>
     <string name="screenshot_section_feedback">Уведомления</string>
     <string name="screenshot_toast_switch">Показывать сообщения подтверждения</string>
     <string name="screenshot_toast_switch_desc">Короткое сообщение после копирования или удаления скриншота. Ошибки показываются всегда.</string>
@@ -1034,11 +1032,8 @@
     <string name="screenshot_group_timing">Тайминги</string>
     <string name="screenshot_group_position">Положение и предпросмотр</string>
     <string name="screenshot_perm_images">Доступ к фото и видео</string>
-    <string name="screenshot_perm_notifications">Уведомления</string>
-    <string name="screenshot_perm_overlay">Поверх других приложений</string>
     <string name="screenshot_granted">Предоставлено</string>
     <string name="screenshot_not_granted">Не предоставлено</string>
-    <string name="screenshot_grant">Предоставить</string>
     <string name="screenshot_section_notification">Режим уведомлений</string>
     <string name="screenshot_section_overlay">Режим наложения</string>
     <string name="screenshot_watcher_switch">Уведомлять о новых скриншотах</string>
@@ -1081,7 +1076,6 @@
     <string name="screenshot_toast_copied">Скриншот скопирован в буфер обмена</string>
     <string name="screenshot_toast_cancelled">Скриншот оставлен</string>
     <string name="screenshot_toast_not_found">Свежих скриншотов не найдено</string>
-    <string name="screenshot_delete_note">Android запрашивает подтверждение каждого удаления. Благодаря этому приложению не нужно разрешение на доступ ко всем файлам.</string>
     <string name="screenshot_toast_copied_deleted">Скопировано в буфер обмена и удалено</string>
     <string name="screenshot_toast_trashed">Скриншот перемещён в корзину</string>
     <string name="screenshot_toast_copied_trashed">Скопировано в буфер обмена и перемещено в корзину</string>

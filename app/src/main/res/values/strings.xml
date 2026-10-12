@@ -1084,9 +1084,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="disable_rotation_suggestions_desc">Hide the rotate button that appears when the device turns (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Screenshot actions</string>
     <string name="screenshot_actions_desc">Copy or delete a screenshot right after you take it, from a notification or a floating button</string>
-    <string name="screenshot_section_permissions">Permissions</string>
     <string name="screenshot_section_tile">Quick Settings tile</string>
-    <string name="screenshot_section_about">How deletion works</string>
     <string name="screenshot_section_feedback">Feedback</string>
     <string name="screenshot_toast_switch">Show confirmation messages</string>
     <string name="screenshot_toast_switch_desc">Short message after a screenshot is copied or deleted. Errors are always shown.</string>
@@ -1094,11 +1092,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_group_timing">Timing</string>
     <string name="screenshot_group_position">Position &amp; preview</string>
     <string name="screenshot_perm_images">Photos and videos access</string>
-    <string name="screenshot_perm_notifications">Notifications</string>
-    <string name="screenshot_perm_overlay">Draw over other apps</string>
     <string name="screenshot_granted">Granted</string>
     <string name="screenshot_not_granted">Not granted</string>
-    <string name="screenshot_grant">Grant</string>
     <string name="screenshot_section_notification">Notification mode</string>
     <string name="screenshot_section_overlay">Overlay mode</string>
     <string name="screenshot_watcher_switch">Notify on new screenshots</string>
@@ -1141,7 +1136,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_toast_copied">Screenshot copied to clipboard</string>
     <string name="screenshot_toast_cancelled">Screenshot kept</string>
     <string name="screenshot_toast_not_found">No recent screenshot found</string>
-    <string name="screenshot_delete_note">Android asks you to confirm each deletion. This keeps the app free of the restricted All-files permission.</string>
     <string name="screenshot_toast_copied_deleted">Copied to clipboard and deleted</string>
     <string name="screenshot_toast_trashed">Screenshot moved to trash</string>
     <string name="screenshot_toast_copied_trashed">Copied to clipboard and moved to trash</string>

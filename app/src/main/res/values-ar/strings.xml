@@ -1081,9 +1081,7 @@
     <string name="disable_rotation_suggestions_desc">إخفاء زر التدوير الذي يظهر عند إمالة الجهاز (show_rotation_suggestions)</string>
     <string name="screenshot_actions">إجراءات لقطات الشاشة</string>
     <string name="screenshot_actions_desc">انسخ أو احذف لقطة شاشة فور التقاطها، من إشعار أو زر عائم</string>
-    <string name="screenshot_section_permissions">الأذونات</string>
     <string name="screenshot_section_tile">مربع الإعدادات السريعة</string>
-    <string name="screenshot_section_about">كيف يعمل الحذف</string>
     <string name="screenshot_section_feedback">التنبيهات</string>
     <string name="screenshot_toast_switch">إظهار رسائل التأكيد</string>
     <string name="screenshot_toast_switch_desc">رسالة قصيرة بعد نسخ لقطة الشاشة أو حذفها. تظهر الأخطاء دائمًا.</string>
@@ -1091,11 +1089,8 @@
     <string name="screenshot_group_timing">التوقيت</string>
     <string name="screenshot_group_position">الموضع والمعاينة</string>
     <string name="screenshot_perm_images">الوصول إلى الصور ومقاطع الفيديو</string>
-    <string name="screenshot_perm_notifications">الإشعارات</string>
-    <string name="screenshot_perm_overlay">العرض فوق التطبيقات الأخرى</string>
     <string name="screenshot_granted">ممنوح</string>
     <string name="screenshot_not_granted">غير ممنوح</string>
-    <string name="screenshot_grant">منح</string>
     <string name="screenshot_section_notification">وضع الإشعار</string>
     <string name="screenshot_section_overlay">وضع التراكب</string>
     <string name="screenshot_watcher_switch">إشعار عند التقاط لقطات شاشة جديدة</string>
@@ -1138,7 +1133,6 @@
     <string name="screenshot_toast_copied">تم نسخ لقطة الشاشة إلى الحافظة</string>
     <string name="screenshot_toast_cancelled">تم الاحتفاظ بلقطة الشاشة</string>
     <string name="screenshot_toast_not_found">لم يتم العثور على لقطة شاشة حديثة</string>
-    <string name="screenshot_delete_note">يطلب أندرويد تأكيد كل عملية حذف. وبذلك لا يحتاج التطبيق إلى إذن الوصول إلى جميع الملفات المقيّد.</string>
     <string name="screenshot_toast_copied_deleted">تم النسخ إلى الحافظة والحذف</string>
     <string name="screenshot_toast_trashed">تم نقل لقطة الشاشة إلى سلة المهملات</string>
     <string name="screenshot_toast_copied_trashed">تم النسخ إلى الحافظة والنقل إلى سلة المهملات</string>

@@ -1022,9 +1022,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="disable_rotation_suggestions_desc">Itago ang rotate button na lumalabas kapag iniikot ang device (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Mga aksyon sa screenshot</string>
     <string name="screenshot_actions_desc">Kopyahin o burahin ang screenshot pagkatapos mo itong kunin, mula sa notification o floating button</string>
-    <string name="screenshot_section_permissions">Mga pahintulot</string>
     <string name="screenshot_section_tile">Tile ng Quick Settings</string>
-    <string name="screenshot_section_about">Paano gumagana ang pagbura</string>
     <string name="screenshot_section_feedback">Feedback</string>
     <string name="screenshot_toast_switch">Ipakita ang mga mensahe ng kumpirmasyon</string>
     <string name="screenshot_toast_switch_desc">Maikling mensahe pagkatapos makopya o ma-delete ang screenshot. Laging ipinapakita ang mga error.</string>
@@ -1032,11 +1030,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="screenshot_group_timing">Timing</string>
     <string name="screenshot_group_position">Posisyon at preview</string>
     <string name="screenshot_perm_images">Access sa mga larawan at video</string>
-    <string name="screenshot_perm_notifications">Mga notification</string>
-    <string name="screenshot_perm_overlay">Ipakita sa ibabaw ng ibang app</string>
     <string name="screenshot_granted">Naibigay</string>
     <string name="screenshot_not_granted">Hindi naibigay</string>
-    <string name="screenshot_grant">Ibigay</string>
     <string name="screenshot_section_notification">Mode ng notification</string>
     <string name="screenshot_section_overlay">Mode ng overlay</string>
     <string name="screenshot_watcher_switch">Mag-notify sa bagong screenshot</string>
@@ -1079,7 +1074,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="screenshot_toast_copied">Nakopya sa clipboard ang screenshot</string>
     <string name="screenshot_toast_cancelled">Hindi binura ang screenshot</string>
     <string name="screenshot_toast_not_found">Walang nakitang kamakailang screenshot</string>
-    <string name="screenshot_delete_note">Humihingi ang Android ng kumpirmasyon sa bawat pagbura. Kaya hindi kailangan ng app ang restricted na All-files na pahintulot.</string>
     <string name="screenshot_toast_copied_deleted">Nakopya sa clipboard at nabura</string>
     <string name="screenshot_toast_trashed">Inilipat sa basurahan ang screenshot</string>
     <string name="screenshot_toast_copied_trashed">Nakopya sa clipboard at inilipat sa basurahan</string>

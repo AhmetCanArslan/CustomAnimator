@@ -1030,9 +1030,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_widget_needs_shizuku">Shizuku izni gerekli</string>
     <string name="screenshot_actions">Ekran görüntüsü eylemleri</string>
     <string name="screenshot_actions_desc">Ekran görüntüsü aldıktan hemen sonra bildirimden veya kayan düğmeden kopyala ya da sil</string>
-    <string name="screenshot_section_permissions">İzinler</string>
     <string name="screenshot_section_tile">Hızlı Ayarlar kutucuğu</string>
-    <string name="screenshot_section_about">Silme nasıl çalışır</string>
     <string name="screenshot_section_feedback">Geri bildirim</string>
     <string name="screenshot_toast_switch">Onay mesajlarını göster</string>
     <string name="screenshot_toast_switch_desc">Ekran görüntüsü kopyalandığında veya silindiğinde kısa bir mesaj gösterir. Hatalar her zaman gösterilir.</string>
@@ -1040,11 +1038,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_group_timing">Zamanlama</string>
     <string name="screenshot_group_position">Konum ve önizleme</string>
     <string name="screenshot_perm_images">Fotoğraf ve video erişimi</string>
-    <string name="screenshot_perm_notifications">Bildirimler</string>
-    <string name="screenshot_perm_overlay">Diğer uygulamaların üzerinde göster</string>
     <string name="screenshot_granted">Verildi</string>
     <string name="screenshot_not_granted">Verilmedi</string>
-    <string name="screenshot_grant">İzin ver</string>
     <string name="screenshot_section_notification">Bildirim modu</string>
     <string name="screenshot_section_overlay">Katman modu</string>
     <string name="screenshot_watcher_switch">Yeni ekran görüntülerinde bildir</string>
@@ -1087,7 +1082,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="screenshot_toast_copied">Ekran görüntüsü panoya kopyalandı</string>
     <string name="screenshot_toast_cancelled">Ekran görüntüsü korundu</string>
     <string name="screenshot_toast_not_found">Yakın zamanlı ekran görüntüsü bulunamadı</string>
-    <string name="screenshot_delete_note">Android her silme için onay ister. Bu sayede uygulama kısıtlı Tüm dosyalar iznine ihtiyaç duymaz.</string>
     <string name="screenshot_toast_copied_deleted">Panoya kopyalandı ve silindi</string>
     <string name="screenshot_toast_trashed">Ekran görüntüsü çöp kutusuna taşındı</string>
     <string name="screenshot_toast_copied_trashed">Panoya kopyalandı ve çöp kutusuna taşındı</string>

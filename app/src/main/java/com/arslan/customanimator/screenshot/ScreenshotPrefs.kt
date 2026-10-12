@@ -76,18 +76,18 @@ class ScreenshotPrefs(context: Context) {
         private const val KEY_OVERLAY_Y = "overlay_y"
 
         const val DEFAULT_DELAY = 2
-        val DELAY_OPTIONS = listOf(0, 1, 2, 3, 5, 10)
+        const val DELAY_MAX = 10
 
         const val AUTO_DISMISS_OFF = 0
         const val DEFAULT_AUTO_DISMISS = AUTO_DISMISS_OFF
-        val AUTO_DISMISS_OPTIONS = listOf(AUTO_DISMISS_OFF, 5, 10, 30, 60)
+        const val AUTO_DISMISS_MAX = 60
 
         const val DEFAULT_OVERLAY_TIMEOUT = 5
-        val OVERLAY_TIMEOUT_OPTIONS = listOf(2, 3, 5, 8, 12)
+        const val OVERLAY_TIMEOUT_MIN = 1
+        const val OVERLAY_TIMEOUT_MAX = 30
 
         const val DEFAULT_OVERLAY_X = 190
         const val DEFAULT_OVERLAY_Y = 54
         const val OVERLAY_POSITION_MAX = 400
-
     }
 }

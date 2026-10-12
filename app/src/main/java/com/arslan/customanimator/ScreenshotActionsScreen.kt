@@ -1,10 +1,7 @@
 package com.arslan.customanimator
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -30,14 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
-import com.arslan.customanimator.screenshot.ScreenshotPermissions
 import com.arslan.customanimator.screenshot.ScreenshotPrefs
 import com.arslan.customanimator.service.ScreenshotWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
+import kotlin.math.roundToInt
+
+private val TIMING_SLIDER_PADDING = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,19 +44,13 @@ fun ScreenshotActionsScreen(
     val context = LocalContext.current
     val prefs = remember { ScreenshotPrefs(context) }
 
-    var permRefresh by remember { mutableIntStateOf(0) }
-    val hasImages = remember(permRefresh) { ScreenshotPermissions.hasImagesPermission(context) }
-    val hasNotif = remember(permRefresh) { ScreenshotPermissions.hasNotificationPermission(context) }
-    val hasOverlayPerm = remember(permRefresh) { ScreenshotPermissions.hasOverlayPermission(context) }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) permRefresh++
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
+    val permissionRefresh = rememberPermissionRefresh()
+    val requestPermission = rememberPermissionRequester(onChanged = { permissionRefresh.intValue++ })
+    val permissions = key(permissionRefresh.intValue) { permissionEntries(SCREENSHOT_PERMISSIONS) }
+    val granted = permissions.filter { it.granted }.map { it.permission }
+    val hasImages = AppPermission.IMAGES in granted
+    val hasNotif = AppPermission.POST_NOTIFICATIONS in granted
+    val hasOverlayPerm = AppPermission.OVERLAY in granted
 
     var watcherEnabled by remember { mutableStateOf(prefs.watcherEnabled) }
     var overlayEnabled by remember { mutableStateOf(prefs.overlayEnabled) }
@@ -82,21 +72,6 @@ fun ScreenshotActionsScreen(
     val tester = remember { ScreenshotOverlay(context) }
     val mainHandler = remember { Handler(Looper.getMainLooper()) }
     DisposableEffect(Unit) { onDispose { tester.hide() } }
-
-    val notifPermLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { permRefresh++ }
-
-    val imagesPermLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        permRefresh++
-        if (!granted) {
-            runCatching {
-                context.startActivity(ScreenshotPermissions.appSettingsIntent(context))
-            }
-        }
-    }
 
     val setWatcher: (Boolean) -> Unit = { on ->
         watcherEnabled = on
@@ -149,38 +124,12 @@ fun ScreenshotActionsScreen(
                 )
             }
 
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_permissions)) }
-
             item {
-                ScreenshotCard {
-                    ScreenshotPermissionRow(
-                        label = stringResource(R.string.screenshot_perm_images),
-                        granted = hasImages,
-                        onGrant = { imagesPermLauncher.launch(ScreenshotPermissions.imagesPermission) }
-                    )
-                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                    ScreenshotPermissionRow(
-                        label = stringResource(R.string.screenshot_perm_notifications),
-                        granted = hasNotif,
-                        onGrant = {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                notifPermLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-                            }
-                        }
-                    )
-                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                    ScreenshotPermissionRow(
-                        label = stringResource(R.string.screenshot_perm_overlay),
-                        granted = hasOverlayPerm,
-                        onGrant = {
-                            runCatching {
-                                context.startActivity(
-                                    ScreenshotPermissions.overlayPermissionIntent(context)
-                                )
-                            }
-                        }
-                    )
-                }
+                PermissionSection(
+                    title = stringResource(R.string.permissions_title),
+                    entries = permissions,
+                    onGrant = requestPermission
+                )
             }
 
             item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_tile)) }
@@ -264,31 +213,31 @@ fun ScreenshotActionsScreen(
                             )
                             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                             ScreenshotGroupLabel(stringResource(R.string.screenshot_group_timing))
-                            ScreenshotChipRow(
+                            ScreenshotSlider(
                                 label = stringResource(R.string.screenshot_delay_label),
-                                options = ScreenshotPrefs.DELAY_OPTIONS,
-                                selected = delaySeconds,
-                                labelFor = { stringResource(R.string.screenshot_delay_value, it) },
-                                onSelect = {
+                                valueText = stringResource(R.string.screenshot_delay_value, delaySeconds),
+                                value = delaySeconds,
+                                range = 0..ScreenshotPrefs.DELAY_MAX,
+                                onChange = {
                                     delaySeconds = it
                                     prefs.notificationDelaySeconds = it
-                                }
-                            )
-                            ScreenshotChipRow(
-                                label = stringResource(R.string.screenshot_auto_dismiss_label),
-                                options = ScreenshotPrefs.AUTO_DISMISS_OPTIONS,
-                                selected = autoDismissSeconds,
-                                labelFor = {
-                                    if (it == ScreenshotPrefs.AUTO_DISMISS_OFF) {
-                                        stringResource(R.string.screenshot_auto_dismiss_off)
-                                    } else {
-                                        stringResource(R.string.screenshot_auto_dismiss_value, it)
-                                    }
                                 },
-                                onSelect = {
+                                modifier = TIMING_SLIDER_PADDING
+                            )
+                            ScreenshotSlider(
+                                label = stringResource(R.string.screenshot_auto_dismiss_label),
+                                valueText = if (autoDismissSeconds == ScreenshotPrefs.AUTO_DISMISS_OFF) {
+                                    stringResource(R.string.screenshot_auto_dismiss_off)
+                                } else {
+                                    stringResource(R.string.screenshot_auto_dismiss_value, autoDismissSeconds)
+                                },
+                                value = autoDismissSeconds,
+                                range = ScreenshotPrefs.AUTO_DISMISS_OFF..ScreenshotPrefs.AUTO_DISMISS_MAX,
+                                onChange = {
                                     autoDismissSeconds = it
                                     prefs.notificationAutoDismissSeconds = it
-                                }
+                                },
+                                modifier = TIMING_SLIDER_PADDING
                             )
                         }
                     }
@@ -337,17 +286,16 @@ fun ScreenshotActionsScreen(
                             )
                             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                             ScreenshotGroupLabel(stringResource(R.string.screenshot_group_timing))
-                            ScreenshotChipRow(
+                            ScreenshotSlider(
                                 label = stringResource(R.string.screenshot_overlay_timeout_label),
-                                options = ScreenshotPrefs.OVERLAY_TIMEOUT_OPTIONS,
-                                selected = overlayTimeout,
-                                labelFor = {
-                                    stringResource(R.string.screenshot_overlay_timeout_value, it)
-                                },
-                                onSelect = {
+                                valueText = stringResource(R.string.screenshot_overlay_timeout_value, overlayTimeout),
+                                value = overlayTimeout,
+                                range = ScreenshotPrefs.OVERLAY_TIMEOUT_MIN..ScreenshotPrefs.OVERLAY_TIMEOUT_MAX,
+                                onChange = {
                                     overlayTimeout = it
                                     prefs.overlayTimeoutSeconds = it
-                                }
+                                },
+                                modifier = TIMING_SLIDER_PADDING
                             )
                             HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
                             ScreenshotGroupLabel(stringResource(R.string.screenshot_group_position))
@@ -358,17 +306,27 @@ fun ScreenshotActionsScreen(
                                     bottom = 16.dp
                                 )
                             ) {
-                                ScreenshotPositionSlider(
-                                    label = stringResource(R.string.screenshot_overlay_x_label),
+                                ScreenshotSlider(
+                                    label = stringResource(
+                                        R.string.screenshot_overlay_position_value,
+                                        stringResource(R.string.screenshot_overlay_x_label),
+                                        overlayX
+                                    ),
                                     value = overlayX,
+                                    range = 0..ScreenshotPrefs.OVERLAY_POSITION_MAX,
                                     onChange = {
                                         overlayX = it
                                         prefs.overlayX = it
                                     }
                                 )
-                                ScreenshotPositionSlider(
-                                    label = stringResource(R.string.screenshot_overlay_y_label),
+                                ScreenshotSlider(
+                                    label = stringResource(
+                                        R.string.screenshot_overlay_position_value,
+                                        stringResource(R.string.screenshot_overlay_y_label),
+                                        overlayY
+                                    ),
                                     value = overlayY,
+                                    range = 0..ScreenshotPrefs.OVERLAY_POSITION_MAX,
                                     onChange = {
                                         overlayY = it
                                         prefs.overlayY = it
@@ -399,19 +357,6 @@ fun ScreenshotActionsScreen(
                             }
                         }
                     }
-                }
-            }
-
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_about)) }
-
-            item {
-                ScreenshotCard {
-                    Text(
-                        text = stringResource(R.string.screenshot_delete_note),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
                 }
             }
         }
@@ -463,35 +408,6 @@ private fun ScreenshotInfoRow(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
-    }
-}
-
-@Composable
-private fun ScreenshotChipRow(
-    label: String,
-    options: List<Int>,
-    selected: Int,
-    labelFor: @Composable (Int) -> String,
-    onSelect: (Int) -> Unit
-) {
-    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 12.dp)) {
-        Text(text = label, style = MaterialTheme.typography.titleSmall)
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            options.forEach { option ->
-                FilterChip(
-                    selected = selected == option,
-                    onClick = { onSelect(option) },
-                    label = {
-                        Text(
-                            labelFor(option),
-                            style = MaterialTheme.typography.bodySmall,
-                            maxLines = 1
-                        )
-                    }
-                )
-            }
         }
     }
 }
@@ -561,49 +477,33 @@ private fun ScreenshotToggleRow(
 }
 
 @Composable
-private fun ScreenshotPermissionRow(label: String, granted: Boolean, onGrant: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = label, style = MaterialTheme.typography.titleSmall)
-            Text(
-                text = if (granted) stringResource(R.string.screenshot_granted)
-                else stringResource(R.string.screenshot_not_granted),
-                style = MaterialTheme.typography.bodySmall,
-                color = if (granted) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.error,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        if (!granted) {
-            Button(onClick = onGrant) {
+private fun ScreenshotSlider(
+    label: String,
+    value: Int,
+    range: IntRange,
+    onChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    valueText: String? = null
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = label, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+            if (valueText != null) {
                 Text(
-                    stringResource(R.string.screenshot_grant),
-                    style = MaterialTheme.typography.bodySmall,
+                    text = valueText,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
                     maxLines = 1
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ScreenshotPositionSlider(label: String, value: Int, onChange: (Int) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(R.string.screenshot_overlay_position_value, label, value),
-            style = MaterialTheme.typography.bodyMedium
-        )
         Slider(
             value = value.toFloat(),
-            onValueChange = { onChange(it.toInt()) },
-            valueRange = 0f..ScreenshotPrefs.OVERLAY_POSITION_MAX.toFloat()
+            onValueChange = { onChange(it.roundToInt()) },
+            valueRange = range.first.toFloat()..range.last.toFloat()
         )
     }
 }

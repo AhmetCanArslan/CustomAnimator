@@ -25,24 +25,8 @@ object ScreenshotPermissions {
 
     fun appSettingsIntent(context: Context): Intent = appDetailsIntent(context)
 
-    fun hasNotificationPermission(context: Context): Boolean =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
-
     fun hasOverlayPermission(context: Context): Boolean =
         Settings.canDrawOverlays(context)
-
-    fun overlayPermissionIntent(context: Context): Intent =
-        Intent(
-            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-            Uri.fromParts("package", context.packageName, null)
-        )
 
     private fun appDetailsIntent(context: Context): Intent =
         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {

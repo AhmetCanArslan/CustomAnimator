@@ -1022,9 +1022,7 @@ Duração do Animador: %3$.2f</string>
     <string name="disable_rotation_suggestions_desc">Oculta o botão de girar que aparece ao virar o dispositivo (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Ações de captura de tela</string>
     <string name="screenshot_actions_desc">Copie ou exclua uma captura logo depois de tirá-la, por uma notificação ou um botão flutuante</string>
-    <string name="screenshot_section_permissions">Permissões</string>
     <string name="screenshot_section_tile">Bloco das Configurações rápidas</string>
-    <string name="screenshot_section_about">Como a exclusão funciona</string>
     <string name="screenshot_section_feedback">Feedback</string>
     <string name="screenshot_toast_switch">Mostrar mensagens de confirmação</string>
     <string name="screenshot_toast_switch_desc">Mensagem curta depois que uma captura é copiada ou excluída. Os erros são sempre exibidos.</string>
@@ -1032,11 +1030,8 @@ Duração do Animador: %3$.2f</string>
     <string name="screenshot_group_timing">Tempo</string>
     <string name="screenshot_group_position">Posição e pré-visualização</string>
     <string name="screenshot_perm_images">Acesso a fotos e vídeos</string>
-    <string name="screenshot_perm_notifications">Notificações</string>
-    <string name="screenshot_perm_overlay">Sobrepor a outros apps</string>
     <string name="screenshot_granted">Concedida</string>
     <string name="screenshot_not_granted">Não concedida</string>
-    <string name="screenshot_grant">Conceder</string>
     <string name="screenshot_section_notification">Modo de notificação</string>
     <string name="screenshot_section_overlay">Modo de sobreposição</string>
     <string name="screenshot_watcher_switch">Notificar novas capturas</string>
@@ -1079,7 +1074,6 @@ Duração do Animador: %3$.2f</string>
     <string name="screenshot_toast_copied">Captura copiada para a área de transferência</string>
     <string name="screenshot_toast_cancelled">Captura mantida</string>
     <string name="screenshot_toast_not_found">Nenhuma captura recente encontrada</string>
-    <string name="screenshot_delete_note">O Android pede confirmação a cada exclusão. Assim o app não precisa da permissão restrita de todos os arquivos.</string>
     <string name="screenshot_toast_copied_deleted">Copiada para a área de transferência e excluída</string>
     <string name="screenshot_toast_trashed">Captura movida para a lixeira</string>
     <string name="screenshot_toast_copied_trashed">Copiada para a área de transferência e movida para a lixeira</string>

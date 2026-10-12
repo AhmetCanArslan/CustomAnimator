@@ -1042,9 +1042,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="disable_rotation_suggestions_desc">Nasconde il pulsante di rotazione che appare quando giri il dispositivo (show_rotation_suggestions)</string>
     <string name="screenshot_actions">Azioni screenshot</string>
     <string name="screenshot_actions_desc">Copia o elimina uno screenshot subito dopo averlo scattato, da una notifica o da un pulsante flottante</string>
-    <string name="screenshot_section_permissions">Autorizzazioni</string>
     <string name="screenshot_section_tile">Riquadro Impostazioni rapide</string>
-    <string name="screenshot_section_about">Come funziona l\'eliminazione</string>
     <string name="screenshot_section_feedback">Feedback</string>
     <string name="screenshot_toast_switch">Mostra messaggi di conferma</string>
     <string name="screenshot_toast_switch_desc">Breve messaggio dopo la copia o la rimozione di uno screenshot. Gli errori vengono sempre mostrati.</string>
@@ -1052,11 +1050,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_group_timing">Tempi</string>
     <string name="screenshot_group_position">Posizione e anteprima</string>
     <string name="screenshot_perm_images">Accesso a foto e video</string>
-    <string name="screenshot_perm_notifications">Notifiche</string>
-    <string name="screenshot_perm_overlay">Mostra sopra le altre app</string>
     <string name="screenshot_granted">Concessa</string>
     <string name="screenshot_not_granted">Non concessa</string>
-    <string name="screenshot_grant">Concedi</string>
     <string name="screenshot_section_notification">Modalità notifica</string>
     <string name="screenshot_section_overlay">Modalità overlay</string>
     <string name="screenshot_watcher_switch">Notifica i nuovi screenshot</string>
@@ -1099,7 +1094,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="screenshot_toast_copied">Screenshot copiato negli appunti</string>
     <string name="screenshot_toast_cancelled">Screenshot mantenuto</string>
     <string name="screenshot_toast_not_found">Nessuno screenshot recente trovato</string>
-    <string name="screenshot_delete_note">Android chiede conferma per ogni eliminazione. Così l\'app non ha bisogno dell\'autorizzazione limitata a tutti i file.</string>
     <string name="screenshot_toast_copied_deleted">Copiato negli appunti ed eliminato</string>
     <string name="screenshot_toast_trashed">Screenshot spostato nel cestino</string>
     <string name="screenshot_toast_copied_trashed">Copiato negli appunti e spostato nel cestino</string>
