@@ -83,8 +83,7 @@ fun GraphicsApiOverrideScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

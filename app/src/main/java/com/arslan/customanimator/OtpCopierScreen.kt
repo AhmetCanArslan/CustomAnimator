@@ -127,8 +127,7 @@ fun OtpCopierScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

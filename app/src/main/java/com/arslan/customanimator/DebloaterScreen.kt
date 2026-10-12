@@ -160,21 +160,18 @@ fun DebloaterScreen(
             )
         },
         bottomBar = {
-            Column {
-                if (selected.isNotEmpty()) {
-                    DebloatSelectionBar(
-                        count = selected.size,
-                        enabled = !isWorking,
-                        onClear = { selected = emptySet() },
-                        onRemove = {
-                            confirmation = DebloatConfirmation(apps.filter { selected.contains(it.packageName) }, false)
-                        },
-                        onDisable = {
-                            confirmation = DebloatConfirmation(apps.filter { selected.contains(it.packageName) }, true)
-                        }
-                    )
-                }
-                BannerAdView()
+            if (selected.isNotEmpty()) {
+                DebloatSelectionBar(
+                    count = selected.size,
+                    enabled = !isWorking,
+                    onClear = { selected = emptySet() },
+                    onRemove = {
+                        confirmation = DebloatConfirmation(apps.filter { selected.contains(it.packageName) }, false)
+                    },
+                    onDisable = {
+                        confirmation = DebloatConfirmation(apps.filter { selected.contains(it.packageName) }, true)
+                    }
+                )
             }
         }
     ) { paddingValues ->

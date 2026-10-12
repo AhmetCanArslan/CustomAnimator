@@ -93,8 +93,7 @@ fun AppThreadingScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

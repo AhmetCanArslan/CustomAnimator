@@ -192,8 +192,7 @@ fun HotspotManagerScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { padding ->
         Box(
             modifier = Modifier

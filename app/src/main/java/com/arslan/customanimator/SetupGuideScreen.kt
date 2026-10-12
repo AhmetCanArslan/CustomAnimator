@@ -136,8 +136,7 @@ fun SetupGuideScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { padding ->
         LazyColumn(
             state = listState,

@@ -218,8 +218,7 @@ fun StatusBarIconsScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

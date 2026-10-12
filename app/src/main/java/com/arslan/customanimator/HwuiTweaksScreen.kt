@@ -102,8 +102,7 @@ fun HwuiTweaksScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,

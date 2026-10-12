@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.CustomPattern
@@ -68,7 +67,6 @@ fun CreatePatternSection(
     }
 
     Scaffold(
-        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = {

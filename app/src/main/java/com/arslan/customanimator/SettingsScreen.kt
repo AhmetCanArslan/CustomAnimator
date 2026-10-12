@@ -135,8 +135,7 @@ fun SettingsScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

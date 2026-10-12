@@ -60,7 +60,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.AppItem
 import com.arslan.customanimator.notify.data.AppListManager
@@ -83,7 +82,6 @@ fun IgnoredNotificationsSection(
     LaunchedEffect(Unit) { viewModel.refresh() }
 
     Scaffold(
-        bottomBar = { BannerAdView() },
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { showAppPicker = true },

@@ -83,8 +83,7 @@ fun IconChangerScreen(
                     }
                 }
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         AnimatedContent(
             targetState = state.app,

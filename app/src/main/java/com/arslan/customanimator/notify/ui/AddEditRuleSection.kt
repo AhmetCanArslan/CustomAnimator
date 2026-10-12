@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.activity.compose.PredictiveBackHandler
 import kotlin.coroutines.cancellation.CancellationException
 import androidx.compose.material.icons.filled.Warning
-import com.arslan.customanimator.BannerAdView
 import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.*
@@ -338,7 +337,6 @@ fun AddEditRuleSection(
     val scrollState = rememberScrollState()
 
     Scaffold(
-        bottomBar = { BannerAdView() },
         topBar = {
             TopAppBar(
                 title = {
