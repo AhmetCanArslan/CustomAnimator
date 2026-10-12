@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.WebAsset
-import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
@@ -38,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
@@ -69,7 +67,6 @@ fun ToolsScreenContent(
     onNavigateToShortcuts: () -> Unit,
     onNavigateToIconChanger: () -> Unit,
     onNavigateToApkExtractor: () -> Unit,
-    onNavigateToCompileBooster: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -107,6 +104,9 @@ fun ToolsScreenContent(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
+    var showCompileBooster by remember { mutableStateOf(false) }
+    val startCompileBooster = rememberCompileBoosterStarter()
+
     val secureToggleEnabled = hasShizukuPermission || hasWriteSecureSettings
     val systemToggleEnabled = hasShizukuPermission || canWriteSystemSettings
 
@@ -128,332 +128,344 @@ fun ToolsScreenContent(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .padding(16.dp)
         ) {
             if (!hasShizukuPermission) {
                 item {
-                    SetupNudgeCard(
-                        message = stringResource(R.string.developer_needs_shizuku),
-                        onOpenSetup = openSetup
-                    )
-                }
-            }
-
-            item {
-                DevSectionTitle(stringResource(R.string.tools_utilities))
-            }
-
-            item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
                     Column {
-                        NavigationRow(
-                            icon = Icons.Filled.AddToHomeScreen,
-                            title = stringResource(R.string.shortcuts),
-                            description = stringResource(R.string.shortcuts_desc),
-                            onClick = onNavigateToShortcuts
+                        SetupNudgeCard(
+                            message = stringResource(R.string.developer_needs_shizuku),
+                            onOpenSetup = openSetup
                         )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.AppShortcut,
-                            title = stringResource(R.string.icon_changer),
-                            description = stringResource(R.string.icon_changer_desc),
-                            onClick = onNavigateToIconChanger
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Unarchive,
-                            title = stringResource(R.string.apk_extractor),
-                            description = stringResource(R.string.apk_extractor_desc),
-                            onClick = onNavigateToApkExtractor
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        SaveToDeviceRow()
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Screenshot,
-                            title = stringResource(R.string.screenshot_actions),
-                            description = stringResource(R.string.screenshot_actions_desc),
-                            onClick = onNavigateToScreenshotActions
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Password,
-                            title = stringResource(R.string.otp_copier),
-                            description = stringResource(R.string.otp_copier_desc),
-                            onClick = onNavigateToOtpCopier
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.VideogameAsset,
-                            title = stringResource(R.string.graphics_api_override),
-                            description = stringResource(R.string.graphics_api_override_desc),
-                            onClick = onNavigateToGraphicsApiOverride
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Brush,
-                            title = stringResource(R.string.hwui_tweaks),
-                            description = stringResource(R.string.hwui_tweaks_desc),
-                            onClick = onNavigateToHwuiTweaks
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Memory,
-                            title = stringResource(R.string.app_threading),
-                            description = stringResource(R.string.app_threading_desc),
-                            onClick = onNavigateToAppThreading
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.MonitorHeart,
-                            title = stringResource(R.string.refresh_rate),
-                            description = stringResource(R.string.refresh_rate_desc),
-                            onClick = onNavigateToRefreshRate
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Widgets,
-                            title = stringResource(R.string.qs_tiles),
-                            description = stringResource(R.string.qs_tiles_desc),
-                            onClick = onNavigateToQsTiles
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.DeleteSweep,
-                            title = stringResource(R.string.debloater),
-                            description = stringResource(R.string.debloater_desc),
-                            onClick = onNavigateToDebloater
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Speed,
-                            title = stringResource(R.string.compile_booster),
-                            description = stringResource(R.string.more_compile_booster_desc),
-                            onClick = onNavigateToCompileBooster
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.PlaylistRemove,
-                            title = stringResource(R.string.auto_actions),
-                            description = stringResource(R.string.more_auto_actions_desc),
-                            onClick = onNavigateToAutoActions
-                        )
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
             }
 
-            item {
-                DevSectionTitle(stringResource(R.string.developer_tweaks))
-            }
+            cardSection(
+                R.string.tools_utilities,
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.AddToHomeScreen,
+                        title = stringResource(R.string.shortcuts),
+                        description = stringResource(R.string.shortcuts_desc),
+                        onClick = onNavigateToShortcuts
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.AppShortcut,
+                        title = stringResource(R.string.icon_changer),
+                        description = stringResource(R.string.icon_changer_desc),
+                        onClick = onNavigateToIconChanger
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Unarchive,
+                        title = stringResource(R.string.apk_extractor),
+                        description = stringResource(R.string.apk_extractor_desc),
+                        onClick = onNavigateToApkExtractor
+                    )
+                },
+                {
+                    SaveToDeviceRow()
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Screenshot,
+                        title = stringResource(R.string.screenshot_actions),
+                        description = stringResource(R.string.screenshot_actions_desc),
+                        onClick = onNavigateToScreenshotActions
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Password,
+                        title = stringResource(R.string.otp_copier),
+                        description = stringResource(R.string.otp_copier_desc),
+                        onClick = onNavigateToOtpCopier
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.VideogameAsset,
+                        title = stringResource(R.string.graphics_api_override),
+                        description = stringResource(R.string.graphics_api_override_desc),
+                        onClick = onNavigateToGraphicsApiOverride
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Brush,
+                        title = stringResource(R.string.hwui_tweaks),
+                        description = stringResource(R.string.hwui_tweaks_desc),
+                        onClick = onNavigateToHwuiTweaks
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Memory,
+                        title = stringResource(R.string.app_threading),
+                        description = stringResource(R.string.app_threading_desc),
+                        onClick = onNavigateToAppThreading
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.MonitorHeart,
+                        title = stringResource(R.string.refresh_rate),
+                        description = stringResource(R.string.refresh_rate_desc),
+                        onClick = onNavigateToRefreshRate
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Widgets,
+                        title = stringResource(R.string.qs_tiles),
+                        description = stringResource(R.string.qs_tiles_desc),
+                        onClick = onNavigateToQsTiles
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.DeleteSweep,
+                        title = stringResource(R.string.debloater),
+                        description = stringResource(R.string.debloater_desc),
+                        onClick = onNavigateToDebloater
+                    )
+                },
+                {
+                    CompileBoosterToolRow(onClick = { showCompileBooster = true })
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.PlaylistRemove,
+                        title = stringResource(R.string.auto_actions),
+                        description = stringResource(R.string.more_auto_actions_desc),
+                        onClick = onNavigateToAutoActions
+                    )
+                }
+            )
 
-            item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
-                    Column {
-                        ToggleRow(
-                            icon = Icons.Filled.Keyboard,
-                            title = stringResource(R.string.disable_keyboard_animation),
-                            description = stringResource(R.string.disable_keyboard_animation_desc),
-                            checked = fancyImeDisabled,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { fancyImeDisabled = it },
-                                    { DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.ScreenRotation,
-                            title = stringResource(R.string.disable_rotation_suggestions),
-                            description = stringResource(R.string.disable_rotation_suggestions_desc),
-                            checked = rotationSuggestionsDisabled,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { rotationSuggestionsDisabled = it },
-                                    { DeveloperOptionsManager.setRotationSuggestions(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.Schedule,
-                            title = stringResource(R.string.show_clock_seconds),
-                            description = stringResource(R.string.show_clock_seconds_desc),
-                            checked = clockSecondsEnabled,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { clockSecondsEnabled = it },
-                                    { DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue) }
-                                )
-                            }
-                        )
-                        if (DeveloperOptionsManager.isOneUi()) {
-                            InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note), dismissKey = "clock_seconds_samsung")
+            cardSection(
+                R.string.developer_tweaks,
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Keyboard,
+                        title = stringResource(R.string.disable_keyboard_animation),
+                        description = stringResource(R.string.disable_keyboard_animation_desc),
+                        checked = fancyImeDisabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { fancyImeDisabled = it },
+                                { DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, newValue) }
+                            )
                         }
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.VolumeUp,
-                            title = stringResource(R.string.remove_high_volume_warning),
-                            description = stringResource(R.string.remove_high_volume_warning_desc),
-                            checked = highVolumeWarningDisabled,
-                            enabled = secureToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { highVolumeWarningDisabled = it },
-                                    {
-                                        DeveloperOptionsManager.setHighVolumeWarningDisabled(context, contentResolver, newValue)
-                                            .also { highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context) }
-                                    }
-                                )
-                            }
-                        )
-                        if (highVolumeWarningPending) {
-                            InfoNote(text = stringResource(R.string.remove_high_volume_warning_note), dismissKey = "high_volume_warning")
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.ScreenRotation,
+                        title = stringResource(R.string.disable_rotation_suggestions),
+                        description = stringResource(R.string.disable_rotation_suggestions_desc),
+                        checked = rotationSuggestionsDisabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { rotationSuggestionsDisabled = it },
+                                { DeveloperOptionsManager.setRotationSuggestions(context, contentResolver, newValue) }
+                            )
                         }
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Wifi,
-                            title = stringResource(R.string.wifi_password_manager),
-                            description = stringResource(R.string.wifi_password_manager_desc),
-                            onClick = onNavigateToWifiPasswords
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.WifiTethering,
-                            title = stringResource(R.string.hotspot_manager),
-                            description = stringResource(R.string.hotspot_manager_desc),
-                            onClick = onNavigateToHotspotManager
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.Alarm,
-                            title = stringResource(R.string.alarm_revealer),
-                            description = stringResource(R.string.alarm_revealer_desc),
-                            onClick = onNavigateToAlarmRevealer
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.SignalCellularAlt,
-                            title = stringResource(R.string.carrier_name),
-                            description = stringResource(R.string.carrier_name_desc),
-                            onClick = onNavigateToCarrierName
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.WebAsset,
-                            title = stringResource(R.string.status_bar_icons),
-                            description = stringResource(R.string.status_bar_icons_desc),
-                            onClick = onNavigateToStatusBarIcons
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        NavigationRow(
-                            icon = Icons.Filled.PowerSettingsNew,
-                            title = stringResource(R.string.button_remapper),
-                            description = stringResource(R.string.button_remapper_desc),
-                            onClick = onNavigateToButtonRemapper
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ActionRow(
-                            icon = Icons.Filled.RestartAlt,
-                            title = stringResource(R.string.restart_system_ui),
-                            description = stringResource(R.string.restart_system_ui_desc),
-                            buttonLabel = stringResource(R.string.restart),
-                            enabled = hasShizukuPermission,
-                            onClick = {
-                                coroutineScope.launch {
-                                    val success = withContext(Dispatchers.IO) {
-                                        DeveloperOptionsManager.restartSystemUi()
-                                    }
-                                    if (!success) {
-                                        Toast.makeText(
-                                            context,
-                                            resources.getString(R.string.action_failed),
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-                            }
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ToggleRow(
-                            icon = Icons.Filled.ScreenLockRotation,
-                            title = stringResource(R.string.lock_screen_rotation),
-                            description = stringResource(R.string.lock_screen_rotation_desc),
-                            checked = isRotationLocked,
-                            enabled = systemToggleEnabled,
-                            onCheckedChange = { newValue ->
-                                applyToggle(
-                                    newValue,
-                                    { isRotationLocked = it },
-                                    { DeveloperOptionsManager.setAutoRotation(context, contentResolver, !newValue) }
-                                )
-                            }
-                        )
-                        if (isRotationLocked) {
-                            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                            RotationSelector(
-                                currentRotation = userRotation,
-                                enabled = systemToggleEnabled,
-                                onRotationSelected = { rotation ->
-                                    val previous = userRotation
-                                    userRotation = rotation
-                                    coroutineScope.launch {
-                                        val success = withContext(Dispatchers.IO) {
-                                            DeveloperOptionsManager.setUserRotation(context, contentResolver, rotation)
-                                        }
-                                        if (!success) {
-                                            userRotation = previous
-                                            Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Schedule,
+                        title = stringResource(R.string.show_clock_seconds),
+                        description = stringResource(R.string.show_clock_seconds_desc),
+                        checked = clockSecondsEnabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { clockSecondsEnabled = it },
+                                { DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                    if (DeveloperOptionsManager.isOneUi()) {
+                        InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note), dismissKey = "clock_seconds_samsung")
+                    }
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.VolumeUp,
+                        title = stringResource(R.string.remove_high_volume_warning),
+                        description = stringResource(R.string.remove_high_volume_warning_desc),
+                        checked = highVolumeWarningDisabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { highVolumeWarningDisabled = it },
+                                {
+                                    DeveloperOptionsManager.setHighVolumeWarningDisabled(context, contentResolver, newValue)
+                                        .also { highVolumeWarningPending = DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context) }
                                 }
                             )
                         }
-                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                        ActionRow(
-                            icon = Icons.Filled.ScreenRotation,
-                            title = stringResource(R.string.reset_rotation),
-                            description = stringResource(R.string.reset_rotation_desc),
-                            buttonLabel = stringResource(R.string.reset),
-                            enabled = systemToggleEnabled,
-                            onClick = {
-                                coroutineScope.launch {
-                                    val success = withContext(Dispatchers.IO) {
-                                        DeveloperOptionsManager.resetRotation(context, contentResolver)
-                                    }
-                                    isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
-                                    userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
+                    )
+                    if (highVolumeWarningPending) {
+                        InfoNote(text = stringResource(R.string.remove_high_volume_warning_note), dismissKey = "high_volume_warning")
+                    }
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Wifi,
+                        title = stringResource(R.string.wifi_password_manager),
+                        description = stringResource(R.string.wifi_password_manager_desc),
+                        onClick = onNavigateToWifiPasswords
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.WifiTethering,
+                        title = stringResource(R.string.hotspot_manager),
+                        description = stringResource(R.string.hotspot_manager_desc),
+                        onClick = onNavigateToHotspotManager
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Alarm,
+                        title = stringResource(R.string.alarm_revealer),
+                        description = stringResource(R.string.alarm_revealer_desc),
+                        onClick = onNavigateToAlarmRevealer
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.SignalCellularAlt,
+                        title = stringResource(R.string.carrier_name),
+                        description = stringResource(R.string.carrier_name_desc),
+                        onClick = onNavigateToCarrierName
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.WebAsset,
+                        title = stringResource(R.string.status_bar_icons),
+                        description = stringResource(R.string.status_bar_icons_desc),
+                        onClick = onNavigateToStatusBarIcons
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.PowerSettingsNew,
+                        title = stringResource(R.string.button_remapper),
+                        description = stringResource(R.string.button_remapper_desc),
+                        onClick = onNavigateToButtonRemapper
+                    )
+                },
+                {
+                    ActionRow(
+                        icon = Icons.Filled.RestartAlt,
+                        title = stringResource(R.string.restart_system_ui),
+                        description = stringResource(R.string.restart_system_ui_desc),
+                        buttonLabel = stringResource(R.string.restart),
+                        enabled = hasShizukuPermission,
+                        onClick = {
+                            coroutineScope.launch {
+                                val success = withContext(Dispatchers.IO) {
+                                    DeveloperOptionsManager.restartSystemUi()
+                                }
+                                if (!success) {
                                     Toast.makeText(
                                         context,
-                                        resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                        resources.getString(R.string.action_failed),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
                             }
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.ScreenLockRotation,
+                        title = stringResource(R.string.lock_screen_rotation),
+                        description = stringResource(R.string.lock_screen_rotation_desc),
+                        checked = isRotationLocked,
+                        enabled = systemToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { isRotationLocked = it },
+                                { DeveloperOptionsManager.setAutoRotation(context, contentResolver, !newValue) }
+                            )
+                        }
+                    )
+                    if (isRotationLocked) {
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        RotationSelector(
+                            currentRotation = userRotation,
+                            enabled = systemToggleEnabled,
+                            onRotationSelected = { rotation ->
+                                val previous = userRotation
+                                userRotation = rotation
+                                coroutineScope.launch {
+                                    val success = withContext(Dispatchers.IO) {
+                                        DeveloperOptionsManager.setUserRotation(context, contentResolver, rotation)
+                                    }
+                                    if (!success) {
+                                        userRotation = previous
+                                        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            }
                         )
                     }
+                },
+                {
+                    ActionRow(
+                        icon = Icons.Filled.ScreenRotation,
+                        title = stringResource(R.string.reset_rotation),
+                        description = stringResource(R.string.reset_rotation_desc),
+                        buttonLabel = stringResource(R.string.reset),
+                        enabled = systemToggleEnabled,
+                        onClick = {
+                            coroutineScope.launch {
+                                val success = withContext(Dispatchers.IO) {
+                                    DeveloperOptionsManager.resetRotation(context, contentResolver)
+                                }
+                                isRotationLocked = !DeveloperOptionsManager.isAutoRotationEnabled(contentResolver)
+                                userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
+                                Toast.makeText(
+                                    context,
+                                    resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    )
                 }
-            }
+            )
 
             item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }
+
+    if (showCompileBooster) {
+        CompileBoosterDialog(
+            hasShizukuPermission = hasShizukuPermission,
+            onStart = startCompileBooster,
+            onDismiss = { showCompileBooster = false }
+        )
     }
 }
