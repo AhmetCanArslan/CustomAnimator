@@ -9,10 +9,6 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -41,30 +37,14 @@ object Motion {
         stiffness = Spring.StiffnessMedium
     )
 
-    fun offsetSpring(): FiniteAnimationSpec<IntOffset> = spring(
-        dampingRatio = 0.8f,
-        stiffness = Spring.StiffnessMediumLow
-    )
-
+    fun slide(): FiniteAnimationSpec<IntOffset> = tween(durationMedium, easing = emphasizedEasing)
 }
 
 fun AnimatedContentTransitionScope<*>.horizontalPagerTransition(forward: Boolean): ContentTransform {
     val direction = if (forward) 1 else -1
-    return (slideInHorizontally(Motion.offsetSpring()) { width -> direction * width / 3 } +
-        fadeIn(tween(Motion.durationMedium, easing = Motion.emphasizedEasing)) +
-        scaleIn(tween(Motion.durationMedium, easing = Motion.emphasizedEasing), initialScale = 0.94f)
-        ) togetherWith (
-        slideOutHorizontally(Motion.offsetSpring()) { width -> -direction * width / 6 } +
-            fadeOut(tween(Motion.durationFast)) +
-            scaleOut(tween(Motion.durationMedium, easing = Motion.emphasizedEasing), targetScale = 0.96f)
-        )
+    return slideInHorizontally(Motion.slide()) { width -> direction * width } togetherWith
+        slideOutHorizontally(Motion.slide()) { width -> -direction * width }
 }
-
-fun AnimatedContentTransitionScope<*>.forwardNavTransition(): ContentTransform =
-    (slideInHorizontally(Motion.offsetSpring()) { width -> width / 2 } +
-        fadeIn(tween(Motion.durationMedium))) togetherWith
-        (fadeOut(tween(Motion.durationFast)) +
-            scaleOut(tween(Motion.durationMedium), targetScale = 0.92f))
 
 @Composable
 fun Modifier.pressScale(
