@@ -16,9 +16,24 @@ object BatteryHealthManager {
 
     private const val SUPPLY_PREFIX = "POWER_SUPPLY_"
     private const val SUPPLY_MARKER = "##"
-    private const val SUPPLIES_SCRIPT =
-        "for f in /sys/class/power_supply/*/uevent; do d=\${f%/uevent}; echo \"##\${d##*/}\"; cat \"\$f\" 2>/dev/null; done; true"
+    private const val SUPPLIES_LOOP =
+        "for f in /sys/class/power_supply/*/uevent; do d=\${f%/uevent}; echo \"##\${d##*/}\"; cat \"\$f\"; done"
     private const val HEALTH_HAL = "android.hardware.health.IHealth/default"
+    private const val SECTION_MARKER = "@@section "
+    private const val SECTION_DOZE = "doze"
+    private const val SECTION_THERMAL = "thermal"
+    private const val SECTION_SERVICE = "service"
+    private const val SECTION_HEALTH = "health"
+    private const val SECTION_SUPPLIES = "supplies"
+    private val SNAPSHOT_SCRIPT = listOf(
+        SECTION_DOZE to "dumpsys deviceidle",
+        SECTION_THERMAL to "dumpsys thermalservice",
+        SECTION_SERVICE to "dumpsys battery",
+        SECTION_HEALTH to "dumpsys $HEALTH_HAL",
+        SECTION_SUPPLIES to SUPPLIES_LOOP
+    ).joinToString("; ", postfix = "; true") { (name, command) ->
+        "echo '$SECTION_MARKER$name'; $command 2>/dev/null"
+    }
     private const val MISSING_SERVICE = "Can't find service"
     private const val MICRO = 1_000_000.0
 
@@ -29,16 +44,35 @@ object BatteryHealthManager {
         RegexOption.MULTILINE
     )
 
-    fun readSnapshot(): BatteryHealthSnapshot {
-        val thermal = runForOutput(arrayOf("dumpsys", "thermalservice"))
+    fun readSnapshot(): BatteryHealthSnapshot =
+        parseSnapshot(runForOutput(arrayOf("sh", "-c", SNAPSHOT_SCRIPT)))
+
+    fun parseSnapshot(raw: String): BatteryHealthSnapshot {
+        val sections = splitSections(raw)
+        val thermal = sections[SECTION_THERMAL].orEmpty()
         return BatteryHealthSnapshot(
-            service = parseColonPairs(runForOutput(arrayOf("dumpsys", "battery"))),
-            supplies = parseSupplies(runForOutput(arrayOf("sh", "-c", SUPPLIES_SCRIPT))),
-            healthHal = parseColonPairs(runForOutput(arrayOf("dumpsys", HEALTH_HAL))),
+            service = parseColonPairs(sections[SECTION_SERVICE].orEmpty()),
+            supplies = parseSupplies(sections[SECTION_SUPPLIES].orEmpty()),
+            healthHal = parseColonPairs(sections[SECTION_HEALTH].orEmpty()),
             thermalStatus = THERMAL_STATUS_REGEX.find(thermal)?.groupValues?.get(1)?.toIntOrNull(),
             temperatures = parseTemperatures(thermal),
-            doze = parseDoze(runForOutput(arrayOf("dumpsys", "deviceidle")))
+            doze = parseDoze(sections[SECTION_DOZE].orEmpty())
         )
+    }
+
+    private fun splitSections(raw: String): Map<String, String> {
+        val sections = LinkedHashMap<String, StringBuilder>()
+        var current: StringBuilder? = null
+        for (line in raw.lineSequence()) {
+            if (line.startsWith(SECTION_MARKER)) {
+                current = sections.getOrPut(line.removePrefix(SECTION_MARKER).trim()) { StringBuilder() }
+            } else {
+                current?.appendLine(line)
+            }
+        }
+        return sections.mapValues { (_, text) ->
+            text.toString().takeUnless { it.startsWith(MISSING_SERVICE) }.orEmpty()
+        }
     }
 
     internal fun runForOutput(command: Array<String>): String {
