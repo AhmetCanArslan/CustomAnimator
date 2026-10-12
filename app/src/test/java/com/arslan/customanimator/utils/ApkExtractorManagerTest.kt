@@ -22,7 +22,7 @@ class ApkExtractorManagerTest {
     val folder = TemporaryFolder()
 
     private fun app(version: String, split: Boolean) =
-        ApkExtractorApp("com.example.app", "Example", null, version, 0, split)
+        ApkExtractorApp("com.example.app", "Example", version, 0, split)
 
     @Test
     fun fileNameCarriesVersionAndMatchesTheContainer() {

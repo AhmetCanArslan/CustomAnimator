@@ -87,6 +87,7 @@ object InstalledAppsProvider {
             .map { appInfo ->
                 cachedApps[appInfo.packageName]?.takeIf { it.sourceDir == appInfo.sourceDir }
                     ?: CachedApp(appInfo.sourceDir, describe(packageManager, appInfo))
+                        .also { AppIconBitmaps.evict(appInfo.packageName) }
             }
         cachedApps = entries.associateBy { it.info.packageName }
         return entries.map { it.info }.sortedBy { it.label.lowercase() }.also { launchableApps = it }
@@ -99,11 +100,6 @@ object InstalledAppsProvider {
         } catch (e: Exception) {
             appInfo.packageName
         },
-        icon = try {
-            appInfo.loadIcon(packageManager)
-        } catch (e: Exception) {
-            null
-        },
         isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
     )
 
@@ -112,13 +108,18 @@ object InstalledAppsProvider {
         trimCallbacksRegistered = true
         context.applicationContext.registerComponentCallbacks(object : ComponentCallbacks2 {
             override fun onTrimMemory(level: Int) {
-                if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) clearLaunchableAppsCache()
+                if (level >= ComponentCallbacks2.TRIM_MEMORY_BACKGROUND) dropCaches()
             }
 
             override fun onConfigurationChanged(newConfig: Configuration) = Unit
 
             @Deprecated("Deprecated in Java")
-            override fun onLowMemory() = clearLaunchableAppsCache()
+            override fun onLowMemory() = dropCaches()
         })
+    }
+
+    private fun dropCaches() {
+        clearLaunchableAppsCache()
+        AppIconBitmaps.clear()
     }
 }

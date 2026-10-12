@@ -31,9 +31,12 @@ object ApkExtractorManager {
 
     const val STORAGE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
-    private val details = ConcurrentHashMap<String, ApkExtractorApp>()
+    private class Described(val source: InstalledAppInfo, val details: ApkExtractorApp)
 
-    fun cachedDetails(app: InstalledAppInfo): ApkExtractorApp? = details[app.packageName]?.takeIf { it.icon === app.icon }
+    private val described = ConcurrentHashMap<String, Described>()
+
+    fun cachedDetails(app: InstalledAppInfo): ApkExtractorApp? =
+        described[app.packageName]?.takeIf { it.source === app }?.details
 
     fun formats(app: ApkExtractorApp): List<ApkExtractorFormat> =
         if (app.isSplit) ApkExtractorFormat.entries else listOf(ApkExtractorFormat.BASE)
@@ -132,11 +135,10 @@ object ApkExtractorManager {
             ApkExtractorApp(
                 packageName = app.packageName,
                 label = app.label,
-                icon = app.icon,
                 versionName = context.packageManager.getPackageInfo(app.packageName, 0).versionName.orEmpty(),
                 sizeBytes = files.sumOf { it.length() },
                 isSplit = files.size > 1
-            ).also { details[app.packageName] = it }
+            ).also { described[app.packageName] = Described(app, it) }
         } catch (e: Exception) {
             null
         }
