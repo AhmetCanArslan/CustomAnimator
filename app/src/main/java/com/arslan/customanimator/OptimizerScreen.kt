@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.CleaningServices
@@ -84,7 +85,10 @@ private class TerminalWriter(
 private class CleanOutcome(val storageFreed: Long, val ramFreed: Long)
 
 @Composable
-fun OptimizerScreenContent(onNavigateToCloseAppsExclusions: () -> Unit) {
+fun OptimizerScreenContent(
+    onNavigateToCloseAppsExclusions: () -> Unit,
+    onNavigateToWhatsAppCleaner: () -> Unit
+) {
     var showBooster by rememberSaveable { mutableStateOf(false) }
 
     if (showBooster) {
@@ -92,7 +96,8 @@ fun OptimizerScreenContent(onNavigateToCloseAppsExclusions: () -> Unit) {
     } else {
         OptimizerHome(
             onOpenBooster = { showBooster = true },
-            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions
+            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions,
+            onNavigateToWhatsAppCleaner = onNavigateToWhatsAppCleaner
         )
     }
 }
@@ -100,7 +105,8 @@ fun OptimizerScreenContent(onNavigateToCloseAppsExclusions: () -> Unit) {
 @Composable
 private fun OptimizerHome(
     onOpenBooster: () -> Unit,
-    onNavigateToCloseAppsExclusions: () -> Unit
+    onNavigateToCloseAppsExclusions: () -> Unit,
+    onNavigateToWhatsAppCleaner: () -> Unit
 ) {
     val context = LocalContext.current
     val resources = LocalResources.current
@@ -207,7 +213,8 @@ private fun OptimizerHome(
         QuickActionsCard(
             enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
             runGated = gatedStart,
-            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions
+            onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions,
+            onNavigateToWhatsAppCleaner = onNavigateToWhatsAppCleaner
         )
 
         cleanOutcome?.let { outcome ->
@@ -239,7 +246,8 @@ private fun runQuickAction(context: Context, action: QuickAction): String = when
 private fun QuickActionsCard(
     enabled: Boolean,
     runGated: (() -> Unit) -> Unit,
-    onNavigateToCloseAppsExclusions: () -> Unit
+    onNavigateToCloseAppsExclusions: () -> Unit,
+    onNavigateToWhatsAppCleaner: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -287,6 +295,13 @@ private fun QuickActionsCard(
                 title = stringResource(R.string.close_apps_exclusions),
                 description = stringResource(R.string.close_apps_exclusions_desc),
                 onClick = onNavigateToCloseAppsExclusions
+            )
+            HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+            NavigationRow(
+                icon = Icons.AutoMirrored.Filled.Chat,
+                title = stringResource(R.string.whatsapp_cleaner),
+                description = stringResource(R.string.whatsapp_cleaner_desc),
+                onClick = onNavigateToWhatsAppCleaner
             )
         }
     }

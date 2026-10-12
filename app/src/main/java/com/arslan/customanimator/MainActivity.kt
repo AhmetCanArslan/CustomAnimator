@@ -259,7 +259,8 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
     HomeScreen.QS_TILES to HomeTab.TOOLS,
     HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH,
-    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.OPTIMIZER
+    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.OPTIMIZER,
+    HomeScreen.WHATSAPP_CLEANER to HomeTab.OPTIMIZER
 )
 
 private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
@@ -321,6 +322,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val shortcutsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val whatsAppCleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -639,6 +641,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.OPTIMIZER) },
             listState = closeAppsExclusionsListState
         )
+    } else if (targetScreen == HomeScreen.WHATSAPP_CLEANER) {
+        WhatsAppCleanerScreen(
+            onBack = { backToTab(HomeTab.OPTIMIZER) },
+            listState = whatsAppCleanerListState
+        )
     } else if (targetScreen == HomeScreen.DEBLOATER) {
         DebloaterScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -858,7 +865,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
         } else if (targetTab == HomeTab.OPTIMIZER) {
         OptimizerScreenContent(
-            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS }
+            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
+            onNavigateToWhatsAppCleaner = { currentScreen = HomeScreen.WHATSAPP_CLEANER }
         )
         } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(

@@ -13,6 +13,7 @@ import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
 import com.arslan.customanimator.CloseAppsExclusionsScreen
+import com.arslan.customanimator.WhatsAppCleanerScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.OtpCopierScreen
@@ -273,7 +274,12 @@ class ScreenLayoutTest {
 
     @Test
     fun optimizerScreenFitsSmallPhones() = screenFits {
-        OptimizerScreenContent(onNavigateToCloseAppsExclusions = {})
+        OptimizerScreenContent(onNavigateToCloseAppsExclusions = {}, onNavigateToWhatsAppCleaner = {})
+    }
+
+    @Test
+    fun whatsAppCleanerScreenFitsSmallPhones() = screenFits(R.string.whatsapp_cleaner) {
+        WhatsAppCleanerScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test
