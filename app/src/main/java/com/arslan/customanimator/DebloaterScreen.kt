@@ -180,6 +180,8 @@ fun DebloaterScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .imePadding()
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -337,7 +339,7 @@ private fun filterApps(
 ): List<DebloatAppInfo> {
     return apps
         .filter { filters.risk == null || it.risk == filters.risk }
-        .filter { filters.state == null || it.state == filters.state }
+        .filter { matchesState(it, filters) }
         .filter { filters.showSystem || !it.isSystemApp }
         .filter { !filters.hideProtected || !it.isProtected }
         .filter { !filters.changedOnly || it.isChangedByApp }
@@ -348,6 +350,10 @@ private fun filterApps(
         }
 }
 
+private fun matchesState(app: DebloatAppInfo, filters: DebloatFilters): Boolean {
+    if (filters.state != null) return app.state == filters.state
+    return filters.changedOnly || app.state != DebloatState.REMOVED
+}
 
 private fun applyAction(
     context: android.content.Context,
@@ -383,7 +389,11 @@ private fun DebloatSelectionBar(
     onRemove: () -> Unit,
     onDisable: () -> Unit
 ) {
-    Surface(color = MaterialTheme.colorScheme.surfaceContainerHigh, tonalElevation = 3.dp) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        tonalElevation = 3.dp,
+        modifier = Modifier.imePadding()
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
