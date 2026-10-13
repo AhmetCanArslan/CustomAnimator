@@ -1,3 +1,15 @@
+## 191 - 3.8
+- Kısayollar (Araçlar): uygulamaları, gizli etkinlikleri, uygulamaların uzun basma kısayollarını, dosyaları, klasörleri, fotoğrafları, bağlantıları ve komutları ana ekrana sabitle.
+- Tuş Atama (Araçlar): güç tuşuna basılı tutunca ne olacağını seç; el feneri veya ekran görüntüsü gibi özel işlemler de var.
+- APK Simge Değiştirici ve APK Çıkarıcı (Araçlar): yüklü bir uygulamanın simgesini değiştir ya da APK'sını Download/CustomAnimator klasörüne kaydet.
+- WhatsApp Temizleyici (Optimizasyon): eski WhatsApp medyasını ve yedeklerini kategoriye ve yaşa göre sil.
+- OTP Kopyalayıcı (Araçlar): bildirimlerdeki doğrulama kodları otomatik kopyalanır.
+- Cihaza kaydet (Araçlar): herhangi bir şeyi bu uygulamayla paylaşarak bir klasöre kaydet veya kopyala.
+- Bildirim Filtreleri (Bildirimler): filtreler artık eşleşen bildirimleri kaldırabiliyor; kurallar, filtreler ve geçmiş tek ekranda.
+- Ekran görüntüsü eylemleri (Araçlar): silme artık ekran görüntüsünü onay penceresi olmadan sistem çöp kutusuna taşıyor (Android 11+).
+- Oyun Modu: arka planda çalışmaya devam edecek uygulamalar için yeni Hariç tutulanlar listesi. Profiller kabuk komutu çalıştırabiliyor, simge seçicilerde artık 1.150'den fazla simge var.
+- Daha hızlı uygulama listeleri ve Debloater, daha az arka plan işi, daha küçük uygulama. Uygulamaya özel genişlikteki siyah şeritler, içeriği kapatan klavye ve Geri gezinmesi düzeltildi.
+
 ## 190 - 3.7
 - Uygulamaya özel özellikler (Otomatik Durdurma, İzin Devre Dışı Bırakıcı, uygulamaya özel genişlik, yenileme hızı ve iş parçacığı) artık Kullanım Erişimi gerektirmiyor — ön plandaki uygulama artık Shizuku üzerinden, anında ve sürekli sorgulama yapmadan algılanıyor.
 - Optimize Edici: Arka Plan Uygulamalarını Kapat ve Performans Artırıcı'nın asla durdurmayacağı uygulamalar için yeni Hariç Tutma Listesi, uygulamaları kapatmadan veya önbelleği temizlemeden önce onay ve kapatılan uygulama sayısı.

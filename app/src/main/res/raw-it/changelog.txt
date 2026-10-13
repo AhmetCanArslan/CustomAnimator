@@ -1,3 +1,15 @@
+## 191 - 3.8
+- Scorciatoie (Strumenti): aggiungi alla schermata Home app, activity nascoste, scorciatoie a pressione prolungata, file, cartelle, foto, link e comandi.
+- Rimappatura tasti (Strumenti): scegli cosa fa la pressione prolungata del tasto di accensione, comprese azioni personalizzate come torcia o screenshot.
+- Cambia icona APK ed Estrattore APK (Strumenti): cambia l'icona di un'app installata o salva l'APK di qualsiasi app in Download/CustomAnimator.
+- Pulizia WhatsApp (Ottimizzatore): elimina vecchi file multimediali e backup di WhatsApp per categoria ed età.
+- Copia OTP (Strumenti): i codici di verifica nelle notifiche vengono copiati automaticamente.
+- Salva sul dispositivo (Strumenti): condividi qualsiasi cosa con questa app per salvarla in una cartella o copiarla.
+- Filtri notifiche (Notifiche): i filtri ora possono rimuovere le notifiche corrispondenti; regole, filtri e cronologia sono in un'unica schermata.
+- Azioni screenshot (Strumenti): l'eliminazione ora sposta lo screenshot nel cestino di sistema senza finestra di conferma (Android 11+).
+- Modalità gioco: nuovo elenco Escluse per le app che devono continuare a funzionare. I Profili possono eseguire comandi shell e i selettori di icone offrono ora oltre 1.150 icone.
+- Elenchi di app e Debloater più veloci, meno lavoro in background, app più piccola. Corrette le barre nere con la larghezza per app, la tastiera che copriva i contenuti e la navigazione Indietro.
+
 ## 190 - 3.7
 - Le funzioni per app (Arresto forzato automatico, Disattivazione permessi, larghezza, frequenza di aggiornamento e threading per app) non richiedono più l'Accesso all'utilizzo: l'app in primo piano ora viene rilevata tramite Shizuku, all'istante e senza polling.
 - Ottimizzatore: nuovo Elenco esclusioni per le app che Chiudi app in background e Potenziamento non devono mai arrestare, conferma prima di chiudere le app o svuotare la cache e conteggio delle app chiuse.

@@ -1,3 +1,15 @@
+## 191 - 3.8
+- Atalhos (Ferramentas): fixe na tela inicial apps, atividades ocultas, atalhos de toque longo, arquivos, pastas, fotos, links e comandos.
+- Remapear botões (Ferramentas): escolha o que acontece ao segurar o botão liga/desliga, incluindo ações personalizadas como lanterna ou captura de tela.
+- Trocador de ícone de APK e Extrator de APK (Ferramentas): troque o ícone de um app instalado ou salve o APK de qualquer app em Download/CustomAnimator.
+- Limpador do WhatsApp (Otimizador): apague mídias e backups antigos do WhatsApp por categoria e idade.
+- Copiador de OTP (Ferramentas): os códigos de verificação das notificações são copiados automaticamente.
+- Salvar no dispositivo (Ferramentas): compartilhe qualquer coisa com este app para salvar em uma pasta ou copiar.
+- Filtros de notificações (Notificações): os filtros agora podem remover as notificações correspondentes; regras, filtros e histórico ficam em uma só tela.
+- Ações de captura de tela (Ferramentas): apagar agora move a captura para a lixeira do sistema sem diálogo de confirmação (Android 11+).
+- Modo jogo: nova lista de Excluídos para apps que devem continuar funcionando. Perfis podem executar comandos shell e os seletores de ícones agora têm mais de 1.150 ícones.
+- Listas de apps e Debloater mais rápidos, menos trabalho em segundo plano e app menor. Corrigidas as barras pretas com largura por app, o teclado cobrindo o conteúdo e a navegação com Voltar.
+
 ## 190 - 3.7
 - Os recursos por app (Forçar parada automática, Desativador de permissões, largura, taxa de atualização e threads por app) não precisam mais de Acesso ao uso: o app em primeiro plano agora é detectado pelo Shizuku, na hora e sem polling.
 - Otimizador: nova Lista de exclusão para apps que Fechar apps em segundo plano e o Turbinar nunca devem forçar a parada, confirmação antes de fechar apps ou limpar caches e contagem de apps fechados.

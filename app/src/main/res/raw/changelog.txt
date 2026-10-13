@@ -1,3 +1,15 @@
+## 191 - 3.8
+- Shortcuts (Tools): pin apps, hidden activities, app long-press shortcuts, files, folders, photos, links and commands to your home screen.
+- Button Remapper (Tools): choose what holding the power button does, including custom actions like the flashlight or a screenshot.
+- APK Icon Changer and APK Extractor (Tools): change an installed app's icon, or save any app's APK to Download/CustomAnimator.
+- WhatsApp Cleaner (Optimizer): delete old WhatsApp media and backups by category and age.
+- OTP Copier (Tools): verification codes in notifications are copied automatically.
+- Save on device (Tools): share anything to this app to save it to a folder or copy it.
+- Notification Filters (Notifications): filters can now remove matching notifications; rules, filters and history are on one screen.
+- Screenshot actions (Tools): delete now moves the screenshot to the system trash with no confirmation dialog (Android 11+).
+- Game Mode: new Excluded list for apps that should keep running. Profiles can run shell commands, and icon pickers now offer 1,150+ icons.
+- Faster app lists and Debloater, less background work, smaller app. Fixed black bars with per-app width, the keyboard covering content and Back navigation.
+
 ## 190 - 3.7
 - Per-app features (Auto Force-Stop, Permission Disabler, per-app width, refresh rate and threading) no longer need Usage Access — the foreground app is now detected through Shizuku, instantly and without polling.
 - Optimizer: new Exclusion List for apps that Close Background Apps and Performance Booster should never force-stop, confirmation before closing apps or clearing caches, and a count of closed apps.
