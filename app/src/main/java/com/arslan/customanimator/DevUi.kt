@@ -293,7 +293,7 @@ internal fun InfoCard(
 }
 
 @Composable
-private fun InfoDismissButton(tint: androidx.compose.ui.graphics.Color, onDismiss: () -> Unit) {
+internal fun InfoDismissButton(tint: androidx.compose.ui.graphics.Color, onDismiss: () -> Unit) {
     IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp)) {
         Icon(
             imageVector = Icons.Filled.Close,

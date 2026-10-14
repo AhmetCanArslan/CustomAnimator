@@ -3,12 +3,13 @@ package com.arslan.customanimator
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
@@ -32,10 +33,13 @@ import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.DebloatManager
 import com.arslan.customanimator.utils.DebloatRemoteList
+import com.arslan.customanimator.utils.InfoNoticeManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+
+private const val LIST_CARD_DISMISS_KEY = "debloater_list_card"
 
 private data class DebloatFilters(
     val risk: DebloatRisk? = null,
@@ -188,11 +192,7 @@ fun DebloaterScreen(
             item(key = "info") {
                 InfoCard(
                     dismissKey = "debloater_info",
-                    texts = listOf(
-                        stringResource(R.string.debloater_info_scope),
-                        stringResource(R.string.debloater_info_listing),
-                        stringResource(R.string.debloater_info_reboot)
-                    ),
+                    texts = listOf(stringResource(R.string.debloater_info)),
                     containerColor = MaterialTheme.colorScheme.errorContainer,
                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                 )
@@ -458,6 +458,9 @@ private fun DebloatSummaryCard(changedCount: Int, enabled: Boolean, onRestoreAll
 
 @Composable
 private fun DebloatListCard(entryCount: Int, updatedAtMs: Long, failed: Boolean) {
+    val context = LocalContext.current
+    val visible = rememberInfoNoticeVisible(LIST_CARD_DISMISS_KEY)
+    if (entryCount > 0 && !visible.value) return
     val formatted = remember(updatedAtMs) {
         if (updatedAtMs <= 0L) {
             ""
@@ -475,91 +478,160 @@ private fun DebloatListCard(entryCount: Int, updatedAtMs: Long, failed: Boolean)
         modifier = Modifier.fillMaxWidth(),
         shape = AppShapes.card
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Row(
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 4.dp, bottom = 16.dp),
+            verticalAlignment = Alignment.Top
         ) {
-            Text(
-                text = stringResource(R.string.debloater_list_title),
-                style = MaterialTheme.typography.titleSmall
-            )
-            Text(
-                text = status,
-                style = MaterialTheme.typography.bodySmall,
-                color = if (entryCount == 0 && failed) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.debloater_list_title),
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    text = status,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = if (entryCount == 0 && failed) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                )
+                Text(
+                    text = stringResource(R.string.debloater_list_credit),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            if (entryCount > 0) {
+                InfoDismissButton(
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    onDismiss = {
+                        InfoNoticeManager.dismiss(context, LIST_CARD_DISMISS_KEY)
+                        visible.value = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun DebloatFilterRows(filters: DebloatFilters, onChange: (DebloatFilters) -> Unit) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(0.dp)
+    ) {
+        DebloatMenuChip(
+            title = stringResource(R.string.debloater_filter_risk),
+            options = DebloatRisk.entries,
+            selected = filters.risk,
+            labelOf = ::riskLabel,
+            onSelect = { onChange(filters.copy(risk = it)) }
+        )
+        DebloatMenuChip(
+            title = stringResource(R.string.debloater_filter_state),
+            options = DebloatState.entries,
+            selected = filters.state,
+            labelOf = ::stateLabel,
+            onSelect = { onChange(filters.copy(state = it)) }
+        )
+        DebloatToggleChip(
+            selected = filters.showSystem,
+            label = stringResource(R.string.debloater_show_system),
+            onClick = { onChange(filters.copy(showSystem = !filters.showSystem)) }
+        )
+        DebloatToggleChip(
+            selected = filters.hideProtected,
+            label = stringResource(R.string.debloater_hide_protected),
+            onClick = { onChange(filters.copy(hideProtected = !filters.hideProtected)) }
+        )
+        DebloatToggleChip(
+            selected = filters.changedOnly,
+            label = stringResource(R.string.debloater_changed_only),
+            onClick = { onChange(filters.copy(changedOnly = !filters.changedOnly)) }
+        )
+        if (filters != DebloatFilters()) {
+            AssistChip(
+                onClick = { onChange(DebloatFilters()) },
+                label = { Text(stringResource(R.string.reset)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
                 }
-            )
-            Text(
-                text = stringResource(R.string.debloater_list_credit),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 }
 
 @Composable
-private fun DebloatFilterRows(filters: DebloatFilters, onChange: (DebloatFilters) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            item {
-                FilterChip(
-                    selected = filters.risk == null,
-                    onClick = { onChange(filters.copy(risk = null)) },
-                    label = { Text(stringResource(R.string.debloater_filter_all)) }
+private fun <T> DebloatMenuChip(
+    title: String,
+    options: List<T>,
+    selected: T?,
+    labelOf: (T) -> Int,
+    onSelect: (T?) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        FilterChip(
+            selected = selected != null,
+            onClick = { expanded = true },
+            label = {
+                Text(
+                    text = selected?.let { stringResource(labelOf(it)) } ?: title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
                 )
             }
-            items(DebloatRisk.entries.toList()) { risk ->
-                FilterChip(
-                    selected = filters.risk == risk,
-                    onClick = { onChange(filters.copy(risk = risk)) },
-                    label = { Text(stringResource(riskLabel(risk))) }
-                )
-            }
-        }
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            item {
-                FilterChip(
-                    selected = filters.state == null,
-                    onClick = { onChange(filters.copy(state = null)) },
-                    label = { Text(stringResource(R.string.debloater_filter_all)) }
-                )
-            }
-            items(DebloatState.entries.toList()) { state ->
-                FilterChip(
-                    selected = filters.state == state,
-                    onClick = { onChange(filters.copy(state = state)) },
-                    label = { Text(stringResource(stateLabel(state))) }
-                )
-            }
-        }
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            item {
-                DebloatToggleChip(
-                    selected = filters.showSystem,
-                    label = stringResource(R.string.debloater_show_system),
-                    onClick = { onChange(filters.copy(showSystem = !filters.showSystem)) }
-                )
-            }
-            item {
-                DebloatToggleChip(
-                    selected = filters.hideProtected,
-                    label = stringResource(R.string.debloater_hide_protected),
-                    onClick = { onChange(filters.copy(hideProtected = !filters.hideProtected)) }
-                )
-            }
-            item {
-                DebloatToggleChip(
-                    selected = filters.changedOnly,
-                    label = stringResource(R.string.debloater_changed_only),
-                    onClick = { onChange(filters.copy(changedOnly = !filters.changedOnly)) }
+        )
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DebloatMenuItem(
+                label = stringResource(R.string.debloater_filter_all),
+                checked = selected == null,
+                onClick = {
+                    expanded = false
+                    onSelect(null)
+                }
+            )
+            options.forEach { option ->
+                DebloatMenuItem(
+                    label = stringResource(labelOf(option)),
+                    checked = selected == option,
+                    onClick = {
+                        expanded = false
+                        onSelect(option)
+                    }
                 )
             }
         }
     }
+}
+
+@Composable
+private fun DebloatMenuItem(label: String, checked: Boolean, onClick: () -> Unit) {
+    DropdownMenuItem(
+        text = { Text(label) },
+        onClick = onClick,
+        trailingIcon = if (checked) {
+            { Icon(imageVector = Icons.Filled.Check, contentDescription = null) }
+        } else {
+            null
+        }
+    )
 }
 
 @Composable

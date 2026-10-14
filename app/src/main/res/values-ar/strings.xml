@@ -653,7 +653,7 @@
     <string name="permissions_section_system">الوصول إلى النظام</string>
     <string name="permissions_section_notifications">الإشعارات</string>
     <string name="permissions_section_other">أخرى</string>
-    <string name="permission_images_desc">مطلوب للعثور على لقطات الشاشة الجديدة ونسخها وحذفها.</string>
+    <string name="permission_screenshot_folder_desc">اختر المجلد الذي تُحفظ فيه لقطات الشاشة للعثور على الجديدة منها ونسخها وحذفها. لا حاجة إلى الوصول إلى الصور.</string>
     <string name="permissions_footer_note">لا يمكن منح الوصول إلى الإعدادات الآمنة من داخل التطبيق. استخدم شيزوكو إذا كان يعمل، أو أمر ADB لمرة واحدة.</string>
     <string name="permission_optional">اختياري</string>
     <string name="permission_shizuku">شيزوكو</string>
@@ -1088,13 +1088,14 @@
     <string name="screenshot_group_buttons">الأزرار</string>
     <string name="screenshot_group_timing">التوقيت</string>
     <string name="screenshot_group_position">الموضع والمعاينة</string>
-    <string name="screenshot_perm_images">الوصول إلى الصور ومقاطع الفيديو</string>
+    <string name="screenshot_perm_folder">مجلد لقطات الشاشة</string>
+    <string name="screenshot_folder_current">%1$s · انقر لاختيار مجلد آخر</string>
     <string name="screenshot_granted">ممنوح</string>
     <string name="screenshot_not_granted">غير ممنوح</string>
     <string name="screenshot_section_notification">وضع الإشعار</string>
     <string name="screenshot_section_overlay">وضع التراكب</string>
     <string name="screenshot_watcher_switch">إشعار عند التقاط لقطات شاشة جديدة</string>
-    <string name="screenshot_watcher_needs_perms">امنح الوصول إلى الصور والإشعارات للتفعيل.</string>
+    <string name="screenshot_watcher_needs_perms">اختر مجلد لقطات الشاشة وامنح الوصول إلى الإشعارات للتفعيل.</string>
     <string name="screenshot_notification_hint">يراقب مجلد لقطات الشاشة وينشر إشعارًا بإجراءات النسخ والحذف.</string>
     <string name="screenshot_delay_label">التأخير قبل الإشعار</string>
     <string name="screenshot_delay_value">%1$d ثانية</string>
@@ -1106,7 +1107,7 @@
     <string name="screenshot_notif_show_preview">إظهار معاينة لقطة الشاشة</string>
     <string name="screenshot_overlay_switch">إظهار الأزرار عند التقاط الشاشة</string>
     <string name="screenshot_overlay_hint">يعرض أزرار النسخ والحذف العائمة فور التقاطك لقطة شاشة.</string>
-    <string name="screenshot_overlay_needs_perms">امنح الوصول إلى الصور والعرض فوق التطبيقات الأخرى للتفعيل.</string>
+    <string name="screenshot_overlay_needs_perms">اختر مجلد لقطات الشاشة وامنح إذن العرض فوق التطبيقات الأخرى للتفعيل.</string>
     <string name="screenshot_overlay_show_copy">إظهار زر النسخ والحذف</string>
     <string name="screenshot_overlay_show_delete">إظهار زر الحذف</string>
     <string name="screenshot_overlay_timeout_label">إخفاء الأزرار بعد</string>
@@ -1131,13 +1132,9 @@
     <string name="screenshot_toast_deleted">تم حذف لقطة الشاشة</string>
     <string name="screenshot_toast_copy_failed">تعذر نسخ لقطة الشاشة</string>
     <string name="screenshot_toast_copied">تم نسخ لقطة الشاشة إلى الحافظة</string>
-    <string name="screenshot_toast_cancelled">تم الاحتفاظ بلقطة الشاشة</string>
+    <string name="screenshot_toast_delete_failed">تعذر حذف لقطة الشاشة</string>
     <string name="screenshot_toast_not_found">لم يتم العثور على لقطة شاشة حديثة</string>
     <string name="screenshot_toast_copied_deleted">تم النسخ إلى الحافظة والحذف</string>
-    <string name="screenshot_toast_trashed">تم نقل لقطة الشاشة إلى سلة المهملات</string>
-    <string name="screenshot_toast_copied_trashed">تم النسخ إلى الحافظة والنقل إلى سلة المهملات</string>
-    <string name="screenshot_toast_trash_failed">تعذر نقل لقطة الشاشة إلى سلة المهملات</string>
-    <string name="screenshot_toast_trash_needs_shizuku">نقل لقطات الشاشة إلى سلة المهملات يتطلب Shizuku</string>
 
     <string name="hotspot_manager">مدير نقطة الاتصال</string>
     <string name="hotspot_manager_desc">التحكم في نقطة اتصال Wi-Fi والعملاء وإعدادات نقطة الوصول المتقدمة</string>
@@ -1591,9 +1588,7 @@
     <string name="bh_doze_charging">قيد الشحن</string>
     <string name="debloater">Debloater</string>
     <string name="debloater_desc">أزل التطبيقات المثبتة مسبقًا أو عطّلها لهذا المستخدم، ثم استعدها متى شئت.</string>
-    <string name="debloater_info_scope">الإزالة من هنا تؤثر على ملف هذا المستخدم فقط. يبقى ملف APK على الجهاز، لذا يمكن استعادة تطبيقات النظام في أي وقت.</string>
-    <string name="debloater_info_listing">تظهر كل حزمة مثبتة لهذا المستخدم، بما في ذلك خدمات النظام التي بلا أيقونة. تُقرأ أسماؤها وأيقوناتها مباشرة من ملف APK.</string>
-    <string name="debloater_info_reboot">بعض التغييرات تحتاج إلى إعادة تشغيل حتى تعمل بالكامل.</string>
+    <string name="debloater_info">التغييرات تخص هذا المستخدم فقط ويمكن التراجع عنها في أي وقت. بعضها يحتاج إلى إعادة تشغيل.</string>
     <string name="debloater_status">غيّر Custom Animator %1$d تطبيقًا</string>
     <string name="debloater_status_clean">لم تتم إزالة أو تعطيل أي شيء بعد.</string>
     <string name="debloater_list_title">قائمة الحزم المجتمعية</string>
@@ -1607,6 +1602,8 @@
     <string name="debloater_restore_all_done">تمت استعادة %1$d تطبيقًا.</string>
     <string name="debloater_search_hint">ابحث عن تطبيق أو اسم حزمة</string>
     <string name="debloater_filter_all">الكل</string>
+    <string name="debloater_filter_risk">الخطورة</string>
+    <string name="debloater_filter_state">الحالة</string>
     <string name="debloater_show_system">إظهار تطبيقات النظام</string>
     <string name="debloater_hide_protected">إخفاء المحمية</string>
     <string name="debloater_changed_only">المعدّلة</string>

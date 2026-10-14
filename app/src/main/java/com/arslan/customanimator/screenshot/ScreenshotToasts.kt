@@ -9,10 +9,7 @@ internal object ScreenshotToasts {
     private val CONFIRMATIONS = setOf(
         R.string.screenshot_toast_copied,
         R.string.screenshot_toast_deleted,
-        R.string.screenshot_toast_copied_deleted,
-        R.string.screenshot_toast_trashed,
-        R.string.screenshot_toast_copied_trashed,
-        R.string.screenshot_toast_cancelled
+        R.string.screenshot_toast_copied_deleted
     )
 
     fun show(context: Context, message: Int) {

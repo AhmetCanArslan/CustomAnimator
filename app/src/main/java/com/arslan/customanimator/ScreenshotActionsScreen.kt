@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Layers
@@ -27,10 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
 import com.arslan.customanimator.screenshot.ScreenshotPrefs
 import com.arslan.customanimator.service.ScreenshotWatcherService
 import com.arslan.customanimator.ui.theme.AppShapes
+import com.arslan.customanimator.utils.SaveToDeviceManager
 import kotlin.math.roundToInt
 
 private val TIMING_SLIDER_PADDING = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
@@ -48,7 +52,7 @@ fun ScreenshotActionsScreen(
     val requestPermission = rememberPermissionRequester(onChanged = { permissionRefresh.intValue++ })
     val permissions = key(permissionRefresh.intValue) { permissionEntries(SCREENSHOT_PERMISSIONS) }
     val granted = permissions.filter { it.granted }.map { it.permission }
-    val hasImages = AppPermission.IMAGES in granted
+    val folder = remember(permissionRefresh.intValue) { ScreenshotFolder.tree(context) }
     val hasNotif = AppPermission.POST_NOTIFICATIONS in granted
     val hasOverlayPerm = AppPermission.OVERLAY in granted
 
@@ -66,8 +70,8 @@ fun ScreenshotActionsScreen(
     var overlayX by remember { mutableIntStateOf(prefs.overlayX) }
     var overlayY by remember { mutableIntStateOf(prefs.overlayY) }
 
-    val canWatch = hasImages && hasNotif
-    val canOverlay = hasImages && hasOverlayPerm
+    val canWatch = folder != null && hasNotif
+    val canOverlay = folder != null && hasOverlayPerm
 
     val tester = remember { ScreenshotOverlay(context) }
     val mainHandler = remember { Handler(Looper.getMainLooper()) }
@@ -129,6 +133,24 @@ fun ScreenshotActionsScreen(
                     entries = permissions,
                     onGrant = requestPermission
                 )
+            }
+
+            if (folder != null) {
+                item {
+                    ScreenshotCard {
+                        ScreenshotInfoRow(
+                            icon = Icons.Filled.Folder,
+                            title = stringResource(R.string.screenshot_perm_folder),
+                            description = stringResource(
+                                R.string.screenshot_folder_current,
+                                SaveToDeviceManager.folderLabel(folder)
+                            ),
+                            modifier = Modifier.clickable {
+                                requestPermission(AppPermission.SCREENSHOT_FOLDER)
+                            }
+                        )
+                    }
+                }
             }
 
             item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_tile)) }
@@ -377,10 +399,11 @@ private fun ScreenshotGroupLabel(label: String) {
 private fun ScreenshotInfoRow(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String,
-    description: String
+    description: String,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),

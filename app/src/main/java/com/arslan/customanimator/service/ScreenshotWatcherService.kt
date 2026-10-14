@@ -5,28 +5,23 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.database.ContentObserver
-import android.net.Uri
+import android.database.Cursor
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Looper
-import android.provider.MediaStore
+import android.provider.DocumentsContract
+import android.provider.Settings
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.screenshot.ScreenshotActionActivity
-import com.arslan.customanimator.screenshot.ScreenshotActionReceiver
 import com.arslan.customanimator.screenshot.ScreenshotActions
+import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.screenshot.ScreenshotNotifier
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
-import com.arslan.customanimator.screenshot.ScreenshotPermissions
 import com.arslan.customanimator.screenshot.ScreenshotPrefs
 
-/**
- * Foreground service that watches MediaStore for newly added screenshots. Each
- * new screenshot can trigger the alert notification, the floating copy/delete
- * buttons, or both, depending on the user's settings.
- */
 class ScreenshotWatcherService : Service() {
 
     private lateinit var prefs: ScreenshotPrefs
@@ -37,8 +32,9 @@ class ScreenshotWatcherService : Service() {
     private var overlay: ScreenshotOverlay? = null
     private val hideOverlay = Runnable { overlay?.hide() }
 
-    private var observer: ContentObserver? = null
-    private var lastSeenId = -1L
+    private lateinit var observer: ContentObserver
+    private var watchedFolder: Cursor? = null
+    private var lastSeenMillis = 0L
 
     override fun onCreate() {
         super.onCreate()
@@ -47,12 +43,16 @@ class ScreenshotWatcherService : Service() {
         workerThread = HandlerThread("screenshot-observer").apply { start() }
         handler = Handler(workerThread.looper)
         overlay = ScreenshotOverlay(this)
-        lastSeenId = ScreenshotActions.newestScreenshot(this)?.id ?: -1L
-        registerObserver()
+        observer = object : ContentObserver(handler) {
+            override fun onChange(selfChange: Boolean) {
+                onFolderChanged()
+            }
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startInForeground()
+        handler.post { watchFolder() }
         return START_STICKY
     }
 
@@ -71,34 +71,37 @@ class ScreenshotWatcherService : Service() {
         )
     }
 
-    private fun registerObserver() {
-        val obs = object : ContentObserver(handler) {
-            override fun onChange(selfChange: Boolean, uri: Uri?) {
-                onMediaChanged()
-            }
-        }
-        runCatching {
-            contentResolver.registerContentObserver(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                true,
-                obs
-            )
-        }.onSuccess { observer = obs }
+    private fun watchFolder() {
+        closeFolder()
+        val tree = ScreenshotFolder.tree(this) ?: return
+        lastSeenMillis = ScreenshotActions.newestScreenshot(this)?.modifiedMillis ?: 0L
+        watchedFolder = runCatching {
+            contentResolver.query(ScreenshotFolder.children(tree), FOLDER_PROJECTION, null, null, null)
+        }.getOrNull()
+        watchedFolder?.registerContentObserver(observer)
     }
 
-    private fun onMediaChanged() {
-        val item = ScreenshotActions.latestScreenshot(applicationContext, RECENT_SECONDS) ?: return
-        if (item.id == lastSeenId) return
-        lastSeenId = item.id
+    private fun closeFolder() {
+        watchedFolder?.let {
+            it.unregisterContentObserver(observer)
+            it.close()
+        }
+        watchedFolder = null
+    }
 
-        if (prefs.overlayEnabled && ScreenshotPermissions.hasOverlayPermission(this)) {
+    private fun onFolderChanged() {
+        val item = ScreenshotActions.latestScreenshot(applicationContext, RECENT_SECONDS) ?: return
+        if (item.modifiedMillis <= lastSeenMillis) return
+        lastSeenMillis = item.modifiedMillis
+
+        if (prefs.overlayEnabled && Settings.canDrawOverlays(this)) {
             main.post { showOverlay() }
         }
 
         if (!prefs.watcherEnabled) return
         val delayMs = prefs.notificationDelaySeconds * 1000L
         handler.postDelayed({
-            val current = ScreenshotActions.itemFor(applicationContext, item.id) ?: return@postDelayed
+            val current = ScreenshotActions.itemFor(applicationContext, item.uri) ?: return@postDelayed
             ScreenshotNotifier.notifyScreenshot(applicationContext, current)
             scheduleAutoDismiss(ScreenshotNotifier.notificationIdFor(current))
         }, delayMs)
@@ -130,20 +133,15 @@ class ScreenshotWatcherService : Service() {
     private fun startAction(action: String) {
         main.removeCallbacks(hideOverlay)
         overlay?.hide()
-        if (ScreenshotActionReceiver.handles(action)) {
-            sendBroadcast(ScreenshotActionReceiver.intent(applicationContext, action, -1L, -1))
-            return
-        }
         runCatching {
             startActivity(
-                ScreenshotActionActivity.intent(applicationContext, action, -1L, -1)
+                ScreenshotActionActivity.intent(applicationContext, action, null, -1)
             )
         }
     }
 
     override fun onDestroy() {
-        observer?.let { runCatching { contentResolver.unregisterContentObserver(it) } }
-        observer = null
+        handler.post { closeFolder() }
         main.removeCallbacks(hideOverlay)
         overlay?.hide()
         overlay = null
@@ -155,6 +153,7 @@ class ScreenshotWatcherService : Service() {
 
     companion object {
         private const val RECENT_SECONDS = 20L
+        private val FOLDER_PROJECTION = arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID)
 
         fun start(context: Context) {
             ContextCompat.startForegroundService(
@@ -167,7 +166,6 @@ class ScreenshotWatcherService : Service() {
             context.stopService(Intent(context, ScreenshotWatcherService::class.java))
         }
 
-        /** Runs while either mode is on; stops when both are off. */
         fun sync(context: Context) {
             val prefs = ScreenshotPrefs(context)
             if (prefs.watcherEnabled || prefs.overlayEnabled) start(context) else stop(context)

@@ -23,7 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BatteryFull
-import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.NotificationsActive
@@ -57,7 +57,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
-import com.arslan.customanimator.screenshot.ScreenshotPermissions
+import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
 import com.arslan.customanimator.utils.LocalShizukuAvailable
@@ -73,7 +73,7 @@ enum class AppPermission {
     POST_NOTIFICATIONS,
     OVERLAY,
     BATTERY_UNRESTRICTED,
-    IMAGES
+    SCREENSHOT_FOLDER
 }
 
 data class PermissionEntry(
@@ -107,7 +107,7 @@ fun isPermissionGranted(context: Context, permission: AppPermission): Boolean = 
         context.getSystemService(PowerManager::class.java)
             ?.isIgnoringBatteryOptimizations(context.packageName) == true
 
-    AppPermission.IMAGES -> ScreenshotPermissions.hasImagesPermission(context)
+    AppPermission.SCREENSHOT_FOLDER -> ScreenshotFolder.hasAccess(context)
 }
 
 private val NOTIFY_BASE_REQUIRED = listOf(
@@ -132,7 +132,7 @@ fun notifyRequiredPermissions(context: Context): List<AppPermission> {
 }
 
 val SCREENSHOT_PERMISSIONS = listOf(
-    AppPermission.IMAGES,
+    AppPermission.SCREENSHOT_FOLDER,
     AppPermission.POST_NOTIFICATIONS,
     AppPermission.OVERLAY
 )
@@ -147,7 +147,7 @@ private val NOTIFICATION_PERMISSIONS = listOf(
 private val OTHER_PERMISSIONS = listOf(
     AppPermission.OVERLAY,
     AppPermission.BATTERY_UNRESTRICTED,
-    AppPermission.IMAGES
+    AppPermission.SCREENSHOT_FOLDER
 )
 
 private val PERMISSION_ICONS = mapOf(
@@ -157,7 +157,7 @@ private val PERMISSION_ICONS = mapOf(
     AppPermission.POST_NOTIFICATIONS to Icons.Filled.Notifications,
     AppPermission.OVERLAY to Icons.Filled.Layers,
     AppPermission.BATTERY_UNRESTRICTED to Icons.Filled.BatteryFull,
-    AppPermission.IMAGES to Icons.Filled.Image
+    AppPermission.SCREENSHOT_FOLDER to Icons.Filled.Folder
 )
 
 private val PERMISSION_TITLES = mapOf(
@@ -167,7 +167,7 @@ private val PERMISSION_TITLES = mapOf(
     AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications,
     AppPermission.OVERLAY to R.string.pn_permission_overlay_title,
     AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background,
-    AppPermission.IMAGES to R.string.screenshot_perm_images
+    AppPermission.SCREENSHOT_FOLDER to R.string.screenshot_perm_folder
 )
 
 private val PERMISSION_DESCRIPTIONS = mapOf(
@@ -177,7 +177,7 @@ private val PERMISSION_DESCRIPTIONS = mapOf(
     AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications_desc,
     AppPermission.OVERLAY to R.string.permission_overlay_desc,
     AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background_desc,
-    AppPermission.IMAGES to R.string.permission_images_desc
+    AppPermission.SCREENSHOT_FOLDER to R.string.permission_screenshot_folder_desc
 )
 
 private fun descriptionOf(permission: AppPermission, granted: Boolean, isShizukuAvailable: Boolean): Int = when {
@@ -277,13 +277,11 @@ fun rememberPermissionRequester(
         ActivityResultContracts.RequestPermission()
     ) { onChanged() }
 
-    val imagesLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
+    val screenshotFolderLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocumentTree()
+    ) { folder ->
+        if (folder != null) ScreenshotFolder.choose(context, folder)
         onChanged()
-        if (!granted) {
-            runCatching { context.startActivity(ScreenshotPermissions.appSettingsIntent(context)) }
-        }
     }
 
     if (showAdbDialog) {
@@ -310,7 +308,7 @@ fun rememberPermissionRequester(
                 }
             }
 
-            AppPermission.IMAGES -> imagesLauncher.launch(ScreenshotPermissions.imagesPermission)
+            AppPermission.SCREENSHOT_FOLDER -> screenshotFolderLauncher.launch(ScreenshotFolder.initialUri)
 
             AppPermission.NOTIFICATION_ACCESS,
             AppPermission.OVERLAY,
@@ -342,7 +340,7 @@ fun PermissionsScreen(
     val otherItems = key(refresh.intValue) {
         permissionEntries(
             OTHER_PERMISSIONS,
-            setOfNotNull(AppPermission.IMAGES, AppPermission.OVERLAY.takeIf { it !in notifyRequired })
+            setOfNotNull(AppPermission.SCREENSHOT_FOLDER, AppPermission.OVERLAY.takeIf { it !in notifyRequired })
         )
     }
     val allEntries = systemEntries + notificationItems + otherItems

@@ -660,7 +660,7 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="permissions_section_system">System access</string>
     <string name="permissions_section_notifications">Notifications</string>
     <string name="permissions_section_other">Other</string>
-    <string name="permission_images_desc">Needed to find, copy and delete new screenshots.</string>
+    <string name="permission_screenshot_folder_desc">Choose the folder your screenshots are saved to, so new ones can be found, copied and deleted. No photo access needed.</string>
     <string name="permissions_footer_note">Secure settings cannot be granted from inside the app. Use Shizuku if it is running, or the one-time ADB command.</string>
     <string name="permission_optional">optional</string>
     <string name="permission_shizuku">Shizuku</string>
@@ -1091,13 +1091,14 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_group_buttons">Buttons</string>
     <string name="screenshot_group_timing">Timing</string>
     <string name="screenshot_group_position">Position &amp; preview</string>
-    <string name="screenshot_perm_images">Photos and videos access</string>
+    <string name="screenshot_perm_folder">Screenshots folder</string>
+    <string name="screenshot_folder_current">%1$s · Tap to choose another folder</string>
     <string name="screenshot_granted">Granted</string>
     <string name="screenshot_not_granted">Not granted</string>
     <string name="screenshot_section_notification">Notification mode</string>
     <string name="screenshot_section_overlay">Overlay mode</string>
     <string name="screenshot_watcher_switch">Notify on new screenshots</string>
-    <string name="screenshot_watcher_needs_perms">Grant Photos and Notifications access to enable.</string>
+    <string name="screenshot_watcher_needs_perms">Choose the screenshots folder and grant Notifications access to enable.</string>
     <string name="screenshot_notification_hint">Watches the screenshot folder and posts a notification with Copy &amp; Delete actions.</string>
     <string name="screenshot_delay_label">Delay before notification</string>
     <string name="screenshot_delay_value">%1$d s</string>
@@ -1109,7 +1110,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_notif_show_preview">Show screenshot preview</string>
     <string name="screenshot_overlay_switch">Show buttons on screenshot</string>
     <string name="screenshot_overlay_hint">Shows floating Copy &amp; Delete and Delete buttons right after you take a screenshot.</string>
-    <string name="screenshot_overlay_needs_perms">Grant Photos access and Draw over other apps to enable.</string>
+    <string name="screenshot_overlay_needs_perms">Choose the screenshots folder and grant Draw over other apps to enable.</string>
     <string name="screenshot_overlay_show_copy">Show Copy &amp; Delete button</string>
     <string name="screenshot_overlay_show_delete">Show Delete button</string>
     <string name="screenshot_overlay_timeout_label">Hide buttons after</string>
@@ -1134,13 +1135,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="screenshot_toast_deleted">Screenshot deleted</string>
     <string name="screenshot_toast_copy_failed">Could not copy screenshot</string>
     <string name="screenshot_toast_copied">Screenshot copied to clipboard</string>
-    <string name="screenshot_toast_cancelled">Screenshot kept</string>
+    <string name="screenshot_toast_delete_failed">Could not delete screenshot</string>
     <string name="screenshot_toast_not_found">No recent screenshot found</string>
     <string name="screenshot_toast_copied_deleted">Copied to clipboard and deleted</string>
-    <string name="screenshot_toast_trashed">Screenshot moved to trash</string>
-    <string name="screenshot_toast_copied_trashed">Copied to clipboard and moved to trash</string>
-    <string name="screenshot_toast_trash_failed">Could not move the screenshot to trash</string>
-    <string name="screenshot_toast_trash_needs_shizuku">Moving screenshots to trash needs Shizuku</string>
 
     <string name="hotspot_manager">Hotspot Manager</string>
     <string name="hotspot_manager_desc">Control the Wi-Fi hotspot, clients and advanced access point settings</string>
@@ -1590,9 +1587,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
 
     <string name="debloater">Debloater</string>
     <string name="debloater_desc">Remove or disable preinstalled apps for this user, then restore them whenever you want.</string>
-    <string name="debloater_info_scope">Removing an app here only affects this user profile. The APK stays on the device, so system apps can be restored at any time.</string>
-    <string name="debloater_info_listing">Every package installed for this user is listed, including system services with no icon. Their names and icons are read straight from the APK file.</string>
-    <string name="debloater_info_reboot">Some changes need a reboot before they fully take effect.</string>
+    <string name="debloater_info">Changes only affect this user and can be undone at any time. Some need a reboot.</string>
     <string name="debloater_status">%1$d apps changed by Custom Animator</string>
     <string name="debloater_status_clean">Nothing has been removed or disabled yet.</string>
     <string name="debloater_list_title">Community package list</string>
@@ -1606,6 +1601,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="debloater_restore_all_done">Restored %1$d apps.</string>
     <string name="debloater_search_hint">Search apps or package names</string>
     <string name="debloater_filter_all">All</string>
+    <string name="debloater_filter_risk">Risk</string>
+    <string name="debloater_filter_state">Status</string>
     <string name="debloater_show_system">Show system</string>
     <string name="debloater_hide_protected">Hide protected</string>
     <string name="debloater_changed_only">Changed by app</string>

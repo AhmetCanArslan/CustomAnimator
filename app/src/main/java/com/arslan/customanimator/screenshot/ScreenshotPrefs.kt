@@ -51,6 +51,10 @@ class ScreenshotPrefs(context: Context) {
         get() = sp.getBoolean(KEY_CONFIRMATION_TOASTS, true)
         set(value) = sp.edit().putBoolean(KEY_CONFIRMATION_TOASTS, value).apply()
 
+    var folderUri: String?
+        get() = sp.getString(KEY_FOLDER, null)
+        set(value) = sp.edit().putString(KEY_FOLDER, value).apply()
+
     var overlayX: Int
         get() = sp.getInt(KEY_OVERLAY_X, DEFAULT_OVERLAY_X)
         set(value) = sp.edit().putInt(KEY_OVERLAY_X, value).apply()
@@ -72,6 +76,7 @@ class ScreenshotPrefs(context: Context) {
         private const val KEY_OVERLAY_DELETE = "overlay_show_delete"
         private const val KEY_OVERLAY_TIMEOUT = "overlay_timeout_seconds"
         private const val KEY_CONFIRMATION_TOASTS = "show_confirmation_toasts"
+        private const val KEY_FOLDER = "screenshot_folder"
         private const val KEY_OVERLAY_X = "overlay_x"
         private const val KEY_OVERLAY_Y = "overlay_y"
 

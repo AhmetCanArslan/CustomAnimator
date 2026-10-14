@@ -94,7 +94,7 @@ class ShareActionsActivity : Activity() {
             getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText(null, item.text))
         } else {
             val name = File(SaveToDeviceManager.describe(this, item).name).name
-            ScreenshotActions.copyToClipboard(this, ScreenshotItem(0, stream, name, 0))
+            ScreenshotActions.copyToClipboard(this, ScreenshotItem(stream, name, 0))
         }
     }
 

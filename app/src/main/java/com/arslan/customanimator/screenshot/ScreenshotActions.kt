@@ -1,39 +1,37 @@
 package com.arslan.customanimator.screenshot
 
-import android.app.Activity
-import android.app.RecoverableSecurityException
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.ClipboardManager
-import android.content.ContentUris
 import android.content.Context
-import android.content.IntentSender
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.PersistableBundle
-import android.os.Process
-import android.provider.MediaStore
-import androidx.annotation.RequiresApi
+import android.provider.DocumentsContract
 import androidx.core.content.FileProvider
-import com.arslan.customanimator.utils.ShizukuHelper
 import java.io.File
 
-data class ScreenshotItem(val id: Long, val uri: Uri, val name: String, val dateAdded: Long)
-
-enum class ScreenshotTrashResult { TRASHED, NO_SHIZUKU, FAILED }
+data class ScreenshotItem(val uri: Uri, val name: String, val modifiedMillis: Long)
 
 object ScreenshotActions {
 
     private const val PREVIEW_MAX_EDGE = 1024
-    private const val PER_USER_RANGE = 100000
+    private const val IMAGE_MIME_PREFIX = "image/"
+    private val PROJECTION = arrayOf(
+        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+        DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+        DocumentsContract.Document.COLUMN_MIME_TYPE
+    )
 
     fun copyToClipboard(context: Context, item: ScreenshotItem): Boolean {
         return try {
             val dir = File(context.cacheDir, "clipboard").apply { mkdirs() }
             dir.listFiles()?.forEach { it.delete() }
-            val copy = File(dir, item.name.ifEmpty { "screenshot_${item.id}.png" })
+            val copy = File(dir, item.name.ifEmpty { "screenshot_${item.modifiedMillis}.png" })
             context.contentResolver.openInputStream(item.uri)?.use { input ->
                 copy.outputStream().use { output -> input.copyTo(output) }
             } ?: return false
@@ -59,124 +57,44 @@ object ScreenshotActions {
     }
 
     fun latestScreenshot(context: Context, withinSeconds: Long = 30): ScreenshotItem? {
-        val newest = query(context, limitToNewest = true) ?: return null
-        val nowSec = System.currentTimeMillis() / 1000
-        return if (nowSec - newest.dateAdded <= withinSeconds) newest else null
+        val newest = newestScreenshot(context) ?: return null
+        val ageMillis = System.currentTimeMillis() - newest.modifiedMillis
+        return newest.takeIf { ageMillis <= withinSeconds * 1000 }
     }
 
-    fun newestScreenshot(context: Context): ScreenshotItem? = query(context, limitToNewest = true)
-
-    fun targetOf(context: Context, mediaId: Long): ScreenshotItem? =
-        if (mediaId >= 0) itemFor(context, mediaId) else latestScreenshot(context)
-
-    fun itemFor(context: Context, id: Long): ScreenshotItem? {
-        val uri = ContentUris.withAppendedId(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            id
-        )
-        val (selection, args) = screenshotSelection()
+    fun newestScreenshot(context: Context): ScreenshotItem? {
+        val tree = ScreenshotFolder.tree(context) ?: return null
         return runCatching {
-            context.contentResolver.query(
-                uri,
-                arrayOf(
-                    MediaStore.Images.Media._ID,
-                    MediaStore.Images.Media.DISPLAY_NAME,
-                    MediaStore.Images.Media.DATE_ADDED
-                ),
-                selection, args, null
-            )?.use { c ->
-                if (c.moveToFirst()) {
-                    ScreenshotItem(
-                        id = c.getLong(0),
-                        uri = uri,
-                        name = c.getString(1) ?: "",
-                        dateAdded = c.getLong(2)
-                    )
-                } else {
-                    null
-                }
-            }
+            context.contentResolver.query(ScreenshotFolder.children(tree), PROJECTION, null, null, null)
+                ?.use { cursor -> newestIn(cursor, tree) }
         }.getOrNull()
     }
 
-    private fun query(context: Context, limitToNewest: Boolean): ScreenshotItem? {
-        val projection = arrayOf(
-            MediaStore.Images.Media._ID,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_ADDED
-        )
-        val (selection, args) = screenshotSelection()
-        val sort = "${MediaStore.Images.Media.DATE_ADDED} DESC"
-        return runCatching {
-            context.contentResolver.query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                projection, selection, args, sort
-            )?.use { c ->
-                if (!c.moveToFirst()) return@use null
-                val id = c.getLong(0)
-                ScreenshotItem(
-                    id = id,
-                    uri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        id
-                    ),
-                    name = c.getString(1) ?: "",
-                    dateAdded = c.getLong(2)
-                )
-            }
-        }.getOrNull().takeIf { limitToNewest || it != null }
+    fun itemFor(context: Context, uri: Uri): ScreenshotItem? = runCatching {
+        context.contentResolver.query(uri, PROJECTION, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) itemAt(cursor, uri) else null
+        }
+    }.getOrNull()
+
+    fun delete(context: Context, item: ScreenshotItem): Boolean = runCatching {
+        DocumentsContract.deleteDocument(context.contentResolver, item.uri)
+    }.getOrDefault(false)
+
+    private fun newestIn(cursor: Cursor, tree: Uri): ScreenshotItem? {
+        var newest: ScreenshotItem? = null
+        while (cursor.moveToNext()) {
+            val uri = DocumentsContract.buildDocumentUriUsingTree(tree, cursor.getString(0))
+            val item = itemAt(cursor, uri) ?: continue
+            if (newest == null || item.modifiedMillis > newest.modifiedMillis) newest = item
+        }
+        return newest
     }
 
-    private fun screenshotSelection(): Pair<String, Array<String>> {
-        val names = arrayOf("%Screenshots%", "%creenshot%")
-        val byName = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ? OR " +
-            "${MediaStore.Images.Media.DISPLAY_NAME} LIKE ?"
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            return "($byName) AND ${MediaStore.MediaColumns.IS_TRASHED} = 0" to names
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return byName to names
-        }
-        @Suppress("DEPRECATION")
-        return "${MediaStore.Images.Media.DATA} LIKE ?" to arrayOf("%Screenshot%")
-    }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    fun moveToTrash(context: Context, item: ScreenshotItem): ScreenshotTrashResult {
-        if (!ShizukuHelper.hasShizukuPermission()) return ScreenshotTrashResult.NO_SHIZUKU
-        val target = itemFor(context, item.id) ?: return ScreenshotTrashResult.FAILED
-        ShizukuHelper.executeShellCommand(trashCommand(target.id))
-        return if (itemFor(context, target.id) == null) {
-            ScreenshotTrashResult.TRASHED
-        } else {
-            ScreenshotTrashResult.FAILED
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    internal fun trashCommand(id: Long): Array<String> {
-        require(id > 0)
-        return arrayOf(
-            "content", "update",
-            "--user", (Process.myUid() / PER_USER_RANGE).toString(),
-            "--uri", ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id).toString(),
-            "--bind", "${MediaStore.MediaColumns.IS_TRASHED}:i:1"
-        )
-    }
-
-    fun deleteOrRequest(context: Context, item: ScreenshotItem): IntentSender? {
-        return try {
-            context.contentResolver.delete(item.uri, null, null)
-            null
-        } catch (e: SecurityException) {
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q &&
-                e is RecoverableSecurityException
-            ) {
-                e.userAction.actionIntent.intentSender
-            } else {
-                null
-            }
-        }
+    private fun itemAt(cursor: Cursor, uri: Uri): ScreenshotItem? {
+        val name = cursor.getString(1).orEmpty()
+        val isImage = cursor.getString(3)?.startsWith(IMAGE_MIME_PREFIX) == true
+        if (!isImage || name.startsWith(".")) return null
+        return ScreenshotItem(uri = uri, name = name, modifiedMillis = cursor.getLong(2))
     }
 
     fun decodePreview(context: Context, item: ScreenshotItem): Bitmap? {
@@ -196,6 +114,4 @@ object ScreenshotActions {
             null
         }
     }
-
-    fun isDeleteConfirmed(resultCode: Int): Boolean = resultCode == Activity.RESULT_OK
 }

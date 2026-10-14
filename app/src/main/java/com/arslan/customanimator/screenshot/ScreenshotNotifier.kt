@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -109,7 +108,7 @@ object ScreenshotNotifier {
     }
 
     fun notificationIdFor(item: ScreenshotItem): Int =
-        ((item.id.hashCode()) and 0x7FFFFFFF).coerceAtLeast(WATCHER_NOTIFICATION_ID + 1)
+        (item.uri.hashCode() and 0x7FFFFFFF).coerceAtLeast(WATCHER_NOTIFICATION_ID + 1)
 
     private fun actionPendingIntent(
         context: Context,
@@ -117,13 +116,8 @@ object ScreenshotNotifier {
         item: ScreenshotItem,
         notifId: Int
     ): PendingIntent {
-        val data = Uri.fromParts("screenshot", item.id.toString(), action)
+        val intent = ScreenshotActionActivity.intent(context, action, item.uri, notifId)
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        if (ScreenshotActionReceiver.handles(action)) {
-            val intent = ScreenshotActionReceiver.intent(context, action, item.id, notifId).apply { this.data = data }
-            return PendingIntent.getBroadcast(context, action.hashCode(), intent, flags)
-        }
-        val intent = ScreenshotActionActivity.intent(context, action, item.id, notifId).apply { this.data = data }
         return PendingIntent.getActivity(context, action.hashCode(), intent, flags)
     }
 }
