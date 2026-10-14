@@ -1,4 +1,4 @@
-## 191 - 3.8
+## 195 - 3.8
 - Pintasan (Alat): sematkan aplikasi, aktivitas tersembunyi, pintasan tekan lama aplikasi, file, folder, foto, tautan, dan perintah ke layar utama.
 - Pemetaan Ulang Tombol (Alat): pilih apa yang terjadi saat tombol daya ditahan, termasuk tindakan kustom seperti senter atau tangkapan layar.
 - Pengubah Ikon APK dan Pengekstrak APK (Alat): ubah ikon aplikasi terpasang, atau simpan APK aplikasi apa pun ke Download/CustomAnimator.
@@ -6,7 +6,7 @@
 - Penyalin OTP (Alat): kode verifikasi di notifikasi disalin otomatis.
 - Simpan di perangkat (Alat): bagikan apa saja ke aplikasi ini untuk menyimpannya ke folder atau menyalinnya.
 - Filter notifikasi (Notifikasi): filter kini bisa menghapus notifikasi yang cocok; aturan, filter, dan riwayat ada di satu layar.
-- Tindakan tangkapan layar (Alat): menghapus kini memindahkan tangkapan layar ke sampah sistem tanpa dialog konfirmasi (Android 11+).
+- Tindakan tangkapan layar (Alat): tidak perlu akses foto lagi. Pilih folder screenshot sekali, dan menghapus langsung membuang tangkapan layar tanpa dialog konfirmasi.
 - Mode Game: daftar Dikecualikan baru untuk aplikasi yang harus tetap berjalan. Profil bisa menjalankan perintah shell, dan pemilih ikon kini punya lebih dari 1.150 ikon.
 - Daftar aplikasi dan Debloater lebih cepat, pekerjaan latar belakang berkurang, aplikasi lebih kecil. Memperbaiki bilah hitam pada lebar per aplikasi, keyboard yang menutupi konten, dan navigasi Kembali.
 

@@ -1,4 +1,4 @@
-## 191 - 3.8
+## 195 - 3.8
 - Accesos directos (Herramientas): fija en la pantalla de inicio apps, actividades ocultas, accesos de pulsación larga, archivos, carpetas, fotos, enlaces y comandos.
 - Reasignar botones (Herramientas): elige qué hace mantener presionado el botón de encendido, con acciones personalizadas como la linterna o una captura.
 - Cambiador de ícono de APK y Extractor de APK (Herramientas): cambia el ícono de una app instalada o guarda el APK de cualquier app en Download/CustomAnimator.
@@ -6,7 +6,7 @@
 - Copiador de OTP (Herramientas): los códigos de verificación de las notificaciones se copian automáticamente.
 - Guardar en el dispositivo (Herramientas): comparte cualquier cosa con esta app para guardarla en una carpeta o copiarla.
 - Filtros de notificaciones (Notificaciones): los filtros ahora pueden quitar las notificaciones coincidentes; reglas, filtros e historial están en una sola pantalla.
-- Acciones de captura (Herramientas): borrar ahora mueve la captura a la papelera del sistema sin diálogo de confirmación (Android 11+).
+- Acciones de captura (Herramientas): ya no se necesita acceso a fotos. Elige la carpeta de capturas una vez; borrar elimina la captura al instante sin diálogo de confirmación.
 - Modo juego: nueva lista de Excluidas para apps que deben seguir funcionando. Los Perfiles pueden ejecutar comandos de shell y los selectores de íconos ahora ofrecen más de 1150 íconos.
 - Listas de apps y Debloater más rápidos, menos trabajo en segundo plano y app más pequeña. Se corrigieron las barras negras con ancho por app, el teclado que tapaba el contenido y la navegación con Atrás.
 

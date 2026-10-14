@@ -1,4 +1,4 @@
-## 191 - 3.8
+## 195 - 3.8
 - Mga Shortcut (Mga tool): i-pin sa home screen ang mga app, nakatagong activity, long-press shortcut ng app, file, folder, larawan, link at command.
 - Button Remapper (Mga tool): piliin ang gagawin ng matagal na pagpindot sa power button, kasama ang custom na aksyon gaya ng flashlight o screenshot.
 - Pampalit ng Icon ng APK at Pang-extract ng APK (Mga tool): palitan ang icon ng naka-install na app, o i-save ang APK ng kahit anong app sa Download/CustomAnimator.
@@ -6,7 +6,7 @@
 - OTP Copier (Mga tool): awtomatikong kinokopya ang mga verification code sa mga notification.
 - I-save sa device (Mga tool): i-share ang kahit ano sa app na ito para i-save sa folder o kopyahin.
 - Mga filter ng notification (Mga notification): kaya nang alisin ng mga filter ang tumutugmang notification; nasa iisang screen ang mga rule, filter at history.
-- Mga aksyon sa screenshot (Mga tool): ang pagbura ay naglilipat na ng screenshot sa trash ng system nang walang confirmation dialog (Android 11+).
+- Mga aksyon sa screenshot (Mga tool): hindi na kailangan ng access sa mga larawan. Piliin nang isang beses ang folder ng mga screenshot, at agad na binubura ng delete ang screenshot nang walang confirmation dialog.
 - Game Mode: bagong listahang Hindi kasama para sa mga app na dapat tuloy-tuloy na tumakbo. Kaya nang magpatakbo ng shell command ang Mga Profile, at may mahigit 1,150 icon na ang mga icon picker.
 - Mas mabilis na listahan ng app at Debloater, mas kaunting trabaho sa background, mas maliit na app. Inayos ang itim na bar sa per-app width, ang keyboard na tumatakip sa content at ang Back navigation.
 

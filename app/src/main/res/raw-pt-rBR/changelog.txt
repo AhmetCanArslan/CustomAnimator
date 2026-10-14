@@ -1,4 +1,4 @@
-## 191 - 3.8
+## 195 - 3.8
 - Atalhos (Ferramentas): fixe na tela inicial apps, atividades ocultas, atalhos de toque longo, arquivos, pastas, fotos, links e comandos.
 - Remapear botões (Ferramentas): escolha o que acontece ao segurar o botão liga/desliga, incluindo ações personalizadas como lanterna ou captura de tela.
 - Trocador de ícone de APK e Extrator de APK (Ferramentas): troque o ícone de um app instalado ou salve o APK de qualquer app em Download/CustomAnimator.
@@ -6,7 +6,7 @@
 - Copiador de OTP (Ferramentas): os códigos de verificação das notificações são copiados automaticamente.
 - Salvar no dispositivo (Ferramentas): compartilhe qualquer coisa com este app para salvar em uma pasta ou copiar.
 - Filtros de notificações (Notificações): os filtros agora podem remover as notificações correspondentes; regras, filtros e histórico ficam em uma só tela.
-- Ações de captura de tela (Ferramentas): apagar agora move a captura para a lixeira do sistema sem diálogo de confirmação (Android 11+).
+- Ações de captura de tela (Ferramentas): não precisa mais de acesso a fotos. Escolha a pasta de capturas uma vez, e apagar remove a captura na hora sem diálogo de confirmação.
 - Modo jogo: nova lista de Excluídos para apps que devem continuar funcionando. Perfis podem executar comandos shell e os seletores de ícones agora têm mais de 1.150 ícones.
 - Listas de apps e Debloater mais rápidos, menos trabalho em segundo plano e app menor. Corrigidas as barras pretas com largura por app, o teclado cobrindo o conteúdo e a navegação com Voltar.
 

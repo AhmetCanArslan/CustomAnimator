@@ -1,4 +1,4 @@
-## 191 - 3.8
+## 195 - 3.8
 - Kısayollar (Araçlar): uygulamaları, gizli etkinlikleri, uygulamaların uzun basma kısayollarını, dosyaları, klasörleri, fotoğrafları, bağlantıları ve komutları ana ekrana sabitle.
 - Tuş Atama (Araçlar): güç tuşuna basılı tutunca ne olacağını seç; el feneri veya ekran görüntüsü gibi özel işlemler de var.
 - APK Simge Değiştirici ve APK Çıkarıcı (Araçlar): yüklü bir uygulamanın simgesini değiştir ya da APK'sını Download/CustomAnimator klasörüne kaydet.
@@ -6,7 +6,7 @@
 - OTP Kopyalayıcı (Araçlar): bildirimlerdeki doğrulama kodları otomatik kopyalanır.
 - Cihaza kaydet (Araçlar): herhangi bir şeyi bu uygulamayla paylaşarak bir klasöre kaydet veya kopyala.
 - Bildirim Filtreleri (Bildirimler): filtreler artık eşleşen bildirimleri kaldırabiliyor; kurallar, filtreler ve geçmiş tek ekranda.
-- Ekran görüntüsü eylemleri (Araçlar): silme artık ekran görüntüsünü onay penceresi olmadan sistem çöp kutusuna taşıyor (Android 11+).
+- Ekran görüntüsü eylemleri (Araçlar): artık fotoğraf erişimi gerekmiyor. Ekran görüntüsü klasörünü bir kez seçin; silme, ekran görüntüsünü onay penceresi olmadan hemen kaldırır.
 - Oyun Modu: arka planda çalışmaya devam edecek uygulamalar için yeni Hariç tutulanlar listesi. Profiller kabuk komutu çalıştırabiliyor, simge seçicilerde artık 1.150'den fazla simge var.
 - Daha hızlı uygulama listeleri ve Debloater, daha az arka plan işi, daha küçük uygulama. Uygulamaya özel genişlikteki siyah şeritler, içeriği kapatan klavye ve Geri gezinmesi düzeltildi.
 
