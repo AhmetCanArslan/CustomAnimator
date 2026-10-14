@@ -3,6 +3,7 @@ package com.arslan.customanimator.screenshot
 import android.content.Context
 import android.graphics.PixelFormat
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -108,7 +109,8 @@ class ScreenshotOverlay(private val context: Context) {
                     dragging = false
                     tracker = VelocityTracker.obtain()
                     tracker?.addMovement(event)
-                    target.isPressed = true
+                    target.drawableHotspotChanged(event.x, event.y)
+                    press(target, true)
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -116,7 +118,7 @@ class ScreenshotOverlay(private val context: Context) {
                     val dx = event.rawX - downX
                     if (!dragging && kotlin.math.abs(dx) > slop) {
                         dragging = true
-                        target.isPressed = false
+                        press(target, false)
                     }
                     if (dragging) {
                         lp.x = startX + dx.toInt()
@@ -126,7 +128,7 @@ class ScreenshotOverlay(private val context: Context) {
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    target.isPressed = false
+                    press(target, false)
                     tracker?.addMovement(event)
                     tracker?.computeCurrentVelocity(1000)
                     val velocity = tracker?.xVelocity ?: 0f
@@ -140,13 +142,27 @@ class ScreenshotOverlay(private val context: Context) {
                         event.actionMasked == MotionEvent.ACTION_CANCEL -> settle(root, startX)
                         dismissed -> hide()
                         dragging -> settle(root, startX)
-                        else -> onTap()
+                        else -> {
+                            target.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                            onTap()
+                        }
                     }
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun press(target: View, pressed: Boolean) {
+        target.isPressed = pressed
+        val scale = if (pressed) PRESSED_SCALE else 1f
+        target.animate().cancel()
+        target.animate()
+            .scaleX(scale).scaleY(scale)
+            .setDuration(PRESS_MS)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     private fun settle(root: View, startX: Int) {
@@ -193,6 +209,8 @@ class ScreenshotOverlay(private val context: Context) {
 
     private companion object {
         const val ENTER_MS = 220L
+        const val PRESS_MS = 90L
+        const val PRESSED_SCALE = 0.86f
         const val SLIDE_DP = 56
         const val DISMISS_DP = 96
     }

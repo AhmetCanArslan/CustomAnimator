@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.arslan.customanimator.screenshot.ScreenshotActionActivity
 import com.arslan.customanimator.screenshot.ScreenshotActions
 import com.arslan.customanimator.screenshot.ScreenshotFolder
+import com.arslan.customanimator.screenshot.ScreenshotItem
 import com.arslan.customanimator.screenshot.ScreenshotNotifier
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
 import com.arslan.customanimator.screenshot.ScreenshotPrefs
@@ -95,7 +96,7 @@ class ScreenshotWatcherService : Service() {
         lastSeenMillis = item.modifiedMillis
 
         if (prefs.overlayEnabled && Settings.canDrawOverlays(this)) {
-            main.post { showOverlay() }
+            main.post { showOverlay(item) }
         }
 
         if (!prefs.watcherEnabled) return
@@ -116,7 +117,7 @@ class ScreenshotWatcherService : Service() {
         )
     }
 
-    private fun showOverlay() {
+    private fun showOverlay(item: ScreenshotItem) {
         val view = overlay ?: return
         main.removeCallbacks(hideOverlay)
         view.show(
@@ -124,18 +125,18 @@ class ScreenshotWatcherService : Service() {
             prefs.overlayY,
             prefs.overlayShowCopy,
             prefs.overlayShowDelete,
-            { startAction(ScreenshotActionActivity.ACTION_COPY_DELETE) },
-            { startAction(ScreenshotActionActivity.ACTION_DELETE) }
+            { startAction(ScreenshotActionActivity.ACTION_COPY_DELETE, item) },
+            { startAction(ScreenshotActionActivity.ACTION_DELETE, item) }
         )
         main.postDelayed(hideOverlay, prefs.overlayTimeoutSeconds * 1000L)
     }
 
-    private fun startAction(action: String) {
+    private fun startAction(action: String, item: ScreenshotItem) {
         main.removeCallbacks(hideOverlay)
         overlay?.hide()
         runCatching {
             startActivity(
-                ScreenshotActionActivity.intent(applicationContext, action, null, -1)
+                ScreenshotActionActivity.intent(applicationContext, action, item.uri, -1)
             )
         }
     }
