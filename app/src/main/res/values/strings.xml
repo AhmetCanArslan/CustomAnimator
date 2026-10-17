@@ -101,6 +101,7 @@
     <string name="otp_copier_test">Test message</string>
     <string name="otp_copier_test_result">Detected code: %1$s</string>
     <string name="otp_copier_test_none">No code found</string>
+    <string name="otp_copier_demo_code" translatable="false">482 913</string>
     <string name="otp_copier_copied">Code copied: %1$s</string>
     <string name="otp_copier_note">Codes are matched on the device against the notification title and text and are never stored. If codes still arrive hidden after granting sensitive notifications, turn notification access off and on again.</string>
     <string name="alarm_revealer">Alarm Revealer</string>

@@ -4,6 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -13,6 +19,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ContentPaste
+import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Notifications
@@ -22,10 +31,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -35,12 +48,15 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.DividerSoft
 import com.arslan.customanimator.ui.components.ExpandableCard
+import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.components.SettingRow
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.components.ToggleRow
+import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.LocalExtendedColors
+import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.OtpCopierManager
 import kotlinx.coroutines.Dispatchers
@@ -139,6 +155,8 @@ fun OtpCopierScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item { OtpScenarioCard() }
+
             item {
                 OtpSwitchCard(
                     isEnabled = isEnabled && hasNotificationAccess,
@@ -248,6 +266,144 @@ fun OtpCopierScreen(
                 )
             }
         }
+    }
+}
+
+private const val SCENARIO_DURATION_MS = 4200
+
+private fun scenarioPhase(progress: Float, start: Float, end: Float): Float =
+    Motion.emphasizedEasing.transform(((progress - start) / (end - start)).coerceIn(0f, 1f))
+
+private fun GraphicsLayerScope.scenarioVisibility(progress: Float, start: Float, end: Float) {
+    val shown = scenarioPhase(progress, start, end)
+    val hidden = scenarioPhase(progress, 0.88f, 1f)
+    alpha = shown * (1f - hidden)
+}
+
+@Composable
+private fun OtpScenarioCard() {
+    val transition = rememberInfiniteTransition(label = "otpScenario")
+    val progress by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(SCENARIO_DURATION_MS, easing = LinearEasing)),
+        label = "otpScenarioProgress"
+    )
+    val code = stringResource(R.string.otp_copier_demo_code)
+
+    AppCard(contentPadding = 16.dp) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OtpScenarioNotification(code = code, progress = { progress })
+            Icon(
+                imageVector = Icons.Filled.ArrowDownward,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.graphicsLayer {
+                    scenarioVisibility(progress, 0.42f, 0.55f)
+                    translationY = (1f - scenarioPhase(progress, 0.42f, 0.55f)) * -8.dp.toPx()
+                }
+            )
+            OtpScenarioClipboard(code = code, progress = { progress })
+        }
+    }
+}
+
+@Composable
+private fun OtpScenarioNotification(code: String, progress: () -> Float) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .graphicsLayer {
+                scenarioVisibility(progress(), 0f, 0.14f)
+                translationY = (1f - scenarioPhase(progress(), 0f, 0.14f)) * -16.dp.toPx()
+            }
+            .clip(AppShapes.card)
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .padding(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        IconBadge(icon = Icons.Filled.Sms, size = 36.dp)
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            OtpScenarioBar(fraction = 0.45f)
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OtpScenarioBar(fraction = 0.3f)
+                OtpScenarioCodeChip(code = code, progress = progress)
+            }
+        }
+    }
+}
+
+@Composable
+private fun OtpScenarioBar(fraction: Float) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(fraction)
+            .height(8.dp)
+            .clip(AppShapes.chip)
+            .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.25f))
+    )
+}
+
+@Composable
+private fun OtpScenarioCodeChip(code: String, progress: () -> Float) {
+    Box(contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .graphicsLayer {
+                    val highlight = scenarioPhase(progress(), 0.22f, 0.36f)
+                    alpha = highlight
+                    scaleX = 0.8f + 0.2f * highlight
+                    scaleY = 0.8f + 0.2f * highlight
+                }
+                .clip(AppShapes.chip)
+                .background(MaterialTheme.colorScheme.primaryContainer)
+        )
+        Text(
+            text = code,
+            style = MaterialTheme.typography.labelLarge,
+            fontFamily = FontFamily.Monospace,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+        )
+    }
+}
+
+@Composable
+private fun OtpScenarioClipboard(code: String, progress: () -> Float) {
+    Row(
+        modifier = Modifier
+            .graphicsLayer {
+                scenarioVisibility(progress(), 0.55f, 0.68f)
+                val pop = 0.85f + 0.15f * scenarioPhase(progress(), 0.55f, 0.68f)
+                scaleX = pop
+                scaleY = pop
+            }
+            .clip(AppShapes.chip)
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = 14.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Filled.ContentPaste,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier.size(18.dp)
+        )
+        Text(
+            text = stringResource(R.string.otp_copier_copied, code),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
