@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
-import android.view.VelocityTracker
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import com.arslan.customanimator.R
@@ -95,11 +94,9 @@ class ScreenshotOverlay(private val context: Context) {
 
     private fun attachDrag(root: View, target: View, onTap: () -> Unit) {
         val slop = ViewConfiguration.get(context).scaledTouchSlop
-        val minFling = ViewConfiguration.get(context).scaledMinimumFlingVelocity
         var downX = 0f
         var startX = 0
         var dragging = false
-        var tracker: VelocityTracker? = null
         target.setOnTouchListener { _, event ->
             val lp = params ?: return@setOnTouchListener false
             when (event.actionMasked) {
@@ -107,40 +104,29 @@ class ScreenshotOverlay(private val context: Context) {
                     downX = event.rawX
                     startX = lp.x
                     dragging = false
-                    tracker = VelocityTracker.obtain()
-                    tracker?.addMovement(event)
                     target.drawableHotspotChanged(event.x, event.y)
                     press(target, true)
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    tracker?.addMovement(event)
                     val dx = event.rawX - downX
                     if (!dragging && kotlin.math.abs(dx) > slop) {
                         dragging = true
                         press(target, false)
                     }
                     if (dragging) {
-                        lp.x = startX + dx.toInt()
-                        root.alpha = dismissAlpha(dx)
+                        lp.x = (startX + dx.toInt()).coerceIn(0, maxX(root))
+                        root.alpha = dismissAlpha(root, startX, lp.x)
                         runCatching { wm.updateViewLayout(root, lp) }
                     }
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     press(target, false)
-                    tracker?.addMovement(event)
-                    tracker?.computeCurrentVelocity(1000)
-                    val velocity = tracker?.xVelocity ?: 0f
-                    tracker?.recycle()
-                    tracker = null
-                    val dx = event.rawX - downX
-                    val dismissed = dragging &&
-                        (kotlin.math.abs(dx) > dismissPx() ||
-                            kotlin.math.abs(velocity) > minFling)
+                    val atEdge = lp.x <= 0 || lp.x >= maxX(root)
                     when {
                         event.actionMasked == MotionEvent.ACTION_CANCEL -> settle(root, startX)
-                        dismissed -> hide()
+                        dragging && atEdge -> hide(if (lp.x <= 0) -1f else 1f)
                         dragging -> settle(root, startX)
                         else -> {
                             target.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -174,27 +160,31 @@ class ScreenshotOverlay(private val context: Context) {
         animator.addUpdateListener { a ->
             val current = params ?: return@addUpdateListener
             current.x = a.animatedValue as Int
-            root.alpha = dismissAlpha((current.x - startX).toFloat())
+            root.alpha = dismissAlpha(root, startX, current.x)
             runCatching { wm.updateViewLayout(root, current) }
         }
         animator.start()
     }
 
-    private fun dismissAlpha(dx: Float): Float {
-        val fraction = kotlin.math.abs(dx) / dismissPx()
-        return (1f - fraction * 0.6f).coerceIn(0.3f, 1f)
+    private fun maxX(root: View): Int =
+        (context.resources.displayMetrics.widthPixels - root.width).coerceAtLeast(0)
+
+    private fun dismissAlpha(root: View, startX: Int, x: Int): Float {
+        val edge = if (x < startX) 0 else maxX(root)
+        val travel = kotlin.math.abs(edge - startX)
+        if (travel == 0) return 1f
+        val fraction = kotlin.math.abs(x - startX).toFloat() / travel
+        return (1f - fraction * 0.6f).coerceIn(0.4f, 1f)
     }
 
-    private fun dismissPx(): Float = dpToPx(DISMISS_DP).toFloat()
-
-    fun hide() {
+    fun hide(direction: Float = -1f) {
         val v = view ?: return
         view = null
         params = null
         v.findViewById<View>(R.id.overlay_copy).setOnTouchListener(null)
         v.findViewById<View>(R.id.overlay_delete).setOnTouchListener(null)
         v.animate()
-            .alpha(0f).translationX(-slidePx())
+            .alpha(0f).translationX(direction * slidePx())
             .setDuration(ENTER_MS)
             .setInterpolator(DecelerateInterpolator())
             .withLayer()
@@ -212,6 +202,5 @@ class ScreenshotOverlay(private val context: Context) {
         const val PRESS_MS = 90L
         const val PRESSED_SCALE = 0.86f
         const val SLIDE_DP = 56
-        const val DISMISS_DP = 96
     }
 }
