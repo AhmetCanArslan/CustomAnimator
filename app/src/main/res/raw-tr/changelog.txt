@@ -33,3 +33,53 @@
 - Daha akıcı gezinme: HomeTopBar ayrıldı, ExpressiveNavBar yenilendi ve animasyon önizlemesi daha akıcı zamanlamayla yeniden düzenlendi.
 - Daha güvenilir kartlar ve izinler: tüm kartlar BaseTileService'i paylaşıyor, Shizuku artık kararlı bağlayıcı için awaitShizukuPermission kullanıyor.
 - Daha güvenilir hotspot: hotspot'u açma/kapama ve ayarlarını değiştirme artık özellikle yeni Android sürümlerinde daha tutarlı çalışıyor.
+
+## 181 - 3.4
+- Uygulama başına yenileme hızı: her uygulama için ekran yenileme hızı belirleyin, otomatik olarak geçsin.
+- Hızlı Ayarlar kartları: kendi anahtar kartlarınızı oluşturun, simgelerini seçin ve Hızlı Ayarlar paneline ekleyin.
+- Uygulama başına tüm özellikler artık tek bir arka plan servisini paylaşıyor, daha az pil harcıyor.
+- Daha hızlı uygulama algılama ve küçük düzeltmeler.
+
+## 179 - 3.3
+- Sistem Ölçer: telefonu kullanırken FPS, CPU, GPU, RAM ve pili gösteren kayan bir katman.
+- Temizleyici: önbellekleri ve artık dosyaları bulup yer açın.
+- Doze Beyaz Listesi: telefon boştayken hangi uygulamaların çalışmaya devam edeceğini seçin.
+- HWUI Ayarları: daha akıcı çizim için donanım hızlandırma özelliklerini ayarlayın.
+- Pil uyarıları: belirlediğiniz pil seviyelerinde bildirim alın.
+- Yenilenen gezinme, bilgi kartları ve durum etiketleri.
+
+## 177 - 3.2
+- Ekran görüntüsü işlemleri: yeni ekran görüntüsünü bildirimden veya kayan düğmeden kopyalayın ya da silin; ayrıca "Ekran görüntüsünü kopyala" Hızlı Ayarlar kutusu.
+- Hotspot Yöneticisi: hotspot'u başlatın veya durdurun, bağlı cihazları görün ve engelleyin, ad, parola, güvenlik, bant ve sınırları düzenleyin, QR ile paylaşın; Hızlı Ayarlar kutusuyla birlikte.
+- Ses kutusu: basınca veya basılı tutunca ses panelini ya da medya çıkışı seçiciyi açan Hızlı Ayarlar kutusu.
+- Oyun Modu: oyunlarınız çalışırken arka plan uygulamalarını kısıtlar; Hızlı Ayarlar kutusu ve ana ekran widget'ı ile.
+- Derleme modu: uygulamaların nasıl derleneceğini seçin (Her şey, Hız, Hız (profil), Doğrulama).
+- Uygulama başına genişlik: her uygulama için farklı bir en küçük genişlik ayarlayın ve uygulama ön plandayken otomatik olarak uygulayın.
+- Oyun Modu iyileştirmeleri: daha güvenilir arka plan uygulaması takibi ve geliştirilmiş bildirimler.
+- Genişletilmiş terminal komut önerileri ve Arapça dil desteği.
+- Boost: telefon performansınızı en üst düzeye çıkaran yeni Sistem performans artırma sayfası.
+
+## 174 - 3.1
+- Profiller: animasyon ölçeklerini, ekran genişliğini, pil ön ayarlarını ve geliştirici seçeneklerini tek bir profilde toplayın ve tek dokunuşla uygulayın.
+- Bildirim widget'ı: yeni "Widget'ta göster" kural eylemiyle eşleşen bildirimleri listeleyen ana ekran widget'ı.
+- Hızlandırma widget'ı: tek dokunuşla uygulama önbelleklerini temizler ve arka plan uygulamalarını kapatır, boşalan depolama ve RAM'i gösterir; küçük, normal ve geniş düzenler.
+- Uygulamaya özel DPI: her uygulama için bir DPI belirleyin; uygulama öne geldiğinde otomatik uygulanır, çıkınca geri alınır.
+- Always On Display: yeni AOD Hızlı Ayarlar kutusu.
+- Geliştirici: "Döndürme önerilerini kapat" ve "Yüksek ses uyarısını kaldır" eklendi, yeniden başlatmadan sonra tekrar uygulanır.
+- Kurallar: bildirim izinleri artık yalnızca kurallarınızın gerçekten kullandığı eylemlere göre istenir.
+
+## 170 - 3.0
+- Bildirimler: yeni bildirim dinleyicisi, sekme, test bildirimi ve izin akışı.
+- Kurallar: uygulamaya özel kurallar, başlık ve metin anahtar kelimeleri, birden çok eylem, koşullar, bekleme süreleri ve çakışma tespiti.
+- Eylemler: kamera flaşı, özel desenler, ekranı uyandırma, cep modu, AOD ve tam ekran flaş.
+- Ekran flaşı: 12 renk, süreler, dokunarak durdurma, kilit ekranı desteği ve kaplamalar.
+- AOD ve uyandırma: güvenli geri yükleme, kilit açılınca veya kapatılınca durma ve yakınlık sensörüne duyarlı uyandırma.
+- Geçmiş: arama, eylem filtreleri, otomatik silme, temizleme ve silme, kural oluşturma kısayolları.
+- İzinler: Shizuku, güvenli ayarlar, bildirimler, kamera, kaplama ve pil erişimi için tek bir canlı ekran.
+- FPS: konumunu hatırlayan, sürüklenebilir gerçek zamanlı FPS kaplaması.
+- Wi-Fi: kayıtlı parolalar, arama, bağlantı durumu, QR kodları, kopyalama ve güvenli dışa aktarma.
+- Hızlı Ayarlar: her biri beş yuvalı Kafein, Terminal, Animasyon ve Genişlik ön ayar kutuları; canlı durum, etiket ve simgelerle.
+- Geliştirici: Sensörleri kapat, Dokunmaları göster, İşaretçi konumu, Düzen sınırları, GPU profili ve RTL'yi zorla.
+- Alarm Gösterici ve SIM'e göre operatör adı özelleştirme.
+- Terminal: risk onayı, otomatik tamamlama, paket önerileri, kayıtlı ön ayarlar, çıktı, çıkış kodları ve 50 komutluk geçmiş.
+- Shizuku: izin kontrolleri artık canlı bağlantıyı doğruluyor.

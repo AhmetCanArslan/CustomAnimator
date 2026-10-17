@@ -33,3 +33,53 @@
 - Navigasi lebih halus: HomeTopBar dipisah, ExpressiveNavBar diperbarui dan pratinjau animasi diatur ulang waktunya.
 - Tile & izin lebih andal: semua tile berbagi BaseTileService dan Shizuku kini pakai awaitShizukuPermission untuk binder stabil.
 - Hotspot lebih andal: menyalakan/mematikan hotspot dan mengubah pengaturannya kini lebih konsisten, terutama di versi Android yang lebih baru.
+
+## 181 - 3.4
+- Refresh rate per aplikasi: tetapkan refresh rate layar untuk tiap aplikasi dan biarkan berpindah otomatis.
+- Tile Setelan Cepat: buat tile sakelar sendiri, pilih ikonnya, dan tambahkan ke panel Setelan Cepat.
+- Semua fitur per aplikasi kini memakai satu layanan latar belakang, jadi lebih hemat baterai.
+- Deteksi aplikasi lebih cepat dan perbaikan kecil.
+
+## 179 - 3.3
+- System Meter: overlay mengambang yang menampilkan FPS, CPU, GPU, RAM, dan baterai saat kamu memakai ponsel.
+- Pembersih: temukan dan bebaskan ruang dari cache serta file sisa.
+- Daftar Putih Doze: pilih aplikasi mana yang boleh tetap berjalan saat ponsel idle.
+- Tweak HWUI: atur properti rendering perangkat keras agar gambar lebih mulus.
+- Peringatan baterai: dapatkan notifikasi saat baterai mencapai level yang kamu tentukan.
+- Navigasi, kartu info, dan label status yang diperbarui di seluruh aplikasi.
+
+## 177 - 3.2
+- Aksi tangkapan layar: salin atau hapus tangkapan layar baru dari notifikasi atau tombol mengambang, plus ubin Setelan Cepat "Salin tangkapan layar".
+- Pengelola Hotspot: nyalakan atau matikan hotspot, lihat dan blokir perangkat yang terhubung, ubah nama, sandi, keamanan, pita, dan batas, bagikan lewat QR, dengan ubin Setelan Cepat.
+- Ubin suara: ubin Setelan Cepat yang membuka panel volume atau pemilih output media saat ditekan atau ditekan lama.
+- Mode Game: membatasi aplikasi latar belakang saat game berjalan, dengan ubin Setelan Cepat dan widget layar utama.
+- Mode kompilasi: pilih cara aplikasi dikompilasi (Everything, Speed, Speed profile, Verify).
+- Lebar per aplikasi: atur lebar minimum yang berbeda untuk setiap aplikasi dan terapkan otomatis saat aplikasi berada di latar depan.
+- Peningkatan Mode Game: pelacakan aplikasi latar belakang yang lebih andal dan notifikasi yang lebih baik.
+- Saran perintah terminal yang diperluas dan dukungan bahasa Arab.
+- Boost: halaman peningkatan performa sistem baru untuk memaksimalkan performa ponsel Anda.
+
+## 174 - 3.1
+- Profil: gabungkan skala animasi, lebar layar, preset baterai, dan opsi developer dalam satu profil lalu terapkan dengan sekali ketuk.
+- Widget notifikasi: widget layar utama yang menampilkan notifikasi yang cocok dengan aksi aturan baru "Tampilkan di widget".
+- Widget boost: sekali ketuk untuk membersihkan cache aplikasi dan menutup aplikasi latar belakang, serta menampilkan penyimpanan dan RAM yang dibebaskan; tata letak kecil, normal, dan lebar.
+- DPI per aplikasi: atur DPI untuk setiap aplikasi, diterapkan otomatis saat aplikasi tampil di depan dan dikembalikan saat ditinggalkan.
+- Always On Display: tile AOD baru di Setelan Cepat.
+- Developer: ditambahkan "Nonaktifkan saran rotasi" dan "Hapus peringatan volume tinggi", diterapkan lagi setelah reboot.
+- Aturan: izin notifikasi kini diminta berdasarkan aksi yang benar-benar dipakai aturan Anda.
+
+## 170 - 3.0
+- Notifikasi: listener notifikasi baru, tab, notifikasi uji, dan alur izin.
+- Aturan: aturan per aplikasi, kata kunci judul dan teks, banyak aksi, kondisi, jeda, dan deteksi konflik.
+- Aksi: lampu kilat kamera, pola kustom, membangunkan layar, mode saku, AOD, dan kilat layar penuh.
+- Kilat layar: 12 warna, durasi, ketuk untuk berhenti, dukungan layar kunci, dan overlay.
+- AOD dan bangun: pemulihan aman, berhenti saat dibuka kuncinya atau ditutup, dan bangun yang memperhatikan sensor jarak.
+- Riwayat: pencarian, filter aksi, hapus otomatis, bersihkan dan hapus, serta pintasan membuat aturan.
+- Izin: satu layar langsung untuk Shizuku, setelan aman, notifikasi, kamera, overlay, dan akses baterai.
+- FPS: overlay FPS real-time yang bisa digeser dan mengingat posisinya.
+- Wi-Fi: kata sandi tersimpan, pencarian, status koneksi, kode QR, salin, dan ekspor aman.
+- Setelan Cepat: tile Kafein, Terminal, Animasi, dan preset Lebar dengan lima slot masing-masing, dengan status, label, dan ikon langsung.
+- Developer: Sensor nonaktif, Tampilkan ketukan, Lokasi penunjuk, Batas tata letak, Profil GPU, dan Paksa RTL.
+- Pengungkap Alarm dan kustomisasi nama operator per SIM.
+- Terminal: persetujuan risiko, pelengkapan otomatis, saran paket, preset tersimpan, output, kode keluar, dan riwayat 50 perintah.
+- Shizuku: pemeriksaan izin kini memverifikasi koneksi yang aktif.

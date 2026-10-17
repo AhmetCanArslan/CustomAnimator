@@ -33,3 +33,53 @@
 - Mas maayos na navigation: hiniwalay ang HomeTopBar, ni-refresh ang ExpressiveNavBar at muling tiniming ang animation preview para bawas jank.
 - Mas maaasahang tiles at permiso: lahat ng tile naka-BaseTileService at gumagamit na ang Shizuku ng awaitShizukuPermission para sa stable binder.
 - Mas maaasahang hotspot: mas consistent na ngayon ang pag-on/off at pagpalit ng settings ng hotspot, lalo na sa mas bagong Android versions.
+
+## 181 - 3.4
+- Refresh rate bawat app: magtakda ng refresh rate ng screen para sa bawat app at awtomatiko itong lilipat.
+- Mga Quick Settings tile: gumawa ng sarili mong toggle tile, piliin ang icon at idagdag sa Quick Settings panel.
+- Iisang background service na lang ang ginagamit ng lahat ng per-app na feature, kaya mas tipid sa baterya.
+- Mas mabilis na pagtukoy ng app at maliliit na pag-aayos.
+
+## 179 - 3.3
+- System Meter: lumulutang na overlay na nagpapakita ng FPS, CPU, GPU, RAM at baterya habang ginagamit mo ang telepono.
+- Cleaner: hanapin at bakantehin ang espasyo mula sa cache at mga natirang file.
+- Doze Whitelist: piliin kung aling mga app ang puwedeng tumakbo habang idle ang telepono.
+- HWUI Tweaks: iayos ang mga hardware rendering property para sa mas maayos na pagguhit.
+- Mga alerto sa baterya: makatanggap ng abiso kapag umabot ang baterya sa mga antas na itinakda mo.
+- Binagong navigation, mga info card at status label sa buong app.
+
+## 177 - 3.2
+- Mga aksyon sa screenshot: kopyahin o burahin ang bagong screenshot mula sa notification o lumulutang na button, kasama ang "Kopyahin ang screenshot" na Quick Settings tile.
+- Hotspot Manager: buksan o isara ang hotspot, tingnan at i-block ang mga nakakonektang device, baguhin ang pangalan, password, seguridad, band at mga limitasyon, ibahagi sa QR, may Quick Settings tile.
+- Sound tile: Quick Settings tile na nagbubukas ng volume panel o media output picker kapag pinindot o pinindot nang matagal.
+- Game Mode: nililimitahan ang mga app sa background habang naglalaro ka, may Quick Settings tile at home screen widget.
+- Compilation mode: piliin kung paano kino-compile ang mga app (Everything, Speed, Speed profile, Verify).
+- Lapad bawat app: magtakda ng magkakaibang minimum na lapad para sa bawat app at awtomatikong ilapat ito kapag nasa foreground ang app.
+- Mga pagpapahusay sa Game Mode: mas maaasahang pagsubaybay sa mga background app at pinahusay na notification.
+- Mas maraming mungkahi ng terminal command at suporta sa wikang Arabic.
+- Boost: bagong pahina ng pagpapalakas ng performance ng system para ma-maximize ang performance ng iyong telepono.
+
+## 174 - 3.1
+- Mga Profile: pagsamahin ang animation scale, lapad ng screen, battery preset at developer toggle sa isang profile at ilapat ito sa isang tap.
+- Notification widget: widget sa home screen na naglilista ng mga notification na tumugma sa bagong rule action na "Ipakita sa widget".
+- Boost widget: isang tap para linisin ang cache ng mga app at isara ang mga app sa background, at ipakita ang nabakanteng storage at RAM; maliit, normal at malapad na layout.
+- DPI kada app: magtakda ng DPI para sa bawat app, awtomatikong inilalapat kapag nasa harap ang app at ibinabalik kapag umalis ito.
+- Always On Display: bagong AOD tile sa Quick Settings.
+- Developer: idinagdag ang "I-off ang mungkahi sa pag-rotate" at "Alisin ang babala sa malakas na volume", muling inilalapat pagkatapos mag-reboot.
+- Mga Rule: hinihingi na ngayon ang mga pahintulot sa notification batay sa mga action na talagang ginagamit ng iyong mga rule.
+
+## 170 - 3.0
+- Mga Notification: bagong notification listener, tab, test notification at daloy ng pahintulot.
+- Mga Rule: rule kada app, keyword sa pamagat at teksto, maraming action, kondisyon, cooldown at pagtukoy ng conflict.
+- Mga Action: camera flash, custom na pattern, paggising ng screen, pocket mode, AOD at full-screen flash.
+- Screen flash: 12 kulay, tagal, i-tap para ihinto, suporta sa lock screen at overlay.
+- AOD at paggising: ligtas na pagbabalik, paghinto kapag na-unlock o na-dismiss at paggising na nakadepende sa proximity.
+- Kasaysayan: paghahanap, filter ng action, awtomatikong pagbura, paglinis at pagbura, at shortcut para gumawa ng rule.
+- Mga Pahintulot: isang live na screen para sa Shizuku, secure settings, notification, camera, overlay at access sa baterya.
+- FPS: nadadrag na real-time FPS overlay na tinatandaan ang posisyon nito.
+- Wi-Fi: mga naka-save na password, paghahanap, status ng koneksyon, QR code, pagkopya at ligtas na pag-export.
+- Quick Settings: Caffeine, Terminal, Animation at Width preset tile na may tig-limang slot, na may live na estado, label at icon.
+- Developer: I-off ang sensor, Ipakita ang tap, Lokasyon ng pointer, Layout bounds, GPU profiling at Force RTL.
+- Alarm Revealer at pag-customize ng pangalan ng carrier kada SIM.
+- Terminal: pagsang-ayon sa panganib, autocomplete, mungkahi ng package, naka-save na preset, output, exit code at kasaysayan ng 50 command.
+- Shizuku: tinitiyak na ngayon ng mga pagsuri ng pahintulot ang live na koneksyon.
