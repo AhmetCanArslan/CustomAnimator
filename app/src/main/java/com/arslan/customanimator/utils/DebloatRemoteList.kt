@@ -6,8 +6,6 @@ import com.arslan.customanimator.data.DebloatGroup
 import com.arslan.customanimator.data.DebloatRisk
 import org.json.JSONObject
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
 
 object DebloatRemoteList {
 
@@ -20,7 +18,6 @@ object DebloatRemoteList {
     private const val KEY_UPDATED_AT = "updated_at"
     private const val KEY_COUNT = "entry_count"
     private const val KEY_ETAG = "etag"
-    private const val TIMEOUT_MS = 30_000
     private const val MAX_BYTES = 16L * 1024 * 1024
 
     data class Entry(
@@ -30,8 +27,6 @@ object DebloatRemoteList {
     )
 
     enum class DownloadResult { UPDATED, UNCHANGED, FAILED }
-
-    private class Response(val body: String?, val etag: String?)
 
     private class Loaded(val stamp: Long, val packages: Set<String>, val entries: Map<String, Entry>)
 
@@ -56,7 +51,7 @@ object DebloatRemoteList {
 
     fun download(context: Context): DownloadResult {
         val knownEtag = prefs(context).getString(KEY_ETAG, null).takeIf { file(context).exists() }
-        val response = fetch(knownEtag) ?: return DownloadResult.FAILED
+        val response = ConditionalDownload.fetch(SOURCE_URL, knownEtag, MAX_BYTES, TAG) ?: return DownloadResult.FAILED
         val body = response.body
         if (body == null) {
             prefs(context).edit().putLong(KEY_UPDATED_AT, System.currentTimeMillis()).apply()
@@ -104,45 +99,6 @@ object DebloatRemoteList {
         }
         lastLoaded = Loaded(stamp, packages, entries)
         return entries
-    }
-
-    private fun fetch(knownEtag: String?): Response? {
-        var connection: HttpURLConnection? = null
-        return try {
-            connection = (URL(SOURCE_URL).openConnection() as HttpURLConnection).apply {
-                connectTimeout = TIMEOUT_MS
-                readTimeout = TIMEOUT_MS
-                requestMethod = "GET"
-                knownEtag?.let { setRequestProperty("If-None-Match", it) }
-            }
-            if (connection.responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
-                return Response(null, knownEtag)
-            }
-            if (connection.responseCode != HttpURLConnection.HTTP_OK) {
-                Log.w(TAG, "Unexpected response: ${connection.responseCode}")
-                return null
-            }
-            val etag = connection.getHeaderField("ETag")
-            connection.inputStream.bufferedReader().use { reader ->
-                val builder = StringBuilder()
-                val buffer = CharArray(8192)
-                while (true) {
-                    val read = reader.read(buffer)
-                    if (read < 0) break
-                    builder.append(buffer, 0, read)
-                    if (builder.length > MAX_BYTES) {
-                        Log.w(TAG, "List exceeds the size limit")
-                        return null
-                    }
-                }
-                Response(builder.toString(), etag)
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to download the package list", e)
-            null
-        } finally {
-            connection?.disconnect()
-        }
     }
 
     private fun riskOf(removal: String?): DebloatRisk? = when (removal) {
