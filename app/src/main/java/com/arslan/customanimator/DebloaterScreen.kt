@@ -1,5 +1,6 @@
 package com.arslan.customanimator
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -18,7 +19,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusTarget
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -65,6 +69,7 @@ fun DebloaterScreen(
     val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
     var apps by remember { mutableStateOf<List<DebloatAppInfo>>(emptyList()) }
     var changedCount by remember { mutableIntStateOf(0) }
@@ -186,6 +191,10 @@ fun DebloaterScreen(
                 .padding(paddingValues)
                 .consumeWindowInsets(paddingValues)
                 .imePadding()
+                .focusTarget()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
