@@ -5,7 +5,7 @@
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
-    <style name="Theme.CustomAnimator.ScreenFlash" parent="android:Theme.Material.NoActionBar">
+    <style name="Theme.CustomAnimator.Transparent" parent="android:Theme.Material.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>

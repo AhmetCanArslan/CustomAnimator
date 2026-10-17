@@ -776,7 +776,7 @@
             android:excludeFromRecents="true"
             android:noHistory="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.CustomAnimator.ScreenFlash"
+            android:theme="@style/Theme.CustomAnimator.Transparent"
             android:showOnLockScreen="true"
             android:turnScreenOn="true" />
 
