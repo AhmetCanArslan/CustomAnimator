@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,6 +58,8 @@ import com.arslan.customanimator.ui.theme.LocalThemeController
 import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.ui.theme.ThemeMode
 import com.arslan.customanimator.ui.theme.pressScale
+import com.arslan.customanimator.utils.ChangelogManager
+import com.arslan.customanimator.utils.ChangelogRelease
 import com.arslan.customanimator.utils.BackupManager
 import com.arslan.customanimator.utils.SystemResetManager
 import kotlinx.coroutines.Dispatchers
@@ -85,6 +88,7 @@ fun SettingsScreen(
     val coroutineScope = rememberCoroutineScope()
     val canRevert = hasShizukuPermission || hasWriteSecureSettings
     var showRevertConfirm by remember { mutableStateOf(false) }
+    var changelog by remember { mutableStateOf<List<ChangelogRelease>>(emptyList()) }
     var isReverting by remember { mutableStateOf(false) }
 
     val toast: (Int) -> Unit = { res ->
@@ -245,6 +249,14 @@ fun SettingsScreen(
                 )
                 SettingDivider()
                 ActionSettingRow(
+                    icon = Icons.Filled.NewReleases,
+                    title = stringResource(R.string.changelog_title),
+                    description = stringResource(R.string.changelog_version, BuildConfig.VERSION_NAME),
+                    trailingIcon = Icons.Filled.ChevronRight,
+                    onClick = { changelog = ChangelogManager.readAll(context) }
+                )
+                SettingDivider()
+                ActionSettingRow(
                     icon = Icons.Filled.Security,
                     title = stringResource(R.string.permissions_title),
                     description = if (hasWriteSecureSettings)
@@ -295,6 +307,10 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+
+    if (changelog.isNotEmpty()) {
+        ChangelogDialog(releases = changelog, onDismiss = { changelog = emptyList() })
     }
 
     if (showRevertConfirm) {
