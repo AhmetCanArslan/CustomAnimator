@@ -1664,6 +1664,12 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_tile_photo_desc">Open a picture in the gallery you choose</string>
     <string name="share_actions">Action</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="link_cleaner_label">Clean link</string>
+    <string name="link_cleaner_share">Share</string>
+    <string name="link_cleaner_copy">Copy</string>
+    <string name="link_cleaner_copied">Clean link copied</string>
+    <string name="link_cleaner_rules_failed">Could not download the link cleaning rules</string>
+    <string name="link_cleaner_credit">Rules from ClearURLs, used under LGPL-3.0.</string>
     <string name="save_to_device">Save on device</string>
     <string name="save_to_device_desc">Share anything to this app to keep a copy on your device. Pick a folder to save there automatically, or get asked where to save each time.</string>
     <string name="save_to_device_ask">Ask every time</string>

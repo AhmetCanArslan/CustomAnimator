@@ -1628,6 +1628,12 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_photo_desc">Buka gambar di galeri pilihan Anda</string>
     <string name="share_actions">Tindakan</string>
     <string name="copy_to_clipboard">Salin ke papan klip</string>
+    <string name="link_cleaner_label">Bersihkan tautan</string>
+    <string name="link_cleaner_share">Bagikan</string>
+    <string name="link_cleaner_copy">Salin</string>
+    <string name="link_cleaner_copied">Tautan bersih disalin</string>
+    <string name="link_cleaner_rules_failed">Tidak dapat mengunduh aturan pembersihan tautan</string>
+    <string name="link_cleaner_credit">Aturan dari ClearURLs, digunakan di bawah LGPL-3.0.</string>
     <string name="save_to_device">Simpan di perangkat</string>
     <string name="save_to_device_desc">Bagikan apa pun ke aplikasi ini untuk menyimpan salinannya di perangkat. Pilih folder agar otomatis disimpan di sana, atau pilih lokasinya setiap kali.</string>
     <string name="save_to_device_ask">Selalu tanya</string>

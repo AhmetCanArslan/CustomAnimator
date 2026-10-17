@@ -1648,6 +1648,12 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_tile_photo_desc">Apri una immagine nella galleria che scegli</string>
     <string name="share_actions">Azione</string>
     <string name="copy_to_clipboard">Copia negli appunti</string>
+    <string name="link_cleaner_label">Pulisci link</string>
+    <string name="link_cleaner_share">Condividi</string>
+    <string name="link_cleaner_copy">Copia</string>
+    <string name="link_cleaner_copied">Link pulito copiato</string>
+    <string name="link_cleaner_rules_failed">Impossibile scaricare le regole di pulizia dei link</string>
+    <string name="link_cleaner_credit">Regole da ClearURLs, usate con licenza LGPL-3.0.</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="save_to_device_desc">Condividi qualsiasi cosa con questa app per conservarne una copia sul dispositivo. Scegli una cartella per salvare lì automaticamente oppure decidi ogni volta dove salvare.</string>
     <string name="save_to_device_ask">Chiedi ogni volta</string>

@@ -1668,6 +1668,12 @@
     <string name="shortcut_tile_photo_desc">افتح صورة في المعرض الذي تختاره</string>
     <string name="share_actions">إجراء</string>
     <string name="copy_to_clipboard">نسخ إلى الحافظة</string>
+    <string name="link_cleaner_label">تنظيف الرابط</string>
+    <string name="link_cleaner_share">مشاركة</string>
+    <string name="link_cleaner_copy">نسخ</string>
+    <string name="link_cleaner_copied">تم نسخ الرابط النظيف</string>
+    <string name="link_cleaner_rules_failed">تعذّر تنزيل قواعد تنظيف الروابط</string>
+    <string name="link_cleaner_credit">القواعد من ClearURLs، مستخدمة بموجب LGPL-3.0.</string>
     <string name="save_to_device">حفظ على الجهاز</string>
     <string name="save_to_device_desc">شارك أي شيء مع هذا التطبيق للاحتفاظ بنسخة على جهازك. اختر مجلدًا للحفظ فيه تلقائيًا، أو اختر مكان الحفظ في كل مرة.</string>
     <string name="save_to_device_ask">السؤال في كل مرة</string>

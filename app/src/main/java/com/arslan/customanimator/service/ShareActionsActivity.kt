@@ -1,18 +1,26 @@
 package com.arslan.customanimator.service
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ComponentName
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.lifecycleScope
 import com.arslan.customanimator.R
 import com.arslan.customanimator.data.SharedItem
 import com.arslan.customanimator.screenshot.ScreenshotActions
 import com.arslan.customanimator.screenshot.ScreenshotItem
+import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import com.arslan.customanimator.utils.LinkCleaner
+import com.arslan.customanimator.utils.LinkCleanerRules
 import com.arslan.customanimator.utils.SaveToDeviceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,14 +29,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class ShareActionsActivity : Activity() {
+class ShareActionsActivity : ComponentActivity() {
 
     private val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var isSaving = false
-    private var actionDialog: AlertDialog? = null
+    private var sheet by mutableStateOf<ShareSheetState?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        overridePendingTransition(0, 0)
         isSaving = savedInstanceState?.getBoolean(KEY_SAVING) == true
         if (isSaving) return
 
@@ -36,7 +46,7 @@ class ShareActionsActivity : Activity() {
         when {
             items.isEmpty() -> finishWith(false)
             items.size > 1 -> saveToDevice(items)
-            else -> askForAction(items)
+            else -> showSheet(items.first())
         }
     }
 
@@ -45,9 +55,9 @@ class ShareActionsActivity : Activity() {
         outState.putBoolean(KEY_SAVING, isSaving)
     }
 
-    override fun onDestroy() {
-        actionDialog?.dismiss()
-        super.onDestroy()
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -61,27 +71,63 @@ class ShareActionsActivity : Activity() {
         save { saveAfterAsking(requestCode, target, items) }
     }
 
-    private fun askForAction(items: List<SharedItem>) {
-        val actions = arrayOf(getString(R.string.copy_to_clipboard), getString(R.string.save_to_device))
-        actionDialog = AlertDialog.Builder(this, dialogTheme())
-            .setTitle(R.string.share_actions)
-            .setItems(actions) { _, index ->
-                if (index == 0) copyToClipboard(items.first()) else saveToDevice(items)
+    private fun showSheet(item: SharedItem) {
+        sheet = ShareSheetState(item = item, hasLink = LinkCleaner.hasLink(item.text.orEmpty()))
+        setContent {
+            CustomAnimatorTheme {
+                sheet?.let { state ->
+                    ShareActionsSheet(
+                        state = state,
+                        onDescribe = { SaveToDeviceManager.describe(this, item) },
+                        onCopy = { copyToClipboard(item) },
+                        onSave = { saveToDevice(listOf(item)) },
+                        onCleanLink = { cleanLink(item.text.orEmpty()) },
+                        onCopyCleaned = ::copyCleaned,
+                        onShareCleaned = ::shareCleaned,
+                        onDismiss = ::finish
+                    )
+                }
             }
-            .setOnCancelListener { finish() }
-            .show()
-    }
-
-    private fun dialogTheme(): Int {
-        val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
-            android.R.style.Theme_DeviceDefault_Dialog_Alert
-        } else {
-            android.R.style.Theme_DeviceDefault_Light_Dialog_Alert
         }
     }
 
+    private fun cleanLink(text: String) {
+        sheet = sheet?.copy(isCleaning = true)
+        lifecycleScope.launch {
+            val providers = withContext(Dispatchers.IO) { loadRules() }
+            if (providers.isEmpty()) {
+                Toast.makeText(applicationContext, R.string.link_cleaner_rules_failed, Toast.LENGTH_SHORT).show()
+                sheet = sheet?.copy(isCleaning = false)
+            } else {
+                sheet = sheet?.copy(isCleaning = false, cleaned = LinkCleaner.clean(text, providers))
+            }
+        }
+    }
+
+    private fun loadRules(): List<LinkCleaner.Provider> {
+        val hadRules = LinkCleanerRules.isAvailable(applicationContext)
+        if (!hadRules) LinkCleanerRules.download(applicationContext)
+        val providers = LinkCleanerRules.load(applicationContext)
+        if (hadRules) backgroundScope.launch { LinkCleanerRules.download(applicationContext) }
+        return providers
+    }
+
+    private fun copyCleaned(text: String) {
+        getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText(null, text))
+        Toast.makeText(applicationContext, R.string.link_cleaner_copied, Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    private fun shareCleaned(text: String) {
+        val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)
+        val chooser = Intent.createChooser(send, null)
+            .putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, arrayOf(ComponentName(this, ShareActionsActivity::class.java)))
+        startActivity(chooser)
+        finish()
+    }
+
     private fun copyToClipboard(item: SharedItem) {
+        sheet = null
         backgroundScope.launch {
             copy(item)
             withContext(Dispatchers.Main) { finish() }
@@ -99,6 +145,7 @@ class ShareActionsActivity : Activity() {
     }
 
     private fun saveToDevice(items: List<SharedItem>) {
+        sheet = null
         val folder = SaveToDeviceManager.getDefaultFolder(this)
         when {
             folder != null -> save { SaveToDeviceManager.saveInto(this, folder, items) }

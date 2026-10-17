@@ -1628,6 +1628,12 @@ Duração do Animador: %3$.2f</string>
     <string name="shortcut_tile_photo_desc">Abra uma imagem na galeria que você escolher</string>
     <string name="share_actions">Ação</string>
     <string name="copy_to_clipboard">Copiar para a área de transferência</string>
+    <string name="link_cleaner_label">Limpar link</string>
+    <string name="link_cleaner_share">Compartilhar</string>
+    <string name="link_cleaner_copy">Copiar</string>
+    <string name="link_cleaner_copied">Link limpo copiado</string>
+    <string name="link_cleaner_rules_failed">Não foi possível baixar as regras de limpeza de links</string>
+    <string name="link_cleaner_credit">Regras do ClearURLs, usadas sob a LGPL-3.0.</string>
     <string name="save_to_device">Salvar no dispositivo</string>
     <string name="save_to_device_desc">Compartilhe qualquer coisa com este app para manter uma cópia no dispositivo. Escolha uma pasta para salvar nela automaticamente ou decida onde salvar a cada vez.</string>
     <string name="save_to_device_ask">Perguntar sempre</string>
