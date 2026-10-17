@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +22,7 @@ import com.arslan.customanimator.utils.AppShortcutManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShortcutMaker
 import com.arslan.customanimator.utils.ShortcutStore
+import com.arslan.customanimator.widget.ShortcutWidgetProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +50,8 @@ internal sealed interface ShortcutStep {
 }
 
 internal class ShortcutsState(private val context: Context, private val scope: CoroutineScope) {
+    val canAddWidget = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
     var shortcuts by mutableStateOf<List<ShortcutEntry>>(emptyList())
         private set
     var icons by mutableStateOf<Map<String, Bitmap>>(emptyMap())
@@ -171,7 +175,7 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         step = ShortcutStep.Confirm(entry, icon, editing = true)
     }
 
-    fun confirm(entry: ShortcutEntry, icon: Bitmap) {
+    fun confirm(entry: ShortcutEntry, icon: Bitmap, asWidget: Boolean) {
         val current = step as? ShortcutStep.Confirm ?: return
         step = ShortcutStep.Idle
         scope.launch {
@@ -179,13 +183,14 @@ internal class ShortcutsState(private val context: Context, private val scope: C
                 ShortcutStore.save(context, entry, icon)
                 if (current.editing) {
                     ShortcutMaker.updatePinned(context, entry, icon)
+                    updateWidgets(entry.id)
                     true
                 } else {
-                    ShortcutMaker.pin(context, entry, icon)
+                    place(entry, icon, asWidget)
                 }
             }
             refresh()
-            if (!placed) toast(R.string.shortcut_pin_unsupported)
+            if (!placed) toast(if (asWidget) R.string.shortcut_widget_unsupported else R.string.shortcut_pin_unsupported)
         }
     }
 
@@ -204,6 +209,23 @@ internal class ShortcutsState(private val context: Context, private val scope: C
         }
     }
 
+    fun addWidget(entry: ShortcutEntry) {
+        scope.launch {
+            val requested = withContext(Dispatchers.IO) { pinWidget(entry.id) }
+            if (!requested) toast(R.string.shortcut_widget_unsupported)
+        }
+    }
+
+    private fun place(entry: ShortcutEntry, icon: Bitmap, asWidget: Boolean): Boolean =
+        if (asWidget) pinWidget(entry.id) else ShortcutMaker.pin(context, entry, icon)
+
+    private fun pinWidget(shortcutId: String): Boolean =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ShortcutWidgetProvider.requestPin(context, shortcutId)
+
+    private fun updateWidgets(shortcutId: String) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ShortcutWidgetProvider.update(context, shortcutId)
+    }
+
     fun changeHandler(entry: ShortcutEntry) {
         scope.launch {
             step = withContext(Dispatchers.IO) { handlerStepFor(entry, editing = true) }
@@ -213,7 +235,10 @@ internal class ShortcutsState(private val context: Context, private val scope: C
     fun delete(entry: ShortcutEntry) {
         shortcuts = shortcuts.filterNot { it.id == entry.id }
         scope.launch {
-            withContext(Dispatchers.IO) { ShortcutMaker.remove(context, entry.id) }
+            withContext(Dispatchers.IO) {
+                ShortcutMaker.remove(context, entry.id)
+                updateWidgets(entry.id)
+            }
         }
     }
 

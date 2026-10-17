@@ -1659,6 +1659,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_launch">Başlat</string>
     <string name="shortcut_test">Test et</string>
     <string name="shortcut_add_to_home">Ana ekrana ekle</string>
+    <string name="shortcut_add_widget">Widget olarak ekle</string>
+    <string name="shortcut_place_shortcut">Kısayol</string>
+    <string name="shortcut_place_widget">Widget</string>
+    <string name="shortcut_widget_unsupported">Başlatıcınız uygulamaların widget eklemesine izin vermiyor.</string>
     <string name="shortcut_watch_ad_add">Reklam izle ve ekle</string>
     <string name="shortcut_change_app">Uygulamayı değiştir</string>
     <string name="shortcut_pick_app">Bir uygulama seçin</string>

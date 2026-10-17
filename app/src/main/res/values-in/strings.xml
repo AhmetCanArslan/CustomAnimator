@@ -1651,6 +1651,10 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_launch">Luncurkan</string>
     <string name="shortcut_test">Uji</string>
     <string name="shortcut_add_to_home">Tambahkan ke layar utama</string>
+    <string name="shortcut_add_widget">Tambahkan sebagai widget</string>
+    <string name="shortcut_place_shortcut">Pintasan</string>
+    <string name="shortcut_place_widget">Widget</string>
+    <string name="shortcut_widget_unsupported">Launcher Anda tidak mengizinkan aplikasi menambahkan widget.</string>
     <string name="shortcut_watch_ad_add">Tonton iklan &amp; tambahkan</string>
     <string name="shortcut_change_app">Ganti aplikasi</string>
     <string name="shortcut_pick_app">Pilih aplikasi</string>

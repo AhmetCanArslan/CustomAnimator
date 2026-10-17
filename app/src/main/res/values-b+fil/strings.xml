@@ -1651,6 +1651,10 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_launch">Ilunsad</string>
     <string name="shortcut_test">Subukan</string>
     <string name="shortcut_add_to_home">Idagdag sa home screen</string>
+    <string name="shortcut_add_widget">Idagdag bilang widget</string>
+    <string name="shortcut_place_shortcut">Shortcut</string>
+    <string name="shortcut_place_widget">Widget</string>
+    <string name="shortcut_widget_unsupported">Hindi pinapayagan ng launcher mo ang mga app na magdagdag ng widget.</string>
     <string name="shortcut_watch_ad_add">Manood ng ad at idagdag</string>
     <string name="shortcut_change_app">Palitan ang app</string>
     <string name="shortcut_pick_app">Pumili ng app</string>

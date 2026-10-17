@@ -18,6 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -201,6 +202,7 @@ fun ShortcutsScreen(
                         onLaunch = { state.launch(entry) },
                         onEdit = { state.edit(entry) },
                         onPin = { state.pinAgain(entry) },
+                        onAddWidget = if (state.canAddWidget) ({ state.addWidget(entry) }) else null,
                         onChangeHandler = { state.changeHandler(entry) },
                         onDelete = { state.delete(entry) }
                     )
@@ -304,6 +306,7 @@ private fun ShortcutRow(
     onLaunch: () -> Unit,
     onEdit: () -> Unit,
     onPin: () -> Unit,
+    onAddWidget: (() -> Unit)?,
     onChangeHandler: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -331,6 +334,7 @@ private fun ShortcutRow(
                 onLaunch = onLaunch,
                 onEdit = onEdit,
                 onPin = onPin,
+                onAddWidget = onAddWidget,
                 onChangeHandler = onChangeHandler,
                 onDelete = onDelete
             )
@@ -344,6 +348,7 @@ private fun ShortcutRowMenu(
     onLaunch: () -> Unit,
     onEdit: () -> Unit,
     onPin: () -> Unit,
+    onAddWidget: (() -> Unit)?,
     onChangeHandler: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -363,6 +368,9 @@ private fun ShortcutRowMenu(
             ShortcutMenuItem(Icons.Filled.PlayArrow, R.string.shortcut_launch) { select(onLaunch) }
             ShortcutMenuItem(Icons.Filled.Edit, R.string.shortcut_edit) { select(onEdit) }
             ShortcutMenuItem(Icons.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
+            if (onAddWidget != null) {
+                ShortcutMenuItem(Icons.Filled.Widgets, R.string.shortcut_add_widget) { select(onAddWidget) }
+            }
             if (showChangeHandler) {
                 ShortcutMenuItem(Icons.AutoMirrored.Filled.OpenInNew, R.string.shortcut_change_app) {
                     select(onChangeHandler)

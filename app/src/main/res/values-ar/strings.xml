@@ -1691,6 +1691,10 @@
     <string name="shortcut_launch">تشغيل</string>
     <string name="shortcut_test">اختبار</string>
     <string name="shortcut_add_to_home">إضافة إلى الشاشة الرئيسية</string>
+    <string name="shortcut_add_widget">إضافة كأداة</string>
+    <string name="shortcut_place_shortcut">اختصار</string>
+    <string name="shortcut_place_widget">أداة</string>
+    <string name="shortcut_widget_unsupported">المشغّل لديك لا يسمح للتطبيقات بإضافة الأدوات.</string>
     <string name="shortcut_watch_ad_add">شاهد إعلانًا وأضِف</string>
     <string name="shortcut_change_app">تغيير التطبيق</string>
     <string name="shortcut_pick_app">اختر تطبيقًا</string>

@@ -1651,6 +1651,10 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_launch">Abrir</string>
     <string name="shortcut_test">Probar</string>
     <string name="shortcut_add_to_home">Agregar a la pantalla de inicio</string>
+    <string name="shortcut_add_widget">Agregar como widget</string>
+    <string name="shortcut_place_shortcut">Acceso directo</string>
+    <string name="shortcut_place_widget">Widget</string>
+    <string name="shortcut_widget_unsupported">Tu launcher no permite que las apps agreguen widgets.</string>
     <string name="shortcut_watch_ad_add">Ver anuncio y agregar</string>
     <string name="shortcut_change_app">Cambiar app</string>
     <string name="shortcut_pick_app">Elige una app</string>

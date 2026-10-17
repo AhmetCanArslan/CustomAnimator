@@ -10,7 +10,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -63,6 +65,7 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
         )
         is ShortcutStep.Confirm -> ConfirmShortcutDialog(
             step = step,
+            canAddWidget = state.canAddWidget,
             onConfirm = state::confirm,
             onTest = state::launch,
             onDismiss = state::dismiss
@@ -312,7 +315,8 @@ private fun HandlerPickerSheet(
 @Composable
 private fun ConfirmShortcutDialog(
     step: ShortcutStep.Confirm,
-    onConfirm: (ShortcutEntry, Bitmap) -> Unit,
+    canAddWidget: Boolean,
+    onConfirm: (ShortcutEntry, Bitmap, Boolean) -> Unit,
     onTest: (ShortcutEntry) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -321,12 +325,24 @@ private fun ConfirmShortcutDialog(
     var value by remember(entry.id) { mutableStateOf(entry.inputValue()) }
     var icon by remember(entry.id) { mutableStateOf(ShortcutIconImage(step.icon, entry.legacyIcon)) }
     var showIconPicker by remember(entry.id) { mutableStateOf(false) }
+    var rewarded by remember(entry.id) { mutableStateOf(false) }
+    var choosingPlacement by remember(entry.id) { mutableStateOf(false) }
     val valueLabelRes = entry.valueLabelRes()
     val isValid = label.isNotBlank() && (valueLabelRes == null || value.isNotBlank())
     val context = LocalContext.current
     val isAdFree by rememberIsAdFree()
-    val needsAd = !step.editing && !isAdFree
-    val save = { onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap) }
+    val needsAd = !step.editing && !isAdFree && !rewarded
+    val save: (Boolean) -> Unit = { asWidget ->
+        onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap, asWidget)
+    }
+    val proceed = {
+        if (!step.editing && canAddWidget) choosingPlacement = true else save(false)
+    }
+
+    if (choosingPlacement) {
+        ShortcutPlacementDialog(onPick = save, onDismiss = { choosingPlacement = false })
+        return
+    }
 
     if (showIconPicker) {
         ShortcutIconPickerSheet(
@@ -383,7 +399,16 @@ private fun ConfirmShortcutDialog(
         },
         confirmButton = {
             Button(
-                onClick = { if (needsAd) requestReward(context) { save() } else save() },
+                onClick = {
+                    if (needsAd) {
+                        requestReward(context) {
+                            rewarded = true
+                            proceed()
+                        }
+                    } else {
+                        proceed()
+                    }
+                },
                 enabled = isValid
             ) {
                 Text(stringResource(confirmLabelRes(step.editing, needsAd)))
@@ -393,6 +418,30 @@ private fun ConfirmShortcutDialog(
             TextButton(onClick = { onTest(entry.withInput(label, value)) }, enabled = isValid) {
                 Text(stringResource(R.string.shortcut_test))
             }
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun ShortcutPlacementDialog(onPick: (Boolean) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.shortcut_add_to_home)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PickerRow(title = stringResource(R.string.shortcut_place_shortcut), subtitle = "", onClick = { onPick(false) }) {
+                    IconBadge(icon = Icons.Filled.AddToHomeScreen, size = 40.dp)
+                }
+                PickerRow(title = stringResource(R.string.shortcut_place_widget), subtitle = "", onClick = { onPick(true) }) {
+                    IconBadge(icon = Icons.Filled.Widgets, size = 40.dp)
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.cancel))
             }

@@ -1688,6 +1688,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_launch">Launch</string>
     <string name="shortcut_test">Test</string>
     <string name="shortcut_add_to_home">Add to home screen</string>
+    <string name="shortcut_add_widget">Add as widget</string>
+    <string name="shortcut_place_shortcut">Shortcut</string>
+    <string name="shortcut_place_widget">Widget</string>
+    <string name="shortcut_widget_unsupported">Your launcher does not let apps add widgets.</string>
     <string name="shortcut_watch_ad_add">Watch ad &amp; add</string>
     <string name="shortcut_change_app">Change app</string>
     <string name="shortcut_pick_app">Choose an app</string>

@@ -1653,6 +1653,10 @@
     <string name="shortcut_launch">Запустить</string>
     <string name="shortcut_test">Проверить</string>
     <string name="shortcut_add_to_home">Добавить на главный экран</string>
+    <string name="shortcut_add_widget">Добавить как виджет</string>
+    <string name="shortcut_place_shortcut">Ярлык</string>
+    <string name="shortcut_place_widget">Виджет</string>
+    <string name="shortcut_widget_unsupported">Ваш лаунчер не позволяет приложениям добавлять виджеты.</string>
     <string name="shortcut_watch_ad_add">Посмотреть рекламу и добавить</string>
     <string name="shortcut_change_app">Сменить приложение</string>
     <string name="shortcut_pick_app">Выберите приложение</string>
