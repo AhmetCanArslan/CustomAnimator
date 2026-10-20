@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val BUILT_IN_SOURCE = ""
+private const val ORIGINAL_SOURCE = "original"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +48,8 @@ internal fun ShortcutIconPickerSheet(
     type: ShortcutType,
     current: ShortcutIconImage,
     onPick: (ShortcutIconImage) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    originals: List<ShortcutIconImage> = emptyList()
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -63,7 +65,7 @@ internal fun ShortcutIconPickerSheet(
     }
     val packIcons by produceState<List<String>?>(initialValue = null, source) {
         value = null
-        if (source != BUILT_IN_SOURCE) {
+        if (source != BUILT_IN_SOURCE && source != ORIGINAL_SOURCE) {
             value = withContext(Dispatchers.IO) { ShortcutIconPacks.listIcons(context, source, targetPackage) }
         }
     }
@@ -82,13 +84,14 @@ internal fun ShortcutIconPickerSheet(
         builtInKey = key
         glyphRes = TerminalTileIcons.resFor(key)
     }
+    val pickImage: (ShortcutIconImage) -> Unit = { image ->
+        builtInKey = null
+        glyphRes = null
+        preview = image
+    }
     val pickFromPack: (String) -> Unit = { name ->
         coroutineScope.launch {
-            withContext(Dispatchers.IO) { ShortcutIconPacks.loadIcon(context, source, name) }?.let {
-                builtInKey = null
-                glyphRes = null
-                preview = it
-            }
+            withContext(Dispatchers.IO) { ShortcutIconPacks.loadIcon(context, source, name) }?.let(pickImage)
         }
     }
 
@@ -111,6 +114,7 @@ internal fun ShortcutIconPickerSheet(
             IconPreviewRow(preview = preview, onUse = { onPick(preview) })
             Spacer(modifier = Modifier.height(12.dp))
             IconSourceChips(
+                hasOriginals = originals.isNotEmpty(),
                 packs = packs,
                 selected = source,
                 onSelect = {
@@ -119,23 +123,27 @@ internal fun ShortcutIconPickerSheet(
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
-            AppSearchBar(
-                searchQuery = query,
-                onSearchQueryChange = { query = it },
-                showFilterCheckbox = false,
-                placeholder = stringResource(R.string.terminal_tile_icon_search)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            SourceIconGrid(
-                source = source,
-                query = query,
-                color = color,
-                builtInKey = builtInKey,
-                packIcons = packIcons,
-                onPickColor = pickColor,
-                onPickBuiltIn = pickBuiltIn,
-                onPickFromPack = pickFromPack
-            )
+            if (source == ORIGINAL_SOURCE) {
+                OriginalIconGrid(originals = originals, onPick = pickImage)
+            } else {
+                AppSearchBar(
+                    searchQuery = query,
+                    onSearchQueryChange = { query = it },
+                    showFilterCheckbox = false,
+                    placeholder = stringResource(R.string.terminal_tile_icon_search)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                SourceIconGrid(
+                    source = source,
+                    query = query,
+                    color = color,
+                    builtInKey = builtInKey,
+                    packIcons = packIcons,
+                    onPickColor = pickColor,
+                    onPickBuiltIn = pickBuiltIn,
+                    onPickFromPack = pickFromPack
+                )
+            }
         }
     }
 }
@@ -180,8 +188,22 @@ private fun IconPreviewRow(preview: ShortcutIconImage, onUse: () -> Unit) {
 }
 
 @Composable
-private fun IconSourceChips(packs: List<ShortcutIconPack>, selected: String, onSelect: (String) -> Unit) {
+private fun IconSourceChips(
+    hasOriginals: Boolean,
+    packs: List<ShortcutIconPack>,
+    selected: String,
+    onSelect: (String) -> Unit
+) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (hasOriginals) {
+            item {
+                FilterChip(
+                    selected = selected == ORIGINAL_SOURCE,
+                    onClick = { onSelect(ORIGINAL_SOURCE) },
+                    label = { Text(stringResource(R.string.shortcut_icon_original)) }
+                )
+            }
+        }
         item {
             FilterChip(
                 selected = selected == BUILT_IN_SOURCE,
@@ -238,6 +260,23 @@ private fun IconGrid(content: LazyGridScope.() -> Unit) {
         contentPadding = PaddingValues(bottom = 24.dp),
         content = content
     )
+}
+
+@Composable
+private fun OriginalIconGrid(originals: List<ShortcutIconImage>, onPick: (ShortcutIconImage) -> Unit) {
+    IconGrid {
+        items(originals) { original ->
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .clickable { onPick(original) },
+                contentAlignment = Alignment.Center
+            ) {
+                ShortcutIcon(bitmap = original.bitmap, legacy = original.legacy, modifier = Modifier.size(44.dp))
+            }
+        }
+    }
 }
 
 @Composable

@@ -35,6 +35,8 @@ import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.components.ToggleRow
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ShortcutMaker
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private const val DISABLED_ROW_ALPHA = 0.45f
 
@@ -345,10 +347,14 @@ private fun ConfirmShortcutDialog(
     }
 
     if (showIconPicker) {
+        val originalIcons by produceState(initialValue = emptyList<ShortcutIconImage>(), entry.id) {
+            this.value = withContext(Dispatchers.IO) { ShortcutMaker.originalIcons(context, entry) }
+        }
         ShortcutIconPickerSheet(
             targetPackage = entry.packageName,
             type = entry.type,
             current = icon,
+            originals = originalIcons,
             onPick = {
                 icon = it
                 showIconPicker = false
