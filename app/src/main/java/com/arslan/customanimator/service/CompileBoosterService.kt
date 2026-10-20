@@ -67,6 +67,7 @@ class CompileBoosterService : Service() {
     }
 
     private suspend fun runCompileAll() {
+        CompileBoosterProgressTracker.prepare()
         val apps = InstalledAppsProvider.getLaunchableApps(applicationContext)
         val total = apps.size
         if (total == 0) {
@@ -75,8 +76,7 @@ class CompileBoosterService : Service() {
         }
 
         val filter = CompileFilterManager.getFilter(applicationContext)
-        CompileBoosterProgressTracker.update(isRunning = true, current = 0, total = total, currentLabel = "")
-        var successCount = 0
+        CompileBoosterProgressTracker.start(total)
 
         for ((index, app) in apps.withIndex()) {
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
@@ -87,19 +87,21 @@ class CompileBoosterService : Service() {
                 return
             }
 
-            CompileBoosterProgressTracker.update(isRunning = true, current = index, total = total, currentLabel = app.label)
+            CompileBoosterProgressTracker.compiling(app.packageName, app.label)
             updateNotification(index, total, app.label)
 
             val success = DeveloperOptionsManager.compileApp(app.packageName, filter)
-            if (success) successCount++
+            CompileBoosterProgressTracker.record(
+                CompileBoosterProgressTracker.CompileResult(app.packageName, app.label, success)
+            )
         }
 
-        Log.d(TAG, "Compiled $successCount/$total apps with ${filter.value}")
+        Log.d(TAG, "Compiled $total apps with ${filter.value}, ${CompileBoosterProgressTracker.progress.value.failedCount} failed")
         finish()
     }
 
     private fun finish() {
-        CompileBoosterProgressTracker.reset()
+        CompileBoosterProgressTracker.finish()
         stopSelf()
     }
 
@@ -155,7 +157,7 @@ class CompileBoosterService : Service() {
     override fun onDestroy() {
         compileJob?.cancel()
         job.cancel()
-        CompileBoosterProgressTracker.reset()
+        CompileBoosterProgressTracker.finish()
         super.onDestroy()
     }
 }
