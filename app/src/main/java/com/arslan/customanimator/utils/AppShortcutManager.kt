@@ -87,6 +87,9 @@ object AppShortcutManager {
         return options
     }
 
+    suspend fun loadIcon(context: Context, packageName: String, shortcutId: String): ShortcutIconImage? =
+        listShortcuts(context, packageName).firstOrNull { it.id == shortcutId }?.let { loadIcon(context, packageName, it) }
+
     suspend fun loadIcon(context: Context, packageName: String, shortcut: AppShortcutInfo): ShortcutIconImage? {
         if (shortcut.hasIconFile) return withService(context) { fileIcon(it, packageName, shortcut) }
         if (shortcut.iconResId == 0) return null

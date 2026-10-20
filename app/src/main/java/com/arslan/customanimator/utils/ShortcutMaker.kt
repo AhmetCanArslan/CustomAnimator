@@ -26,6 +26,7 @@ import com.arslan.customanimator.data.ShortcutActivityInfo
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutFileInfo
 import com.arslan.customanimator.data.ShortcutHandlerInfo
+import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.service.ShortcutLaunchActivity
 
@@ -121,6 +122,18 @@ object ShortcutMaker {
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
+    }
+
+    suspend fun originalIcons(context: Context, entry: ShortcutEntry): List<ShortcutIconImage> {
+        val packageName = entry.packageName ?: return emptyList()
+        val own = when (entry.type) {
+            ShortcutType.APP_SHORTCUT -> entry.shortcutId?.let { AppShortcutManager.loadIcon(context, packageName, it) }
+            ShortcutType.ACTIVITY -> entry.activityName?.let { activityIcon(context, packageName, it) }
+                ?.let { ShortcutIconImage(drawableIcon(it)) }
+            else -> null
+        }
+        val app = appIcon(context, packageName)?.let { ShortcutIconImage(drawableIcon(it)) }
+        return listOfNotNull(own, app)
     }
 
     fun drawableIcon(drawable: Drawable): Bitmap {
