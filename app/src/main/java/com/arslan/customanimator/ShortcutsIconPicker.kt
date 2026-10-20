@@ -126,19 +126,42 @@ internal fun ShortcutIconPickerSheet(
                 placeholder = stringResource(R.string.terminal_tile_icon_search)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (source == BUILT_IN_SOURCE) {
-                IconColorRow(selected = color, onSelect = pickColor)
-                Spacer(modifier = Modifier.height(12.dp))
-                TileIconGrid(
-                    query = query,
-                    selectedKey = builtInKey,
-                    onSelect = pickBuiltIn,
-                    contentPadding = PaddingValues(bottom = 24.dp)
-                )
-            } else {
-                PackIconGrid(packageName = source, names = packIcons, query = query, onPick = pickFromPack)
-            }
+            SourceIconGrid(
+                source = source,
+                query = query,
+                color = color,
+                builtInKey = builtInKey,
+                packIcons = packIcons,
+                onPickColor = pickColor,
+                onPickBuiltIn = pickBuiltIn,
+                onPickFromPack = pickFromPack
+            )
         }
+    }
+}
+
+@Composable
+private fun SourceIconGrid(
+    source: String,
+    query: String,
+    color: Int,
+    builtInKey: String?,
+    packIcons: List<String>?,
+    onPickColor: (Int) -> Unit,
+    onPickBuiltIn: (String) -> Unit,
+    onPickFromPack: (String) -> Unit
+) {
+    if (source == BUILT_IN_SOURCE) {
+        IconColorRow(selected = color, onSelect = onPickColor)
+        Spacer(modifier = Modifier.height(12.dp))
+        TileIconGrid(
+            query = query,
+            selectedKey = builtInKey,
+            onSelect = onPickBuiltIn,
+            contentPadding = PaddingValues(bottom = 24.dp)
+        )
+    } else {
+        PackIconGrid(packageName = source, names = packIcons, query = query, onPick = onPickFromPack)
     }
 }
 
