@@ -13,6 +13,7 @@ import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
 import com.arslan.customanimator.CloseAppsExclusionsScreen
+import com.arslan.customanimator.CompileBoosterScreen
 import com.arslan.customanimator.WhatsAppCleanerScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
@@ -161,6 +162,7 @@ class ScreenLayoutTest {
             onNavigateToQsTiles = {},
             onNavigateToScreenshotActions = {},
             onNavigateToDebloater = {},
+            onNavigateToCompileBooster = {},
             onNavigateToShortcuts = {},
             onNavigateToIconChanger = {},
             onNavigateToApkExtractor = {},
@@ -280,6 +282,11 @@ class ScreenLayoutTest {
     @Test
     fun whatsAppCleanerScreenFitsSmallPhones() = screenFits(R.string.whatsapp_cleaner) {
         WhatsAppCleanerScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun compileBoosterScreenFitsSmallPhones() = screenFits(R.string.compile_booster) {
+        CompileBoosterScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test
