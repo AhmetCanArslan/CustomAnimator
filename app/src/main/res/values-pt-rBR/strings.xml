@@ -49,7 +49,6 @@
     <string name="compile_booster_progress">Compilando… %1$d%%</string>
     <string name="compile_all_apps">Compilar Todos os Apps</string>
     <string name="compile_all_apps_desc">Compilar todos os aplicativos instalados quando este perfil for aplicado</string>
-    <string name="compile_all_apps_confirm_title">Compilar Todos os Apps?</string>
     <string name="compile_all_apps_confirm_message">Isso força a compilação completa de todos os apps instalados, um por um. Pode demorar e usar bateria/armazenamento extra temporariamente, mas continua em segundo plano mesmo se você sair deste app.</string>
     <string name="compile_booster_channel_name">Otimizador de Compilação</string>
     <string name="compile_booster_channel_desc">Mostra o progresso enquanto os apps são compilados à força</string>

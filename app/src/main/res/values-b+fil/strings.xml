@@ -49,7 +49,6 @@
     <string name="compile_booster_progress">Kinokompile… %1$d%%</string>
     <string name="compile_all_apps">Kompilehin ang Lahat ng App</string>
     <string name="compile_all_apps_desc">I-compile ang lahat ng naka-install na app kapag inilapat ang profile na ito</string>
-    <string name="compile_all_apps_confirm_title">Kompilehin ang Lahat ng App?</string>
     <string name="compile_all_apps_confirm_message">Puwersahang kokompilehin nito ang bawat naka-install na app, isa-isa. Maaaring tumagal ito at pansamantalang gumamit ng dagdag na baterya/storage, pero patuloy itong tatakbo sa background kahit umalis ka sa app na ito.</string>
     <string name="compile_booster_channel_name">Compile Booster</string>
     <string name="compile_booster_channel_desc">Ipinapakita ang progress habang pinipilit i-compile ang mga app</string>

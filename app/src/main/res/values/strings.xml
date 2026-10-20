@@ -153,7 +153,6 @@
     <string name="compile_booster_progress">Compiling… %1$d%%</string>
     <string name="compile_all_apps">Compile All Apps</string>
     <string name="compile_all_apps_desc">Compile every installed app when this profile is applied</string>
-    <string name="compile_all_apps_confirm_title">Compile All Apps?</string>
     <string name="compile_all_apps_confirm_message">This forces every installed app to fully compile, one by one. It may take a while and use extra battery/storage temporarily, but keeps running in the background even if you leave this app.</string>
     <string name="compile_booster_channel_name">Compile Booster</string>
     <string name="compile_booster_channel_desc">Shows progress while apps are being force-compiled</string>

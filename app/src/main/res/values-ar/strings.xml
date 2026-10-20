@@ -148,7 +148,6 @@
     <string name="compile_booster_progress">جارٍ التجميع… %1$d%%</string>
     <string name="compile_all_apps">تجميع جميع التطبيقات</string>
     <string name="compile_all_apps_desc">تجميع كل تطبيق مثبت عند تطبيق هذا الملف الشخصي</string>
-    <string name="compile_all_apps_confirm_title">تجميع جميع التطبيقات؟</string>
     <string name="compile_all_apps_confirm_message">سيؤدي هذا إلى فرض التجميع الكاملة لكل تطبيق مثبت، واحدًا تلو الآخر. قد يستغرق وقتًا ويستخدم بطارية/مساحة إضافية مؤقتًا، لكنه يستمر في العمل في الخلفية حتى لو غادرت هذا التطبيق.</string>
     <string name="compile_booster_channel_name">معزّز التجميع</string>
     <string name="compile_booster_channel_desc">يعرض التقدم أثناء التجميع القسرية للتطبيقات</string>

@@ -49,7 +49,6 @@
     <string name="compile_booster_progress">Компиляция… %1$d%%</string>
     <string name="compile_all_apps">Скомпилировать все приложения</string>
     <string name="compile_all_apps_desc">Скомпилировать все установленные приложения при применении этого профиля</string>
-    <string name="compile_all_apps_confirm_title">Скомпилировать все приложения?</string>
     <string name="compile_all_apps_confirm_message">Это принудительно скомпилирует каждое установленное приложение по очереди. Может занять некоторое время и временно расходовать больше батареи/памяти, но продолжит работу в фоне, даже если вы выйдете из этого приложения.</string>
     <string name="compile_booster_channel_name">Ускоритель компиляции</string>
     <string name="compile_booster_channel_desc">Отображает прогресс во время принудительной компиляции приложений</string>

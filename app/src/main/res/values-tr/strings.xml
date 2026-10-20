@@ -49,7 +49,6 @@
     <string name="compile_booster_progress">Derleniyor… %1$d%%</string>
     <string name="compile_all_apps">Tüm Uygulamaları Derle</string>
     <string name="compile_all_apps_desc">Bu profil uygulandığında yüklü tüm uygulamaları derle</string>
-    <string name="compile_all_apps_confirm_title">Tüm Uygulamalar Derlensin mi?</string>
     <string name="compile_all_apps_confirm_message">Bu, yüklü her uygulamayı tek tek tam olarak derlemeye zorlar. Biraz zaman alabilir ve geçici olarak ekstra pil/depolama kullanabilir, ancak bu uygulamadan çıksanız bile arka planda çalışmaya devam eder.</string>
     <string name="compile_booster_channel_name">Derleme Hızlandırıcı</string>
     <string name="compile_booster_channel_desc">Uygulamalar zorla derlenirken ilerlemeyi gösterir</string>

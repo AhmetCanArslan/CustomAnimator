@@ -49,7 +49,6 @@
     <string name="compile_booster_progress">Mengompilasi… %1$d%%</string>
     <string name="compile_all_apps">Kompilasi Semua Aplikasi</string>
     <string name="compile_all_apps_desc">Kompilasi semua aplikasi yang terpasang saat profil ini diterapkan</string>
-    <string name="compile_all_apps_confirm_title">Kompilasi Semua Aplikasi?</string>
     <string name="compile_all_apps_confirm_message">Ini akan memaksa setiap aplikasi terpasang untuk dikompilasi penuh, satu per satu. Mungkin butuh waktu dan sementara menggunakan tambahan baterai/penyimpanan, tetapi tetap berjalan di latar belakang meskipun Anda meninggalkan aplikasi ini.</string>
     <string name="compile_booster_channel_name">Penguat Kompilasi</string>
     <string name="compile_booster_channel_desc">Menampilkan progres saat aplikasi sedang dipaksa dikompilasi</string>

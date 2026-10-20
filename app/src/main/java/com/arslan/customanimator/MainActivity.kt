@@ -193,7 +193,7 @@ enum class HomeScreen {
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
-    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR
+    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, COMPILE_BOOSTER
 }
 
 private fun HomeTab.labelRes(): Int = when (this) {
@@ -236,6 +236,7 @@ private val SUB_SCREEN_PARENTS = mapOf(
 
 private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.DEBLOATER to HomeTab.TOOLS,
+    HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
     HomeScreen.SHORTCUTS to HomeTab.TOOLS,
     HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
     HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
@@ -335,6 +336,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val shortcutsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val whatsAppCleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -660,6 +662,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = debloaterListState
         )
+    } else if (targetScreen == HomeScreen.COMPILE_BOOSTER) {
+        CompileBoosterScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = compileBoosterListState
+        )
     } else if (targetScreen == HomeScreen.SHORTCUTS) {
         ShortcutsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -892,6 +899,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToButtonRemapper = { currentScreen = HomeScreen.BUTTON_REMAPPER },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
+            onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
             onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },
             onNavigateToIconChanger = { currentScreen = HomeScreen.ICON_CHANGER },
             onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },

@@ -64,6 +64,7 @@ fun ToolsScreenContent(
     onNavigateToStatusBarIcons: () -> Unit,
     onNavigateToButtonRemapper: () -> Unit,
     onNavigateToDebloater: () -> Unit,
+    onNavigateToCompileBooster: () -> Unit,
     onNavigateToShortcuts: () -> Unit,
     onNavigateToIconChanger: () -> Unit,
     onNavigateToApkExtractor: () -> Unit,
@@ -103,9 +104,6 @@ fun ToolsScreenContent(
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
-
-    var showCompileBooster by remember { mutableStateOf(false) }
-    val startCompileBooster = rememberCompileBoosterStarter()
 
     val secureToggleEnabled = hasShizukuPermission || hasWriteSecureSettings
     val systemToggleEnabled = hasShizukuPermission || canWriteSystemSettings
@@ -236,7 +234,7 @@ fun ToolsScreenContent(
                     )
                 },
                 {
-                    CompileBoosterToolRow(onClick = { showCompileBooster = true })
+                    CompileBoosterToolRow(onClick = onNavigateToCompileBooster)
                 },
                 {
                     NavigationRow(
@@ -459,13 +457,5 @@ fun ToolsScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
-
-    if (showCompileBooster) {
-        CompileBoosterDialog(
-            hasShizukuPermission = hasShizukuPermission,
-            onStart = startCompileBooster,
-            onDismiss = { showCompileBooster = false }
-        )
     }
 }
