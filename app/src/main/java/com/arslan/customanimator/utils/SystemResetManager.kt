@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import com.arslan.customanimator.service.CompileBoosterService
 import com.arslan.customanimator.service.ForegroundAppWatcherService
+import com.arslan.customanimator.service.PowerButtonService
 
 object SystemResetManager {
 
@@ -32,6 +33,8 @@ object SystemResetManager {
         val dontKeepActivities = DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, false)
         val bgLimit = DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, false)
         val powerLongPress = ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
+        ButtonRemapperManager.setDoublePressAction(context, null)
+        PowerButtonService.sync(context)
 
         val angle = DeveloperOptionsManager.clearAngleDriverSelections(context, contentResolver)
         val permissions = regrantRevokedPermissions(context)
