@@ -1819,4 +1819,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="whatsapp_cleaner_confirm_title">Delete WhatsApp media?</string>
     <string name="whatsapp_cleaner_confirm_message">%1$d files (%2$s) will be deleted permanently. This cannot be undone.</string>
     <string name="whatsapp_cleaner_freed">%1$s freed</string>
+    <string name="search_app">Search</string>
+    <string name="search_app_hint">Search features and settings</string>
+    <string name="search_app_empty">No results for “%1$s”</string>
+    <string name="search_app_empty_hint">Try a different or shorter word.</string>
 </resources>

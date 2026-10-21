@@ -1818,4 +1818,8 @@
     <string name="whatsapp_cleaner_confirm_title">حذف وسائط واتساب؟</string>
     <string name="whatsapp_cleaner_confirm_message">سيُحذف %1$d ملف (%2$s) نهائيًا. لا يمكن التراجع عن هذا الإجراء.</string>
     <string name="whatsapp_cleaner_freed">تم تحرير %1$s</string>
+    <string name="search_app">بحث</string>
+    <string name="search_app_hint">ابحث في الميزات والإعدادات</string>
+    <string name="search_app_empty">لا توجد نتائج لـ “%1$s”</string>
+    <string name="search_app_empty_hint">جرّب كلمة مختلفة أو أقصر.</string>
 </resources>

@@ -1778,4 +1778,8 @@ Duración del Animador: %3$.2f</string>
     <string name="whatsapp_cleaner_confirm_title">¿Borrar archivos de WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">Se borrarán %1$d archivos (%2$s) de forma permanente. Esta acción no se puede deshacer.</string>
     <string name="whatsapp_cleaner_freed">%1$s liberados</string>
+    <string name="search_app">Buscar</string>
+    <string name="search_app_hint">Buscar funciones y ajustes</string>
+    <string name="search_app_empty">No hay resultados para “%1$s”</string>
+    <string name="search_app_empty_hint">Prueba con otra palabra o una más corta.</string>
 </resources>

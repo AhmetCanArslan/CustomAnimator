@@ -1778,4 +1778,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="whatsapp_cleaner_confirm_title">I-delete ang media ng WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">Permanenteng made-delete ang %1$d (na) file (%2$s). Hindi na ito maibabalik.</string>
     <string name="whatsapp_cleaner_freed">%1$s ang na-libre</string>
+    <string name="search_app">Maghanap</string>
+    <string name="search_app_hint">Maghanap ng feature at setting</string>
+    <string name="search_app_empty">Walang resulta para sa “%1$s”</string>
+    <string name="search_app_empty_hint">Subukan ang ibang salita o mas maikli.</string>
 </resources>

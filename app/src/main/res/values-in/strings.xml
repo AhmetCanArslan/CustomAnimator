@@ -1778,4 +1778,8 @@ Durasi Animator: %3$.2f</string>
     <string name="whatsapp_cleaner_confirm_title">Hapus media WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">%1$d file (%2$s) akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.</string>
     <string name="whatsapp_cleaner_freed">%1$s dibebaskan</string>
+    <string name="search_app">Cari</string>
+    <string name="search_app_hint">Cari fitur dan setelan</string>
+    <string name="search_app_empty">Tidak ada hasil untuk “%1$s”</string>
+    <string name="search_app_empty_hint">Coba kata lain atau yang lebih pendek.</string>
 </resources>

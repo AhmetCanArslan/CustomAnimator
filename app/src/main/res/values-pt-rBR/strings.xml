@@ -1778,4 +1778,8 @@ Duração do Animador: %3$.2f</string>
     <string name="whatsapp_cleaner_confirm_title">Apagar mídias do WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">%1$d arquivos (%2$s) serão apagados definitivamente. Esta ação não pode ser desfeita.</string>
     <string name="whatsapp_cleaner_freed">%1$s liberados</string>
+    <string name="search_app">Pesquisar</string>
+    <string name="search_app_hint">Pesquisar recursos e configurações</string>
+    <string name="search_app_empty">Nenhum resultado para “%1$s”</string>
+    <string name="search_app_empty_hint">Tente outra palavra ou uma mais curta.</string>
 </resources>

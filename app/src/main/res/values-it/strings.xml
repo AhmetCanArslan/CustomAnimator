@@ -1798,4 +1798,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="whatsapp_cleaner_confirm_title">Eliminare i file di WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">%1$d file (%2$s) verranno eliminati definitivamente. L’operazione non può essere annullata.</string>
     <string name="whatsapp_cleaner_freed">%1$s liberati</string>
+    <string name="search_app">Cerca</string>
+    <string name="search_app_hint">Cerca funzioni e impostazioni</string>
+    <string name="search_app_empty">Nessun risultato per “%1$s”</string>
+    <string name="search_app_empty_hint">Prova una parola diversa o più breve.</string>
 </resources>

@@ -1780,4 +1780,8 @@
     <string name="whatsapp_cleaner_confirm_title">Удалить медиафайлы WhatsApp?</string>
     <string name="whatsapp_cleaner_confirm_message">Файлов: %1$d (%2$s) — они будут удалены безвозвратно. Это действие нельзя отменить.</string>
     <string name="whatsapp_cleaner_freed">Освобождено %1$s</string>
+    <string name="search_app">Поиск</string>
+    <string name="search_app_hint">Поиск функций и настроек</string>
+    <string name="search_app_empty">Ничего не найдено по запросу «%1$s»</string>
+    <string name="search_app_empty_hint">Попробуйте другое или более короткое слово.</string>
 </resources>

@@ -1786,4 +1786,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="whatsapp_cleaner_confirm_title">WhatsApp medyası silinsin mi?</string>
     <string name="whatsapp_cleaner_confirm_message">%1$d dosya (%2$s) kalıcı olarak silinecek. Bu işlem geri alınamaz.</string>
     <string name="whatsapp_cleaner_freed">%1$s yer açıldı</string>
+    <string name="search_app">Ara</string>
+    <string name="search_app_hint">Özellik ve ayar ara</string>
+    <string name="search_app_empty">“%1$s” için sonuç yok</string>
+    <string name="search_app_empty_hint">Farklı ya da daha kısa bir kelime deneyin.</string>
 </resources>
