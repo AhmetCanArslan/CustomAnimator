@@ -68,6 +68,10 @@ fun ButtonRemapperScreen(
     val doublePressLabel by produceState<String?>(null, doublePressAction) {
         value = doublePressAction?.let { withContext(Dispatchers.IO) { ButtonActions.label(context, it) } }
     }
+    var volumeComboAction by remember { mutableStateOf(ButtonRemapperManager.getVolumeComboAction(context)) }
+    val volumeComboLabel by produceState<String?>(null, volumeComboAction) {
+        value = volumeComboAction?.let { withContext(Dispatchers.IO) { ButtonActions.label(context, it) } }
+    }
     var doublePressWindowMs by remember { mutableIntStateOf(ButtonRemapperManager.getDoublePressWindowMs(context)) }
     val requestNotificationPermission = rememberNotificationPermissionRequest()
     val defaultPowerLongPress = remember { ButtonRemapperManager.getDefaultPowerLongPress() }
@@ -98,22 +102,41 @@ fun ButtonRemapperScreen(
         }
     }
 
-    fun applyDoublePress(action: ButtonAction?) {
-        if (action == doublePressAction) return
-        doublePressAction = action
+    fun applyServiceAction(
+        action: ButtonAction?,
+        current: ButtonAction?,
+        update: (ButtonAction?) -> Unit,
+        store: (ButtonAction?) -> Unit
+    ) {
+        if (action == current) return
+        update(action)
         if (action != null) requestNotificationPermission()
         coroutineScope.launch {
             withContext(Dispatchers.IO) {
-                ButtonRemapperManager.setDoublePressAction(context, action)
+                store(action)
                 PowerButtonService.sync(context)
             }
             maybeShowInterstitial(context)
         }
     }
 
+    fun applyDoublePress(action: ButtonAction?) =
+        applyServiceAction(action, doublePressAction, { doublePressAction = it }) {
+            ButtonRemapperManager.setDoublePressAction(context, it)
+        }
+
+    fun applyVolumeCombo(action: ButtonAction?) =
+        applyServiceAction(action, volumeComboAction, { volumeComboAction = it }) {
+            ButtonRemapperManager.setVolumeComboAction(context, it)
+        }
+
     ButtonActionPicker(
         step = pickerStep,
-        current = if (pickerTarget == PressTarget.LONG_PRESS) customAction else doublePressAction,
+        current = when (pickerTarget) {
+            PressTarget.LONG_PRESS -> customAction
+            PressTarget.DOUBLE_PRESS -> doublePressAction
+            PressTarget.VOLUME_COMBO -> volumeComboAction
+        },
         onStepChange = { pickerStep = it },
         onPicked = { action ->
             pickerStep = ButtonActionPickerStep.HIDDEN
@@ -122,6 +145,7 @@ fun ButtonRemapperScreen(
                     ButtonRemapperManager.setCustomLongPress(context, contentResolver, action)
                 }
                 PressTarget.DOUBLE_PRESS -> applyDoublePress(action)
+                PressTarget.VOLUME_COMBO -> applyVolumeCombo(action)
             }
         }
     )
@@ -229,6 +253,25 @@ fun ButtonRemapperScreen(
             }
 
             item {
+                DevSectionTitle(stringResource(R.string.button_remapper_volume_combo))
+            }
+
+            item {
+                ServiceActionCard(
+                    action = volumeComboAction,
+                    actionLabel = volumeComboLabel,
+                    selectedRes = R.string.button_remapper_volume_combo_selected,
+                    descriptionRes = R.string.button_remapper_volume_combo_desc,
+                    enabled = hasShizukuPermission,
+                    onDefault = { applyVolumeCombo(null) },
+                    onCustomClick = {
+                        pickerTarget = PressTarget.VOLUME_COMBO
+                        pickerStep = ButtonActionPickerStep.ACTIONS
+                    }
+                )
+            }
+
+            item {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -295,25 +338,15 @@ private fun PowerDoublePressCard(
     onCustomClick: () -> Unit
 ) {
     val resources = LocalResources.current
-    RemapOptionsCard {
-        RemapOptionRow(
-            selected = action == null,
-            label = stringResource(R.string.button_remapper_system_default),
-            description = stringResource(R.string.button_remapper_system_default_desc),
-            enabled = enabled,
-            onClick = onDefault
-        )
-        RemapOptionRow(
-            selected = action != null,
-            label = stringResource(R.string.button_remapper_custom),
-            description = if (action != null && actionLabel != null) {
-                stringResource(R.string.button_remapper_double_press_selected, actionLabel)
-            } else {
-                stringResource(R.string.button_remapper_double_press_desc)
-            },
-            enabled = enabled,
-            onClick = onCustomClick
-        )
+    ServiceActionCard(
+        action = action,
+        actionLabel = actionLabel,
+        selectedRes = R.string.button_remapper_double_press_selected,
+        descriptionRes = R.string.button_remapper_double_press_desc,
+        enabled = enabled,
+        onDefault = onDefault,
+        onCustomClick = onCustomClick
+    ) {
         if (action != null) {
             SliderRow(
                 title = stringResource(R.string.button_remapper_double_press_window),
@@ -327,6 +360,40 @@ private fun PowerDoublePressCard(
                 onChange = { onWindowChange(it.roundToInt()) }
             )
         }
+    }
+}
+
+@Composable
+private fun ServiceActionCard(
+    action: ButtonAction?,
+    actionLabel: String?,
+    selectedRes: Int,
+    descriptionRes: Int,
+    enabled: Boolean,
+    onDefault: () -> Unit,
+    onCustomClick: () -> Unit,
+    extra: @Composable ColumnScope.() -> Unit = {}
+) {
+    RemapOptionsCard {
+        RemapOptionRow(
+            selected = action == null,
+            label = stringResource(R.string.button_remapper_system_default),
+            description = stringResource(R.string.button_remapper_system_default_desc),
+            enabled = enabled,
+            onClick = onDefault
+        )
+        RemapOptionRow(
+            selected = action != null,
+            label = stringResource(R.string.button_remapper_custom),
+            description = if (action != null && actionLabel != null) {
+                stringResource(selectedRes, actionLabel)
+            } else {
+                stringResource(descriptionRes)
+            },
+            enabled = enabled,
+            onClick = onCustomClick
+        )
+        extra()
     }
 }
 
@@ -389,7 +456,7 @@ private const val DOUBLE_PRESS_WINDOW_STEPS =
     (ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MAX_MS - ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MIN_MS) /
         ButtonRemapperManager.DOUBLE_PRESS_WINDOW_STEP_MS - 1
 
-private enum class PressTarget { LONG_PRESS, DOUBLE_PRESS }
+private enum class PressTarget { LONG_PRESS, DOUBLE_PRESS, VOLUME_COMBO }
 
 private data class LongPressChoice(val behavior: PowerLongPress?, val action: ButtonAction?)
 
