@@ -17,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.components.SliderRow
 import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -224,7 +225,7 @@ fun BatteryScreenContent(
                     ) { writeGlobal(mgr.KEY_LOW_POWER, if (it) "1" else "0") }
 
                     HorizontalDivider()
-                    BatterySliderRow(
+                    SliderRow(
                         title = stringResource(R.string.bt_trigger_level),
                         description = stringResource(R.string.bt_trigger_level_desc),
                         value = triggerLevel.toFloat(),
@@ -270,7 +271,7 @@ fun BatteryScreenContent(
 
                     if (sticky && stickyAuto) {
                         HorizontalDivider()
-                        BatterySliderRow(
+                        SliderRow(
                             title = stringResource(R.string.bt_sticky_level),
                             description = stringResource(R.string.bt_sticky_level_desc),
                             value = stickyLevel.toFloat(),
@@ -362,7 +363,7 @@ fun BatteryScreenContent(
                             enabled = canWrite
                         ) { writePolicy(tweak.key, it.toString()) }
 
-                        is BatteryTweak.FloatRange -> BatterySliderRow(
+                        is BatteryTweak.FloatRange -> SliderRow(
                             title = stringResource(tweak.titleRes),
                             description = stringResource(tweak.descriptionRes),
                             value = raw.toFloatOrNull() ?: tweak.default,
@@ -383,7 +384,7 @@ fun BatteryScreenContent(
                             enabled = canWrite
                         ) { writePolicy(tweak.key, it.toString()) }
 
-                        is BatteryTweak.IntRange -> BatterySliderRow(
+                        is BatteryTweak.IntRange -> SliderRow(
                             title = stringResource(tweak.titleRes),
                             description = stringResource(tweak.descriptionRes),
                             value = (raw.toIntOrNull() ?: tweak.default).toFloat(),
@@ -567,7 +568,7 @@ fun BatteryScreenContent(
 
                     if (alertLowEnabled) {
                         HorizontalDivider()
-                        BatterySliderRow(
+                        SliderRow(
                             title = stringResource(R.string.bt_alert_low_level),
                             description = stringResource(R.string.bt_alert_low_level_desc),
                             value = alertLowLevel.toFloat(),
@@ -600,7 +601,7 @@ fun BatteryScreenContent(
 
                     if (alertHighEnabled) {
                         HorizontalDivider()
-                        BatterySliderRow(
+                        SliderRow(
                             title = stringResource(R.string.bt_alert_high_level),
                             description = stringResource(R.string.bt_alert_high_level_desc),
                             value = alertHighLevel.toFloat(),
@@ -692,44 +693,6 @@ private fun BatteryToggleRow(
             )
         }
         Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
-    }
-}
-
-@Composable
-private fun BatterySliderRow(
-    title: String,
-    description: String,
-    value: Float,
-    min: Float,
-    max: Float,
-    steps: Int,
-    enabled: Boolean,
-    display: (Float) -> String,
-    onChange: (Float) -> Unit
-) {
-    var local by remember(value) { mutableFloatStateOf(value.coerceIn(min, max)) }
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.weight(1f)
-            )
-            Text(text = display(local), style = MaterialTheme.typography.labelLarge,)
-        }
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Slider(
-            value = local,
-            onValueChange = { local = it },
-            onValueChangeFinished = { onChange(local) },
-            valueRange = min..max,
-            steps = steps,
-            enabled = enabled
-        )
     }
 }
 

@@ -31,12 +31,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -404,4 +407,42 @@ fun DividerSoft(modifier: Modifier = Modifier) {
             .height(1.dp)
             .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
     )
+}
+
+@Composable
+fun SliderRow(
+    title: String,
+    description: String,
+    value: Float,
+    min: Float,
+    max: Float,
+    steps: Int,
+    enabled: Boolean,
+    display: (Float) -> String,
+    onChange: (Float) -> Unit
+) {
+    var local by remember(value) { mutableFloatStateOf(value.coerceIn(min, max)) }
+    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.weight(1f)
+            )
+            Text(text = display(local), style = MaterialTheme.typography.labelLarge)
+        }
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Slider(
+            value = local,
+            onValueChange = { local = it },
+            onValueChangeFinished = { onChange(local) },
+            valueRange = min..max,
+            steps = steps,
+            enabled = enabled
+        )
+    }
 }
