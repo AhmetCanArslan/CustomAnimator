@@ -84,6 +84,15 @@
         </service>
 
         <service
+            android:name=".service.PowerButtonService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Runs the action the user assigned to a double press of the power button" />
+        </service>
+
+        <service
             android:name=".service.CompileBoosterService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
