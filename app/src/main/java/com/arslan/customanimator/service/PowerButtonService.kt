@@ -23,6 +23,7 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
+import com.arslan.customanimator.utils.ButtonAction
 import com.arslan.customanimator.utils.ButtonActions
 import com.arslan.customanimator.utils.ButtonRemapperManager
 import com.arslan.customanimator.utils.ShizukuHelper
@@ -42,19 +43,23 @@ class PowerButtonService : Service() {
         private const val TAG = "PowerButtonService"
         private const val CHANNEL_ID = "power_button_channel"
         private const val NOTIF_ID = 4203
-        private const val SERVICE_VERSION = 3
+        private const val SERVICE_VERSION = 4
         private const val RECONNECT_BASE_DELAY_MS = 2000L
         private const val MAX_RECONNECT_ATTEMPTS = 5
 
         fun sync(context: Context) {
             val appContext = context.applicationContext
             val intent = Intent(appContext, PowerButtonService::class.java)
-            if (ButtonRemapperManager.getDoublePressAction(appContext) != null) {
+            if (isNeeded(appContext)) {
                 ContextCompat.startForegroundService(appContext, intent)
             } else {
                 appContext.stopService(intent)
             }
         }
+
+        private fun isNeeded(context: Context): Boolean =
+            ButtonRemapperManager.getDoublePressAction(context) != null ||
+                ButtonRemapperManager.getVolumeComboAction(context) != null
     }
 
     private enum class Status(val textRes: Int) {
@@ -82,7 +87,11 @@ class PowerButtonService : Service() {
 
     private val listener = object : IPowerButtonListener.Stub() {
         override fun onDoublePress() {
-            scope.launch { performDoublePress() }
+            scope.launch { perform(ButtonRemapperManager::getDoublePressAction) }
+        }
+
+        override fun onVolumeCombo() {
+            scope.launch { perform(ButtonRemapperManager::getVolumeComboAction) }
         }
     }
 
@@ -134,7 +143,7 @@ class PowerButtonService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (ButtonRemapperManager.getDoublePressAction(this) == null) {
+        if (!isNeeded(this)) {
             stopSelf()
             return START_NOT_STICKY
         }
@@ -164,8 +173,13 @@ class PowerButtonService : Service() {
 
     private suspend fun startListening(service: IPowerButtonUserService?) {
         val started = withContext(Dispatchers.IO) {
-            val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
-            runCatching { service?.start(listener, windowMs) == true }
+            val windowMs = if (ButtonRemapperManager.getDoublePressAction(applicationContext) == null) {
+                PowerPressDetector.PASS_THROUGH.toInt()
+            } else {
+                ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
+            }
+            val volumeCombo = ButtonRemapperManager.getVolumeComboAction(applicationContext) != null
+            runCatching { service?.start(listener, windowMs, volumeCombo) == true }
                 .getOrDefault(false)
         }
         if (!started) {
@@ -187,9 +201,9 @@ class PowerButtonService : Service() {
         updateStatus(if (applied) Status.ACTIVE else Status.UNSUPPORTED)
     }
 
-    private suspend fun performDoublePress() {
+    private suspend fun perform(storedAction: (Context) -> ButtonAction?) {
         val performed = withContext(Dispatchers.IO) {
-            ButtonRemapperManager.getDoublePressAction(applicationContext)
+            storedAction(applicationContext)
                 ?.let { ButtonActions.performInBackground(applicationContext, it) } ?: false
         }
         if (!performed) {
@@ -245,7 +259,7 @@ class PowerButtonService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(getString(R.string.button_remapper_power_double_press))
+            .setContentTitle(getString(R.string.button_remapper))
             .setContentText(getString(status.textRes))
             .setSmallIcon(R.drawable.ic_tile_power_settings_new)
             .setOngoing(true)

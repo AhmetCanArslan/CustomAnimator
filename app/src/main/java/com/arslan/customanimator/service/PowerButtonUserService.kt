@@ -27,6 +27,27 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
 
     private var devices: List<EvdevDevice> = emptyList()
     private var detector: PowerPressDetector? = null
+    private val volumeDetector = VolumeComboDetector(object : VolumeComboDetector.Output {
+        override fun pressKey(code: Int) {
+            val keyCode = EvdevDevice.forwardedKeys[code] ?: return
+            val now = SystemClock.uptimeMillis()
+            val down = KeyEvent(
+                now, now, KeyEvent.ACTION_DOWN, keyCode, 0, 0,
+                KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0, InputDevice.SOURCE_KEYBOARD
+            )
+            forwardedDowns[code] = down
+            inject(down)
+        }
+
+        override fun releaseKey(code: Int) {
+            val down = forwardedDowns.remove(code) ?: return
+            inject(KeyEvent.changeTimeRepeat(KeyEvent.changeAction(down, KeyEvent.ACTION_UP), SystemClock.uptimeMillis(), 0))
+        }
+
+        override fun combo() {
+            notifyListener { it.onVolumeCombo() }
+        }
+    })
     private var grabbed = false
     private var grabPending = false
     private var holdDownTime = 0L
@@ -68,13 +89,17 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         }
 
         override fun doublePress() {
-            val target = listener ?: return
-            try {
-                target.onDoublePress()
-            } catch (e: RemoteException) {
-                Log.d(TAG, "Listener is gone", e)
-                listener = null
-            }
+            notifyListener { it.onDoublePress() }
+        }
+    }
+
+    private fun notifyListener(call: (IPowerButtonListener) -> Unit) {
+        val target = listener ?: return
+        try {
+            call(target)
+        } catch (e: RemoteException) {
+            Log.d(TAG, "Listener is gone", e)
+            listener = null
         }
     }
 
@@ -83,9 +108,10 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         System.exit(0)
     }
 
-    override fun start(listener: IPowerButtonListener?, multiPressTimeoutMs: Int): Boolean {
+    override fun start(listener: IPowerButtonListener?, multiPressTimeoutMs: Int, volumeCombo: Boolean): Boolean {
         synchronized(lock) {
             this.listener = listener
+            volumeDetector.enabled = volumeCombo
             detector?.let {
                 it.multiPressTimeoutMs = multiPressTimeoutMs.toLong()
                 return true
@@ -115,6 +141,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
 
     private fun releaseHeldKeys() {
         detector?.reset()
+        volumeDetector.reset()
         forwardedDowns.values.forEach { inject(KeyEvent.changeAction(it, KeyEvent.ACTION_UP)) }
         forwardedDowns.clear()
     }
@@ -150,13 +177,17 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             pollFds.forEachIndexed { index, pollFd ->
                 if (pollFd.revents.toInt() and OsConstants.POLLIN != 0) drain(devices[index], buffer)
             }
-            detector?.onTimeout(SystemClock.uptimeMillis())
+            val now = SystemClock.uptimeMillis()
+            detector?.onTimeout(now)
+            volumeDetector.onTimeout(now)
         }
     }
 
     private fun pollTimeoutMs(): Int = synchronized(lock) {
-        val deadline = detector?.deadline ?: PowerPressDetector.NO_DEADLINE
-        if (deadline == PowerPressDetector.NO_DEADLINE) {
+        val deadline = listOfNotNull(detector?.deadline, volumeDetector.deadline)
+            .filter { it != PowerPressDetector.NO_DEADLINE }
+            .minOrNull()
+        if (deadline == null) {
             -1
         } else {
             (deadline - SystemClock.uptimeMillis()).coerceAtLeast(0).toInt()
@@ -194,27 +225,20 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     }
 
     private fun forward(code: Int, value: Int, now: Long) {
-        val keyCode = EvdevDevice.forwardedKeys[code] ?: return
-        val previous = forwardedDowns[code]
+        if (code !in EvdevDevice.forwardedKeys) return
         when (value) {
             KEY_DOWN -> {
                 detector?.onOtherKeyDown()
-                val down = KeyEvent(
-                    now, now, KeyEvent.ACTION_DOWN, keyCode, 0, 0,
-                    KeyCharacterMap.VIRTUAL_KEYBOARD, 0, 0, InputDevice.SOURCE_KEYBOARD
-                )
-                forwardedDowns[code] = down
-                inject(down)
+                volumeDetector.onDown(code, now)
             }
-            KEY_REPEAT -> previous?.let {
+            KEY_REPEAT -> forwardedDowns[code]?.let {
                 val repeat = KeyEvent.changeTimeRepeat(it, now, it.repeatCount + 1)
                 forwardedDowns[code] = repeat
                 inject(repeat)
             }
-            KEY_UP -> previous?.let {
-                forwardedDowns.remove(code)
+            KEY_UP -> {
                 detector?.onOtherKeyUp()
-                inject(KeyEvent.changeTimeRepeat(KeyEvent.changeAction(it, KeyEvent.ACTION_UP), now, 0))
+                volumeDetector.onUp(code)
             }
         }
     }
