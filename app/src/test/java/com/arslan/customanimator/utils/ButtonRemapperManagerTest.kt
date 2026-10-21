@@ -166,6 +166,33 @@ class ButtonRemapperManagerTest {
         assertEquals("com.example.old", remapperPrefs().getString("previous_assistant", null))
     }
 
+    @Test
+    fun doublePressActionRoundTripsAndIsIndependentOfLongPress() {
+        assertNull(ButtonRemapperManager.getDoublePressAction(context))
+
+        ButtonRemapperManager.setDoublePressAction(context, flashlight)
+        assertEquals(flashlight, ButtonRemapperManager.getDoublePressAction(context))
+        assertNull(ButtonRemapperManager.getAssistAction(context))
+
+        ButtonRemapperManager.setDoublePressAction(context, null)
+        assertNull(ButtonRemapperManager.getDoublePressAction(context))
+        assertFalse(remapperPrefs().contains("double_press_action_type"))
+    }
+
+    @Test
+    fun doublePressWindowDefaultsTo250AndStaysInRange() {
+        assertEquals(250, ButtonRemapperManager.getDoublePressWindowMs(context))
+
+        ButtonRemapperManager.setDoublePressWindowMs(context, 175)
+        assertEquals(175, ButtonRemapperManager.getDoublePressWindowMs(context))
+
+        ButtonRemapperManager.setDoublePressWindowMs(context, 10)
+        assertEquals(ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MIN_MS, ButtonRemapperManager.getDoublePressWindowMs(context))
+
+        remapperPrefs().edit().putInt("double_press_window_ms", 5000).commit()
+        assertEquals(ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MAX_MS, ButtonRemapperManager.getDoublePressWindowMs(context))
+    }
+
     private val flashlight = ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.FLASHLIGHT.key)
 
     private fun storeAssistAction() {

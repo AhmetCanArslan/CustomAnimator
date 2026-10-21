@@ -30,9 +30,16 @@ object ButtonRemapperManager {
     private const val PREFS_NAME = "button_remapper_prefs"
     private const val KEY_ASSIST_ACTION_TYPE = "assist_action_type"
     private const val KEY_ASSIST_ACTION_VALUE = "assist_action_value"
+    private const val KEY_DOUBLE_PRESS_ACTION_TYPE = "double_press_action_type"
+    private const val KEY_DOUBLE_PRESS_ACTION_VALUE = "double_press_action_value"
+    private const val KEY_DOUBLE_PRESS_WINDOW = "double_press_window_ms"
     private const val KEY_PREVIOUS_ASSISTANT = "previous_assistant"
     private const val KEY_PREVIOUS_RECOGNIZER = "previous_recognizer"
     private const val UNSET = -1
+    const val DOUBLE_PRESS_WINDOW_MIN_MS = 150
+    const val DOUBLE_PRESS_WINDOW_MAX_MS = 400
+    const val DOUBLE_PRESS_WINDOW_STEP_MS = 25
+    private const val DOUBLE_PRESS_WINDOW_DEFAULT_MS = 250
 
     fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
@@ -83,11 +90,34 @@ object ButtonRemapperManager {
         }
     }
 
-    fun getAssistAction(context: Context): ButtonAction? {
+    fun getAssistAction(context: Context): ButtonAction? =
+        readAction(context, KEY_ASSIST_ACTION_TYPE, KEY_ASSIST_ACTION_VALUE)
+
+    fun getDoublePressAction(context: Context): ButtonAction? =
+        readAction(context, KEY_DOUBLE_PRESS_ACTION_TYPE, KEY_DOUBLE_PRESS_ACTION_VALUE)
+
+    fun setDoublePressAction(context: Context, action: ButtonAction?) {
+        prefs(context).edit()
+            .putString(KEY_DOUBLE_PRESS_ACTION_TYPE, action?.type?.name)
+            .putString(KEY_DOUBLE_PRESS_ACTION_VALUE, action?.value)
+            .commit()
+    }
+
+    fun getDoublePressWindowMs(context: Context): Int =
+        prefs(context).getInt(KEY_DOUBLE_PRESS_WINDOW, DOUBLE_PRESS_WINDOW_DEFAULT_MS)
+            .coerceIn(DOUBLE_PRESS_WINDOW_MIN_MS, DOUBLE_PRESS_WINDOW_MAX_MS)
+
+    fun setDoublePressWindowMs(context: Context, windowMs: Int) {
+        prefs(context).edit()
+            .putInt(KEY_DOUBLE_PRESS_WINDOW, windowMs.coerceIn(DOUBLE_PRESS_WINDOW_MIN_MS, DOUBLE_PRESS_WINDOW_MAX_MS))
+            .commit()
+    }
+
+    private fun readAction(context: Context, typeKey: String, valueKey: String): ButtonAction? {
         val prefs = prefs(context)
-        val storedType = prefs.getString(KEY_ASSIST_ACTION_TYPE, null)
+        val storedType = prefs.getString(typeKey, null)
         val type = ButtonAction.Type.entries.firstOrNull { it.name == storedType } ?: return null
-        val value = prefs.getString(KEY_ASSIST_ACTION_VALUE, null) ?: return null
+        val value = prefs.getString(valueKey, null) ?: return null
         return ButtonAction(type, value)
     }
 
