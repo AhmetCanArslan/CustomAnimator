@@ -43,7 +43,7 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.SystemMeterMetric
 
-private fun metricIcon(metric: SystemMeterMetric): ImageVector = when (metric) {
+internal fun metricIcon(metric: SystemMeterMetric): ImageVector = when (metric) {
     SystemMeterMetric.FPS -> Icons.Filled.Speed
     SystemMeterMetric.CPU_FREQ -> Icons.Filled.Memory
     SystemMeterMetric.CPU_TEMP -> Icons.Filled.Thermostat
@@ -54,7 +54,7 @@ private fun metricIcon(metric: SystemMeterMetric): ImageVector = when (metric) {
     SystemMeterMetric.BATTERY_CURRENT -> Icons.Filled.Bolt
 }
 
-private fun metricTitle(metric: SystemMeterMetric): Int = when (metric) {
+internal fun metricTitle(metric: SystemMeterMetric): Int = when (metric) {
     SystemMeterMetric.FPS -> R.string.meter_fps
     SystemMeterMetric.CPU_FREQ -> R.string.meter_cpu_freq
     SystemMeterMetric.CPU_TEMP -> R.string.meter_cpu_temp
@@ -65,7 +65,7 @@ private fun metricTitle(metric: SystemMeterMetric): Int = when (metric) {
     SystemMeterMetric.BATTERY_CURRENT -> R.string.meter_battery_current
 }
 
-private fun metricDesc(metric: SystemMeterMetric): Int = when (metric) {
+internal fun metricDesc(metric: SystemMeterMetric): Int = when (metric) {
     SystemMeterMetric.FPS -> R.string.meter_fps_desc
     SystemMeterMetric.CPU_FREQ -> R.string.meter_cpu_freq_desc
     SystemMeterMetric.CPU_TEMP -> R.string.meter_cpu_temp_desc

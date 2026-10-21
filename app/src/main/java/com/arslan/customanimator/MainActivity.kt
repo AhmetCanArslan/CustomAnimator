@@ -196,7 +196,7 @@ enum class HomeScreen {
     BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, COMPILE_BOOSTER
 }
 
-private fun HomeTab.labelRes(): Int = when (this) {
+internal fun HomeTab.labelRes(): Int = when (this) {
     HomeTab.ANIMATION -> R.string.nav_animation
     HomeTab.WIDTH -> R.string.nav_width
     HomeTab.OPTIMIZER -> R.string.optimizer_title
@@ -208,7 +208,7 @@ private fun HomeTab.labelRes(): Int = when (this) {
     HomeTab.TERMINAL -> R.string.nav_terminal
 }
 
-private fun HomeTab.icon(): ImageVector = when (this) {
+internal fun HomeTab.icon(): ImageVector = when (this) {
     HomeTab.ANIMATION -> Icons.Default.PlayArrow
     HomeTab.WIDTH -> Icons.Default.Straighten
     HomeTab.OPTIMIZER -> Icons.Default.Bolt
