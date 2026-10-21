@@ -12,4 +12,5 @@
 -->
     <exclude domain="sharedpref" path="per_app_width_state.xml" />
     <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
+    <exclude domain="sharedpref" path="notify_aod_state.xml" />
 </full-backup-content>

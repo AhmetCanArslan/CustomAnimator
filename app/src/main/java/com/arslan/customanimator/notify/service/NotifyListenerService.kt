@@ -59,7 +59,7 @@ class NotifyListenerService : NotificationListenerService() {
     private lateinit var loggingPreferences: LoggingPreferences
     private val flashManager = lazy { FlashManager(this) }
     private val screenWakeManager = lazy { ScreenWakeManager(this) }
-    private val aodManager = lazy { AodManager(this) }
+    private lateinit var aodManager: AodManager
     private val screenFlashManager = lazy { ScreenFlashManager(this) }
     private val appLabels = ConcurrentHashMap<String, String>()
     private var lastPurgeTime = 0L
@@ -71,6 +71,8 @@ class NotifyListenerService : NotificationListenerService() {
         ignoreManager = IgnoreManager(this)
         loggingManager = LoggingManager.getInstance(this)
         loggingPreferences = LoggingPreferences(this)
+        aodManager = AodManager(this)
+        aodManager.recoverStaleState()
         startPersistentNotification()
     }
 
@@ -86,7 +88,7 @@ class NotifyListenerService : NotificationListenerService() {
         loggingManager.flushPending()
         if (flashManager.isInitialized()) flashManager.value.stop()
         if (screenWakeManager.isInitialized()) screenWakeManager.value.stop()
-        if (aodManager.isInitialized()) aodManager.value.stop()
+        aodManager.stop()
         if (screenFlashManager.isInitialized()) screenFlashManager.value.stop()
         stopForeground(STOP_FOREGROUND_REMOVE)
         super.onDestroy()
@@ -187,7 +189,7 @@ class NotifyListenerService : NotificationListenerService() {
                 durationSeconds = action.screenDurationSeconds ?: 10,
                 pocketModeEnabled = action.pocketModeEnabled ?: true,
             )
-            RuleType.AOD -> aodManager.value.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
+            RuleType.AOD -> aodManager.triggerAod(durationSeconds = action.aodDurationSeconds ?: 10)
             RuleType.FLASH_SCREEN -> screenFlashManager.value.triggerFlash(
                 color = ScreenFlashColor.fromName(action.screenFlashColor),
                 durationSeconds = action.screenFlashDurationSeconds ?: 5,
@@ -259,7 +261,7 @@ class NotifyListenerService : NotificationListenerService() {
             val hasPersistentAod = rulesManager.enabledRulesFor(sbn.packageName).any { rule ->
                 rule.actions.any { it.type == RuleType.AOD && it.aodDurationSeconds == -1 }
             }
-            if (hasPersistentAod) aodManager.value.stopAodForReason(-1)
+            if (hasPersistentAod) aodManager.stopAodForReason(-1)
         }
     }
 
