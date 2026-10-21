@@ -94,6 +94,13 @@ android {
         buildConfig = true
         aidl = true
     }
+    ndkVersion = "28.2.13676358"
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+            version = "3.22.1"
+        }
+    }
     androidResources {
         localeFilters += listOf("en", "ar", "fil", "es", "es-rUS", "in", "it", "pt", "pt-rBR", "ru", "tr")
     }
