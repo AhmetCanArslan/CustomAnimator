@@ -59,6 +59,9 @@ object ButtonActions {
         ButtonAction.Type.COMMAND -> runShell(action.value)
     }
 
+    fun performInBackground(context: Context, action: ButtonAction): Boolean =
+        if (action.type == ButtonAction.Type.APP) launchAppFromShell(context, action.value) else perform(context, action)
+
     fun label(context: Context, action: ButtonAction): String = when (action.type) {
         ButtonAction.Type.QUICK -> Quick.fromKey(action.value)?.let { context.getString(it.nameRes) }
         ButtonAction.Type.TOGGLE -> ToggleTilePresets.byKey(action.value)?.let { context.getString(it.nameRes) }
@@ -99,6 +102,11 @@ object ButtonActions {
         } catch (e: Exception) {
             false
         }
+    }
+
+    private fun launchAppFromShell(context: Context, packageName: String): Boolean {
+        val component = context.packageManager.getLaunchIntentForPackage(packageName)?.component ?: return false
+        return ShizukuHelper.executeShellCommand(arrayOf("am", "start", "-n", component.flattenToShortString()))
     }
 
     private fun appLabel(context: Context, packageName: String): String? {
