@@ -54,12 +54,23 @@ class PowerPressDetectorTest {
     }
 
     @Test
-    fun doublePressRunsTheActionAndNothingIsReplayed() {
+    fun doublePressRunsTheActionOnTheSecondReleaseAndNothingIsReplayed() {
         press(at = 0)
         press(at = 100)
-        detector.onTimeout(110 + TIMEOUT)
-
         assertEquals(listOf("double"), events)
+
+        detector.onTimeout(110 + TIMEOUT)
+        assertEquals(listOf("double"), events)
+    }
+
+    @Test
+    fun doublePressThenHoldDoesNotReplayTheDoublePress() {
+        press(at = 0)
+        press(at = 100)
+        detector.onPowerDown(200)
+        detector.onTimeout(200 + TIMEOUT)
+
+        assertEquals(listOf("double", "hold down"), events)
     }
 
     @Test
@@ -67,7 +78,7 @@ class PowerPressDetectorTest {
         (0 until 5).forEach { press(at = it * 100L) }
         detector.onTimeout(410 + TIMEOUT)
 
-        assertEquals(listOf("replay 5"), events)
+        assertEquals(listOf("double", "replay 5"), events)
     }
 
     @Test

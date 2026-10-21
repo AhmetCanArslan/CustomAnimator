@@ -39,12 +39,13 @@ class PowerPressDetector(
         if (!pressing) return
         pressing = false
         presses++
+        if (isDoublePress()) output.doublePress()
         deadline = now + multiPressTimeoutMs
     }
 
     fun onTimeout(now: Long) {
         if (deadline == NO_DEADLINE || now < deadline) return
-        if (pressing) startHold() else finishBurst()
+        if (pressing) startHold() else replayPending()
     }
 
     fun onOtherKeyDown() {
@@ -72,14 +73,10 @@ class PowerPressDetector(
         output.holdDown()
     }
 
-    private fun finishBurst() {
-        if (presses == DOUBLE_PRESS && multiPressTimeoutMs != PASS_THROUGH) output.doublePress() else output.replayPresses(presses)
-        presses = 0
-        deadline = NO_DEADLINE
-    }
+    private fun isDoublePress() = presses == DOUBLE_PRESS && multiPressTimeoutMs != PASS_THROUGH
 
     private fun replayPending() {
-        if (presses > 0) output.replayPresses(presses)
+        if (presses > 0 && !isDoublePress()) output.replayPresses(presses)
         presses = 0
         deadline = NO_DEADLINE
     }
