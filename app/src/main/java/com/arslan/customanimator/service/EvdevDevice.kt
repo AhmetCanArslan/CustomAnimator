@@ -32,20 +32,20 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
             System.loadLibrary("evdev")
         }
 
-        fun openPowerKeyDevices(): List<EvdevDevice> =
+        fun openButtonDevices(): List<EvdevDevice> =
             File("/dev/input")
                 .listFiles { file -> file.name.startsWith("event") }
                 .orEmpty()
-                .mapNotNull { openIfPowerKey(it) }
+                .mapNotNull { openIfButtons(it) }
 
-        private fun openIfPowerKey(file: File): EvdevDevice? {
+        private fun openIfButtons(file: File): EvdevDevice? {
             val descriptor = try {
                 ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
             } catch (e: IOException) {
                 return null
             }
             val keys = nativeKeyCodes(descriptor.fd).toSet()
-            if (KEY_POWER in keys && (keys - KEY_POWER).all { it in forwardedKeys }) {
+            if (keys.isNotEmpty() && keys.all { it == KEY_POWER || it in forwardedKeys }) {
                 return EvdevDevice(descriptor)
             }
             descriptor.close()

@@ -90,7 +90,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
                 it.multiPressTimeoutMs = multiPressTimeoutMs.toLong()
                 return true
             }
-            devices = EvdevDevice.openPowerKeyDevices()
+            devices = EvdevDevice.openButtonDevices()
             if (devices.isEmpty()) return false
             detector = PowerPressDetector(multiPressTimeoutMs.toLong(), output)
         }
