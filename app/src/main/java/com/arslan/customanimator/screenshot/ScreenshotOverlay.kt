@@ -1,5 +1,6 @@
 package com.arslan.customanimator.screenshot
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.PixelFormat
 import android.view.Gravity
@@ -17,6 +18,7 @@ class ScreenshotOverlay(private val context: Context) {
     private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private var view: View? = null
     private var params: WindowManager.LayoutParams? = null
+    private var summonAnimator: ValueAnimator? = null
 
     fun isShowing(): Boolean = view != null
 
@@ -30,6 +32,7 @@ class ScreenshotOverlay(private val context: Context) {
     ) {
         if (!showCopy && !showDelete) return
         view?.let { v ->
+            summonAnimator?.end()
             bind(v, showCopy, showDelete, onCopy, onDelete)
             params?.let { p ->
                 p.x = dpToPx(xDp)
@@ -58,23 +61,39 @@ class ScreenshotOverlay(private val context: Context) {
             PixelFormat.TRANSPARENT
         ).apply {
             gravity = Gravity.START or Gravity.BOTTOM
-            x = dpToPx(xDp)
             y = dpToPx(yDp)
         }
 
-        v.alpha = 0f
-        v.translationX = -slidePx()
+        v.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val screenWidth = context.resources.displayMetrics.widthPixels
+        val maxX = (screenWidth - v.measuredWidth).coerceAtLeast(0)
+        val targetX = dpToPx(xDp).coerceIn(0, maxX)
+        val edgeX = if (targetX + v.measuredWidth / 2 < screenWidth / 2) -v.measuredWidth else screenWidth
+        placeContent(v, lp, edgeX, maxX)
         runCatching { wm.addView(v, lp) }
             .onSuccess {
                 view = v
                 params = lp
-                v.animate()
-                    .alpha(1f).translationX(0f)
-                    .setDuration(ENTER_MS)
-                    .setInterpolator(DecelerateInterpolator())
-                    .withLayer()
-                    .start()
+                summon(v, lp, edgeX, targetX, maxX)
             }
+    }
+
+    private fun summon(root: View, lp: WindowManager.LayoutParams, fromX: Int, toX: Int, maxX: Int) {
+        val animator = ValueAnimator.ofInt(fromX, toX)
+        animator.duration = SUMMON_MS
+        animator.interpolator = DecelerateInterpolator(SUMMON_DECELERATION)
+        animator.addUpdateListener { a ->
+            if (params !== lp) return@addUpdateListener
+            placeContent(root, lp, a.animatedValue as Int, maxX)
+            runCatching { wm.updateViewLayout(root, lp) }
+        }
+        summonAnimator = animator
+        animator.start()
+    }
+
+    private fun placeContent(root: View, lp: WindowManager.LayoutParams, contentX: Int, maxX: Int) {
+        lp.x = contentX.coerceIn(0, maxX)
+        root.translationX = (contentX - lp.x).toFloat()
     }
 
     private fun bind(
@@ -101,6 +120,7 @@ class ScreenshotOverlay(private val context: Context) {
             val lp = params ?: return@setOnTouchListener false
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
+                    summonAnimator?.end()
                     downX = event.rawX
                     startX = lp.x
                     dragging = false
@@ -154,7 +174,7 @@ class ScreenshotOverlay(private val context: Context) {
     private fun settle(root: View, startX: Int) {
         val lp = params ?: return
         val from = lp.x
-        val animator = android.animation.ValueAnimator.ofInt(from, startX)
+        val animator = ValueAnimator.ofInt(from, startX)
         animator.duration = ENTER_MS
         animator.interpolator = DecelerateInterpolator()
         animator.addUpdateListener { a ->
@@ -179,6 +199,8 @@ class ScreenshotOverlay(private val context: Context) {
 
     fun hide(direction: Float = -1f) {
         val v = view ?: return
+        summonAnimator?.cancel()
+        summonAnimator = null
         view = null
         params = null
         v.findViewById<View>(R.id.overlay_copy).setOnTouchListener(null)
@@ -199,6 +221,8 @@ class ScreenshotOverlay(private val context: Context) {
 
     private companion object {
         const val ENTER_MS = 220L
+        const val SUMMON_MS = 420L
+        const val SUMMON_DECELERATION = 2f
         const val PRESS_MS = 90L
         const val PRESSED_SCALE = 0.86f
         const val SLIDE_DP = 56
