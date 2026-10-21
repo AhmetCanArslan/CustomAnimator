@@ -33,6 +33,8 @@ object ButtonRemapperManager {
     private const val KEY_DOUBLE_PRESS_ACTION_TYPE = "double_press_action_type"
     private const val KEY_DOUBLE_PRESS_ACTION_VALUE = "double_press_action_value"
     private const val KEY_DOUBLE_PRESS_WINDOW = "double_press_window_ms"
+    private const val KEY_VOLUME_COMBO_ACTION_TYPE = "volume_combo_action_type"
+    private const val KEY_VOLUME_COMBO_ACTION_VALUE = "volume_combo_action_value"
     private const val KEY_PREVIOUS_ASSISTANT = "previous_assistant"
     private const val KEY_PREVIOUS_RECOGNIZER = "previous_recognizer"
     private const val UNSET = -1
@@ -100,6 +102,16 @@ object ButtonRemapperManager {
         prefs(context).edit()
             .putString(KEY_DOUBLE_PRESS_ACTION_TYPE, action?.type?.name)
             .putString(KEY_DOUBLE_PRESS_ACTION_VALUE, action?.value)
+            .commit()
+    }
+
+    fun getVolumeComboAction(context: Context): ButtonAction? =
+        readAction(context, KEY_VOLUME_COMBO_ACTION_TYPE, KEY_VOLUME_COMBO_ACTION_VALUE)
+
+    fun setVolumeComboAction(context: Context, action: ButtonAction?) {
+        prefs(context).edit()
+            .putString(KEY_VOLUME_COMBO_ACTION_TYPE, action?.type?.name)
+            .putString(KEY_VOLUME_COMBO_ACTION_VALUE, action?.value)
             .commit()
     }
 

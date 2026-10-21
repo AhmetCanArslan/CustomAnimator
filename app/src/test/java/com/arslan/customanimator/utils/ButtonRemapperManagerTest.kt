@@ -180,6 +180,19 @@ class ButtonRemapperManagerTest {
     }
 
     @Test
+    fun volumeComboActionRoundTripsAndIsIndependentOfDoublePress() {
+        assertNull(ButtonRemapperManager.getVolumeComboAction(context))
+
+        ButtonRemapperManager.setVolumeComboAction(context, flashlight)
+        assertEquals(flashlight, ButtonRemapperManager.getVolumeComboAction(context))
+        assertNull(ButtonRemapperManager.getDoublePressAction(context))
+
+        ButtonRemapperManager.setVolumeComboAction(context, null)
+        assertNull(ButtonRemapperManager.getVolumeComboAction(context))
+        assertFalse(remapperPrefs().contains("volume_combo_action_type"))
+    }
+
+    @Test
     fun doublePressWindowDefaultsTo250AndStaysInRange() {
         assertEquals(250, ButtonRemapperManager.getDoublePressWindowMs(context))
 
