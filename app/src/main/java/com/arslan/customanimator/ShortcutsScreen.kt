@@ -365,24 +365,24 @@ private fun ShortcutRowMenu(
             )
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            ShortcutMenuItem(Icons.Filled.PlayArrow, R.string.shortcut_launch) { select(onLaunch) }
-            ShortcutMenuItem(Icons.Filled.Edit, R.string.shortcut_edit) { select(onEdit) }
-            ShortcutMenuItem(Icons.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
+            IconMenuItem(Icons.Filled.PlayArrow, R.string.shortcut_launch) { select(onLaunch) }
+            IconMenuItem(Icons.Filled.Edit, R.string.shortcut_edit) { select(onEdit) }
+            IconMenuItem(Icons.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
             if (onAddWidget != null) {
-                ShortcutMenuItem(Icons.Filled.Widgets, R.string.shortcut_add_widget) { select(onAddWidget) }
+                IconMenuItem(Icons.Filled.Widgets, R.string.shortcut_add_widget) { select(onAddWidget) }
             }
             if (showChangeHandler) {
-                ShortcutMenuItem(Icons.AutoMirrored.Filled.OpenInNew, R.string.shortcut_change_app) {
+                IconMenuItem(Icons.AutoMirrored.Filled.OpenInNew, R.string.shortcut_change_app) {
                     select(onChangeHandler)
                 }
             }
-            ShortcutMenuItem(Icons.Filled.Delete, R.string.delete) { select(onDelete) }
+            IconMenuItem(Icons.Filled.Delete, R.string.delete) { select(onDelete) }
         }
     }
 }
 
 @Composable
-private fun ShortcutMenuItem(icon: ImageVector, labelRes: Int, onClick: () -> Unit) {
+internal fun IconMenuItem(icon: ImageVector, labelRes: Int, onClick: () -> Unit) {
     DropdownMenuItem(
         text = { Text(stringResource(labelRes)) },
         leadingIcon = { Icon(imageVector = icon, contentDescription = null) },
