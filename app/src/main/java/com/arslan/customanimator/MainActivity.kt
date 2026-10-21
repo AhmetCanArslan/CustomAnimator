@@ -11,6 +11,11 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -28,6 +33,7 @@ import androidx.compose.material.icons.filled.DeveloperMode
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Straighten
@@ -51,6 +57,7 @@ import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.KeyboardType
@@ -83,6 +90,7 @@ import com.arslan.customanimator.ui.theme.MonoNumeralLarge
 import com.arslan.customanimator.ui.components.NavBarItem
 import com.arslan.customanimator.ui.components.NavBarItems
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.PresetManager
 import com.arslan.customanimator.utils.ChangelogManager
@@ -562,6 +570,23 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         selectedTab = tab
     }
 
+    var showSearch by rememberSaveable { mutableStateOf(false) }
+    val openSearchScreen: (HomeScreen) -> Unit = { screen ->
+        when (screen) {
+            HomeScreen.NOTIFY_IGNORED -> notifyIgnoredReturnScreen = HomeScreen.NOTIFY_HOME
+            HomeScreen.PROFILES -> profilesRefreshToken++
+            else -> Unit
+        }
+        if (screen in DEFAULT_RETURN_SCREENS) openRemembering(screen) else currentScreen = screen
+    }
+    val openSearchTarget: (SearchTarget) -> Unit = { target ->
+        showSearch = false
+        when (target) {
+            is SearchTarget.Tab -> backToTab(target.tab)
+            is SearchTarget.Screen -> openSearchScreen(target.screen)
+        }
+    }
+
     BackHandler(enabled = currentScreen in SUB_SCREEN_PARENTS) {
         SUB_SCREEN_PARENTS[currentScreen]?.let { currentScreen = it }
     }
@@ -592,6 +617,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val density = LocalDensity.current
 
     CompositionLocalProvider(LocalOpenSetupGuide provides openSetupGuide) {
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
     AnimatedContent(
         targetState = currentScreen,
@@ -849,7 +875,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     profilesRefreshToken++
                     openRemembering(HomeScreen.PROFILES)
                 },
-                onOpenSettings = { currentScreen = HomeScreen.SETTINGS }
+                onOpenSettings = { currentScreen = HomeScreen.SETTINGS },
+                onOpenSearch = { showSearch = true }
             )
         },
         bottomBar = { RemoveAdsPrompt() }
@@ -1828,6 +1855,22 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         if (currentScreen !in BANNERLESS_SCREENS) BannerAdView()
     }
     }
+    AnimatedVisibility(
+        visible = showSearch,
+        enter = fadeIn(tween(Motion.durationMedium)) + scaleIn(
+            animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
+            initialScale = 0.92f,
+            transformOrigin = TransformOrigin(1f, 0f)
+        ),
+        exit = fadeOut(tween(Motion.durationFast)) + scaleOut(
+            animationSpec = tween(Motion.durationFast),
+            targetScale = 0.96f,
+            transformOrigin = TransformOrigin(1f, 0f)
+        )
+    ) {
+        AppSearchScreen(onClose = { showSearch = false }, onOpen = openSearchTarget)
+    }
+    }
     }
 
     if (showPermissionDialog) {
@@ -2396,7 +2439,8 @@ private fun HomeTopBar(
     onSelectTab: (HomeTab) -> Unit,
     onOpenNotify: () -> Unit,
     onOpenProfiles: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    onOpenSearch: () -> Unit
 ) {
     Column {
         TopAppBar(
@@ -2430,6 +2474,12 @@ private fun HomeTopBar(
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = stringResource(R.string.settings)
+                    )
+                }
+                IconButton(onClick = onOpenSearch) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(R.string.search_app)
                     )
                 }
             }
