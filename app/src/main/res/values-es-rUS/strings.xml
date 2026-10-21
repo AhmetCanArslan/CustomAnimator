@@ -564,7 +564,7 @@ Duración del Animador: %3$.2f</string>
     <string name="force_rtl_desc">Organizar todas las pantallas de derecha a izquierda</string>
     <string name="developer_tiles_restart_note">Los límites de diseño y el perfil de GPU solo se aplican a las apps iniciadas después de activarlos; reinicia la app que quieras inspeccionar.</string>
     <string name="button_remapper">Reasignar botones</string>
-    <string name="button_remapper_desc">Elige qué hace mantener presionado o presionar dos veces el botón de encendido</string>
+    <string name="button_remapper_desc">Elige qué hacen los botones de encendido y volumen</string>
     <string name="button_remapper_unsupported">Esta función necesita Android 10 o una versión más reciente.</string>
     <string name="button_remapper_info">El cambio se aplica de inmediato y se mantiene tras reiniciar. Elige Predeterminado del sistema para deshacerlo.</string>
     <string name="button_remapper_oem_note">Algunos fabricantes, como Samsung y Xiaomi, gestionan el botón de encendido por su cuenta y pueden ignorar este ajuste.</string>
@@ -594,8 +594,11 @@ Duración del Animador: %3$.2f</string>
     <string name="button_remapper_double_press_window">Ventana de doble pulsación</string>
     <string name="button_remapper_double_press_window_desc">Más corta hace que las pulsaciones simples respondan antes, pero la segunda pulsación debe llegar más rápido.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>
-    <string name="power_button_notif_active">Esperando una doble pulsación mientras la pantalla está encendida</string>
+    <string name="power_button_notif_active">Esperando pulsaciones de botones mientras la pantalla está encendida</string>
     <string name="power_button_notif_unsupported">No se puede capturar el botón de encendido de este dispositivo</string>
+    <string name="button_remapper_volume_combo">Subir + bajar volumen a la vez</string>
+    <string name="button_remapper_volume_combo_desc">Ejecuta una acción que elijas al pulsar ambas teclas de volumen a la vez mientras la pantalla está encendida. Los cambios de volumen esperan un momento para distinguirlos.</string>
+    <string name="button_remapper_volume_combo_selected">Ejecuta %1$s al pulsar ambas teclas de volumen a la vez mientras la pantalla está encendida.</string>
     <string name="button_action_quick">Acciones rápidas</string>
     <string name="button_action_flashlight">Linterna</string>
     <string name="button_action_screenshot">Tomar captura de pantalla</string>

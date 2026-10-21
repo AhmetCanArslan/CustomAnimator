@@ -564,7 +564,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="force_rtl_desc">Ayusin ang lahat ng screen mula kanan pakaliwa</string>
     <string name="developer_tiles_restart_note">Ang mga hangganan ng layout at profile ng GPU ay nalalapat lang sa mga app na binuksan pagkatapos i-on; i-restart ang app na gusto mong suriin.</string>
     <string name="button_remapper">Button Remapper</string>
-    <string name="button_remapper_desc">Piliin ang gagawin kapag pinindot nang matagal o dalawang beses ang power button</string>
+    <string name="button_remapper_desc">Piliin ang ginagawa ng power at volume button</string>
     <string name="button_remapper_unsupported">Kailangan ng feature na ito ang Android 10 o mas bago.</string>
     <string name="button_remapper_info">Agad na nag-a-apply ang pagbabago at nananatili kahit mag-restart. Piliin ang Default ng system para i-undo ito.</string>
     <string name="button_remapper_oem_note">May mga manufacturer, gaya ng Samsung at Xiaomi, na sila mismo ang humahawak sa power button at maaaring balewalain ang setting na ito.</string>
@@ -594,8 +594,11 @@ Tagal ng Animator: %3$.2f</string>
     <string name="button_remapper_double_press_window">Window ng dobleng pindot</string>
     <string name="button_remapper_double_press_window_desc">Kapag mas maikli, mas mabilis tumugon ang isang pindot, pero kailangang mas maaga ang ikalawang pindot.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>
-    <string name="power_button_notif_active">Nakikinig sa dobleng pindot habang naka-on ang screen</string>
+    <string name="power_button_notif_active">Nakikinig sa mga pindot ng button habang naka-on ang screen</string>
     <string name="power_button_notif_unsupported">Hindi makuha ang power button ng device na ito</string>
+    <string name="button_remapper_volume_combo">Volume up + down nang sabay</string>
+    <string name="button_remapper_volume_combo_desc">Magpatakbo ng aksyong pipiliin mo kapag sabay na pinindot ang dalawang volume key habang naka-on ang screen. Saglit na naghihintay ang pagbabago ng volume para maihiwalay ang dalawa.</string>
+    <string name="button_remapper_volume_combo_selected">Pinapatakbo ang %1$s kapag sabay na pinindot ang dalawang volume key habang naka-on ang screen.</string>
     <string name="button_action_quick">Mga mabilisang aksyon</string>
     <string name="button_action_flashlight">Flashlight</string>
     <string name="button_action_screenshot">Kumuha ng screenshot</string>

@@ -564,7 +564,7 @@ Duração do Animador: %3$.2f</string>
     <string name="force_rtl_desc">Organizar todas as telas da direita para a esquerda</string>
     <string name="developer_tiles_restart_note">Os limites de layout e o perfil de GPU só se aplicam a apps iniciados após a ativação; reinicie o app que deseja inspecionar.</string>
     <string name="button_remapper">Remapear botões</string>
-    <string name="button_remapper_desc">Escolha o que acontece ao segurar ou pressionar duas vezes o botão liga/desliga</string>
+    <string name="button_remapper_desc">Escolha o que os botões liga/desliga e de volume fazem</string>
     <string name="button_remapper_unsupported">Este recurso precisa do Android 10 ou mais recente.</string>
     <string name="button_remapper_info">A mudança vale na hora e continua após reiniciar. Escolha Padrão do sistema para desfazer.</string>
     <string name="button_remapper_oem_note">Alguns fabricantes, como Samsung e Xiaomi, controlam o botão liga/desliga por conta própria e podem ignorar esta configuração.</string>
@@ -594,8 +594,11 @@ Duração do Animador: %3$.2f</string>
     <string name="button_remapper_double_press_window">Janela do toque duplo</string>
     <string name="button_remapper_double_press_window_desc">Mais curta deixa os toques simples mais rápidos, mas o segundo toque precisa vir mais cedo.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>
-    <string name="power_button_notif_active">Aguardando um toque duplo enquanto a tela está ligada</string>
+    <string name="power_button_notif_active">Aguardando toques nos botões enquanto a tela está ligada</string>
     <string name="power_button_notif_unsupported">Não é possível capturar o botão liga/desliga deste dispositivo</string>
+    <string name="button_remapper_volume_combo">Aumentar + diminuir volume juntos</string>
+    <string name="button_remapper_volume_combo_desc">Executa uma ação escolhida por você ao pressionar os dois botões de volume juntos enquanto a tela está ligada. As mudanças de volume esperam um instante para serem diferenciadas.</string>
+    <string name="button_remapper_volume_combo_selected">Executa %1$s ao pressionar os dois botões de volume juntos enquanto a tela está ligada.</string>
     <string name="button_action_quick">Ações rápidas</string>
     <string name="button_action_flashlight">Lanterna</string>
     <string name="button_action_screenshot">Fazer captura de tela</string>
