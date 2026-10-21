@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
@@ -2458,30 +2459,17 @@ private fun HomeTopBar(
                 actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             actions = {
-                IconButton(onClick = onOpenNotify) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = stringResource(R.string.pn_title)
-                    )
-                }
-                IconButton(onClick = onOpenProfiles) {
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = stringResource(R.string.profiles_title)
-                    )
-                }
-                IconButton(onClick = onOpenSettings) {
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = stringResource(R.string.settings)
-                    )
-                }
                 IconButton(onClick = onOpenSearch) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = stringResource(R.string.search_app)
                     )
                 }
+                HomeOverflowMenu(
+                    onOpenNotify = onOpenNotify,
+                    onOpenProfiles = onOpenProfiles,
+                    onOpenSettings = onOpenSettings
+                )
             }
         )
         ExpressiveTopNavBar(
@@ -2489,6 +2477,32 @@ private fun HomeTopBar(
             selectedIndex = selectedTab.ordinal,
             onSelect = { onSelectTab(HomeTab.entries[it]) }
         )
+    }
+}
+
+@Composable
+private fun HomeOverflowMenu(
+    onOpenNotify: () -> Unit,
+    onOpenProfiles: () -> Unit,
+    onOpenSettings: () -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val select: (() -> Unit) -> Unit = { action ->
+        expanded = false
+        action()
+    }
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = stringResource(R.string.shortcut_more_options)
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            IconMenuItem(Icons.Default.Notifications, R.string.pn_title) { select(onOpenNotify) }
+            IconMenuItem(Icons.Default.AccountCircle, R.string.profiles_title) { select(onOpenProfiles) }
+            IconMenuItem(Icons.Default.Settings, R.string.settings) { select(onOpenSettings) }
+        }
     }
 }
 
