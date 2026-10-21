@@ -28,3 +28,13 @@ Java_com_arslan_customanimator_service_EvdevDevice_nativeKeyCodes(JNIEnv *env, j
     }
     return result;
 }
+
+JNIEXPORT jboolean JNICALL
+Java_com_arslan_customanimator_service_EvdevDevice_nativeKeyDown(JNIEnv *env, jclass clazz, jint fd, jint code) {
+    unsigned char bits[KEY_MAX / 8 + 1];
+    memset(bits, 0, sizeof(bits));
+    if (ioctl(fd, EVIOCGKEY(sizeof(bits)), bits) < 0) {
+        return JNI_FALSE;
+    }
+    return (bits[code / 8] & (1 << (code % 8))) ? JNI_TRUE : JNI_FALSE;
+}

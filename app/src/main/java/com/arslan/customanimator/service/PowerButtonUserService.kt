@@ -28,6 +28,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     private var devices: List<EvdevDevice> = emptyList()
     private var detector: PowerPressDetector? = null
     private var grabbed = false
+    private var grabPending = false
     private var holdDownTime = 0L
     private val forwardedDowns = HashMap<Int, KeyEvent>()
 
@@ -98,12 +99,18 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     }
 
     override fun setGrabbed(grabbed: Boolean): Boolean = synchronized(lock) {
+        grabPending = grabbed && !this.grabbed && devices.any { it.isKeyDown(EvdevDevice.KEY_POWER) }
+        if (grabPending) return true
+        applyGrab(grabbed)
+    }
+
+    private fun applyGrab(grabbed: Boolean): Boolean {
         if (this.grabbed == grabbed) return true
         releaseHeldKeys()
         val applied = devices.isNotEmpty() && devices.all { it.grab(grabbed) }
         if (grabbed && !applied) devices.forEach { it.grab(false) }
         this.grabbed = grabbed && applied
-        applied
+        return applied
     }
 
     private fun releaseHeldKeys() {
@@ -163,7 +170,16 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             val type = events.getShort(offset + TIME_SIZE).toInt()
             val code = events.getShort(offset + TIME_SIZE + 2).toInt()
             val value = events.getInt(offset + TIME_SIZE + 4)
-            if (grabbed && type == EvdevDevice.EV_KEY) onKey(code, value)
+            if (type == EvdevDevice.EV_KEY) handleKey(code, value)
+        }
+    }
+
+    private fun handleKey(code: Int, value: Int) {
+        if (grabbed) {
+            onKey(code, value)
+        } else if (grabPending && code == EvdevDevice.KEY_POWER && value == KEY_UP) {
+            grabPending = false
+            applyGrab(true)
         }
     }
 

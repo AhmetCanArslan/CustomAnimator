@@ -13,6 +13,8 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
 
     fun grab(grab: Boolean): Boolean = nativeGrab(descriptor.fd, grab)
 
+    fun isKeyDown(code: Int): Boolean = nativeKeyDown(descriptor.fd, code)
+
     fun close() {
         descriptor.close()
     }
@@ -55,5 +57,8 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
 
         @JvmStatic
         private external fun nativeKeyCodes(fd: Int): IntArray
+
+        @JvmStatic
+        private external fun nativeKeyDown(fd: Int, code: Int): Boolean
     }
 }
