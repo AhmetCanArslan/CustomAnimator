@@ -22,6 +22,12 @@
 -keep class com.arslan.customanimator.service.IAppMonitorUserService$* { *; }
 -keep interface com.arslan.customanimator.service.IForegroundAppListener { *; }
 -keep class com.arslan.customanimator.service.IForegroundAppListener$* { *; }
+-keep class com.arslan.customanimator.service.PowerButtonUserService { *; }
+-keep class com.arslan.customanimator.service.PowerButtonUserService$* { *; }
+-keep interface com.arslan.customanimator.service.IPowerButtonUserService { *; }
+-keep class com.arslan.customanimator.service.IPowerButtonUserService$* { *; }
+-keep interface com.arslan.customanimator.service.IPowerButtonListener { *; }
+-keep class com.arslan.customanimator.service.IPowerButtonListener$* { *; }
 -keep interface android.app.IProcessObserver { *; }
 -keep class android.app.IProcessObserver$* { *; }
 
