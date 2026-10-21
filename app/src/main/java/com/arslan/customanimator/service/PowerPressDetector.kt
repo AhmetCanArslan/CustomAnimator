@@ -73,7 +73,7 @@ class PowerPressDetector(
     }
 
     private fun finishBurst() {
-        if (presses == DOUBLE_PRESS) output.doublePress() else output.replayPresses(presses)
+        if (presses == DOUBLE_PRESS && multiPressTimeoutMs != PASS_THROUGH) output.doublePress() else output.replayPresses(presses)
         presses = 0
         deadline = NO_DEADLINE
     }
@@ -86,6 +86,7 @@ class PowerPressDetector(
 
     companion object {
         const val NO_DEADLINE = -1L
+        const val PASS_THROUGH = 0L
         private const val DOUBLE_PRESS = 2
     }
 }

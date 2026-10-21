@@ -120,6 +120,19 @@ class PowerPressDetectorTest {
         assertEquals(PowerPressDetector.NO_DEADLINE, detector.deadline)
     }
 
+    @Test
+    fun passThroughForwardsPressesWithoutWaitingAndNeverRunsTheAction() {
+        detector.multiPressTimeoutMs = PowerPressDetector.PASS_THROUGH
+        detector.onPowerDown(0)
+        detector.onTimeout(0)
+        detector.onPowerUp(600)
+        press(at = 700)
+        press(at = 720)
+        detector.onTimeout(730)
+
+        assertEquals(listOf("hold down", "hold up", "replay 2"), events)
+    }
+
     private fun press(at: Long) {
         detector.onPowerDown(at)
         detector.onPowerUp(at + 10)
