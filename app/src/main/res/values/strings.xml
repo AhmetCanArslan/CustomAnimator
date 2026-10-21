@@ -31,7 +31,7 @@
     <string name="limit_background_processes">Limit Background Processes</string>
     <string name="limit_background_processes_desc">Keep at most 1 cached app in the background</string>
     <string name="button_remapper">Button Remapper</string>
-    <string name="button_remapper_desc">Choose what holding the power button does</string>
+    <string name="button_remapper_desc">Choose what holding or double pressing the power button does</string>
     <string name="button_remapper_unsupported">This feature needs Android 10 or newer.</string>
     <string name="button_remapper_info">The change applies right away and survives reboots. Pick System default to undo it.</string>
     <string name="button_remapper_oem_note">Some manufacturers, such as Samsung and Xiaomi, handle the power button themselves and may ignore this setting.</string>
@@ -55,6 +55,14 @@
     <string name="button_remapper_custom_desc">Run an action you choose. This app takes over as your digital assistant app while this is selected.</string>
     <string name="button_remapper_custom_selected">Runs %1$s. This app is your digital assistant app while this is selected.</string>
     <string name="button_remapper_custom_pick">Choose an action</string>
+    <string name="button_remapper_power_double_press">Power button double press</string>
+    <string name="button_remapper_double_press_desc">Run an action you choose while the screen is on. Single presses wait a moment so they can be told apart from a double press.</string>
+    <string name="button_remapper_double_press_selected">Runs %1$s while the screen is on. Single presses wait a moment so they can be told apart from a double press.</string>
+    <string name="button_remapper_double_press_window">Double press window</string>
+    <string name="button_remapper_double_press_window_desc">Shorter makes single presses respond faster, but the second press has to come sooner.</string>
+    <string name="button_remapper_double_press_window_value">%1$d ms</string>
+    <string name="power_button_notif_active">Listening for a double press while the screen is on</string>
+    <string name="power_button_notif_unsupported">The power button on this device can\'t be captured</string>
     <string name="button_action_quick">Quick actions</string>
     <string name="button_action_flashlight">Flashlight</string>
     <string name="button_action_screenshot">Take a screenshot</string>

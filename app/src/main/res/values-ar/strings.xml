@@ -27,7 +27,7 @@
     <string name="limit_background_processes">تحديد العمليات في الخلفية</string>
     <string name="limit_background_processes_desc">إبقاء تطبيق واحد مخزّن في الخلفية على الأكثر</string>
     <string name="button_remapper">إعادة تعيين الأزرار</string>
-    <string name="button_remapper_desc">اختر ما يفعله الضغط المطوّل على زر التشغيل</string>
+    <string name="button_remapper_desc">اختر ما يفعله الضغط المطوّل أو المزدوج على زر التشغيل</string>
     <string name="button_remapper_unsupported">تتطلب هذه الميزة أندرويد 10 أو أحدث.</string>
     <string name="button_remapper_info">يُطبَّق التغيير فورًا ويبقى بعد إعادة التشغيل. اختر افتراضي النظام للتراجع عنه.</string>
     <string name="button_remapper_oem_note">بعض الشركات المصنّعة، مثل سامسونج وشاومي، تتحكم في زر التشغيل بنفسها وقد تتجاهل هذا الإعداد.</string>
@@ -51,6 +51,14 @@
     <string name="button_remapper_custom_desc">تشغيل إجراء تختاره. يصبح هذا التطبيق تطبيق المساعد الرقمي ما دام هذا الخيار محددًا.</string>
     <string name="button_remapper_custom_selected">يشغّل %1$s. يصبح هذا التطبيق تطبيق المساعد الرقمي ما دام هذا الخيار محددًا.</string>
     <string name="button_remapper_custom_pick">اختر إجراءً</string>
+    <string name="button_remapper_power_double_press">الضغط المزدوج على زر التشغيل</string>
+    <string name="button_remapper_double_press_desc">شغّل إجراءً تختاره أثناء تشغيل الشاشة. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
+    <string name="button_remapper_double_press_selected">يشغّل %1$s أثناء تشغيل الشاشة. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
+    <string name="button_remapper_double_press_window">مهلة الضغط المزدوج</string>
+    <string name="button_remapper_double_press_window_desc">المهلة الأقصر تجعل الضغطة الواحدة أسرع استجابة، لكن يجب أن تأتي الضغطة الثانية أسرع.</string>
+    <string name="button_remapper_double_press_window_value">%1$d مللي ثانية</string>
+    <string name="power_button_notif_active">يستمع إلى الضغط المزدوج أثناء تشغيل الشاشة</string>
+    <string name="power_button_notif_unsupported">لا يمكن التقاط زر التشغيل على هذا الجهاز</string>
     <string name="button_action_quick">إجراءات سريعة</string>
     <string name="button_action_flashlight">المصباح</string>
     <string name="button_action_screenshot">التقاط لقطة شاشة</string>

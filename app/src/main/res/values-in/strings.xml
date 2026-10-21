@@ -564,7 +564,7 @@ Durasi Animator: %3$.2f</string>
     <string name="force_rtl_desc">Susun semua layar dari kanan ke kiri</string>
     <string name="developer_tiles_restart_note">Batas tata letak dan profil GPU hanya berlaku untuk aplikasi yang dibuka setelah diaktifkan; mulai ulang aplikasi yang ingin diperiksa.</string>
     <string name="button_remapper">Pemetaan Ulang Tombol</string>
-    <string name="button_remapper_desc">Pilih fungsi saat tombol daya ditekan lama</string>
+    <string name="button_remapper_desc">Pilih fungsi saat tombol daya ditekan lama atau ditekan dua kali</string>
     <string name="button_remapper_unsupported">Fitur ini memerlukan Android 10 atau yang lebih baru.</string>
     <string name="button_remapper_info">Perubahan langsung berlaku dan tetap ada setelah mulai ulang. Pilih Default sistem untuk membatalkannya.</string>
     <string name="button_remapper_oem_note">Beberapa produsen, seperti Samsung dan Xiaomi, menangani tombol daya sendiri dan mungkin mengabaikan setelan ini.</string>
@@ -588,6 +588,14 @@ Durasi Animator: %3$.2f</string>
     <string name="button_remapper_custom_desc">Jalankan tindakan yang Anda pilih. Aplikasi ini menjadi aplikasi asisten digital Anda selama opsi ini dipilih.</string>
     <string name="button_remapper_custom_selected">Menjalankan %1$s. Aplikasi ini menjadi aplikasi asisten digital Anda selama opsi ini dipilih.</string>
     <string name="button_remapper_custom_pick">Pilih tindakan</string>
+    <string name="button_remapper_power_double_press">Tekan dua kali tombol daya</string>
+    <string name="button_remapper_double_press_desc">Jalankan tindakan pilihanmu saat layar menyala. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
+    <string name="button_remapper_double_press_selected">Menjalankan %1$s saat layar menyala. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
+    <string name="button_remapper_double_press_window">Jendela tekan dua kali</string>
+    <string name="button_remapper_double_press_window_desc">Lebih pendek membuat tekanan tunggal merespons lebih cepat, tetapi tekanan kedua harus datang lebih cepat.</string>
+    <string name="button_remapper_double_press_window_value">%1$d md</string>
+    <string name="power_button_notif_active">Mendengarkan tekan dua kali saat layar menyala</string>
+    <string name="power_button_notif_unsupported">Tombol daya di perangkat ini tidak dapat ditangkap</string>
     <string name="button_action_quick">Tindakan cepat</string>
     <string name="button_action_flashlight">Senter</string>
     <string name="button_action_screenshot">Ambil screenshot</string>

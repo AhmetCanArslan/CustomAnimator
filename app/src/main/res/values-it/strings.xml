@@ -584,7 +584,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="force_rtl_desc">Disponi tutte le schermate da destra a sinistra</string>
     <string name="developer_tiles_restart_note">I limiti del layout e il profilo GPU si applicano solo alle app avviate dopo l\'attivazione; riavvia l\'app da esaminare.</string>
     <string name="button_remapper">Rimappatura tasti</string>
-    <string name="button_remapper_desc">Scegli cosa fa la pressione prolungata del tasto di accensione</string>
+    <string name="button_remapper_desc">Scegli cosa fa la pressione prolungata o doppia del tasto di accensione</string>
     <string name="button_remapper_unsupported">Questa funzione richiede Android 10 o versioni successive.</string>
     <string name="button_remapper_info">La modifica si applica subito e resta dopo il riavvio. Scegli Predefinito di sistema per annullarla.</string>
     <string name="button_remapper_oem_note">Alcuni produttori, come Samsung e Xiaomi, gestiscono il tasto di accensione in autonomia e possono ignorare questa impostazione.</string>
@@ -608,6 +608,14 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_remapper_custom_desc">Esegui una tua azione a scelta. Finché è selezionata, questa app diventa la tua app assistente digitale.</string>
     <string name="button_remapper_custom_selected">Esegue %1$s. Finché è selezionata, questa app è la tua app assistente digitale.</string>
     <string name="button_remapper_custom_pick">Scegli azione</string>
+    <string name="button_remapper_power_double_press">Doppia pressione del tasto di accensione</string>
+    <string name="button_remapper_double_press_desc">Esegui un\'azione a tua scelta mentre lo schermo è acceso. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
+    <string name="button_remapper_double_press_selected">Esegue %1$s mentre lo schermo è acceso. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
+    <string name="button_remapper_double_press_window">Finestra della doppia pressione</string>
+    <string name="button_remapper_double_press_window_desc">Più breve rende più rapide le pressioni singole, ma la seconda pressione deve arrivare prima.</string>
+    <string name="button_remapper_double_press_window_value">%1$d ms</string>
+    <string name="power_button_notif_active">In ascolto di una doppia pressione mentre lo schermo è acceso</string>
+    <string name="power_button_notif_unsupported">Impossibile catturare il tasto di accensione su questo dispositivo</string>
     <string name="button_action_quick">Azioni rapide</string>
     <string name="button_action_flashlight">Torcia</string>
     <string name="button_action_screenshot">Acquisisci screenshot</string>

@@ -564,7 +564,7 @@
     <string name="force_rtl_desc">Располагать все экраны справа налево</string>
     <string name="developer_tiles_restart_note">Границы макета и профилирование GPU действуют только для приложений, запущенных после включения; перезапустите нужное приложение.</string>
     <string name="button_remapper">Переназначение кнопок</string>
-    <string name="button_remapper_desc">Выберите, что делает удержание кнопки питания</string>
+    <string name="button_remapper_desc">Выберите, что делает удержание или двойное нажатие кнопки питания</string>
     <string name="button_remapper_unsupported">Для этой функции нужен Android 10 или новее.</string>
     <string name="button_remapper_info">Изменение применяется сразу и сохраняется после перезагрузки. Чтобы отменить его, выберите «Системное по умолчанию».</string>
     <string name="button_remapper_oem_note">Некоторые производители, например Samsung и Xiaomi, сами управляют кнопкой питания и могут игнорировать эту настройку.</string>
@@ -588,6 +588,14 @@
     <string name="button_remapper_custom_desc">Запускает выбранное вами действие. Пока выбран этот вариант, это приложение становится цифровым ассистентом.</string>
     <string name="button_remapper_custom_selected">Запускает «%1$s». Пока выбран этот вариант, это приложение является цифровым ассистентом.</string>
     <string name="button_remapper_custom_pick">Выберите действие</string>
+    <string name="button_remapper_power_double_press">Двойное нажатие кнопки питания</string>
+    <string name="button_remapper_double_press_desc">Выполняет выбранное действие, пока экран включён. Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
+    <string name="button_remapper_double_press_selected">Выполняет «%1$s», пока экран включён. Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
+    <string name="button_remapper_double_press_window">Интервал двойного нажатия</string>
+    <string name="button_remapper_double_press_window_desc">Чем короче, тем быстрее срабатывает одиночное нажатие, но второе нажатие нужно сделать быстрее.</string>
+    <string name="button_remapper_double_press_window_value">%1$d мс</string>
+    <string name="power_button_notif_active">Ожидание двойного нажатия, пока экран включён</string>
+    <string name="power_button_notif_unsupported">Не удаётся перехватить кнопку питания на этом устройстве</string>
     <string name="button_action_quick">Быстрые действия</string>
     <string name="button_action_flashlight">Фонарик</string>
     <string name="button_action_screenshot">Сделать снимок экрана</string>

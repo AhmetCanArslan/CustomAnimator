@@ -564,7 +564,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="force_rtl_desc">Tüm ekranları sağdan sola yerleştir</string>
     <string name="developer_tiles_restart_note">Düzen sınırları ve GPU profili yalnızca açıldıktan sonra başlatılan uygulamalarda geçerlidir; incelemek istediğiniz uygulamayı yeniden başlatın.</string>
     <string name="button_remapper">Tuş Atama</string>
-    <string name="button_remapper_desc">Güç tuşuna basılı tutunca ne olacağını seç</string>
+    <string name="button_remapper_desc">Güç tuşuna basılı tutunca veya iki kez basınca ne olacağını seç</string>
     <string name="button_remapper_unsupported">Bu özellik Android 10 veya daha yenisini gerektirir.</string>
     <string name="button_remapper_info">Değişiklik hemen uygulanır ve yeniden başlatmadan sonra da kalır. Geri almak için Sistem varsayılanını seç.</string>
     <string name="button_remapper_oem_note">Samsung ve Xiaomi gibi bazı üreticiler güç tuşunu kendileri yönetir ve bu ayarı yok sayabilir.</string>
@@ -588,6 +588,14 @@ Animatör Süresi: %3$.2f</string>
     <string name="button_remapper_custom_desc">Seçtiğin bir işlemi çalıştır. Bu seçiliyken bu uygulama dijital asistan uygulaman olur.</string>
     <string name="button_remapper_custom_selected">%1$s çalışır. Bu seçiliyken bu uygulama dijital asistan uygulaman olur.</string>
     <string name="button_remapper_custom_pick">İşlem seç</string>
+    <string name="button_remapper_power_double_press">Güç tuşuna iki kez basma</string>
+    <string name="button_remapper_double_press_desc">Ekran açıkken seçtiğin işlemi çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
+    <string name="button_remapper_double_press_selected">Ekran açıkken %1$s çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
+    <string name="button_remapper_double_press_window">İki kez basma aralığı</string>
+    <string name="button_remapper_double_press_window_desc">Kısa tutmak tek basışların daha hızlı tepki vermesini sağlar ama ikinci basışın daha çabuk gelmesi gerekir.</string>
+    <string name="button_remapper_double_press_window_value">%1$d ms</string>
+    <string name="power_button_notif_active">Ekran açıkken iki kez basma bekleniyor</string>
+    <string name="power_button_notif_unsupported">Bu cihazın güç tuşu yakalanamıyor</string>
     <string name="button_action_quick">Hızlı işlemler</string>
     <string name="button_action_flashlight">Fener</string>
     <string name="button_action_screenshot">Ekran görüntüsü al</string>
