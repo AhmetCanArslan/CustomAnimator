@@ -1,13 +1,8 @@
 package com.arslan.customanimator
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -23,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Delete
@@ -41,7 +35,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,7 +46,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -68,6 +60,14 @@ import com.arslan.customanimator.utils.TerminalTileIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.theme.Motion
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialShapes
+import androidx.compose.material3.toShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,16 +99,17 @@ fun ProfilesScreen(
     val slotsFullMessage = stringResource(R.string.terminal_tile_slots_full, ProfileManager.MAX_TILE_SLOTS)
     val addTileManualHint = stringResource(R.string.terminal_tile_add_manual_hint)
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            TopAppBar(
+            ScreenTopBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(R.string.profiles_title),
-                            style = MaterialTheme.typography.headlineSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -124,19 +125,8 @@ fun ProfilesScreen(
                         )
                     }
                 },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent,
-                    titleContentColor = MaterialTheme.colorScheme.onBackground,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         },
         floatingActionButton = {
@@ -250,13 +240,14 @@ fun ProfilesScreen(
                         manager.deleteProfile(target.id)
                         profiles = manager.getAllProfiles()
                         deleteTarget = null
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { deleteTarget = null }) {
+                TextButton(onClick = { deleteTarget = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -278,7 +269,7 @@ private fun ProfileCard(
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .clip(CircleShape)
+                    .clip(MaterialShapes.Cookie9Sided.toShape())
                     .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
@@ -303,7 +294,7 @@ private fun ProfileCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            IconButton(onClick = onDelete) {
+            IconButton(onClick = onDelete, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.profile_delete),
@@ -316,12 +307,13 @@ private fun ProfileCard(
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             FilledTonalButton(
                 onClick = onApply,
-                enabled = !applying
+                enabled = !applying,
+                shapes = ButtonDefaults.shapes()
             ) {
                 AnimatedVisibility(
                     visible = applying,
-                    enter = fadeIn() + scaleIn(),
-                    exit = fadeOut() + scaleOut()
+                    enter = Motion.popIn(),
+                    exit = Motion.popOut()
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(
@@ -341,7 +333,7 @@ private fun ProfileCard(
                 }
                 Text(stringResource(R.string.profile_apply))
             }
-            FilledTonalButton(onClick = onMakeTile) {
+            FilledTonalButton(onClick = onMakeTile, shapes = ButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
@@ -350,7 +342,7 @@ private fun ProfileCard(
                 Spacer(Modifier.width(6.dp))
                 Text(stringResource(R.string.profile_make_tile))
             }
-            FilledTonalButton(onClick = onEdit) {
+            FilledTonalButton(onClick = onEdit, shapes = ButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = null,
