@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.GridOn
@@ -20,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.HwuiTweaksManager
@@ -28,6 +26,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,25 +84,14 @@ fun HwuiTweaksScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.hwui_tweaks),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.hwui_tweaks),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -132,11 +123,7 @@ fun HwuiTweaksScreen(
             item { DevSectionTitle(stringResource(R.string.hwui_section_renderer)) }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                         Text(
                             text = stringResource(R.string.hwui_renderer),
@@ -148,35 +135,28 @@ fun HwuiTweaksScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                            val options = listOf(
-                                HwuiTweaksManager.RENDERER_DEFAULT to R.string.hwui_renderer_default,
-                                HwuiTweaksManager.RENDERER_SKIA_GL to R.string.hwui_renderer_gl,
-                                HwuiTweaksManager.RENDERER_SKIA_VK to R.string.hwui_renderer_vk
-                            )
-                            options.forEachIndexed { index, (value, labelRes) ->
-                                SegmentedButton(
-                                    selected = renderer == value,
-                                    enabled = hasShizukuPermission && !isLoading,
-                                    onClick = {
-                                        val previous = renderer
-                                        renderer = value
-                                        coroutineScope.launch {
-                                            val success = withContext(Dispatchers.IO) {
-                                                HwuiTweaksManager.setRenderer(value)
-                                            }
-                                            if (!success) {
-                                                renderer = previous
-                                                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
-                                            }
-                                        }
-                                    },
-                                    shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
-                                ) {
-                                    Text(stringResource(labelRes), style = MaterialTheme.typography.labelSmall)
+                        ConnectedChoiceGroup(
+                            options = listOf(
+                                HwuiTweaksManager.RENDERER_DEFAULT to stringResource(R.string.hwui_renderer_default),
+                                HwuiTweaksManager.RENDERER_SKIA_GL to stringResource(R.string.hwui_renderer_gl),
+                                HwuiTweaksManager.RENDERER_SKIA_VK to stringResource(R.string.hwui_renderer_vk)
+                            ),
+                            selected = renderer,
+                            enabled = hasShizukuPermission && !isLoading,
+                            onSelect = { value ->
+                                val previous = renderer
+                                renderer = value
+                                coroutineScope.launch {
+                                    val success = withContext(Dispatchers.IO) {
+                                        HwuiTweaksManager.setRenderer(value)
+                                    }
+                                    if (!success) {
+                                        renderer = previous
+                                        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                    }
                                 }
                             }
-                        }
+                        )
                         InfoNote(text = stringResource(R.string.hwui_restart_note), dismissKey = "hwui_restart")
                     }
                 }
@@ -185,11 +165,7 @@ fun HwuiTweaksScreen(
             item { DevSectionTitle(stringResource(R.string.hwui_section_cache)) }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                         Text(
                             text = stringResource(R.string.hwui_texture_cache),
@@ -259,11 +235,7 @@ fun HwuiTweaksScreen(
             item { DevSectionTitle(stringResource(R.string.hwui_section_rendering)) }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column {
                         ToggleRow(
                             icon = Icons.Filled.Layers,
