@@ -20,7 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,7 +40,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
@@ -66,6 +63,12 @@ import com.arslan.customanimator.notify.data.AppListManager
 import com.arslan.customanimator.notify.data.AppRow
 import com.arslan.customanimator.notify.data.IgnoreRule
 import com.arslan.customanimator.notify.data.IgnoreType
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.components.AppSwitch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,7 +84,9 @@ fun IgnoredNotificationsSection(
 
     LaunchedEffect(Unit) { viewModel.refresh() }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { showAppPicker = true },
@@ -90,23 +95,10 @@ fun IgnoredNotificationsSection(
             )
         },
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.pn_ignored_notifications_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.pn_cd_back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.pn_ignored_notifications_title),
+                onBack = onNavigateBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
@@ -234,12 +226,12 @@ fun IgnoredNotificationsSection(
                 Button(onClick = {
                     viewModel.removeRule(rule.id)
                     confirmRemoveRule = null
-                }) {
+                }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.pn_ignored_restore_confirm))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { confirmRemoveRule = null }) {
+                TextButton(onClick = { confirmRemoveRule = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -374,7 +366,8 @@ private fun IgnoredRuleItem(
                     onClick = onEditClick,
                     modifier = Modifier
                         .padding(start = 2.dp)
-                        .size(32.dp)
+                        .size(32.dp),
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Default.Edit,
@@ -388,7 +381,8 @@ private fun IgnoredRuleItem(
                     onClick = onRestoreClick,
                     modifier = Modifier
                         .padding(start = 2.dp)
-                        .size(32.dp)
+                        .size(32.dp),
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Default.CheckCircle,
@@ -450,7 +444,7 @@ internal fun FilterBlockRow(checked: Boolean, onCheckedChange: (Boolean) -> Unit
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
-        Switch(checked = checked, onCheckedChange = onCheckedChange)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }
 
@@ -492,7 +486,7 @@ private fun FilterAppPickerDialog(onDismiss: () -> Unit, onPick: (AppItem) -> Un
         },
         confirmButton = {},
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -527,7 +521,7 @@ private fun EditIgnoreRuleDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(onClick = onDismiss, modifier = Modifier.size(24.dp)) {
+                IconButton(onClick = onDismiss, modifier = Modifier.size(24.dp), shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = stringResource(R.string.close),
@@ -588,7 +582,7 @@ private fun EditIgnoreRuleDialog(
                                 },
                                 trailingIcon = {
                                     if (matchValueText.isNotEmpty()) {
-                                        IconButton(onClick = { matchValueText = ""; errorMessage = null }) {
+                                        IconButton(onClick = { matchValueText = ""; errorMessage = null }, shapes = IconButtonDefaults.shapes()) {
                                             Icon(Icons.Default.Close, contentDescription = null)
                                         }
                                     }
@@ -613,7 +607,7 @@ private fun EditIgnoreRuleDialog(
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.weight(1f)
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = matchValueIsRegex,
                                     onCheckedChange = {
                                         matchValueIsRegex = it
@@ -648,7 +642,7 @@ private fun EditIgnoreRuleDialog(
                                             if (rule.type == IgnoreType.BODY) matchValueText = ""
                                             else matchValue2Text = ""
                                             errorMessage = null
-                                        }) {
+                                        }, shapes = IconButtonDefaults.shapes()) {
                                             Icon(Icons.Default.Close, contentDescription = null)
                                         }
                                     }
@@ -674,7 +668,7 @@ private fun EditIgnoreRuleDialog(
                                     style = MaterialTheme.typography.bodySmall,
                                     modifier = Modifier.weight(1f)
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = if (rule.type == IgnoreType.BODY) matchValueIsRegex else matchValue2IsRegex,
                                     onCheckedChange = { v ->
                                         if (rule.type == IgnoreType.BODY) matchValueIsRegex = v
@@ -765,12 +759,12 @@ private fun EditIgnoreRuleDialog(
                         )
                     }
                     onSave(updatedRule)
-                }) {
+                }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.save))
                 }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
