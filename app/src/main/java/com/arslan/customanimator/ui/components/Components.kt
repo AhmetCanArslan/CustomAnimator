@@ -487,7 +487,8 @@ fun <T> ConnectedChoiceGroup(
                 Text(
                     text = label,
                     style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
+                    maxLines = 2,
+                    textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis
                 )
             }
