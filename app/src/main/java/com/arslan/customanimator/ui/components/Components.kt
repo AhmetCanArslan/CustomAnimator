@@ -422,11 +422,37 @@ fun ToggleRow(
         enabled = enabled,
         onClick = { onCheckedChange(!checked) },
         trailing = {
-            Switch(
+            AppSwitch(
                 checked = checked,
-                onCheckedChange = { onCheckedChange(it) },
+                onCheckedChange = onCheckedChange,
                 enabled = enabled
             )
+        }
+    )
+}
+
+@Composable
+fun AppSwitch(
+    checked: Boolean,
+    onCheckedChange: ((Boolean) -> Unit)?,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Switch(
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier,
+        enabled = enabled,
+        thumbContent = if (checked) {
+            {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(SwitchDefaults.IconSize)
+                )
+            }
+        } else {
+            null
         }
     )
 }
