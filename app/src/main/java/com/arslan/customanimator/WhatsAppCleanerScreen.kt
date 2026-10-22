@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Delete
@@ -42,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.DividerSoft
@@ -60,6 +58,8 @@ import com.arslan.customanimator.utils.WhatsAppScan
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private val CATEGORY_ICONS = mapOf(
     WhatsAppMediaCategory.IMAGES to Icons.Filled.Image,
@@ -129,25 +129,14 @@ fun WhatsAppCleanerScreen(
 
     val selectedUsage = scan?.usageOf(selected) ?: WhatsAppMediaUsage.NONE
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.whatsapp_cleaner),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.whatsapp_cleaner),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
@@ -225,7 +214,7 @@ private fun LazyListScope.scanResult(
     if (scans == null || scan == null) {
         item {
             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                LoadingIndicator()
             }
         }
         return
@@ -452,7 +441,8 @@ private fun DeleteButton(usage: WhatsAppMediaUsage, isCleaning: Boolean, onClick
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .heightIn(min = 52.dp)
+            .heightIn(min = 52.dp),
+        shapes = ButtonDefaults.shapes()
     ) {
         if (isCleaning) {
             CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
@@ -490,7 +480,8 @@ private fun DeleteConfirmDialog(usage: WhatsAppMediaUsage, onConfirm: () -> Unit
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError
-                )
+                ),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.delete))
             }
@@ -498,7 +489,8 @@ private fun DeleteConfirmDialog(usage: WhatsAppMediaUsage, onConfirm: () -> Unit
         dismissButton = {
             Button(
                 onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.cancel))
             }
