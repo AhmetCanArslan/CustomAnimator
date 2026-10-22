@@ -203,7 +203,7 @@ fun AppSelectionTable(
                         IconButton(onClick = {
                             searchQuery = ""
                             focusManager.clearFocus()
-                        }) {
+                        }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.Default.Close,
                                 contentDescription = stringResource(R.string.pn_cd_clear_search)
@@ -223,7 +223,7 @@ fun AppSelectionTable(
                     modifier = Modifier.weight(1f).fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    LoadingIndicator()
                 }
             } else {
                 Row(modifier = Modifier.weight(1f).fillMaxWidth()) {
@@ -253,7 +253,8 @@ fun AppSelectionTable(
                             Text(stringResource(R.string.pn_selected), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
                             IconButton(
                                 onClick = { onSelectedAppsChanged(unselectedApps) },
-                                modifier = Modifier.size(24.dp)
+                                modifier = Modifier.size(24.dp),
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Refresh,
