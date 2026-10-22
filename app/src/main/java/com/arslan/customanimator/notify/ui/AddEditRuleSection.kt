@@ -1,10 +1,6 @@
 package com.arslan.customanimator.notify.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -15,7 +11,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -34,7 +29,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.activity.compose.PredictiveBackHandler
 import kotlin.coroutines.cancellation.CancellationException
@@ -42,6 +36,9 @@ import androidx.compose.material.icons.filled.Warning
 import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.*
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.theme.Motion
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -336,29 +333,22 @@ fun AddEditRuleSection(
 
     val scrollState = rememberScrollState()
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        if (initialRule != null) stringResource(R.string.pn_edit_rule_title)
-                        else stringResource(R.string.pn_create_rule_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+            ScreenTopBar(
+                title = if (initialRule != null) {
+                    stringResource(R.string.pn_edit_rule_title)
+                } else {
+                    stringResource(R.string.pn_create_rule_title)
                 },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        shouldDiscardDraft[0] = true
-                        AddEditRuleDraft.clear(context, draftKey)
-                        onNavigateBack()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.pn_cd_back)
-                        )
-                    }
+                onBack = {
+                    shouldDiscardDraft[0] = true
+                    AddEditRuleDraft.clear(context, draftKey)
+                    onNavigateBack()
                 },
+                scrollBehavior = scrollBehavior,
                 actions = {
                     Button(
                         onClick = {
@@ -418,7 +408,8 @@ fun AddEditRuleSection(
                             }
                         },
                         enabled = selectedApps.isNotEmpty() && atLeastOneAction,
-                        modifier = Modifier.padding(end = 8.dp)
+                        modifier = Modifier.padding(end = 8.dp),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.save))
                     }
@@ -464,8 +455,8 @@ fun AddEditRuleSection(
                         )
                         AnimatedVisibility(
                             visible = titleKeywords.isNotEmpty(),
-                            enter = fadeIn() + expandVertically(),
-                            exit = fadeOut() + shrinkVertically()
+                            enter = Motion.expandIn(),
+                            exit = Motion.collapseOut()
                         ) {
                             LazyRow(
                                 modifier = Modifier
@@ -512,7 +503,8 @@ fun AddEditRuleSection(
                                             currentTitleKeyword = ""
                                         }
                                     },
-                                    enabled = currentTitleKeyword.isNotBlank()
+                                    enabled = currentTitleKeyword.isNotBlank(),
+                                    shapes = IconButtonDefaults.shapes()
                                 ) {
                                     Icon(
                                         Icons.Default.Add,
@@ -532,8 +524,8 @@ fun AddEditRuleSection(
                         )
                         AnimatedVisibility(
                             visible = bodyKeywords.isNotEmpty(),
-                            enter = fadeIn() + expandVertically(),
-                            exit = fadeOut() + shrinkVertically()
+                            enter = Motion.expandIn(),
+                            exit = Motion.collapseOut()
                         ) {
                             LazyRow(
                                 modifier = Modifier
@@ -580,7 +572,8 @@ fun AddEditRuleSection(
                                             currentBodyKeyword = ""
                                         }
                                     },
-                                    enabled = currentBodyKeyword.isNotBlank()
+                                    enabled = currentBodyKeyword.isNotBlank(),
+                                    shapes = IconButtonDefaults.shapes()
                                 ) {
                                     Icon(
                                         Icons.Default.Add,
@@ -716,15 +709,15 @@ fun AddEditRuleSection(
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = flashEnabled,
                                     onCheckedChange = { flashEnabled = it }
                                 )
                             }
                             AnimatedVisibility(
                                 visible = flashEnabled,
-                                enter = fadeIn() + expandVertically(),
-                                exit = fadeOut() + shrinkVertically()
+                                enter = Motion.expandIn(),
+                                exit = Motion.collapseOut()
                             ) {
                                 Column(
                                     modifier = Modifier.padding(start = 8.dp, top = 8.dp),
@@ -752,7 +745,7 @@ fun AddEditRuleSection(
                                                 )
                                             },
                                             modifier = Modifier
-                                                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
                                                 .fillMaxWidth()
                                         )
                                         ExposedDropdownMenu(
@@ -786,7 +779,8 @@ fun AddEditRuleSection(
                                                                     expandedFlashPatterns = false
                                                                     patternToDelete = cPattern
                                                                 },
-                                                                modifier = Modifier.size(32.dp)
+                                                                modifier = Modifier.size(32.dp),
+                                                                shapes = IconButtonDefaults.shapes()
                                                             ) {
                                                                 Icon(
                                                                     imageVector = Icons.Default.Delete,
@@ -803,7 +797,8 @@ fun AddEditRuleSection(
                                     }
                                     TextButton(
                                         onClick = onNavigateToCreatePattern,
-                                        modifier = Modifier.fillMaxWidth()
+                                        modifier = Modifier.fillMaxWidth(),
+                                        shapes = ButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             Icons.Default.Add,
@@ -832,15 +827,15 @@ fun AddEditRuleSection(
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = wakeUpEnabled,
                                     onCheckedChange = { wakeUpEnabled = it }
                                 )
                             }
                             AnimatedVisibility(
                                 visible = wakeUpEnabled,
-                                enter = fadeIn() + expandVertically(),
-                                exit = fadeOut() + shrinkVertically()
+                                enter = Motion.expandIn(),
+                                exit = Motion.collapseOut()
                             ) {
                                 Column(
                                     modifier = Modifier.padding(start = 8.dp, top = 8.dp),
@@ -866,7 +861,7 @@ fun AddEditRuleSection(
                                                 )
                                             },
                                             modifier = Modifier
-                                                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
                                                 .fillMaxWidth()
                                         )
                                         ExposedDropdownMenu(
@@ -942,15 +937,15 @@ fun AddEditRuleSection(
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = aodEnabled,
                                     onCheckedChange = { aodEnabled = it }
                                 )
                             }
                             AnimatedVisibility(
                                 visible = aodEnabled,
-                                enter = fadeIn() + expandVertically(),
-                                exit = fadeOut() + shrinkVertically()
+                                enter = Motion.expandIn(),
+                                exit = Motion.collapseOut()
                             ) {
                                 Column(
                                     modifier = Modifier.padding(start = 8.dp, top = 8.dp)
@@ -979,7 +974,7 @@ fun AddEditRuleSection(
                                                 )
                                             },
                                             modifier = Modifier
-                                                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
                                                 .fillMaxWidth()
                                         )
                                         ExposedDropdownMenu(
@@ -1024,15 +1019,15 @@ fun AddEditRuleSection(
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Switch(
+                                AppSwitch(
                                     checked = screenFlashEnabled,
                                     onCheckedChange = { screenFlashEnabled = it }
                                 )
                             }
                             AnimatedVisibility(
                                 visible = screenFlashEnabled,
-                                enter = fadeIn() + expandVertically(),
-                                exit = fadeOut() + shrinkVertically()
+                                enter = Motion.expandIn(),
+                                exit = Motion.collapseOut()
                             ) {
                                 Column(
                                     modifier = Modifier.padding(start = 8.dp, top = 8.dp),
@@ -1085,7 +1080,7 @@ fun AddEditRuleSection(
                                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedScreenFlashDuration)
                                             },
                                             modifier = Modifier
-                                                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable, true)
                                                 .fillMaxWidth()
                                         )
                                         ExposedDropdownMenu(
@@ -1231,11 +1226,12 @@ fun AddEditRuleSection(
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) { Text(stringResource(R.string.delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { patternToDelete = null }) {
+                TextButton(onClick = { patternToDelete = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
