@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ContentPaste
@@ -62,6 +61,8 @@ import com.arslan.customanimator.utils.OtpCopierManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -123,25 +124,14 @@ fun OtpCopierScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.otp_copier),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.otp_copier),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -192,7 +182,7 @@ fun OtpCopierScreen(
                             TextButton(onClick = {
                                 OtpCopierManager.resetKeywords(context)
                                 keywords = OtpCopierManager.getKeywords(context)
-                            }) {
+                            }, shapes = ButtonDefaults.shapes()) {
                                 Text(stringResource(R.string.reset), maxLines = 1)
                             }
                         }
@@ -438,7 +428,7 @@ private fun OtpSwitchCard(
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onRequestAccess, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = onRequestAccess, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.grant), maxLines = 1)
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -471,7 +461,7 @@ private fun OtpSensitiveAccessCard(
         )
         Spacer(modifier = Modifier.height(4.dp))
         if (hasShizukuPermission) {
-            Button(onClick = onGrant, modifier = Modifier.fillMaxWidth()) {
+            Button(onClick = onGrant, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.grant), maxLines = 1)
             }
         } else {
@@ -566,7 +556,7 @@ private fun OtpPatternRow(pattern: String, onRemove: () -> Unit) {
             fontFamily = FontFamily.Monospace,
             modifier = Modifier.weight(1f)
         )
-        IconButton(onClick = onRemove) {
+        IconButton(onClick = onRemove, shapes = IconButtonDefaults.shapes()) {
             Icon(
                 imageVector = Icons.Filled.Close,
                 contentDescription = stringResource(R.string.delete)
@@ -606,7 +596,7 @@ private fun OtpAddField(
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { submit() }),
         trailingIcon = {
-            IconButton(onClick = submit, enabled = canAdd) {
+            IconButton(onClick = submit, enabled = canAdd, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = stringResource(R.string.otp_copier_add)
