@@ -1,6 +1,5 @@
 package com.arslan.customanimator
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
@@ -83,31 +82,18 @@ internal fun ToggleRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 42.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }
 
 @Composable
 internal fun NavigationRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     description: String,
     enabled: Boolean = true,
@@ -123,20 +109,7 @@ internal fun NavigationRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 42.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -151,7 +124,7 @@ internal fun NavigationRow(
 
 @Composable
 internal fun QuickActionRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     description: String,
     enabled: Boolean,
@@ -166,25 +139,12 @@ internal fun QuickActionRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 42.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall,)
             Text(text = description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Button(onClick = onClick, enabled = enabled) {
+        Button(onClick = onClick, enabled = enabled, shapes = ButtonDefaults.shapes()) {
             Text(
                 text = if (isRunning) stringResource(R.string.working) else stringResource(R.string.apply_settings),
                 style = MaterialTheme.typography.bodySmall,
@@ -288,7 +248,7 @@ internal fun InfoCard(
 
 @Composable
 internal fun InfoDismissButton(tint: androidx.compose.ui.graphics.Color, onDismiss: () -> Unit) {
-    IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp)) {
+    IconButton(onClick = onDismiss, modifier = Modifier.size(28.dp), shapes = IconButtonDefaults.shapes()) {
         Icon(
             imageVector = Icons.Filled.Close,
             contentDescription = stringResource(R.string.close),
@@ -300,7 +260,7 @@ internal fun InfoDismissButton(tint: androidx.compose.ui.graphics.Color, onDismi
 
 @Composable
 internal fun ActionRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     description: String,
     buttonLabel: String,
@@ -318,20 +278,7 @@ internal fun ActionRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
+                IconBadge(icon = icon, size = 42.dp)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = title, style = MaterialTheme.typography.titleSmall)
                     Text(
@@ -341,7 +288,7 @@ internal fun ActionRow(
                     )
                 }
                 if (!stacked) {
-                    Button(onClick = onClick, enabled = enabled) {
+                    Button(onClick = onClick, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                         Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
                     }
                 }
@@ -350,7 +297,8 @@ internal fun ActionRow(
                 Button(
                     onClick = onClick,
                     enabled = enabled,
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(text = buttonLabel, style = MaterialTheme.typography.bodySmall, maxLines = 1)
                 }
@@ -442,7 +390,7 @@ internal fun BusyDialog(message: String) {
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CircularProgressIndicator(modifier = Modifier.size(28.dp))
+                LoadingIndicator(modifier = Modifier.size(40.dp))
                 Text(message)
             }
         }
