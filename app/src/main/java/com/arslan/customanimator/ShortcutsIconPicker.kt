@@ -181,7 +181,7 @@ private fun IconPreviewRow(preview: ShortcutIconImage, onUse: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         ShortcutIcon(bitmap = preview.bitmap, legacy = preview.legacy, modifier = Modifier.size(64.dp))
-        Button(onClick = onUse) {
+        Button(onClick = onUse, shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.shortcut_icon_use))
         }
     }
@@ -283,7 +283,7 @@ private fun OriginalIconGrid(originals: List<ShortcutIconImage>, onPick: (Shortc
 private fun PackIconGrid(packageName: String, names: List<String>?, query: String, onPick: (String) -> Unit) {
     if (names == null) {
         Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
+            LoadingIndicator()
         }
         return
     }
