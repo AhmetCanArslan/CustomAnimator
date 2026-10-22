@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
@@ -55,7 +53,6 @@ import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import com.arslan.customanimator.ui.theme.LocalThemeController
-import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.ui.theme.ThemeMode
 import com.arslan.customanimator.ui.theme.pressScale
 import com.arslan.customanimator.utils.ChangelogManager
@@ -68,6 +65,8 @@ import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuAvailable
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private const val DEVELOPER_EMAIL = "ahmetcanarslandev@gmail.com"
 private const val PRIVACY_POLICY_URL =
@@ -119,25 +118,14 @@ fun SettingsScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.settings),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.settings),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -334,7 +322,8 @@ fun SettingsScreen(
                                 else R.string.revert_everything_partial
                             )
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(
                         stringResource(
@@ -347,7 +336,8 @@ fun SettingsScreen(
                 Button(
                     enabled = !isReverting,
                     onClick = { showRevertConfirm = false },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -484,7 +474,7 @@ private fun ThemeModeSelector() {
                     } else {
                         Color.Transparent
                     },
-                    animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
+                    animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
                     label = "themeSegment"
                 )
                 val content by animateColorAsState(
@@ -493,7 +483,7 @@ private fun ThemeModeSelector() {
                     } else {
                         MaterialTheme.colorScheme.onSurfaceVariant
                     },
-                    animationSpec = tween(Motion.durationMedium),
+                    animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
                     label = "themeSegmentContent"
                 )
                 val interactionSource = remember { MutableInteractionSource() }
