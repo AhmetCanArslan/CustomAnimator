@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
 import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
@@ -52,6 +51,8 @@ import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.components.StatusPill
 import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private const val ADAPTIVE_ICON_ZOOM = 1.5f
 private const val DISABLED_TILE_ALPHA = 0.5f
@@ -119,25 +120,14 @@ fun ShortcutsScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.shortcuts),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.shortcuts),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -187,7 +177,7 @@ fun ShortcutsScreen(
             if (state.isLoading) {
                 item {
                     Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LoadingIndicator()
                     }
                 }
             } else if (state.shortcuts.isEmpty()) {
@@ -358,7 +348,7 @@ private fun ShortcutRowMenu(
         action()
     }
     Box {
-        IconButton(onClick = { expanded = true }) {
+        IconButton(onClick = { expanded = true }, shapes = IconButtonDefaults.shapes()) {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
                 contentDescription = stringResource(R.string.shortcut_more_options)
