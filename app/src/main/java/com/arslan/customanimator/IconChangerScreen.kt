@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
@@ -31,10 +30,12 @@ import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.IconChangerManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 private const val ADAPTIVE_LAYER_ZOOM = 1.5f
 
@@ -63,25 +64,14 @@ fun IconChangerScreen(
 
     IconChangerOverlays(state)
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.icon_changer),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { if (state.app == null) onBack() else state.clearApp() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.icon_changer),
+                onBack = { if (state.app == null) onBack() else state.clearApp() },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -219,11 +209,7 @@ private fun IconChangerOverlays(state: IconChangerState) {
 
 @Composable
 private fun IconChangerAppCard(app: InstalledAppInfo, onClick: () -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         PickerRow(title = app.label, subtitle = app.packageName, onClick = onClick) {
             AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
         }
@@ -237,11 +223,7 @@ private fun IconChangerDesignCard(
     image: ShortcutIconImage,
     onPickImage: () -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -257,10 +239,10 @@ private fun IconChangerDesignCard(
                 IconChangerPreview(image = image, scale = state.scale, background = state.background)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onClick = { state.sheet = IconChangerSheet.ICONS }, modifier = Modifier.weight(1f)) {
+                OutlinedButton(onClick = { state.sheet = IconChangerSheet.ICONS }, modifier = Modifier.weight(1f), shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.icon_changer_choose_icon), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-                OutlinedButton(onClick = onPickImage, modifier = Modifier.weight(1f)) {
+                OutlinedButton(onClick = onPickImage, modifier = Modifier.weight(1f), shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.icon_changer_from_gallery), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
@@ -320,14 +302,16 @@ private fun IconChangerActions(state: IconChangerState, enabled: Boolean) {
         Button(
             onClick = state::askToApply,
             enabled = enabled && state.canApply,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shapes = ButtonDefaults.shapes()
         ) {
             Text(stringResource(R.string.icon_changer_apply))
         }
         OutlinedButton(
             onClick = state::export,
             enabled = enabled && state.canApply,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shapes = ButtonDefaults.shapes()
         ) {
             Text(stringResource(R.string.debloater_export_apk))
         }
@@ -350,12 +334,12 @@ private fun IconChangerConfirmDialog(
         title = { Text(stringResource(R.string.icon_changer_confirm_title)) },
         text = { Text(stringResource(messageRes, confirmation.app.label)) },
         confirmButton = {
-            Button(onClick = onConfirm) {
+            Button(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.icon_changer_apply))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -385,13 +369,14 @@ private fun IconChangerEraseDialog(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
                     contentColor = MaterialTheme.colorScheme.onError
-                )
+                ),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.icon_changer_erase_confirm))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
