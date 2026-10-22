@@ -248,6 +248,62 @@ private val BADGE_SHAPES = listOf(
 )
 
 @Composable
+fun ScaleSlider(
+    label: String,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    valueRange: ClosedFloatingPointRange<Float>,
+    modifier: Modifier = Modifier
+) {
+    val step: (Int) -> Unit = { direction ->
+        val next = ((value * SCALE_STEPS_PER_UNIT).roundToInt() + direction) / SCALE_STEPS_PER_UNIT
+        onValueChange(next.coerceIn(valueRange.start, valueRange.endInclusive))
+    }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.weight(1f)
+            )
+            Surface(
+                shape = AppShapes.chip,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ) {
+                Text(
+                    text = String.format(Locale.US, "%.2f×", value),
+                    style = MaterialTheme.typography.titleMedium.copy(fontFeatureSettings = "tnum"),
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp)
+                )
+            }
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            FilledTonalIconButton(onClick = { step(-1) }, shapes = IconButtonDefaults.shapes()) {
+                Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.minus_symbol))
+            }
+            Slider(
+                value = value,
+                onValueChange = onValueChange,
+                valueRange = valueRange,
+                modifier = Modifier.weight(1f)
+            )
+            FilledTonalIconButton(onClick = { step(1) }, shapes = IconButtonDefaults.shapes()) {
+                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.plus_symbol))
+            }
+        }
+    }
+}
+
+private const val SCALE_STEPS_PER_UNIT = 100f
+
+@Composable
 fun StatusPill(
     text: String,
     tone: StatusTone = StatusTone.NEUTRAL,
