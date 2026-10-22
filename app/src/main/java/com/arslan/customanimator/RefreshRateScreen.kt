@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,13 +20,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.PerAppRefreshRateManager
 import com.arslan.customanimator.utils.RefreshRateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -113,32 +114,21 @@ fun RefreshRateScreen(
         )
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.refresh_rate),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.refresh_rate),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
                     if (overrides.isNotEmpty()) {
                         TextButton(onClick = {
                             manager.clearAll()
                             overrides = manager.getOverrides()
                             syncServiceState()
-                        }) {
+                        }, shapes = ButtonDefaults.shapes()) {
                             Text(stringResource(R.string.per_app_refresh_rate_clear_all))
                         }
                     }
@@ -171,11 +161,7 @@ fun RefreshRateScreen(
             }
 
             item(key = "current") {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -293,11 +279,7 @@ private fun RefreshRateSelector(
     enabled: Boolean,
     onSelect: (Float?) -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -342,11 +324,7 @@ private fun PerAppRefreshRateRow(
     onClick: () -> Unit,
     onClear: () -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -379,7 +357,7 @@ private fun PerAppRefreshRateRow(
                 )
             }
             if (rate != null) {
-                IconButton(onClick = onClear, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onClear, modifier = Modifier.size(36.dp), shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = stringResource(R.string.per_app_refresh_rate_reset)
@@ -440,18 +418,18 @@ private fun RefreshRateDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(selected) }, enabled = selected != null) {
+            TextButton(onClick = { onConfirm(selected) }, enabled = selected != null, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
             Row {
                 if (currentRate != null) {
-                    TextButton(onClick = { onConfirm(null) }) {
+                    TextButton(onClick = { onConfirm(null) }, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.per_app_refresh_rate_reset))
                     }
                 }
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
