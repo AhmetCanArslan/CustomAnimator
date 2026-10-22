@@ -12,8 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.ui.components.AppCard
 
 @Composable
 fun AutoActionsScreenContent(
@@ -43,11 +43,7 @@ fun AutoActionsScreenContent(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column {
                         NavigationRow(
                             icon = Icons.Filled.PlaylistRemove,
