@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -34,6 +32,9 @@ import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.data.WidgetConfig
 import com.arslan.customanimator.notify.data.WidgetConfigStore
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSwitch
 
 @Suppress("DEPRECATION")
 class NotificationWidgetConfigureActivity : ComponentActivity() {
@@ -101,21 +102,14 @@ private fun WidgetConfigureScreen(
 
     var config by remember { mutableStateOf(initialConfig) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.pn_widget_configure_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onCancel) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.pn_widget_configure_title),
+                onBack = onCancel,
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
@@ -129,11 +123,13 @@ private fun WidgetConfigureScreen(
                 ) {
                     OutlinedButton(
                         onClick = onCancel,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        shapes = ButtonDefaults.shapes()
                     ) { Text(stringResource(R.string.pn_widget_cancel)) }
                     Button(
                         onClick = { onConfirm(config) },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        shapes = ButtonDefaults.shapes()
                     ) { Text(stringResource(R.string.pn_widget_add)) }
                 }
             }
@@ -312,7 +308,7 @@ private fun SwitchRow(label: String, checked: Boolean, onChange: (Boolean) -> Un
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.weight(1f).padding(end = 12.dp)
         )
-        Switch(checked = checked, onCheckedChange = onChange)
+        AppSwitch(checked = checked, onCheckedChange = onChange)
     }
 }
 
