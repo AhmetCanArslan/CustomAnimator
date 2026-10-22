@@ -4,10 +4,6 @@ import android.content.res.Resources
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -123,6 +119,8 @@ import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.SystemMeterMetric
 import java.text.Normalizer
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.theme.Motion
 
 sealed interface SearchTarget {
     data class Tab(val tab: HomeTab) : SearchTarget
@@ -188,31 +186,31 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.TOOLS.screen(HomeScreen.SHORTCUTS, R.string.shortcuts, R.string.shortcuts_desc, Icons.Filled.AddToHomeScreen),
     HomeTab.TOOLS.screen(HomeScreen.ICON_CHANGER, R.string.icon_changer, R.string.icon_changer_desc, Icons.Filled.AppShortcut),
     HomeTab.TOOLS.screen(HomeScreen.APK_EXTRACTOR, R.string.apk_extractor, R.string.apk_extractor_desc, Icons.Filled.Unarchive),
-    HomeTab.TOOLS.row(R.string.save_to_device, R.string.save_to_device_desc, Icons.Filled.SaveAlt),
-    HomeTab.TOOLS.screen(HomeScreen.SCREENSHOT_ACTIONS, R.string.screenshot_actions, R.string.screenshot_actions_desc, Icons.Filled.Screenshot),
-    HomeTab.TOOLS.screen(HomeScreen.OTP_COPIER, R.string.otp_copier, R.string.otp_copier_desc, Icons.Filled.Password),
+    HomeTab.TOOLS.screen(HomeScreen.DEBLOATER, R.string.debloater, R.string.debloater_desc, Icons.Filled.DeleteSweep),
+    HomeTab.TOOLS.screen(HomeScreen.COMPILE_BOOSTER, R.string.compile_booster, R.string.more_compile_booster_desc, Icons.Filled.Speed),
+    HomeTab.TOOLS.screen(HomeScreen.AUTO_ACTIONS, R.string.auto_actions, R.string.more_auto_actions_desc, Icons.Filled.PlaylistRemove),
+    HomeTab.TOOLS.screen(HomeScreen.AUTO_FORCE_STOP, R.string.auto_force_stop, R.string.auto_force_stop_desc, Icons.Filled.PlaylistRemove),
+    HomeTab.TOOLS.screen(HomeScreen.AUTO_PERMISSION_DISABLER, R.string.auto_permission_disabler, R.string.auto_permission_disabler_desc, Icons.Filled.Shield),
     HomeTab.TOOLS.screen(HomeScreen.GRAPHICS_API_OVERRIDE, R.string.graphics_api_override, R.string.graphics_api_override_desc, Icons.Filled.VideogameAsset),
     HomeTab.TOOLS.screen(HomeScreen.HWUI_TWEAKS, R.string.hwui_tweaks, R.string.hwui_tweaks_desc, Icons.Filled.Brush),
     HomeTab.TOOLS.screen(HomeScreen.APP_THREADING, R.string.app_threading, R.string.app_threading_desc, Icons.Filled.Memory),
     HomeTab.TOOLS.screen(HomeScreen.REFRESH_RATE, R.string.refresh_rate, R.string.refresh_rate_desc, Icons.Filled.MonitorHeart),
     HomeTab.TOOLS.screen(HomeScreen.QS_TILES, R.string.qs_tiles, R.string.qs_tiles_desc, Icons.Filled.Widgets),
     HomeTab.TOOLS.screen(HomeScreen.SOUND_TILE, R.string.sound_tile, R.string.sound_tile_desc, Icons.AutoMirrored.Filled.VolumeUp),
-    HomeTab.TOOLS.screen(HomeScreen.DEBLOATER, R.string.debloater, R.string.debloater_desc, Icons.Filled.DeleteSweep),
-    HomeTab.TOOLS.screen(HomeScreen.COMPILE_BOOSTER, R.string.compile_booster, R.string.more_compile_booster_desc, Icons.Filled.Speed),
-    HomeTab.TOOLS.screen(HomeScreen.AUTO_ACTIONS, R.string.auto_actions, R.string.more_auto_actions_desc, Icons.Filled.PlaylistRemove),
-    HomeTab.TOOLS.screen(HomeScreen.AUTO_FORCE_STOP, R.string.auto_force_stop, R.string.auto_force_stop_desc, Icons.Filled.PlaylistRemove),
-    HomeTab.TOOLS.screen(HomeScreen.AUTO_PERMISSION_DISABLER, R.string.auto_permission_disabler, R.string.auto_permission_disabler_desc, Icons.Filled.Shield),
+    HomeTab.TOOLS.screen(HomeScreen.STATUS_BAR_ICONS, R.string.status_bar_icons, R.string.status_bar_icons_desc, Icons.Filled.WebAsset),
+    HomeTab.TOOLS.screen(HomeScreen.CARRIER_NAME, R.string.carrier_name, R.string.carrier_name_desc, Icons.Filled.SignalCellularAlt),
+    HomeTab.TOOLS.screen(HomeScreen.BUTTON_REMAPPER, R.string.button_remapper, R.string.button_remapper_desc, Icons.Filled.PowerSettingsNew),
+    HomeTab.TOOLS.row(R.string.restart_system_ui, R.string.restart_system_ui_desc, Icons.Filled.RestartAlt),
+    HomeTab.TOOLS.screen(HomeScreen.WIFI_PASSWORDS, R.string.wifi_password_manager, R.string.wifi_password_manager_desc, Icons.Filled.Wifi),
+    HomeTab.TOOLS.screen(HomeScreen.HOTSPOT_MANAGER, R.string.hotspot_manager, R.string.hotspot_manager_desc, Icons.Filled.WifiTethering),
+    HomeTab.TOOLS.row(R.string.save_to_device, R.string.save_to_device_desc, Icons.Filled.SaveAlt),
+    HomeTab.TOOLS.screen(HomeScreen.SCREENSHOT_ACTIONS, R.string.screenshot_actions, R.string.screenshot_actions_desc, Icons.Filled.Screenshot),
+    HomeTab.TOOLS.screen(HomeScreen.OTP_COPIER, R.string.otp_copier, R.string.otp_copier_desc, Icons.Filled.Password),
+    HomeTab.TOOLS.screen(HomeScreen.ALARM_REVEALER, R.string.alarm_revealer, R.string.alarm_revealer_desc, Icons.Filled.Alarm),
     HomeTab.TOOLS.row(R.string.disable_keyboard_animation, R.string.disable_keyboard_animation_desc, Icons.Filled.Keyboard),
     HomeTab.TOOLS.row(R.string.disable_rotation_suggestions, R.string.disable_rotation_suggestions_desc, Icons.Filled.ScreenRotation),
     HomeTab.TOOLS.row(R.string.show_clock_seconds, R.string.show_clock_seconds_desc, Icons.Filled.Schedule),
     HomeTab.TOOLS.row(R.string.remove_high_volume_warning, R.string.remove_high_volume_warning_desc, Icons.AutoMirrored.Filled.VolumeUp),
-    HomeTab.TOOLS.screen(HomeScreen.WIFI_PASSWORDS, R.string.wifi_password_manager, R.string.wifi_password_manager_desc, Icons.Filled.Wifi),
-    HomeTab.TOOLS.screen(HomeScreen.HOTSPOT_MANAGER, R.string.hotspot_manager, R.string.hotspot_manager_desc, Icons.Filled.WifiTethering),
-    HomeTab.TOOLS.screen(HomeScreen.ALARM_REVEALER, R.string.alarm_revealer, R.string.alarm_revealer_desc, Icons.Filled.Alarm),
-    HomeTab.TOOLS.screen(HomeScreen.CARRIER_NAME, R.string.carrier_name, R.string.carrier_name_desc, Icons.Filled.SignalCellularAlt),
-    HomeTab.TOOLS.screen(HomeScreen.STATUS_BAR_ICONS, R.string.status_bar_icons, R.string.status_bar_icons_desc, Icons.Filled.WebAsset),
-    HomeTab.TOOLS.screen(HomeScreen.BUTTON_REMAPPER, R.string.button_remapper, R.string.button_remapper_desc, Icons.Filled.PowerSettingsNew),
-    HomeTab.TOOLS.row(R.string.restart_system_ui, R.string.restart_system_ui_desc, Icons.Filled.RestartAlt),
     HomeTab.TOOLS.row(R.string.lock_screen_rotation, R.string.lock_screen_rotation_desc, Icons.Filled.ScreenLockRotation),
     HomeTab.TOOLS.row(R.string.reset_rotation, R.string.reset_rotation_desc, Icons.Filled.ScreenRotation),
     HomeTab.DEVELOPER.row(R.string.developer_title, null),
@@ -376,7 +374,7 @@ private fun SearchField(
             .height(56.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 4.dp)) {
-            IconButton(onClick = onClose) {
+            IconButton(onClick = onClose, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back)
@@ -410,13 +408,13 @@ private fun SearchField(
             )
             AnimatedVisibility(
                 visible = query.isNotEmpty(),
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
+                enter = Motion.popIn(),
+                exit = Motion.popOut()
             ) {
                 IconButton(onClick = {
                     onQueryChange("")
                     focusRequester.requestFocus()
-                }) {
+                }, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Filled.Close,
                         contentDescription = stringResource(R.string.clear)
