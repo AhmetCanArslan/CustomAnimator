@@ -56,7 +56,6 @@ import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.PlaylistRemove
@@ -232,7 +231,6 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     section(R.string.pn_title, HomeScreen.NOTIFY_IGNORED, R.string.pn_filters, null, Icons.Filled.FilterAlt),
     section(R.string.profiles_title, HomeScreen.PROFILES, R.string.profiles_title, R.string.profiles_subtitle, Icons.Filled.AccountCircle),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.settings_theme, null, Icons.Filled.Palette),
-    section(R.string.settings, HomeScreen.SETTINGS, R.string.settings_accent_color, null, Icons.Filled.Colorize),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.backup_app_data, R.string.backup_app_data_desc, Icons.Filled.Save),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.restore_app_data, R.string.restore_app_data_desc, Icons.Filled.Restore),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.revert_everything, R.string.revert_everything_desc, Icons.Filled.SettingsBackupRestore),
