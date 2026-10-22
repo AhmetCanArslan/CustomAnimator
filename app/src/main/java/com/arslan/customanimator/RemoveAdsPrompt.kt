@@ -3,10 +3,6 @@ package com.arslan.customanimator
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +35,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.SettingsManager
 import kotlinx.coroutines.delay
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.theme.Motion
 
 @Composable
 fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
@@ -56,8 +55,8 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
 
     AnimatedVisibility(
         visible = !isAdFree && visible,
-        enter = fadeIn() + expandVertically(),
-        exit = fadeOut() + shrinkVertically()
+        enter = Motion.expandIn(),
+        exit = Motion.collapseOut()
     ) {
         Surface(
             modifier = modifier
@@ -97,7 +96,8 @@ fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
                     onClick = {
                         SettingsManager.dismissRemoveAdsPrompt(context)
                         visible = false
-                    }
+                    },
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Close,
@@ -123,7 +123,7 @@ fun RemoveAdsSupportDialog(
         title = { Text(stringResource(R.string.remove_ads_support_title)) },
         text = { Text(stringResource(R.string.remove_ads_support_message)) },
         confirmButton = {
-            Button(onClick = onBuy) {
+            Button(onClick = onBuy, shapes = ButtonDefaults.shapes()) {
                 Text(
                     text = price?.let { stringResource(R.string.remove_ads_support_buy_price, it) }
                         ?: stringResource(R.string.remove_ads)
@@ -131,7 +131,7 @@ fun RemoveAdsSupportDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.rate_dialog_later))
             }
         }
