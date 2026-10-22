@@ -209,26 +209,43 @@ fun SectionHeader(
 fun IconBadge(
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    containerColor: Color? = null,
+    contentColor: Color? = null,
     size: Dp = 42.dp,
     contentDescription: String? = null
 ) {
+    val seed = Math.floorMod(icon.name.hashCode(), BADGE_PALETTE_SIZE * BADGE_SHAPES.size)
+    val scheme = MaterialTheme.colorScheme
+    val (paletteContainer, paletteContent) = when (seed % BADGE_PALETTE_SIZE) {
+        0 -> scheme.primaryContainer to scheme.onPrimaryContainer
+        1 -> scheme.secondaryContainer to scheme.onSecondaryContainer
+        else -> scheme.tertiaryContainer to scheme.onTertiaryContainer
+    }
     Box(
         modifier = modifier
             .size(size)
-            .clip(AppShapes.iconBadge)
-            .background(containerColor),
+            .clip(BADGE_SHAPES[seed / BADGE_PALETTE_SIZE].toShape())
+            .background(containerColor ?: paletteContainer),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = icon,
             contentDescription = contentDescription,
-            tint = contentColor,
+            tint = contentColor ?: paletteContent,
             modifier = Modifier.size(size * 0.5f)
         )
     }
 }
+
+private const val BADGE_PALETTE_SIZE = 3
+private val BADGE_SHAPES = listOf(
+    MaterialShapes.Cookie9Sided,
+    MaterialShapes.Cookie6Sided,
+    MaterialShapes.Clover4Leaf,
+    MaterialShapes.Sunny,
+    MaterialShapes.SoftBurst,
+    MaterialShapes.Cookie7Sided
+)
 
 @Composable
 fun StatusPill(
