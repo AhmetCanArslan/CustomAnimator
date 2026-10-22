@@ -120,6 +120,53 @@ fun AppCard(
 }
 
 @Composable
+fun ScreenTopBar(
+    title: String,
+    onBack: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    ScreenTopBar(
+        title = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        onBack = onBack,
+        scrollBehavior = scrollBehavior,
+        actions = actions
+    )
+}
+
+@Composable
+fun ScreenTopBar(
+    title: @Composable () -> Unit,
+    onBack: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior,
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    MediumFlexibleTopAppBar(
+        title = title,
+        navigationIcon = {
+            IconButton(onClick = onBack, shapes = IconButtonDefaults.shapes()) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+        actions = actions,
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
+        ),
+        scrollBehavior = scrollBehavior
+    )
+}
+
+@Composable
 fun SectionHeader(
     title: String,
     modifier: Modifier = Modifier,
