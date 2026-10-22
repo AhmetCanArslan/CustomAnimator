@@ -458,6 +458,44 @@ fun AppSwitch(
 }
 
 @Composable
+fun <T> ConnectedChoiceGroup(
+    options: List<Pair<T, String>>,
+    selected: T,
+    onSelect: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)
+    ) {
+        options.forEachIndexed { index, (value, label) ->
+            ToggleButton(
+                checked = value == selected,
+                onCheckedChange = { onSelect(value) },
+                enabled = enabled,
+                shapes = when (index) {
+                    0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                    options.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                    else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                },
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .semantics { role = Role.RadioButton }
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun ExpandableCard(
     title: String,
     expanded: Boolean,
