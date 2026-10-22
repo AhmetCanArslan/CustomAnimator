@@ -343,6 +343,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val openSetupGuide: () -> Unit = { openRemembering(HomeScreen.SETUP_GUIDE) }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val homeNavListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -877,7 +878,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     openRemembering(HomeScreen.PROFILES)
                 },
                 onOpenSettings = { currentScreen = HomeScreen.SETTINGS },
-                onOpenSearch = { showSearch = true }
+                onOpenSearch = { showSearch = true },
+                navListState = homeNavListState
             )
         },
         bottomBar = { RemoveAdsPrompt() }
@@ -2441,7 +2443,8 @@ private fun HomeTopBar(
     onOpenNotify: () -> Unit,
     onOpenProfiles: () -> Unit,
     onOpenSettings: () -> Unit,
-    onOpenSearch: () -> Unit
+    onOpenSearch: () -> Unit,
+    navListState: LazyListState
 ) {
     Column {
         TopAppBar(
@@ -2475,7 +2478,8 @@ private fun HomeTopBar(
         ExpressiveTopNavBar(
             items = rememberHomeNavItems(),
             selectedIndex = selectedTab.ordinal,
-            onSelect = { onSelectTab(HomeTab.entries[it]) }
+            onSelect = { onSelectTab(HomeTab.entries[it]) },
+            listState = navListState
         )
     }
 }

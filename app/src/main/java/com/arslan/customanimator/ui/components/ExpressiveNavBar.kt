@@ -1,7 +1,8 @@
 package com.arslan.customanimator.ui.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,9 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -23,6 +26,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -32,8 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.first
-import com.arslan.customanimator.ui.theme.AppShapes
-import com.arslan.customanimator.ui.theme.Motion
+import com.arslan.customanimator.ui.theme.pressScale
 
 @Immutable
 data class NavBarItem(
@@ -50,22 +54,26 @@ fun ExpressiveTopNavBar(
     items: NavBarItems,
     selectedIndex: Int,
     onSelect: (Int) -> Unit,
+    listState: LazyListState,
     modifier: Modifier = Modifier
 ) {
-    val listState = rememberLazyListState()
+    var revealedOnce by remember { mutableStateOf(false) }
 
     LaunchedEffect(selectedIndex) {
         if (selectedIndex < 0) return@LaunchedEffect
+        val animate = revealedOnce
+        revealedOnce = true
         val info = snapshotFlow { listState.layoutInfo }
             .first { it.visibleItemsInfo.isNotEmpty() }
         val item = info.visibleItemsInfo.firstOrNull { it.index == selectedIndex }
         if (item == null) {
-            listState.animateScrollToItem(selectedIndex)
+            if (animate) listState.animateScrollToItem(selectedIndex) else listState.scrollToItem(selectedIndex)
             return@LaunchedEffect
         }
         val delta = revealScrollDelta(info.viewportStartOffset + info.beforeContentPadding,
             info.viewportEndOffset - info.afterContentPadding, item)
-        if (delta != 0f) listState.animateScrollBy(delta)
+        if (delta == 0f) return@LaunchedEffect
+        if (animate) listState.animateScrollBy(delta) else listState.scrollBy(delta)
     }
 
     LazyRow(
@@ -99,7 +107,7 @@ private fun TopNavBarCell(
         } else {
             MaterialTheme.colorScheme.surfaceContainerHigh
         },
-        animationSpec = tween(Motion.durationFast),
+        animationSpec = MaterialTheme.motionScheme.fastEffectsSpec(),
         label = "topNavContainer"
     )
     val content by animateColorAsState(
@@ -108,20 +116,31 @@ private fun TopNavBarCell(
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant
         },
-        animationSpec = tween(Motion.durationFast),
+        animationSpec = MaterialTheme.motionScheme.fastEffectsSpec(),
         label = "topNavContent"
+    )
+    val cornerPercent by animateIntAsState(
+        targetValue = if (selected) SELECTED_CORNER_PERCENT else 50,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "topNavCorner"
+    )
+    val horizontalPadding by animateDpAsState(
+        targetValue = if (selected) 20.dp else 14.dp,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "topNavPadding"
     )
 
     Row(
         modifier = Modifier
-            .clip(AppShapes.chip)
+            .pressScale(interactionSource, 0.9f)
+            .clip(RoundedCornerShape(cornerPercent))
             .background(container)
             .clickable(
                 interactionSource = interactionSource,
                 indication = LocalIndication.current,
                 onClick = onClick
             )
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = horizontalPadding, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -154,3 +173,4 @@ private val OUTER_PADDING = 12.dp
 private val INNER_PADDING = 6.dp
 private val CELL_SPACING = 8.dp
 private val ICON_SIZE = 22.dp
+private const val SELECTED_CORNER_PERCENT = 32
