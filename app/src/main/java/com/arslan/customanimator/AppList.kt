@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,9 +28,11 @@ import com.arslan.customanimator.utils.InstalledAppsProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.material3.LoadingIndicator
 
 private const val PREWARMED_ICONS = 12
 private const val PRELOAD_DELAY_MS = 1200L
+private const val APP_ROW_CONTENT_TYPE = "appRow"
 
 @Stable
 class AppListState internal constructor(private val include: (InstalledAppInfo) -> Boolean) {
@@ -90,7 +91,7 @@ fun LazyListScope.appList(
     if (state.isLoading) {
         item(key = "app_list_loading") {
             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+                LoadingIndicator()
             }
         }
         return
@@ -115,5 +116,7 @@ fun LazyListScope.appList(
             )
         }
     }
-    items(state.visibleApps, key = { it.packageName }) { app -> row(app) }
+    items(state.visibleApps, key = { it.packageName }, contentType = { APP_ROW_CONTENT_TYPE }) { app ->
+        Box(modifier = Modifier.animateItem()) { row(app) }
+    }
 }
