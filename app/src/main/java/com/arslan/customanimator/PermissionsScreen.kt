@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.CheckCircle
@@ -46,7 +45,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,6 +59,8 @@ import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
 import com.arslan.customanimator.utils.LocalShizukuAvailable
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private val GrantedGreen: Color
     @Composable
@@ -346,24 +346,14 @@ fun PermissionsScreen(
     val allEntries = systemEntries + notificationItems + otherItems
     val grantedCount = allEntries.count { it.granted }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.permissions_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.permissions_title),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -565,13 +555,13 @@ private fun PermissionRow(entry: PermissionEntry, onGrant: () -> Unit) {
                 modifier = Modifier.size(22.dp)
             )
         } else if (!stacked) {
-            TextButton(onClick = onGrant) {
+            TextButton(onClick = onGrant, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.grant))
             }
         }
     }
     if (stacked && !entry.granted) {
-        TextButton(onClick = onGrant, modifier = Modifier.align(Alignment.End)) {
+        TextButton(onClick = onGrant, modifier = Modifier.align(Alignment.End), shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.grant))
         }
     }
@@ -605,10 +595,10 @@ private fun AdbGrantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit) {
             }
         },
         confirmButton = {
-            Button(onClick = onConfirm) { Text(stringResource(R.string.pn_got_it)) }
+            Button(onClick = onConfirm, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.pn_got_it)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.close)) }
         }
     )
 }
@@ -654,7 +644,8 @@ private fun SecureSettingsSetupCard(
             if (isShizukuAvailable) {
                 Button(
                     onClick = onGrantViaShizuku,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.grant))
                 }
@@ -710,7 +701,8 @@ private fun AdbCommandBox(
                     ).show()
                 },
                 colors = ButtonDefaults.textButtonColors(contentColor = contentColor),
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Icon(
                     imageVector = Icons.Filled.ContentCopy,
