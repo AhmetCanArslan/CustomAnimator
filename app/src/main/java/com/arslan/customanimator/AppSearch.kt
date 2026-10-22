@@ -198,6 +198,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.TOOLS.screen(HomeScreen.QS_TILES, R.string.qs_tiles, R.string.qs_tiles_desc, Icons.Filled.Widgets),
     HomeTab.TOOLS.screen(HomeScreen.SOUND_TILE, R.string.sound_tile, R.string.sound_tile_desc, Icons.AutoMirrored.Filled.VolumeUp),
     HomeTab.TOOLS.screen(HomeScreen.STATUS_BAR_ICONS, R.string.status_bar_icons, R.string.status_bar_icons_desc, Icons.Filled.WebAsset),
+    HomeTab.TOOLS.screen(HomeScreen.SYSTEM_COLORS, R.string.system_colors, R.string.system_colors_desc, Icons.Filled.Palette),
     HomeTab.TOOLS.screen(HomeScreen.CARRIER_NAME, R.string.carrier_name, R.string.carrier_name_desc, Icons.Filled.SignalCellularAlt),
     HomeTab.TOOLS.screen(HomeScreen.BUTTON_REMAPPER, R.string.button_remapper, R.string.button_remapper_desc, Icons.Filled.PowerSettingsNew),
     HomeTab.TOOLS.row(R.string.restart_system_ui, R.string.restart_system_ui_desc, Icons.Filled.RestartAlt),
