@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -20,12 +19,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.PerAppWidthManager
 import com.arslan.customanimator.utils.SettingsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,32 +67,21 @@ fun PerAppWidthScreen(
         )
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.per_app_width),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.per_app_width),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
                     if (overrides.isNotEmpty()) {
                         TextButton(onClick = {
                             manager.clearAll()
                             overrides = manager.getOverrides()
                             syncServiceState()
-                        }) {
+                        }, shapes = ButtonDefaults.shapes()) {
                             Text(stringResource(R.string.per_app_width_clear_all))
                         }
                     }
@@ -164,11 +154,7 @@ private fun PerAppWidthRow(
     onClick: () -> Unit,
     onClear: () -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -201,7 +187,7 @@ private fun PerAppWidthRow(
                 )
             }
             if (widthDp != null) {
-                IconButton(onClick = onClear, modifier = Modifier.size(36.dp)) {
+                IconButton(onClick = onClear, modifier = Modifier.size(36.dp), shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Default.Refresh,
                         contentDescription = stringResource(R.string.per_app_width_reset)
@@ -266,18 +252,18 @@ private fun PerAppWidthDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(parsed) }, enabled = isValid) {
+            TextButton(onClick = { onConfirm(parsed) }, enabled = isValid, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
             Row {
                 if (currentWidth != null) {
-                    TextButton(onClick = { onConfirm(null) }) {
+                    TextButton(onClick = { onConfirm(null) }, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.per_app_width_reset))
                     }
                 }
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
