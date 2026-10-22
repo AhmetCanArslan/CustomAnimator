@@ -22,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -42,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.TerminalTileIcons
+import androidx.compose.material3.ButtonDefaults
+import com.arslan.customanimator.ui.components.AppSwitch
 
 data class TileSetupDraft(
     val label: String,
@@ -128,13 +129,14 @@ fun TileSetupDialog(
         confirmButton = {
             TextButton(
                 onClick = { onSave(if (enabled) draft else null) },
-                enabled = canSave
+                enabled = canSave,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -216,7 +218,8 @@ private fun TileSetupBody(
         OutlinedButton(
             onClick = onAddToPanel,
             enabled = trimmedLabel.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            shapes = ButtonDefaults.shapes()
         ) {
             Icon(
                 imageVector = Icons.Default.Add,
@@ -237,7 +240,7 @@ private fun TileSetupBody(
 
 @Composable
 private fun TileSetupIconButton(iconKey: String, onClick: () -> Unit) {
-    OutlinedButton(onClick = onClick, modifier = Modifier.fillMaxWidth()) {
+    OutlinedButton(onClick = onClick, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
         Icon(
             painter = painterResource(TerminalTileIcons.resFor(iconKey)),
             contentDescription = null,
@@ -336,6 +339,6 @@ private fun TileSetupToggleRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }
