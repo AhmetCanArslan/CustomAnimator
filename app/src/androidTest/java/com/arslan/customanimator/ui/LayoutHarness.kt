@@ -98,7 +98,9 @@ object LayoutHarness {
             val ellipsized = (0 until layout.lineCount).any { layout.isLineEllipsized(it) }
             val lineCapped = layout.lineCount >= layout.layoutInput.maxLines
             val needsMoreWidth = layout.multiParagraph.maxIntrinsicWidth > layout.multiParagraph.width + 0.5f
-            if (ellipsized || (lineCapped && needsMoreWidth)) {
+            val textCut = layout.getLineEnd(layout.lineCount - 1) < layout.layoutInput.text.length
+            val singleLineOverflow = layout.layoutInput.maxLines == 1 && needsMoreWidth
+            if (ellipsized || (lineCapped && (textCut || singleLineOverflow))) {
                 layout.layoutInput.text.text.take(60)
             } else {
                 null
