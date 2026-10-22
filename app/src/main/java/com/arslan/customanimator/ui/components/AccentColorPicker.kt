@@ -1,6 +1,5 @@
 package com.arslan.customanimator.ui.components
 
-import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -50,60 +48,75 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.R
-import com.arslan.customanimator.ui.theme.AccentSeedColors
-import com.arslan.customanimator.ui.theme.LocalThemeController
+import com.arslan.customanimator.utils.SystemColorsManager
+import com.arslan.customanimator.utils.SystemPalette
 
 private val RainbowColors = listOf(0f, 60f, 120f, 180f, 240f, 300f, 360f).map { hsvColor(it, 1f, 1f) }
 
 private const val HEX_LENGTH = 6
 
 @Composable
-fun AccentColorSelector() {
-    val controller = LocalThemeController.current
-    val seed = controller.seedColor
+fun AccentColorSelector(
+    palette: SystemPalette,
+    wallpaperColors: List<Int>,
+    recentColors: List<Int>,
+    enabled: Boolean,
+    onSelect: (SystemPalette) -> Unit
+) {
     var showCustom by remember { mutableStateOf(false) }
-    Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-        Text(
-            text = stringResource(R.string.settings_accent_color),
-            style = MaterialTheme.typography.titleSmall
-        )
-        Text(
-            text = accentDescription(seed),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
+    val pick: (Int) -> Unit = { onSelect(palette.copy(seedColor = it, fromWallpaper = false, colorIndex = null)) }
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Column {
+            Text(
+                text = stringResource(R.string.accent_color),
+                style = MaterialTheme.typography.titleSmall
+            )
+            Text(
+                text = palette.seedColor?.let { hexOf(it) } ?: stringResource(R.string.accent_wallpaper),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        SwatchGroup(stringResource(R.string.system_colors_source_wallpaper)) {
             AccentSwatch(
                 brush = SolidColor(MaterialTheme.colorScheme.surfaceContainerHighest),
                 icon = Icons.Filled.AutoAwesome,
                 iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                selected = seed == null,
-                label = stringResource(autoAccentLabel()),
-                onClick = { controller.updateSeedColor(null) }
+                selected = palette.fromWallpaper && palette.seedColor !in wallpaperColors,
+                enabled = enabled,
+                label = stringResource(R.string.accent_wallpaper),
+                onClick = { onSelect(palette.copy(seedColor = null, fromWallpaper = true, colorIndex = null)) }
             )
-            AccentSeedColors.forEach { color ->
-                AccentSwatch(
-                    brush = SolidColor(Color(color)),
-                    icon = null,
-                    iconTint = contentColorOn(color),
-                    selected = seed == color,
-                    label = hexOf(color),
-                    onClick = { controller.updateSeedColor(color) }
-                )
+            wallpaperColors.forEachIndexed { index, color ->
+                ColorSwatch(color, palette.fromWallpaper && palette.seedColor == color, enabled) {
+                    onSelect(palette.copy(seedColor = color, fromWallpaper = true, colorIndex = index))
+                }
             }
-            CustomAccentSwatch(seed = seed, onClick = { showCustom = true })
+        }
+        SwatchGroup(stringResource(R.string.system_colors_source_basic)) {
+            SystemColorsManager.presets.forEach { color ->
+                ColorSwatch(color, !palette.fromWallpaper && palette.seedColor == color, enabled) { pick(color) }
+            }
+        }
+        SwatchGroup(stringResource(R.string.system_colors_source_custom)) {
+            recentColors.forEach { color ->
+                ColorSwatch(color, !palette.fromWallpaper && palette.seedColor == color, enabled) { pick(color) }
+            }
+            val unlisted = palette.seedColor?.takeIf {
+                !palette.fromWallpaper && it !in SystemColorsManager.presets && it !in recentColors
+            }
+            CustomAccentSwatch(custom = unlisted, enabled = enabled, onClick = { showCustom = true })
         }
     }
     if (showCustom) {
         AccentColorDialog(
-            initial = seed ?: AccentSeedColors.first(),
+            initial = palette.seedColor ?: SystemColorsManager.presets.first(),
             onDismiss = { showCustom = false },
             onConfirm = {
-                controller.updateSeedColor(it)
+                pick(it)
                 showCustom = false
             }
         )
@@ -111,20 +124,43 @@ fun AccentColorSelector() {
 }
 
 @Composable
-private fun accentDescription(seed: Int?): String =
-    if (seed == null) stringResource(autoAccentLabel()) else hexOf(seed)
-
-private fun autoAccentLabel(): Int =
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) R.string.accent_wallpaper else R.string.accent_default
+private fun SwatchGroup(title: String, content: @Composable () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            content()
+        }
+    }
+}
 
 @Composable
-private fun CustomAccentSwatch(seed: Int?, onClick: () -> Unit) {
-    val custom = seed?.takeIf { it !in AccentSeedColors }
+private fun ColorSwatch(color: Int, selected: Boolean, enabled: Boolean, onClick: () -> Unit) {
+    AccentSwatch(
+        brush = SolidColor(Color(color)),
+        icon = null,
+        iconTint = contentColorOn(color),
+        selected = selected,
+        enabled = enabled,
+        label = hexOf(color),
+        onClick = onClick
+    )
+}
+
+@Composable
+private fun CustomAccentSwatch(custom: Int?, enabled: Boolean, onClick: () -> Unit) {
     AccentSwatch(
         brush = if (custom == null) Brush.sweepGradient(RainbowColors) else SolidColor(Color(custom)),
         icon = Icons.Filled.Colorize,
         iconTint = custom?.let { contentColorOn(it) } ?: Color.White,
         selected = custom != null,
+        enabled = enabled,
         label = stringResource(R.string.accent_custom),
         onClick = onClick
     )
@@ -136,6 +172,7 @@ private fun AccentSwatch(
     icon: ImageVector?,
     iconTint: Color,
     selected: Boolean,
+    enabled: Boolean,
     label: String,
     onClick: () -> Unit
 ) {
@@ -150,7 +187,7 @@ private fun AccentSwatch(
             .padding(4.dp)
             .clip(CircleShape)
             .background(brush)
-            .clickable(onClick = onClick),
+            .clickable(enabled = enabled, onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
         val shown = if (selected) Icons.Filled.Check else icon
