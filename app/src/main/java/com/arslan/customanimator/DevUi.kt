@@ -15,24 +15,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.InfoNoticeManager
 
 @Composable
 internal fun DevSectionTitle(title: String) {
     Text(
-        text = title.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
-        letterSpacing = 0.5.sp,
+        text = title,
+        style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 4.dp)
+        modifier = Modifier.padding(start = 8.dp)
     )
 }
 
@@ -40,7 +39,7 @@ internal fun LazyListScope.cardSection(titleRes: Int, vararg rows: @Composable (
     item {
         Column {
             DevSectionTitle(stringResource(titleRes))
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
     }
     cardRows(*rows)
@@ -50,32 +49,27 @@ internal fun LazyListScope.cardSection(titleRes: Int, vararg rows: @Composable (
 }
 
 internal fun LazyListScope.cardRows(vararg rows: @Composable () -> Unit) {
-    items(rows.size) { index ->
+    items(rows.size, contentType = { CARD_ROW_CONTENT_TYPE }) { index ->
         Surface(
             color = MaterialTheme.colorScheme.surfaceContainer,
-            shape = cardRowShape(isFirst = index == 0, isLast = index == rows.lastIndex),
-            modifier = Modifier.fillMaxWidth()
+            shape = AppShapes.segment(index, rows.size),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = if (index > 0) SEGMENT_GAP else 0.dp)
         ) {
             Column {
-                if (index > 0) {
-                    HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
-                }
                 rows[index]()
             }
         }
     }
 }
 
-private fun cardRowShape(isFirst: Boolean, isLast: Boolean): Shape = when {
-    isFirst && isLast -> AppShapes.card
-    isFirst -> AppShapes.cardTop
-    isLast -> AppShapes.cardBottom
-    else -> RectangleShape
-}
+private const val CARD_ROW_CONTENT_TYPE = "cardRow"
+private val SEGMENT_GAP = 2.dp
 
 @Composable
 internal fun ToggleRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     title: String,
     description: String,
     checked: Boolean,
