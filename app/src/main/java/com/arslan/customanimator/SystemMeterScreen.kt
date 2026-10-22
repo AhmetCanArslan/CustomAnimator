@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -21,10 +20,7 @@ import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -39,9 +35,9 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.service.FpsOverlayService
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.FpsOverlayManager
 import com.arslan.customanimator.utils.SystemMeterMetric
+import com.arslan.customanimator.ui.components.AppCard
 
 internal fun metricIcon(metric: SystemMeterMetric): ImageVector = when (metric) {
     SystemMeterMetric.FPS -> Icons.Filled.Speed
@@ -137,11 +133,7 @@ fun SystemMeterScreenContent(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     ToggleRow(
                         icon = Icons.Filled.Visibility,
                         title = stringResource(R.string.system_meter_enable),
@@ -186,11 +178,7 @@ fun SystemMeterScreenContent(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     androidx.compose.foundation.layout.Column {
                         SystemMeterMetric.entries.forEachIndexed { index, metric ->
                             if (index > 0) {
