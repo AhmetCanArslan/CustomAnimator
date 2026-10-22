@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -134,11 +135,7 @@ fun DeveloperScreenContent(
 
             if (!hasShizukuPermission && !canWriteSystemSettings) {
                 item {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = AppShapes.card
-                    ) {
+                    AppCard(contentPadding = 0.dp) {
                         ActionRow(
                             icon = Icons.Filled.EditNote,
                             title = stringResource(R.string.write_settings_permission),
