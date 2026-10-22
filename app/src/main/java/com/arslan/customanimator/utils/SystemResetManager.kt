@@ -33,6 +33,7 @@ object SystemResetManager {
         val dontKeepActivities = DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, false)
         val bgLimit = DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, false)
         val powerLongPress = ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
+        val systemColors = SystemColorsManager.restoreBaseline(context)
         ButtonRemapperManager.setDoublePressAction(context, null)
         ButtonRemapperManager.setVolumeComboAction(context, null)
         PowerButtonService.sync(context)
@@ -44,7 +45,7 @@ object SystemResetManager {
             animationScales = scales,
             density = density,
             rotation = rotation,
-            tweaks = fancyIme && clockSeconds && dontKeepActivities && bgLimit && powerLongPress,
+            tweaks = fancyIme && clockSeconds && dontKeepActivities && bgLimit && powerLongPress && systemColors,
             angle = angle,
             permissions = permissions
         )
