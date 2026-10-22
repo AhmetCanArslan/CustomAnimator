@@ -6,8 +6,6 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
@@ -23,6 +20,8 @@ import com.arslan.customanimator.notify.data.CustomPattern
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.notify.service.FlashManager
 import kotlinx.coroutines.delay
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,21 +65,14 @@ fun CreatePatternSection(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.pn_create_pattern),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.pn_cd_back))
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.pn_create_pattern),
+                onBack = onNavigateBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { innerPadding ->
@@ -148,7 +140,8 @@ fun CreatePatternSection(
                             recordingTimeLeft = 5000L
                             isRecording = true
                         },
-                        modifier = Modifier.fillMaxWidth(0.5f)
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.pn_start))
                     }
@@ -162,7 +155,8 @@ fun CreatePatternSection(
                             showNameDialog = true
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
-                        modifier = Modifier.fillMaxWidth(0.5f)
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.pn_stop))
                     }
@@ -214,13 +208,14 @@ fun CreatePatternSection(
                             onNavigateBack()
                         }
                     },
-                    enabled = patternName.isNotBlank()
+                    enabled = patternName.isNotBlank(),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showNameDialog = false }) {
+                TextButton(onClick = { showNameDialog = false }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
