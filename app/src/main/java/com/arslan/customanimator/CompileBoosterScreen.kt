@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Error
@@ -44,6 +43,8 @@ import com.arslan.customanimator.utils.CompileBoosterProgressTracker
 import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import java.text.NumberFormat
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private enum class CompilePhase { IDLE, PREPARING, RUNNING, FINISHED }
 
@@ -97,25 +98,14 @@ fun CompileBoosterScreen(
 
     LaunchedEffect(Unit) { RewardedAds.prepare(context) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.compile_booster),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.compile_booster),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
@@ -404,7 +394,8 @@ private fun CompileActionButton(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .heightIn(min = 52.dp)
+            .heightIn(min = 52.dp),
+        shapes = ButtonDefaults.shapes()
     ) {
         Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(20.dp))
         Spacer(modifier = Modifier.width(8.dp))
