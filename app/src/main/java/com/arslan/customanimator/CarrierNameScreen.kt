@@ -8,17 +8,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.CarrierNameManager
 import com.arslan.customanimator.utils.SimSlot
@@ -26,6 +22,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,25 +76,14 @@ fun CarrierNameScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.carrier_name),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.carrier_name),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -125,11 +113,7 @@ fun CarrierNameScreen(
 
             if (!hasPhonePermission) {
                 item {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = AppShapes.card
-                    ) {
+                    AppCard(contentPadding = 0.dp) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
                                 text = stringResource(R.string.carrier_name_needs_phone_permission),
@@ -138,7 +122,7 @@ fun CarrierNameScreen(
                             Spacer(modifier = Modifier.height(12.dp))
                             Button(onClick = {
                                 permissionLauncher.launch(Manifest.permission.READ_PHONE_STATE)
-                            }) {
+                            }, shapes = ButtonDefaults.shapes()) {
                                 Text(stringResource(R.string.grant), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
@@ -154,11 +138,7 @@ fun CarrierNameScreen(
 
             if (slots.size > 1) {
                 item {
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = AppShapes.card
-                    ) {
+                    AppCard(contentPadding = 0.dp) {
                         Column(modifier = Modifier.padding(vertical = 8.dp)) {
                             slots.forEach { slot ->
                                 Row(
@@ -188,11 +168,7 @@ fun CarrierNameScreen(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         slots.firstOrNull { it.subId == selectedSubId }?.let { slot ->
                             Text(
@@ -215,7 +191,8 @@ fun CarrierNameScreen(
                                 onClick = {
                                     runAction { CarrierNameManager.setCarrierName(context, selectedSubId, newName) }
                                 },
-                                enabled = hasShizukuPermission && !isBusy && newName.isNotBlank()
+                                enabled = hasShizukuPermission && !isBusy && newName.isNotBlank(),
+                                shapes = ButtonDefaults.shapes()
                             ) {
                                 Text(stringResource(R.string.apply_settings), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
@@ -227,7 +204,8 @@ fun CarrierNameScreen(
                                 enabled = hasShizukuPermission && !isBusy,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.secondary
-                                )
+                                ),
+                                shapes = ButtonDefaults.shapes()
                             ) {
                                 Text(stringResource(R.string.reset), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
