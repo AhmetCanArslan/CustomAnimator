@@ -29,14 +29,24 @@ enum class ThemeMode {
 
 class ThemeController(
     initialMode: ThemeMode,
-    private val onModeChange: (ThemeMode) -> Unit
+    initialSeedColor: Int?,
+    private val onModeChange: (ThemeMode) -> Unit,
+    private val onSeedColorChange: (Int?) -> Unit
 ) {
     var mode by mutableStateOf(initialMode)
+        private set
+
+    var seedColor by mutableStateOf(initialSeedColor)
         private set
 
     fun updateMode(value: ThemeMode) {
         mode = value
         onModeChange(value)
+    }
+
+    fun updateSeedColor(value: Int?) {
+        seedColor = value
+        onSeedColorChange(value)
     }
 }
 
@@ -116,7 +126,9 @@ fun CustomAnimatorTheme(
     val controller = remember {
         ThemeController(
             initialMode = SettingsManager.getThemeMode(context),
-            onModeChange = { SettingsManager.setThemeMode(context, it) }
+            initialSeedColor = SettingsManager.getSeedColor(context),
+            onModeChange = { SettingsManager.setThemeMode(context, it) },
+            onSeedColorChange = { SettingsManager.setSeedColor(context, it) }
         )
     }
 
@@ -128,8 +140,10 @@ fun CustomAnimatorTheme(
 
     val useDynamic = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
-    val targetScheme = remember(context, darkTheme) {
+    val seedColor = controller.seedColor
+    val targetScheme = remember(context, darkTheme, seedColor) {
         when {
+            seedColor != null -> seedColorScheme(seedColor, darkTheme)
             useDynamic && darkTheme -> dynamicDarkColorScheme(context)
             useDynamic -> dynamicLightColorScheme(context)
             darkTheme -> MaterialDarkColorScheme
