@@ -12,6 +12,7 @@ userMessagingPlatform = "4.0.0"
 billingKtx = "9.1.0"
 zxingCore = "3.5.3"
 gson = "2.14.0"
+materialColorUtilities = "5.0.1"
 shizuku = "13.1.5"
 junit = "4.13.2"
 robolectric = "4.16"
@@ -37,6 +38,7 @@ user-messaging-platform = { group = "com.google.android.ump", name = "user-messa
 billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingKtx" }
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxingCore" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+material-color-utilities = { group = "com.materialkolor", name = "material-color-utilities", version.ref = "materialColorUtilities" }
 shizuku-api = { group = "dev.rikka.shizuku", name = "api", version.ref = "shizuku" }
 shizuku-provider = { group = "dev.rikka.shizuku", name = "provider", version.ref = "shizuku" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

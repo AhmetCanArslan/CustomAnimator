@@ -141,6 +141,7 @@ dependencies {
     implementation(libs.shizuku.provider)
     implementation(libs.zxing.core)
     implementation(libs.gson)
+    implementation(libs.material.color.utilities)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
