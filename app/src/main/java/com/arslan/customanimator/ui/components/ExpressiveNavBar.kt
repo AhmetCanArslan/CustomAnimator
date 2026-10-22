@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyListState
@@ -37,6 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.first
+import kotlin.math.roundToInt
 import com.arslan.customanimator.ui.theme.pressScale
 
 @Immutable
@@ -67,13 +67,20 @@ fun ExpressiveTopNavBar(
             .first { it.visibleItemsInfo.isNotEmpty() }
         val item = info.visibleItemsInfo.firstOrNull { it.index == selectedIndex }
         if (item == null) {
-            if (animate) listState.animateScrollToItem(selectedIndex) else listState.scrollToItem(selectedIndex)
+            if (animate) listState.animateScrollToItem(selectedIndex) else listState.requestScrollToItem(selectedIndex)
             return@LaunchedEffect
         }
         val delta = revealScrollDelta(info.viewportStartOffset + info.beforeContentPadding,
             info.viewportEndOffset - info.afterContentPadding, item)
         if (delta == 0f) return@LaunchedEffect
-        if (animate) listState.animateScrollBy(delta) else listState.scrollBy(delta)
+        if (animate) {
+            listState.animateScrollBy(delta)
+        } else {
+            listState.requestScrollToItem(
+                listState.firstVisibleItemIndex,
+                listState.firstVisibleItemScrollOffset + delta.roundToInt()
+            )
+        }
     }
 
     LazyRow(
