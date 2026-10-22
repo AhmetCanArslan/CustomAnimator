@@ -5,17 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.utils.DeveloperOptionsManager
@@ -24,6 +20,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
 
 private const val DRIVER_NATIVE = "native"
 private const val DRIVER_ANGLE = "angle"
@@ -63,25 +63,14 @@ fun GraphicsApiOverrideScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.graphics_api_override),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.graphics_api_override),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -141,11 +130,7 @@ private fun DriverSelectionRow(
     enabled: Boolean,
     onDriverSelected: (String?) -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -159,32 +144,16 @@ private fun DriverSelectionRow(
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                SegmentedButton(
-                    selected = selectedDriver == null,
-                    onClick = { onDriverSelected(null) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_default), style = MaterialTheme.typography.labelSmall,)
-                }
-                SegmentedButton(
-                    selected = selectedDriver == DRIVER_NATIVE,
-                    onClick = { onDriverSelected(DRIVER_NATIVE) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_native), style = MaterialTheme.typography.labelSmall,)
-                }
-                SegmentedButton(
-                    selected = selectedDriver == DRIVER_ANGLE,
-                    onClick = { onDriverSelected(DRIVER_ANGLE) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_angle), style = MaterialTheme.typography.labelSmall,)
-                }
-            }
+            ConnectedChoiceGroup(
+                options = listOf(
+                    null to stringResource(R.string.driver_default),
+                    DRIVER_NATIVE to stringResource(R.string.driver_native),
+                    DRIVER_ANGLE to stringResource(R.string.driver_angle)
+                ),
+                selected = selectedDriver,
+                onSelect = onDriverSelected,
+                enabled = enabled
+            )
         }
     }
 }
