@@ -4,19 +4,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.service.ForegroundAppWatcherService
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.AppThreadingConfig
 import com.arslan.customanimator.utils.AppThreadingManager
 import com.arslan.customanimator.utils.CpuTopology
@@ -26,6 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,25 +73,14 @@ fun AppThreadingScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.app_threading),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.app_threading),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -183,11 +172,7 @@ private fun ThreadingRow(
     enabled: Boolean,
     onConfigChange: (AppThreadingConfig) -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -208,23 +193,16 @@ private fun ThreadingRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(4.dp))
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                val options = listOf(
-                    ThreadAffinityMode.ALL to R.string.app_threading_cores_all,
-                    ThreadAffinityMode.BIG to R.string.app_threading_cores_big,
-                    ThreadAffinityMode.LITTLE to R.string.app_threading_cores_little
-                )
-                options.forEachIndexed { index, (mode, labelRes) ->
-                    SegmentedButton(
-                        selected = config.affinity == mode,
-                        enabled = enabled,
-                        onClick = { onConfigChange(config.copy(affinity = mode)) },
-                        shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
-                    ) {
-                        Text(stringResource(labelRes), style = MaterialTheme.typography.labelSmall)
-                    }
-                }
-            }
+            ConnectedChoiceGroup(
+                options = listOf(
+                    ThreadAffinityMode.ALL to stringResource(R.string.app_threading_cores_all),
+                    ThreadAffinityMode.BIG to stringResource(R.string.app_threading_cores_big),
+                    ThreadAffinityMode.LITTLE to stringResource(R.string.app_threading_cores_little)
+                ),
+                selected = config.affinity,
+                onSelect = { onConfigChange(config.copy(affinity = it)) },
+                enabled = enabled
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -233,23 +211,16 @@ private fun ThreadingRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(4.dp))
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                val options = listOf(
-                    ThreadPriority.HIGH to R.string.app_threading_priority_high,
-                    ThreadPriority.NORMAL to R.string.app_threading_priority_normal,
-                    ThreadPriority.LOW to R.string.app_threading_priority_low
-                )
-                options.forEachIndexed { index, (priority, labelRes) ->
-                    SegmentedButton(
-                        selected = config.priority == priority,
-                        enabled = enabled,
-                        onClick = { onConfigChange(config.copy(priority = priority)) },
-                        shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
-                    ) {
-                        Text(stringResource(labelRes), style = MaterialTheme.typography.labelSmall)
-                    }
-                }
-            }
+            ConnectedChoiceGroup(
+                options = listOf(
+                    ThreadPriority.HIGH to stringResource(R.string.app_threading_priority_high),
+                    ThreadPriority.NORMAL to stringResource(R.string.app_threading_priority_normal),
+                    ThreadPriority.LOW to stringResource(R.string.app_threading_priority_low)
+                ),
+                selected = config.priority,
+                onSelect = { onConfigChange(config.copy(priority = it)) },
+                enabled = enabled
+            )
         }
     }
 }
