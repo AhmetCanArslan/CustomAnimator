@@ -843,6 +843,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="accent_brightness">Liwanag</string>
     <string name="accent_hex">Hex code</string>
     <string name="system_colors">Mga kulay ng system</string>
+    <string name="system_colors_desc">Baguhin ang Material You palette ng buong system</string>
     <string name="system_colors_info">Itinatakda ang palette na ginagamit ng Android, System UI at mga app na may dynamic na kulay. Ibinabalik ng mga kulay ng wallpaper ang palette sa wallpaper.</string>
     <string name="system_colors_unsupported">Kailangan ng feature na ito ang Android 12 o mas bago.</string>
     <string name="system_colors_source_wallpaper">Mula sa wallpaper</string>

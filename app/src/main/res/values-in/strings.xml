@@ -843,6 +843,7 @@ Durasi Animator: %3$.2f</string>
     <string name="accent_brightness">Kecerahan</string>
     <string name="accent_hex">Kode hex</string>
     <string name="system_colors">Warna sistem</string>
+    <string name="system_colors_desc">Ubah palet Material You di seluruh sistem</string>
     <string name="system_colors_info">Mengatur palet yang dipakai Android, UI Sistem, dan aplikasi dengan warna dinamis. Warna wallpaper mengembalikan palet ke wallpaper.</string>
     <string name="system_colors_unsupported">Fitur ini memerlukan Android 12 atau yang lebih baru.</string>
     <string name="system_colors_source_wallpaper">Dari wallpaper</string>

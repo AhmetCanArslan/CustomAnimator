@@ -899,6 +899,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="accent_brightness">Brightness</string>
     <string name="accent_hex">Hex code</string>
     <string name="system_colors">System colors</string>
+    <string name="system_colors_desc">Change the Material You palette of the whole system</string>
     <string name="system_colors_info">Sets the palette Android, System UI and apps with dynamic colors use. Wallpaper colors hands the palette back to the wallpaper.</string>
     <string name="system_colors_unsupported">This feature needs Android 12 or newer.</string>
     <string name="system_colors_source_wallpaper">From wallpaper</string>

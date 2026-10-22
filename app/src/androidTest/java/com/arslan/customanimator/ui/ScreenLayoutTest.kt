@@ -173,6 +173,7 @@ class ScreenLayoutTest {
             onNavigateToCarrierName = {},
             onNavigateToOtpCopier = {},
             onNavigateToStatusBarIcons = {},
+            onNavigateToSystemColors = {},
             onNavigateToButtonRemapper = {}
         )
     }

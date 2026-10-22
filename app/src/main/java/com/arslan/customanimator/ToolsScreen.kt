@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.WebAsset
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
@@ -62,6 +63,7 @@ fun ToolsScreenContent(
     onNavigateToCarrierName: () -> Unit,
     onNavigateToOtpCopier: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
+    onNavigateToSystemColors: () -> Unit,
     onNavigateToButtonRemapper: () -> Unit,
     onNavigateToDebloater: () -> Unit,
     onNavigateToCompileBooster: () -> Unit,
@@ -240,6 +242,14 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.status_bar_icons),
                         description = stringResource(R.string.status_bar_icons_desc),
                         onClick = onNavigateToStatusBarIcons
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Palette,
+                        title = stringResource(R.string.system_colors),
+                        description = stringResource(R.string.system_colors_desc),
+                        onClick = onNavigateToSystemColors
                     )
                 },
                 {

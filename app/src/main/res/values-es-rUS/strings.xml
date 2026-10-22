@@ -843,6 +843,7 @@ Duración del Animador: %3$.2f</string>
     <string name="accent_brightness">Brillo</string>
     <string name="accent_hex">Código hex</string>
     <string name="system_colors">Colores del sistema</string>
+    <string name="system_colors_desc">Cambia la paleta Material You de todo el sistema</string>
     <string name="system_colors_info">Define la paleta que usan Android, la IU del sistema y las apps con colores dinámicos. Colores del fondo de pantalla devuelve la paleta al fondo.</string>
     <string name="system_colors_unsupported">Esta función necesita Android 12 o una versión más reciente.</string>
     <string name="system_colors_source_wallpaper">Del fondo de pantalla</string>

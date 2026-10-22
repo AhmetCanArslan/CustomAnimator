@@ -843,6 +843,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="accent_brightness">Parlaklık</string>
     <string name="accent_hex">Hex kodu</string>
     <string name="system_colors">Sistem renkleri</string>
+    <string name="system_colors_desc">Tüm sistemin Material You paletini değiştirin</string>
     <string name="system_colors_info">Android, Sistem Arayüzü ve dinamik renk kullanan uygulamaların paletini belirler. Duvar kağıdı renkleri paleti yeniden duvar kağıdına bırakır.</string>
     <string name="system_colors_unsupported">Bu özellik Android 12 veya daha yenisini gerektirir.</string>
     <string name="system_colors_source_wallpaper">Duvar kağıdından</string>

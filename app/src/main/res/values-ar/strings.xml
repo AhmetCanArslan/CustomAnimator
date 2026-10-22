@@ -887,6 +887,7 @@
     <string name="accent_brightness">السطوع</string>
     <string name="accent_hex">رمز Hex</string>
     <string name="system_colors">ألوان النظام</string>
+    <string name="system_colors_desc">غيّر لوحة ألوان Material You للنظام بالكامل</string>
     <string name="system_colors_info">يحدد لوحة الألوان التي يستخدمها أندرويد وواجهة النظام والتطبيقات ذات الألوان الديناميكية. ألوان الخلفية تعيد اللوحة إلى الخلفية.</string>
     <string name="system_colors_unsupported">تتطلب هذه الميزة أندرويد 12 أو أحدث.</string>
     <string name="system_colors_source_wallpaper">من الخلفية</string>

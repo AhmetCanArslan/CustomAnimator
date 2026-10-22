@@ -843,6 +843,7 @@ Duração do Animador: %3$.2f</string>
     <string name="accent_brightness">Brilho</string>
     <string name="accent_hex">Código hex</string>
     <string name="system_colors">Cores do sistema</string>
+    <string name="system_colors_desc">Mude a paleta Material You de todo o sistema</string>
     <string name="system_colors_info">Define a paleta usada pelo Android, pela IU do sistema e pelos apps com cores dinâmicas. Cores do plano de fundo devolve a paleta ao plano de fundo.</string>
     <string name="system_colors_unsupported">Este recurso precisa do Android 12 ou mais recente.</string>
     <string name="system_colors_source_wallpaper">Do plano de fundo</string>

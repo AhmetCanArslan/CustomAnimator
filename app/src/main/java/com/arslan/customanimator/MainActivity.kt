@@ -201,7 +201,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
+    AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
     BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, COMPILE_BOOSTER
 }
 
@@ -258,6 +258,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
     HomeScreen.OTP_COPIER to HomeTab.TOOLS,
     HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
+    HomeScreen.SYSTEM_COLORS to HomeTab.TOOLS,
     HomeScreen.BUTTON_REMAPPER to HomeTab.TOOLS,
     HomeScreen.ICON_CHANGER to HomeTab.TOOLS,
     HomeScreen.APK_EXTRACTOR to HomeTab.TOOLS,
@@ -368,6 +369,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val otpCopierListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val systemColorsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val buttonRemapperListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val iconChangerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val apkExtractorListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -789,6 +791,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = statusBarIconsListState
         )
+    } else if (targetScreen == HomeScreen.SYSTEM_COLORS) {
+        SystemColorsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = systemColorsListState
+        )
     } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
         ScreenshotActionsScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -926,6 +933,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
             onNavigateToOtpCopier = { currentScreen = HomeScreen.OTP_COPIER },
             onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
+            onNavigateToSystemColors = { currentScreen = HomeScreen.SYSTEM_COLORS },
             onNavigateToButtonRemapper = { currentScreen = HomeScreen.BUTTON_REMAPPER },
             onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
             onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },

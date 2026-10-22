@@ -863,6 +863,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="accent_brightness">Luminosità</string>
     <string name="accent_hex">Codice hex</string>
     <string name="system_colors">Colori di sistema</string>
+    <string name="system_colors_desc">Cambia la tavolozza Material You di tutto il sistema</string>
     <string name="system_colors_info">Imposta la tavolozza usata da Android, dall\'interfaccia di sistema e dalle app con colori dinamici. Colori dello sfondo restituisce la tavolozza allo sfondo.</string>
     <string name="system_colors_unsupported">Questa funzione richiede Android 12 o versioni successive.</string>
     <string name="system_colors_source_wallpaper">Dallo sfondo</string>

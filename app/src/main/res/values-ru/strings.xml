@@ -843,6 +843,7 @@
     <string name="accent_brightness">Яркость</string>
     <string name="accent_hex">Hex-код</string>
     <string name="system_colors">Цвета системы</string>
+    <string name="system_colors_desc">Измените палитру Material You во всей системе</string>
     <string name="system_colors_info">Задаёт палитру, которую используют Android, системный интерфейс и приложения с динамическими цветами. Цвета обоев возвращают палитру обоям.</string>
     <string name="system_colors_unsupported">Для этой функции нужен Android 12 или новее.</string>
     <string name="system_colors_source_wallpaper">Из обоев</string>
