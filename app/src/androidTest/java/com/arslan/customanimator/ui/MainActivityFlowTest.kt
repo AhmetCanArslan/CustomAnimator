@@ -8,22 +8,36 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import com.arslan.customanimator.HomeScreen
+import com.arslan.customanimator.HomeTab
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
+import com.arslan.customanimator.utils.SettingsManager
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.ExternalResource
+import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 
 @OptIn(ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
 class MainActivityFlowTest {
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    private val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @get:Rule
+    val rules: RuleChain = RuleChain
+        .outerRule(object : ExternalResource() {
+            override fun before() {
+                SettingsManager.setLastScreen(context, HomeScreen.MAIN.name)
+                SettingsManager.setLastTab(context, HomeTab.ANIMATION.name)
+            }
+        })
+        .around(composeTestRule)
 
     private fun string(id: Int) = context.getString(id)
 
