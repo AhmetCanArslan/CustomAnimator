@@ -141,7 +141,7 @@ fun ToolsScreenContent(
             }
 
             cardSection(
-                R.string.tools_utilities,
+                R.string.tools_section_apps,
                 {
                     NavigationRow(
                         icon = Icons.Filled.AddToHomeScreen,
@@ -167,24 +167,29 @@ fun ToolsScreenContent(
                     )
                 },
                 {
-                    SaveToDeviceRow()
-                },
-                {
                     NavigationRow(
-                        icon = Icons.Filled.Screenshot,
-                        title = stringResource(R.string.screenshot_actions),
-                        description = stringResource(R.string.screenshot_actions_desc),
-                        onClick = onNavigateToScreenshotActions
+                        icon = Icons.Filled.DeleteSweep,
+                        title = stringResource(R.string.debloater),
+                        description = stringResource(R.string.debloater_desc),
+                        onClick = onNavigateToDebloater
                     )
                 },
                 {
-                    NavigationRow(
-                        icon = Icons.Filled.Password,
-                        title = stringResource(R.string.otp_copier),
-                        description = stringResource(R.string.otp_copier_desc),
-                        onClick = onNavigateToOtpCopier
-                    )
+                    CompileBoosterToolRow(onClick = onNavigateToCompileBooster)
                 },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.PlaylistRemove,
+                        title = stringResource(R.string.auto_actions),
+                        description = stringResource(R.string.more_auto_actions_desc),
+                        onClick = onNavigateToAutoActions
+                    )
+                }
+            
+            )
+
+            cardSection(
+                R.string.tools_section_performance,
                 {
                     NavigationRow(
                         icon = Icons.Filled.VideogameAsset,
@@ -216,7 +221,11 @@ fun ToolsScreenContent(
                         description = stringResource(R.string.refresh_rate_desc),
                         onClick = onNavigateToRefreshRate
                     )
-                },
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_system_ui,
                 {
                     NavigationRow(
                         icon = Icons.Filled.Widgets,
@@ -227,21 +236,100 @@ fun ToolsScreenContent(
                 },
                 {
                     NavigationRow(
-                        icon = Icons.Filled.DeleteSweep,
-                        title = stringResource(R.string.debloater),
-                        description = stringResource(R.string.debloater_desc),
-                        onClick = onNavigateToDebloater
+                        icon = Icons.Filled.WebAsset,
+                        title = stringResource(R.string.status_bar_icons),
+                        description = stringResource(R.string.status_bar_icons_desc),
+                        onClick = onNavigateToStatusBarIcons
                     )
                 },
                 {
-                    CompileBoosterToolRow(onClick = onNavigateToCompileBooster)
+                    NavigationRow(
+                        icon = Icons.Filled.SignalCellularAlt,
+                        title = stringResource(R.string.carrier_name),
+                        description = stringResource(R.string.carrier_name_desc),
+                        onClick = onNavigateToCarrierName
+                    )
                 },
                 {
                     NavigationRow(
-                        icon = Icons.Filled.PlaylistRemove,
-                        title = stringResource(R.string.auto_actions),
-                        description = stringResource(R.string.more_auto_actions_desc),
-                        onClick = onNavigateToAutoActions
+                        icon = Icons.Filled.PowerSettingsNew,
+                        title = stringResource(R.string.button_remapper),
+                        description = stringResource(R.string.button_remapper_desc),
+                        onClick = onNavigateToButtonRemapper
+                    )
+                },
+                {
+                    ActionRow(
+                        icon = Icons.Filled.RestartAlt,
+                        title = stringResource(R.string.restart_system_ui),
+                        description = stringResource(R.string.restart_system_ui_desc),
+                        buttonLabel = stringResource(R.string.restart),
+                        enabled = hasShizukuPermission,
+                        onClick = {
+                            coroutineScope.launch {
+                                val success = withContext(Dispatchers.IO) {
+                                    DeveloperOptionsManager.restartSystemUi()
+                                }
+                                if (!success) {
+                                    Toast.makeText(
+                                        context,
+                                        resources.getString(R.string.action_failed),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_connectivity,
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Wifi,
+                        title = stringResource(R.string.wifi_password_manager),
+                        description = stringResource(R.string.wifi_password_manager_desc),
+                        onClick = onNavigateToWifiPasswords
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.WifiTethering,
+                        title = stringResource(R.string.hotspot_manager),
+                        description = stringResource(R.string.hotspot_manager_desc),
+                        onClick = onNavigateToHotspotManager
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_utilities,
+                {
+                    SaveToDeviceRow()
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Screenshot,
+                        title = stringResource(R.string.screenshot_actions),
+                        description = stringResource(R.string.screenshot_actions_desc),
+                        onClick = onNavigateToScreenshotActions
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Password,
+                        title = stringResource(R.string.otp_copier),
+                        description = stringResource(R.string.otp_copier_desc),
+                        onClick = onNavigateToOtpCopier
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Alarm,
+                        title = stringResource(R.string.alarm_revealer),
+                        description = stringResource(R.string.alarm_revealer_desc),
+                        onClick = onNavigateToAlarmRevealer
                     )
                 }
             )
@@ -322,77 +410,6 @@ fun ToolsScreenContent(
                     }
                 },
                 {
-                    NavigationRow(
-                        icon = Icons.Filled.Wifi,
-                        title = stringResource(R.string.wifi_password_manager),
-                        description = stringResource(R.string.wifi_password_manager_desc),
-                        onClick = onNavigateToWifiPasswords
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.WifiTethering,
-                        title = stringResource(R.string.hotspot_manager),
-                        description = stringResource(R.string.hotspot_manager_desc),
-                        onClick = onNavigateToHotspotManager
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Alarm,
-                        title = stringResource(R.string.alarm_revealer),
-                        description = stringResource(R.string.alarm_revealer_desc),
-                        onClick = onNavigateToAlarmRevealer
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.SignalCellularAlt,
-                        title = stringResource(R.string.carrier_name),
-                        description = stringResource(R.string.carrier_name_desc),
-                        onClick = onNavigateToCarrierName
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.WebAsset,
-                        title = stringResource(R.string.status_bar_icons),
-                        description = stringResource(R.string.status_bar_icons_desc),
-                        onClick = onNavigateToStatusBarIcons
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.PowerSettingsNew,
-                        title = stringResource(R.string.button_remapper),
-                        description = stringResource(R.string.button_remapper_desc),
-                        onClick = onNavigateToButtonRemapper
-                    )
-                },
-                {
-                    ActionRow(
-                        icon = Icons.Filled.RestartAlt,
-                        title = stringResource(R.string.restart_system_ui),
-                        description = stringResource(R.string.restart_system_ui_desc),
-                        buttonLabel = stringResource(R.string.restart),
-                        enabled = hasShizukuPermission,
-                        onClick = {
-                            coroutineScope.launch {
-                                val success = withContext(Dispatchers.IO) {
-                                    DeveloperOptionsManager.restartSystemUi()
-                                }
-                                if (!success) {
-                                    Toast.makeText(
-                                        context,
-                                        resources.getString(R.string.action_failed),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                    )
-                },
-                {
                     ToggleRow(
                         icon = Icons.Filled.ScreenLockRotation,
                         title = stringResource(R.string.lock_screen_rotation),
@@ -451,6 +468,7 @@ fun ToolsScreenContent(
                         }
                     )
                 }
+            
             )
 
             item {
