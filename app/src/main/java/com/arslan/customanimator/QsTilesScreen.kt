@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Settings
@@ -54,6 +53,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSwitch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,25 +148,14 @@ fun QsTilesScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.qs_tiles),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.qs_tiles),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -474,7 +465,7 @@ private fun TileRow(
             )
         }
         if (onSettings != null) {
-            IconButton(onClick = onSettings) {
+            IconButton(onClick = onSettings, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = stringResource(R.string.qs_tiles_action_settings)
@@ -482,7 +473,7 @@ private fun TileRow(
             }
         }
         if (onAdd != null) {
-            IconButton(onClick = onAdd) {
+            IconButton(onClick = onAdd, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.qs_tiles_add_to_panel)
@@ -490,7 +481,7 @@ private fun TileRow(
             }
         }
         if (onRemove != null) {
-            IconButton(onClick = onRemove) {
+            IconButton(onClick = onRemove, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.qs_tiles_remove)
@@ -569,7 +560,8 @@ private fun ToggleTileDialog(
                 Spacer(Modifier.height(12.dp))
                 OutlinedButton(
                     onClick = { showIconPicker = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Icon(
                         painter = painterResource(TerminalTileIcons.resFor(iconKey)),
@@ -580,7 +572,7 @@ private fun ToggleTileDialog(
                     Text(stringResource(R.string.qs_tiles_pick_icon))
                 }
                 Spacer(Modifier.height(4.dp))
-                TextButton(onClick = { showAdvanced = !showAdvanced }) {
+                TextButton(onClick = { showAdvanced = !showAdvanced }, shapes = ButtonDefaults.shapes()) {
                     Text(
                         stringResource(
                             if (showAdvanced) {
@@ -624,7 +616,8 @@ private fun ToggleTileDialog(
                             showToast = showToast
                         )
                     )
-                }
+                },
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.save))
             }
@@ -632,11 +625,11 @@ private fun ToggleTileDialog(
         dismissButton = {
             Row {
                 if (onDelete != null) {
-                    TextButton(onClick = onDelete) {
+                    TextButton(onClick = onDelete, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.qs_tiles_remove))
                     }
                 }
-                TextButton(onClick = onDismiss) {
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -710,6 +703,6 @@ private fun ToggleTileSwitchRow(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.weight(1f)
         )
-        Switch(checked = checked, onCheckedChange = onCheckedChange)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange)
     }
 }
