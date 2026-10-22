@@ -16,7 +16,8 @@
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Lebar</string>
     <string name="nav_terminal">Terminal</string>
-    <string name="developer_toggles">Pengalih Sistem</string>
+    <string name="developer_section_debugging">Debugging</string>
+    <string name="developer_section_drawing">Input &amp; gambar</string>
     <string name="developer_needs_shizuku">Tindakan ini memerlukan Shizuku yang terhubung.</string>
     <string name="usb_debugging">Debugging USB</string>
     <string name="usb_debugging_desc">Izinkan debugging melalui koneksi USB</string>
@@ -1218,6 +1219,10 @@ Durasi Animator: %3$.2f</string>
     <string name="developer_title">Pengembang</string>
     <string name="tools_title">Alat</string>
     <string name="tools_utilities">Utilitas</string>
+    <string name="tools_section_apps">Aplikasi</string>
+    <string name="tools_section_performance">Layar &amp; performa</string>
+    <string name="tools_section_system_ui">UI sistem</string>
+    <string name="tools_section_connectivity">Konektivitas</string>
     <string name="more_compile_booster_desc">Kompilasi ulang aplikasi agar terbuka lebih cepat</string>
     <string name="more_auto_actions_desc">Aturan hentikan paksa dan izin otomatis</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>

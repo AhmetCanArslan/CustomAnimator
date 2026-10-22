@@ -16,7 +16,8 @@
     <string name="nav_animation">Anim</string>
     <string name="nav_width">Genişlik</string>
     <string name="nav_terminal">Terminal</string>
-    <string name="developer_toggles">Sistem Anahtarları</string>
+    <string name="developer_section_debugging">Hata ayıklama</string>
+    <string name="developer_section_drawing">Giriş ve çizim</string>
     <string name="developer_needs_shizuku">Bu işlemler için Shizuku bağlı olmalı.</string>
     <string name="usb_debugging">USB Hata Ayıklama</string>
     <string name="usb_debugging_desc">USB bağlantısı üzerinden hata ayıklamaya izin ver</string>
@@ -1226,6 +1227,10 @@ Animatör Süresi: %3$.2f</string>
     <string name="developer_title">Geliştirici</string>
     <string name="tools_title">Araçlar</string>
     <string name="tools_utilities">Yardımcı araçlar</string>
+    <string name="tools_section_apps">Uygulamalar</string>
+    <string name="tools_section_performance">Ekran ve performans</string>
+    <string name="tools_section_system_ui">Sistem arayüzü</string>
+    <string name="tools_section_connectivity">Bağlantı</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
     <string name="more_auto_actions_desc">Otomatik zorla durdurma ve izin kuralları</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>

@@ -16,7 +16,8 @@
     <string name="nav_animation">الحركة</string>
     <string name="nav_width">العرض</string>
     <string name="nav_terminal">الطرفية</string>
-    <string name="developer_toggles">مفاتيح النظام</string>
+    <string name="developer_section_debugging">تصحيح الأخطاء</string>
+    <string name="developer_section_drawing">الإدخال والرسم</string>
     <string name="developer_needs_shizuku">تتطلب هذه الإجراءات اتصال شيزوكو.</string>
     <string name="usb_debugging">تصحيح أخطاء USB</string>
     <string name="usb_debugging_desc">السماح بتصحيح الأخطاء عبر اتصال USB</string>
@@ -1258,6 +1259,10 @@
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
     <string name="tools_utilities">أدوات مساعدة</string>
+    <string name="tools_section_apps">التطبيقات</string>
+    <string name="tools_section_performance">العرض والأداء</string>
+    <string name="tools_section_system_ui">واجهة النظام</string>
+    <string name="tools_section_connectivity">الاتصال</string>
     <string name="more_compile_booster_desc">إعادة تجميع التطبيقات لتشغيل أسرع</string>
     <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>

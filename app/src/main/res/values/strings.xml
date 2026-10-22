@@ -18,9 +18,14 @@
     <string name="developer_title">Developer</string>
     <string name="tools_title">Tools</string>
     <string name="tools_utilities">Utilities</string>
+    <string name="tools_section_apps">Apps</string>
+    <string name="tools_section_performance">Display &amp; performance</string>
+    <string name="tools_section_system_ui">System UI</string>
+    <string name="tools_section_connectivity">Connectivity</string>
     <string name="more_compile_booster_desc">Recompile apps for faster launches</string>
     <string name="more_auto_actions_desc">Automatic force stop and permission rules</string>
-    <string name="developer_toggles">System Toggles</string>
+    <string name="developer_section_debugging">Debugging</string>
+    <string name="developer_section_drawing">Input &amp; drawing</string>
     <string name="developer_needs_shizuku">These actions require Shizuku to be connected.</string>
     <string name="usb_debugging">USB Debugging</string>
     <string name="usb_debugging_desc">Allow debugging over a USB connection</string>

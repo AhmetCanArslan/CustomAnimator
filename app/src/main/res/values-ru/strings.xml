@@ -16,7 +16,8 @@
     <string name="nav_animation">Аним.</string>
     <string name="nav_width">Ширина</string>
     <string name="nav_terminal">Терминал</string>
-    <string name="developer_toggles">Системные переключатели</string>
+    <string name="developer_section_debugging">Отладка</string>
+    <string name="developer_section_drawing">Ввод и отрисовка</string>
     <string name="developer_needs_shizuku">Эти действия требуют подключения Shizuku.</string>
     <string name="usb_debugging">Отладка по USB</string>
     <string name="usb_debugging_desc">Разрешить отладку через USB-соединение</string>
@@ -1220,6 +1221,10 @@
     <string name="developer_title">Разработчик</string>
     <string name="tools_title">Инструменты</string>
     <string name="tools_utilities">Утилиты</string>
+    <string name="tools_section_apps">Приложения</string>
+    <string name="tools_section_performance">Экран и производительность</string>
+    <string name="tools_section_system_ui">Интерфейс системы</string>
+    <string name="tools_section_connectivity">Подключения</string>
     <string name="more_compile_booster_desc">Перекомпиляция приложений для быстрого запуска</string>
     <string name="more_auto_actions_desc">Автоматическая остановка и правила разрешений</string>
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
