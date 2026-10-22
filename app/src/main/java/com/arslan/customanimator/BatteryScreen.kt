@@ -18,7 +18,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arslan.customanimator.ui.components.SliderRow
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -33,6 +32,11 @@ import com.arslan.customanimator.utils.BatteryTweaksManager
 import kotlin.math.roundToInt
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.AppSwitch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun BatteryScreenContent(
@@ -120,27 +124,27 @@ fun BatteryScreenContent(
 
     val policySupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
-    fun afterWrite(success: Boolean) {
-        refreshToken++
-        if (success) maybeShowInterstitial(context)
+    val coroutineScope = rememberCoroutineScope()
+
+    fun write(action: () -> Boolean) {
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) { action() }
+            refreshToken++
+            if (success) maybeShowInterstitial(context)
+        }
     }
 
-    fun writeGlobal(key: String, value: String) {
-        afterWrite(mgr.putGlobal(context, resolver, key, value))
-    }
+    fun writeGlobal(key: String, value: String) = write { mgr.putGlobal(context, resolver, key, value) }
 
-    fun writeSecure(key: String, value: String) {
-        afterWrite(mgr.putSecure(context, resolver, key, value))
-    }
+    fun writeSecure(key: String, value: String) = write { mgr.putSecure(context, resolver, key, value) }
 
     fun writePolicy(key: String, value: String) {
         val next = policyValues.toMutableMap()
         next[key] = value
-        val success = mgr.putGlobal(
-            context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS, mgr.serialiseConstants(next)
-        )
-        mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "")
-        afterWrite(success)
+        write {
+            mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "")
+            mgr.putGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS, mgr.serialiseConstants(next))
+        }
     }
 
     LazyColumn(
@@ -151,11 +155,7 @@ fun BatteryScreenContent(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth(),
-                shape = AppShapes.card
-            ) {
+            AppCard(contentPadding = 0.dp) {
                 NavigationRow(
                     icon = Icons.Filled.BatteryChargingFull,
                     title = stringResource(R.string.bh_title),
@@ -212,10 +212,7 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_saver)) }
         item {
-            Card(
-                shape = AppShapes.card,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth()) {
+            AppCard(contentPadding = 0.dp) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_low_power),
@@ -247,8 +244,10 @@ fun BatteryScreenContent(
                         ),
                         enabled = canWrite
                     ) { mode ->
-                        if (hasShizukuPermission) mgr.setAdaptivePowerSaver(mode == 1)
-                        writeGlobal(mgr.KEY_AUTOMATIC_POWER_SAVE_MODE, mode.toString())
+                        write {
+                            if (hasShizukuPermission) mgr.setAdaptivePowerSaver(mode == 1)
+                            mgr.putGlobal(context, resolver, mgr.KEY_AUTOMATIC_POWER_SAVE_MODE, mode.toString())
+                        }
                     }
 
                     HorizontalDivider()
@@ -321,18 +320,16 @@ fun BatteryScreenContent(
                 selected = matches,
                 enabled = canWrite
             ) {
-                val success = if (preset.constants.isEmpty()) {
-                    mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
-                } else {
-                    val next = policyValues.toMutableMap()
-                    next.putAll(preset.constants)
-                    mgr.putGlobal(
-                        context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS,
-                        mgr.serialiseConstants(next)
-                    )
+                val next = policyValues.toMutableMap()
+                next.putAll(preset.constants)
+                write {
+                    mgr.setAppliedPreset(context, mgr.GROUP_SAVER, preset.id)
+                    if (preset.constants.isEmpty()) {
+                        mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
+                    } else {
+                        mgr.putGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS, mgr.serialiseConstants(next))
+                    }
                 }
-                mgr.setAppliedPreset(context, mgr.GROUP_SAVER, preset.id)
-                afterWrite(success)
             }
         }
 
@@ -351,10 +348,7 @@ fun BatteryScreenContent(
             items(mgr.policyTweaks.size) { index ->
                 val tweak = mgr.policyTweaks[index]
                 val raw = policyValues[tweak.key] ?: ""
-                Card(
-                    shape = AppShapes.card,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth()) {
+                AppCard(contentPadding = 0.dp) {
                     when (tweak) {
                         is BatteryTweak.Toggle -> BatteryToggleRow(
                             title = stringResource(tweak.titleRes),
@@ -415,25 +409,19 @@ fun BatteryScreenContent(
                 selected = matches,
                 enabled = canWrite
             ) {
-                val success = if (preset.constants.isEmpty()) {
-                    mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS)
-                } else {
-                    mgr.putGlobal(
-                        context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS,
-                        mgr.serialiseConstants(preset.constants)
-                    )
+                write {
+                    mgr.setAppliedPreset(context, mgr.GROUP_DOZE, preset.id)
+                    if (preset.constants.isEmpty()) {
+                        mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS)
+                    } else {
+                        mgr.putGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS, mgr.serialiseConstants(preset.constants))
+                    }
                 }
-                mgr.setAppliedPreset(context, mgr.GROUP_DOZE, preset.id)
-                afterWrite(success)
             }
         }
 
         item {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth(),
-                shape = AppShapes.card
-            ) {
+            AppCard(contentPadding = 0.dp) {
                 NavigationRow(
                     icon = Icons.Filled.Check,
                     title = stringResource(R.string.doze_whitelist),
@@ -453,10 +441,7 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_background)) }
         item {
-            Card(
-                shape = AppShapes.card,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth()) {
+            AppCard(contentPadding = 0.dp) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_app_standby),
@@ -502,10 +487,7 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_charging)) }
         item {
-            Card(
-                shape = AppShapes.card,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth()) {
+            AppCard(contentPadding = 0.dp) {
                 Column {
                     BatteryToggleRow(
                         title = stringResource(R.string.bt_adaptive_charging),
@@ -541,10 +523,7 @@ fun BatteryScreenContent(
 
         item { BatterySectionTitle(stringResource(R.string.bt_section_alerts)) }
         item {
-            Card(
-                shape = AppShapes.card,
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                modifier = Modifier.fillMaxWidth()) {
+            AppCard(contentPadding = 0.dp) {
                 Column {
                     Text(
                         text = stringResource(R.string.bt_alert_info),
@@ -637,17 +616,20 @@ fun BatteryScreenContent(
         item {
             OutlinedButton(
                 onClick = {
-                    var success = mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
-                    success = mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS) || success
-                    success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER, "0") || success
-                    success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER_TRIGGER, "0") || success
-                    success = mgr.putGlobal(context, resolver, mgr.KEY_APP_STANDBY, "1") || success
-                    mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "default")
-                    mgr.setAppliedPreset(context, mgr.GROUP_DOZE, "default")
-                    afterWrite(success)
+                    write {
+                        var success = mgr.clearGlobal(context, resolver, mgr.KEY_BATTERY_SAVER_CONSTANTS)
+                        success = mgr.clearGlobal(context, resolver, mgr.KEY_DEVICE_IDLE_CONSTANTS) || success
+                        success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER, "0") || success
+                        success = mgr.putGlobal(context, resolver, mgr.KEY_LOW_POWER_TRIGGER, "0") || success
+                        success = mgr.putGlobal(context, resolver, mgr.KEY_APP_STANDBY, "1") || success
+                        mgr.setAppliedPreset(context, mgr.GROUP_SAVER, "default")
+                        mgr.setAppliedPreset(context, mgr.GROUP_DOZE, "default")
+                        success
+                    }
                 },
                 enabled = canWrite,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.bt_reset_all))
             }
@@ -692,7 +674,7 @@ private fun BatteryToggleRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }
 
