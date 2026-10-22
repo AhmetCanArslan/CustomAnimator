@@ -2,19 +2,14 @@ package com.arslan.customanimator.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -28,13 +23,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -43,14 +53,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.R
+import java.util.Locale
+import kotlin.math.roundToInt
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.Motion
 import com.arslan.customanimator.ui.theme.pressScale
@@ -76,7 +94,7 @@ fun AppCard(
         } else {
             Color.Transparent
         },
-        animationSpec = tween(Motion.durationMedium),
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
         label = "cardBorder"
     )
     val base = modifier
@@ -84,7 +102,7 @@ fun AppCard(
         .then(if (onClick != null) Modifier.pressScale(interactionSource) else Modifier)
         .clip(shape)
         .background(containerColor)
-        .border(width = if (highlighted) 1.5.dp else 0.dp, color = borderColor, shape = shape)
+        .then(if (highlighted) Modifier.border(width = 1.5.dp, color = borderColor, shape = shape) else Modifier)
         .then(
             if (onClick != null) {
                 Modifier.clickable(
@@ -305,23 +323,23 @@ fun ExpandableCard(
     pillTone: StatusTone = StatusTone.NEUTRAL,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val rotation by animateFloatAsState(
+    val rotation = animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
-        animationSpec = Motion.bouncy(),
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "chevron"
     )
-    val elevationPad by animateDpAsState(
-        targetValue = if (expanded) 4.dp else 0.dp,
-        animationSpec = Motion.snappy(),
-        label = "expandPad"
-    )
-    AppCard(
-        modifier = modifier,
-        containerColor = if (expanded) {
+    val containerColor by animateColorAsState(
+        targetValue = if (expanded) {
             MaterialTheme.colorScheme.surfaceContainerHigh
         } else {
             MaterialTheme.colorScheme.surfaceContainer
         },
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "expandContainer"
+    )
+    AppCard(
+        modifier = modifier,
+        containerColor = containerColor,
         contentPadding = 16.dp,
         highlighted = expanded
     ) {
@@ -339,7 +357,7 @@ fun ExpandableCard(
                     Icon(
                         imageVector = Icons.Default.ExpandMore,
                         contentDescription = null,
-                        modifier = Modifier.rotate(rotation),
+                        modifier = Modifier.graphicsLayer { rotationZ = rotation.value },
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -347,11 +365,11 @@ fun ExpandableCard(
         )
         AnimatedVisibility(
             visible = expanded,
-            enter = expandVertically(Motion.snappy()) + fadeIn(tween(Motion.durationMedium)),
-            exit = shrinkVertically(Motion.snappy()) + fadeOut(tween(Motion.durationFast))
+            enter = Motion.expandIn(),
+            exit = Motion.collapseOut()
         ) {
             Column(
-                modifier = Modifier.padding(top = elevationPad + 4.dp),
+                modifier = Modifier.padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 content = content
             )
