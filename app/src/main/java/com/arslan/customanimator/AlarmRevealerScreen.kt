@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.Refresh
@@ -18,11 +17,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.AlarmRevealer
@@ -34,6 +31,9 @@ import kotlinx.coroutines.withContext
 import java.text.DateFormat
 import java.util.Date
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,27 +70,16 @@ fun AlarmRevealerScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.alarm_revealer),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.alarm_revealer),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = { reloadKey++ }) {
+                    IconButton(onClick = { reloadKey++ }, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             imageVector = Icons.Filled.Refresh,
                             contentDescription = stringResource(R.string.refresh)
@@ -118,11 +107,7 @@ fun AlarmRevealerScreen(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -162,7 +147,7 @@ fun AlarmRevealerScreen(
                             if (alarm.packageName.isNotEmpty()) {
                                 Spacer(modifier = Modifier.height(12.dp))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Button(onClick = { openAppInfo(alarm.packageName) }) {
+                                    Button(onClick = { openAppInfo(alarm.packageName) }, shapes = ButtonDefaults.shapes()) {
                                         Text(stringResource(R.string.app_info), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
                                     Button(
@@ -184,7 +169,8 @@ fun AlarmRevealerScreen(
                                         enabled = hasShizukuPermission,
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = MaterialTheme.colorScheme.secondary
-                                        )
+                                        ),
+                                        shapes = ButtonDefaults.shapes()
                                     ) {
                                         Text(stringResource(R.string.force_stop), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
@@ -198,7 +184,7 @@ fun AlarmRevealerScreen(
             if (isLoading) {
                 item {
                     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LoadingIndicator()
                     }
                 }
             }
@@ -214,11 +200,7 @@ fun AlarmRevealerScreen(
                     )
                 }
                 items(others, key = { it.packageName }) { alarm ->
-                    Card(
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = AppShapes.card
-                    ) {
+                    AppCard(contentPadding = 0.dp) {
                         Row(
                             modifier = Modifier.padding(16.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -232,7 +214,7 @@ fun AlarmRevealerScreen(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            Button(onClick = { openAppInfo(alarm.packageName) }) {
+                            Button(onClick = { openAppInfo(alarm.packageName) }, shapes = ButtonDefaults.shapes()) {
                                 Text(stringResource(R.string.app_info), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
