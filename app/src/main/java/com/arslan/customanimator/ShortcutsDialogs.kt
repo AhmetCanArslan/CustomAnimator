@@ -381,7 +381,7 @@ private fun ConfirmShortcutDialog(
         },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedButton(onClick = { showIconPicker = true }, modifier = Modifier.fillMaxWidth()) {
+                OutlinedButton(onClick = { showIconPicker = true }, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.shortcut_change_icon))
                 }
                 OutlinedTextField(
@@ -415,16 +415,17 @@ private fun ConfirmShortcutDialog(
                         proceed()
                     }
                 },
-                enabled = isValid
+                enabled = isValid,
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(confirmLabelRes(step.editing, needsAd)))
             }
         },
         dismissButton = {
-            TextButton(onClick = { onTest(entry.withInput(label, value)) }, enabled = isValid) {
+            TextButton(onClick = { onTest(entry.withInput(label, value)) }, enabled = isValid, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.shortcut_test))
             }
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
@@ -448,7 +449,7 @@ private fun ShortcutPlacementDialog(onPick: (Boolean) -> Unit, onDismiss: () -> 
         },
         confirmButton = {},
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
