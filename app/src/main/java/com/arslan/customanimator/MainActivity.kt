@@ -996,7 +996,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(
                                     onClick = { showWidthPresetDialog = true },
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(32.dp),
+                                    shapes = IconButtonDefaults.shapes()
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Add,
@@ -1020,7 +1021,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             }
                                         }
                                     },
-                                    modifier = Modifier.size(32.dp)
+                                    modifier = Modifier.size(32.dp),
+                                    shapes = IconButtonDefaults.shapes()
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Refresh,
@@ -1092,7 +1094,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 enabled = !isApplyingSettings,
-                                modifier = Modifier.heightIn(min = 56.dp)
+                                modifier = Modifier.heightIn(min = 56.dp),
+                                shapes = ButtonDefaults.shapes()
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
@@ -1131,7 +1134,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
-                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_WIDTH }) {
+                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_WIDTH }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                                 contentDescription = stringResource(R.string.per_app_width_button)
@@ -1179,7 +1182,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            IconButton(onClick = { widthTilePreset = widthPreset }) {
+                            IconButton(onClick = { widthTilePreset = widthPreset }, shapes = IconButtonDefaults.shapes()) {
                                 Icon(
                                     imageVector = Icons.Default.Widgets,
                                     contentDescription = stringResource(R.string.terminal_tile_menu)
@@ -1190,7 +1193,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     widthPresetManager.deletePreset(widthPreset.id)
                                     allWidthPresets = widthPresetManager.getAllPresets()
                                     Toast.makeText(context, context.getString(R.string.width_preset_deleted), Toast.LENGTH_SHORT).show()
-                                }
+                                },
+                                shapes = IconButtonDefaults.shapes()
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
@@ -1231,7 +1235,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 enabled = !isApplyingSettings,
-                                modifier = Modifier.heightIn(min = 42.dp)
+                                modifier = Modifier.heightIn(min = 42.dp),
+                                shapes = ButtonDefaults.shapes()
                             ) {
                                 Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
@@ -1309,7 +1314,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     IconButton(
                                         onClick = { showPresetDialog = true },
-                                        modifier = Modifier.size(32.dp)
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Add,
@@ -1320,7 +1326,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         onClick = {
                                             resetAnimationScalesToDefault()
                                         },
-                                        modifier = Modifier.size(32.dp)
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Refresh,
@@ -1429,7 +1436,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     IconButton(
                                         onClick = { showPresetDialog = true },
-                                        modifier = Modifier.size(32.dp)
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Add,
@@ -1440,7 +1448,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         onClick = {
                                             resetAnimationScalesToDefault()
                                         },
-                                        modifier = Modifier.size(32.dp)
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Refresh,
@@ -1488,7 +1497,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 modifier = Modifier.heightIn(min = 56.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
-                                )
+                                ),
+                                shapes = ButtonDefaults.shapes()
                             ) {
                                 Text(
                                     stringResource(R.string.apply_settings),
@@ -1601,7 +1611,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
-                                IconButton(onClick = { animationTilePreset = preset }) {
+                                IconButton(onClick = { animationTilePreset = preset }, shapes = IconButtonDefaults.shapes()) {
                                     Icon(
                                         imageVector = Icons.Default.Widgets,
                                         contentDescription = stringResource(R.string.terminal_tile_menu)
@@ -1612,7 +1622,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         presetManager.deletePreset(preset.id)
                                         allPresets = presetManager.getAllPresets()
                                         Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
-                                    }
+                                    },
+                                    shapes = IconButtonDefaults.shapes()
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
@@ -1673,7 +1684,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         enabled = !isApplyingSettings,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .heightIn(min = 42.dp)
+                                            .heightIn(min = 42.dp),
+                                        shapes = ButtonDefaults.shapes()
                                     ) {
                                         Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
@@ -1839,7 +1851,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                         clipboard.setPrimaryClip(clip)
                         Toast.makeText(context, context.getString(R.string.command_copied), Toast.LENGTH_SHORT).show()
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.copy_command))
                 }
@@ -1849,7 +1862,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = { showPermissionDialog = false },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.close))
                 }
@@ -1867,7 +1881,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = {
                         SettingsManager.setSkipWriteSecureWidthConfirmDialog(context, true)
                         showWriteSecureWidthConfirmDialog = false
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.yes))
                 }
@@ -1880,7 +1895,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.no))
                 }
@@ -1910,7 +1926,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = {
                         SettingsManager.markAdInfoDialogShown(context)
                         showAdInfoDialog = false
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.ad_info_ok))
                 }
@@ -1921,7 +1938,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         SettingsManager.markAdInfoDialogShown(context)
                         showAdInfoDialog = false
                         startRemoveAdsPurchase(context)
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.remove_ads))
                 }
@@ -1965,7 +1983,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
                             )
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.rate_dialog_rate))
                 }
@@ -1978,7 +1997,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.rate_dialog_later))
                 }
@@ -1993,7 +2013,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             text = { Text(stringResource(R.string.write_secure_not_supported_message)) },
             confirmButton = {
                 Button(
-                    onClick = { showWriteSecureWidthUnsupportedDialog = false }
+                    onClick = { showWriteSecureWidthUnsupportedDialog = false },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -2044,7 +2065,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         } else {
                             Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save))
                 }
@@ -2057,7 +2079,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -2102,7 +2125,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 TextButton(onClick = {
                     widthRevertDeadline = 0L
                     widthRevertTarget = -1
-                }) { Text(stringResource(R.string.width_revert_keep)) }
+                }, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.width_revert_keep)) }
             },
             dismissButton = {
                 TextButton(onClick = {
@@ -2116,7 +2139,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         smallestWidth = SettingsManager.getSmallestWidth(context)
                         smallestWidthInputValue = smallestWidth.toString()
                     }
-                }) { Text(stringResource(R.string.width_revert_now)) }
+                }, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.width_revert_now)) }
             }
         )
     }
@@ -2217,7 +2240,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         } else {
                             Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save))
                 }
@@ -2230,7 +2254,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -2296,7 +2321,7 @@ private fun HomeTopBar(
                 actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
             ),
             actions = {
-                IconButton(onClick = onOpenSearch) {
+                IconButton(onClick = onOpenSearch, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = stringResource(R.string.search_app)
@@ -2330,7 +2355,7 @@ private fun HomeOverflowMenu(
         action()
     }
     Box {
-        IconButton(onClick = { expanded = true }) {
+        IconButton(onClick = { expanded = true }, shapes = IconButtonDefaults.shapes()) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = stringResource(R.string.shortcut_more_options)
