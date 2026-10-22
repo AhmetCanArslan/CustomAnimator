@@ -1156,14 +1156,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
 
             if (allWidthPresets.isNotEmpty()) {
-                items(allWidthPresets) { widthPreset ->
-                    Card(
-                        shape = AppShapes.card,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
+                items(allWidthPresets, key = { it.id }) { widthPreset ->
+                    AppCard(modifier = Modifier.animateItem(), contentPadding = 0.dp) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -1685,19 +1679,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
             
             if (allPresets.isNotEmpty()) {
-                items(allPresets) { preset ->
-                    Card(
-                        shape = AppShapes.card,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(
-                                if (expandedPresetId == preset.id)
-                                    MaterialTheme.colorScheme.primaryContainer
-                                else
-                                    Color.Transparent
-                            )
+                items(allPresets, key = { it.id }) { preset ->
+                    AppCard(
+                        modifier = Modifier.animateItem(),
+                        containerColor = if (expandedPresetId == preset.id) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.surfaceContainer
+                        },
+                        contentPadding = 0.dp
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Row(
