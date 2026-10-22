@@ -47,7 +47,6 @@ import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.VideogameAsset
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -117,6 +116,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.lifecycleScope
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.arslan.customanimator.R
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ScaleSlider
+import androidx.compose.material.icons.filled.Check
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -2402,25 +2406,14 @@ private fun SubScreen(
     actions: @Composable RowScope.() -> Unit = {},
     content: @Composable () -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        title,
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = title,
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = actions
             )
         }
