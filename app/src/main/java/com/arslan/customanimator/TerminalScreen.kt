@@ -26,7 +26,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -61,6 +60,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.ui.components.AppCard
 
 @Composable
 fun TerminalScreenContent(
@@ -169,7 +169,8 @@ fun TerminalScreenContent(
                             focusManager.clearFocus()
                             run(command.text)
                         },
-                        enabled = canRun && command.text.isNotBlank()
+                        enabled = canRun && command.text.isNotBlank(),
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
@@ -191,7 +192,8 @@ fun TerminalScreenContent(
                     style = MaterialTheme.typography.titleMedium,
                 )
                 TextButton(
-                    onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.text.trim()) }
+                    onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.text.trim()) },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
@@ -258,7 +260,7 @@ fun TerminalScreenContent(
                     }
                 }
                 if (output.isNotEmpty()) {
-                    TextButton(onClick = { output = ""; exitCode = null }) {
+                    TextButton(onClick = { output = ""; exitCode = null }, shapes = ButtonDefaults.shapes()) {
                         Text(stringResource(R.string.terminal_clear_output))
                     }
                 }
@@ -314,7 +316,7 @@ fun TerminalScreenContent(
                 TextButton(onClick = {
                     com.arslan.customanimator.utils.SettingsManager.markTerminalRiskAccepted(context)
                     showRiskDialog = false
-                }) {
+                }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.risk_dialog_accept))
                 }
             }
@@ -439,7 +441,7 @@ private fun CommandField(
                         IconButton(onClick = {
                             focusRequester.requestFocus()
                             showHistory = !showHistory
-                        }) {
+                        }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.Default.History,
                                 contentDescription = stringResource(R.string.terminal_history)
@@ -447,7 +449,7 @@ private fun CommandField(
                         }
                     }
                     if (value.text.isNotEmpty()) {
-                        IconButton(onClick = { onValueChange(TextFieldValue("")) }) {
+                        IconButton(onClick = { onValueChange(TextFieldValue("")) }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
                                 contentDescription = stringResource(R.string.terminal_clear_command)
@@ -573,10 +575,7 @@ private fun PresetCard(
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
 
-    Card(
-        shape = AppShapes.card,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth()) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -604,14 +603,14 @@ private fun PresetCard(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            IconButton(onClick = onRun, enabled = canRun) {
+            IconButton(onClick = onRun, enabled = canRun, shapes = IconButtonDefaults.shapes()) {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
                     contentDescription = stringResource(R.string.terminal_run)
                 )
             }
             Box {
-                IconButton(onClick = { menuExpanded = true }) {
+                IconButton(onClick = { menuExpanded = true }, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = stringResource(R.string.terminal_preset_options)
@@ -691,13 +690,14 @@ private fun PresetDialog(
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(name.trim(), command.text.trim()) },
-                enabled = name.isNotBlank() && command.text.isNotBlank()
+                enabled = name.isNotBlank() && command.text.isNotBlank(),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
