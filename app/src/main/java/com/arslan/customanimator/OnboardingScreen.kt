@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import com.arslan.customanimator.ui.components.IconBadge
 
 private data class OnboardingPage(
     val icon: ImageVector,
@@ -131,7 +132,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                     onClick = {
                         scope.launch { pagerState.animateScrollToPage(onboardingPages.lastIndex) }
                     },
-                    enabled = !isLastPage
+                    enabled = !isLastPage,
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(
                         text = if (isLastPage) "" else stringResource(R.string.onboarding_skip),
@@ -194,7 +196,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                             },
                             modifier = Modifier
                                 .weight(1f)
-                                .heightIn(min = 52.dp)
+                                .heightIn(min = 52.dp),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Text(stringResource(R.string.onboarding_back))
                         }
@@ -211,7 +214,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                         enabled = !isLastPage || canFinish,
                         modifier = Modifier
                             .weight(if (pagerState.currentPage > 0) 1f else 2f)
-                            .heightIn(min = 52.dp)
+                            .heightIn(min = 52.dp),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(
                             text = if (isLastPage) {
@@ -228,7 +232,8 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                     TextButton(
                         onClick = onFinished,
                         enabled = canFinish,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        shapes = ButtonDefaults.shapes()
                     ) {
                         Text(stringResource(R.string.onboarding_setup_later))
                     }
@@ -253,20 +258,7 @@ private fun OnboardingPageContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(84.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = page.icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(42.dp)
-            )
-        }
+        IconBadge(icon = page.icon, size = 84.dp)
 
         Spacer(Modifier.height(22.dp))
 
@@ -307,7 +299,7 @@ private fun OnboardingPageContent(
 
         if (page.offersRemoveAds) {
             Spacer(Modifier.height(10.dp))
-            OutlinedButton(onClick = onRemoveAds) {
+            OutlinedButton(onClick = onRemoveAds, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.remove_ads))
             }
         }
