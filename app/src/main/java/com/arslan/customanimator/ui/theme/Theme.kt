@@ -3,9 +3,9 @@ package com.arslan.customanimator.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -76,10 +76,7 @@ val MaterialTheme.extendedColors: ExtendedColors
 
 @Composable
 private fun animateScheme(target: ColorScheme): ColorScheme {
-    val spec = tween<Color>(
-        durationMillis = Motion.durationSlow,
-        easing = Motion.emphasizedEasing
-    )
+    val spec = AppMotionScheme.slowEffectsSpec<Color>()
     @Composable
     fun anim(color: Color, label: String): Color =
         animateColorAsState(targetValue = color, animationSpec = spec, label = label).value
@@ -131,11 +128,13 @@ fun CustomAnimatorTheme(
 
     val useDynamic = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
-    val targetScheme = when {
-        useDynamic && darkTheme -> dynamicDarkColorScheme(context)
-        useDynamic -> dynamicLightColorScheme(context)
-        darkTheme -> MaterialDarkColorScheme
-        else -> MaterialLightColorScheme
+    val targetScheme = remember(context, darkTheme) {
+        when {
+            useDynamic && darkTheme -> dynamicDarkColorScheme(context)
+            useDynamic -> dynamicLightColorScheme(context)
+            darkTheme -> MaterialDarkColorScheme
+            else -> MaterialLightColorScheme
+        }
     }
 
     val colorScheme = if (LocalInspectionMode.current) targetScheme else animateScheme(targetScheme)
@@ -180,8 +179,9 @@ fun CustomAnimatorTheme(
         LocalThemeController provides controller,
         LocalExtendedColors provides extendedColors
     ) {
-        MaterialTheme(
+        MaterialExpressiveTheme(
             colorScheme = colorScheme,
+            motionScheme = AppMotionScheme,
             typography = Typography,
             shapes = Shapes,
             content = content
