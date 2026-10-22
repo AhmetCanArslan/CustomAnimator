@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AirplanemodeActive
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.BatteryFull
@@ -55,14 +54,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.StatusBarIconsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 private data class StatusBarIconEntry(
     val slot: String,
@@ -198,25 +198,14 @@ fun StatusBarIconsScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.status_bar_icons),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.status_bar_icons),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -246,11 +235,7 @@ fun StatusBarIconsScreen(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column {
                         ActionRow(
                             icon = Icons.Filled.Visibility,
@@ -299,11 +284,7 @@ private fun StatusBarIconSectionCard(
     enabled: Boolean,
     onToggle: (String, Boolean) -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column {
             entries.forEachIndexed { index, entry ->
                 if (index > 0) {
