@@ -20,6 +20,7 @@ import com.arslan.customanimator.CarrierNameScreen
 import com.arslan.customanimator.OtpCopierScreen
 import com.arslan.customanimator.DebloaterScreen
 import com.arslan.customanimator.StatusBarIconsScreen
+import com.arslan.customanimator.SystemColorsScreen
 import com.arslan.customanimator.DeveloperScreenContent
 import com.arslan.customanimator.DozeWhitelistScreen
 import com.arslan.customanimator.GameModeScreenContent
@@ -227,6 +228,11 @@ class ScreenLayoutTest {
     @Test
     fun statusBarIconsScreenFitsSmallPhones() = screenFits(R.string.status_bar_icons) {
         StatusBarIconsScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun systemColorsScreenFitsSmallPhones() = screenFits(R.string.system_colors) {
+        SystemColorsScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test
