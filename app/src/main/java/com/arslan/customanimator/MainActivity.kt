@@ -976,13 +976,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             }
 
             item {
-                Card(
-                    shape = AppShapes.card,
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -1310,11 +1304,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             
             if (inputMode == "slider") {
                 item {
-                    Card(
-                        shape = AppShapes.card,
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                        modifier = Modifier
-                        .fillMaxWidth()) {
+                    AppCard(contentPadding = 0.dp) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
