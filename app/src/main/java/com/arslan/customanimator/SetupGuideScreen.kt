@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ContentCopy
@@ -37,7 +36,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -55,6 +53,8 @@ import com.arslan.customanimator.utils.SetupStage
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
 import kotlinx.coroutines.delay
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private enum class SetupRoute { PHONE_ONLY, COMPUTER }
 
@@ -117,24 +117,14 @@ fun SetupGuideScreen(
     val route = SetupRoute.valueOf(routeName)
     var explainerOpen by rememberSaveable { mutableStateOf(false) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.setup_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.setup_title),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { padding ->
@@ -596,7 +586,7 @@ private fun SetupStep(
                 if (!done && primaryLabel != null && onPrimary != null) {
                     Spacer(Modifier.height(4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(onClick = onPrimary) {
+                        Button(onClick = onPrimary, shapes = ButtonDefaults.shapes()) {
                             if (primaryIcon != null) {
                                 Icon(
                                     imageVector = primaryIcon,
@@ -608,7 +598,7 @@ private fun SetupStep(
                             Text(primaryLabel)
                         }
                         if (secondaryLabel != null && onSecondary != null) {
-                            TextButton(onClick = onSecondary) { Text(secondaryLabel) }
+                            TextButton(onClick = onSecondary, shapes = ButtonDefaults.shapes()) { Text(secondaryLabel) }
                         }
                     }
                 }
@@ -644,7 +634,8 @@ private fun CommandBox(command: String) {
                         Toast.LENGTH_SHORT
                     ).show()
                 },
-                modifier = Modifier.align(Alignment.End)
+                modifier = Modifier.align(Alignment.End),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Icon(
                     imageVector = Icons.Filled.ContentCopy,
@@ -665,7 +656,7 @@ private fun HelpFooter() {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TextButton(onClick = { SetupHelper.openShizukuGuide(context) }) {
+        TextButton(onClick = { SetupHelper.openShizukuGuide(context) }, shapes = ButtonDefaults.shapes()) {
             Icon(
                 imageVector = Icons.Filled.OpenInNew,
                 contentDescription = null,
@@ -691,7 +682,7 @@ private fun ReadyNextSteps(onBack: () -> Unit) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(Modifier.height(14.dp))
-        Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = onBack, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.setup_ready_next_action))
         }
     }
@@ -725,7 +716,7 @@ fun SetupNudgeCard(message: String, onOpenSetup: () -> Unit) {
             }
         }
         Spacer(Modifier.height(12.dp))
-        Button(onClick = onOpenSetup, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = onOpenSetup, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
             Text(stringResource(R.string.setup_nudge_action))
         }
     }
