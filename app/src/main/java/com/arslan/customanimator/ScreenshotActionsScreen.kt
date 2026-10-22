@@ -3,15 +3,12 @@ package com.arslan.customanimator
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Folder
@@ -23,19 +20,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.screenshot.ScreenshotOverlay
 import com.arslan.customanimator.screenshot.ScreenshotPrefs
 import com.arslan.customanimator.service.ScreenshotWatcherService
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.SaveToDeviceManager
 import kotlin.math.roundToInt
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.components.IconBadge
 
 private val TIMING_SLIDER_PADDING = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp)
 
@@ -89,25 +88,14 @@ fun ScreenshotActionsScreen(
         ScreenshotWatcherService.sync(context)
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.screenshot_actions),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.screenshot_actions),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -367,7 +355,8 @@ fun ScreenshotActionsScreen(
                                         mainHandler.postDelayed({ tester.hide() }, 1500L)
                                     },
                                     enabled = hasOverlayPerm,
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shapes = ButtonDefaults.shapes()
                                 ) {
                                     Text(
                                         stringResource(R.string.screenshot_overlay_test),
@@ -409,20 +398,7 @@ private fun ScreenshotInfoRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 36.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall)
             Text(
@@ -447,11 +423,7 @@ private fun ScreenshotSectionTitle(title: String) {
 
 @Composable
 private fun ScreenshotCard(content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(content = content)
     }
 }
@@ -472,20 +444,7 @@ private fun ScreenshotToggleRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 36.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall)
             Text(
@@ -494,7 +453,7 @@ private fun ScreenshotToggleRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
 }
 
