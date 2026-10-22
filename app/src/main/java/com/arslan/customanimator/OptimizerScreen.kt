@@ -11,9 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
@@ -26,7 +24,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -53,6 +50,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.IconBadge
 
 private val SPINNER_FRAMES = listOf("|", "/", "-", "\\")
 
@@ -266,11 +267,7 @@ private fun QuickActionsCard(
 
     val rowsEnabled = enabled && runningAction == null
 
-    Card(
-        shape = AppShapes.card,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column {
             QuickActionRow(
                 icon = Icons.Filled.CleaningServices,
@@ -329,14 +326,15 @@ private fun QuickActionConfirmDialog(
         title = { Text(stringResource(action.confirmTitleRes)) },
         text = { Text(stringResource(action.confirmMessageRes)) },
         confirmButton = {
-            Button(onClick = onConfirm) {
+            Button(onClick = onConfirm, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(action.titleRes))
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.cancel))
             }
@@ -355,11 +353,7 @@ private fun ActionCard(
     enabled: Boolean,
     onClick: () -> Unit
 ) {
-    Card(
-        shape = AppShapes.card,
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth()
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -368,20 +362,7 @@ private fun ActionCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        modifier = Modifier.size(22.dp)
-                    )
-                }
+                IconBadge(icon = icon, size = 40.dp)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = title,
@@ -400,7 +381,8 @@ private fun ActionCard(
                 enabled = enabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 52.dp)
+                    .heightIn(min = 52.dp),
+                shapes = ButtonDefaults.shapes()
             ) {
                 if (busy) {
                     CircularProgressIndicator(
@@ -498,21 +480,17 @@ private fun BoosterTerminalScreen(onClose: () -> Unit) {
         onClose()
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.optimizer_performance_booster)) },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        runJob?.cancel()
-                        onClose()
-                    }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.optimizer_performance_booster),
+                onBack = {
+                    runJob?.cancel()
+                    onClose()
+                },
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -539,7 +517,8 @@ private fun BoosterTerminalScreen(onClose: () -> Unit) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 56.dp)
+                    .heightIn(min = 56.dp),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Icon(
                     imageVector = Icons.Filled.Close,
