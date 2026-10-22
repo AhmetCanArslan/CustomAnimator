@@ -136,7 +136,6 @@
     <string name="close">Закрыть</string>
     <string name="adb_command_title">Команда ADB</string>
     <string name="dp_short">dp</string>
-    <string name="labeled_value">%1$s: %2$s</string>
     <string name="plus_symbol">+</string>
     <string name="minus_symbol">-</string>
     <string name="preview_app_text">Приложение</string>

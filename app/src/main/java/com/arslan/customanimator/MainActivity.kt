@@ -1335,197 +1335,70 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
-                        val sliderLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation_scale)
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                sliderLabel,
-                                String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
+                        ScaleSlider(
+                            label = if (isSimpleMode) {
+                                stringResource(R.string.animation_scale_applies_to_all)
+                            } else {
+                                stringResource(R.string.window_animation_scale)
+                            },
+                            value = windowAnimScale,
+                            onValueChange = { scale ->
+                                windowAnimScale = scale
+                                windowInputValue = String.format(java.util.Locale.US, "%.2f", scale)
+                                if (isSimpleMode) {
+                                    transitionAnimScale = scale
+                                    transitionInputValue = windowInputValue
+                                    animatorDurScale = scale
+                                    animatorInputValue = windowInputValue
+                                }
+                            },
+                            valueRange = 0f..5f
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    windowAnimScale = (windowAnimScale - 0.01f).coerceAtLeast(0f)
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = windowAnimScale
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                            Slider(
-                                value = windowAnimScale,
-                                onValueChange = { 
-                                    windowAnimScale = it
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", it)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = it
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = it
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Button(
-                                onClick = {
-                                    windowAnimScale = (windowAnimScale + 0.01f).coerceAtMost(5f)
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = windowAnimScale
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                        }
                         if (!isSimpleMode) {
                             Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                stringResource(R.string.transition_animation_scale),
-                                String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    transitionAnimScale = (transitionAnimScale - 0.01f).coerceAtLeast(0f)
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                            Slider(
+                            ScaleSlider(
+                                label = stringResource(R.string.transition_animation_scale),
                                 value = transitionAnimScale,
-                                onValueChange = { 
-                                    transitionAnimScale = it
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", it)
+                                onValueChange = { scale ->
+                                    transitionAnimScale = scale
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", scale)
                                 },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
+                                valueRange = 0f..5f
                             )
-                            Button(
-                                onClick = {
-                                    transitionAnimScale = (transitionAnimScale + 0.01f).coerceAtMost(5f)
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                stringResource(R.string.animator_duration_scale),
-                                String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    animatorDurScale = (animatorDurScale - 0.01f).coerceAtLeast(0f)
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                            Slider(
+                            Spacer(modifier = Modifier.height(16.dp))
+                            ScaleSlider(
+                                label = stringResource(R.string.animator_duration_scale),
                                 value = animatorDurScale,
-                                onValueChange = { 
-                                    animatorDurScale = it
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", it)
+                                onValueChange = { scale ->
+                                    animatorDurScale = scale
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", scale)
                                 },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
+                                valueRange = 0f..5f
                             )
-                            Button(
-                                onClick = {
-                                    animatorDurScale = (animatorDurScale + 0.01f).coerceAtMost(5f)
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), style = MaterialTheme.typography.titleLarge,)
-                            }
-                        }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Button(
+                            onClick = { applySelectedAnimationScales() },
+                            enabled = !isApplyingSettings,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = ButtonDefaults.MediumContainerHeight),
+                            contentPadding = ButtonDefaults.MediumContentPadding,
+                            shapes = ButtonDefaults.shapes()
                         ) {
-                            Spacer(modifier = Modifier.weight(1f))
-                            Button(
-                                onClick = {
-                                    applySelectedAnimationScales()
-                                },
-                                enabled = !isApplyingSettings,
-                                modifier = Modifier.heightIn(min = 50.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text(
-                                    stringResource(R.string.apply_settings),
-                                    style = MaterialTheme.typography.titleSmall,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                modifier = Modifier.size(ButtonDefaults.MediumIconSize)
+                            )
+                            Spacer(modifier = Modifier.width(ButtonDefaults.MediumIconSpacing))
+                            Text(
+                                stringResource(R.string.apply_settings),
+                                style = MaterialTheme.typography.titleMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
                 }
