@@ -23,7 +23,6 @@ import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -154,7 +153,7 @@ fun DeveloperScreenContent(
             }
 
             cardSection(
-                R.string.developer_toggles,
+                R.string.developer_section_debugging,
                 {
                     ToggleRow(
                         icon = Icons.Filled.Usb,
@@ -190,6 +189,26 @@ fun DeveloperScreenContent(
                 },
                 {
                     ToggleRow(
+                        icon = Icons.Filled.SensorsOff,
+                        title = stringResource(R.string.sensors_off),
+                        description = stringResource(R.string.sensors_off_desc),
+                        checked = sensorsOff,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { sensorsOff = it },
+                                { DeveloperOptionsManager.setSensorsOff(newValue) }
+                            )
+                        }
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_apps,
+                {
+                    ToggleRow(
                         icon = Icons.Filled.LayersClear,
                         title = stringResource(R.string.dont_keep_activities),
                         description = stringResource(R.string.dont_keep_activities_desc),
@@ -219,23 +238,11 @@ fun DeveloperScreenContent(
                             )
                         }
                     )
-                },
-                {
-                    ToggleRow(
-                        icon = Icons.Filled.SensorsOff,
-                        title = stringResource(R.string.sensors_off),
-                        description = stringResource(R.string.sensors_off_desc),
-                        checked = sensorsOff,
-                        enabled = hasShizukuPermission,
-                        onCheckedChange = { newValue ->
-                            applyToggle(
-                                newValue,
-                                { sensorsOff = it },
-                                { DeveloperOptionsManager.setSensorsOff(newValue) }
-                            )
-                        }
-                    )
-                },
+                }
+            )
+
+            cardSection(
+                R.string.developer_section_drawing,
                 {
                     ToggleRow(
                         icon = Icons.Filled.TouchApp,
@@ -317,6 +324,7 @@ fun DeveloperScreenContent(
                     )
                     InfoNote(text = stringResource(R.string.developer_tiles_restart_note), dismissKey = "developer_tiles_restart")
                 }
+            
             )
 
             item {
