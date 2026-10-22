@@ -855,6 +855,14 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_notification_persistent_settings_hint">Tocca qui per disattivare questa notifica.</string>
     <string name="settings_appearance">Aspetto</string>
     <string name="settings_theme">Tema</string>
+    <string name="settings_accent_color">Colore di accento</string>
+    <string name="accent_wallpaper">Colori dello sfondo</string>
+    <string name="accent_default">Colori predefiniti</string>
+    <string name="accent_custom">Colore personalizzato</string>
+    <string name="accent_hue">Tonalità</string>
+    <string name="accent_saturation">Saturazione</string>
+    <string name="accent_brightness">Luminosità</string>
+    <string name="accent_hex">Codice hex</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Chiaro</string>
     <string name="theme_dark">Scuro</string>

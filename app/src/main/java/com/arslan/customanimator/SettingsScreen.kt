@@ -49,6 +49,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.ui.components.AccentColorSelector
 import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.ui.theme.LocalExtendedColors
@@ -141,6 +142,8 @@ fun SettingsScreen(
 
             SettingsSection(title = stringResource(R.string.settings_appearance)) {
                 ThemeModeSelector()
+                SettingDivider()
+                AccentColorSelector()
             }
 
             SettingsSection(title = stringResource(R.string.settings_backup)) {

@@ -835,6 +835,14 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_notification_persistent_settings_hint">Ketuk di sini untuk menonaktifkan notifikasi ini.</string>
     <string name="settings_appearance">Tampilan</string>
     <string name="settings_theme">Tema</string>
+    <string name="settings_accent_color">Warna aksen</string>
+    <string name="accent_wallpaper">Warna wallpaper</string>
+    <string name="accent_default">Warna default</string>
+    <string name="accent_custom">Warna kustom</string>
+    <string name="accent_hue">Rona</string>
+    <string name="accent_saturation">Saturasi</string>
+    <string name="accent_brightness">Kecerahan</string>
+    <string name="accent_hex">Kode hex</string>
     <string name="theme_system">Sistem</string>
     <string name="theme_light">Terang</string>
     <string name="theme_dark">Gelap</string>

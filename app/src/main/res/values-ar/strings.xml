@@ -879,6 +879,14 @@
     <string name="pn_notification_persistent_settings_hint">اضغط هنا لإيقاف تشغيل هذا الإشعار.</string>
     <string name="settings_appearance">المظهر</string>
     <string name="settings_theme">السمة</string>
+    <string name="settings_accent_color">لون التمييز</string>
+    <string name="accent_wallpaper">ألوان الخلفية</string>
+    <string name="accent_default">الألوان الافتراضية</string>
+    <string name="accent_custom">لون مخصص</string>
+    <string name="accent_hue">تدرج اللون</string>
+    <string name="accent_saturation">التشبع</string>
+    <string name="accent_brightness">السطوع</string>
+    <string name="accent_hex">رمز Hex</string>
     <string name="theme_system">النظام</string>
     <string name="theme_light">فاتح</string>
     <string name="theme_dark">داكن</string>

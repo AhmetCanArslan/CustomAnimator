@@ -891,6 +891,14 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_notification_persistent_settings_hint">Tap here to turn this notification off.</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_accent_color">Accent color</string>
+    <string name="accent_wallpaper">Wallpaper colors</string>
+    <string name="accent_default">Default colors</string>
+    <string name="accent_custom">Custom color</string>
+    <string name="accent_hue">Hue</string>
+    <string name="accent_saturation">Saturation</string>
+    <string name="accent_brightness">Brightness</string>
+    <string name="accent_hex">Hex code</string>
     <string name="theme_system">System</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>

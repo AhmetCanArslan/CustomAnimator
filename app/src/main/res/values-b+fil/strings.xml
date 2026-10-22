@@ -835,6 +835,14 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_notification_persistent_settings_hint">I-tap dito para i-off ang notification na ito.</string>
     <string name="settings_appearance">Hitsura</string>
     <string name="settings_theme">Tema</string>
+    <string name="settings_accent_color">Accent na kulay</string>
+    <string name="accent_wallpaper">Mga kulay ng wallpaper</string>
+    <string name="accent_default">Mga default na kulay</string>
+    <string name="accent_custom">Custom na kulay</string>
+    <string name="accent_hue">Hue</string>
+    <string name="accent_saturation">Saturation</string>
+    <string name="accent_brightness">Liwanag</string>
+    <string name="accent_hex">Hex code</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Maliwanag</string>
     <string name="theme_dark">Madilim</string>

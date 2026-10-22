@@ -835,6 +835,14 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_notification_persistent_settings_hint">Toca aquí para desactivar esta notificación.</string>
     <string name="settings_appearance">Apariencia</string>
     <string name="settings_theme">Tema</string>
+    <string name="settings_accent_color">Color de acento</string>
+    <string name="accent_wallpaper">Colores del fondo de pantalla</string>
+    <string name="accent_default">Colores predeterminados</string>
+    <string name="accent_custom">Color personalizado</string>
+    <string name="accent_hue">Tono</string>
+    <string name="accent_saturation">Saturación</string>
+    <string name="accent_brightness">Brillo</string>
+    <string name="accent_hex">Código hex</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Oscuro</string>
