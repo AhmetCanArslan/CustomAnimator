@@ -1,6 +1,5 @@
 package com.arslan.customanimator
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -9,9 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cast
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.VolumeUp
@@ -19,21 +16,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.SoundTileAction
 import com.arslan.customanimator.utils.SoundTileActions
 import com.arslan.customanimator.utils.SoundTilePrefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.IconBadge
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,25 +48,14 @@ fun SoundTileScreen(
     var longPressAction by remember { mutableStateOf(prefs.longPressAction) }
     var collapseDelay by remember { mutableIntStateOf(prefs.collapseDelayMs) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.sound_tile),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.sound_tile),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         }
     ) { paddingValues ->
@@ -156,7 +143,7 @@ fun SoundTileScreen(
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier.weight(1f)
                         )
-                        OutlinedButton(onClick = { SoundTileActions.showVolumePanel(context) }) {
+                        OutlinedButton(onClick = { SoundTileActions.showVolumePanel(context) }, shapes = ButtonDefaults.shapes()) {
                             Text(
                                 stringResource(R.string.sound_tile_action_volume_panel),
                                 style = MaterialTheme.typography.bodySmall,
@@ -169,7 +156,8 @@ fun SoundTileScreen(
                                 coroutineScope.launch(Dispatchers.IO) {
                                     SoundTileActions.openMediaOutputDialog()
                                 }
-                            }
+                            },
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Cast,
@@ -302,11 +290,7 @@ private fun SoundSectionTitle(title: String) {
 
 @Composable
 private fun SoundCard(content: @Composable ColumnScope.() -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(content = content)
     }
 }
@@ -320,20 +304,7 @@ private fun SoundInfoRow(icon: ImageVector, title: String, description: String) 
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        IconBadge(icon = icon, size = 36.dp)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = title, style = MaterialTheme.typography.titleSmall)
             Text(
