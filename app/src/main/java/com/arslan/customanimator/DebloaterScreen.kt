@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -42,6 +41,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 private const val LIST_CARD_DISMISS_KEY = "debloater_list_card"
 
@@ -147,25 +149,14 @@ fun DebloaterScreen(
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.debloater),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.debloater),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
         },
         bottomBar = {
@@ -244,7 +235,7 @@ fun DebloaterScreen(
             if (isLoading || isWorking) {
                 item(key = "loading") {
                     Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LoadingIndicator()
                     }
                 }
             } else if (visibleApps.isEmpty()) {
@@ -327,13 +318,14 @@ fun DebloaterScreen(
                                 android.widget.Toast.LENGTH_LONG
                             ).show()
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.debloater_restore_all))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { confirmRestoreAll = false }) {
+                TextButton(onClick = { confirmRestoreAll = false }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -415,13 +407,13 @@ private fun DebloatSelectionBar(
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.weight(1f)
             )
-            TextButton(onClick = onClear, enabled = enabled) {
+            TextButton(onClick = onClear, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.debloater_clear_selection))
             }
-            TextButton(onClick = onDisable, enabled = enabled) {
+            TextButton(onClick = onDisable, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.debloater_action_disable))
             }
-            Button(onClick = onRemove, enabled = enabled) {
+            Button(onClick = onRemove, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.debloater_action_remove))
             }
         }
@@ -430,11 +422,7 @@ private fun DebloatSelectionBar(
 
 @Composable
 private fun DebloatSummaryCard(changedCount: Int, enabled: Boolean, onRestoreAll: () -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -451,7 +439,7 @@ private fun DebloatSummaryCard(changedCount: Int, enabled: Boolean, onRestoreAll
                 modifier = Modifier.weight(1f)
             )
             if (changedCount > 0) {
-                FilledTonalButton(onClick = onRestoreAll, enabled = enabled) {
+                FilledTonalButton(onClick = onRestoreAll, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                     Icon(
                         imageVector = Icons.Filled.Restore,
                         contentDescription = null,
@@ -482,11 +470,7 @@ private fun DebloatListCard(entryCount: Int, updatedAtMs: Long, failed: Boolean)
         failed -> stringResource(R.string.debloater_list_failed)
         else -> stringResource(R.string.debloater_list_missing)
     }
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 4.dp, bottom = 16.dp),
             verticalAlignment = Alignment.Top
@@ -747,17 +731,17 @@ private fun DebloatDetailDialog(
         confirmButton = {
             if (app.state == DebloatState.ACTIVE) {
                 if (!app.isProtected) {
-                    Button(onClick = onRemove) { Text(stringResource(R.string.debloater_action_remove)) }
+                    Button(onClick = onRemove, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.debloater_action_remove)) }
                 }
             } else {
-                Button(onClick = onRestore) { Text(stringResource(R.string.debloater_action_restore)) }
+                Button(onClick = onRestore, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.debloater_action_restore)) }
             }
         },
         dismissButton = {
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.close)) }
                 if (app.state == DebloatState.ACTIVE && !app.isProtected) {
-                    TextButton(onClick = onDisable) { Text(stringResource(R.string.debloater_action_disable)) }
+                    TextButton(onClick = onDisable, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.debloater_action_disable)) }
                 }
             }
         }
@@ -789,7 +773,7 @@ private fun DebloatDetailBody(app: DebloatAppInfo, onExport: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        OutlinedButton(onClick = onExport, modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = onExport, modifier = Modifier.fillMaxWidth(), shapes = ButtonDefaults.shapes()) {
             Icon(
                 imageVector = Icons.Filled.Save,
                 contentDescription = null,
@@ -864,7 +848,8 @@ private fun DebloatConfirmDialog(
         confirmButton = {
             Button(
                 onClick = onConfirm,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(
                     stringResource(
@@ -878,7 +863,7 @@ private fun DebloatConfirmDialog(
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.cancel)) }
         }
     )
 }
