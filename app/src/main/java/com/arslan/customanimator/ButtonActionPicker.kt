@@ -42,6 +42,7 @@ import com.arslan.customanimator.utils.ButtonAction
 import com.arslan.customanimator.utils.ButtonActions
 import com.arslan.customanimator.utils.TerminalTileIcons
 import com.arslan.customanimator.utils.ToggleTilePresets
+import androidx.compose.material3.ButtonDefaults
 
 internal enum class ButtonActionPickerStep { HIDDEN, ACTIONS, APPS, COMMAND }
 
@@ -163,12 +164,12 @@ private fun ButtonCommandDialog(
             )
         },
         confirmButton = {
-            TextButton(onClick = { onSave(command.trim()) }, enabled = command.isNotBlank()) {
+            TextButton(onClick = { onSave(command.trim()) }, enabled = command.isNotBlank(), shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) }
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.cancel)) }
         }
     )
 }

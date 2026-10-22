@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.arslan.customanimator.utils.SaveToDeviceManager
+import androidx.compose.material3.ButtonDefaults
 
 @Composable
 internal fun SaveToDeviceRow() {
@@ -48,7 +49,8 @@ internal fun SaveToDeviceRow() {
                     onClick = {
                         showDialog = false
                         folderPicker.launch(folder)
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save_to_device_choose_folder))
                 }
@@ -59,7 +61,8 @@ internal fun SaveToDeviceRow() {
                         showDialog = false
                         SaveToDeviceManager.setDefaultFolder(context, null)
                         folder = null
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save_to_device_ask))
                 }

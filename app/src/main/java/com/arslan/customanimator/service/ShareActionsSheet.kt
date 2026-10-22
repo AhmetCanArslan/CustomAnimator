@@ -163,12 +163,12 @@ private fun CleanedLinkCard(cleaned: String, onCopy: () -> Unit, onShare: () -> 
             overflow = TextOverflow.Ellipsis
         )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedButton(onClick = onCopy, modifier = Modifier.weight(1f)) {
+            OutlinedButton(onClick = onCopy, modifier = Modifier.weight(1f), shapes = ButtonDefaults.shapes()) {
                 Icon(imageVector = Icons.Filled.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.link_cleaner_copy), maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
-            Button(onClick = onShare, modifier = Modifier.weight(1f)) {
+            Button(onClick = onShare, modifier = Modifier.weight(1f), shapes = ButtonDefaults.shapes()) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.Send, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.link_cleaner_share), maxLines = 1, overflow = TextOverflow.Ellipsis)

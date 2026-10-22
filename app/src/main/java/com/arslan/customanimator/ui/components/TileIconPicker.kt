@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Box
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.TerminalTileIcons
+import androidx.compose.material3.ButtonDefaults
 
 @Composable
 fun TileIconPickerDialog(
@@ -75,7 +76,7 @@ fun TileIconPickerDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }

@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.ChangelogRelease
+import androidx.compose.material3.ButtonDefaults
 
 @Composable
 fun ChangelogDialog(
@@ -77,7 +78,7 @@ fun ChangelogDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss, modifier = Modifier.padding(end = 4.dp)) {
+            TextButton(onClick = onDismiss, modifier = Modifier.padding(end = 4.dp), shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.close))
             }
         }
