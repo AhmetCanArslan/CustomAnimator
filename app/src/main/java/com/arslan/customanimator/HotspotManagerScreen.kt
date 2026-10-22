@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Block
@@ -73,6 +72,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private const val POLL_INTERVAL_MS = 3000L
 private const val QR_SIZE_PX = 640
@@ -152,30 +153,19 @@ fun HotspotManagerScreen(
     val config = current?.config ?: HotspotConfig()
     val caps = current?.capabilities
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.hotspot_manager),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.hotspot_manager),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = { refreshKey++ }) {
+                    IconButton(onClick = { refreshKey++ }, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.refresh))
                     }
-                    IconButton(onClick = { showMenu = true }) {
+                    IconButton(onClick = { showMenu = true }, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.MoreVert, contentDescription = null)
                     }
                     DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
@@ -411,7 +401,8 @@ fun HotspotManagerScreen(
                                     refresh()
                                     isWorking = false
                                 }
-                            }
+                            },
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Text(stringResource(R.string.hotspot_apply))
                         }
@@ -421,7 +412,8 @@ fun HotspotManagerScreen(
                             onClick = {
                                 draft = config
                                 isDirty = false
-                            }
+                            },
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Text(stringResource(R.string.hotspot_discard))
                         }
@@ -515,7 +507,7 @@ private fun HotspotStatusCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                IconButton(onClick = onTogglePassphrase) {
+                IconButton(onClick = onTogglePassphrase, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         imageVector = if (passphraseVisible) {
                             Icons.Filled.VisibilityOff
@@ -531,13 +523,13 @@ private fun HotspotStatusCard(
                         )
                     )
                 }
-                IconButton(onClick = onCopyPassphrase) {
+                IconButton(onClick = onCopyPassphrase, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         Icons.Filled.ContentCopy,
                         contentDescription = stringResource(R.string.hotspot_copy_password)
                     )
                 }
-                IconButton(onClick = onShowQr) {
+                IconButton(onClick = onShowQr, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         Icons.Filled.QrCode2,
                         contentDescription = stringResource(R.string.hotspot_show_qr)
@@ -552,7 +544,7 @@ private fun HotspotStatusCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(onClick = onShowQr) {
+                IconButton(onClick = onShowQr, shapes = IconButtonDefaults.shapes()) {
                     Icon(
                         Icons.Filled.QrCode2,
                         contentDescription = stringResource(R.string.hotspot_show_qr)
@@ -566,7 +558,8 @@ private fun HotspotStatusCard(
         Button(
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled && !isWorking && !isLoading,
-            onClick = { onToggleHotspot(!isOn) }
+            onClick = { onToggleHotspot(!isOn) },
+            shapes = ButtonDefaults.shapes()
         ) {
             if (isWorking) {
                 CircularProgressIndicator(
@@ -620,7 +613,7 @@ private fun HotspotConfigCard(
             },
             trailingIcon = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = { draftPassphraseVisible = !draftPassphraseVisible }) {
+                    IconButton(onClick = { draftPassphraseVisible = !draftPassphraseVisible }, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             imageVector = if (draftPassphraseVisible) {
                                 Icons.Filled.VisibilityOff
@@ -640,7 +633,8 @@ private fun HotspotConfigCard(
                         enabled = enabled && draft.security != HotspotSecurity.OPEN,
                         onClick = {
                             onDraftChange(draft.copy(passphrase = HotspotManager.generatePassphrase()))
-                        }
+                        },
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             Icons.Filled.Casino,
@@ -744,7 +738,8 @@ private fun HotspotConfigCard(
                     FilledTonalIconButton(
                         modifier = Modifier.size(36.dp),
                         enabled = enabled && draft.maxClients > 0,
-                        onClick = { onDraftChange(draft.copy(maxClients = draft.maxClients - 1)) }
+                        onClick = { onDraftChange(draft.copy(maxClients = draft.maxClients - 1)) },
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             Icons.Filled.Remove,
@@ -755,7 +750,8 @@ private fun HotspotConfigCard(
                     FilledTonalIconButton(
                         modifier = Modifier.size(36.dp),
                         enabled = enabled && draft.maxClients < ceiling,
-                        onClick = { onDraftChange(draft.copy(maxClients = draft.maxClients + 1)) }
+                        onClick = { onDraftChange(draft.copy(maxClients = draft.maxClients + 1)) },
+                        shapes = IconButtonDefaults.shapes()
                     ) {
                         Icon(
                             Icons.Filled.Add,
@@ -825,7 +821,7 @@ private fun ClientRow(
         icon = Icons.Filled.Devices,
         enabled = true,
         trailing = {
-            TextButton(onClick = onAction, enabled = enabled) {
+            TextButton(onClick = onAction, enabled = enabled, shapes = ButtonDefaults.shapes()) {
                 Icon(actionIcon, contentDescription = null)
                 Spacer(Modifier.width(6.dp))
                 Text(actionLabel)
@@ -866,7 +862,7 @@ private fun HotspotQrDialog(config: HotspotConfig, onDismiss: () -> Unit) {
                     Text(stringResource(R.string.hotspot_qr_failed))
                 }
                 Spacer(Modifier.height(16.dp))
-                TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) }
+                TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.close)) }
             }
         }
     }
