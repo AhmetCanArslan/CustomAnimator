@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.QrCode2
@@ -28,7 +27,6 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
@@ -36,7 +34,6 @@ import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.WifiNetwork
 import com.arslan.customanimator.data.WifiSecurity
@@ -51,6 +48,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 private const val QR_SIZE_PX = 640
 private const val CONNECTED_POLL_MS = 5000L
@@ -130,27 +130,19 @@ fun WifiPasswordsScreen(
     }
 
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.wifi_password_manager),
-                        style = MaterialTheme.typography.headlineSmall,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.wifi_password_manager),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = { coroutineScope.launch { reload() } }) {
+                    IconButton(onClick = { coroutineScope.launch { reload() } }, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.Refresh, contentDescription = stringResource(R.string.wifi_refresh))
                     }
-                    IconButton(onClick = { showExportMenu = true }) {
+                    IconButton(onClick = { showExportMenu = true }, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.wifi_more))
                     }
                     DropdownMenu(expanded = showExportMenu, onDismissRequest = { showExportMenu = false }) {
@@ -212,7 +204,7 @@ fun WifiPasswordsScreen(
             when (val state = result) {
                 null -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+                        LoadingIndicator()
                     }
                 }
                 is WifiConfigReader.Result.Error -> {
@@ -321,11 +313,7 @@ private fun WifiNetworkCard(
     onCopy: () -> Unit,
     onShowQr: () -> Unit
 ) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-        modifier = Modifier.fillMaxWidth(),
-        shape = AppShapes.card
-    ) {
+    AppCard(contentPadding = 0.dp) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
@@ -349,17 +337,17 @@ private fun WifiNetworkCard(
                     modifier = Modifier.weight(1f)
                 )
                 if (network.security != WifiSecurity.OPEN) {
-                    IconButton(onClick = onToggleReveal) {
+                    IconButton(onClick = onToggleReveal, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             imageVector = if (isRevealed) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                             contentDescription = stringResource(R.string.wifi_toggle_password)
                         )
                     }
-                    IconButton(onClick = onCopy) {
+                    IconButton(onClick = onCopy, shapes = IconButtonDefaults.shapes()) {
                         Icon(Icons.Filled.ContentCopy, contentDescription = stringResource(R.string.wifi_copy_password))
                     }
                 }
-                IconButton(onClick = onShowQr) {
+                IconButton(onClick = onShowQr, shapes = IconButtonDefaults.shapes()) {
                     Icon(Icons.Filled.QrCode2, contentDescription = stringResource(R.string.wifi_show_qr))
                 }
             }
@@ -436,7 +424,7 @@ private fun WifiQrDialog(network: WifiNetwork, onDismiss: () -> Unit) {
             }
         },
         confirmButton = {
-            Button(onClick = onDismiss) { Text(stringResource(R.string.close)) }
+            Button(onClick = onDismiss, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.close)) }
         }
     )
 }
@@ -469,14 +457,15 @@ private fun WifiPasswordDialog(
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(password) }, enabled = password.isNotBlank()) {
+            Button(onClick = { onConfirm(password) }, enabled = password.isNotBlank(), shapes = ButtonDefaults.shapes()) {
                 Text(confirmLabel)
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.cancel))
             }
