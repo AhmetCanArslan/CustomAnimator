@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.GameModeController
 import com.arslan.customanimator.utils.GameModeExclusionManager
 import com.arslan.customanimator.utils.GameModeManager
@@ -21,6 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -95,11 +96,7 @@ fun GameModeScreenContent(
             }
 
             item {
-                Card(
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = AppShapes.card
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -143,7 +140,8 @@ fun GameModeScreenContent(
                                 }
                             },
                             enabled = !isBusy,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            shapes = ButtonDefaults.shapes()
                         ) {
                             Text(
                                 text = when {
@@ -211,19 +209,12 @@ fun GameModeScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GameModeListSwitch(editingExclusions: Boolean, onEditingExclusionsChange: (Boolean) -> Unit) {
-    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-        val options = listOf(
-            false to R.string.game_mode_list_games,
-            true to R.string.game_mode_list_excluded
-        )
-        options.forEachIndexed { index, (exclusions, labelRes) ->
-            SegmentedButton(
-                selected = editingExclusions == exclusions,
-                onClick = { onEditingExclusionsChange(exclusions) },
-                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size)
-            ) {
-                Text(stringResource(labelRes))
-            }
-        }
-    }
+    ConnectedChoiceGroup(
+        options = listOf(
+            false to stringResource(R.string.game_mode_list_games),
+            true to stringResource(R.string.game_mode_list_excluded)
+        ),
+        selected = editingExclusions,
+        onSelect = onEditingExclusionsChange
+    )
 }
