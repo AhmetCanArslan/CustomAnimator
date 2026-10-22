@@ -121,12 +121,6 @@ class PrefsManagersTest {
         SettingsManager.setThemeMode(context, ThemeMode.DARK)
         assertEquals(ThemeMode.DARK, SettingsManager.getThemeMode(context))
 
-        assertNull(SettingsManager.getSeedColor(context))
-        SettingsManager.setSeedColor(context, 0xFF1E88E5.toInt())
-        assertEquals(0xFF1E88E5.toInt(), SettingsManager.getSeedColor(context))
-        SettingsManager.setSeedColor(context, null)
-        assertNull(SettingsManager.getSeedColor(context))
-
         assertEquals("slider", SettingsManager.getInputMode(context))
         SettingsManager.setInputMode(context, "text")
         assertEquals("text", SettingsManager.getInputMode(context))

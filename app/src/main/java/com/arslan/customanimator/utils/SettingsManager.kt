@@ -28,7 +28,6 @@ object SettingsManager {
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
     private const val KEY_THEME_MODE = "theme_mode"
-    private const val KEY_SEED_COLOR = "seed_color"
 
     private fun getPrefs(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -41,17 +40,6 @@ object SettingsManager {
 
     fun setThemeMode(context: Context, mode: ThemeMode) {
         getPrefs(context).edit().putString(KEY_THEME_MODE, mode.name).apply()
-    }
-
-    fun getSeedColor(context: Context): Int? {
-        val prefs = getPrefs(context)
-        return if (prefs.contains(KEY_SEED_COLOR)) prefs.getInt(KEY_SEED_COLOR, 0) else null
-    }
-
-    fun setSeedColor(context: Context, color: Int?) {
-        val editor = getPrefs(context).edit()
-        if (color == null) editor.remove(KEY_SEED_COLOR) else editor.putInt(KEY_SEED_COLOR, color)
-        editor.apply()
     }
 
     fun getInputMode(context: Context): String {
