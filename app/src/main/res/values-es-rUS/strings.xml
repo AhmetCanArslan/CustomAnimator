@@ -653,7 +653,6 @@ Duración del Animador: %3$.2f</string>
     <string name="pn_available">Disponible</string>
     <string name="pn_body_keywords_format">Cuerpo: %1$s</string>
     <string name="pn_cd_add">Agregar</string>
-    <string name="pn_cd_back">Volver</string>
     <string name="pn_cd_clear_search">Borrar búsqueda</string>
     <string name="pn_cd_edit">Editar</string>
     <string name="pn_cd_more_options">Más opciones</string>

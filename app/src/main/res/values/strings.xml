@@ -708,7 +708,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="pn_available">Available</string>
     <string name="pn_body_keywords_format">Body: %1$s</string>
     <string name="pn_cd_add">Add</string>
-    <string name="pn_cd_back">Navigate back</string>
     <string name="pn_cd_clear_search">Clear search</string>
     <string name="pn_cd_edit">Edit</string>
     <string name="pn_cd_more_options">More options</string>

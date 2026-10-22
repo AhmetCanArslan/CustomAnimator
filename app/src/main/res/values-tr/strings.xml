@@ -653,7 +653,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_available">Mevcut</string>
     <string name="pn_body_keywords_format">Gövde: %1$s</string>
     <string name="pn_cd_add">Ekle</string>
-    <string name="pn_cd_back">Geri git</string>
     <string name="pn_cd_clear_search">Aramayı temizle</string>
     <string name="pn_cd_edit">Düzenle</string>
     <string name="pn_cd_more_options">Diğer seçenekler</string>

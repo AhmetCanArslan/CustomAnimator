@@ -653,7 +653,6 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_available">Tersedia</string>
     <string name="pn_body_keywords_format">Isi: %1$s</string>
     <string name="pn_cd_add">Tambah</string>
-    <string name="pn_cd_back">Kembali</string>
     <string name="pn_cd_clear_search">Hapus pencarian</string>
     <string name="pn_cd_edit">Edit</string>
     <string name="pn_cd_more_options">Opsi lainnya</string>
