@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -16,12 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.NotificationRule
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSwitch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,24 +36,14 @@ fun RulesSection(
 
     var ruleToDelete by remember { mutableStateOf<NotificationRule?>(null) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.pn_rules),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.pn_cd_back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.pn_rules),
+                onBack = onNavigateBack,
+                scrollBehavior = scrollBehavior
             )
         },
         floatingActionButton = {
@@ -121,11 +112,12 @@ fun RulesSection(
                         rulesManager.removeRule(rule.id)
                         rules = rulesManager.getRules()
                         ruleToDelete = null
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) { Text(stringResource(R.string.delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { ruleToDelete = null }) {
+                TextButton(onClick = { ruleToDelete = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -226,14 +218,15 @@ private fun NotificationRuleCard(
                     }
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Switch(
+                    AppSwitch(
                         checked = rule.isEnabled,
                         onCheckedChange = onToggle
                     )
                     Row {
                         IconButton(
                             onClick = onEdit,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(36.dp),
+                            shapes = IconButtonDefaults.shapes()
                         ) {
                             Icon(
                                 Icons.Default.Edit,
@@ -243,7 +236,8 @@ private fun NotificationRuleCard(
                         }
                         IconButton(
                             onClick = onDelete,
-                            modifier = Modifier.size(36.dp)
+                            modifier = Modifier.size(36.dp),
+                            shapes = IconButtonDefaults.shapes()
                         ) {
                             Icon(
                                 Icons.Default.Delete,
