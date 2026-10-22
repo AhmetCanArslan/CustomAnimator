@@ -1,8 +1,6 @@
 package com.arslan.customanimator.notify.ui
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +26,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
@@ -53,10 +50,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -86,6 +81,12 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.theme.Motion
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,37 +111,26 @@ fun LoggingSection(
     var showSettingsDialog by remember { mutableStateOf(false) }
     var isSearchVisible by remember { mutableStateOf(false) }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.pn_logs_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.pn_cd_back)
-                        )
-                    }
-                },
+            ScreenTopBar(
+                title = stringResource(R.string.pn_logs_title),
+                onBack = onNavigateBack,
+                scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(onClick = {
                         isSearchVisible = !isSearchVisible
                         if (!isSearchVisible) viewModel.setSearchQuery("")
-                    }) {
+                    }, shapes = IconButtonDefaults.shapes()) {
                         Icon(
                             imageVector = if (isSearchVisible) Icons.Default.Close else Icons.Default.Search,
                             contentDescription = stringResource(R.string.pn_logs_search_cd)
                         )
                     }
                     Box {
-                        IconButton(onClick = { showOverflowMenu = true }) {
+                        IconButton(onClick = { showOverflowMenu = true }, shapes = IconButtonDefaults.shapes()) {
                             Icon(
                                 imageVector = Icons.Default.MoreVert,
                                 contentDescription = stringResource(R.string.pn_cd_more_options)
@@ -204,8 +194,8 @@ fun LoggingSection(
         ) {
             AnimatedVisibility(
                 visible = isSearchVisible,
-                enter = expandVertically(),
-                exit = shrinkVertically()
+                enter = Motion.expandIn(),
+                exit = Motion.collapseOut()
             ) {
                 OutlinedTextField(
                     value = searchQuery,
@@ -219,7 +209,7 @@ fun LoggingSection(
                     },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
-                            IconButton(onClick = { viewModel.setSearchQuery("") }) {
+                            IconButton(onClick = { viewModel.setSearchQuery("") }, shapes = IconButtonDefaults.shapes()) {
                                 Icon(
                                     Icons.Default.Close,
                                     contentDescription = stringResource(R.string.pn_cd_clear_search)
@@ -280,12 +270,12 @@ fun LoggingSection(
                 Button(onClick = {
                     viewModel.clearLogs()
                     showClearDialog = false
-                }) {
+                }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showClearDialog = false }) {
+                TextButton(onClick = { showClearDialog = false }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -314,13 +304,14 @@ fun LoggingSection(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { deleteTarget = null }) {
+                TextButton(onClick = { deleteTarget = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -397,12 +388,12 @@ fun LoggingSection(
                     )
                     createRuleTarget = null
                     onNavigateToAddEditRule()
-                }) {
+                }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.pn_create_rule_title))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { createRuleTarget = null }) {
+                TextButton(onClick = { createRuleTarget = null }, shapes = ButtonDefaults.shapes()) {
                     Text(stringResource(R.string.cancel))
                 }
             }
@@ -470,7 +461,7 @@ private fun LogSettingsDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.pn_logs_settings_done))
             }
         }
@@ -544,7 +535,8 @@ private fun LogItem(
 
                 IconButton(
                     onClick = onCreateRuleClick,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.AddCircleOutline,
@@ -556,7 +548,8 @@ private fun LogItem(
 
                 IconButton(
                     onClick = onDeleteClick,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -568,7 +561,8 @@ private fun LogItem(
 
                 IconButton(
                     onClick = onIgnoreClick,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(32.dp),
+                    shapes = IconButtonDefaults.shapes()
                 ) {
                     Icon(
                         imageVector = Icons.Default.NotificationsOff,
@@ -876,7 +870,7 @@ private fun IgnoreDialog(
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.weight(1f)
                             )
-                            Switch(
+                            AppSwitch(
                                 checked = titleIsRegex,
                                 onCheckedChange = { checked ->
                                     titleIsRegex = checked
@@ -924,7 +918,7 @@ private fun IgnoreDialog(
                                 style = MaterialTheme.typography.bodySmall,
                                 modifier = Modifier.weight(1f)
                             )
-                            Switch(
+                            AppSwitch(
                                 checked = bodyIsRegex,
                                 onCheckedChange = { checked ->
                                     bodyIsRegex = checked
@@ -973,12 +967,12 @@ private fun IgnoreDialog(
                     bodyIsRegex,
                     blocksNotification
                 )
-            }) {
+            }, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.pn_ignore_dialog_save))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
                 Text(stringResource(R.string.cancel))
             }
         }
