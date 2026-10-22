@@ -12,10 +12,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -1717,16 +1713,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     AnimatedVisibility(
         visible = showSearch,
-        enter = fadeIn(tween(Motion.durationMedium)) + scaleIn(
-            animationSpec = tween(Motion.durationMedium, easing = Motion.emphasizedEasing),
-            initialScale = 0.92f,
-            transformOrigin = TransformOrigin(1f, 0f)
-        ),
-        exit = fadeOut(tween(Motion.durationFast)) + scaleOut(
-            animationSpec = tween(Motion.durationFast),
-            targetScale = 0.96f,
-            transformOrigin = TransformOrigin(1f, 0f)
-        )
+        enter = Motion.popIn(TransformOrigin(1f, 0f)),
+        exit = Motion.popOut(TransformOrigin(1f, 0f))
     ) {
         AppSearchScreen(onClose = { showSearch = false }, onOpen = openSearchTarget)
     }
