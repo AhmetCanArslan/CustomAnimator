@@ -2,8 +2,11 @@ package com.arslan.customanimator.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import com.arslan.customanimator.data.ShortcutType
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -30,45 +33,49 @@ class ButtonActionsTest {
     }
 
     @Test
-    fun everyQuickActionAndToggleHasAReadableLabel() {
+    fun everyQuickActionAndToggleBecomesALabelledEntryWithAnIcon() {
         ButtonActions.Quick.entries.forEach { quick ->
-            val label = ButtonActions.label(context, ButtonAction(ButtonAction.Type.QUICK, quick.key))
-            assertEquals(context.getString(quick.nameRes), label)
-            assertTrue(label.isNotBlank())
+            val entry = ButtonActions.quickEntry(context, quick)
+            assertEquals(ShortcutType.QUICK, entry.type)
+            assertEquals(quick.key, entry.actionKey)
+            assertEquals(context.getString(quick.nameRes), entry.label)
+            assertEquals(quick.needsShizuku, entry.needsShizuku)
+            assertFalse(entry.startsActivity)
+            assertEquals(TerminalTileIcons.canonicalKey(quick.iconKey), quick.iconKey)
+            assertNotNull(ButtonActions.iconRes(entry))
         }
         ToggleTilePresets.all.forEach { preset ->
-            val label = ButtonActions.label(context, ButtonAction(ButtonAction.Type.TOGGLE, preset.key))
-            assertEquals(context.getString(preset.nameRes), label)
+            val entry = ButtonActions.toggleEntry(context, preset)
+            assertEquals(ShortcutType.TOGGLE, entry.type)
+            assertEquals(context.getString(preset.nameRes), entry.label)
+            assertTrue(entry.needsShizuku)
+            assertNotNull(ButtonActions.iconRes(entry))
         }
     }
 
     @Test
-    fun commandAndUnknownActionsAreLabelledByTheirValue() {
-        assertEquals("svc wifi disable", ButtonActions.label(context, ButtonAction(ButtonAction.Type.COMMAND, "svc wifi disable")))
-        assertEquals("com.example.missing", ButtonActions.label(context, ButtonAction(ButtonAction.Type.APP, "com.example.missing")))
-        assertEquals("teleport", ButtonActions.label(context, ButtonAction(ButtonAction.Type.QUICK, "teleport")))
+    fun everyQuickActionBelongsToAGroupThatIsNotEmpty() {
+        ButtonActions.Group.entries.forEach { group ->
+            assertTrue(ButtonActions.Quick.entries.any { it.group == group })
+        }
     }
 
     @Test
     fun shizukuBackedActionsFailSafelyWithoutShizuku() {
-        val shizukuBacked = listOf(
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.SCREENSHOT.key),
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.NOTIFICATIONS.key),
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.QUICK_SETTINGS.key),
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.RECENT_APPS.key),
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.FREE_MEMORY.key),
-            ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.RESTART_SYSTEM_UI.key),
-            ButtonAction(ButtonAction.Type.TOGGLE, ToggleTilePresets.all.first().key),
-            ButtonAction(ButtonAction.Type.COMMAND, "echo hi")
-        )
-        shizukuBacked.forEach { assertFalse(ButtonActions.perform(context, it)) }
+        val shizukuBacked = ButtonActions.Quick.entries
+            .filter { it.needsShizuku && it != ButtonActions.Quick.KEEP_SCREEN_ON }
+            .map { ButtonActions.quickEntry(context, it) } +
+            ButtonActions.toggleEntry(context, ToggleTilePresets.all.first())
+        shizukuBacked.forEach { entry ->
+            assertFalse(entry.label, runBlocking { ShortcutMaker.launch(context, entry) })
+        }
     }
 
     @Test
-    fun unknownOrEmptyActionsFail() {
-        assertFalse(ButtonActions.perform(context, ButtonAction(ButtonAction.Type.QUICK, "teleport")))
-        assertFalse(ButtonActions.perform(context, ButtonAction(ButtonAction.Type.TOGGLE, "teleport")))
-        assertFalse(ButtonActions.perform(context, ButtonAction(ButtonAction.Type.APP, "com.example.missing")))
-        assertFalse(ButtonActions.perform(context, ButtonAction(ButtonAction.Type.COMMAND, "  ")))
+    fun unknownActionsFail() {
+        assertFalse(ButtonActions.runQuick(context, "teleport"))
+        assertFalse(ButtonActions.runQuick(context, null))
+        assertFalse(ButtonActions.toggle("teleport"))
+        assertFalse(ButtonActions.toggle(null))
     }
 }

@@ -1,7 +1,6 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
-import android.content.Intent
 import android.media.AudioManager
 import android.view.KeyEvent
 import androidx.annotation.DrawableRes
@@ -11,10 +10,6 @@ import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.screenshot.ScreenshotActions
 import java.util.UUID
-
-data class ButtonAction(val type: Type, val value: String) {
-    enum class Type { QUICK, TOGGLE, APP, COMMAND }
-}
 
 object ButtonActions {
 
@@ -179,23 +174,6 @@ object ButtonActions {
         else -> null
     }?.let(TerminalTileIcons::resFor)
 
-    fun perform(context: Context, action: ButtonAction): Boolean = when (action.type) {
-        ButtonAction.Type.QUICK -> runQuick(context, action.value)
-        ButtonAction.Type.TOGGLE -> toggle(action.value)
-        ButtonAction.Type.APP -> launchApp(context, action.value)
-        ButtonAction.Type.COMMAND -> runShell(action.value)
-    }
-
-    fun performInBackground(context: Context, action: ButtonAction): Boolean =
-        if (action.type == ButtonAction.Type.APP) launchAppFromShell(context, action.value) else perform(context, action)
-
-    fun label(context: Context, action: ButtonAction): String = when (action.type) {
-        ButtonAction.Type.QUICK -> Quick.fromKey(action.value)?.let { context.getString(it.nameRes) }
-        ButtonAction.Type.TOGGLE -> ToggleTilePresets.byKey(action.value)?.let { context.getString(it.nameRes) }
-        ButtonAction.Type.APP -> appLabel(context, action.value)
-        ButtonAction.Type.COMMAND -> action.value
-    } ?: action.value
-
     fun runQuick(context: Context, key: String?): Boolean = Quick.fromKey(key)?.run?.invoke(context) ?: false
 
     fun toggle(key: String?): Boolean {
@@ -255,29 +233,5 @@ object ButtonActions {
             audio.ringerMode = next
             true
         }.getOrDefault(false)
-    }
-
-    private fun launchApp(context: Context, packageName: String): Boolean {
-        val intent = context.packageManager.getLaunchIntentForPackage(packageName) ?: return false
-        return try {
-            context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            true
-        } catch (e: Exception) {
-            false
-        }
-    }
-
-    private fun launchAppFromShell(context: Context, packageName: String): Boolean {
-        val component = context.packageManager.getLaunchIntentForPackage(packageName)?.component ?: return false
-        return ShizukuHelper.executeShellCommand(arrayOf("am", "start", "-n", component.flattenToShortString()))
-    }
-
-    private fun appLabel(context: Context, packageName: String): String? {
-        return try {
-            val packageManager = context.packageManager
-            packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0)).toString()
-        } catch (e: Exception) {
-            null
-        }
     }
 }
