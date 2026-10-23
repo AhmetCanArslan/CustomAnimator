@@ -34,6 +34,14 @@ object ShortcutStore {
 
     fun get(context: Context, id: String): ShortcutEntry? = getAll(context).firstOrNull { it.id == id }
 
+    fun encode(entry: ShortcutEntry): String = gson.toJson(entry)
+
+    fun decode(json: String): ShortcutEntry? = try {
+        gson.fromJson(json, ShortcutEntry::class.java)
+    } catch (e: Exception) {
+        null
+    }
+
     @Synchronized
     fun save(context: Context, entry: ShortcutEntry, icon: Bitmap) {
         writeIcon(context, entry.id, icon)
