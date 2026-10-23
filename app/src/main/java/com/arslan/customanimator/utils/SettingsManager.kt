@@ -21,6 +21,7 @@ object SettingsManager {
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
+    private const val KEY_RATE_DIALOG_RATED = "rate_dialog_rated"
     private const val KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL = "remove_ads_prompt_dismissed_until"
     private const val KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW = "remove_ads_support_next_show"
 
@@ -172,13 +173,14 @@ object SettingsManager {
     }
 
     fun shouldShowRateDialog(context: Context): Boolean {
-        val nextShow = getPrefs(context).getLong(KEY_RATE_DIALOG_NEXT_SHOW, 0L)
+        val prefs = getPrefs(context)
+        if (prefs.getBoolean(KEY_RATE_DIALOG_RATED, false)) return false
+        val nextShow = prefs.getLong(KEY_RATE_DIALOG_NEXT_SHOW, 0L)
         return nextShow == 0L || System.currentTimeMillis() >= nextShow
     }
 
     fun markRateDialogRated(context: Context) {
-        val next = System.currentTimeMillis() + 14L * 24 * 60 * 60 * 1000
-        getPrefs(context).edit().putLong(KEY_RATE_DIALOG_NEXT_SHOW, next).apply()
+        getPrefs(context).edit().putBoolean(KEY_RATE_DIALOG_RATED, true).apply()
     }
 
     fun markRateDialogLater(context: Context) {
