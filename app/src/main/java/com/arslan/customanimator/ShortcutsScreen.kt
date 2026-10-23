@@ -2,8 +2,6 @@ package com.arslan.customanimator
 
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,21 +11,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
-import androidx.compose.material.icons.automirrored.filled.Launch
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Widgets
-import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Folder
-import androidx.compose.material.icons.filled.Image
-import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -56,29 +46,6 @@ import com.arslan.customanimator.ui.components.ScreenTopBar
 
 private const val ADAPTIVE_ICON_ZOOM = 1.5f
 private const val DISABLED_TILE_ALPHA = 0.5f
-private const val IMAGE_MIME = "image/*"
-private const val ANY_MIME = "*/*"
-
-private enum class ShortcutTile(
-    val icon: ImageVector,
-    val titleRes: Int,
-    val descriptionRes: Int,
-    val needsShizuku: Boolean = false
-) {
-    APP(Icons.Filled.Apps, R.string.shortcut_tile_app, R.string.shortcut_tile_app_desc),
-    ACTIVITY(Icons.AutoMirrored.Filled.Launch, R.string.shortcut_tile_activity, R.string.shortcut_tile_activity_desc),
-    APP_SHORTCUT(
-        Icons.Filled.TouchApp,
-        R.string.shortcut_tile_app_shortcut,
-        R.string.shortcut_tile_app_shortcut_desc
-    ),
-    FILE(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.shortcut_tile_file, R.string.shortcut_tile_file_desc),
-    PHOTO(Icons.Filled.Image, R.string.shortcut_tile_photo, R.string.shortcut_tile_photo_desc),
-    FOLDER(Icons.Filled.Folder, R.string.shortcut_tile_folder, R.string.shortcut_tile_folder_desc),
-    LINK(Icons.Filled.Link, R.string.shortcut_tile_link, R.string.shortcut_tile_link_desc),
-    COMMAND(Icons.Filled.Terminal, R.string.shortcut_tile_command, R.string.shortcut_tile_command_desc, needsShizuku = true)
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutsScreen(
@@ -87,17 +54,8 @@ fun ShortcutsScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
-    val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
     val state = remember { ShortcutsState(context, coroutineScope) }
-
-    val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        uri?.let(state::onFilePicked)
-    }
-
-    val folderPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-        uri?.let(state::onFolderPicked)
-    }
 
     LaunchedEffect(Unit) {
         RewardedAds.preload(context)
@@ -107,18 +65,7 @@ fun ShortcutsScreen(
         state.load(hasShizukuPermission)
     }
 
-    val onTileClick: (ShortcutTile) -> Unit = { tile ->
-        when (tile) {
-            ShortcutTile.APP -> state.startAppPicker(AppPickTarget.APP)
-            ShortcutTile.ACTIVITY -> state.startAppPicker(AppPickTarget.ACTIVITY)
-            ShortcutTile.APP_SHORTCUT -> state.startAppPicker(AppPickTarget.APP_SHORTCUT)
-            ShortcutTile.FILE -> filePicker.launch(arrayOf(ANY_MIME))
-            ShortcutTile.PHOTO -> filePicker.launch(arrayOf(IMAGE_MIME))
-            ShortcutTile.FOLDER -> folderPicker.launch(null)
-            ShortcutTile.LINK -> state.startBlank(ShortcutType.LINK)
-            ShortcutTile.COMMAND -> if (hasShizukuPermission) state.startBlank(ShortcutType.COMMAND) else openSetup()
-        }
-    }
+    val onTileClick = rememberShortcutSources(state, hasShizukuPermission)
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
