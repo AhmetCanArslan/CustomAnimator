@@ -2,7 +2,10 @@ package com.arslan.customanimator
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
@@ -23,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -36,6 +40,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.ShortcutEntry
 import com.arslan.customanimator.data.ShortcutType
@@ -43,6 +48,7 @@ import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.ui.components.SectionHeader
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ButtonActions
+import com.arslan.customanimator.utils.ShortcutMaker
 import com.arslan.customanimator.utils.TerminalTileIcons
 import com.arslan.customanimator.utils.ToggleTilePresets
 
@@ -173,6 +179,43 @@ private fun ActionRow(
             )
         }
     }
+}
+
+@Composable
+internal fun ActionChip(entry: ShortcutEntry) {
+    Surface(
+        shape = AppShapes.chip,
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+    ) {
+        Row(
+            modifier = Modifier.padding(start = 6.dp, end = 12.dp, top = 4.dp, bottom = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ActionIcon(entry = entry, modifier = Modifier.size(20.dp))
+            Text(
+                text = entry.label,
+                style = MaterialTheme.typography.labelLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionIcon(entry: ShortcutEntry, modifier: Modifier) {
+    val packageName = entry.packageName
+    if (packageName != null) {
+        AppIcon(packageName = packageName, modifier = modifier)
+        return
+    }
+    Icon(
+        painter = painterResource(ButtonActions.iconRes(entry) ?: ShortcutMaker.glyphRes(entry.type)),
+        contentDescription = null,
+        modifier = modifier
+    )
 }
 
 @Composable
