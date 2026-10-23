@@ -4,9 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.view.KeyEvent
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.arslan.customanimator.R
+import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.screenshot.ScreenshotActions
+import java.util.UUID
 
 data class ButtonAction(val type: Type, val value: String) {
     enum class Type { QUICK, TOGGLE, APP, COMMAND }
@@ -152,6 +156,28 @@ object ButtonActions {
 
     private const val FOREGROUND_PACKAGE_SCRIPT =
         "dumpsys activity activities | grep -m1 topResumedActivity | sed -E 's/.* ([A-Za-z0-9_.]+)\\/.*/\\1/'"
+
+    fun quickEntry(context: Context, quick: Quick): ShortcutEntry = ShortcutEntry(
+        id = UUID.randomUUID().toString(),
+        type = ShortcutType.QUICK,
+        label = context.getString(quick.nameRes),
+        actionKey = quick.key,
+        viaShizuku = quick.needsShizuku
+    )
+
+    fun toggleEntry(context: Context, preset: ToggleTilePresets.Preset): ShortcutEntry = ShortcutEntry(
+        id = UUID.randomUUID().toString(),
+        type = ShortcutType.TOGGLE,
+        label = context.getString(preset.nameRes),
+        actionKey = preset.key
+    )
+
+    @DrawableRes
+    fun iconRes(entry: ShortcutEntry): Int? = when (entry.type) {
+        ShortcutType.QUICK -> Quick.fromKey(entry.actionKey)?.iconKey
+        ShortcutType.TOGGLE -> entry.actionKey?.let(ToggleTilePresets::byKey)?.iconKey
+        else -> null
+    }?.let(TerminalTileIcons::resFor)
 
     fun perform(context: Context, action: ButtonAction): Boolean = when (action.type) {
         ButtonAction.Type.QUICK -> runQuick(context, action.value)

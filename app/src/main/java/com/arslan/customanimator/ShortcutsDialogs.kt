@@ -41,9 +41,22 @@ import kotlinx.coroutines.withContext
 private const val DISABLED_ROW_ALPHA = 0.45f
 
 @Composable
-internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boolean) {
+internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boolean, onSource: (ShortcutTile) -> Unit) {
     when (val step = state.step) {
         ShortcutStep.Idle -> Unit
+        is ShortcutStep.PickAction -> ActionPickerSheet(
+            step = step,
+            current = state.current,
+            hasShizukuPermission = hasShizukuPermission,
+            onSource = onSource,
+            onPick = state::onActionPicked,
+            onDismiss = state::dismiss
+        )
+        is ShortcutStep.EnterValue -> ActionValueDialog(
+            entry = step.entry,
+            onSave = state::onValueEntered,
+            onDismiss = state::dismiss
+        )
         is ShortcutStep.PickApp -> AppPickerSheet(
             onPick = state::onAppPicked,
             onDismiss = state::dismiss
@@ -471,19 +484,19 @@ private fun ShortcutActivityInfo.isLaunchable(hasShizukuPermission: Boolean, isR
 private fun ShortcutEntry.selectedHandler() =
     packageName?.let { owner -> activityName?.let { android.content.ComponentName(owner, it) } }
 
-private fun ShortcutEntry.inputValue(): String = when (type) {
+internal fun ShortcutEntry.inputValue(): String = when (type) {
     ShortcutType.LINK -> uri
     ShortcutType.COMMAND -> command
     else -> null
 }.orEmpty()
 
-private fun ShortcutEntry.valueLabelRes(): Int? = when (type) {
+internal fun ShortcutEntry.valueLabelRes(): Int? = when (type) {
     ShortcutType.LINK -> R.string.shortcut_link_field
     ShortcutType.COMMAND -> R.string.shortcut_command_field
     else -> null
 }
 
-private fun ShortcutEntry.withInput(label: String, value: String): ShortcutEntry = when (type) {
+internal fun ShortcutEntry.withInput(label: String, value: String): ShortcutEntry = when (type) {
     ShortcutType.LINK -> copy(label = label.trim(), uri = ShortcutMaker.normalizeLink(value))
     ShortcutType.COMMAND -> copy(label = label.trim(), command = value.trim())
     else -> copy(label = label.trim())

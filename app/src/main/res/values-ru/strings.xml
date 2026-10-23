@@ -634,6 +634,7 @@
     <string name="qs_toggle_battery_saver">Экономия заряда</string>
     <string name="qs_toggle_battery_saver_desc">Включить или выключить экономию заряда</string>
     <string name="shortcut_tile_action">Действие</string>
+    <string name="shortcut_tile_action_desc">Фонарик, медиаклавиши, переключатели и другое</string>
     <string name="carrier_name">Название оператора</string>
     <string name="carrier_name_desc">Показывать своё название оператора в строке состояния и на экране блокировки</string>
     <string name="carrier_name_current">Текущее название: %1$s</string>

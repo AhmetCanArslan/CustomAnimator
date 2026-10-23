@@ -152,7 +152,7 @@ fun ShortcutsScreen(
         }
     }
 
-    ShortcutStepHost(state = state, hasShizukuPermission = hasShizukuPermission)
+    ShortcutStepHost(state = state, hasShizukuPermission = hasShizukuPermission, onSource = onTileClick)
 }
 
 @Composable

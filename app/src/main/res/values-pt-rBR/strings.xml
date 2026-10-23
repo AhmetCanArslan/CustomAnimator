@@ -634,6 +634,7 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_toggle_battery_saver">Economia de bateria</string>
     <string name="qs_toggle_battery_saver_desc">Ative ou desative a economia de bateria</string>
     <string name="shortcut_tile_action">Ação</string>
+    <string name="shortcut_tile_action_desc">Lanterna, teclas de mídia, alternâncias e mais</string>
     <string name="carrier_name">Nome da operadora</string>
     <string name="carrier_name_desc">Mostrar um nome de operadora personalizado na barra de status e na tela de bloqueio</string>
     <string name="carrier_name_current">Nome atual: %1$s</string>

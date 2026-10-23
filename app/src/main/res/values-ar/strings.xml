@@ -98,6 +98,7 @@
     <string name="qs_toggle_battery_saver">توفير شحن البطارية</string>
     <string name="qs_toggle_battery_saver_desc">تشغيل توفير شحن البطارية أو إيقافه</string>
     <string name="shortcut_tile_action">إجراء</string>
+    <string name="shortcut_tile_action_desc">المصباح ومفاتيح الوسائط والمفاتيح السريعة والمزيد</string>
     <string name="carrier_name">اسم المشغّل</string>
     <string name="carrier_name_desc">عرض اسم مشغّل مخصص في شريط الحالة وشاشة القفل</string>
     <string name="carrier_name_current">الاسم الحالي: %1$s</string>

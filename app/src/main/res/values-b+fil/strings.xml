@@ -634,6 +634,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="qs_toggle_battery_saver">Battery saver</string>
     <string name="qs_toggle_battery_saver_desc">I-on o i-off ang battery saver</string>
     <string name="shortcut_tile_action">Aksyon</string>
+    <string name="shortcut_tile_action_desc">Flashlight, media key, toggle at iba pa</string>
     <string name="carrier_name">Pangalan ng Carrier</string>
     <string name="carrier_name_desc">Magpakita ng custom na pangalan ng carrier sa status bar at lock screen</string>
     <string name="carrier_name_current">Kasalukuyang pangalan: %1$s</string>

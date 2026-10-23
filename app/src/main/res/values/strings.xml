@@ -106,6 +106,7 @@
     <string name="qs_toggle_battery_saver">Battery saver</string>
     <string name="qs_toggle_battery_saver_desc">Turn battery saver on or off</string>
     <string name="shortcut_tile_action">Action</string>
+    <string name="shortcut_tile_action_desc">Flashlight, media keys, toggles and more</string>
     <string name="carrier_name">Carrier Name</string>
     <string name="carrier_name_desc">Show a custom carrier name in the status bar and lock screen</string>
     <string name="carrier_name_current">Current name: %1$s</string>

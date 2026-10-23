@@ -187,8 +187,8 @@ object ShortcutMaker {
         0xFF000000.toInt()
     )
 
-    fun glyphIcon(context: Context, type: ShortcutType): Bitmap =
-        glyphIcon(context, glyphRes(type), glyphColor(type))
+    fun glyphIcon(context: Context, entry: ShortcutEntry): Bitmap =
+        glyphIcon(context, ButtonActions.iconRes(entry) ?: glyphRes(entry.type), glyphColor(entry.type))
 
     fun glyphIcon(context: Context, drawableRes: Int, color: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(ICON_PX, ICON_PX, Bitmap.Config.ARGB_8888)
@@ -206,7 +206,7 @@ object ShortcutMaker {
         if (uri != null && entry.mimeType?.startsWith(IMAGE_MIME_PREFIX) == true) {
             thumbnailIcon(context, uri)?.let { return it }
         }
-        return handlerIcon?.let(::drawableIcon) ?: glyphIcon(context, entry.type)
+        return handlerIcon?.let(::drawableIcon) ?: glyphIcon(context, entry)
     }
 
     fun pin(context: Context, entry: ShortcutEntry, icon: Bitmap): Boolean {
