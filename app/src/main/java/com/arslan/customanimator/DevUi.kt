@@ -35,15 +35,19 @@ internal fun DevSectionTitle(title: String) {
 }
 
 internal fun LazyListScope.cardSection(titleRes: Int, vararg rows: @Composable () -> Unit) {
+    sectionTitle(titleRes)
+    cardRows(*rows)
+    item {
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+internal fun LazyListScope.sectionTitle(titleRes: Int) {
     item {
         Column {
             DevSectionTitle(stringResource(titleRes))
             Spacer(modifier = Modifier.height(12.dp))
         }
-    }
-    cardRows(*rows)
-    item {
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
