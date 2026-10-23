@@ -14,6 +14,7 @@ import android.view.InputDevice
 import android.view.InputEvent
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
+import com.arslan.customanimator.utils.ButtonTrigger
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.concurrent.thread
@@ -27,7 +28,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
 
     private var devices: List<EvdevDevice> = emptyList()
     private var detector: PowerPressDetector? = null
-    private val volumeDetector = VolumeComboDetector(object : VolumeComboDetector.Output {
+    private val volumeDetector = VolumeKeyDetector(object : VolumeKeyDetector.Output {
         override fun pressKey(code: Int) {
             val keyCode = EvdevDevice.forwardedKeys[code] ?: return
             val now = SystemClock.uptimeMillis()
@@ -44,11 +45,13 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             inject(KeyEvent.changeTimeRepeat(KeyEvent.changeAction(down, KeyEvent.ACTION_UP), SystemClock.uptimeMillis(), 0))
         }
 
-        override fun combo() {
-            notifyListener { it.onVolumeCombo() }
+        override fun trigger(trigger: ButtonTrigger) {
+            notifyListener { it.onVolumeTrigger(trigger.name) }
         }
     })
-    private var grabbed = false
+    private val grabbedDevices = HashSet<EvdevDevice>()
+    private var interactive = false
+    private var volumeScreenOff = false
     private var grabPending = false
     private var holdDownTime = 0L
     private val forwardedDowns = HashMap<Int, KeyEvent>()
@@ -104,39 +107,66 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     }
 
     override fun destroy() {
-        setGrabbed(false)
+        synchronized(lock) { releaseAll() }
         System.exit(0)
     }
 
-    override fun start(listener: IPowerButtonListener?, multiPressTimeoutMs: Int, volumeCombo: Boolean): Boolean {
+    override fun start(
+        listener: IPowerButtonListener?,
+        doublePressWindowMs: Int,
+        powerDoublePress: Boolean,
+        volumeTriggers: Array<String>?,
+        volumeScreenOff: Boolean
+    ): Boolean {
+        val multiPressTimeoutMs = if (powerDoublePress) doublePressWindowMs.toLong() else PowerPressDetector.PASS_THROUGH
         synchronized(lock) {
             this.listener = listener
-            volumeDetector.enabled = volumeCombo
+            this.volumeScreenOff = volumeScreenOff
+            volumeDetector.triggers = volumeTriggers.orEmpty().mapNotNull(ButtonTrigger::fromName).toSet()
+            volumeDetector.doublePressWindowMs = doublePressWindowMs.toLong()
             detector?.let {
-                it.multiPressTimeoutMs = multiPressTimeoutMs.toLong()
+                it.multiPressTimeoutMs = multiPressTimeoutMs
+                applyGrabs()
                 return true
             }
             devices = EvdevDevice.openButtonDevices()
             if (devices.isEmpty()) return false
-            detector = PowerPressDetector(multiPressTimeoutMs.toLong(), output)
+            detector = PowerPressDetector(multiPressTimeoutMs, output)
         }
         thread(name = "power-button-reader") { readLoop() }
         return true
     }
 
-    override fun setGrabbed(grabbed: Boolean): Boolean = synchronized(lock) {
-        grabPending = grabbed && !this.grabbed && devices.any { it.isKeyDown(EvdevDevice.KEY_POWER) }
-        if (grabPending) return true
-        applyGrab(grabbed)
+    override fun setGrabbed(interactive: Boolean): Boolean = synchronized(lock) {
+        this.interactive = interactive
+        grabPending = interactive && devices.any {
+            it.hasPower && it !in grabbedDevices && it.isKeyDown(EvdevDevice.KEY_POWER)
+        }
+        applyGrabs()
     }
 
-    private fun applyGrab(grabbed: Boolean): Boolean {
-        if (this.grabbed == grabbed) return true
+    private fun wantsGrab(device: EvdevDevice): Boolean = when {
+        device.hasPower -> interactive && !grabPending
+        volumeDetector.triggers.isEmpty() -> false
+        else -> interactive || volumeScreenOff
+    }
+
+    private fun applyGrabs(): Boolean = devices.map { applyGrab(it, wantsGrab(it)) }.all { it }
+
+    private fun applyGrab(device: EvdevDevice, grab: Boolean): Boolean {
+        if ((device in grabbedDevices) == grab) return true
         releaseHeldKeys()
-        val applied = devices.isNotEmpty() && devices.all { it.grab(grabbed) }
-        if (grabbed && !applied) devices.forEach { it.grab(false) }
-        this.grabbed = grabbed && applied
+        if (!grab) {
+            grabbedDevices -= device
+            return device.grab(false)
+        }
+        val applied = device.grab(true)
+        if (applied) grabbedDevices += device
         return applied
+    }
+
+    private fun releaseAll() {
+        devices.forEach { applyGrab(it, false) }
     }
 
     private fun releaseHeldKeys() {
@@ -160,7 +190,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             Log.e(TAG, "Reading the power button failed", e)
         } finally {
             synchronized(lock) {
-                setGrabbed(false)
+                releaseAll()
                 devices.forEach { it.close() }
                 devices = emptyList()
             }
@@ -201,16 +231,16 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             val type = events.getShort(offset + TIME_SIZE).toInt()
             val code = events.getShort(offset + TIME_SIZE + 2).toInt()
             val value = events.getInt(offset + TIME_SIZE + 4)
-            if (type == EvdevDevice.EV_KEY) handleKey(code, value)
+            if (type == EvdevDevice.EV_KEY) handleKey(device, code, value)
         }
     }
 
-    private fun handleKey(code: Int, value: Int) {
-        if (grabbed) {
+    private fun handleKey(device: EvdevDevice, code: Int, value: Int) {
+        if (device in grabbedDevices) {
             onKey(code, value)
         } else if (grabPending && code == EvdevDevice.KEY_POWER && value == KEY_UP) {
             grabPending = false
-            applyGrab(true)
+            applyGrabs()
         }
     }
 
@@ -218,8 +248,14 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         val detector = detector ?: return
         val now = SystemClock.uptimeMillis()
         when {
-            code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> detector.onPowerDown(now)
-            code == EvdevDevice.KEY_POWER && value == KEY_UP -> detector.onPowerUp(now)
+            code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> {
+                volumeDetector.onPowerDown(now)
+                detector.onPowerDown(now)
+            }
+            code == EvdevDevice.KEY_POWER && value == KEY_UP -> {
+                volumeDetector.onPowerUp()
+                detector.onPowerUp(now)
+            }
             code != EvdevDevice.KEY_POWER -> forward(code, value, now)
         }
     }
@@ -238,7 +274,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             }
             KEY_UP -> {
                 detector?.onOtherKeyUp()
-                volumeDetector.onUp(code)
+                volumeDetector.onUp(code, now)
             }
         }
     }

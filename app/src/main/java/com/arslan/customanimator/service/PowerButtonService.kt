@@ -26,6 +26,7 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ButtonAction
 import com.arslan.customanimator.utils.ButtonActions
 import com.arslan.customanimator.utils.ButtonRemapperManager
+import com.arslan.customanimator.utils.ButtonTrigger
 import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +44,7 @@ class PowerButtonService : Service() {
         private const val TAG = "PowerButtonService"
         private const val CHANNEL_ID = "power_button_channel"
         private const val NOTIF_ID = 4203
-        private const val SERVICE_VERSION = 5
+        private const val SERVICE_VERSION = 6
         private const val RECONNECT_BASE_DELAY_MS = 2000L
         private const val MAX_RECONNECT_ATTEMPTS = 5
 
@@ -90,8 +91,10 @@ class PowerButtonService : Service() {
             scope.launch { perform(ButtonRemapperManager::getDoublePressAction) }
         }
 
-        override fun onVolumeCombo() {
-            scope.launch { perform(ButtonRemapperManager::getVolumeComboAction) }
+        override fun onVolumeTrigger(trigger: String?) {
+            if (ButtonTrigger.fromName(trigger) == ButtonTrigger.VOLUME_COMBO) {
+                scope.launch { perform(ButtonRemapperManager::getVolumeComboAction) }
+            }
         }
     }
 
@@ -173,13 +176,13 @@ class PowerButtonService : Service() {
 
     private suspend fun startListening(service: IPowerButtonUserService?) {
         val started = withContext(Dispatchers.IO) {
-            val windowMs = if (ButtonRemapperManager.getDoublePressAction(applicationContext) == null) {
-                PowerPressDetector.PASS_THROUGH.toInt()
-            } else {
-                ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
-            }
-            val volumeCombo = ButtonRemapperManager.getVolumeComboAction(applicationContext) != null
-            runCatching { service?.start(listener, windowMs, volumeCombo) == true }
+            val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
+            val powerDoublePress = ButtonRemapperManager.getDoublePressAction(applicationContext) != null
+            val volumeTriggers = listOfNotNull(
+                ButtonTrigger.VOLUME_COMBO.name.takeIf { ButtonRemapperManager.getVolumeComboAction(applicationContext) != null }
+            ).toTypedArray()
+            val volumeScreenOff = ButtonRemapperManager.isVolumeScreenOff(applicationContext)
+            runCatching { service?.start(listener, windowMs, powerDoublePress, volumeTriggers, volumeScreenOff) == true }
                 .getOrDefault(false)
         }
         if (!started) {
