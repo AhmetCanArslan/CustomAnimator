@@ -234,6 +234,8 @@ object ShortcutMaker {
     }
 
     suspend fun launch(context: Context, entry: ShortcutEntry): Boolean {
+        if (entry.type == ShortcutType.QUICK) return ButtonActions.runQuick(context, entry.actionKey)
+        if (entry.type == ShortcutType.TOGGLE) return ButtonActions.toggle(entry.actionKey)
         if (entry.type == ShortcutType.APP_SHORTCUT) return startAppShortcut(context, entry)
         if (entry.type == ShortcutType.COMMAND) return runCommand(entry)
         if (entry.viaShizuku) return startThroughShizuku(entry)
@@ -267,7 +269,7 @@ object ShortcutMaker {
         ShortcutType.APP -> entry.packageName?.let { context.packageManager.getLaunchIntentForPackage(it) }
         ShortcutType.ACTIVITY -> component(entry)?.let { Intent().setComponent(it) }
         ShortcutType.FILE, ShortcutType.FOLDER, ShortcutType.LINK -> viewIntent(entry)
-        ShortcutType.COMMAND, ShortcutType.APP_SHORTCUT -> null
+        ShortcutType.COMMAND, ShortcutType.APP_SHORTCUT, ShortcutType.QUICK, ShortcutType.TOGGLE -> null
     }
 
     private fun viewIntent(entry: ShortcutEntry): Intent {
@@ -314,6 +316,8 @@ object ShortcutMaker {
         ShortcutType.COMMAND -> R.drawable.ic_tile_terminal
         ShortcutType.FOLDER -> R.drawable.ic_tile_folder
         ShortcutType.APP_SHORTCUT -> R.drawable.ic_tile_touch_app
+        ShortcutType.QUICK -> R.drawable.ic_tile_bolt
+        ShortcutType.TOGGLE -> R.drawable.ic_tile_toggle_on
     }
 
     private fun glyphColor(type: ShortcutType): Int = glyphColors[type.ordinal]

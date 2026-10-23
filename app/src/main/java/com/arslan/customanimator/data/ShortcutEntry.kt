@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 
 enum class ShortcutType {
-    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER, APP_SHORTCUT
+    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER, APP_SHORTCUT, QUICK, TOGGLE
 }
 
 data class ShortcutEntry(
@@ -19,9 +19,13 @@ data class ShortcutEntry(
     val command: String? = null,
     val viaShizuku: Boolean = false,
     val legacyIcon: Boolean = false,
-    val shortcutId: String? = null
+    val shortcutId: String? = null,
+    val actionKey: String? = null
 ) {
-    val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND
+    val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND || type == ShortcutType.TOGGLE
+
+    val startsActivity: Boolean
+        get() = type != ShortcutType.COMMAND && type != ShortcutType.QUICK && type != ShortcutType.TOGGLE
 }
 
 data class ShortcutActivityInfo(

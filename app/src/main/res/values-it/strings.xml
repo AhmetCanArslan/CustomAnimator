@@ -631,6 +631,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_action_free_memory">Libera memoria</string>
     <string name="qs_toggle_battery_saver">Risparmio energetico</string>
     <string name="qs_toggle_battery_saver_desc">Attiva o disattiva il risparmio energetico</string>
+    <string name="shortcut_tile_action">Azione</string>
     <string name="carrier_name">Nome operatore</string>
     <string name="carrier_name_desc">Mostra un nome operatore personalizzato nella barra di stato e nella schermata di blocco</string>
     <string name="carrier_name_current">Nome attuale: %1$s</string>

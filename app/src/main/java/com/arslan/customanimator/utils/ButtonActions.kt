@@ -48,13 +48,13 @@ object ButtonActions {
         );
 
         companion object {
-            fun fromKey(key: String): Quick? = entries.firstOrNull { it.key == key }
+            fun fromKey(key: String?): Quick? = entries.firstOrNull { it.key == key }
         }
     }
 
     fun perform(context: Context, action: ButtonAction): Boolean = when (action.type) {
-        ButtonAction.Type.QUICK -> Quick.fromKey(action.value)?.run?.invoke(context) ?: false
-        ButtonAction.Type.TOGGLE -> ToggleTilePresets.byKey(action.value)?.let { toggle(it) } ?: false
+        ButtonAction.Type.QUICK -> runQuick(context, action.value)
+        ButtonAction.Type.TOGGLE -> toggle(action.value)
         ButtonAction.Type.APP -> launchApp(context, action.value)
         ButtonAction.Type.COMMAND -> runShell(action.value)
     }
@@ -69,7 +69,10 @@ object ButtonActions {
         ButtonAction.Type.COMMAND -> action.value
     } ?: action.value
 
-    private fun toggle(preset: ToggleTilePresets.Preset): Boolean {
+    fun runQuick(context: Context, key: String?): Boolean = Quick.fromKey(key)?.run?.invoke(context) ?: false
+
+    fun toggle(key: String?): Boolean {
+        val preset = key?.let(ToggleTilePresets::byKey) ?: return false
         val state = ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", preset.readCommand))
         if (!state.isSuccess) return false
         val active = state.output.trim().lines().firstOrNull()?.trim() == preset.onValue.trim()
