@@ -631,6 +631,17 @@
     <string name="button_action_video_camera">Записать видео</string>
     <string name="button_action_keep_screen_on">Не выключать экран</string>
     <string name="button_action_force_stop_app">Принудительно остановить приложение на экране</string>
+    <string name="button_remapper_volume_buttons">Кнопки громкости</string>
+    <string name="button_remapper_volume_up">Громкость +</string>
+    <string name="button_remapper_volume_down">Громкость −</string>
+    <string name="button_gesture_double_press">Двойное нажатие</string>
+    <string name="button_gesture_long_press">Долгое нажатие</string>
+    <string name="button_gesture_double_hint">Одиночные нажатия ждут мгновение, чтобы их можно было различить</string>
+    <string name="button_gesture_long_hint">Удержание кнопки больше не меняет громкость непрерывно</string>
+    <string name="button_gesture_combo_hint">Изменение громкости ждёт мгновение, чтобы различить два случая</string>
+    <string name="button_remapper_volume_tap_hint">Короткое нажатие по-прежнему меняет громкость</string>
+    <string name="button_remapper_volume_screen_off">Кнопки громкости при выключенном экране</string>
+    <string name="button_remapper_volume_screen_off_desc">Действия кнопок громкости работают и при выключенном экране. Невозможно на устройствах, где кнопки громкости и кнопка питания относятся к одному устройству ввода.</string>
     <string name="qs_toggle_battery_saver">Экономия заряда</string>
     <string name="qs_toggle_battery_saver_desc">Включить или выключить экономию заряда</string>
     <string name="shortcut_tile_action">Действие</string>

@@ -651,6 +651,17 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_action_video_camera">Registra video</string>
     <string name="button_action_keep_screen_on">Mantieni lo schermo acceso</string>
     <string name="button_action_force_stop_app">Forza l\'arresto dell\'app sullo schermo</string>
+    <string name="button_remapper_volume_buttons">Tasti del volume</string>
+    <string name="button_remapper_volume_up">Volume +</string>
+    <string name="button_remapper_volume_down">Volume −</string>
+    <string name="button_gesture_double_press">Doppia pressione</string>
+    <string name="button_gesture_long_press">Pressione prolungata</string>
+    <string name="button_gesture_double_hint">I tocchi singoli attendono un attimo per poterli distinguere</string>
+    <string name="button_gesture_long_hint">Tenere premuto il tasto non cambia più il volume in modo continuo</string>
+    <string name="button_gesture_combo_hint">Le variazioni di volume attendono un attimo per distinguere i due casi</string>
+    <string name="button_remapper_volume_tap_hint">Un tocco cambia ancora il volume</string>
+    <string name="button_remapper_volume_screen_off">Tasti del volume a schermo spento</string>
+    <string name="button_remapper_volume_screen_off_desc">Le azioni dei tasti del volume funzionano anche a schermo spento. Non è possibile sui dispositivi in cui i tasti del volume condividono il dispositivo di input con il tasto di accensione.</string>
     <string name="qs_toggle_battery_saver">Risparmio energetico</string>
     <string name="qs_toggle_battery_saver_desc">Attiva o disattiva il risparmio energetico</string>
     <string name="shortcut_tile_action">Azione</string>

@@ -631,6 +631,17 @@ Animatör Süresi: %3$.2f</string>
     <string name="button_action_video_camera">Video kaydet</string>
     <string name="button_action_keep_screen_on">Ekranı açık tut</string>
     <string name="button_action_force_stop_app">Ekrandaki uygulamayı zorla durdur</string>
+    <string name="button_remapper_volume_buttons">Ses tuşları</string>
+    <string name="button_remapper_volume_up">Ses +</string>
+    <string name="button_remapper_volume_down">Ses −</string>
+    <string name="button_gesture_double_press">Çift basma</string>
+    <string name="button_gesture_long_press">Uzun basma</string>
+    <string name="button_gesture_double_hint">Tek basışlar ayırt edilebilmek için bir an bekler</string>
+    <string name="button_gesture_long_hint">Tuşu basılı tutmak sesi artık sürekli değiştirmez</string>
+    <string name="button_gesture_combo_hint">İkisini ayırt etmek için ses değişimi bir an bekler</string>
+    <string name="button_remapper_volume_tap_hint">Kısa basış sesi yine değiştirir</string>
+    <string name="button_remapper_volume_screen_off">Ekran kapalıyken ses tuşları</string>
+    <string name="button_remapper_volume_screen_off_desc">Ses tuşu işlemleri ekran kapalıyken de çalışır. Ses tuşlarının güç tuşuyla aynı giriş cihazını paylaştığı cihazlarda mümkün değildir.</string>
     <string name="qs_toggle_battery_saver">Pil tasarrufu</string>
     <string name="qs_toggle_battery_saver_desc">Pil tasarrufunu açın veya kapatın</string>
     <string name="shortcut_tile_action">İşlem</string>

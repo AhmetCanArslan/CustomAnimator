@@ -103,6 +103,17 @@
     <string name="button_action_video_camera">Record video</string>
     <string name="button_action_keep_screen_on">Keep screen on</string>
     <string name="button_action_force_stop_app">Force stop the app on screen</string>
+    <string name="button_remapper_volume_buttons">Volume buttons</string>
+    <string name="button_remapper_volume_up">Volume +</string>
+    <string name="button_remapper_volume_down">Volume −</string>
+    <string name="button_gesture_double_press">Double press</string>
+    <string name="button_gesture_long_press">Long press</string>
+    <string name="button_gesture_double_hint">Single taps wait a moment so they can be told apart</string>
+    <string name="button_gesture_long_hint">Holding the key no longer keeps changing the volume</string>
+    <string name="button_gesture_combo_hint">Volume changes wait a moment so the two can be told apart</string>
+    <string name="button_remapper_volume_tap_hint">A tap still changes the volume</string>
+    <string name="button_remapper_volume_screen_off">Volume keys with the screen off</string>
+    <string name="button_remapper_volume_screen_off_desc">Volume key actions keep working with the screen off. Not possible on devices where the volume keys share an input device with the power button.</string>
     <string name="qs_toggle_battery_saver">Battery saver</string>
     <string name="qs_toggle_battery_saver_desc">Turn battery saver on or off</string>
     <string name="shortcut_tile_action">Action</string>

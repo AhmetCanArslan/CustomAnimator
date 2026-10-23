@@ -631,6 +631,17 @@ Durasi Animator: %3$.2f</string>
     <string name="button_action_video_camera">Rekam video</string>
     <string name="button_action_keep_screen_on">Biarkan layar tetap menyala</string>
     <string name="button_action_force_stop_app">Paksa hentikan aplikasi di layar</string>
+    <string name="button_remapper_volume_buttons">Tombol volume</string>
+    <string name="button_remapper_volume_up">Volume +</string>
+    <string name="button_remapper_volume_down">Volume −</string>
+    <string name="button_gesture_double_press">Tekan dua kali</string>
+    <string name="button_gesture_long_press">Tekan lama</string>
+    <string name="button_gesture_double_hint">Ketukan tunggal menunggu sebentar agar dapat dibedakan</string>
+    <string name="button_gesture_long_hint">Menahan tombol tidak lagi mengubah volume terus-menerus</string>
+    <string name="button_gesture_combo_hint">Perubahan volume menunggu sebentar agar keduanya dapat dibedakan</string>
+    <string name="button_remapper_volume_tap_hint">Ketukan tetap mengubah volume</string>
+    <string name="button_remapper_volume_screen_off">Tombol volume saat layar mati</string>
+    <string name="button_remapper_volume_screen_off_desc">Tindakan tombol volume tetap berjalan saat layar mati. Tidak dapat dilakukan di perangkat yang tombol volumenya berbagi perangkat input dengan tombol daya.</string>
     <string name="qs_toggle_battery_saver">Penghemat baterai</string>
     <string name="qs_toggle_battery_saver_desc">Aktifkan atau nonaktifkan penghemat baterai</string>
     <string name="shortcut_tile_action">Tindakan</string>

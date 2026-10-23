@@ -95,6 +95,17 @@
     <string name="button_action_video_camera">تسجيل فيديو</string>
     <string name="button_action_keep_screen_on">إبقاء الشاشة قيد التشغيل</string>
     <string name="button_action_force_stop_app">فرض إيقاف التطبيق المعروض</string>
+    <string name="button_remapper_volume_buttons">أزرار الصوت</string>
+    <string name="button_remapper_volume_up">رفع الصوت</string>
+    <string name="button_remapper_volume_down">خفض الصوت</string>
+    <string name="button_gesture_double_press">ضغطة مزدوجة</string>
+    <string name="button_gesture_long_press">ضغطة مطولة</string>
+    <string name="button_gesture_double_hint">تنتظر النقرات المفردة لحظة لتمييزها</string>
+    <string name="button_gesture_long_hint">لا يعود الضغط المستمر على الزر يغيّر الصوت باستمرار</string>
+    <string name="button_gesture_combo_hint">ينتظر تغيير الصوت لحظة للتمييز بين الحالتين</string>
+    <string name="button_remapper_volume_tap_hint">النقرة القصيرة ما زالت تغيّر مستوى الصوت</string>
+    <string name="button_remapper_volume_screen_off">أزرار الصوت والشاشة مطفأة</string>
+    <string name="button_remapper_volume_screen_off_desc">تستمر إجراءات أزرار الصوت في العمل والشاشة مطفأة. غير ممكن على الأجهزة التي تشترك فيها أزرار الصوت مع زر التشغيل في جهاز الإدخال نفسه.</string>
     <string name="qs_toggle_battery_saver">توفير شحن البطارية</string>
     <string name="qs_toggle_battery_saver_desc">تشغيل توفير شحن البطارية أو إيقافه</string>
     <string name="shortcut_tile_action">إجراء</string>

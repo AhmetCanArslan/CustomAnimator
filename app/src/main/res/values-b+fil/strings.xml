@@ -631,6 +631,17 @@ Tagal ng Animator: %3$.2f</string>
     <string name="button_action_video_camera">Mag-record ng video</string>
     <string name="button_action_keep_screen_on">Panatilihing bukas ang screen</string>
     <string name="button_action_force_stop_app">Puwersahang ihinto ang app na nasa screen</string>
+    <string name="button_remapper_volume_buttons">Mga volume button</string>
+    <string name="button_remapper_volume_up">Volume +</string>
+    <string name="button_remapper_volume_down">Volume −</string>
+    <string name="button_gesture_double_press">Double press</string>
+    <string name="button_gesture_long_press">Long press</string>
+    <string name="button_gesture_double_hint">Sandaling naghihintay ang isang tap para makilala ito</string>
+    <string name="button_gesture_long_hint">Hindi na tuloy-tuloy na binabago ng pagpindot ang volume</string>
+    <string name="button_gesture_combo_hint">Sandaling naghihintay ang pagbabago ng volume para makilala ang dalawa</string>
+    <string name="button_remapper_volume_tap_hint">Binabago pa rin ng isang tap ang volume</string>
+    <string name="button_remapper_volume_screen_off">Mga volume key kapag nakapatay ang screen</string>
+    <string name="button_remapper_volume_screen_off_desc">Gumagana pa rin ang mga aksyon ng volume key kahit nakapatay ang screen. Hindi posible sa mga device kung saan kapareho ng power button ang input device ng mga volume key.</string>
     <string name="qs_toggle_battery_saver">Battery saver</string>
     <string name="qs_toggle_battery_saver_desc">I-on o i-off ang battery saver</string>
     <string name="shortcut_tile_action">Aksyon</string>
