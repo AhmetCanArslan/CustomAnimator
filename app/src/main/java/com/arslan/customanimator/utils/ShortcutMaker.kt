@@ -33,6 +33,7 @@ import com.arslan.customanimator.service.ShortcutLaunchActivity
 
 object ShortcutMaker {
     const val EXTRA_SHORTCUT_ID = "com.arslan.customanimator.extra.SHORTCUT_ID"
+    const val EXTRA_BUTTON_TRIGGER = "com.arslan.customanimator.extra.BUTTON_TRIGGER"
 
     private const val ICON_PX = 324
     private const val LEGACY_INSET = 0.19f
@@ -249,6 +250,13 @@ object ShortcutMaker {
         }
     }
 
+    fun startForTrigger(context: Context, trigger: ButtonTrigger): Boolean {
+        val launcher = ComponentName(context, ShortcutLaunchActivity::class.java).flattenToShortString()
+        return startFromShell(
+            arrayOf("am", "start", "--user", "current", "-n", launcher, "--es", EXTRA_BUTTON_TRIGGER, trigger.name)
+        )
+    }
+
     fun failureMessageRes(entry: ShortcutEntry): Int =
         if (entry.needsShizuku) R.string.action_failed else R.string.shortcut_launch_failed
 
@@ -309,9 +317,11 @@ object ShortcutMaker {
 
     private fun startThroughShizuku(entry: ShortcutEntry): Boolean {
         val target = component(entry) ?: return false
-        val result = ShizukuHelper.executeShellCommandWithOutput(
-            arrayOf("am", "start", "-n", target.flattenToString())
-        )
+        return startFromShell(arrayOf("am", "start", "-n", target.flattenToString()))
+    }
+
+    private fun startFromShell(command: Array<String>): Boolean {
+        val result = ShizukuHelper.executeShellCommandWithOutput(command)
         return result.isSuccess && !result.output.contains("Error") && !result.output.contains("Exception")
     }
 

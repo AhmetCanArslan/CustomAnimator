@@ -160,7 +160,8 @@
 
         <activity
             android:name=".service.ShortcutLaunchActivity"
-            android:exported="false"
+            android:exported="true"
+            android:permission="android.permission.INJECT_EVENTS"
             android:excludeFromRecents="true"
             android:taskAffinity=""
             android:noHistory="true"
