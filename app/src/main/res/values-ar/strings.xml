@@ -61,9 +61,6 @@
     <string name="power_button_notif_active">يستمع إلى ضغطات الأزرار أثناء تشغيل الشاشة</string>
     <string name="power_button_notif_unsupported">لا يمكن التقاط زر التشغيل على هذا الجهاز</string>
     <string name="button_remapper_volume_combo">رفع الصوت + خفضه معًا</string>
-    <string name="button_remapper_volume_combo_desc">شغّل إجراءً تختاره عند الضغط على زرّي الصوت معًا أثناء تشغيل الشاشة. تنتظر تغييرات الصوت لحظة للتمييز بينهما.</string>
-    <string name="button_remapper_volume_combo_selected">يشغّل %1$s عند الضغط على زرّي الصوت معًا أثناء تشغيل الشاشة.</string>
-    <string name="button_action_quick">إجراءات سريعة</string>
     <string name="button_action_flashlight">المصباح</string>
     <string name="button_action_screenshot">التقاط لقطة شاشة</string>
     <string name="button_action_play_pause">تشغيل الوسائط أو إيقافها مؤقتًا</string>

@@ -597,9 +597,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="power_button_notif_active">Ekran açıkken tuş basışları bekleniyor</string>
     <string name="power_button_notif_unsupported">Bu cihazın güç tuşu yakalanamıyor</string>
     <string name="button_remapper_volume_combo">Ses + ve − birlikte</string>
-    <string name="button_remapper_volume_combo_desc">Ekran açıkken iki ses tuşuna birlikte basınca seçtiğin işlemi çalıştırır. Ses değişiklikleri, ikisinin ayırt edilebilmesi için kısa bir süre bekler.</string>
-    <string name="button_remapper_volume_combo_selected">Ekran açıkken iki ses tuşuna birlikte basınca %1$s çalıştırır.</string>
-    <string name="button_action_quick">Hızlı işlemler</string>
     <string name="button_action_flashlight">Fener</string>
     <string name="button_action_screenshot">Ekran görüntüsü al</string>
     <string name="button_action_play_pause">Medyayı oynat veya duraklat</string>
