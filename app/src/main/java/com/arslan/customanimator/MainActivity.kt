@@ -119,9 +119,12 @@ import com.arslan.customanimator.ui.components.ScaleSlider
 import androidx.compose.material.icons.filled.Check
 
 class MainActivity : ComponentActivity() {
+    var shortcutTarget by mutableStateOf<SearchTarget?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (savedInstanceState == null) readShortcutTarget(intent)
         initBilling(this)
         initAds(this)
 
@@ -182,11 +185,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        readShortcutTarget(intent)
+    }
+
+    private fun readShortcutTarget(intent: Intent?) {
+        shortcutTarget = intent?.getStringExtra(EXTRA_SCREEN)?.let(::searchTargetOf)
+    }
+
     override fun onResume() {
         super.onResume()
         initBilling(this)
         preloadInterstitial(this)
         ShizukuState.refresh()
+    }
+
+    companion object {
+        const val EXTRA_SCREEN = "com.arslan.customanimator.extra.SCREEN"
     }
 }
 
@@ -588,6 +604,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         when (target) {
             is SearchTarget.Tab -> backToTab(target.tab)
             is SearchTarget.Screen -> openSearchScreen(target.screen)
+        }
+    }
+    LaunchedEffect(activity.shortcutTarget) {
+        activity.shortcutTarget?.let { target ->
+            activity.shortcutTarget = null
+            openSearchTarget(target)
         }
     }
 
