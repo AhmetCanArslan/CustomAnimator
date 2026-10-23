@@ -609,6 +609,8 @@ Durasi Animator: %3$.2f</string>
     <string name="button_action_quick_settings">Buka setelan cepat</string>
     <string name="button_action_recent_apps">Aplikasi terbaru</string>
     <string name="button_action_free_memory">Kosongkan memori</string>
+    <string name="qs_toggle_battery_saver">Penghemat baterai</string>
+    <string name="qs_toggle_battery_saver_desc">Aktifkan atau nonaktifkan penghemat baterai</string>
     <string name="carrier_name">Nama Operator</string>
     <string name="carrier_name_desc">Tampilkan nama operator khusus di bilah status dan layar kunci</string>
     <string name="carrier_name_current">Nama saat ini: %1$s</string>

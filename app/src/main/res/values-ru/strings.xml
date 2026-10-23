@@ -609,6 +609,8 @@
     <string name="button_action_quick_settings">Открыть быстрые настройки</string>
     <string name="button_action_recent_apps">Недавние приложения</string>
     <string name="button_action_free_memory">Освободить память</string>
+    <string name="qs_toggle_battery_saver">Экономия заряда</string>
+    <string name="qs_toggle_battery_saver_desc">Включить или выключить экономию заряда</string>
     <string name="carrier_name">Название оператора</string>
     <string name="carrier_name_desc">Показывать своё название оператора в строке состояния и на экране блокировки</string>
     <string name="carrier_name_current">Текущее название: %1$s</string>

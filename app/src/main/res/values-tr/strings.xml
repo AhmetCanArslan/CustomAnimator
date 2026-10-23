@@ -609,6 +609,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="button_action_quick_settings">Hızlı ayarları aç</string>
     <string name="button_action_recent_apps">Son uygulamalar</string>
     <string name="button_action_free_memory">Belleği boşalt</string>
+    <string name="qs_toggle_battery_saver">Pil tasarrufu</string>
+    <string name="qs_toggle_battery_saver_desc">Pil tasarrufunu açın veya kapatın</string>
     <string name="carrier_name">Operatör Adı</string>
     <string name="carrier_name_desc">Durum çubuğunda ve kilit ekranında özel bir operatör adı göster</string>
     <string name="carrier_name_current">Mevcut ad: %1$s</string>

@@ -254,6 +254,10 @@ object ToggleTilePresets {
                     onValue = "1"
                 ),
                 setting(
+                    "battery_saver", R.string.qs_toggle_battery_saver, R.string.qs_toggle_battery_saver_desc,
+                    "battery_saver", "global", "low_power", "1", "0"
+                ),
+                setting(
                     "heads_up", R.string.qs_toggle_heads_up, R.string.qs_toggle_heads_up_desc,
                     "notifications", "global", "heads_up_notifications_enabled", "1", "0"
                 ),
