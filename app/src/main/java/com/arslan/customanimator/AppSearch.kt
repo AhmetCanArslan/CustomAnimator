@@ -72,6 +72,7 @@ import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.SensorsOff
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsBackupRestore
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.SignalCellularAlt
@@ -123,8 +124,15 @@ import androidx.compose.material3.IconButtonDefaults
 import com.arslan.customanimator.ui.theme.Motion
 
 sealed interface SearchTarget {
-    data class Tab(val tab: HomeTab) : SearchTarget
-    data class Screen(val screen: HomeScreen) : SearchTarget
+    val key: String
+
+    data class Tab(val tab: HomeTab) : SearchTarget {
+        override val key: String get() = "tab:${tab.name}"
+    }
+
+    data class Screen(val screen: HomeScreen) : SearchTarget {
+        override val key: String get() = "screen:${screen.name}"
+    }
 }
 
 class SearchEntry(
@@ -231,6 +239,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     section(R.string.pn_title, HomeScreen.NOTIFY_LOGGING, R.string.pn_nav_logging, R.string.pn_history_desc, Icons.Filled.History),
     section(R.string.pn_title, HomeScreen.NOTIFY_IGNORED, R.string.pn_filters, null, Icons.Filled.FilterAlt),
     section(R.string.profiles_title, HomeScreen.PROFILES, R.string.profiles_title, R.string.profiles_subtitle, Icons.Filled.AccountCircle),
+    section(R.string.settings, HomeScreen.SETTINGS, R.string.settings, null, Icons.Filled.Settings),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.settings_theme, null, Icons.Filled.Palette),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.backup_app_data, R.string.backup_app_data_desc, Icons.Filled.Save),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.restore_app_data, R.string.restore_app_data_desc, Icons.Filled.Restore),
@@ -240,6 +249,13 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     section(R.string.settings, HomeScreen.PERMISSIONS, R.string.permissions_title, null, Icons.Filled.Security),
     section(R.string.settings, HomeScreen.SETUP_GUIDE, R.string.setup_open, R.string.setup_open_desc, Icons.AutoMirrored.Filled.HelpOutline)
 )
+
+fun screenShortcutEntries(): List<SearchEntry> =
+    HomeTab.entries.map { tab -> tab.row(tab.labelRes(), null) } +
+        searchEntries().filter { it.target is SearchTarget.Screen }.distinctBy { it.target }
+
+fun searchTargetOf(key: String): SearchTarget? =
+    screenShortcutEntries().firstOrNull { it.target.key == key }?.target
 
 class SearchHit(val entry: SearchEntry, val title: String, val description: String?)
 
