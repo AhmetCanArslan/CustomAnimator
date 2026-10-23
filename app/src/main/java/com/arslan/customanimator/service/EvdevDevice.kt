@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileDescriptor
 import java.io.IOException
 
-class EvdevDevice private constructor(private val descriptor: ParcelFileDescriptor) {
+class EvdevDevice private constructor(private val descriptor: ParcelFileDescriptor, val hasPower: Boolean) {
 
     val fileDescriptor: FileDescriptor
         get() = descriptor.fileDescriptor
@@ -46,7 +46,7 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
             }
             val keys = nativeKeyCodes(descriptor.fd).toSet()
             if (keys.isNotEmpty() && keys.all { it == KEY_POWER || it in forwardedKeys }) {
-                return EvdevDevice(descriptor)
+                return EvdevDevice(descriptor, KEY_POWER in keys)
             }
             descriptor.close()
             return null
