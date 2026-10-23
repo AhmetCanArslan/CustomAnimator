@@ -6,6 +6,9 @@ import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import android.provider.Settings
+import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.data.ShortcutType
+import java.util.UUID
 
 object ButtonRemapperManager {
 
@@ -28,13 +31,10 @@ object ButtonRemapperManager {
     private const val RECOGNIZER_KEY = "voice_recognition_service"
     private const val ASSISTANT_ROLE = "android.app.role.ASSISTANT"
     private const val PREFS_NAME = "button_remapper_prefs"
-    private const val KEY_ASSIST_ACTION_TYPE = "assist_action_type"
-    private const val KEY_ASSIST_ACTION_VALUE = "assist_action_value"
-    private const val KEY_DOUBLE_PRESS_ACTION_TYPE = "double_press_action_type"
-    private const val KEY_DOUBLE_PRESS_ACTION_VALUE = "double_press_action_value"
+    private const val ACTION_SUFFIX = "_action"
+    private const val LEGACY_TYPE_SUFFIX = "_action_type"
+    private const val LEGACY_VALUE_SUFFIX = "_action_value"
     private const val KEY_DOUBLE_PRESS_WINDOW = "double_press_window_ms"
-    private const val KEY_VOLUME_COMBO_ACTION_TYPE = "volume_combo_action_type"
-    private const val KEY_VOLUME_COMBO_ACTION_VALUE = "volume_combo_action_value"
     private const val KEY_VOLUME_SCREEN_OFF = "volume_screen_off"
     private const val KEY_PREVIOUS_ASSISTANT = "previous_assistant"
     private const val KEY_PREVIOUS_RECOGNIZER = "previous_recognizer"
@@ -61,27 +61,33 @@ object ButtonRemapperManager {
         releaseAssistant(context, contentResolver) &&
             writePowerLongPress(context, contentResolver, behavior)
 
-    fun getCustomLongPress(context: Context, contentResolver: ContentResolver): ButtonAction? {
+    fun getCustomLongPress(context: Context, contentResolver: ContentResolver): ShortcutEntry? {
         val active = getPowerLongPress(contentResolver) == PowerLongPress.ASSISTANT &&
             isAssistant(context, contentResolver)
-        return if (active) getAssistAction(context) else null
+        return if (active) getAction(context, ButtonTrigger.POWER_LONG_PRESS) else null
     }
 
-    fun setCustomLongPress(context: Context, contentResolver: ContentResolver, action: ButtonAction): Boolean {
+    fun setCustomLongPress(context: Context, contentResolver: ContentResolver, action: ShortcutEntry): Boolean {
         if (!claimAssistant(context, contentResolver)) return false
         if (!writePowerLongPress(context, contentResolver, PowerLongPress.ASSISTANT)) {
             restoreAssistant(context)
             return false
         }
-        prefs(context).edit()
-            .putString(KEY_ASSIST_ACTION_TYPE, action.type.name)
-            .putString(KEY_ASSIST_ACTION_VALUE, action.value)
-            .apply()
+        setAction(context, ButtonTrigger.POWER_LONG_PRESS, action)
         return true
     }
 
-    fun performCustomLongPress(context: Context): Boolean =
-        getAssistAction(context)?.let { ButtonActions.perform(context, it) } ?: false
+    suspend fun performCustomLongPress(context: Context): Boolean =
+        getAction(context, ButtonTrigger.POWER_LONG_PRESS)?.let { ShortcutMaker.launch(context, it) } ?: false
+
+    suspend fun perform(context: Context, trigger: ButtonTrigger): Boolean {
+        val action = getAction(context, trigger) ?: return false
+        return if (action.startsActivity) {
+            ShortcutMaker.startForTrigger(context, trigger)
+        } else {
+            ShortcutMaker.launch(context, action)
+        }
+    }
 
     fun keepPreviousRecognizer(context: Context): Boolean {
         val previous = prefs(context).getString(KEY_PREVIOUS_RECOGNIZER, null)
@@ -93,27 +99,24 @@ object ButtonRemapperManager {
         }
     }
 
-    fun getAssistAction(context: Context): ButtonAction? =
-        readAction(context, KEY_ASSIST_ACTION_TYPE, KEY_ASSIST_ACTION_VALUE)
+    fun getAction(context: Context, trigger: ButtonTrigger): ShortcutEntry? {
+        val stored = prefs(context).getString(trigger.prefsKey + ACTION_SUFFIX, null)
+        return if (stored == null) legacyAction(context, trigger) else ShortcutStore.decode(stored)
+    }
 
-    fun getDoublePressAction(context: Context): ButtonAction? =
-        readAction(context, KEY_DOUBLE_PRESS_ACTION_TYPE, KEY_DOUBLE_PRESS_ACTION_VALUE)
-
-    fun setDoublePressAction(context: Context, action: ButtonAction?) {
+    fun setAction(context: Context, trigger: ButtonTrigger, action: ShortcutEntry?) {
         prefs(context).edit()
-            .putString(KEY_DOUBLE_PRESS_ACTION_TYPE, action?.type?.name)
-            .putString(KEY_DOUBLE_PRESS_ACTION_VALUE, action?.value)
+            .putString(trigger.prefsKey + ACTION_SUFFIX, action?.let(ShortcutStore::encode))
+            .remove(trigger.prefsKey + LEGACY_TYPE_SUFFIX)
+            .remove(trigger.prefsKey + LEGACY_VALUE_SUFFIX)
             .commit()
     }
 
-    fun getVolumeComboAction(context: Context): ButtonAction? =
-        readAction(context, KEY_VOLUME_COMBO_ACTION_TYPE, KEY_VOLUME_COMBO_ACTION_VALUE)
+    fun activeServiceTriggers(context: Context): List<ButtonTrigger> =
+        ButtonTrigger.service.filter { getAction(context, it) != null }
 
-    fun setVolumeComboAction(context: Context, action: ButtonAction?) {
-        prefs(context).edit()
-            .putString(KEY_VOLUME_COMBO_ACTION_TYPE, action?.type?.name)
-            .putString(KEY_VOLUME_COMBO_ACTION_VALUE, action?.value)
-            .commit()
+    fun clearServiceActions(context: Context) {
+        ButtonTrigger.service.forEach { setAction(context, it, null) }
     }
 
     fun isVolumeScreenOff(context: Context): Boolean = prefs(context).getBoolean(KEY_VOLUME_SCREEN_OFF, false)
@@ -132,12 +135,29 @@ object ButtonRemapperManager {
             .commit()
     }
 
-    private fun readAction(context: Context, typeKey: String, valueKey: String): ButtonAction? {
+    private fun legacyAction(context: Context, trigger: ButtonTrigger): ShortcutEntry? {
         val prefs = prefs(context)
-        val storedType = prefs.getString(typeKey, null)
-        val type = ButtonAction.Type.entries.firstOrNull { it.name == storedType } ?: return null
-        val value = prefs.getString(valueKey, null) ?: return null
-        return ButtonAction(type, value)
+        val type = prefs.getString(trigger.prefsKey + LEGACY_TYPE_SUFFIX, null) ?: return null
+        val value = prefs.getString(trigger.prefsKey + LEGACY_VALUE_SUFFIX, null) ?: return null
+        return when (type) {
+            "QUICK" -> ButtonActions.Quick.fromKey(value)?.let { ButtonActions.quickEntry(context, it) }
+            "TOGGLE" -> ToggleTilePresets.byKey(value)?.let { ButtonActions.toggleEntry(context, it) }
+            "APP" -> legacyEntry(ShortcutType.APP, appLabel(context, value) ?: value).copy(packageName = value)
+            "COMMAND" -> legacyEntry(ShortcutType.COMMAND, value).copy(command = value)
+            else -> null
+        }
+    }
+
+    private fun legacyEntry(type: ShortcutType, label: String) =
+        ShortcutEntry(id = UUID.randomUUID().toString(), type = type, label = label)
+
+    private fun appLabel(context: Context, packageName: String): String? {
+        return try {
+            val packageManager = context.packageManager
+            packageManager.getApplicationLabel(packageManager.getApplicationInfo(packageName, 0)).toString()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun claimAssistant(context: Context, contentResolver: ContentResolver): Boolean {
@@ -174,9 +194,8 @@ object ButtonRemapperManager {
         prefs(context).edit()
             .remove(KEY_PREVIOUS_ASSISTANT)
             .remove(KEY_PREVIOUS_RECOGNIZER)
-            .remove(KEY_ASSIST_ACTION_TYPE)
-            .remove(KEY_ASSIST_ACTION_VALUE)
             .apply()
+        setAction(context, ButtonTrigger.POWER_LONG_PRESS, null)
     }
 
     private fun isAssistant(context: Context, contentResolver: ContentResolver): Boolean =

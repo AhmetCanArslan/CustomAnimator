@@ -34,8 +34,7 @@ object SystemResetManager {
         val bgLimit = DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, false)
         val powerLongPress = ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
         val systemColors = SystemColorsManager.restoreBaseline(context)
-        ButtonRemapperManager.setDoublePressAction(context, null)
-        ButtonRemapperManager.setVolumeComboAction(context, null)
+        ButtonRemapperManager.clearServiceActions(context)
         PowerButtonService.sync(context)
 
         val angle = DeveloperOptionsManager.clearAngleDriverSelections(context, contentResolver)

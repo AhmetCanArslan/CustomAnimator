@@ -3,7 +3,10 @@ package com.arslan.customanimator.utils
 import android.content.Context
 import android.provider.Settings
 import androidx.test.core.app.ApplicationProvider
+import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.utils.ButtonRemapperManager.PowerLongPress
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -18,10 +21,12 @@ import org.robolectric.annotation.Config
 class ButtonRemapperManagerTest {
 
     private lateinit var context: Context
+    private lateinit var flashlight: ShortcutEntry
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
+        flashlight = ButtonActions.quickEntry(context, ButtonActions.Quick.FLASHLIGHT)
     }
 
     @Test
@@ -89,8 +94,8 @@ class ButtonRemapperManagerTest {
         assertFalse(ButtonRemapperManager.setCustomLongPress(context, resolver, flashlight))
 
         assertNull(ButtonRemapperManager.getCustomLongPress(context, resolver))
-        assertNull(ButtonRemapperManager.getAssistAction(context))
-        assertFalse(ButtonRemapperManager.performCustomLongPress(context))
+        assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS))
+        assertFalse(runBlocking { ButtonRemapperManager.performCustomLongPress(context) })
         assertNull(ButtonRemapperManager.getPowerLongPress(resolver))
         assertTrue(ButtonRemapperManager.setPowerLongPress(context, resolver, PowerLongPress.POWER_MENU))
     }
@@ -119,7 +124,35 @@ class ButtonRemapperManagerTest {
             .putString("assist_action_value", "somewhere")
             .commit()
 
-        assertNull(ButtonRemapperManager.getAssistAction(context))
+        assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS))
+    }
+
+    @Test
+    fun legacyTypeAndValueActionsAreReadAsEntries() {
+        remapperPrefs().edit()
+            .putString("assist_action_type", "QUICK")
+            .putString("assist_action_value", ButtonActions.Quick.FLASHLIGHT.key)
+            .putString("double_press_action_type", "COMMAND")
+            .putString("double_press_action_value", "svc wifi disable")
+            .putString("volume_combo_action_type", "APP")
+            .putString("volume_combo_action_value", "com.example.missing")
+            .commit()
+
+        val quick = ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS)
+        assertEquals(ShortcutType.QUICK, quick?.type)
+        assertEquals(ButtonActions.Quick.FLASHLIGHT.key, quick?.actionKey)
+        val command = ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_DOUBLE_PRESS)
+        assertEquals(ShortcutType.COMMAND, command?.type)
+        assertEquals("svc wifi disable", command?.command)
+        val app = ButtonRemapperManager.getAction(context, ButtonTrigger.VOLUME_COMBO)
+        assertEquals(ShortcutType.APP, app?.type)
+        assertEquals("com.example.missing", app?.packageName)
+        assertEquals("com.example.missing", app?.label)
+
+        ButtonRemapperManager.setAction(context, ButtonTrigger.POWER_DOUBLE_PRESS, flashlight)
+        assertFalse(remapperPrefs().contains("double_press_action_type"))
+        assertFalse(remapperPrefs().contains("double_press_action_value"))
+        assertEquals(flashlight, ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_DOUBLE_PRESS))
     }
 
     @Test
@@ -146,7 +179,7 @@ class ButtonRemapperManagerTest {
 
         assertTrue(ButtonRemapperManager.setPowerLongPress(context, resolver, PowerLongPress.POWER_MENU))
 
-        assertNull(ButtonRemapperManager.getAssistAction(context))
+        assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS))
         assertFalse(remapperPrefs().contains("previous_assistant"))
         assertFalse(remapperPrefs().contains("previous_recognizer"))
         assertEquals(PowerLongPress.POWER_MENU, ButtonRemapperManager.getPowerLongPress(resolver))
@@ -167,29 +200,42 @@ class ButtonRemapperManagerTest {
     }
 
     @Test
-    fun doublePressActionRoundTripsAndIsIndependentOfLongPress() {
-        assertNull(ButtonRemapperManager.getDoublePressAction(context))
+    fun everyServiceTriggerRoundTripsOnItsOwn() {
+        ButtonTrigger.service.forEach { trigger ->
+            assertNull(ButtonRemapperManager.getAction(context, trigger))
+            ButtonRemapperManager.setAction(context, trigger, flashlight)
+            assertEquals(flashlight, ButtonRemapperManager.getAction(context, trigger))
+            assertEquals(listOf(trigger), ButtonRemapperManager.activeServiceTriggers(context))
+            assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS))
 
-        ButtonRemapperManager.setDoublePressAction(context, flashlight)
-        assertEquals(flashlight, ButtonRemapperManager.getDoublePressAction(context))
-        assertNull(ButtonRemapperManager.getAssistAction(context))
-
-        ButtonRemapperManager.setDoublePressAction(context, null)
-        assertNull(ButtonRemapperManager.getDoublePressAction(context))
-        assertFalse(remapperPrefs().contains("double_press_action_type"))
+            ButtonRemapperManager.setAction(context, trigger, null)
+            assertNull(ButtonRemapperManager.getAction(context, trigger))
+            assertFalse(remapperPrefs().contains(trigger.prefsKey + "_action"))
+        }
     }
 
     @Test
-    fun volumeComboActionRoundTripsAndIsIndependentOfDoublePress() {
-        assertNull(ButtonRemapperManager.getVolumeComboAction(context))
+    fun clearingServiceActionsLeavesLongPressAlone() {
+        ButtonRemapperManager.setAction(context, ButtonTrigger.POWER_LONG_PRESS, flashlight)
+        ButtonTrigger.service.forEach { ButtonRemapperManager.setAction(context, it, flashlight) }
 
-        ButtonRemapperManager.setVolumeComboAction(context, flashlight)
-        assertEquals(flashlight, ButtonRemapperManager.getVolumeComboAction(context))
-        assertNull(ButtonRemapperManager.getDoublePressAction(context))
+        ButtonRemapperManager.clearServiceActions(context)
 
-        ButtonRemapperManager.setVolumeComboAction(context, null)
-        assertNull(ButtonRemapperManager.getVolumeComboAction(context))
-        assertFalse(remapperPrefs().contains("volume_combo_action_type"))
+        assertTrue(ButtonRemapperManager.activeServiceTriggers(context).isEmpty())
+        assertEquals(flashlight, ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_LONG_PRESS))
+    }
+
+    @Test
+    fun volumeScreenOffIsOffUntilEnabled() {
+        assertFalse(ButtonRemapperManager.isVolumeScreenOff(context))
+        ButtonRemapperManager.setVolumeScreenOff(context, true)
+        assertTrue(ButtonRemapperManager.isVolumeScreenOff(context))
+    }
+
+    @Test
+    fun corruptStoredActionReadsAsNoAction() {
+        remapperPrefs().edit().putString("double_press_action", "{not json").commit()
+        assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_DOUBLE_PRESS))
     }
 
     @Test
@@ -206,13 +252,8 @@ class ButtonRemapperManagerTest {
         assertEquals(ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MAX_MS, ButtonRemapperManager.getDoublePressWindowMs(context))
     }
 
-    private val flashlight = ButtonAction(ButtonAction.Type.QUICK, ButtonActions.Quick.FLASHLIGHT.key)
-
     private fun storeAssistAction() {
-        remapperPrefs().edit()
-            .putString("assist_action_type", flashlight.type.name)
-            .putString("assist_action_value", flashlight.value)
-            .commit()
+        ButtonRemapperManager.setAction(context, ButtonTrigger.POWER_LONG_PRESS, flashlight)
     }
 
     private fun remapperPrefs() = context.getSharedPreferences("button_remapper_prefs", Context.MODE_PRIVATE)

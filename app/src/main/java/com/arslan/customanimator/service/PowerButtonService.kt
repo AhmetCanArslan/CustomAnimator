@@ -23,8 +23,6 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
-import com.arslan.customanimator.utils.ButtonAction
-import com.arslan.customanimator.utils.ButtonActions
 import com.arslan.customanimator.utils.ButtonRemapperManager
 import com.arslan.customanimator.utils.ButtonTrigger
 import com.arslan.customanimator.utils.ShizukuHelper
@@ -59,8 +57,7 @@ class PowerButtonService : Service() {
         }
 
         private fun isNeeded(context: Context): Boolean =
-            ButtonRemapperManager.getDoublePressAction(context) != null ||
-                ButtonRemapperManager.getVolumeComboAction(context) != null
+            ButtonRemapperManager.activeServiceTriggers(context).isNotEmpty()
     }
 
     private enum class Status(val textRes: Int) {
@@ -88,13 +85,11 @@ class PowerButtonService : Service() {
 
     private val listener = object : IPowerButtonListener.Stub() {
         override fun onDoublePress() {
-            scope.launch { perform(ButtonRemapperManager::getDoublePressAction) }
+            scope.launch { perform(ButtonTrigger.POWER_DOUBLE_PRESS) }
         }
 
         override fun onVolumeTrigger(trigger: String?) {
-            if (ButtonTrigger.fromName(trigger) == ButtonTrigger.VOLUME_COMBO) {
-                scope.launch { perform(ButtonRemapperManager::getVolumeComboAction) }
-            }
+            ButtonTrigger.fromName(trigger)?.let { scope.launch { perform(it) } }
         }
     }
 
@@ -176,11 +171,10 @@ class PowerButtonService : Service() {
 
     private suspend fun startListening(service: IPowerButtonUserService?) {
         val started = withContext(Dispatchers.IO) {
+            val triggers = ButtonRemapperManager.activeServiceTriggers(applicationContext)
             val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
-            val powerDoublePress = ButtonRemapperManager.getDoublePressAction(applicationContext) != null
-            val volumeTriggers = listOfNotNull(
-                ButtonTrigger.VOLUME_COMBO.name.takeIf { ButtonRemapperManager.getVolumeComboAction(applicationContext) != null }
-            ).toTypedArray()
+            val powerDoublePress = ButtonTrigger.POWER_DOUBLE_PRESS in triggers
+            val volumeTriggers = triggers.filter { it in ButtonTrigger.volume }.map { it.name }.toTypedArray()
             val volumeScreenOff = ButtonRemapperManager.isVolumeScreenOff(applicationContext)
             runCatching { service?.start(listener, windowMs, powerDoublePress, volumeTriggers, volumeScreenOff) == true }
                 .getOrDefault(false)
@@ -204,11 +198,8 @@ class PowerButtonService : Service() {
         updateStatus(if (applied) Status.ACTIVE else Status.UNSUPPORTED)
     }
 
-    private suspend fun perform(storedAction: (Context) -> ButtonAction?) {
-        val performed = withContext(Dispatchers.IO) {
-            storedAction(applicationContext)
-                ?.let { ButtonActions.performInBackground(applicationContext, it) } ?: false
-        }
+    private suspend fun perform(trigger: ButtonTrigger) {
+        val performed = withContext(Dispatchers.IO) { ButtonRemapperManager.perform(applicationContext, trigger) }
         if (!performed) {
             Toast.makeText(this, getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
         }
