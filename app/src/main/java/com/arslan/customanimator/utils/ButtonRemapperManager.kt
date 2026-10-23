@@ -35,6 +35,7 @@ object ButtonRemapperManager {
     private const val KEY_DOUBLE_PRESS_WINDOW = "double_press_window_ms"
     private const val KEY_VOLUME_COMBO_ACTION_TYPE = "volume_combo_action_type"
     private const val KEY_VOLUME_COMBO_ACTION_VALUE = "volume_combo_action_value"
+    private const val KEY_VOLUME_SCREEN_OFF = "volume_screen_off"
     private const val KEY_PREVIOUS_ASSISTANT = "previous_assistant"
     private const val KEY_PREVIOUS_RECOGNIZER = "previous_recognizer"
     private const val UNSET = -1
@@ -113,6 +114,12 @@ object ButtonRemapperManager {
             .putString(KEY_VOLUME_COMBO_ACTION_TYPE, action?.type?.name)
             .putString(KEY_VOLUME_COMBO_ACTION_VALUE, action?.value)
             .commit()
+    }
+
+    fun isVolumeScreenOff(context: Context): Boolean = prefs(context).getBoolean(KEY_VOLUME_SCREEN_OFF, false)
+
+    fun setVolumeScreenOff(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean(KEY_VOLUME_SCREEN_OFF, enabled).commit()
     }
 
     fun getDoublePressWindowMs(context: Context): Int =
