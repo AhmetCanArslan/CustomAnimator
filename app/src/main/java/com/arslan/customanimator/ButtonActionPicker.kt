@@ -5,19 +5,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.FlashlightOn
-import androidx.compose.material.icons.filled.Memory
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material.icons.filled.Screenshot
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material.icons.filled.Tune
-import androidx.compose.material.icons.filled.ViewCarousel
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -116,7 +104,7 @@ private fun ButtonActionSheet(
                 selected = current == action,
                 onClick = { onPicked(action) }
             ) {
-                IconBadge(icon = quick.icon(), size = 40.dp)
+                TileGlyph(quick.iconKey)
             }
         }
         ToggleTilePresets.categories.forEach { category ->
@@ -129,14 +117,7 @@ private fun ButtonActionSheet(
                     selected = current == action,
                     onClick = { onPicked(action) }
                 ) {
-                    Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.Center) {
-                        Icon(
-                            painter = painterResource(TerminalTileIcons.resFor(preset.iconKey)),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
+                    TileGlyph(preset.iconKey)
                 }
             }
         }
@@ -174,16 +155,14 @@ private fun ButtonCommandDialog(
     )
 }
 
-private fun ButtonActions.Quick.icon(): ImageVector = when (this) {
-    ButtonActions.Quick.FLASHLIGHT -> Icons.Filled.FlashlightOn
-    ButtonActions.Quick.SCREENSHOT -> Icons.Filled.Screenshot
-    ButtonActions.Quick.PLAY_PAUSE -> Icons.Filled.PlayArrow
-    ButtonActions.Quick.NEXT_TRACK -> Icons.Filled.SkipNext
-    ButtonActions.Quick.PREVIOUS_TRACK -> Icons.Filled.SkipPrevious
-    ButtonActions.Quick.VOLUME_PANEL -> Icons.AutoMirrored.Filled.VolumeUp
-    ButtonActions.Quick.NOTIFICATIONS -> Icons.Filled.Notifications
-    ButtonActions.Quick.QUICK_SETTINGS -> Icons.Filled.Tune
-    ButtonActions.Quick.RECENT_APPS -> Icons.Filled.ViewCarousel
-    ButtonActions.Quick.FREE_MEMORY -> Icons.Filled.Memory
-    ButtonActions.Quick.RESTART_SYSTEM_UI -> Icons.Filled.RestartAlt
+@Composable
+private fun TileGlyph(iconKey: String) {
+    Box(modifier = Modifier.size(40.dp), contentAlignment = Alignment.Center) {
+        Icon(
+            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(24.dp)
+        )
+    }
 }
