@@ -1738,6 +1738,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_tile_link_desc">Bir web sitesi veya derin bağlantı açın</string>
     <string name="shortcut_tile_command">Komut</string>
     <string name="shortcut_tile_command_desc">Shizuku üzerinden kabuk komutu çalıştırın</string>
+    <string name="shortcut_tile_screen">Uygulama ekranı</string>
+    <string name="shortcut_tile_screen_desc">Bu uygulamanın bir ekranını doğrudan açın</string>
     <string name="shortcut_more_options">Diğer seçenekler</string>
     <string name="shortcut_launch">Başlat</string>
     <string name="shortcut_test">Test et</string>
@@ -1749,6 +1751,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_watch_ad_add">Reklam izle ve ekle</string>
     <string name="shortcut_change_app">Uygulamayı değiştir</string>
     <string name="shortcut_pick_app">Bir uygulama seçin</string>
+    <string name="shortcut_pick_screen">Bir ekran seçin</string>
     <string name="shortcut_search_activities">Aktivite ara</string>
     <string name="shortcut_no_activities">Aktivite bulunamadı</string>
     <string name="shortcut_activity_note">Shizuku işaretli aktiviteler Shizuku üzerinden başlatılır. Root işaretli aktiviteler uygulamalarına özeldir ve yalnızca Shizuku root olarak çalışırken başlatılır.</string>

@@ -1770,6 +1770,8 @@
     <string name="shortcut_tile_link_desc">افتح موقع ويب أو رابطًا عميقًا</string>
     <string name="shortcut_tile_command">أمر</string>
     <string name="shortcut_tile_command_desc">شغّل أمر shell عبر Shizuku</string>
+    <string name="shortcut_tile_screen">شاشة في التطبيق</string>
+    <string name="shortcut_tile_screen_desc">افتح شاشة من هذا التطبيق مباشرةً</string>
     <string name="shortcut_more_options">خيارات أخرى</string>
     <string name="shortcut_launch">تشغيل</string>
     <string name="shortcut_test">اختبار</string>
@@ -1781,6 +1783,7 @@
     <string name="shortcut_watch_ad_add">شاهد إعلانًا وأضِف</string>
     <string name="shortcut_change_app">تغيير التطبيق</string>
     <string name="shortcut_pick_app">اختر تطبيقًا</string>
+    <string name="shortcut_pick_screen">اختر شاشة</string>
     <string name="shortcut_search_activities">ابحث في الأنشطة</string>
     <string name="shortcut_no_activities">لم يُعثر على أنشطة</string>
     <string name="shortcut_activity_note">الأنشطة التي تحمل علامة Shizuku تُشغَّل عبر Shizuku. الأنشطة التي تحمل علامة Root خاصة بتطبيقها ولا تُشغَّل إلا عندما يعمل Shizuku بصلاحية root.</string>

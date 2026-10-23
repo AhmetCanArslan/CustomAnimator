@@ -1767,6 +1767,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_tile_link_desc">Open a website or deep link</string>
     <string name="shortcut_tile_command">Command</string>
     <string name="shortcut_tile_command_desc">Run a shell command through Shizuku</string>
+    <string name="shortcut_tile_screen">App screen</string>
+    <string name="shortcut_tile_screen_desc">Open a screen of this app directly</string>
     <string name="shortcut_more_options">More options</string>
     <string name="shortcut_launch">Launch</string>
     <string name="shortcut_test">Test</string>
@@ -1778,6 +1780,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_watch_ad_add">Watch ad &amp; add</string>
     <string name="shortcut_change_app">Change app</string>
     <string name="shortcut_pick_app">Choose an app</string>
+    <string name="shortcut_pick_screen">Choose a screen</string>
     <string name="shortcut_search_activities">Search activities</string>
     <string name="shortcut_no_activities">No activities found</string>
     <string name="shortcut_activity_note">Activities marked Shizuku start through Shizuku. Activities marked Root are private to their app and only start when Shizuku runs as root.</string>

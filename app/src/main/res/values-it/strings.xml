@@ -1750,6 +1750,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_tile_link_desc">Apri un sito web o un deep link</string>
     <string name="shortcut_tile_command">Comando</string>
     <string name="shortcut_tile_command_desc">Esegui un comando shell tramite Shizuku</string>
+    <string name="shortcut_tile_screen">Schermata dell\'app</string>
+    <string name="shortcut_tile_screen_desc">Apri direttamente una schermata di questa app</string>
     <string name="shortcut_more_options">Altre opzioni</string>
     <string name="shortcut_launch">Avvia</string>
     <string name="shortcut_test">Prova</string>
@@ -1761,6 +1763,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_watch_ad_add">Guarda annuncio e aggiungi</string>
     <string name="shortcut_change_app">Cambia app</string>
     <string name="shortcut_pick_app">Scegli una app</string>
+    <string name="shortcut_pick_screen">Scegli una schermata</string>
     <string name="shortcut_search_activities">Cerca attività</string>
     <string name="shortcut_no_activities">Nessuna attività trovata</string>
     <string name="shortcut_activity_note">Le attività contrassegnate con Shizuku vengono avviate tramite Shizuku. Quelle contrassegnate con Root sono private della loro app e si avviano solo quando Shizuku è in esecuzione come root.</string>

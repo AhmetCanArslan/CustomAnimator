@@ -1730,6 +1730,8 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_tile_link_desc">Buka situs web atau deep link</string>
     <string name="shortcut_tile_command">Perintah</string>
     <string name="shortcut_tile_command_desc">Jalankan perintah shell melalui Shizuku</string>
+    <string name="shortcut_tile_screen">Layar aplikasi</string>
+    <string name="shortcut_tile_screen_desc">Buka layar aplikasi ini secara langsung</string>
     <string name="shortcut_more_options">Opsi lainnya</string>
     <string name="shortcut_launch">Luncurkan</string>
     <string name="shortcut_test">Uji</string>
@@ -1741,6 +1743,7 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_watch_ad_add">Tonton iklan &amp; tambahkan</string>
     <string name="shortcut_change_app">Ganti aplikasi</string>
     <string name="shortcut_pick_app">Pilih aplikasi</string>
+    <string name="shortcut_pick_screen">Pilih layar</string>
     <string name="shortcut_search_activities">Cari aktivitas</string>
     <string name="shortcut_no_activities">Aktivitas tidak ditemukan</string>
     <string name="shortcut_activity_note">Aktivitas bertanda Shizuku dimulai melalui Shizuku. Aktivitas bertanda Root bersifat privat bagi aplikasinya dan hanya dimulai saat Shizuku berjalan sebagai root.</string>

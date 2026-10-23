@@ -1730,6 +1730,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_tile_link_desc">Magbukas ng website o deep link</string>
     <string name="shortcut_tile_command">Command</string>
     <string name="shortcut_tile_command_desc">Magpatakbo ng shell command gamit ang Shizuku</string>
+    <string name="shortcut_tile_screen">Screen ng app</string>
+    <string name="shortcut_tile_screen_desc">Direktang buksan ang isang screen ng app na ito</string>
     <string name="shortcut_more_options">Higit pang opsyon</string>
     <string name="shortcut_launch">Ilunsad</string>
     <string name="shortcut_test">Subukan</string>
@@ -1741,6 +1743,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_watch_ad_add">Manood ng ad at idagdag</string>
     <string name="shortcut_change_app">Palitan ang app</string>
     <string name="shortcut_pick_app">Pumili ng app</string>
+    <string name="shortcut_pick_screen">Pumili ng screen</string>
     <string name="shortcut_search_activities">Maghanap ng activity</string>
     <string name="shortcut_no_activities">Walang nakitang activity</string>
     <string name="shortcut_activity_note">Ang mga activity na may markang Shizuku ay sinisimulan gamit ang Shizuku. Ang may markang Root ay pribado sa app nito at nagsisimula lang kapag tumatakbo ang Shizuku bilang root.</string>

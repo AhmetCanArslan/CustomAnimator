@@ -1730,6 +1730,8 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_tile_link_desc">Abre un sitio web o un enlace profundo</string>
     <string name="shortcut_tile_command">Comando</string>
     <string name="shortcut_tile_command_desc">Ejecuta un comando de shell mediante Shizuku</string>
+    <string name="shortcut_tile_screen">Pantalla de la app</string>
+    <string name="shortcut_tile_screen_desc">Abre directamente una pantalla de esta app</string>
     <string name="shortcut_more_options">Más opciones</string>
     <string name="shortcut_launch">Abrir</string>
     <string name="shortcut_test">Probar</string>
@@ -1741,6 +1743,7 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_watch_ad_add">Ver anuncio y agregar</string>
     <string name="shortcut_change_app">Cambiar app</string>
     <string name="shortcut_pick_app">Elige una app</string>
+    <string name="shortcut_pick_screen">Elige una pantalla</string>
     <string name="shortcut_search_activities">Buscar actividades</string>
     <string name="shortcut_no_activities">No se encontraron actividades</string>
     <string name="shortcut_activity_note">Las actividades marcadas con Shizuku se inician mediante Shizuku. Las marcadas con Root son privadas de su app y solo se inician cuando Shizuku se ejecuta como root.</string>
