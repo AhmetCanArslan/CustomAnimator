@@ -614,6 +614,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="button_action_back">Bumalik</string>
     <string name="button_action_close_shade">Isara ang mga notification at quick settings</string>
     <string name="button_action_lock_screen">I-lock ang screen</string>
+    <string name="button_action_power_double_press">Double press ng power (system)</string>
     <string name="button_action_assistant">Voice assistant</string>
     <string name="button_action_system_settings">Buksan ang settings</string>
     <string name="button_action_stop_media">Ihinto ang media</string>

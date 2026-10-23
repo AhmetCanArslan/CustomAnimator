@@ -614,6 +614,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="button_action_back">Geri</string>
     <string name="button_action_close_shade">Bildirimleri ve hızlı ayarları kapat</string>
     <string name="button_action_lock_screen">Ekranı kilitle</string>
+    <string name="button_action_power_double_press">Güç tuşuna çift basma (sistem)</string>
     <string name="button_action_assistant">Sesli asistan</string>
     <string name="button_action_system_settings">Ayarları aç</string>
     <string name="button_action_stop_media">Medyayı durdur</string>

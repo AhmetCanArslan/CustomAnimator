@@ -86,6 +86,7 @@
     <string name="button_action_back">Back</string>
     <string name="button_action_close_shade">Close notifications and quick settings</string>
     <string name="button_action_lock_screen">Lock screen</string>
+    <string name="button_action_power_double_press">System power double press</string>
     <string name="button_action_assistant">Voice assistant</string>
     <string name="button_action_system_settings">Open settings</string>
     <string name="button_action_stop_media">Stop media</string>

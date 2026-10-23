@@ -634,6 +634,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_action_back">Indietro</string>
     <string name="button_action_close_shade">Chiudi notifiche e impostazioni rapide</string>
     <string name="button_action_lock_screen">Blocca schermo</string>
+    <string name="button_action_power_double_press">Doppia pressione accensione (sistema)</string>
     <string name="button_action_assistant">Assistente vocale</string>
     <string name="button_action_system_settings">Apri impostazioni</string>
     <string name="button_action_stop_media">Interrompi riproduzione</string>

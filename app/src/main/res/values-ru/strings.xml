@@ -614,6 +614,7 @@
     <string name="button_action_back">Назад</string>
     <string name="button_action_close_shade">Закрыть уведомления и быстрые настройки</string>
     <string name="button_action_lock_screen">Заблокировать экран</string>
+    <string name="button_action_power_double_press">Двойное нажатие питания (система)</string>
     <string name="button_action_assistant">Голосовой помощник</string>
     <string name="button_action_system_settings">Открыть настройки</string>
     <string name="button_action_stop_media">Остановить воспроизведение</string>

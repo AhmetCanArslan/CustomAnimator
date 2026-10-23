@@ -50,6 +50,10 @@ object ButtonActions {
             "lock_screen", R.string.button_action_lock_screen, "lock", Group.NAVIGATION, true,
             { sendKey(KeyEvent.KEYCODE_SLEEP) }
         ),
+        POWER_DOUBLE_PRESS(
+            "power_double_press", R.string.button_action_power_double_press, "power_settings_new", Group.NAVIGATION, true,
+            { sendKey(KeyEvent.KEYCODE_POWER, KeyEvent.KEYCODE_POWER) }
+        ),
         ASSISTANT(
             "assistant", R.string.button_action_assistant, "mic", Group.NAVIGATION, true,
             { startAction("android.intent.action.VOICE_COMMAND") }
@@ -188,8 +192,8 @@ object ButtonActions {
         command.isNotBlank() &&
             ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", command)).isSuccess
 
-    private fun sendKey(keyCode: Int): Boolean =
-        ShizukuHelper.executeShellCommand(arrayOf("input", "keyevent", keyCode.toString()))
+    private fun sendKey(vararg keyCodes: Int): Boolean =
+        ShizukuHelper.executeShellCommand(arrayOf("input", "keyevent") + keyCodes.map(Int::toString))
 
     private fun statusBar(command: String): Boolean =
         ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", command))

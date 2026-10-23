@@ -614,6 +614,7 @@ Duração do Animador: %3$.2f</string>
     <string name="button_action_back">Voltar</string>
     <string name="button_action_close_shade">Fechar notificações e configurações rápidas</string>
     <string name="button_action_lock_screen">Bloquear tela</string>
+    <string name="button_action_power_double_press">Toque duplo no botão liga/desliga (sistema)</string>
     <string name="button_action_assistant">Assistente de voz</string>
     <string name="button_action_system_settings">Abrir configurações</string>
     <string name="button_action_stop_media">Parar mídia</string>

@@ -78,6 +78,7 @@
     <string name="button_action_back">رجوع</string>
     <string name="button_action_close_shade">إغلاق الإشعارات والإعدادات السريعة</string>
     <string name="button_action_lock_screen">قفل الشاشة</string>
+    <string name="button_action_power_double_press">الضغط المزدوج على زر التشغيل (النظام)</string>
     <string name="button_action_assistant">المساعد الصوتي</string>
     <string name="button_action_system_settings">فتح الإعدادات</string>
     <string name="button_action_stop_media">إيقاف الوسائط</string>

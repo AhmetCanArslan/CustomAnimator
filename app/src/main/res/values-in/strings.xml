@@ -614,6 +614,7 @@ Durasi Animator: %3$.2f</string>
     <string name="button_action_back">Kembali</string>
     <string name="button_action_close_shade">Tutup notifikasi dan setelan cepat</string>
     <string name="button_action_lock_screen">Kunci layar</string>
+    <string name="button_action_power_double_press">Tekan ganda tombol daya (sistem)</string>
     <string name="button_action_assistant">Asisten suara</string>
     <string name="button_action_system_settings">Buka setelan</string>
     <string name="button_action_stop_media">Hentikan media</string>
