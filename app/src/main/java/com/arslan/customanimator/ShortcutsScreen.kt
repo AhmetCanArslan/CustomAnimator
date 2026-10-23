@@ -362,6 +362,7 @@ private fun ShortcutEntry.typeLabelRes(): Int = when (type) {
     ShortcutType.COMMAND -> R.string.shortcut_tile_command
     ShortcutType.FOLDER -> R.string.shortcut_tile_folder
     ShortcutType.APP_SHORTCUT -> R.string.shortcut_tile_app_shortcut
+    ShortcutType.APP_SCREEN -> R.string.shortcut_tile_screen
     ShortcutType.QUICK, ShortcutType.TOGGLE -> R.string.shortcut_tile_action
 }
 
@@ -372,5 +373,5 @@ private fun ShortcutEntry.target(): String = when (type) {
     ShortcutType.LINK -> uri
     ShortcutType.COMMAND -> command
     ShortcutType.FOLDER -> uri?.let { Uri.parse(it).lastPathSegment }
-    ShortcutType.QUICK, ShortcutType.TOGGLE -> null
+    ShortcutType.APP_SCREEN, ShortcutType.QUICK, ShortcutType.TOGGLE -> null
 }.orEmpty()

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.SpaceDashboard
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.AlertDialog
@@ -62,6 +63,7 @@ internal enum class ShortcutTile(
         R.string.shortcut_tile_app_shortcut,
         R.string.shortcut_tile_app_shortcut_desc
     ),
+    SCREEN(Icons.Filled.SpaceDashboard, R.string.shortcut_tile_screen, R.string.shortcut_tile_screen_desc),
     FILE(Icons.AutoMirrored.Filled.InsertDriveFile, R.string.shortcut_tile_file, R.string.shortcut_tile_file_desc),
     PHOTO(Icons.Filled.Image, R.string.shortcut_tile_photo, R.string.shortcut_tile_photo_desc),
     FOLDER(Icons.Filled.Folder, R.string.shortcut_tile_folder, R.string.shortcut_tile_folder_desc),
@@ -84,6 +86,7 @@ internal fun rememberShortcutSources(state: ShortcutsState, hasShizukuPermission
             ShortcutTile.ACTION -> state.startActionPicker(withSources = false)
             ShortcutTile.ACTIVITY -> state.startAppPicker(AppPickTarget.ACTIVITY)
             ShortcutTile.APP_SHORTCUT -> state.startAppPicker(AppPickTarget.APP_SHORTCUT)
+            ShortcutTile.SCREEN -> state.startScreenPicker()
             ShortcutTile.FILE -> filePicker.launch(arrayOf(ANY_MIME))
             ShortcutTile.PHOTO -> filePicker.launch(arrayOf(IMAGE_MIME))
             ShortcutTile.FOLDER -> folderPicker.launch(null)

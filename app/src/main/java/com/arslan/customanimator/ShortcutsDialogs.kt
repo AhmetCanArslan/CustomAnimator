@@ -57,6 +57,10 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
             onSave = state::onValueEntered,
             onDismiss = state::dismiss
         )
+        ShortcutStep.PickScreen -> ScreenPickerSheet(
+            onPick = state::onScreenPicked,
+            onDismiss = state::dismiss
+        )
         is ShortcutStep.PickApp -> AppPickerSheet(
             onPick = state::onAppPicked,
             onDismiss = state::dismiss
@@ -183,6 +187,25 @@ internal fun AppPickerSheet(
         appList(appList) { app ->
             PickerRow(title = app.label, subtitle = app.packageName, onClick = { onPick(app) }) {
                 AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScreenPickerSheet(
+    onPick: (SearchEntry) -> Unit,
+    onDismiss: () -> Unit
+) {
+    val screens = remember { screenShortcutEntries() }
+    PickerSheet(title = stringResource(R.string.shortcut_pick_screen), subtitle = null, onDismiss = onDismiss) {
+        items(screens, key = { it.target.key }) { screen ->
+            PickerRow(
+                title = stringResource(screen.titleRes),
+                subtitle = screen.descriptionRes?.let { stringResource(it) }.orEmpty(),
+                onClick = { onPick(screen) }
+            ) {
+                IconBadge(icon = screen.icon, size = 40.dp)
             }
         }
     }

@@ -33,6 +33,7 @@ internal enum class AppPickTarget { APP, ACTIVITY, APP_SHORTCUT }
 
 internal sealed interface ShortcutStep {
     data object Idle : ShortcutStep
+    data object PickScreen : ShortcutStep
     data class PickAction(val withSources: Boolean) : ShortcutStep
     data class EnterValue(val entry: ShortcutEntry) : ShortcutStep
     data class PickApp(val target: AppPickTarget) : ShortcutStep
@@ -87,6 +88,10 @@ internal class ShortcutsState(
         step = ShortcutStep.PickApp(target)
     }
 
+    fun startScreenPicker() {
+        step = ShortcutStep.PickScreen
+    }
+
     fun startActionPicker(withSources: Boolean, selected: ShortcutEntry? = null) {
         current = selected
         step = ShortcutStep.PickAction(withSources)
@@ -94,6 +99,17 @@ internal class ShortcutsState(
 
     fun startBlank(type: ShortcutType) {
         presentWithGlyph(ShortcutEntry(id = newId(), type = type, label = ""))
+    }
+
+    fun onScreenPicked(screen: SearchEntry) {
+        presentWithGlyph(
+            ShortcutEntry(
+                id = newId(),
+                type = ShortcutType.APP_SCREEN,
+                label = context.getString(screen.titleRes),
+                screen = screen.target.key
+            )
+        )
     }
 
     fun onActionPicked(entry: ShortcutEntry) {

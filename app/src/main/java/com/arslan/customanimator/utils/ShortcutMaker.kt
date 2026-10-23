@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.data.ShortcutActivityInfo
 import com.arslan.customanimator.data.ShortcutEntry
@@ -269,8 +270,14 @@ object ShortcutMaker {
         ShortcutType.APP -> entry.packageName?.let { context.packageManager.getLaunchIntentForPackage(it) }
         ShortcutType.ACTIVITY -> component(entry)?.let { Intent().setComponent(it) }
         ShortcutType.FILE, ShortcutType.FOLDER, ShortcutType.LINK -> viewIntent(entry)
+        ShortcutType.APP_SCREEN -> entry.screen?.let { screenIntent(context, it) }
         ShortcutType.COMMAND, ShortcutType.APP_SHORTCUT, ShortcutType.QUICK, ShortcutType.TOGGLE -> null
     }
+
+    private fun screenIntent(context: Context, screen: String): Intent =
+        Intent(context, MainActivity::class.java)
+            .putExtra(MainActivity.EXTRA_SCREEN, screen)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
     private fun viewIntent(entry: ShortcutEntry): Intent {
         val uri = Uri.parse(entry.uri.orEmpty())
@@ -316,6 +323,7 @@ object ShortcutMaker {
         ShortcutType.COMMAND -> R.drawable.ic_tile_terminal
         ShortcutType.FOLDER -> R.drawable.ic_tile_folder
         ShortcutType.APP_SHORTCUT -> R.drawable.ic_tile_touch_app
+        ShortcutType.APP_SCREEN -> R.drawable.ic_tile_space_dashboard
         ShortcutType.QUICK -> R.drawable.ic_tile_bolt
         ShortcutType.TOGGLE -> R.drawable.ic_tile_toggle_on
     }
