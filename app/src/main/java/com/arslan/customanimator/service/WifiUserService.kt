@@ -31,6 +31,7 @@ class WifiUserService : IWifiUserService.Stub {
                 if (ssid.isBlank()) return@forEach
                 val psk = configuration.preSharedKey?.let(::unquoteWifiValue)
                     ?.takeIf { it.isNotBlank() && it != "*" }
+                @Suppress("DEPRECATION")
                 val wep = configuration.wepKeys
                     ?.firstOrNull { !it.isNullOrBlank() && it != "*" }
                     ?.let(::unquoteWifiValue)
