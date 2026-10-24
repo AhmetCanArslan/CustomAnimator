@@ -1,5 +1,6 @@
 package com.arslan.customanimator
 
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -125,7 +126,7 @@ fun HotspotManagerScreen(
         isLoading = false
     }
 
-    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {

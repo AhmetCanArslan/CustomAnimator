@@ -1,5 +1,6 @@
 package com.arslan.customanimator
 
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -64,7 +65,7 @@ fun DeveloperScreenContent(
     var sensorsOff by remember { mutableStateOf(false) }
 
 
-    val lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
