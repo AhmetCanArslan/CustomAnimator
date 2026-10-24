@@ -25,7 +25,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -302,7 +301,7 @@ private fun GradientSlider(
                     .clip(CircleShape)
                     .background(brush)
             )
-            Slider(
+            AppSlider(
                 value = value,
                 onValueChange = onValueChange,
                 valueRange = range,
