@@ -278,7 +278,7 @@ object ShortcutMaker {
             .setAction(Intent.ACTION_VIEW)
             .putExtra(EXTRA_SHORTCUT_ID, id)
 
-    private fun targetIntent(context: Context, entry: ShortcutEntry): Intent? = when (entry.type) {
+    fun targetIntent(context: Context, entry: ShortcutEntry): Intent? = when (entry.type) {
         ShortcutType.APP -> entry.packageName?.let { context.packageManager.getLaunchIntentForPackage(it) }
         ShortcutType.ACTIVITY -> component(entry)?.let { Intent().setComponent(it) }
         ShortcutType.FILE, ShortcutType.FOLDER, ShortcutType.LINK -> viewIntent(entry)

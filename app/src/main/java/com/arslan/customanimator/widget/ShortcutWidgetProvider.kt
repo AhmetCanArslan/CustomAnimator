@@ -82,7 +82,7 @@ class ShortcutWidgetProvider : AppWidgetProvider() {
             ShortcutStore.loadIcon(context, shortcutId)?.let { icon ->
                 views.setImageViewBitmap(R.id.widget_shortcut_icon, shapedIcon(context, icon, entry))
             }
-            views.setOnClickPendingIntent(R.id.widget_shortcut_icon, launchIntent(context, widgetId, shortcutId))
+            views.setOnClickPendingIntent(R.id.widget_shortcut_icon, launchIntent(context, widgetId, shortcutId, entry))
             return views
         }
 
@@ -95,15 +95,17 @@ class ShortcutWidgetProvider : AppWidgetProvider() {
             return shaped
         }
 
-        private fun launchIntent(context: Context, widgetId: Int, shortcutId: String): PendingIntent =
-            PendingIntent.getActivity(
-                context,
-                widgetId,
-                Intent(context, ShortcutLaunchActivity::class.java)
+        private fun launchIntent(context: Context, widgetId: Int, shortcutId: String, entry: ShortcutEntry?): PendingIntent {
+            val target = entry?.takeIf { it.opensDirectly }?.let { ShortcutMaker.targetIntent(context, it) }
+                ?: Intent(context, ShortcutLaunchActivity::class.java)
                     .setAction(Intent.ACTION_VIEW)
                     .putExtra(ShortcutMaker.EXTRA_SHORTCUT_ID, shortcutId)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            return PendingIntent.getActivity(
+                context,
+                widgetId,
+                target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
+        }
     }
 }
