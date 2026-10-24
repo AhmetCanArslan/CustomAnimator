@@ -32,6 +32,7 @@ import com.arslan.customanimator.utils.SaveToDeviceManager
 import kotlin.math.roundToInt
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSlider
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.AppSwitch
 import com.arslan.customanimator.ui.components.IconBadge
@@ -481,7 +482,7 @@ private fun ScreenshotSlider(
                 )
             }
         }
-        Slider(
+        AppSlider(
             value = value.toFloat(),
             onValueChange = { onChange(it.roundToInt()) },
             valueRange = range.first.toFloat()..range.last.toFloat()
