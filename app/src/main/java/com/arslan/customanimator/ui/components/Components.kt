@@ -37,6 +37,9 @@ import androidx.compose.material3.MaterialShapes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderColors
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -46,6 +49,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.toShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -288,7 +292,7 @@ fun ScaleSlider(
             FilledTonalIconButton(onClick = { step(-1) }, shapes = IconButtonDefaults.shapes()) {
                 Icon(Icons.Filled.Remove, contentDescription = stringResource(R.string.minus_symbol))
             }
-            Slider(
+            AppSlider(
                 value = value,
                 onValueChange = onValueChange,
                 valueRange = valueRange,
@@ -428,6 +432,29 @@ fun ToggleRow(
                 enabled = enabled
             )
         }
+    )
+}
+
+@Composable
+fun AppSlider(
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
+    steps: Int = 0,
+    onValueChangeFinished: (() -> Unit)? = null,
+    colors: SliderColors = SliderDefaults.colors()
+) {
+    val state = remember(steps, valueRange) { SliderState(value, steps, valueRange) }
+    SideEffect { state.value = value }
+    Slider(
+        state = state,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        enabled = enabled,
+        onValueChangeFinished = onValueChangeFinished,
+        colors = colors
     )
 }
 
@@ -639,7 +666,7 @@ fun SliderRow(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Slider(
+        AppSlider(
             value = local,
             onValueChange = { local = it },
             onValueChangeFinished = { onChange(local) },
