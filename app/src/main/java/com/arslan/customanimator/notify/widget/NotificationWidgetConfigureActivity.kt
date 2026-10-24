@@ -34,6 +34,7 @@ import com.arslan.customanimator.notify.data.WidgetConfigStore
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSlider
 import com.arslan.customanimator.ui.components.AppSwitch
 
 @Suppress("DEPRECATION")
@@ -159,7 +160,7 @@ private fun WidgetConfigureScreen(
                     stringResource(R.string.pn_widget_max_items, config.maxItems),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Slider(
+                AppSlider(
                     value = config.maxItems.toFloat(),
                     onValueChange = { config = config.copy(maxItems = it.toInt()) },
                     valueRange = 1f..30f,
@@ -240,7 +241,7 @@ private fun WidgetConfigureScreen(
                     stringResource(R.string.pn_widget_opacity, config.backgroundAlphaPercent),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Slider(
+                AppSlider(
                     value = config.backgroundAlphaPercent.toFloat(),
                     onValueChange = { config = config.copy(backgroundAlphaPercent = it.toInt()) },
                     valueRange = 0f..100f
@@ -265,7 +266,7 @@ private fun WidgetConfigureScreen(
                     stringResource(R.string.pn_widget_text_size, config.textSizeSp),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Slider(
+                AppSlider(
                     value = config.textSizeSp.toFloat(),
                     onValueChange = { config = config.copy(textSizeSp = it.toInt()) },
                     valueRange = 10f..22f,
