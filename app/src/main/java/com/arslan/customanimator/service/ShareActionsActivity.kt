@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
@@ -35,6 +37,12 @@ class ShareActionsActivity : ComponentActivity() {
     private val backgroundScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var isSaving = false
     private var sheet by mutableStateOf<ShareSheetState?>(null)
+    private val fileRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onPicked(result) { target, items -> SaveToDeviceManager.saveTo(this, target, items.first()) }
+    }
+    private val folderRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        onPicked(result) { target, items -> SaveToDeviceManager.saveInto(this, target, items) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,15 +69,14 @@ class ShareActionsActivity : ComponentActivity() {
         skipTransitions()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val target = data?.data?.takeIf { resultCode == RESULT_OK }
+    private fun onPicked(result: ActivityResult, saveTo: (Uri, List<SharedItem>) -> Boolean) {
+        val target = result.data?.data?.takeIf { result.resultCode == RESULT_OK }
         if (target == null) {
             finish()
             return
         }
         val items = SaveToDeviceManager.sharedItems(intent)
-        save { saveAfterAsking(requestCode, target, items) }
+        save { saveTo(target, items) }
     }
 
     private fun showSheet(item: SharedItem) {
@@ -155,28 +162,20 @@ class ShareActionsActivity : ComponentActivity() {
         }
     }
 
-    private fun saveAfterAsking(requestCode: Int, target: Uri, items: List<SharedItem>): Boolean =
-        if (requestCode == REQUEST_FILE) {
-            SaveToDeviceManager.saveTo(this, target, items.first())
-        } else {
-            SaveToDeviceManager.saveInto(this, target, items)
-        }
-
     private fun askForFile(item: SharedItem) {
         val file = SaveToDeviceManager.describe(this, item)
         isSaving = true
-        startActivityForResult(
+        fileRequest.launch(
             Intent(Intent.ACTION_CREATE_DOCUMENT)
                 .addCategory(Intent.CATEGORY_OPENABLE)
                 .setType(file.mimeType)
-                .putExtra(Intent.EXTRA_TITLE, file.name),
-            REQUEST_FILE
+                .putExtra(Intent.EXTRA_TITLE, file.name)
         )
     }
 
     private fun askForFolder() {
         isSaving = true
-        startActivityForResult(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), REQUEST_FOLDER)
+        folderRequest.launch(Intent(Intent.ACTION_OPEN_DOCUMENT_TREE))
     }
 
     private fun save(action: () -> Boolean) {
@@ -197,7 +196,5 @@ class ShareActionsActivity : ComponentActivity() {
 
     private companion object {
         const val KEY_SAVING = "saving"
-        const val REQUEST_FILE = 1
-        const val REQUEST_FOLDER = 2
     }
 }
