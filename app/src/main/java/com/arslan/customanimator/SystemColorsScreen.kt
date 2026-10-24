@@ -52,11 +52,17 @@ import com.arslan.customanimator.utils.SystemPalette
 import com.materialkolor.scheme.DynamicScheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val PALETTE_SETTLE_MS = 600L
+
 private class SystemColorsState {
     var palette by mutableStateOf(SystemPalette.WALLPAPER_DEFAULT)
+    var appliedPalette = SystemPalette.WALLPAPER_DEFAULT
+    var pendingPalette: Job? = null
     var contrast by mutableStateOf(SystemContrast.STANDARD)
     var darkMode by mutableStateOf<SystemDarkMode?>(null)
     var wallpaperColors by mutableStateOf(emptyList<Int>())
@@ -72,6 +78,7 @@ private class SystemColorsState {
             val recentColors = SystemColorsManager.recentColors(context)
             withContext(Dispatchers.Main) {
                 this@SystemColorsState.palette = palette
+                appliedPalette = palette
                 this@SystemColorsState.contrast = contrast
                 this@SystemColorsState.darkMode = darkMode
                 this@SystemColorsState.wallpaperColors = wallpaperColors
@@ -101,12 +108,11 @@ fun SystemColorsScreen(
     val showFailure: () -> Unit = {
         Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
     }
-    val applyPalette: (SystemPalette) -> Unit = { palette ->
-        val previous = state.palette
-        state.palette = palette
+    val writePalette: (SystemPalette) -> Unit = { palette ->
         coroutineScope.runAction(context, { SystemColorsManager.applyPalette(context, palette) }) { success ->
-            if (!success) {
-                state.palette = previous
+            if (success) state.appliedPalette = palette
+            if (!success && state.palette == palette) {
+                state.palette = state.appliedPalette
                 showFailure()
             }
             palette.seedColor?.takeIf { success && !palette.fromWallpaper }?.let {
@@ -115,7 +121,16 @@ fun SystemColorsScreen(
             }
         }
     }
-    val applyContrast: (SystemContrast) -> Unit = { contrast ->
+    val applyPalette: (SystemPalette) -> Unit = { palette ->
+        state.palette = palette
+        state.pendingPalette?.cancel()
+        state.pendingPalette = coroutineScope.launch {
+            delay(PALETTE_SETTLE_MS)
+            if (palette != state.appliedPalette) writePalette(palette)
+        }
+    }
+    val applyContrast: (SystemContrast) -> Unit = applyContrast@{ contrast ->
+        if (contrast == state.contrast) return@applyContrast
         val previous = state.contrast
         state.contrast = contrast
         coroutineScope.runAction(context, { SystemColorsManager.applyContrast(context, contrast) }) { success ->

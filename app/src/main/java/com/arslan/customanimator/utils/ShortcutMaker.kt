@@ -241,6 +241,10 @@ object ShortcutMaker {
         if (entry.type == ShortcutType.APP_SHORTCUT) return startAppShortcut(context, entry)
         if (entry.type == ShortcutType.COMMAND) return runCommand(entry)
         if (entry.viaShizuku) return startThroughShizuku(entry)
+        return startDirectly(context, entry)
+    }
+
+    fun startDirectly(context: Context, entry: ShortcutEntry): Boolean {
         val intent = targetIntent(context, entry) ?: return false
         return try {
             context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -282,7 +286,7 @@ object ShortcutMaker {
         ShortcutType.COMMAND, ShortcutType.APP_SHORTCUT, ShortcutType.QUICK, ShortcutType.TOGGLE -> null
     }
 
-    private fun screenIntent(context: Context, screen: String): Intent =
+    fun screenIntent(context: Context, screen: String): Intent =
         Intent(context, MainActivity::class.java)
             .putExtra(MainActivity.EXTRA_SCREEN, screen)
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)

@@ -27,6 +27,9 @@ data class ShortcutEntry(
 
     val startsActivity: Boolean
         get() = type != ShortcutType.COMMAND && type != ShortcutType.QUICK && type != ShortcutType.TOGGLE
+
+    val opensDirectly: Boolean
+        get() = !viaShizuku && startsActivity && type != ShortcutType.APP_SHORTCUT
 }
 
 data class ShortcutActivityInfo(

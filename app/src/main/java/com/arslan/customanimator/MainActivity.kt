@@ -106,6 +106,8 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
 import com.arslan.customanimator.utils.ProvideShizukuState
 import com.arslan.customanimator.utils.ShizukuState
+import com.arslan.customanimator.utils.AppScreenShortcuts
+import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -182,6 +184,7 @@ class MainActivity : ComponentActivity() {
             ToggleTileSlots.sync(appContext, ToggleTileManager(appContext))
             WidthTileSlots.sync(appContext, WidthPresetManager(appContext))
             AnimationTileSlots.sync(appContext, PresetManager(appContext))
+            AppScreenShortcuts.publish(appContext)
         }
     }
 
@@ -191,7 +194,9 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun readShortcutTarget(intent: Intent?) {
-        shortcutTarget = intent?.getStringExtra(EXTRA_SCREEN)?.let(::searchTargetOf)
+        val key = intent?.getStringExtra(EXTRA_SCREEN) ?: return
+        ShortcutManagerCompat.reportShortcutUsed(this, key)
+        shortcutTarget = searchTargetOf(key)
     }
 
     override fun onResume() {

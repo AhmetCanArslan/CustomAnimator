@@ -30,19 +30,22 @@ class ShortcutLaunchActivity : Activity() {
             return
         }
 
+        if (entry.opensDirectly) {
+            finishLaunch(entry, ShortcutMaker.startDirectly(this, entry))
+            return
+        }
+
         backgroundScope.launch {
             val launched = ShortcutMaker.launch(this@ShortcutLaunchActivity, entry)
-            withContext(Dispatchers.Main) {
-                if (!launched) {
-                    Toast.makeText(
-                        applicationContext,
-                        getString(ShortcutMaker.failureMessageRes(entry)),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                finish()
-            }
+            withContext(Dispatchers.Main) { finishLaunch(entry, launched) }
         }
+    }
+
+    private fun finishLaunch(entry: ShortcutEntry, launched: Boolean) {
+        if (!launched) {
+            Toast.makeText(applicationContext, getString(ShortcutMaker.failureMessageRes(entry)), Toast.LENGTH_SHORT).show()
+        }
+        finish()
     }
 
     private fun resolveEntry(intent: Intent): ShortcutEntry? {
