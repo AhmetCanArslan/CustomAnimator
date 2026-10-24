@@ -22,6 +22,7 @@ import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
 import com.arslan.customanimator.utils.LinkCleaner
 import com.arslan.customanimator.utils.LinkCleanerRules
 import com.arslan.customanimator.utils.SaveToDeviceManager
+import com.arslan.customanimator.utils.skipTransitions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -38,7 +39,7 @@ class ShareActionsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        overridePendingTransition(0, 0)
+        skipTransitions()
         isSaving = savedInstanceState?.getBoolean(KEY_SAVING) == true
         if (isSaving) return
 
@@ -57,7 +58,7 @@ class ShareActionsActivity : ComponentActivity() {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(0, 0)
+        skipTransitions()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
