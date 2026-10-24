@@ -27,7 +27,7 @@ import androidx.compose.material.icons.filled.PhoneDisabled
 import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.ScreenRotation
-import androidx.compose.material.icons.filled.ScreenShare
+import androidx.compose.material.icons.automirrored.filled.ScreenShare
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.SensorsOff
 import androidx.compose.material.icons.filled.SettingsEthernet
@@ -127,7 +127,7 @@ private val statusBarIconSections = listOf(
             StatusBarIconEntry(StatusBarIconsManager.SLOT_LOCATION, R.string.status_bar_icon_location, Icons.Filled.LocationOn),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_ROTATE, R.string.status_bar_icon_rotate, Icons.Filled.ScreenRotation),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_CAST, R.string.status_bar_icon_cast, Icons.Filled.Cast),
-            StatusBarIconEntry(StatusBarIconsManager.SLOT_CONNECTED_DISPLAY, R.string.status_bar_icon_connected_display, Icons.Filled.ScreenShare),
+            StatusBarIconEntry(StatusBarIconsManager.SLOT_CONNECTED_DISPLAY, R.string.status_bar_icon_connected_display, Icons.AutoMirrored.Filled.ScreenShare),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_SCREEN_RECORD, R.string.status_bar_icon_screen_record, Icons.Filled.Videocam),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_SENSORS_OFF, R.string.status_bar_icon_sensors_off, Icons.Filled.SensorsOff),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_MANAGED_PROFILE, R.string.status_bar_icon_managed_profile, Icons.Filled.Work),
