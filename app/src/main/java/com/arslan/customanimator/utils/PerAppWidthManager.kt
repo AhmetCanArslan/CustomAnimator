@@ -106,7 +106,6 @@ class PerAppWidthManager(context: Context) {
                 persist(existing)
             }
         } catch (e: Exception) {
-            Unit
         }
         legacyPreferences.edit().clear().apply()
     }
