@@ -70,6 +70,7 @@ class RulesManager(private val context: Context) {
         }
     }
 
+    @Suppress("SENSELESS_COMPARISON")
     private fun sanitize(rules: List<NotificationRule?>?): List<NotificationRule> {
         if (rules == null) return emptyList()
         return rules.filterNotNull()
