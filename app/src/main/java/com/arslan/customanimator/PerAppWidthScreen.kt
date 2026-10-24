@@ -212,7 +212,7 @@ private fun PerAppWidthDialog(
     var value by remember { mutableStateOf(currentWidth?.toString() ?: deviceWidth.toString()) }
     val parsed = value.toIntOrNull()
     val isValid = parsed != null && parsed in PerAppWidthManager.MIN_WIDTH..PerAppWidthManager.MAX_WIDTH
-    val previewDensity = if (isValid) SettingsManager.densityForSmallestWidth(context, parsed!!) else null
+    val previewDensity = if (isValid) SettingsManager.densityForSmallestWidth(context, parsed) else null
 
     AlertDialog(
         onDismissRequest = onDismiss,
