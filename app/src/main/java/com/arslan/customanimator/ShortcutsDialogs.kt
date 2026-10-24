@@ -102,7 +102,10 @@ internal fun PickerSheet(
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = rememberBottomSheetState(
+            initialValue = SheetValue.Hidden,
+            enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded)
+        ),
         shape = AppShapes.sheet,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLow
     ) {
