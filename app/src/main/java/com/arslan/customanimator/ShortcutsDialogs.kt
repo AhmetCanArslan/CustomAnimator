@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
@@ -476,7 +476,7 @@ private fun ShortcutPlacementDialog(onPick: (Boolean) -> Unit, onDismiss: () -> 
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 PickerRow(title = stringResource(R.string.shortcut_place_shortcut), subtitle = "", onClick = { onPick(false) }) {
-                    IconBadge(icon = Icons.Filled.AddToHomeScreen, size = 40.dp)
+                    IconBadge(icon = Icons.AutoMirrored.Filled.AddToHomeScreen, size = 40.dp)
                 }
                 PickerRow(title = stringResource(R.string.shortcut_place_widget), subtitle = "", onClick = { onPick(true) }) {
                     IconBadge(icon = Icons.Filled.Widgets, size = 40.dp)

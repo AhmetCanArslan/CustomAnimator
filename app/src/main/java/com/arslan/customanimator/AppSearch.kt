@@ -29,7 +29,7 @@ import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.filled.BarChart
@@ -191,7 +191,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.BATTERY.row(R.string.bt_alert_low, R.string.bt_alert_low_desc, Icons.Filled.BatteryAlert),
     HomeTab.BATTERY.row(R.string.bt_alert_high, R.string.bt_alert_high_desc, Icons.Filled.BatteryAlert),
     HomeTab.TOOLS.row(R.string.tools_title, null),
-    HomeTab.TOOLS.screen(HomeScreen.SHORTCUTS, R.string.shortcuts, R.string.shortcuts_desc, Icons.Filled.AddToHomeScreen),
+    HomeTab.TOOLS.screen(HomeScreen.SHORTCUTS, R.string.shortcuts, R.string.shortcuts_desc, Icons.AutoMirrored.Filled.AddToHomeScreen),
     HomeTab.TOOLS.screen(HomeScreen.ICON_CHANGER, R.string.icon_changer, R.string.icon_changer_desc, Icons.Filled.AppShortcut),
     HomeTab.TOOLS.screen(HomeScreen.APK_EXTRACTOR, R.string.apk_extractor, R.string.apk_extractor_desc, Icons.Filled.Unarchive),
     HomeTab.TOOLS.screen(HomeScreen.DEBLOATER, R.string.debloater, R.string.debloater_desc, Icons.Filled.DeleteSweep),

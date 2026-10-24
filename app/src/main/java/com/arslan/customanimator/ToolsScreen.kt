@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
@@ -147,7 +147,7 @@ fun ToolsScreenContent(
                 R.string.tools_section_apps,
                 {
                     NavigationRow(
-                        icon = Icons.Filled.AddToHomeScreen,
+                        icon = Icons.AutoMirrored.Filled.AddToHomeScreen,
                         title = stringResource(R.string.shortcuts),
                         description = stringResource(R.string.shortcuts_desc),
                         onClick = onNavigateToShortcuts

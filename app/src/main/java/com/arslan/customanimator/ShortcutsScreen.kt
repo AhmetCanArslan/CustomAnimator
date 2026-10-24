@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.AddToHomeScreen
+import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -222,7 +222,7 @@ private fun ShortcutsEmptyCard() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             IconBadge(
-                icon = Icons.Filled.AddToHomeScreen,
+                icon = Icons.AutoMirrored.Filled.AddToHomeScreen,
                 size = 52.dp,
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
@@ -306,7 +306,7 @@ private fun ShortcutRowMenu(
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             IconMenuItem(Icons.Filled.PlayArrow, R.string.shortcut_launch) { select(onLaunch) }
             IconMenuItem(Icons.Filled.Edit, R.string.shortcut_edit) { select(onEdit) }
-            IconMenuItem(Icons.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
+            IconMenuItem(Icons.AutoMirrored.Filled.AddToHomeScreen, R.string.shortcut_add_to_home) { select(onPin) }
             if (onAddWidget != null) {
                 IconMenuItem(Icons.Filled.Widgets, R.string.shortcut_add_widget) { select(onAddWidget) }
             }
