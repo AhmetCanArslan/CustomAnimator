@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.BorderAll
-import androidx.compose.material.icons.filled.FormatTextdirectionRToL
+import androidx.compose.material.icons.automirrored.filled.FormatTextdirectionRToL
 import androidx.compose.material.icons.filled.LayersClear
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.MyLocation
@@ -310,7 +310,7 @@ fun DeveloperScreenContent(
                 },
                 {
                     ToggleRow(
-                        icon = Icons.Filled.FormatTextdirectionRToL,
+                        icon = Icons.AutoMirrored.Filled.FormatTextdirectionRToL,
                         title = stringResource(R.string.force_rtl),
                         description = stringResource(R.string.force_rtl_desc),
                         checked = forceRtl,

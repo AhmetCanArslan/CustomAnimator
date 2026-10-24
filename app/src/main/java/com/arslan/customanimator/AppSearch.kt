@@ -48,7 +48,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.material.icons.filled.FormatTextdirectionRToL
+import androidx.compose.material.icons.automirrored.filled.FormatTextdirectionRToL
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.LayersClear
@@ -62,7 +62,7 @@ import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Restore
-import androidx.compose.material.icons.filled.Rule
+import androidx.compose.material.icons.automirrored.filled.Rule
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Schedule
@@ -232,10 +232,10 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.DEVELOPER.row(R.string.pointer_location, R.string.pointer_location_desc, Icons.Filled.MyLocation),
     HomeTab.DEVELOPER.row(R.string.show_layout_bounds, R.string.show_layout_bounds_desc, Icons.Filled.BorderAll),
     HomeTab.DEVELOPER.row(R.string.gpu_profiling, R.string.gpu_profiling_desc, Icons.Filled.BarChart),
-    HomeTab.DEVELOPER.row(R.string.force_rtl, R.string.force_rtl_desc, Icons.Filled.FormatTextdirectionRToL),
+    HomeTab.DEVELOPER.row(R.string.force_rtl, R.string.force_rtl_desc, Icons.AutoMirrored.Filled.FormatTextdirectionRToL),
     HomeTab.TERMINAL.row(R.string.nav_terminal, null),
     section(R.string.pn_title, HomeScreen.NOTIFY_HOME, R.string.pn_title, null, Icons.Filled.Notifications),
-    section(R.string.pn_title, HomeScreen.NOTIFY_RULES, R.string.pn_rules, null, Icons.Filled.Rule),
+    section(R.string.pn_title, HomeScreen.NOTIFY_RULES, R.string.pn_rules, null, Icons.AutoMirrored.Filled.Rule),
     section(R.string.pn_title, HomeScreen.NOTIFY_LOGGING, R.string.pn_nav_logging, R.string.pn_history_desc, Icons.Filled.History),
     section(R.string.pn_title, HomeScreen.NOTIFY_IGNORED, R.string.pn_filters, null, Icons.Filled.FilterAlt),
     section(R.string.profiles_title, HomeScreen.PROFILES, R.string.profiles_title, R.string.profiles_subtitle, Icons.Filled.AccountCircle),
