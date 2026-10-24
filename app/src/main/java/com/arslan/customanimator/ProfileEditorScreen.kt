@@ -34,7 +34,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -71,6 +70,7 @@ import java.util.Locale
 import kotlin.math.roundToInt
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSlider
 import androidx.compose.material3.ButtonDefaults
 import com.arslan.customanimator.ui.components.AppSwitch
 
@@ -408,7 +408,7 @@ fun ProfileEditorScreen(
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary
                             )
-                            Slider(
+                            AppSlider(
                                 value = triggerLevel,
                                 onValueChange = { triggerLevel = it },
                                 valueRange = 0f..75f,
@@ -495,7 +495,7 @@ fun ProfileEditorScreen(
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.primary
                             )
-                            Slider(
+                            AppSlider(
                                 value = stickyLevel,
                                 onValueChange = { stickyLevel = it },
                                 valueRange = 10f..100f,
@@ -540,7 +540,7 @@ fun ProfileEditorScreen(
                                         style = MaterialTheme.typography.labelLarge,
                                         color = MaterialTheme.colorScheme.primary
                                     )
-                                    Slider(
+                                    AppSlider(
                                         value = value,
                                         onValueChange = {
                                             value = it
@@ -584,7 +584,7 @@ fun ProfileEditorScreen(
                                         style = MaterialTheme.typography.labelLarge,
                                         color = MaterialTheme.colorScheme.primary
                                     )
-                                    Slider(
+                                    AppSlider(
                                         value = value.toFloat(),
                                         onValueChange = {
                                             value = it.roundToInt()
@@ -781,7 +781,7 @@ private fun ScaleSlider(title: String, value: Float, onValueChange: (Float) -> U
                 color = MaterialTheme.colorScheme.primary
             )
         }
-        Slider(
+        AppSlider(
             value = value,
             onValueChange = { onValueChange((it * 20f).roundToInt() / 20f) },
             valueRange = 0f..5f,
