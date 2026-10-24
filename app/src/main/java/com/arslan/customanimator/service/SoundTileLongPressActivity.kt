@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.content.IntentCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ShizukuHelper
@@ -51,8 +52,8 @@ class SoundTileLongPressActivity : Activity() {
     }
 
     private fun isSoundTileLongPress(): Boolean {
-        val component = intent?.getParcelableExtra<ComponentName>(Intent.EXTRA_COMPONENT_NAME)
-            ?: intent?.getParcelableExtra<ComponentName>(EXTRA_COMPONENT_ID)
+        val component = intent?.let { IntentCompat.getParcelableExtra(it, Intent.EXTRA_COMPONENT_NAME, ComponentName::class.java) }
+            ?: intent?.let { IntentCompat.getParcelableExtra(it, EXTRA_COMPONENT_ID, ComponentName::class.java) }
             ?: return false
         return component.className == SoundTileService::class.java.name
     }
