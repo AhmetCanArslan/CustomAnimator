@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.core.app.NotificationManagerCompat
 import com.arslan.customanimator.R
+import com.arslan.customanimator.utils.skipTransitions
 
 class ScreenshotActionActivity : ComponentActivity() {
 
@@ -14,7 +15,7 @@ class ScreenshotActionActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) handle(intent)
         finish()
-        overridePendingTransition(0, 0)
+        skipTransitions()
     }
 
     private fun handle(intent: Intent) {
