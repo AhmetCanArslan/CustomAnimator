@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cast
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -80,7 +80,7 @@ fun SoundTileScreen(
             item {
                 SoundCard {
                     SoundInfoRow(
-                        icon = Icons.Filled.VolumeUp,
+                        icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.sound_tile_label),
                         description = stringResource(R.string.sound_tile_hint)
                     )

@@ -41,8 +41,8 @@ import androidx.compose.material.icons.filled.WifiCalling
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VolumeOff
-import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.automirrored.filled.VolumeOff
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.VpnKey
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiTethering
@@ -107,8 +107,8 @@ private val statusBarIconSections = listOf(
         R.string.status_bar_icons_section_sound,
         listOf(
             StatusBarIconEntry(StatusBarIconsManager.SLOT_ZEN, R.string.status_bar_icon_zen, Icons.Filled.DoNotDisturbOn),
-            StatusBarIconEntry(StatusBarIconsManager.SLOT_VOLUME, R.string.status_bar_icon_volume, Icons.Filled.VolumeUp),
-            StatusBarIconEntry(StatusBarIconsManager.SLOT_MUTE, R.string.status_bar_icon_mute, Icons.Filled.VolumeOff),
+            StatusBarIconEntry(StatusBarIconsManager.SLOT_VOLUME, R.string.status_bar_icon_volume, Icons.AutoMirrored.Filled.VolumeUp),
+            StatusBarIconEntry(StatusBarIconsManager.SLOT_MUTE, R.string.status_bar_icon_mute, Icons.AutoMirrored.Filled.VolumeOff),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_HEADSET, R.string.status_bar_icon_headset, Icons.Filled.Headset),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_SPEAKERPHONE, R.string.status_bar_icon_speakerphone, Icons.Filled.RecordVoiceOver),
             StatusBarIconEntry(StatusBarIconsManager.SLOT_TTY, R.string.status_bar_icon_tty, Icons.Filled.Hearing),

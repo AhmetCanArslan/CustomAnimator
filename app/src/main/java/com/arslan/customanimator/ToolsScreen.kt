@@ -28,7 +28,7 @@ import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.WebAsset
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.VideogameAsset
-import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material.icons.filled.Widgets
@@ -400,7 +400,7 @@ fun ToolsScreenContent(
                 },
                 {
                     ToggleRow(
-                        icon = Icons.Filled.VolumeUp,
+                        icon = Icons.AutoMirrored.Filled.VolumeUp,
                         title = stringResource(R.string.remove_high_volume_warning),
                         description = stringResource(R.string.remove_high_volume_warning_desc),
                         checked = highVolumeWarningDisabled,
