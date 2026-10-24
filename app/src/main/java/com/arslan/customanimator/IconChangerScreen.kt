@@ -35,6 +35,7 @@ import com.arslan.customanimator.utils.IconChangerManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppSlider
 import com.arslan.customanimator.ui.components.AppCard
 
 private const val ADAPTIVE_LAYER_ZOOM = 1.5f
@@ -270,7 +271,7 @@ private fun IconChangerLayerControls(state: IconChangerState) {
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
-    Slider(
+    AppSlider(
         value = state.scale,
         onValueChange = { state.scale = it },
         valueRange = IconChangerManager.MIN_SCALE..IconChangerManager.MAX_SCALE
