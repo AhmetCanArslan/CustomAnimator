@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.OpenInNew
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Security
@@ -390,7 +390,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
             done = running,
             active = installed && !running,
             primaryLabel = stringResource(R.string.setup_step_devopts_action),
-            primaryIcon = Icons.Filled.OpenInNew,
+            primaryIcon = Icons.AutoMirrored.Filled.OpenInNew,
             onPrimary = { SetupHelper.openAboutPhone(context) }
         )
         SetupStep(
@@ -400,7 +400,7 @@ private fun PhoneOnlySteps(stage: SetupStage) {
             done = running,
             active = installed && !running,
             primaryLabel = stringResource(R.string.setup_step_wireless_action),
-            primaryIcon = Icons.Filled.OpenInNew,
+            primaryIcon = Icons.AutoMirrored.Filled.OpenInNew,
             onPrimary = { SetupHelper.openWirelessDebugging(context) }
         )
         SetupStep(
@@ -476,7 +476,7 @@ private fun ComputerSteps() {
             done = false,
             active = true,
             primaryLabel = stringResource(R.string.setup_step_devopts_action),
-            primaryIcon = Icons.Filled.OpenInNew,
+            primaryIcon = Icons.AutoMirrored.Filled.OpenInNew,
             onPrimary = { SetupHelper.openAboutPhone(context) }
         )
         SetupStep(
@@ -486,7 +486,7 @@ private fun ComputerSteps() {
             done = false,
             active = true,
             primaryLabel = stringResource(R.string.setup_pc_step2_action),
-            primaryIcon = Icons.Filled.OpenInNew,
+            primaryIcon = Icons.AutoMirrored.Filled.OpenInNew,
             onPrimary = { SetupHelper.openDeveloperOptions(context) }
         )
         SetupStep(
@@ -658,7 +658,7 @@ private fun HelpFooter() {
     ) {
         TextButton(onClick = { SetupHelper.openShizukuGuide(context) }, shapes = ButtonDefaults.shapes()) {
             Icon(
-                imageVector = Icons.Filled.OpenInNew,
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp)
             )
