@@ -1808,7 +1808,9 @@ Durasi Animator: %3$.2f</string>
     <string name="icon_changer_image_failed">Tidak dapat membaca gambar itu.</string>
     <string name="apk_extractor">Pengekstrak APK</string>
     <string name="apk_extractor_desc">Simpan APK dari aplikasi terinstal</string>
-    <string name="apk_extractor_info">Ketuk aplikasi untuk menyimpan APK-nya ke Download/CustomAnimator. Untuk aplikasi yang diinstal sebagai APK terpisah, pilih formatnya dulu: satu file .apks, hanya APK dasar, atau file APK terpisah.</string>
+    <string name="apk_extractor_info">Ketuk aplikasi untuk menyimpan APK-nya ke folder yang dipilih di atas. Untuk aplikasi yang diinstal sebagai APK terpisah, pilih formatnya dulu: satu file .apks, hanya APK dasar, atau file APK terpisah.</string>
+    <string name="apk_extractor_folder_desc">APK disimpan ke Download/CustomAnimator. Pilih folder lain untuk menyimpannya di sana.</string>
+    <string name="apk_extractor_folder_default">Gunakan %1$s</string>
     <string name="apk_extractor_format_hint">Aplikasi ini diinstal sebagai APK terpisah. Pilih cara menyimpannya.</string>
     <string name="apk_extractor_format_bundle">Satu file .apks</string>
     <string name="apk_extractor_format_bundle_desc">Semua bagian dalam satu arsip yang dapat dibuka penginstal seperti SAI.</string>

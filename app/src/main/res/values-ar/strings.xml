@@ -1848,7 +1848,9 @@
     <string name="icon_changer_image_failed">تعذّرت قراءة هذه الصورة.</string>
     <string name="apk_extractor">مستخرج APK</string>
     <string name="apk_extractor_desc">احفظ ملف APK لتطبيق مثبت</string>
-    <string name="apk_extractor_info">انقر على تطبيق لحفظ ملف APK الخاص به في Download/CustomAnimator. في التطبيقات المثبتة كملفات APK مقسّمة تختار الصيغة أولاً: ملف .apks واحد، أو ملف APK الأساسي فقط، أو ملفات APK منفصلة.</string>
+    <string name="apk_extractor_info">انقر على تطبيق لحفظ ملف APK الخاص به في المجلد المحدد أعلاه. في التطبيقات المثبتة كملفات APK مقسّمة تختار الصيغة أولاً: ملف .apks واحد، أو ملف APK الأساسي فقط، أو ملفات APK منفصلة.</string>
+    <string name="apk_extractor_folder_desc">تُحفظ ملفات APK في Download/CustomAnimator. اختر مجلدًا آخر لحفظها فيه بدلاً من ذلك.</string>
+    <string name="apk_extractor_folder_default">استخدام %1$s</string>
     <string name="apk_extractor_format_hint">هذا التطبيق مثبت كملفات APK مقسّمة. اختر طريقة حفظه.</string>
     <string name="apk_extractor_format_bundle">ملف .apks واحد</string>
     <string name="apk_extractor_format_bundle_desc">كل الأجزاء في أرشيف واحد يمكن فتحه بمثبّتات مثل SAI.</string>

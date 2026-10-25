@@ -11,33 +11,14 @@ import com.arslan.customanimator.data.ShortcutFileInfo
 import java.io.InputStream
 
 object SaveToDeviceManager {
-    private const val PREFS_NAME = "save_to_device_prefs"
-    private const val KEY_FOLDER = "default_folder"
     private const val TEXT_MIME = "text/plain"
     private const val TEXT_FILE_NAME = "Shared text.txt"
     private const val UNKNOWN_MIME = "application/octet-stream"
-    private const val FOLDER_PERMISSIONS =
-        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+    private val defaultFolder = PersistedFolder("save_to_device_prefs", "default_folder")
 
-    private fun prefs(context: Context) =
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    fun getDefaultFolder(context: Context): Uri? = defaultFolder.get(context)
 
-    fun getDefaultFolder(context: Context): Uri? =
-        prefs(context).getString(KEY_FOLDER, null)?.let(Uri::parse)
-
-    fun setDefaultFolder(context: Context, folder: Uri?) {
-        val resolver = context.contentResolver
-        getDefaultFolder(context)?.let { previous ->
-            try {
-                resolver.releasePersistableUriPermission(previous, FOLDER_PERMISSIONS)
-            } catch (e: Exception) {
-            }
-        }
-        folder?.let { resolver.takePersistableUriPermission(it, FOLDER_PERMISSIONS) }
-        prefs(context).edit().apply {
-            if (folder == null) remove(KEY_FOLDER) else putString(KEY_FOLDER, folder.toString())
-        }.apply()
-    }
+    fun setDefaultFolder(context: Context, folder: Uri?) = defaultFolder.set(context, folder)
 
     fun folderLabel(folder: Uri): String {
         val documentId = DocumentsContract.getTreeDocumentId(folder)

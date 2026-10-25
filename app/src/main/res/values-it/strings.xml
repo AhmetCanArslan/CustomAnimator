@@ -1828,7 +1828,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="icon_changer_image_failed">Impossibile leggere l’immagine.</string>
     <string name="apk_extractor">Estrattore APK</string>
     <string name="apk_extractor_desc">Salva l’APK di un’app installata</string>
-    <string name="apk_extractor_info">Tocca un’app per salvare il suo APK in Download/CustomAnimator. Per le app installate come APK divisi scegli prima il formato: un unico file .apks, solo l’APK di base o file APK separati.</string>
+    <string name="apk_extractor_info">Tocca un’app per salvare il suo APK nella cartella scelta sopra. Per le app installate come APK divisi scegli prima il formato: un unico file .apks, solo l’APK di base o file APK separati.</string>
+    <string name="apk_extractor_folder_desc">Gli APK vengono salvati in Download/CustomAnimator. Scegli un’altra cartella per salvarli lì.</string>
+    <string name="apk_extractor_folder_default">Usa %1$s</string>
     <string name="apk_extractor_format_hint">Questa app è installata come APK divisi. Scegli come salvarla.</string>
     <string name="apk_extractor_format_bundle">Un unico file .apks</string>
     <string name="apk_extractor_format_bundle_desc">Tutte le parti in un archivio che installer come SAI possono aprire.</string>

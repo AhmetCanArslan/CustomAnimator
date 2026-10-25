@@ -1810,7 +1810,9 @@
     <string name="icon_changer_image_failed">Не удалось прочитать изображение.</string>
     <string name="apk_extractor">Извлечение APK</string>
     <string name="apk_extractor_desc">Сохраните APK установленного приложения</string>
-    <string name="apk_extractor_info">Нажмите на приложение, чтобы сохранить его APK в Download/CustomAnimator. Для приложений, установленных как разделённые APK, сначала выбирается формат: один файл .apks, только базовый APK или отдельные файлы APK.</string>
+    <string name="apk_extractor_info">Нажмите на приложение, чтобы сохранить его APK в выбранную выше папку. Для приложений, установленных как разделённые APK, сначала выбирается формат: один файл .apks, только базовый APK или отдельные файлы APK.</string>
+    <string name="apk_extractor_folder_desc">APK сохраняются в Download/CustomAnimator. Выберите другую папку, чтобы сохранять их туда.</string>
+    <string name="apk_extractor_folder_default">Использовать %1$s</string>
     <string name="apk_extractor_format_hint">Это приложение установлено как разделённые APK. Выберите, как его сохранить.</string>
     <string name="apk_extractor_format_bundle">Один файл .apks</string>
     <string name="apk_extractor_format_bundle_desc">Все части в одном архиве, который открывают установщики вроде SAI.</string>

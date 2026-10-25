@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.ApkExtractorApp
 import com.arslan.customanimator.data.ApkExtractorFormat
 import com.arslan.customanimator.data.InstalledAppInfo
+import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.IconBadge
 import com.arslan.customanimator.utils.ApkExtractorManager
 import kotlinx.coroutines.Dispatchers
@@ -128,6 +129,12 @@ fun ApkExtractorScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            item {
+                AppCard(contentPadding = 0.dp) {
+                    ApkExportFolderRow()
+                }
+            }
+
             item {
                 InfoCard(
                     dismissKey = "apk_extractor_info",

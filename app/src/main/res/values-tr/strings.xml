@@ -1816,7 +1816,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="icon_changer_image_failed">Bu görsel okunamadı.</string>
     <string name="apk_extractor">APK Çıkarıcı</string>
     <string name="apk_extractor_desc">Yüklü bir uygulamanın APK dosyasını kaydedin</string>
-    <string name="apk_extractor_info">APK dosyasını Download/CustomAnimator klasörüne kaydetmek için bir uygulamaya dokunun. Bölünmüş APK olarak yüklenen uygulamalarda önce biçimi seçersiniz: tek bir .apks dosyası, yalnızca temel APK veya ayrı APK dosyaları.</string>
+    <string name="apk_extractor_info">APK dosyasını yukarıda seçilen klasöre kaydetmek için bir uygulamaya dokunun. Bölünmüş APK olarak yüklenen uygulamalarda önce biçimi seçersiniz: tek bir .apks dosyası, yalnızca temel APK veya ayrı APK dosyaları.</string>
+    <string name="apk_extractor_folder_desc">APK dosyaları Download/CustomAnimator klasörüne kaydedilir. Başka bir klasöre kaydetmek için klasör seçin.</string>
+    <string name="apk_extractor_folder_default">%1$s kullan</string>
     <string name="apk_extractor_format_hint">Bu uygulama bölünmüş APK olarak yüklenmiş. Nasıl kaydedileceğini seçin.</string>
     <string name="apk_extractor_format_bundle">Tek .apks dosyası</string>
     <string name="apk_extractor_format_bundle_desc">Tüm parçalar, SAI gibi yükleyicilerin açabildiği tek bir arşivde.</string>

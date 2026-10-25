@@ -2,10 +2,13 @@ package com.arslan.customanimator.utils
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -31,6 +34,12 @@ object ApkExtractorManager {
 
     const val STORAGE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
+    val DEFAULT_FOLDER: String = Environment.DIRECTORY_DOWNLOADS + File.separator + InstalledAppsProvider.EXPORT_DIR
+
+    private val exportTree = PersistedFolder("apk_extractor_prefs", "export_folder")
+
+    private class Destination(val label: String, val save: (String, String, (OutputStream) -> Unit) -> Unit)
+
     private class Described(val source: InstalledAppInfo, val details: ApkExtractorApp)
 
     private val described = ConcurrentHashMap<String, Described>()
@@ -50,32 +59,71 @@ object ApkExtractorManager {
     fun fileName(app: ApkExtractorApp, format: ApkExtractorFormat): String =
         baseName(app) + if (format == ApkExtractorFormat.BUNDLE) BUNDLE_EXTENSION else APK_EXTENSION
 
+    fun exportTree(context: Context): Uri? = exportTree.get(context)
+
+    fun setExportTree(context: Context, folder: Uri?) = exportTree.set(context, folder)
+
     fun needsStoragePermission(context: Context): Boolean =
         Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+            exportTree(context) == null &&
             ContextCompat.checkSelfPermission(context, STORAGE_PERMISSION) != PackageManager.PERMISSION_GRANTED
 
     fun extract(context: Context, app: ApkExtractorApp, format: ApkExtractorFormat): String? {
         return try {
             val files = InstalledAppsProvider.sourceApks(context, app.packageName)
-            val folder = exportFolder(app, format)
+            val destination = destination(context, app, format)
             if (format == ApkExtractorFormat.SEPARATE) {
                 files.forEach { file ->
-                    save(context, folder, file.name, APK_MIME) { writeTo(listOf(file), it, ApkExtractorFormat.BASE) }
+                    destination.save(file.name, APK_MIME) { writeTo(listOf(file), it, ApkExtractorFormat.BASE) }
                 }
             } else {
                 val mime = if (format == ApkExtractorFormat.BUNDLE) BUNDLE_MIME else APK_MIME
-                save(context, folder, fileName(app, format), mime) { writeTo(files, it, format) }
+                destination.save(fileName(app, format), mime) { writeTo(files, it, format) }
             }
-            folder
+            destination.label
         } catch (e: Exception) {
             Log.e(TAG, "Failed to extract ${app.packageName}", e)
             null
         }
     }
 
+    private fun destination(context: Context, app: ApkExtractorApp, format: ApkExtractorFormat): Destination {
+        val tree = exportTree(context) ?: return exportFolder(app, format).let { folder ->
+            Destination(folder) { name, mime, write -> save(context, folder, name, mime, write) }
+        }
+        val resolver = context.contentResolver
+        val root = DocumentsContract.buildDocumentUriUsingTree(tree, DocumentsContract.getTreeDocumentId(tree))
+        val label = SaveToDeviceManager.folderLabel(tree)
+        if (format != ApkExtractorFormat.SEPARATE) {
+            return Destination(label) { name, mime, write -> saveToDocument(resolver, root, name, mime, write) }
+        }
+        val subfolder = baseName(app)
+        val parent = requireNotNull(
+            DocumentsContract.createDocument(resolver, root, DocumentsContract.Document.MIME_TYPE_DIR, subfolder)
+        )
+        return Destination(label + File.separator + subfolder) { name, mime, write ->
+            saveToDocument(resolver, parent, name, mime, write)
+        }
+    }
+
+    private fun saveToDocument(
+        resolver: ContentResolver,
+        parent: Uri,
+        name: String,
+        mime: String,
+        write: (OutputStream) -> Unit
+    ) {
+        val target = requireNotNull(DocumentsContract.createDocument(resolver, parent, mime, name))
+        try {
+            requireNotNull(resolver.openOutputStream(target)).use(write)
+        } catch (e: Exception) {
+            DocumentsContract.deleteDocument(resolver, target)
+            throw e
+        }
+    }
+
     internal fun exportFolder(app: ApkExtractorApp, format: ApkExtractorFormat): String {
-        val root = Environment.DIRECTORY_DOWNLOADS + File.separator + InstalledAppsProvider.EXPORT_DIR
-        return if (format == ApkExtractorFormat.SEPARATE) root + File.separator + baseName(app) else root
+        return if (format == ApkExtractorFormat.SEPARATE) DEFAULT_FOLDER + File.separator + baseName(app) else DEFAULT_FOLDER
     }
 
     internal fun writeTo(files: List<File>, output: OutputStream, format: ApkExtractorFormat) {

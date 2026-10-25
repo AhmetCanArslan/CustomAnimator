@@ -1808,7 +1808,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="icon_changer_image_failed">Hindi mabasa ang larawang iyon.</string>
     <string name="apk_extractor">Pang-extract ng APK</string>
     <string name="apk_extractor_desc">I-save ang APK ng naka-install na app</string>
-    <string name="apk_extractor_info">I-tap ang app para i-save ang APK nito sa Download/CustomAnimator. Para sa mga app na naka-install bilang split APK, pipiliin mo muna ang format: isang .apks file, base APK lang, o magkakahiwalay na APK file.</string>
+    <string name="apk_extractor_info">I-tap ang app para i-save ang APK nito sa folder na pinili sa itaas. Para sa mga app na naka-install bilang split APK, pipiliin mo muna ang format: isang .apks file, base APK lang, o magkakahiwalay na APK file.</string>
+    <string name="apk_extractor_folder_desc">Sine-save ang mga APK sa Download/CustomAnimator. Pumili ng ibang folder para doon sila i-save.</string>
+    <string name="apk_extractor_folder_default">Gamitin ang %1$s</string>
     <string name="apk_extractor_format_hint">Naka-install ang app na ito bilang split APK. Piliin kung paano ito ise-save.</string>
     <string name="apk_extractor_format_bundle">Isang .apks file</string>
     <string name="apk_extractor_format_bundle_desc">Lahat ng split sa isang archive na nabubuksan ng mga installer tulad ng SAI.</string>
