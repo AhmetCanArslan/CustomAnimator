@@ -1,7 +1,10 @@
 package com.arslan.customanimator
 
 import android.graphics.drawable.Drawable
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -17,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -130,6 +134,8 @@ fun AppSearchBar(
     showFilterCheckbox: Boolean = true,
     placeholder: String? = null
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val focused by interactionSource.collectIsFocusedAsState()
     Column {
         OutlinedTextField(
             value = searchQuery,
@@ -137,9 +143,8 @@ fun AppSearchBar(
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(placeholder ?: stringResource(R.string.search_apps)) },
             singleLine = true,
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = null)
-            },
+            leadingIcon = { AnimatedSearchIcon(focused) },
+            interactionSource = interactionSource,
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
                     IconButton(onClick = { onSearchQueryChange("") }, shapes = IconButtonDefaults.shapes()) {
@@ -171,6 +176,28 @@ fun AppSearchBar(
         }
     }
 }
+
+@Composable
+private fun AnimatedSearchIcon(focused: Boolean) {
+    val progress by animateFloatAsState(
+        targetValue = if (focused) 1f else 0f,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "searchIconFocus"
+    )
+    Icon(
+        imageVector = Icons.Filled.Search,
+        contentDescription = null,
+        modifier = Modifier.graphicsLayer {
+            val scale = 1f + progress * SEARCH_ICON_FOCUS_SCALE
+            scaleX = scale
+            scaleY = scale
+            rotationZ = progress * SEARCH_ICON_FOCUS_ROTATION
+        }
+    )
+}
+
+private const val SEARCH_ICON_FOCUS_SCALE = 0.15f
+private const val SEARCH_ICON_FOCUS_ROTATION = -20f
 
 @Composable
 fun WarningCard(message: String, actionLabel: String, onAction: () -> Unit) {
