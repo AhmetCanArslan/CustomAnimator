@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -17,8 +18,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutActivityInfo
+import com.arslan.customanimator.service.LiveActivityService
+import com.arslan.customanimator.ui.components.AppSwitch
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.theme.horizontalPagerTransition
+import com.arslan.customanimator.utils.LiveActivityManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShortcutMaker
@@ -64,6 +68,8 @@ fun ActivityManagerScreen(
         }
     }
 
+    val liveActivity = rememberLiveActivityToggle(hasShizukuPermission)
+
     BackHandler(enabled = selected != null) { selected = null }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -73,7 +79,8 @@ fun ActivityManagerScreen(
             ScreenTopBar(
                 title = stringResource(R.string.activity_manager),
                 onBack = { if (selected == null) onBack() else selected = null },
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                actions = { LiveActivitySwitch(liveActivity) }
             )
         }
     ) { paddingValues ->
@@ -89,7 +96,12 @@ fun ActivityManagerScreen(
             label = "activity manager step"
         ) { picked ->
             if (picked == null) {
-                ActivityManagerAppList(appList = appList, listState = listState, onPick = onAppPicked)
+                ActivityManagerAppList(
+                    appList = appList,
+                    listState = listState,
+                    liveActivity = liveActivity,
+                    onPick = onAppPicked
+                )
             } else {
                 ActivityManagerActivities(
                     picked = picked,
@@ -107,6 +119,7 @@ fun ActivityManagerScreen(
 private fun ActivityManagerAppList(
     appList: AppListState,
     listState: LazyListState,
+    liveActivity: LiveActivityToggle,
     onPick: (InstalledAppInfo) -> Unit
 ) {
     LazyColumn(
@@ -121,6 +134,16 @@ private fun ActivityManagerAppList(
                 dismissKey = "activity_manager_info",
                 texts = listOf(stringResource(R.string.activity_manager_info))
             )
+        }
+
+        if (liveActivity.showPermissions) {
+            item {
+                PermissionSection(
+                    title = stringResource(R.string.live_activity_permissions),
+                    entries = liveActivity.permissions,
+                    onGrant = liveActivity.requestPermission
+                )
+            }
         }
 
         appList(appList) { app ->
@@ -178,5 +201,73 @@ private fun ActivityManagerActivities(
         item(key = "activity_bottom") {
             Spacer(modifier = Modifier.height(16.dp))
         }
+    }
+}
+
+private class LiveActivityToggle(
+    val enabled: Boolean,
+    val showPermissions: Boolean,
+    val permissions: List<PermissionEntry>,
+    val requestPermission: (AppPermission) -> Unit,
+    val onToggle: (Boolean) -> Unit
+)
+
+@Composable
+private fun rememberLiveActivityToggle(hasShizukuPermission: Boolean): LiveActivityToggle {
+    val context = LocalContext.current
+    val resources = LocalResources.current
+    val permissionRefresh = rememberPermissionRefresh()
+    val requestPermission = rememberPermissionRequester(onChanged = { permissionRefresh.intValue++ })
+    val requestNotificationsIfNeeded = rememberNotificationPermissionRequest()
+    val permissions = key(permissionRefresh.intValue, hasShizukuPermission) {
+        permissionEntries(LIVE_ACTIVITY_PERMISSIONS)
+    }
+    val missing = permissions.firstOrNull { !it.granted }?.permission
+    var enabled by remember { mutableStateOf(false) }
+    var permissionsRequested by remember { mutableStateOf(false) }
+
+    LaunchedEffect(permissionRefresh.intValue, hasShizukuPermission) {
+        enabled = LiveActivityManager.isEnabled(context) && missing == null
+    }
+
+    val onToggle: (Boolean) -> Unit = { on ->
+        if (on && missing != null) {
+            permissionsRequested = true
+            Toast.makeText(context, resources.getString(R.string.live_activity_permission_needed), Toast.LENGTH_LONG).show()
+            requestPermission(missing)
+        } else {
+            enabled = on
+            LiveActivityManager.setEnabled(context, on)
+            if (on) {
+                requestNotificationsIfNeeded()
+                LiveActivityService.start(context)
+            } else {
+                LiveActivityService.stop(context)
+            }
+        }
+    }
+
+    return LiveActivityToggle(
+        enabled = enabled,
+        showPermissions = permissionsRequested && missing != null,
+        permissions = permissions,
+        requestPermission = requestPermission,
+        onToggle = onToggle
+    )
+}
+
+@Composable
+private fun LiveActivitySwitch(liveActivity: LiveActivityToggle) {
+    Row(
+        modifier = Modifier.padding(end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.live_activity),
+            style = MaterialTheme.typography.labelLarge,
+            maxLines = 1
+        )
+        AppSwitch(checked = liveActivity.enabled, onCheckedChange = liveActivity.onToggle)
     }
 }
