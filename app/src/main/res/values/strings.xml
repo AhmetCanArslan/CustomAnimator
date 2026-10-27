@@ -1903,4 +1903,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="search_app_hint">Search features and settings</string>
     <string name="search_app_empty">No results for “%1$s”</string>
     <string name="search_app_empty_hint">Try a different or shorter word.</string>
+    <string name="live_activity">Live</string>
+    <string name="live_activity_channel_desc">Shows while the live activity overlay is running</string>
+    <string name="live_activity_notif_title">Live activity running</string>
+    <string name="live_activity_permissions">Live activity permissions</string>
+    <string name="live_activity_permission_needed">Live activity needs Shizuku and permission to display over other apps.</string>
+    <string name="live_activity_value" translatable="false">%1$s\n%2$s</string>
 </resources>
