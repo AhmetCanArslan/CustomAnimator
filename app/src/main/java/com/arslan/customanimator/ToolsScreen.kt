@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
+import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RestartAlt
@@ -71,6 +72,7 @@ fun ToolsScreenContent(
     onNavigateToShortcuts: () -> Unit,
     onNavigateToIconChanger: () -> Unit,
     onNavigateToApkExtractor: () -> Unit,
+    onNavigateToActivityManager: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -167,6 +169,14 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.apk_extractor),
                         description = stringResource(R.string.apk_extractor_desc),
                         onClick = onNavigateToApkExtractor
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Layers,
+                        title = stringResource(R.string.activity_manager),
+                        description = stringResource(R.string.activity_manager_desc),
+                        onClick = onNavigateToActivityManager
                     )
                 },
                 {

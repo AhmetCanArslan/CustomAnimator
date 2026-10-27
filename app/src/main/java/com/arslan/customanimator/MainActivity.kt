@@ -975,6 +975,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },
             onNavigateToIconChanger = { currentScreen = HomeScreen.ICON_CHANGER },
             onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },
+            onNavigateToActivityManager = { currentScreen = HomeScreen.ACTIVITY_MANAGER },
             onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = toolsListState
         )
