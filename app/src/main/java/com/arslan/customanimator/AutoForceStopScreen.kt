@@ -1,6 +1,7 @@
 package com.arslan.customanimator
 
 import android.graphics.drawable.Drawable
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -184,9 +185,15 @@ private fun AnimatedSearchIcon(focused: Boolean) {
         animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "searchIconFocus"
     )
+    val tint by animateColorAsState(
+        targetValue = if (focused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "searchIconTint"
+    )
     Icon(
         imageVector = Icons.Filled.Search,
         contentDescription = null,
+        tint = tint,
         modifier = Modifier.graphicsLayer {
             val scale = 1f + progress * SEARCH_ICON_FOCUS_SCALE
             scaleX = scale
