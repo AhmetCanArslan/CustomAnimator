@@ -1811,6 +1811,9 @@
     <string name="apk_extractor">Извлечение APK</string>
     <string name="apk_extractor_desc">Сохраните APK установленного приложения</string>
     <string name="apk_extractor_info">Нажмите на приложение, чтобы сохранить его APK в выбранную выше папку. Для приложений, установленных как разделённые APK, сначала выбирается формат: один файл .apks, только базовый APK или отдельные файлы APK.</string>
+    <string name="activity_manager">Диспетчер активностей</string>
+    <string name="activity_manager_desc">Просмотр и запуск активностей установленных приложений</string>
+    <string name="activity_manager_info">Выберите приложение, чтобы увидеть все объявленные в нём активности. Нажмите на активность, чтобы открыть её, включая экраны, которых нет в лаунчере.</string>
     <string name="apk_extractor_folder_desc">APK сохраняются в Download/CustomAnimator. Выберите другую папку, чтобы сохранять их туда.</string>
     <string name="apk_extractor_folder_default">Использовать %1$s</string>
     <string name="apk_extractor_format_hint">Это приложение установлено как разделённые APK. Выберите, как его сохранить.</string>

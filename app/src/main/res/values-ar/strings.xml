@@ -1849,6 +1849,9 @@
     <string name="apk_extractor">مستخرج APK</string>
     <string name="apk_extractor_desc">احفظ ملف APK لتطبيق مثبت</string>
     <string name="apk_extractor_info">انقر على تطبيق لحفظ ملف APK الخاص به في المجلد المحدد أعلاه. في التطبيقات المثبتة كملفات APK مقسّمة تختار الصيغة أولاً: ملف .apks واحد، أو ملف APK الأساسي فقط، أو ملفات APK منفصلة.</string>
+    <string name="activity_manager">مدير الأنشطة</string>
+    <string name="activity_manager_desc">تصفّح أنشطة التطبيقات المثبتة وافتحها</string>
+    <string name="activity_manager_info">اختر تطبيقًا لعرض كل الأنشطة التي يعلن عنها. انقر على نشاط لفتحه، بما في ذلك الشاشات التي لا يعرضها التطبيق في المشغّل.</string>
     <string name="apk_extractor_folder_desc">تُحفظ ملفات APK في Download/CustomAnimator. اختر مجلدًا آخر لحفظها فيه بدلاً من ذلك.</string>
     <string name="apk_extractor_folder_default">استخدام %1$s</string>
     <string name="apk_extractor_format_hint">هذا التطبيق مثبت كملفات APK مقسّمة. اختر طريقة حفظه.</string>

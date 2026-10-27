@@ -1829,6 +1829,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="apk_extractor">Estrattore APK</string>
     <string name="apk_extractor_desc">Salva l’APK di un’app installata</string>
     <string name="apk_extractor_info">Tocca un’app per salvare il suo APK nella cartella scelta sopra. Per le app installate come APK divisi scegli prima il formato: un unico file .apks, solo l’APK di base o file APK separati.</string>
+    <string name="activity_manager">Gestore attività</string>
+    <string name="activity_manager_desc">Sfoglia e apri le attività delle app installate</string>
+    <string name="activity_manager_info">Scegli un’app per vedere tutte le attività che dichiara. Tocca un’attività per aprirla, comprese le schermate che l’app non mostra nel launcher.</string>
     <string name="apk_extractor_folder_desc">Gli APK vengono salvati in Download/CustomAnimator. Scegli un’altra cartella per salvarli lì.</string>
     <string name="apk_extractor_folder_default">Usa %1$s</string>
     <string name="apk_extractor_format_hint">Questa app è installata come APK divisi. Scegli come salvarla.</string>

@@ -1809,6 +1809,9 @@ Durasi Animator: %3$.2f</string>
     <string name="apk_extractor">Pengekstrak APK</string>
     <string name="apk_extractor_desc">Simpan APK dari aplikasi terinstal</string>
     <string name="apk_extractor_info">Ketuk aplikasi untuk menyimpan APK-nya ke folder yang dipilih di atas. Untuk aplikasi yang diinstal sebagai APK terpisah, pilih formatnya dulu: satu file .apks, hanya APK dasar, atau file APK terpisah.</string>
+    <string name="activity_manager">Pengelola Aktivitas</string>
+    <string name="activity_manager_desc">Jelajahi dan buka aktivitas aplikasi yang terinstal</string>
+    <string name="activity_manager_info">Pilih aplikasi untuk melihat semua aktivitas yang dideklarasikannya. Ketuk aktivitas untuk membukanya, termasuk layar yang tidak ditampilkan aplikasi di peluncur.</string>
     <string name="apk_extractor_folder_desc">APK disimpan ke Download/CustomAnimator. Pilih folder lain untuk menyimpannya di sana.</string>
     <string name="apk_extractor_folder_default">Gunakan %1$s</string>
     <string name="apk_extractor_format_hint">Aplikasi ini diinstal sebagai APK terpisah. Pilih cara menyimpannya.</string>
