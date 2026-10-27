@@ -108,6 +108,7 @@ fun LoggingSection(
     var ignoreTarget by remember { mutableStateOf<LogEntry?>(null) }
     var deleteTarget by remember { mutableStateOf<LogEntry?>(null) }
     var createRuleTarget by remember { mutableStateOf<LogEntry?>(null) }
+    var detailTarget by remember { mutableStateOf<LogEntry?>(null) }
     var showOverflowMenu by remember { mutableStateOf(false) }
     var showSettingsDialog by remember { mutableStateOf(false) }
     var isSearchVisible by remember { mutableStateOf(false) }
@@ -246,6 +247,7 @@ fun LoggingSection(
                             onIgnoreClick = { ignoreTarget = entry },
                             onDeleteClick = { deleteTarget = entry },
                             onCreateRuleClick = { createRuleTarget = entry },
+                            onClick = { detailTarget = entry },
                             modifier = Modifier.animateItem()
                         )
                     }
@@ -281,6 +283,10 @@ fun LoggingSection(
                 }
             }
         )
+    }
+
+    detailTarget?.let { entry ->
+        LogDetailDialog(entry = entry, onDismiss = { detailTarget = null })
     }
 
     deleteTarget?.let { entry ->
@@ -526,11 +532,13 @@ private fun LogItem(
     onIgnoreClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onCreateRuleClick: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     Card(
+        onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
