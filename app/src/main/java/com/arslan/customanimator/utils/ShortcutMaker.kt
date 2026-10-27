@@ -60,6 +60,15 @@ object ShortcutMaker {
             .sortedWith(compareBy({ it.needsShizuku }, { it.name.substringAfterLast('.').lowercase() }))
     }
 
+    fun activityEntry(id: String, packageName: String, activity: ShortcutActivityInfo) = ShortcutEntry(
+        id = id,
+        type = ShortcutType.ACTIVITY,
+        label = activity.label,
+        packageName = packageName,
+        activityName = activity.name,
+        viaShizuku = activity.needsShizuku
+    )
+
     fun describeFile(context: Context, uri: Uri): ShortcutFileInfo {
         val name = try {
             context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->

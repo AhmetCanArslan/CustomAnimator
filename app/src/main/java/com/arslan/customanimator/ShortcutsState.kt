@@ -168,14 +168,7 @@ internal class ShortcutsState(
     }
 
     fun onActivityPicked(app: InstalledAppInfo, activity: ShortcutActivityInfo) {
-        val entry = ShortcutEntry(
-            id = newId(),
-            type = ShortcutType.ACTIVITY,
-            label = activity.label,
-            packageName = app.packageName,
-            activityName = activity.name,
-            viaShizuku = activity.needsShizuku
-        )
+        val entry = ShortcutMaker.activityEntry(newId(), app.packageName, activity)
         present(entry) { iconOf(ShortcutMaker.activityIcon(context, app.packageName, activity.name), entry) }
     }
 
