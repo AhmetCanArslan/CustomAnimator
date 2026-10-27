@@ -223,35 +223,53 @@ private fun ActivityPickerSheet(
     onDismiss: () -> Unit
 ) {
     var query by remember { mutableStateOf("") }
-    val filtered = remember(step.activities, query) {
-        step.activities.filter { it.name.contains(query, ignoreCase = true) || it.label.contains(query, ignoreCase = true) }
-    }
     PickerSheet(
         title = step.app.label,
         subtitle = stringResource(R.string.shortcut_activity_note),
         onDismiss = onDismiss
     ) {
-        item {
-            AppSearchBar(
-                searchQuery = query,
-                onSearchQueryChange = { query = it },
-                showFilterCheckbox = false,
-                placeholder = stringResource(R.string.shortcut_search_activities)
-            )
-        }
-        if (filtered.isEmpty()) {
-            item { PickerMessage(stringResource(R.string.shortcut_no_activities)) }
-        }
-        items(filtered, key = { it.name }) { activity ->
-            PickerRow(
-                title = activity.label,
-                subtitle = activity.name.substringAfterLast('.'),
-                enabled = activity.isLaunchable(hasShizukuPermission, isRoot),
-                onClick = { onPick(activity) },
-                trailing = { ActivityAccessPill(activity) }
-            ) {
-                AppIcon(packageName = step.app.packageName, modifier = Modifier.size(40.dp))
-            }
+        activityList(
+            app = step.app,
+            activities = step.activities,
+            query = query,
+            onQueryChange = { query = it },
+            hasShizukuPermission = hasShizukuPermission,
+            isRoot = isRoot,
+            onPick = onPick
+        )
+    }
+}
+
+internal fun LazyListScope.activityList(
+    app: InstalledAppInfo,
+    activities: List<ShortcutActivityInfo>,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    hasShizukuPermission: Boolean,
+    isRoot: Boolean,
+    onPick: (ShortcutActivityInfo) -> Unit
+) {
+    val filtered = activities.filter { it.name.contains(query, ignoreCase = true) || it.label.contains(query, ignoreCase = true) }
+    item(key = "activity_search") {
+        AppSearchBar(
+            searchQuery = query,
+            onSearchQueryChange = onQueryChange,
+            showFilterCheckbox = false,
+            placeholder = stringResource(R.string.shortcut_search_activities)
+        )
+    }
+    if (filtered.isEmpty()) {
+        item(key = "activity_empty") { PickerMessage(stringResource(R.string.shortcut_no_activities)) }
+    }
+    items(filtered, key = { it.name }) { activity ->
+        PickerRow(
+            title = activity.label,
+            subtitle = activity.name.substringAfterLast('.'),
+            enabled = activity.isLaunchable(hasShizukuPermission, isRoot),
+            onClick = { onPick(activity) },
+            trailing = { ActivityAccessPill(activity) }
+        ) {
+            AppIcon(packageName = app.packageName, modifier = Modifier.size(40.dp))
         }
     }
 }
