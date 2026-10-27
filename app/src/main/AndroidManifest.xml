@@ -111,6 +111,15 @@
         </service>
 
         <service
+            android:name=".service.LiveActivityService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Shows the name of the activity currently on screen over other apps (dev tool)" />
+        </service>
+
+        <service
             android:name=".service.ScreenshotWatcherService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
