@@ -37,7 +37,7 @@ class LiveActivityService : Service() {
 
     companion object {
         private const val CHANNEL_ID = "live_activity_channel"
-        private const val NOTIF_ID = 4203
+        private const val NOTIF_ID = 4204
         private const val POLL_INTERVAL_MS = 1000L
         private const val MAX_WIDTH_FRACTION = 0.6f
 
