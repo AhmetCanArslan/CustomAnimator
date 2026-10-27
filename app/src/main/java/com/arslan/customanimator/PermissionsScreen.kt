@@ -131,6 +131,8 @@ fun notifyRequiredPermissions(context: Context): List<AppPermission> {
     return NOTIFY_BASE_REQUIRED + extras
 }
 
+val LIVE_ACTIVITY_PERMISSIONS = listOf(AppPermission.SHIZUKU, AppPermission.OVERLAY)
+
 val SCREENSHOT_PERMISSIONS = listOf(
     AppPermission.SCREENSHOT_FOLDER,
     AppPermission.POST_NOTIFICATIONS,
