@@ -265,7 +265,7 @@ fun BannerAdView() {
                 .fillMaxWidth()
                 .navigationBarsPadding(),
             factory = { context ->
-                val adSize = AdSize.getLargeAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
+                val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
                 AdView(context).apply {
                     setAdSize(adSize)
                     adUnitId = BANNER_AD_UNIT_ID
