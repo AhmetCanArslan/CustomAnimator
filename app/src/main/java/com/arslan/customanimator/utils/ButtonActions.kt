@@ -153,9 +153,6 @@ object ButtonActions {
         }
     }
 
-    private const val FOREGROUND_PACKAGE_SCRIPT =
-        "dumpsys activity activities | grep -m1 topResumedActivity | sed -E 's/.* ([A-Za-z0-9_.]+)\\/.*/\\1/'"
-
     fun quickEntry(context: Context, quick: Quick): ShortcutEntry = ShortcutEntry(
         id = UUID.randomUUID().toString(),
         type = ShortcutType.QUICK,
@@ -202,8 +199,7 @@ object ButtonActions {
         ShizukuHelper.executeShellCommand(arrayOf("am", "start", "--user", "current", "-a", action))
 
     private fun forceStopForegroundApp(): Boolean {
-        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", FOREGROUND_PACKAGE_SCRIPT))
-        val packageName = result.output.trim().takeIf { result.isSuccess && it.isNotEmpty() } ?: return false
+        val packageName = LiveActivityManager.resumedActivity()?.packageName ?: return false
         return DeveloperOptionsManager.forceStopApp(packageName)
     }
 
