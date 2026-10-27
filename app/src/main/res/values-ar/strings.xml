@@ -1902,4 +1902,9 @@
     <string name="search_app_hint">ابحث في الميزات والإعدادات</string>
     <string name="search_app_empty">لا توجد نتائج لـ “%1$s”</string>
     <string name="search_app_empty_hint">جرّب كلمة مختلفة أو أقصر.</string>
+    <string name="live_activity">مباشر</string>
+    <string name="live_activity_channel_desc">يظهر أثناء تشغيل تراكب النشاط المباشر</string>
+    <string name="live_activity_notif_title">النشاط المباشر يعمل</string>
+    <string name="live_activity_permissions">أذونات النشاط المباشر</string>
+    <string name="live_activity_permission_needed">يحتاج النشاط المباشر إلى Shizuku وإذن العرض فوق التطبيقات الأخرى.</string>
 </resources>

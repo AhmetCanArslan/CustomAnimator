@@ -1870,4 +1870,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="search_app_hint">Özellik ve ayar ara</string>
     <string name="search_app_empty">“%1$s” için sonuç yok</string>
     <string name="search_app_empty_hint">Farklı ya da daha kısa bir kelime deneyin.</string>
+    <string name="live_activity">Canlı</string>
+    <string name="live_activity_channel_desc">Canlı aktivite katmanı çalışırken görünür</string>
+    <string name="live_activity_notif_title">Canlı aktivite çalışıyor</string>
+    <string name="live_activity_permissions">Canlı aktivite izinleri</string>
+    <string name="live_activity_permission_needed">Canlı aktivite için Shizuku ve diğer uygulamaların üzerinde gösterme izni gerekir.</string>
 </resources>

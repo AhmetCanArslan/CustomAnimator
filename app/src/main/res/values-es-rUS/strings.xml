@@ -1862,4 +1862,9 @@ Duración del Animador: %3$.2f</string>
     <string name="search_app_hint">Buscar funciones y ajustes</string>
     <string name="search_app_empty">No hay resultados para “%1$s”</string>
     <string name="search_app_empty_hint">Prueba con otra palabra o una más corta.</string>
+    <string name="live_activity">En vivo</string>
+    <string name="live_activity_channel_desc">Se muestra mientras el indicador de actividad en vivo está activo</string>
+    <string name="live_activity_notif_title">Actividad en vivo activa</string>
+    <string name="live_activity_permissions">Permisos de actividad en vivo</string>
+    <string name="live_activity_permission_needed">La actividad en vivo necesita Shizuku y permiso para mostrarse sobre otras apps.</string>
 </resources>

@@ -1862,4 +1862,9 @@ Duração do Animador: %3$.2f</string>
     <string name="search_app_hint">Pesquisar recursos e configurações</string>
     <string name="search_app_empty">Nenhum resultado para “%1$s”</string>
     <string name="search_app_empty_hint">Tente outra palavra ou uma mais curta.</string>
+    <string name="live_activity">Ao vivo</string>
+    <string name="live_activity_channel_desc">Aparece enquanto a sobreposição de atividade ao vivo está ativa</string>
+    <string name="live_activity_notif_title">Atividade ao vivo ativa</string>
+    <string name="live_activity_permissions">Permissões da atividade ao vivo</string>
+    <string name="live_activity_permission_needed">A atividade ao vivo precisa do Shizuku e da permissão para sobrepor outros apps.</string>
 </resources>

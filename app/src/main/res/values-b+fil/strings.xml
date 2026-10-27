@@ -1862,4 +1862,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="search_app_hint">Maghanap ng feature at setting</string>
     <string name="search_app_empty">Walang resulta para sa “%1$s”</string>
     <string name="search_app_empty_hint">Subukan ang ibang salita o mas maikli.</string>
+    <string name="live_activity">Live</string>
+    <string name="live_activity_channel_desc">Lumalabas habang tumatakbo ang live activity overlay</string>
+    <string name="live_activity_notif_title">Tumatakbo ang live activity</string>
+    <string name="live_activity_permissions">Mga pahintulot ng live activity</string>
+    <string name="live_activity_permission_needed">Kailangan ng live activity ang Shizuku at pahintulot na magpakita sa ibabaw ng ibang app.</string>
 </resources>

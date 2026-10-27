@@ -1862,4 +1862,9 @@ Durasi Animator: %3$.2f</string>
     <string name="search_app_hint">Cari fitur dan setelan</string>
     <string name="search_app_empty">Tidak ada hasil untuk “%1$s”</string>
     <string name="search_app_empty_hint">Coba kata lain atau yang lebih pendek.</string>
+    <string name="live_activity">Langsung</string>
+    <string name="live_activity_channel_desc">Muncul saat overlay aktivitas langsung sedang berjalan</string>
+    <string name="live_activity_notif_title">Aktivitas langsung berjalan</string>
+    <string name="live_activity_permissions">Izin aktivitas langsung</string>
+    <string name="live_activity_permission_needed">Aktivitas langsung memerlukan Shizuku dan izin tampil di atas aplikasi lain.</string>
 </resources>

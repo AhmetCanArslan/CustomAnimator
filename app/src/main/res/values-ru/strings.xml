@@ -1864,4 +1864,9 @@
     <string name="search_app_hint">Поиск функций и настроек</string>
     <string name="search_app_empty">Ничего не найдено по запросу «%1$s»</string>
     <string name="search_app_empty_hint">Попробуйте другое или более короткое слово.</string>
+    <string name="live_activity">Live</string>
+    <string name="live_activity_channel_desc">Отображается, пока работает наложение текущей активности</string>
+    <string name="live_activity_notif_title">Текущая активность отображается</string>
+    <string name="live_activity_permissions">Разрешения для текущей активности</string>
+    <string name="live_activity_permission_needed">Для показа текущей активности нужны Shizuku и разрешение на показ поверх других приложений.</string>
 </resources>

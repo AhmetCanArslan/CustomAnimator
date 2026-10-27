@@ -1882,4 +1882,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="search_app_hint">Cerca funzioni e impostazioni</string>
     <string name="search_app_empty">Nessun risultato per “%1$s”</string>
     <string name="search_app_empty_hint">Prova una parola diversa o più breve.</string>
+    <string name="live_activity">Live</string>
+    <string name="live_activity_channel_desc">Visibile mentre l\'overlay dell\'attività live è attivo</string>
+    <string name="live_activity_notif_title">Attività live attiva</string>
+    <string name="live_activity_permissions">Autorizzazioni attività live</string>
+    <string name="live_activity_permission_needed">L\'attività live richiede Shizuku e l\'autorizzazione a mostrarsi sopra le altre app.</string>
 </resources>
