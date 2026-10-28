@@ -1860,6 +1860,25 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="apk_extractor_format_separate_desc">Every split as its own .apk inside a folder named after the app.</string>
     <string name="apk_extractor_saving">Saving…</string>
     <string name="apk_extractor_failed">Could not save the APK.</string>
+    <string name="apk_installer">APK Installer</string>
+    <string name="apk_installer_desc">Install APK, APKS and XAPK files through Shizuku</string>
+    <string name="apk_installer_info">Choose an .apk file, several split .apk files, or an .apks or .xapk bundle. It is installed through Shizuku, so no install permission is needed. Tap the app card to choose other files.</string>
+    <string name="apk_installer_choose">Choose files</string>
+    <string name="apk_installer_reading">Reading files…</string>
+    <string name="apk_installer_invalid">These files are not a valid APK or APK bundle.</string>
+    <string name="apk_installer_installed_version">Installed: %1$s</string>
+    <string name="apk_installer_options">Install options</string>
+    <string name="apk_installer_grant">Grant all permissions</string>
+    <string name="apk_installer_grant_desc">Grant every runtime permission the app asks for</string>
+    <string name="apk_installer_downgrade">Allow downgrade</string>
+    <string name="apk_installer_downgrade_desc">Install an older version over a newer one. Android allows this only for debuggable apps or on debuggable builds.</string>
+    <string name="apk_installer_play_store">Install as Google Play</string>
+    <string name="apk_installer_play_store_desc">Record Google Play as the installer, for apps that check where they came from</string>
+    <string name="apk_installer_low_sdk">Allow old apps</string>
+    <string name="apk_installer_low_sdk_desc">Install apps that target an Android version this device blocks by default</string>
+    <string name="apk_installer_install">Install</string>
+    <string name="apk_installer_done">%1$s installed.</string>
+    <string name="apk_installer_failed">Installation failed: %1$s</string>
     <string name="apk_extractor_row" translatable="false">%1$s · %2$s</string>
     <string name="apk_extractor_row_split" translatable="false">%1$s · %2$s · Split APK</string>
     <string name="whatsapp_cleaner">WhatsApp Cleaner</string>
