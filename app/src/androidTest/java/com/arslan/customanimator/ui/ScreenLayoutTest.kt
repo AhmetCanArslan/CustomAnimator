@@ -8,6 +8,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.arslan.customanimator.AlarmRevealerScreen
 import com.arslan.customanimator.ActivityManagerScreen
 import com.arslan.customanimator.ApkExtractorScreen
+import com.arslan.customanimator.ApkInstallerScreen
 import com.arslan.customanimator.AppThreadingScreen
 import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
@@ -116,6 +117,11 @@ class ScreenLayoutTest {
     @Test
     fun apkExtractorScreenFitsSmallPhones() = screenFits(R.string.apk_extractor) {
         ApkExtractorScreen(onBack = {})
+    }
+
+    @Test
+    fun apkInstallerScreenFitsSmallPhones() = screenFits(R.string.apk_installer) {
+        ApkInstallerScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test
