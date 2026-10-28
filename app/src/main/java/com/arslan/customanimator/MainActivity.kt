@@ -223,7 +223,7 @@ enum class HomeScreen {
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
-    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, ACTIVITY_MANAGER, COMPILE_BOOSTER
+    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, APK_INSTALLER, ACTIVITY_MANAGER, COMPILE_BOOSTER
 }
 
 internal fun HomeTab.labelRes(): Int = when (this) {
@@ -283,6 +283,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.BUTTON_REMAPPER to HomeTab.TOOLS,
     HomeScreen.ICON_CHANGER to HomeTab.TOOLS,
     HomeScreen.APK_EXTRACTOR to HomeTab.TOOLS,
+    HomeScreen.APK_INSTALLER to HomeTab.TOOLS,
     HomeScreen.ACTIVITY_MANAGER to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
@@ -395,6 +396,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val buttonRemapperListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val iconChangerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val apkExtractorListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val apkInstallerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val activityManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -740,6 +742,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         ApkExtractorScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = apkExtractorListState
+        )
+    } else if (targetScreen == HomeScreen.APK_INSTALLER) {
+        ApkInstallerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = apkInstallerListState
         )
     } else if (targetScreen == HomeScreen.ACTIVITY_MANAGER) {
         ActivityManagerScreen(
