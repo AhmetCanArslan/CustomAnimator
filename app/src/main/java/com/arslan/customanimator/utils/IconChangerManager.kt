@@ -38,11 +38,9 @@ object IconChangerManager {
     private const val STAGED_ORIGINAL = "original"
     private const val EXPORT_SUFFIX = "-icon"
     private const val APK_EXTENSION = ".apk"
-    private const val SHELL_SUCCESS = "Success"
     private const val LAYER_PX = 432
     private const val VISIBLE_FRACTION = 72f / 108f
     private const val PNG_QUALITY = 100
-    private val SESSION_ID = Regex("\\[(\\d+)]")
 
     const val MIN_SCALE = 0.5f
     const val MAX_SCALE = 1f
@@ -52,8 +50,6 @@ object IconChangerManager {
     enum class Step { REBUILDING, INSTALLING }
 
     enum class Outcome { DONE, BUILD_FAILED, NO_SHIZUKU, INSTALL_BLOCKED, ORIGINAL_RESTORED, APP_LOST }
-
-    private class StagedApk(val path: String, val size: Long)
 
     private class SigningIdentity(val key: PrivateKey, val certificate: Certificate)
 
@@ -139,46 +135,17 @@ object IconChangerManager {
     }
 
     private fun install(packageName: String, originals: List<File>, patched: List<File>, keepsData: Boolean): Outcome {
-        val stagedPatched = stage(patched, STAGED_PATCHED) ?: return Outcome.INSTALL_BLOCKED
-        if (keepsData) return if (installSession(stagedPatched)) Outcome.DONE else Outcome.INSTALL_BLOCKED
-        val stagedOriginals = stage(originals, STAGED_ORIGINAL) ?: return Outcome.INSTALL_BLOCKED
-        if (!installSession(stagedOriginals)) return Outcome.INSTALL_BLOCKED
+        val stagedPatched = ShellApkInstaller.stage(patched, "$STAGING_DIR/$STAGED_PATCHED") ?: return Outcome.INSTALL_BLOCKED
+        if (keepsData) return if (installed(stagedPatched)) Outcome.DONE else Outcome.INSTALL_BLOCKED
+        val stagedOriginals = ShellApkInstaller.stage(originals, "$STAGING_DIR/$STAGED_ORIGINAL") ?: return Outcome.INSTALL_BLOCKED
+        if (!installed(stagedOriginals)) return Outcome.INSTALL_BLOCKED
         if (!ShizukuHelper.hasShizukuPermission()) return Outcome.NO_SHIZUKU
-        if (!succeeded(arrayOf("pm", "uninstall", packageName))) return Outcome.INSTALL_BLOCKED
-        if (installSession(stagedPatched)) return Outcome.DONE
-        return if (installSession(stagedOriginals)) Outcome.ORIGINAL_RESTORED else Outcome.APP_LOST
+        if (!ShellApkInstaller.run(arrayOf("pm", "uninstall", packageName)).success) return Outcome.INSTALL_BLOCKED
+        if (installed(stagedPatched)) return Outcome.DONE
+        return if (installed(stagedOriginals)) Outcome.ORIGINAL_RESTORED else Outcome.APP_LOST
     }
 
-    private fun stage(files: List<File>, name: String): List<StagedApk>? {
-        val directory = "$STAGING_DIR/$name"
-        if (!ShizukuHelper.executeShellCommand(arrayOf("mkdir", "-p", directory))) return null
-        return files.mapIndexed { index, file ->
-            val target = "$directory/$index$APK_EXTENSION"
-            if (!ShizukuHelper.executeShellCommand(arrayOf("cp", file.absolutePath, target))) return null
-            StagedApk(target, file.length())
-        }
-    }
-
-    private fun installSession(apks: List<StagedApk>): Boolean {
-        val created = ShizukuHelper.executeShellCommandWithOutput(arrayOf("pm", "install-create", "-r"))
-        if (!created.isSuccess) return false
-        val session = SESSION_ID.find(created.output)?.groupValues?.get(1) ?: return false
-        apks.forEachIndexed { index, apk ->
-            val written = succeeded(
-                arrayOf("pm", "install-write", "-S", apk.size.toString(), session, "$index$APK_EXTENSION", apk.path)
-            )
-            if (!written) {
-                ShizukuHelper.executeShellCommand(arrayOf("pm", "install-abandon", session))
-                return false
-            }
-        }
-        return succeeded(arrayOf("pm", "install-commit", session))
-    }
-
-    private fun succeeded(command: Array<String>): Boolean {
-        val result = ShizukuHelper.executeShellCommandWithOutput(command)
-        return result.isSuccess && result.output.contains(SHELL_SUCCESS)
-    }
+    private fun installed(apks: List<ShellApkInstaller.StagedApk>): Boolean = ShellApkInstaller.install(apks).success
 
     private fun export(packageName: String, patched: List<File>): String? {
         val root = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), InstalledAppsProvider.EXPORT_DIR)
