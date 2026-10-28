@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.AppShortcut
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.Unarchive
+import androidx.compose.material.icons.filled.InstallMobile
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.Password
@@ -72,6 +73,7 @@ fun ToolsScreenContent(
     onNavigateToShortcuts: () -> Unit,
     onNavigateToIconChanger: () -> Unit,
     onNavigateToApkExtractor: () -> Unit,
+    onNavigateToApkInstaller: () -> Unit,
     onNavigateToActivityManager: () -> Unit,
     onNavigateToAutoActions: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -169,6 +171,14 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.apk_extractor),
                         description = stringResource(R.string.apk_extractor_desc),
                         onClick = onNavigateToApkExtractor
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.InstallMobile,
+                        title = stringResource(R.string.apk_installer),
+                        description = stringResource(R.string.apk_installer_desc),
+                        onClick = onNavigateToApkInstaller
                     )
                 },
                 {

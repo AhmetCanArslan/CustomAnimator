@@ -173,6 +173,7 @@ class ScreenLayoutTest {
             onNavigateToShortcuts = {},
             onNavigateToIconChanger = {},
             onNavigateToApkExtractor = {},
+            onNavigateToApkInstaller = {},
             onNavigateToActivityManager = {},
             onNavigateToAutoActions = {},
             onNavigateToWifiPasswords = {},
