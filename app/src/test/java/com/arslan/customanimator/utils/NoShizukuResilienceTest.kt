@@ -156,6 +156,24 @@ class NoShizukuResilienceTest {
     }
 
     @Test
+    fun apkInstallerRefusesToInstallWithoutShizuku() {
+        val app = com.arslan.customanimator.data.ApkInstallerPackage(
+            packageName = "com.example.app",
+            label = "Example",
+            versionName = "1.0",
+            installedVersion = null,
+            sizeBytes = 0,
+            icon = null,
+            apks = emptyList()
+        )
+
+        val result = ApkInstallerManager.install(context, app, ApkInstallerManager.Option.entries.toSet())
+
+        assertEquals(ApkInstallerManager.Outcome.NO_SHIZUKU, result.outcome)
+        assertEquals(ApkInstallerManager.Outcome.NO_SHIZUKU, ApkInstallerManager.installBlocker(context))
+    }
+
+    @Test
     fun debloaterNeverTouchesProtectedPackages() {
         val blocked = DebloatProtection.protectedPackages(context)
         assertTrue(blocked.contains(context.packageName))
