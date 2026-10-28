@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
@@ -252,7 +253,6 @@ internal fun HomeTab.icon(): ImageVector = when (this) {
 
 private val NOTIFY_SCREENS = setOf(
     HomeScreen.NOTIFY_RULES,
-    HomeScreen.NOTIFY_LOGGING,
     HomeScreen.NOTIFY_IGNORED,
     HomeScreen.NOTIFY_ADD_EDIT_RULE,
     HomeScreen.NOTIFY_CREATE_PATTERN
@@ -299,6 +299,7 @@ private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
 private val DEFAULT_RETURN_SCREENS = mapOf(
     HomeScreen.SETUP_GUIDE to HomeScreen.MAIN,
     HomeScreen.PROFILES to HomeScreen.MAIN,
+    HomeScreen.NOTIFY_LOGGING to HomeScreen.NOTIFY_HOME,
     HomeScreen.PERMISSIONS to HomeScreen.SETTINGS
 )
 
@@ -868,7 +869,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.NOTIFY_LOGGING) {
         LoggingSection(
-            onNavigateBack = notifyBack,
+            onNavigateBack = returnFromCurrent,
             onNavigateToIgnored = {
                 notifyIgnoredReturnScreen = HomeScreen.NOTIFY_LOGGING
                 currentScreen = HomeScreen.NOTIFY_IGNORED
@@ -900,7 +901,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     notifyIgnoredReturnScreen = HomeScreen.NOTIFY_HOME
                     currentScreen = HomeScreen.NOTIFY_IGNORED
                 },
-                onNavigateToHistory = { currentScreen = HomeScreen.NOTIFY_LOGGING }
+                onNavigateToHistory = { openRemembering(HomeScreen.NOTIFY_LOGGING) }
             )
         }
     } else if (targetScreen == HomeScreen.AUTO_ACTIONS) {
@@ -921,6 +922,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 selectedTab = selectedTab,
                 onSelectTab = { selectedTab = it },
                 onOpenNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
+                onOpenNotifyHistory = { openRemembering(HomeScreen.NOTIFY_LOGGING) },
                 onOpenProfiles = {
                     profilesRefreshToken++
                     openRemembering(HomeScreen.PROFILES)
@@ -2351,6 +2353,7 @@ private fun HomeTopBar(
     selectedTab: HomeTab,
     onSelectTab: (HomeTab) -> Unit,
     onOpenNotify: () -> Unit,
+    onOpenNotifyHistory: () -> Unit,
     onOpenProfiles: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenSearch: () -> Unit,
@@ -2380,6 +2383,7 @@ private fun HomeTopBar(
                 }
                 HomeOverflowMenu(
                     onOpenNotify = onOpenNotify,
+                    onOpenNotifyHistory = onOpenNotifyHistory,
                     onOpenProfiles = onOpenProfiles,
                     onOpenSettings = onOpenSettings
                 )
@@ -2397,6 +2401,7 @@ private fun HomeTopBar(
 @Composable
 private fun HomeOverflowMenu(
     onOpenNotify: () -> Unit,
+    onOpenNotifyHistory: () -> Unit,
     onOpenProfiles: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
@@ -2414,6 +2419,7 @@ private fun HomeOverflowMenu(
         }
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             IconMenuItem(Icons.Default.Notifications, R.string.pn_title) { select(onOpenNotify) }
+            IconMenuItem(Icons.Default.History, R.string.pn_logs_title) { select(onOpenNotifyHistory) }
             IconMenuItem(Icons.Default.AccountCircle, R.string.profiles_title) { select(onOpenProfiles) }
             IconMenuItem(Icons.Default.Settings, R.string.settings) { select(onOpenSettings) }
         }
