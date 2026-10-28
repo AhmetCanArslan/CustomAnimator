@@ -4,6 +4,7 @@ import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.provider.Settings
@@ -18,6 +19,19 @@ object InstalledAppsProvider {
     fun sourceApks(context: Context, packageName: String): List<File> {
         val info = context.packageManager.getApplicationInfo(packageName, 0)
         return (listOf(info.sourceDir) + info.splitSourceDirs.orEmpty()).map(::File)
+    }
+
+    fun archiveInfo(context: Context, apkPath: String): PackageInfo? {
+        val archive = try {
+            context.packageManager.getPackageArchiveInfo(apkPath, 0)
+        } catch (e: Exception) {
+            null
+        } ?: return null
+        archive.applicationInfo?.let {
+            it.sourceDir = apkPath
+            it.publicSourceDir = apkPath
+        }
+        return archive
     }
 
     fun getUnsafeToKillPackages(context: Context): Set<String> {

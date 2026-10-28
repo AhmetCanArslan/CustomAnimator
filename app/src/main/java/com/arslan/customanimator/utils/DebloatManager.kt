@@ -3,7 +3,6 @@ package com.arslan.customanimator.utils
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Environment
@@ -87,7 +86,7 @@ object DebloatManager {
 
     private fun archiveIcon(context: Context, app: DebloatAppInfo): Drawable? {
         val apkPath = app.apkPath ?: return null
-        val appInfo = archiveInfo(context, apkPath)?.applicationInfo ?: return null
+        val appInfo = InstalledAppsProvider.archiveInfo(context, apkPath)?.applicationInfo ?: return null
         return try {
             appInfo.loadIcon(context.packageManager)
         } catch (e: Exception) {
@@ -307,26 +306,13 @@ object DebloatManager {
 
     private fun archiveMeta(context: Context, apkPath: String): ArchiveMeta? {
         archiveMetaCache[apkPath]?.let { return it }
-        val archive = archiveInfo(context, apkPath) ?: return null
+        val archive = InstalledAppsProvider.archiveInfo(context, apkPath) ?: return null
         val appInfo = archive.applicationInfo
         return ArchiveMeta(
             label = appInfo?.let { loadLabel(context.packageManager, it) },
             flags = appInfo?.flags ?: 0,
             sharedUserId = archive.sharedUserId
         ).also { archiveMetaCache[apkPath] = it }
-    }
-
-    private fun archiveInfo(context: Context, apkPath: String): PackageInfo? {
-        val archive = try {
-            context.packageManager.getPackageArchiveInfo(apkPath, 0)
-        } catch (e: Exception) {
-            null
-        } ?: return null
-        archive.applicationInfo?.let {
-            it.sourceDir = apkPath
-            it.publicSourceDir = apkPath
-        }
-        return archive
     }
 
     private fun stateOf(packageName: String, installed: Set<String>, disabled: Set<String>): DebloatState {
