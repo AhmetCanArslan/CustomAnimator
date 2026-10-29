@@ -17,7 +17,7 @@ class ProfileManager(context: Context) {
 
     fun getAllProfiles(): List<Profile> {
         return try {
-            val array = getArray()
+            val array = sharedPreferences.getJsonArray(profilesKey)
             val list = mutableListOf<Profile>()
             for (i in 0 until array.length()) {
                 list.add(fromJson(array.getJSONObject(i)))
@@ -35,7 +35,7 @@ class ProfileManager(context: Context) {
 
     fun saveProfile(profile: Profile): Boolean {
         return try {
-            val array = getArray()
+            val array = sharedPreferences.getJsonArray(profilesKey)
             var index = -1
             for (i in 0 until array.length()) {
                 if (array.getJSONObject(i).getString("id") == profile.id) {
@@ -57,7 +57,7 @@ class ProfileManager(context: Context) {
 
     fun deleteProfile(id: String): Boolean {
         return try {
-            val array = getArray()
+            val array = sharedPreferences.getJsonArray(profilesKey)
             val remaining = JSONArray()
             var found = false
             for (i in 0 until array.length()) {
@@ -228,14 +228,6 @@ class ProfileManager(context: Context) {
             map[key] = json.optString(key)
         }
         return map
-    }
-
-    private fun getArray(): JSONArray {
-        return try {
-            JSONArray(sharedPreferences.getString(profilesKey, "[]") ?: "[]")
-        } catch (e: Exception) {
-            JSONArray()
-        }
     }
 
     companion object {

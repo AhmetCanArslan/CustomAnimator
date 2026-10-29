@@ -13,7 +13,7 @@ class ToggleTileManager(context: Context) {
 
     fun getTiles(): List<ToggleTile> {
         return try {
-            val array = readArray()
+            val array = sharedPreferences.getJsonArray(TILES_KEY)
             val list = mutableListOf<ToggleTile>()
             for (i in 0 until array.length()) {
                 list.add(fromJson(array.getJSONObject(i)))
@@ -57,14 +57,14 @@ class ToggleTileManager(context: Context) {
             collapsePanel = collapsePanel,
             showToast = showToast
         )
-        val array = readArray()
+        val array = sharedPreferences.getJsonArray(TILES_KEY)
         array.put(toJson(tile))
         persist(array)
         return tile
     }
 
     fun updateTile(tile: ToggleTile): Boolean {
-        val array = readArray()
+        val array = sharedPreferences.getJsonArray(TILES_KEY)
         for (i in 0 until array.length()) {
             if (array.getJSONObject(i).optString("id") == tile.id) {
                 array.put(i, toJson(tile))
@@ -76,7 +76,7 @@ class ToggleTileManager(context: Context) {
     }
 
     fun removeTile(id: String): Boolean {
-        val array = readArray()
+        val array = sharedPreferences.getJsonArray(TILES_KEY)
         val remaining = JSONArray()
         var found = false
         for (i in 0 until array.length()) {
@@ -123,14 +123,6 @@ class ToggleTileManager(context: Context) {
     private fun persist(array: JSONArray) {
         sharedPreferences.edit().putString(TILES_KEY, array.toString()).apply()
         ToggleTileSlots.sync(appContext, this)
-    }
-
-    private fun readArray(): JSONArray {
-        return try {
-            JSONArray(sharedPreferences.getString(TILES_KEY, "[]") ?: "[]")
-        } catch (e: Exception) {
-            JSONArray()
-        }
     }
 
     private fun toJson(tile: ToggleTile): JSONObject = JSONObject().apply {
