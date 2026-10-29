@@ -1285,6 +1285,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="tools_title">Mga tool</string>
     <string name="tools_utilities">Mga utility</string>
     <string name="tools_section_apps">Mga app</string>
+    <string name="tools_section_apk">Mga tool sa APK</string>
     <string name="tools_section_performance">Display at performance</string>
     <string name="tools_section_system_ui">System UI</string>
     <string name="tools_section_connectivity">Koneksyon</string>

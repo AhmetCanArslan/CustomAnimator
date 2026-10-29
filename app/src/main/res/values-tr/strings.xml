@@ -1293,6 +1293,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="tools_title">Araçlar</string>
     <string name="tools_utilities">Yardımcı araçlar</string>
     <string name="tools_section_apps">Uygulamalar</string>
+    <string name="tools_section_apk">APK araçları</string>
     <string name="tools_section_performance">Ekran ve performans</string>
     <string name="tools_section_system_ui">Sistem arayüzü</string>
     <string name="tools_section_connectivity">Bağlantı</string>

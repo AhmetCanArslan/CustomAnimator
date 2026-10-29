@@ -19,6 +19,7 @@
     <string name="tools_title">Tools</string>
     <string name="tools_utilities">Utilities</string>
     <string name="tools_section_apps">Apps</string>
+    <string name="tools_section_apk">APK tools</string>
     <string name="tools_section_performance">Display &amp; performance</string>
     <string name="tools_section_system_ui">System UI</string>
     <string name="tools_section_connectivity">Connectivity</string>

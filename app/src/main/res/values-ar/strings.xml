@@ -1325,6 +1325,7 @@
     <string name="tools_title">الأدوات</string>
     <string name="tools_utilities">أدوات مساعدة</string>
     <string name="tools_section_apps">التطبيقات</string>
+    <string name="tools_section_apk">أدوات APK</string>
     <string name="tools_section_performance">العرض والأداء</string>
     <string name="tools_section_system_ui">واجهة النظام</string>
     <string name="tools_section_connectivity">الاتصال</string>

@@ -159,30 +159,6 @@ fun ToolsScreenContent(
                 },
                 {
                     NavigationRow(
-                        icon = Icons.Filled.AppShortcut,
-                        title = stringResource(R.string.icon_changer),
-                        description = stringResource(R.string.icon_changer_desc),
-                        onClick = onNavigateToIconChanger
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Unarchive,
-                        title = stringResource(R.string.apk_extractor),
-                        description = stringResource(R.string.apk_extractor_desc),
-                        onClick = onNavigateToApkExtractor
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.InstallMobile,
-                        title = stringResource(R.string.apk_installer),
-                        description = stringResource(R.string.apk_installer_desc),
-                        onClick = onNavigateToApkInstaller
-                    )
-                },
-                {
-                    NavigationRow(
                         icon = Icons.Filled.Layers,
                         title = stringResource(R.string.activity_manager),
                         description = stringResource(R.string.activity_manager_desc),
@@ -206,6 +182,34 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.auto_actions),
                         description = stringResource(R.string.more_auto_actions_desc),
                         onClick = onNavigateToAutoActions
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_apk,
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.InstallMobile,
+                        title = stringResource(R.string.apk_installer),
+                        description = stringResource(R.string.apk_installer_desc),
+                        onClick = onNavigateToApkInstaller
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Unarchive,
+                        title = stringResource(R.string.apk_extractor),
+                        description = stringResource(R.string.apk_extractor_desc),
+                        onClick = onNavigateToApkExtractor
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.AppShortcut,
+                        title = stringResource(R.string.icon_changer),
+                        description = stringResource(R.string.icon_changer_desc),
+                        onClick = onNavigateToIconChanger
                     )
                 }
             )

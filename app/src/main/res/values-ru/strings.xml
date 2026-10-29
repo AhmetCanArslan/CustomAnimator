@@ -1287,6 +1287,7 @@
     <string name="tools_title">Инструменты</string>
     <string name="tools_utilities">Утилиты</string>
     <string name="tools_section_apps">Приложения</string>
+    <string name="tools_section_apk">Инструменты APK</string>
     <string name="tools_section_performance">Экран и производительность</string>
     <string name="tools_section_system_ui">Интерфейс системы</string>
     <string name="tools_section_connectivity">Подключения</string>

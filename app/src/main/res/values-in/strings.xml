@@ -1285,6 +1285,7 @@ Durasi Animator: %3$.2f</string>
     <string name="tools_title">Alat</string>
     <string name="tools_utilities">Utilitas</string>
     <string name="tools_section_apps">Aplikasi</string>
+    <string name="tools_section_apk">Alat APK</string>
     <string name="tools_section_performance">Layar &amp; performa</string>
     <string name="tools_section_system_ui">UI sistem</string>
     <string name="tools_section_connectivity">Konektivitas</string>
