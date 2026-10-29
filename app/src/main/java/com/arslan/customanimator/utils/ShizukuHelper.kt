@@ -189,17 +189,19 @@ object ShizukuHelper {
             }
 
             val process = newProcess(command)
-
-            val lines = ArrayDeque<String>()
-            val stderrThread = Thread { drainInto(process.errorStream, lines) }
-            stderrThread.start()
-            drainInto(process.inputStream, lines)
-            stderrThread.join()
-
-            val exitCode = process.waitFor()
-
-            Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
-            ShellResult(exitCode, truncate(lines))
+            try {
+                runCatching { process.outputStream.close() }
+                val lines = ArrayDeque<String>()
+                val stderrThread = Thread { drainInto(process.errorStream, lines) }
+                stderrThread.start()
+                drainInto(process.inputStream, lines)
+                stderrThread.join()
+                val exitCode = process.waitFor()
+                Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
+                ShellResult(exitCode, truncate(lines))
+            } finally {
+                process.destroy()
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed Shizuku shell command: ${command.joinToString(" ")}", e)
             ShellResult(-1, e.message ?: e.javaClass.simpleName)
