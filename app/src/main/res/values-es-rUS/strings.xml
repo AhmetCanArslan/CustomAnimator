@@ -589,8 +589,8 @@ Duración del Animador: %3$.2f</string>
     <string name="button_remapper_custom_selected">Ejecuta %1$s. Esta app es tu app de asistente digital mientras esta opción esté seleccionada.</string>
     <string name="button_remapper_custom_pick">Elige una acción</string>
     <string name="button_remapper_power_double_press">Doble pulsación del botón de encendido</string>
-    <string name="button_remapper_double_press_desc">Ejecuta una acción que elijas mientras la pantalla está encendida. Las pulsaciones simples esperan un momento para distinguirlas de una doble pulsación.</string>
-    <string name="button_remapper_double_press_selected">Ejecuta %1$s mientras la pantalla está encendida. Las pulsaciones simples esperan un momento para distinguirlas de una doble pulsación.</string>
+    <string name="button_remapper_double_press_desc">Ejecuta una acción que elijas. Las pulsaciones simples esperan un momento para distinguirlas de una doble pulsación.</string>
+    <string name="button_remapper_double_press_selected">Ejecuta %1$s. Las pulsaciones simples esperan un momento para distinguirlas de una doble pulsación.</string>
     <string name="button_remapper_double_press_window">Ventana de doble pulsación</string>
     <string name="button_remapper_double_press_window_desc">Más corta hace que las pulsaciones simples respondan antes, pero la segunda pulsación debe llegar más rápido.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

@@ -589,8 +589,8 @@
     <string name="button_remapper_custom_selected">Запускает «%1$s». Пока выбран этот вариант, это приложение является цифровым ассистентом.</string>
     <string name="button_remapper_custom_pick">Выберите действие</string>
     <string name="button_remapper_power_double_press">Двойное нажатие кнопки питания</string>
-    <string name="button_remapper_double_press_desc">Выполняет выбранное действие, пока экран включён. Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
-    <string name="button_remapper_double_press_selected">Выполняет «%1$s», пока экран включён. Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
+    <string name="button_remapper_double_press_desc">Выполняет выбранное действие. Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
+    <string name="button_remapper_double_press_selected">Выполняет «%1$s». Одиночное нажатие срабатывает с небольшой задержкой, чтобы отличить его от двойного.</string>
     <string name="button_remapper_double_press_window">Интервал двойного нажатия</string>
     <string name="button_remapper_double_press_window_desc">Чем короче, тем быстрее срабатывает одиночное нажатие, но второе нажатие нужно сделать быстрее.</string>
     <string name="button_remapper_double_press_window_value">%1$d мс</string>

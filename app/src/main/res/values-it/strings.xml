@@ -609,8 +609,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_remapper_custom_selected">Esegue %1$s. Finché è selezionata, questa app è la tua app assistente digitale.</string>
     <string name="button_remapper_custom_pick">Scegli azione</string>
     <string name="button_remapper_power_double_press">Doppia pressione del tasto di accensione</string>
-    <string name="button_remapper_double_press_desc">Esegui un\'azione a tua scelta mentre lo schermo è acceso. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
-    <string name="button_remapper_double_press_selected">Esegue %1$s mentre lo schermo è acceso. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
+    <string name="button_remapper_double_press_desc">Esegui un\'azione a tua scelta. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
+    <string name="button_remapper_double_press_selected">Esegue %1$s. Le pressioni singole attendono un attimo per distinguerle da una doppia pressione.</string>
     <string name="button_remapper_double_press_window">Finestra della doppia pressione</string>
     <string name="button_remapper_double_press_window_desc">Più breve rende più rapide le pressioni singole, ma la seconda pressione deve arrivare prima.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

@@ -53,8 +53,8 @@
     <string name="button_remapper_custom_selected">يشغّل %1$s. يصبح هذا التطبيق تطبيق المساعد الرقمي ما دام هذا الخيار محددًا.</string>
     <string name="button_remapper_custom_pick">اختر إجراءً</string>
     <string name="button_remapper_power_double_press">الضغط المزدوج على زر التشغيل</string>
-    <string name="button_remapper_double_press_desc">شغّل إجراءً تختاره أثناء تشغيل الشاشة. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
-    <string name="button_remapper_double_press_selected">يشغّل %1$s أثناء تشغيل الشاشة. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
+    <string name="button_remapper_double_press_desc">شغّل إجراءً تختاره. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
+    <string name="button_remapper_double_press_selected">يشغّل %1$s. تنتظر الضغطة الواحدة لحظة لتمييزها عن الضغط المزدوج.</string>
     <string name="button_remapper_double_press_window">مهلة الضغط المزدوج</string>
     <string name="button_remapper_double_press_window_desc">المهلة الأقصر تجعل الضغطة الواحدة أسرع استجابة، لكن يجب أن تأتي الضغطة الثانية أسرع.</string>
     <string name="button_remapper_double_press_window_value">%1$d مللي ثانية</string>

@@ -589,8 +589,8 @@ Duração do Animador: %3$.2f</string>
     <string name="button_remapper_custom_selected">Executa %1$s. Enquanto estiver selecionada, este app é seu app de assistente digital.</string>
     <string name="button_remapper_custom_pick">Escolha uma ação</string>
     <string name="button_remapper_power_double_press">Toque duplo no botão liga/desliga</string>
-    <string name="button_remapper_double_press_desc">Executa uma ação escolhida por você enquanto a tela está ligada. Toques simples esperam um instante para serem diferenciados do toque duplo.</string>
-    <string name="button_remapper_double_press_selected">Executa %1$s enquanto a tela está ligada. Toques simples esperam um instante para serem diferenciados do toque duplo.</string>
+    <string name="button_remapper_double_press_desc">Executa uma ação escolhida por você. Toques simples esperam um instante para serem diferenciados do toque duplo.</string>
+    <string name="button_remapper_double_press_selected">Executa %1$s. Toques simples esperam um instante para serem diferenciados do toque duplo.</string>
     <string name="button_remapper_double_press_window">Janela do toque duplo</string>
     <string name="button_remapper_double_press_window_desc">Mais curta deixa os toques simples mais rápidos, mas o segundo toque precisa vir mais cedo.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

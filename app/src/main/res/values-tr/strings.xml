@@ -589,8 +589,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="button_remapper_custom_selected">%1$s çalışır. Bu seçiliyken bu uygulama dijital asistan uygulaman olur.</string>
     <string name="button_remapper_custom_pick">İşlem seç</string>
     <string name="button_remapper_power_double_press">Güç tuşuna iki kez basma</string>
-    <string name="button_remapper_double_press_desc">Ekran açıkken seçtiğin işlemi çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
-    <string name="button_remapper_double_press_selected">Ekran açıkken %1$s çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
+    <string name="button_remapper_double_press_desc">Seçtiğin işlemi çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
+    <string name="button_remapper_double_press_selected">%1$s çalıştırır. Tek basışlar, iki kez basmadan ayırt edilebilmesi için kısa bir süre bekler.</string>
     <string name="button_remapper_double_press_window">İki kez basma aralığı</string>
     <string name="button_remapper_double_press_window_desc">Kısa tutmak tek basışların daha hızlı tepki vermesini sağlar ama ikinci basışın daha çabuk gelmesi gerekir.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

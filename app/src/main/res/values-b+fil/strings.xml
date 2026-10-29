@@ -589,8 +589,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="button_remapper_custom_selected">Pinapatakbo ang %1$s. Ang app na ito ang digital assistant app mo habang napili ito.</string>
     <string name="button_remapper_custom_pick">Pumili ng aksyon</string>
     <string name="button_remapper_power_double_press">Dobleng pindot ng power button</string>
-    <string name="button_remapper_double_press_desc">Magpatakbo ng aksyong pipiliin mo habang naka-on ang screen. Saglit na naghihintay ang isang pindot para maihiwalay ito sa dobleng pindot.</string>
-    <string name="button_remapper_double_press_selected">Pinapatakbo ang %1$s habang naka-on ang screen. Saglit na naghihintay ang isang pindot para maihiwalay ito sa dobleng pindot.</string>
+    <string name="button_remapper_double_press_desc">Magpatakbo ng aksyong pipiliin mo. Saglit na naghihintay ang isang pindot para maihiwalay ito sa dobleng pindot.</string>
+    <string name="button_remapper_double_press_selected">Pinapatakbo ang %1$s. Saglit na naghihintay ang isang pindot para maihiwalay ito sa dobleng pindot.</string>
     <string name="button_remapper_double_press_window">Window ng dobleng pindot</string>
     <string name="button_remapper_double_press_window_desc">Kapag mas maikli, mas mabilis tumugon ang isang pindot, pero kailangang mas maaga ang ikalawang pindot.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

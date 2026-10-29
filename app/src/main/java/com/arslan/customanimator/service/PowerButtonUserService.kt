@@ -52,6 +52,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     private val grabbedDevices = HashSet<EvdevDevice>()
     private var interactive = false
     private var volumeScreenOff = false
+    private var powerDoublePress = false
     private var grabPending = false
     private var holdDownTime = 0L
     private val forwardedDowns = HashMap<Int, KeyEvent>()
@@ -122,6 +123,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         synchronized(lock) {
             this.listener = listener
             this.volumeScreenOff = volumeScreenOff
+            this.powerDoublePress = powerDoublePress
             volumeDetector.triggers = volumeTriggers.orEmpty().mapNotNull(ButtonTrigger::fromName).toSet()
             volumeDetector.doublePressWindowMs = doublePressWindowMs.toLong()
             detector?.let {
@@ -146,7 +148,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     }
 
     private fun wantsGrab(device: EvdevDevice): Boolean = when {
-        device.hasPower -> interactive && !grabPending
+        device.hasPower -> (interactive || powerDoublePress) && !grabPending
         volumeDetector.triggers.isEmpty() -> false
         else -> interactive || volumeScreenOff
     }

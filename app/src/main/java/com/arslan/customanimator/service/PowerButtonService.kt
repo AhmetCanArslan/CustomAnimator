@@ -42,7 +42,7 @@ class PowerButtonService : Service() {
         private const val TAG = "PowerButtonService"
         private const val CHANNEL_ID = "power_button_channel"
         private const val NOTIF_ID = 4203
-        private const val SERVICE_VERSION = 6
+        private const val SERVICE_VERSION = 7
         private const val RECONNECT_BASE_DELAY_MS = 2000L
         private const val MAX_RECONNECT_ATTEMPTS = 5
 

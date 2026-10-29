@@ -61,8 +61,8 @@
     <string name="button_remapper_custom_selected">Runs %1$s. This app is your digital assistant app while this is selected.</string>
     <string name="button_remapper_custom_pick">Choose an action</string>
     <string name="button_remapper_power_double_press">Power button double press</string>
-    <string name="button_remapper_double_press_desc">Run an action you choose while the screen is on. Single presses wait a moment so they can be told apart from a double press.</string>
-    <string name="button_remapper_double_press_selected">Runs %1$s while the screen is on. Single presses wait a moment so they can be told apart from a double press.</string>
+    <string name="button_remapper_double_press_desc">Run an action you choose. Single presses wait a moment so they can be told apart from a double press.</string>
+    <string name="button_remapper_double_press_selected">Runs %1$s. Single presses wait a moment so they can be told apart from a double press.</string>
     <string name="button_remapper_double_press_window">Double press window</string>
     <string name="button_remapper_double_press_window_desc">Shorter makes single presses respond faster, but the second press has to come sooner.</string>
     <string name="button_remapper_double_press_window_value">%1$d ms</string>

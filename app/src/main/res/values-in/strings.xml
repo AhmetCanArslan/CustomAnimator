@@ -589,8 +589,8 @@ Durasi Animator: %3$.2f</string>
     <string name="button_remapper_custom_selected">Menjalankan %1$s. Aplikasi ini menjadi aplikasi asisten digital Anda selama opsi ini dipilih.</string>
     <string name="button_remapper_custom_pick">Pilih tindakan</string>
     <string name="button_remapper_power_double_press">Tekan dua kali tombol daya</string>
-    <string name="button_remapper_double_press_desc">Jalankan tindakan pilihanmu saat layar menyala. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
-    <string name="button_remapper_double_press_selected">Menjalankan %1$s saat layar menyala. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
+    <string name="button_remapper_double_press_desc">Jalankan tindakan pilihanmu. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
+    <string name="button_remapper_double_press_selected">Menjalankan %1$s. Tekanan tunggal menunggu sebentar agar bisa dibedakan dari tekan dua kali.</string>
     <string name="button_remapper_double_press_window">Jendela tekan dua kali</string>
     <string name="button_remapper_double_press_window_desc">Lebih pendek membuat tekanan tunggal merespons lebih cepat, tetapi tekanan kedua harus datang lebih cepat.</string>
     <string name="button_remapper_double_press_window_value">%1$d md</string>
