@@ -82,7 +82,7 @@ class PrefsManagersTest {
     @Test
     fun threadingConfigsPersistOnlyNonDefaults() {
         val manager = AppThreadingManager(context)
-        manager.clearAll()
+        manager.getConfigs().keys.forEach { manager.setConfig(it, AppThreadingConfig()) }
 
         manager.setConfig("com.example.game", AppThreadingConfig(ThreadAffinityMode.BIG, ThreadPriority.HIGH))
         manager.setConfig("com.example.plain", AppThreadingConfig())
@@ -91,7 +91,7 @@ class PrefsManagersTest {
         assertEquals(1, configs.size)
         assertEquals(ThreadAffinityMode.BIG, configs["com.example.game"]?.affinity)
         assertEquals(ThreadPriority.HIGH, configs["com.example.game"]?.priority)
-        assertTrue(manager.getConfig("com.example.plain").isDefault)
+        assertFalse(configs.containsKey("com.example.plain"))
 
         manager.setConfig("com.example.game", AppThreadingConfig())
         assertTrue(manager.getConfigs().isEmpty())

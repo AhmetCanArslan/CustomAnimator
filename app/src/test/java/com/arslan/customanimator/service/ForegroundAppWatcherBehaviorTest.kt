@@ -61,7 +61,9 @@ class ForegroundAppWatcherBehaviorTest {
         PerAppWidthManager(context).clearRecordedBaseline()
         PerAppRefreshRateManager(context).clearAll()
         PerAppRefreshRateManager(context).clearRecordedBaseline()
-        AppThreadingManager(context).clearAll()
+        AppThreadingManager(context).let { manager ->
+            manager.getConfigs().keys.forEach { manager.setConfig(it, AppThreadingConfig()) }
+        }
         RevokedPermissionsStore(context).clearAll()
         Settings.Secure.putString(context.contentResolver, "display_density_forced", null)
         ForegroundAppWatcherService.watchers.forEach {

@@ -128,9 +128,9 @@ class NoShizukuResilienceTest {
     @Test
     fun threadingApplyIsANoOpWithoutShizuku() {
         val manager = AppThreadingManager(context)
-        manager.clearAll()
-        manager.setConfig("com.example.game", AppThreadingConfig(ThreadAffinityMode.BIG, ThreadPriority.HIGH))
-        val config = manager.getConfig("com.example.game")
+        manager.getConfigs().keys.forEach { manager.setConfig(it, AppThreadingConfig()) }
+        val config = AppThreadingConfig(ThreadAffinityMode.BIG, ThreadPriority.HIGH)
+        manager.setConfig("com.example.game", config)
         assertFalse(manager.apply("com.example.game", config).isSuccess)
         assertEquals(1, manager.getConfigs().size)
     }

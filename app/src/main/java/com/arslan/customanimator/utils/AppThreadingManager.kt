@@ -69,16 +69,11 @@ class AppThreadingManager(context: Context) {
         }
     }
 
-    fun getConfig(packageName: String): AppThreadingConfig =
-        getConfigs()[packageName] ?: AppThreadingConfig()
-
     fun setConfig(packageName: String, config: AppThreadingConfig) {
         val current = getConfigs().toMutableMap()
         if (config.isDefault) current.remove(packageName) else current[packageName] = config
         persist(current)
     }
-
-    fun clearAll() = persist(emptyMap())
 
     private fun persist(configs: Map<String, AppThreadingConfig>) {
         val json = JSONObject()
