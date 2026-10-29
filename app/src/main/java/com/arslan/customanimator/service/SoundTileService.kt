@@ -31,7 +31,7 @@ class SoundTileService : BaseTileService() {
                 delay(collapseDelay.toLong())
             }
             if (!SoundTileActions.perform(this, action)) {
-                toast(R.string.action_failed)
+                toastFailure()
             }
         }
     }

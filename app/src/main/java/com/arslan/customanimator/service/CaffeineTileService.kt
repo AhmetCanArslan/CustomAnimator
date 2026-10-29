@@ -24,7 +24,7 @@ class CaffeineTileService : BaseTileService() {
             }
             val activate = !CaffeineManager.isActive(contentResolver)
             if (!CaffeineManager.setActive(this, contentResolver, activate)) {
-                toast(R.string.action_failed)
+                toastFailure()
             }
         }
     }

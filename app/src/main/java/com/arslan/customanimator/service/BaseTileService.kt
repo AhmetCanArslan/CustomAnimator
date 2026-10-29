@@ -86,6 +86,11 @@ abstract class BaseTileService : TileService() {
         mainHandler.post { Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show() }
     }
 
+    protected fun toastFailure() {
+        val text = ShizukuHelper.failureMessage(this)
+        mainHandler.post { Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show() }
+    }
+
     protected fun collapseShade() {
         ShizukuHelper.executeShellCommand(arrayOf("cmd", "statusbar", "collapse"))
     }

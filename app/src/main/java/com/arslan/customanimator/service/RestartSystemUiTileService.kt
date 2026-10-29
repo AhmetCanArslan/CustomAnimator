@@ -24,7 +24,7 @@ class RestartSystemUiTileService : BaseTileService() {
                 return@runTileAction toast(R.string.terminal_tile_needs_shizuku)
             }
             if (!DeveloperOptionsManager.restartSystemUi()) {
-                toast(R.string.action_failed)
+                toastFailure()
             }
         }
     }

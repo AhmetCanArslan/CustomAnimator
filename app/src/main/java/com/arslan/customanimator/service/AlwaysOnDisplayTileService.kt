@@ -28,7 +28,7 @@ class AlwaysOnDisplayTileService : BaseTileService() {
             }
             val activate = !AlwaysOnDisplayManager.isActive(contentResolver)
             if (!AlwaysOnDisplayManager.setActive(contentResolver, activate)) {
-                toast(R.string.action_failed)
+                toastFailure()
             }
         }
     }
