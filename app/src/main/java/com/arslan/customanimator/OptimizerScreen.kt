@@ -234,9 +234,11 @@ private enum class QuickAction(
 }
 
 private fun runQuickAction(context: Context, action: QuickAction): String = when (action) {
-    QuickAction.CLEAR_CACHES -> context.getString(
-        if (DeveloperOptionsManager.clearAllAppCaches()) R.string.action_succeeded else R.string.action_failed
-    )
+    QuickAction.CLEAR_CACHES -> if (DeveloperOptionsManager.clearAllAppCaches()) {
+        context.getString(R.string.action_succeeded)
+    } else {
+        ShizukuHelper.failureMessage(context)
+    }
     QuickAction.CLOSE_APPS -> context.getString(
         R.string.apps_closed_count,
         DeveloperOptionsManager.closeBackgroundApps(context)

@@ -34,6 +34,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -158,9 +159,11 @@ fun AlarmRevealerScreen(
                                                 }
                                                 Toast.makeText(
                                                     context,
-                                                    resources.getString(
-                                                        if (success) R.string.action_succeeded else R.string.action_failed
-                                                    ),
+                                                    if (success) {
+                                                        resources.getString(R.string.action_succeeded)
+                                                    } else {
+                                                        ShizukuHelper.failureMessage(context)
+                                                    },
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                                 reloadKey++

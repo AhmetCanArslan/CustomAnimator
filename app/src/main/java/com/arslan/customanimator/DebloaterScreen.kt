@@ -44,6 +44,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.utils.ShizukuHelper
 
 private const val LIST_CARD_DISMISS_KEY = "debloater_list_card"
 
@@ -371,7 +372,7 @@ private fun applyAction(
 
 private fun reportResult(context: android.content.Context, done: Int, total: Int) {
     if (done == 0) {
-        android.widget.Toast.makeText(context, R.string.action_failed, android.widget.Toast.LENGTH_LONG).show()
+        android.widget.Toast.makeText(context, ShizukuHelper.failureMessage(context), android.widget.Toast.LENGTH_LONG).show()
         return
     }
     android.widget.Toast.makeText(
