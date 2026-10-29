@@ -12,12 +12,7 @@ import com.arslan.customanimator.data.unquoteWifiValue
 import org.json.JSONArray
 import org.json.JSONObject
 
-class WifiUserService : IWifiUserService.Stub {
-
-    constructor()
-
-    @Suppress("UNUSED_PARAMETER")
-    constructor(context: Context)
+class WifiUserService : IWifiUserService.Stub() {
 
     override fun destroy() {
         System.exit(0)
