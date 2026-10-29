@@ -246,42 +246,6 @@ fun ToolsScreenContent(
             )
 
             cardSection(
-                R.string.tools_section_performance,
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.VideogameAsset,
-                        title = stringResource(R.string.graphics_api_override),
-                        description = stringResource(R.string.graphics_api_override_desc),
-                        onClick = onNavigateToGraphicsApiOverride
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Brush,
-                        title = stringResource(R.string.hwui_tweaks),
-                        description = stringResource(R.string.hwui_tweaks_desc),
-                        onClick = onNavigateToHwuiTweaks
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Memory,
-                        title = stringResource(R.string.app_threading),
-                        description = stringResource(R.string.app_threading_desc),
-                        onClick = onNavigateToAppThreading
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.MonitorHeart,
-                        title = stringResource(R.string.refresh_rate),
-                        description = stringResource(R.string.refresh_rate_desc),
-                        onClick = onNavigateToRefreshRate
-                    )
-                }
-            )
-
-            cardSection(
                 R.string.tools_section_system_ui,
                 {
                     NavigationRow(
@@ -321,6 +285,42 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.alarm_revealer),
                         description = stringResource(R.string.alarm_revealer_desc),
                         onClick = onNavigateToAlarmRevealer
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_performance,
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.MonitorHeart,
+                        title = stringResource(R.string.refresh_rate),
+                        description = stringResource(R.string.refresh_rate_desc),
+                        onClick = onNavigateToRefreshRate
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.VideogameAsset,
+                        title = stringResource(R.string.graphics_api_override),
+                        description = stringResource(R.string.graphics_api_override_desc),
+                        onClick = onNavigateToGraphicsApiOverride
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Brush,
+                        title = stringResource(R.string.hwui_tweaks),
+                        description = stringResource(R.string.hwui_tweaks_desc),
+                        onClick = onNavigateToHwuiTweaks
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Memory,
+                        title = stringResource(R.string.app_threading),
+                        description = stringResource(R.string.app_threading_desc),
+                        onClick = onNavigateToAppThreading
                     )
                 }
             )
