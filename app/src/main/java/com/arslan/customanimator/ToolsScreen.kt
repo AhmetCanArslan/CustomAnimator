@@ -151,10 +151,10 @@ fun ToolsScreenContent(
                 R.string.tools_section_apps,
                 {
                     NavigationRow(
-                        icon = Icons.AutoMirrored.Filled.AddToHomeScreen,
-                        title = stringResource(R.string.shortcuts),
-                        description = stringResource(R.string.shortcuts_desc),
-                        onClick = onNavigateToShortcuts
+                        icon = Icons.Filled.DeleteSweep,
+                        title = stringResource(R.string.debloater),
+                        description = stringResource(R.string.debloater_desc),
+                        onClick = onNavigateToDebloater
                     )
                 },
                 {
@@ -163,14 +163,6 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.activity_manager),
                         description = stringResource(R.string.activity_manager_desc),
                         onClick = onNavigateToActivityManager
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.DeleteSweep,
-                        title = stringResource(R.string.debloater),
-                        description = stringResource(R.string.debloater_desc),
-                        onClick = onNavigateToDebloater
                     )
                 },
                 {
@@ -211,6 +203,45 @@ fun ToolsScreenContent(
                         description = stringResource(R.string.icon_changer_desc),
                         onClick = onNavigateToIconChanger
                     )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_automation,
+                {
+                    NavigationRow(
+                        icon = Icons.AutoMirrored.Filled.AddToHomeScreen,
+                        title = stringResource(R.string.shortcuts),
+                        description = stringResource(R.string.shortcuts_desc),
+                        onClick = onNavigateToShortcuts
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.PowerSettingsNew,
+                        title = stringResource(R.string.button_remapper),
+                        description = stringResource(R.string.button_remapper_desc),
+                        onClick = onNavigateToButtonRemapper
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Screenshot,
+                        title = stringResource(R.string.screenshot_actions),
+                        description = stringResource(R.string.screenshot_actions_desc),
+                        onClick = onNavigateToScreenshotActions
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Password,
+                        title = stringResource(R.string.otp_copier),
+                        description = stringResource(R.string.otp_copier_desc),
+                        onClick = onNavigateToOtpCopier
+                    )
+                },
+                {
+                    SaveToDeviceRow()
                 }
             )
 
@@ -286,10 +317,10 @@ fun ToolsScreenContent(
                 },
                 {
                     NavigationRow(
-                        icon = Icons.Filled.PowerSettingsNew,
-                        title = stringResource(R.string.button_remapper),
-                        description = stringResource(R.string.button_remapper_desc),
-                        onClick = onNavigateToButtonRemapper
+                        icon = Icons.Filled.Alarm,
+                        title = stringResource(R.string.alarm_revealer),
+                        description = stringResource(R.string.alarm_revealer_desc),
+                        onClick = onNavigateToAlarmRevealer
                     )
                 }
             )
@@ -310,37 +341,6 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.hotspot_manager),
                         description = stringResource(R.string.hotspot_manager_desc),
                         onClick = onNavigateToHotspotManager
-                    )
-                }
-            )
-
-            cardSection(
-                R.string.tools_utilities,
-                {
-                    SaveToDeviceRow()
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Screenshot,
-                        title = stringResource(R.string.screenshot_actions),
-                        description = stringResource(R.string.screenshot_actions_desc),
-                        onClick = onNavigateToScreenshotActions
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Password,
-                        title = stringResource(R.string.otp_copier),
-                        description = stringResource(R.string.otp_copier_desc),
-                        onClick = onNavigateToOtpCopier
-                    )
-                },
-                {
-                    NavigationRow(
-                        icon = Icons.Filled.Alarm,
-                        title = stringResource(R.string.alarm_revealer),
-                        description = stringResource(R.string.alarm_revealer_desc),
-                        onClick = onNavigateToAlarmRevealer
                     )
                 }
             )

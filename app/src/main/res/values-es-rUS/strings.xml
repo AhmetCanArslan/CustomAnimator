@@ -1283,9 +1283,9 @@ Duración del Animador: %3$.2f</string>
     <string name="boost_ad_unavailable">No se pudo cargar el anuncio. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="developer_title">Desarrollador</string>
     <string name="tools_title">Herramientas</string>
-    <string name="tools_utilities">Utilidades</string>
     <string name="tools_section_apps">Apps</string>
     <string name="tools_section_apk">Herramientas de APK</string>
+    <string name="tools_section_automation">Accesos directos y automatización</string>
     <string name="tools_section_performance">Pantalla y rendimiento</string>
     <string name="tools_section_system_ui">Interfaz del sistema</string>
     <string name="tools_section_connectivity">Conectividad</string>

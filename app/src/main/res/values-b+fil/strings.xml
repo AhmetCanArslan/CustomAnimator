@@ -1283,9 +1283,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Mga tool</string>
-    <string name="tools_utilities">Mga utility</string>
     <string name="tools_section_apps">Mga app</string>
     <string name="tools_section_apk">Mga tool sa APK</string>
+    <string name="tools_section_automation">Mga shortcut at automation</string>
     <string name="tools_section_performance">Display at performance</string>
     <string name="tools_section_system_ui">System UI</string>
     <string name="tools_section_connectivity">Koneksyon</string>

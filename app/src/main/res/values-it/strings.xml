@@ -1303,9 +1303,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
     <string name="developer_title">Sviluppatore</string>
     <string name="tools_title">Strumenti</string>
-    <string name="tools_utilities">Utilità</string>
     <string name="tools_section_apps">App</string>
     <string name="tools_section_apk">Strumenti APK</string>
+    <string name="tools_section_automation">Scorciatoie e automazione</string>
     <string name="tools_section_performance">Schermo e prestazioni</string>
     <string name="tools_section_system_ui">Interfaccia di sistema</string>
     <string name="tools_section_connectivity">Connettività</string>

@@ -1323,9 +1323,9 @@
     <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
-    <string name="tools_utilities">أدوات مساعدة</string>
     <string name="tools_section_apps">التطبيقات</string>
     <string name="tools_section_apk">أدوات APK</string>
+    <string name="tools_section_automation">الاختصارات والأتمتة</string>
     <string name="tools_section_performance">العرض والأداء</string>
     <string name="tools_section_system_ui">واجهة النظام</string>
     <string name="tools_section_connectivity">الاتصال</string>
