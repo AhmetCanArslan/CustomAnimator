@@ -34,6 +34,21 @@ internal fun DevSectionTitle(title: String) {
     )
 }
 
+@Composable
+internal fun UnsupportedCard(text: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onErrorContainer,
+            modifier = Modifier.padding(12.dp)
+        )
+    }
+}
+
 internal fun LazyListScope.cardSection(titleRes: Int, vararg rows: @Composable () -> Unit) {
     sectionTitle(titleRes)
     cardRows(*rows)

@@ -98,7 +98,7 @@ fun CarrierNameScreen(
         ) {
             if (!CarrierNameManager.isSupported()) {
                 item {
-                    WarningCard(stringResource(R.string.carrier_name_unsupported))
+                    UnsupportedCard(stringResource(R.string.carrier_name_unsupported))
                 }
                 return@LazyColumn
             }
@@ -133,7 +133,7 @@ fun CarrierNameScreen(
             }
 
             if (slots.isEmpty()) {
-                item { WarningCard(stringResource(R.string.carrier_name_no_sim)) }
+                item { UnsupportedCard(stringResource(R.string.carrier_name_no_sim)) }
                 return@LazyColumn
             }
 
@@ -223,20 +223,5 @@ fun CarrierNameScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun WarningCard(text: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-            modifier = Modifier.padding(12.dp)
-        )
     }
 }

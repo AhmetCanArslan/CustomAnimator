@@ -491,21 +491,6 @@ private fun RemapOptionRow(
     }
 }
 
-@Composable
-internal fun UnsupportedCard(text: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-            modifier = Modifier.padding(12.dp)
-        )
-    }
-}
-
 private const val DOUBLE_PRESS_WINDOW_STEPS =
     (ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MAX_MS - ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MIN_MS) /
         ButtonRemapperManager.DOUBLE_PRESS_WINDOW_STEP_MS - 1
