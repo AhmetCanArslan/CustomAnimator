@@ -15,7 +15,7 @@ class WidthPresetManager(context: Context) {
 
     fun savePreset(name: String, widthDp: Int): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val preset = WidthPreset(
                 id = UUID.randomUUID().toString(),
                 name = name,
@@ -39,7 +39,7 @@ class WidthPresetManager(context: Context) {
 
     fun getAllPresets(): List<WidthPreset> {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val list = mutableListOf<WidthPreset>()
             for (i in 0 until presets.length()) {
                 val json = presets.getJSONObject(i)
@@ -61,7 +61,7 @@ class WidthPresetManager(context: Context) {
 
     fun deletePreset(id: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var foundIndex = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -91,7 +91,7 @@ class WidthPresetManager(context: Context) {
 
     fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var index = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -130,13 +130,4 @@ class WidthPresetManager(context: Context) {
         PresetTileJson.firstFreeSlot(
             getAllPresets().filter { it.id != excludingPresetId }.mapNotNull { it.tile?.slot }
         )
-
-    private fun getAllPresetsJson(): JSONArray {
-        return try {
-            val presetStr = sharedPreferences.getString(presetsKey, "[]") ?: "[]"
-            JSONArray(presetStr)
-        } catch (e: Exception) {
-            JSONArray()
-        }
-    }
 }

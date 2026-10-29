@@ -20,7 +20,7 @@ class PresetManager(context: Context) {
         animatorScale: Float
     ): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val preset = AnimatorPreset(
                 id = UUID.randomUUID().toString(),
                 name = name,
@@ -48,7 +48,7 @@ class PresetManager(context: Context) {
     
     fun getAllPresets(): List<AnimatorPreset> {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val list = mutableListOf<AnimatorPreset>()
             for (i in 0 until presets.length()) {
                 val json = presets.getJSONObject(i)
@@ -72,7 +72,7 @@ class PresetManager(context: Context) {
     
     fun deletePreset(id: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var foundIndex = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -102,7 +102,7 @@ class PresetManager(context: Context) {
     
     fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var index = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -141,13 +141,4 @@ class PresetManager(context: Context) {
         PresetTileJson.firstFreeSlot(
             getAllPresets().filter { it.id != excludingPresetId }.mapNotNull { it.tile?.slot }
         )
-
-    private fun getAllPresetsJson(): JSONArray {
-        return try {
-            val presetStr = sharedPreferences.getString(presetsKey, "[]") ?: "[]"
-            JSONArray(presetStr)
-        } catch (e: Exception) {
-            JSONArray()
-        }
-    }
 }

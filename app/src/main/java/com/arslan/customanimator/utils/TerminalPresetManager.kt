@@ -15,7 +15,7 @@ class TerminalPresetManager(context: Context) {
 
     fun savePreset(name: String, command: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             presets.put(toJson(TerminalPreset(UUID.randomUUID().toString(), name, command)))
             sharedPreferences.edit().putString(presetsKey, presets.toString()).apply()
             true
@@ -27,7 +27,7 @@ class TerminalPresetManager(context: Context) {
 
     fun getAllPresets(): List<TerminalPreset> {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val list = mutableListOf<TerminalPreset>()
             for (i in 0 until presets.length()) {
                 list.add(fromJson(presets.getJSONObject(i)))
@@ -41,7 +41,7 @@ class TerminalPresetManager(context: Context) {
 
     fun deletePreset(id: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val remaining = JSONArray()
             var found = false
             for (i in 0 until presets.length()) {
@@ -66,7 +66,7 @@ class TerminalPresetManager(context: Context) {
 
     fun updatePreset(id: String, name: String, command: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var found = false
             for (i in 0 until presets.length()) {
                 val existing = presets.getJSONObject(i)
@@ -91,7 +91,7 @@ class TerminalPresetManager(context: Context) {
 
     fun setTileConfig(id: String, config: TerminalTileConfig?): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var index = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -166,15 +166,6 @@ class TerminalPresetManager(context: Context) {
             command = json.getString("command"),
             tile = tile
         )
-    }
-
-    private fun getAllPresetsJson(): JSONArray {
-        return try {
-            val presetStr = sharedPreferences.getString(presetsKey, "[]") ?: "[]"
-            JSONArray(presetStr)
-        } catch (e: Exception) {
-            JSONArray()
-        }
     }
 
     companion object {
