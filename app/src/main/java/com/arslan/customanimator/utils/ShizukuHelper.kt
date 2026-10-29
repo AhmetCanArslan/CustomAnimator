@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Looper
 import android.os.Process
 import android.os.SystemClock
@@ -49,17 +48,8 @@ object ShizukuHelper {
         }
     }
     
-    fun isShizukuAvailable(): Boolean {
-        return try {
-            Shizuku.checkSelfPermission() >= 0 || 
-            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && 
-             Shizuku.getVersion() > 0)
-        } catch (e: Exception) {
-            Log.d(TAG, "Shizuku not available: ${e.message}")
-            false
-        }
-    }
-    
+    fun isShizukuAvailable(): Boolean = runCatching { Shizuku.pingBinder() }.getOrDefault(false)
+
     fun hasShizukuPermission(): Boolean {
         awaitStartupBinder()
         return isPermissionGranted()

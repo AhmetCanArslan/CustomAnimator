@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import rikka.shizuku.Shizuku
 
 enum class SetupStage {
     NOT_INSTALLED,
@@ -32,18 +31,10 @@ object SetupHelper {
         }
     }
 
-    fun isShizukuRunning(): Boolean {
-        return try {
-            Shizuku.pingBinder()
-        } catch (e: Exception) {
-            false
-        }
-    }
-
     fun stage(context: Context): SetupStage {
         if (ShizukuHelper.hasWriteSecureSettingsPermission(context)) return SetupStage.READY
         if (!isShizukuInstalled(context)) return SetupStage.NOT_INSTALLED
-        if (!isShizukuRunning()) return SetupStage.NOT_RUNNING
+        if (!ShizukuHelper.isShizukuAvailable()) return SetupStage.NOT_RUNNING
         if (!ShizukuHelper.hasShizukuPermission()) return SetupStage.NOT_AUTHORIZED
         return SetupStage.AUTHORIZED
     }
