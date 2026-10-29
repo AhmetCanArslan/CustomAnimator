@@ -178,21 +178,8 @@ object ShizukuHelper {
         )
     }
 
-    fun executeShellCommand(command: Array<String>): Boolean {
-        return try {
-            if (!hasShizukuPermission()) {
-                Log.d(TAG, "Shizuku permission not granted for command: ${command.joinToString(" ")}")
-                return false
-            }
-
-            val result = newProcess(command).waitFor()
-            Log.d(TAG, "Shizuku command result=$result, cmd=${command.joinToString(" ")}")
-            result == 0
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed Shizuku shell command: ${command.joinToString(" ")}", e)
-            false
-        }
-    }
+    fun executeShellCommand(command: Array<String>): Boolean =
+        executeShellCommandWithOutput(command).isSuccess
 
     fun executeShellCommandWithOutput(command: Array<String>): ShellResult {
         return try {
