@@ -1,10 +1,7 @@
 package com.arslan.customanimator.utils
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
 import com.arslan.customanimator.data.HotspotCapabilities
@@ -15,22 +12,13 @@ import com.arslan.customanimator.data.HotspotSnapshot
 import com.arslan.customanimator.data.HotspotState
 import com.arslan.customanimator.service.HotspotUserService
 import com.arslan.customanimator.service.IHotspotUserService
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
 import org.json.JSONArray
 import org.json.JSONObject
-import rikka.shizuku.Shizuku
 import java.util.UUID
-import kotlin.coroutines.resume
 
 object HotspotManager {
 
     private const val TAG = "HotspotManager"
-    private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 2
-
     const val SSID_MIN_LENGTH = 1
     const val SSID_MAX_LENGTH = 32
     const val PSK_MIN_LENGTH = 8
@@ -45,19 +33,9 @@ object HotspotManager {
 
     enum class PassphraseError { TOO_SHORT, TOO_LONG }
 
-    private val lock = Mutex()
-    private var service: IHotspotUserService? = null
-    private var connection: ServiceConnection? = null
-
-    private val serviceArgs: (Context) -> Shizuku.UserServiceArgs = { context ->
-        Shizuku.UserServiceArgs(
-            ComponentName(context.packageName, HotspotUserService::class.java.name)
-        )
-            .daemon(true)
-            .processNameSuffix("hotspot")
-            .debuggable(false)
-            .version(SERVICE_VERSION)
-    }
+    private val service = ShizukuUserService(
+        HotspotUserService::class.java, "hotspot", daemon = true, revision = 2, IHotspotUserService.Stub::asInterface
+    )
 
     fun validateSsid(ssid: String): SsidError? = when {
         ssid.length < SSID_MIN_LENGTH -> SsidError.TOO_SHORT
@@ -115,66 +93,8 @@ object HotspotManager {
         return applyConfig(context, config.copy(blockedDevices = remaining))
     }
 
-    fun release() {
-        service = null
-        connection = null
-    }
-
-    private suspend fun <T> withService(context: Context, block: (IHotspotUserService) -> T): T? {
-        if (!ShizukuHelper.hasShizukuPermission()) return null
-        val binder = lock.withLock { obtainService(context) } ?: return null
-        return try {
-            block(binder)
-        } catch (e: Throwable) {
-            Log.e(TAG, "Privileged hotspot call failed", e)
-            lock.withLock { service = null }
-            null
-        }
-    }
-
-    private suspend fun obtainService(context: Context): IHotspotUserService? {
-        service?.let { cached ->
-            if (runCatching { cached.asBinder().pingBinder() }.getOrDefault(false)) return cached
-            service = null
-        }
-        val appContext = context.applicationContext
-        val args = serviceArgs(appContext)
-        return try {
-            withTimeout(BIND_TIMEOUT_MS) {
-                suspendCancellableCoroutine<IHotspotUserService?> { continuation ->
-                    val serviceConnection = object : ServiceConnection {
-                        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                            if (!continuation.isActive) return
-                            val bound = runCatching {
-                                if (binder == null || !binder.pingBinder()) {
-                                    null
-                                } else {
-                                    IHotspotUserService.Stub.asInterface(binder)
-                                }
-                            }.getOrNull()
-                            service = bound
-                            continuation.resume(bound)
-                        }
-
-                        override fun onServiceDisconnected(name: ComponentName?) {
-                            service = null
-                            if (continuation.isActive) continuation.resume(null)
-                        }
-                    }
-                    connection = serviceConnection
-                    try {
-                        Shizuku.bindUserService(args, serviceConnection)
-                    } catch (e: Throwable) {
-                        Log.e(TAG, "bindUserService failed", e)
-                        if (continuation.isActive) continuation.resume(null)
-                    }
-                }
-            }
-        } catch (e: Throwable) {
-            Log.d(TAG, "Hotspot service bind failed: ${e.message}")
-            null
-        }
-    }
+    private suspend fun <T> withService(context: Context, block: (IHotspotUserService) -> T): T? =
+        service.call(context, block)
 
     private fun parseOutcome(json: String): Outcome = runCatching {
         val root = JSONObject(json)
