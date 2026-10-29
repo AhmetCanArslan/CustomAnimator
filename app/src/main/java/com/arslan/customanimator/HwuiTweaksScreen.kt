@@ -30,6 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
+import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +80,7 @@ fun HwuiTweaksScreen(
                 maybeShowInterstitial(context)
             } else {
                 setState(!newValue)
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -152,7 +153,7 @@ fun HwuiTweaksScreen(
                                     }
                                     if (!success) {
                                         renderer = previous
-                                        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -220,7 +221,7 @@ fun HwuiTweaksScreen(
                                                 }
                                                 if (!success) {
                                                     textureCache = previous
-                                                    Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                                    Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
                                                 }
                                             }
                                         }
@@ -292,7 +293,7 @@ fun HwuiTweaksScreen(
                                     hwOverlaysDisabled = false
                                     Toast.makeText(
                                         context,
-                                        resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                        if (success) resources.getString(R.string.action_succeeded) else ShizukuHelper.failureMessage(context),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -311,7 +312,7 @@ fun HwuiTweaksScreen(
                                         com.arslan.customanimator.utils.DeveloperOptionsManager.restartSystemUi()
                                     }
                                     if (!success) {
-                                        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }

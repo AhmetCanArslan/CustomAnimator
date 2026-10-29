@@ -120,7 +120,7 @@ fun ToolsScreenContent(
                 maybeShowInterstitial(context)
             } else {
                 setState(!newValue)
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -427,7 +427,7 @@ fun ToolsScreenContent(
                                     }
                                     if (!success) {
                                         userRotation = previous
-                                        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             }
@@ -450,7 +450,7 @@ fun ToolsScreenContent(
                                 userRotation = DeveloperOptionsManager.getUserRotation(contentResolver)
                                 Toast.makeText(
                                     context,
-                                    resources.getString(if (success) R.string.action_succeeded else R.string.action_failed),
+                                    if (success) resources.getString(R.string.action_succeeded) else ShizukuHelper.failureMessage(context),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -472,7 +472,7 @@ fun ToolsScreenContent(
                                 if (!success) {
                                     Toast.makeText(
                                         context,
-                                        resources.getString(R.string.action_failed),
+                                        ShizukuHelper.failureMessage(context),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }

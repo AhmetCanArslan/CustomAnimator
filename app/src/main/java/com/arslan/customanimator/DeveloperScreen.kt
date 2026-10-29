@@ -109,7 +109,7 @@ fun DeveloperScreenContent(
                 maybeShowInterstitial(context)
             } else {
                 setState(!newValue)
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }
