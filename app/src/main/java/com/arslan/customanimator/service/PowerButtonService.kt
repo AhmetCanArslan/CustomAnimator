@@ -198,7 +198,7 @@ class PowerButtonService : Service() {
     private suspend fun perform(trigger: ButtonTrigger) {
         val performed = withContext(Dispatchers.IO) { ButtonRemapperManager.perform(applicationContext, trigger) }
         if (!performed) {
-            Toast.makeText(this, getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, ShizukuHelper.failureMessage(this), Toast.LENGTH_SHORT).show()
         }
     }
 

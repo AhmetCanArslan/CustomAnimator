@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.service.voice.VoiceInteractionSession
 import android.service.voice.VoiceInteractionSessionService
 import android.widget.Toast
-import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ButtonRemapperManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +13,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.ShizukuHelper
 
 class PowerAssistSessionService : VoiceInteractionSessionService() {
 
@@ -34,7 +34,7 @@ private class PowerAssistSession(context: Context) : VoiceInteractionSession(con
         sessionScope.launch {
             val performed = withContext(Dispatchers.IO) { ButtonRemapperManager.performCustomLongPress(context) }
             if (!performed) {
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
             hide()
         }
