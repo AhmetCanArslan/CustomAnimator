@@ -43,7 +43,7 @@ class PrefsManagersTest {
         manager.setSelectedPackages(setOf("com.example.game", "com.example.other"))
         assertEquals(setOf("com.example.game", "com.example.other"), manager.getSelectedPackages())
 
-        assertTrue(manager.isPackageSelected("com.example.game"))
+        assertTrue(manager.getSelectedPackages().contains("com.example.game"))
         val afterRemove = manager.togglePackage("com.example.game")
         assertFalse(afterRemove.contains("com.example.game"))
         val afterAdd = manager.togglePackage("com.example.game")

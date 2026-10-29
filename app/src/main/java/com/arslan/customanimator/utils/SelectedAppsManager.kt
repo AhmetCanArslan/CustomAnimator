@@ -37,10 +37,6 @@ abstract class SelectedAppsManager(protected val context: Context, prefsName: St
         sharedPreferences.edit().putString(selectedKey, array.toString()).apply()
     }
 
-    fun isPackageSelected(packageName: String): Boolean {
-        return getSelectedPackages().contains(packageName)
-    }
-
     fun togglePackage(packageName: String): Set<String> {
         val current = getSelectedPackages().toMutableSet()
         if (!current.add(packageName)) {
