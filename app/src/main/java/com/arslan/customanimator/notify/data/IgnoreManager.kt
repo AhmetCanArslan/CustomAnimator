@@ -59,9 +59,6 @@ class IgnoreManager(context: Context) {
         prefs.edit().putString(KEY, gson.toJson(rules)).apply()
     }
 
-    fun isIgnored(packageName: String, title: String, body: String): Boolean =
-        IgnoreMatcher.isIgnored(getRules(), packageName, title, body)
-
     private class RuleSet(val all: List<IgnoreRule>) {
         val byPackage: Map<String, List<IgnoreRule>> by lazy { all.groupBy { it.packageName } }
 

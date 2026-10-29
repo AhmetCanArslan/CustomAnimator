@@ -5,6 +5,7 @@ import com.arslan.customanimator.notify.data.IgnoreRule
 import com.arslan.customanimator.notify.data.IgnoreType
 import com.arslan.customanimator.notify.data.NotificationRule
 import com.arslan.customanimator.notify.data.RuleMatcher
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -73,18 +74,19 @@ class NotificationMatchingTest {
             blocksNotification = true
         )
         val rules = listOf(muted, blocking)
-        assertTrue(IgnoreMatcher.isIgnored(rules, "com.example.chat", "hello", ""))
-        assertFalse(IgnoreMatcher.blocks(rules, "com.example.chat", "hello", ""))
-        assertTrue(IgnoreMatcher.blocks(rules, "com.example.shop", "Big SALE today", ""))
-        assertFalse(IgnoreMatcher.blocks(rules, "com.example.shop", "Your order shipped", ""))
-        assertFalse(IgnoreMatcher.blocks(emptyList(), "com.example.shop", "sale", ""))
+        fun matching(packageName: String, title: String) =
+            rules.filter { IgnoreMatcher.matches(it, packageName, title, "") }
+        assertEquals(listOf(muted), matching("com.example.chat", "hello"))
+        assertFalse(matching("com.example.chat", "hello").any { it.blocksNotification })
+        assertTrue(matching("com.example.shop", "Big SALE today").any { it.blocksNotification })
+        assertTrue(matching("com.example.shop", "Your order shipped").isEmpty())
     }
 
     @Test
     fun ignoreRulesCoverAppTitleBodyAndCombinations() {
         val appRule = IgnoreRule(type = IgnoreType.APP, packageName = "com.example.chat")
-        assertTrue(IgnoreMatcher.isIgnored(listOf(appRule), "com.example.chat", "anything", "anything"))
-        assertFalse(IgnoreMatcher.isIgnored(listOf(appRule), "com.other.app", "anything", "anything"))
+        assertTrue(IgnoreMatcher.matches(appRule, "com.example.chat", "anything", "anything"))
+        assertFalse(IgnoreMatcher.matches(appRule, "com.other.app", "anything", "anything"))
 
         val titleRule = IgnoreRule(type = IgnoreType.TITLE, packageName = "com.example.chat", matchValue = "spam")
         assertTrue(IgnoreMatcher.matches(titleRule, "com.example.chat", "SPAM alert", ""))

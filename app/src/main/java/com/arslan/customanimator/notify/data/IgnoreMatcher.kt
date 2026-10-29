@@ -2,20 +2,6 @@ package com.arslan.customanimator.notify.data
 
 object IgnoreMatcher {
 
-    fun isIgnored(
-        rules: List<IgnoreRule>,
-        packageName: String,
-        title: String,
-        body: String,
-    ): Boolean = rules.any { matches(it, packageName, title, body) }
-
-    fun blocks(
-        rules: List<IgnoreRule>,
-        packageName: String,
-        title: String,
-        body: String,
-    ): Boolean = rules.any { it.blocksNotification && matches(it, packageName, title, body) }
-
     fun matches(
         rule: IgnoreRule,
         packageName: String,
@@ -40,7 +26,7 @@ object IgnoreMatcher {
                 matchText(body, rule.matchValue2, rule.isRegex2)
     }
 
-    fun matchText(text: String, pattern: String, isRegex: Boolean): Boolean {
+    private fun matchText(text: String, pattern: String, isRegex: Boolean): Boolean {
         return if (isRegex) {
             compiled(pattern)?.containsMatchIn(text) ?: false
         } else {
