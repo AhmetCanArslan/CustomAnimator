@@ -100,25 +100,6 @@ class PresetManager(context: Context) {
         }
     }
     
-    fun updatePreset(
-        id: String,
-        name: String,
-        windowScale: Float,
-        transitionScale: Float,
-        animatorScale: Float
-    ): Boolean {
-        return try {
-            if (deletePreset(id)) {
-                savePreset(name, windowScale, transitionScale, animatorScale)
-            } else {
-                false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
-        }
-    }
-    
     fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
         return try {
             val presets = getAllPresetsJson()
