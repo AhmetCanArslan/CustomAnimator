@@ -270,8 +270,8 @@ object ShortcutMaker {
         )
     }
 
-    fun failureMessageRes(entry: ShortcutEntry): Int =
-        if (entry.needsShizuku) R.string.action_failed else R.string.shortcut_launch_failed
+    fun failureMessage(context: Context, entry: ShortcutEntry): String =
+        if (entry.needsShizuku) ShizukuHelper.failureMessage(context) else context.getString(R.string.shortcut_launch_failed)
 
     private fun shortcutInfo(context: Context, entry: ShortcutEntry, icon: Bitmap): ShortcutInfoCompat {
         val shortcutIcon = if (entry.legacyIcon) IconCompat.createWithBitmap(icon) else IconCompat.createWithAdaptiveBitmap(icon)

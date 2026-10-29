@@ -235,7 +235,7 @@ internal class ShortcutsState(
     fun launch(entry: ShortcutEntry) {
         scope.launch {
             val launched = withContext(Dispatchers.IO) { ShortcutMaker.launch(context, entry) }
-            if (!launched) toast(ShortcutMaker.failureMessageRes(entry))
+            if (!launched) Toast.makeText(context, ShortcutMaker.failureMessage(context, entry), Toast.LENGTH_SHORT).show()
         }
     }
 

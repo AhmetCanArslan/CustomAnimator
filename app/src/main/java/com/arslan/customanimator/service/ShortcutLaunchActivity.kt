@@ -43,7 +43,7 @@ class ShortcutLaunchActivity : Activity() {
 
     private fun finishLaunch(entry: ShortcutEntry, launched: Boolean) {
         if (!launched) {
-            Toast.makeText(applicationContext, getString(ShortcutMaker.failureMessageRes(entry)), Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, ShortcutMaker.failureMessage(this, entry), Toast.LENGTH_SHORT).show()
         }
         finish()
     }

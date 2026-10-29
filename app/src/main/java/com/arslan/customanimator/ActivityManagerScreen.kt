@@ -63,7 +63,7 @@ fun ActivityManagerScreen(
         coroutineScope.launch {
             val launched = withContext(Dispatchers.IO) { ShortcutMaker.launch(context, entry) }
             if (!launched) {
-                Toast.makeText(context, resources.getString(ShortcutMaker.failureMessageRes(entry)), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShortcutMaker.failureMessage(context, entry), Toast.LENGTH_SHORT).show()
             }
         }
     }
