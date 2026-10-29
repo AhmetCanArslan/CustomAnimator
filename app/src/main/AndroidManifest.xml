@@ -883,4 +883,8 @@
 
     </application>
 
+    <instrumentation
+        android:name="com.arslan.customanimator.service.CarrierConfigInstrumentation"
+        android:targetPackage="${applicationId}" />
+
 </manifest>

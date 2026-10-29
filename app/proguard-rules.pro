@@ -7,6 +7,7 @@
 -keep class com.arslan.customanimator.service.WifiUserService { *; }
 -keep class com.arslan.customanimator.service.HotspotUserService { *; }
 -keep class com.arslan.customanimator.service.CarrierUserService { *; }
+-keep class com.arslan.customanimator.service.CarrierConfigInstrumentation { *; }
 -keep class com.arslan.customanimator.service.ShortcutUserService { *; }
 -keep class com.arslan.customanimator.service.AppMonitorUserService { *; }
 -keep class com.arslan.customanimator.service.AppMonitorUserService$* { *; }
