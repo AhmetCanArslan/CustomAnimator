@@ -650,9 +650,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="carrier_name_new">Bagong pangalan ng carrier</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">Walang aktibong SIM card na natagpuan.</string>
-    <string name="carrier_name_unsupported">Kailangan ng feature na ito ang Android 11 o mas bago.</string>
+    <string name="carrier_name_unsupported">Kailangan ng feature na ito ang Android 12 o mas bago.</string>
     <string name="carrier_name_needs_phone_permission">Kailangan ng pahintulot sa telepono para mabasa ang mga SIM slot.</string>
-    <string name="carrier_name_note">Inilalapat ang pangalan bilang carrier config override at nananatili pagkatapos mag-restart. Gamitin ang I-reset para ibalik ang orihinal na pangalan.</string>
+    <string name="carrier_name_note">Inilalapat ang pangalan bilang carrier config override hanggang mag-restart ang device. Gamitin ang I-reset para ibalik ang orihinal na pangalan.</string>
 
     <string name="contact_developer">Makipag-ugnayan sa Developer</string>
     <string name="contact_developer_desc">Mangyaring makipag-ugnayan para sa inyong puna, mungkahi, at reklamo</string>

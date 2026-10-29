@@ -114,9 +114,9 @@
     <string name="carrier_name_new">اسم المشغّل الجديد</string>
     <string name="carrier_name_slot">شريحة %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">لم يتم العثور على بطاقة SIM نشطة.</string>
-    <string name="carrier_name_unsupported">تتطلب هذه الميزة أندرويد 11 أو أحدث.</string>
+    <string name="carrier_name_unsupported">تتطلب هذه الميزة أندرويد 12 أو أحدث.</string>
     <string name="carrier_name_needs_phone_permission">قراءة شرائح SIM تتطلب إذن الهاتف.</string>
-    <string name="carrier_name_note">يُطبَّق الاسم كتجاوز لإعدادات المشغّل ويبقى بعد إعادة التشغيل. استخدم إعادة التعيين لاستعادة الاسم الأصلي.</string>
+    <string name="carrier_name_note">يُطبَّق الاسم كتجاوز لإعدادات المشغّل حتى إعادة تشغيل الجهاز. استخدم إعادة التعيين لاستعادة الاسم الأصلي.</string>
     <string name="otp_copier">ناسخ رموز OTP</string>
     <string name="otp_copier_desc">ينسخ رموز التحقق من الإشعارات تلقائيًا</string>
     <string name="otp_copier_enable">نسخ الرموز تلقائيًا</string>

@@ -670,9 +670,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="carrier_name_new">Nuovo nome operatore</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">Nessuna SIM attiva trovata.</string>
-    <string name="carrier_name_unsupported">Questa funzione richiede Android 11 o versioni successive.</string>
+    <string name="carrier_name_unsupported">Questa funzione richiede Android 12 o versioni successive.</string>
     <string name="carrier_name_needs_phone_permission">Per leggere gli slot SIM serve l\'autorizzazione telefono.</string>
-    <string name="carrier_name_note">Il nome viene applicato come override della configurazione operatore e resta dopo il riavvio. Usa Reimposta per ripristinare il nome originale.</string>
+    <string name="carrier_name_note">Il nome viene applicato come override della configurazione operatore fino al riavvio del dispositivo. Usa Reimposta per ripristinare il nome originale.</string>
 
     <string name="contact_developer">Contatta lo sviluppatore</string>
     <string name="contact_developer_desc">Scrivici per opinioni, suggerimenti e reclami</string>

@@ -650,9 +650,9 @@
     <string name="carrier_name_new">Новое название оператора</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">Активная SIM-карта не найдена.</string>
-    <string name="carrier_name_unsupported">Для этой функции нужен Android 11 или новее.</string>
+    <string name="carrier_name_unsupported">Для этой функции нужен Android 12 или новее.</string>
     <string name="carrier_name_needs_phone_permission">Для чтения SIM-слотов требуется разрешение на телефон.</string>
-    <string name="carrier_name_note">Название применяется как переопределение конфигурации оператора и сохраняется после перезагрузки. Нажмите «Сброс», чтобы вернуть исходное название.</string>
+    <string name="carrier_name_note">Название применяется как переопределение конфигурации оператора и действует до перезагрузки устройства. Нажмите «Сброс», чтобы вернуть исходное название.</string>
 
     <string name="contact_developer">Связаться с разработчиком</string>
     <string name="contact_developer_desc">Пишите нам с отзывами, предложениями и жалобами</string>

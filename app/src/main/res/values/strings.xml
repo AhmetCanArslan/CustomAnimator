@@ -123,9 +123,9 @@
     <string name="carrier_name_new">New carrier name</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">No active SIM card found.</string>
-    <string name="carrier_name_unsupported">This feature needs Android 11 or newer.</string>
+    <string name="carrier_name_unsupported">This feature needs Android 12 or newer.</string>
     <string name="carrier_name_needs_phone_permission">Reading your SIM slots needs the phone permission.</string>
-    <string name="carrier_name_note">The name is applied as a carrier config override and survives reboots. Use Reset to restore the original name.</string>
+    <string name="carrier_name_note">The name is applied as a carrier config override until the device restarts. Use Reset to restore the original name.</string>
     <string name="otp_copier">OTP Copier</string>
     <string name="otp_copier_desc">Copy verification codes from notifications automatically</string>
     <string name="otp_copier_enable">Copy codes automatically</string>

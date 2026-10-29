@@ -650,9 +650,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="carrier_name_new">Yeni operatör adı</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">Etkin SIM kart bulunamadı.</string>
-    <string name="carrier_name_unsupported">Bu özellik Android 11 veya daha yenisini gerektirir.</string>
+    <string name="carrier_name_unsupported">Bu özellik Android 12 veya daha yenisini gerektirir.</string>
     <string name="carrier_name_needs_phone_permission">SIM yuvalarınızı okumak için telefon izni gerekir.</string>
-    <string name="carrier_name_note">Ad, operatör yapılandırmasının üzerine yazılarak uygulanır ve yeniden başlatmadan sonra da korunur. Özgün adı geri getirmek için Sıfırla\'ya dokunun.</string>
+    <string name="carrier_name_note">Ad, operatör yapılandırmasının üzerine yazılarak uygulanır ve cihaz yeniden başlatılana kadar geçerli kalır. Özgün adı geri getirmek için Sıfırla\'ya dokunun.</string>
 
     <string name="contact_developer">Geliştiriciye Ulaşın</string>
     <string name="contact_developer_desc">Görüş, öneri ve şikayetleriniz için lütfen bize ulaşın</string>

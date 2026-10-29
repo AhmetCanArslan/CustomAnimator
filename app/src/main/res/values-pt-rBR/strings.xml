@@ -650,9 +650,9 @@ Duração do Animador: %3$.2f</string>
     <string name="carrier_name_new">Novo nome da operadora</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">Nenhum chip ativo encontrado.</string>
-    <string name="carrier_name_unsupported">Este recurso precisa do Android 11 ou mais recente.</string>
+    <string name="carrier_name_unsupported">Este recurso precisa do Android 12 ou mais recente.</string>
     <string name="carrier_name_needs_phone_permission">Ler os slots do chip exige a permissão de telefone.</string>
-    <string name="carrier_name_note">O nome é aplicado como substituição da configuração da operadora e continua após reiniciar. Use Redefinir para restaurar o nome original.</string>
+    <string name="carrier_name_note">O nome é aplicado como substituição da configuração da operadora até o dispositivo reiniciar. Use Redefinir para restaurar o nome original.</string>
 
     <string name="contact_developer">Falar com o desenvolvedor</string>
     <string name="contact_developer_desc">Fale conosco com suas opiniões, sugestões e reclamações</string>

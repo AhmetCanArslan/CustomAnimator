@@ -650,9 +650,9 @@ Duración del Animador: %3$.2f</string>
     <string name="carrier_name_new">Nuevo nombre del operador</string>
     <string name="carrier_name_slot">SIM %1$d (%2$s)</string>
     <string name="carrier_name_no_sim">No se encontró ninguna SIM activa.</string>
-    <string name="carrier_name_unsupported">Esta función necesita Android 11 o una versión más reciente.</string>
+    <string name="carrier_name_unsupported">Esta función necesita Android 12 o una versión más reciente.</string>
     <string name="carrier_name_needs_phone_permission">Leer las ranuras SIM requiere el permiso de teléfono.</string>
-    <string name="carrier_name_note">El nombre se aplica como un reemplazo de la configuración del operador y se mantiene tras reiniciar. Usa Restablecer para recuperar el nombre original.</string>
+    <string name="carrier_name_note">El nombre se aplica como un reemplazo de la configuración del operador hasta que se reinicie el dispositivo. Usa Restablecer para recuperar el nombre original.</string>
 
     <string name="contact_developer">Contactar al desarrollador</string>
     <string name="contact_developer_desc">Escríbenos con tus opiniones, sugerencias y quejas</string>
