@@ -2,37 +2,23 @@ package com.arslan.customanimator.utils
 
 import android.app.ActivityOptions
 import android.app.PendingIntent
-import android.content.ComponentName
 import android.content.Context
-import android.content.ServiceConnection
 import android.graphics.BitmapFactory
 import android.os.Build
-import android.os.IBinder
-import android.util.Log
 import androidx.annotation.ChecksSdkIntAtLeast
-import androidx.annotation.RequiresApi
 import com.arslan.customanimator.data.AppShortcutInfo
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.data.ShortcutType
 import com.arslan.customanimator.data.StaticShortcut
 import com.arslan.customanimator.service.IShortcutUserService
 import com.arslan.customanimator.service.ShortcutUserService
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
-import rikka.shizuku.Shizuku
-import kotlin.coroutines.resume
 
 object AppShortcutManager {
 
-    private const val TAG = "AppShortcutManager"
-    private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 4
-
-    private val lock = Mutex()
-    private var service: IShortcutUserService? = null
+    private val service = ShizukuUserService(
+        ShortcutUserService::class.java, "shortcut", daemon = true, revision = 4, IShortcutUserService.Stub::asInterface
+    )
 
     @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
     fun isSupported(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -120,61 +106,9 @@ object AppShortcutManager {
     }
 
     private suspend fun <T> withService(context: Context, block: (IShortcutUserService) -> T?): T? {
-        if (!isSupported() || !ShizukuHelper.hasShizukuPermission()) return null
-        val binder = lock.withLock { obtainService(context) } ?: return null
-        return try {
-            block(binder)
-        } catch (e: Throwable) {
-            Log.e(TAG, "Privileged shortcut call failed", e)
-            lock.withLock { service = null }
-            null
-        }
+        if (!isSupported()) return null
+        return service.call(context, block)
     }
-
-    @RequiresApi(Build.VERSION_CODES.S)
-    private suspend fun obtainService(context: Context): IShortcutUserService? {
-        service?.let { cached ->
-            if (runCatching { cached.asBinder().pingBinder() }.getOrDefault(false)) return cached
-            service = null
-        }
-        val args = Shizuku.UserServiceArgs(
-            ComponentName(context.packageName, ShortcutUserService::class.java.name)
-        )
-            .daemon(true)
-            .processNameSuffix("shortcut")
-            .debuggable(false)
-            .version(SERVICE_VERSION)
-        return try {
-            withTimeout(BIND_TIMEOUT_MS) { bind(args) }
-        } catch (e: Throwable) {
-            Log.d(TAG, "Shortcut service bind failed: ${e.message}")
-            null
-        }
-    }
-
-    private suspend fun bind(args: Shizuku.UserServiceArgs): IShortcutUserService? =
-        suspendCancellableCoroutine { continuation ->
-            val connection = object : ServiceConnection {
-                override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                    if (!continuation.isActive) return
-                    val bound = binder?.takeIf { it.pingBinder() }
-                        ?.let { IShortcutUserService.Stub.asInterface(it) }
-                    service = bound
-                    continuation.resume(bound)
-                }
-
-                override fun onServiceDisconnected(name: ComponentName?) {
-                    service = null
-                    if (continuation.isActive) continuation.resume(null)
-                }
-            }
-            try {
-                Shizuku.bindUserService(args, connection)
-            } catch (e: Throwable) {
-                Log.e(TAG, "bindUserService failed", e)
-                if (continuation.isActive) continuation.resume(null)
-            }
-        }
 
     internal fun parseShortcuts(json: String): List<AppShortcutInfo>? = runCatching {
         val root = JSONObject(json)
