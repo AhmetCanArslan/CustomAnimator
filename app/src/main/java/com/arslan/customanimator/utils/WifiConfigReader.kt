@@ -1,10 +1,7 @@
 package com.arslan.customanimator.utils
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.ServiceConnection
 import android.net.wifi.WifiManager
-import android.os.IBinder
 import android.util.Log
 import androidx.annotation.StringRes
 import com.arslan.customanimator.R
@@ -13,18 +10,15 @@ import com.arslan.customanimator.data.WifiSecurity
 import com.arslan.customanimator.data.unquoteWifiValue
 import com.arslan.customanimator.service.IWifiUserService
 import com.arslan.customanimator.service.WifiUserService
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
-import rikka.shizuku.Shizuku
-import kotlin.coroutines.resume
 
 object WifiConfigReader {
 
     private const val TAG = "WifiConfigReader"
-    private const val BIND_TIMEOUT_MS = 15_000L
-    private const val SERVICE_VERSION = 1
+
+    private val service = ShizukuUserService(
+        WifiUserService::class.java, "wifi", daemon = false, revision = 1, IWifiUserService.Stub::asInterface
+    )
 
     private val CONNECTED_SSID = Regex("""connected to "(.*?)"""")
 
@@ -44,64 +38,12 @@ object WifiConfigReader {
         return if (networks != null) Result.Success(networks) else Result.Error(R.string.wifi_unreadable)
     }
 
-    private suspend fun readThroughUserService(context: Context): List<WifiNetwork>? {
-        var connection: ServiceConnection? = null
-        val args = Shizuku.UserServiceArgs(
-            ComponentName(context.packageName, WifiUserService::class.java.name)
-        )
-            .daemon(false)
-            .processNameSuffix("wifi")
-            .debuggable(false)
-            .version(SERVICE_VERSION)
-
-        return try {
-            val json = withTimeout(BIND_TIMEOUT_MS) {
-                suspendCancellableCoroutine<String?> { continuation ->
-                    val serviceConnection = object : ServiceConnection {
-                        override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                            if (!continuation.isActive) return
-                            val result = try {
-                                if (binder == null || !binder.pingBinder()) {
-                                    null
-                                } else {
-                                    IWifiUserService.Stub.asInterface(binder).savedNetworksJson
-                                }
-                            } catch (e: Throwable) {
-                                Log.e(TAG, "User service call failed", e)
-                                null
-                            }
-                            continuation.resume(result)
-                        }
-
-                        override fun onServiceDisconnected(name: ComponentName?) {
-                            if (continuation.isActive) continuation.resume(null)
-                        }
-                    }
-                    connection = serviceConnection
-                    continuation.invokeOnCancellation { unbind(args, serviceConnection) }
-                    try {
-                        Shizuku.bindUserService(args, serviceConnection)
-                    } catch (e: Throwable) {
-                        Log.e(TAG, "bindUserService failed", e)
-                        if (continuation.isActive) continuation.resume(null)
-                    }
-                }
-            }
-            json?.let(::parseNetworks)
-        } catch (e: TimeoutCancellationException) {
-            Log.d(TAG, "Privileged read timed out")
-            null
-        } catch (e: Throwable) {
-            Log.e(TAG, "Privileged read failed", e)
-            null
+    private suspend fun readThroughUserService(context: Context): List<WifiNetwork>? =
+        try {
+            service.call(context) { it.savedNetworksJson }?.let(::parseNetworks)
         } finally {
-            connection?.let { unbind(args, it) }
+            service.unbind()
         }
-    }
-
-    private fun unbind(args: Shizuku.UserServiceArgs, connection: ServiceConnection) {
-        runCatching { Shizuku.unbindUserService(args, connection, true) }
-    }
 
     private fun parseNetworks(json: String): List<WifiNetwork>? {
         return try {
