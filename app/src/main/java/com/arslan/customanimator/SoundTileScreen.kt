@@ -21,7 +21,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.utils.SoundTileAction
 import com.arslan.customanimator.utils.SoundTileActions
 import com.arslan.customanimator.utils.SoundTilePrefs
@@ -75,7 +74,7 @@ fun SoundTileScreen(
                 )
             }
 
-            item { SoundSectionTitle(stringResource(R.string.sound_tile_section_actions)) }
+            item { LabelSectionTitle(stringResource(R.string.sound_tile_section_actions)) }
 
             item {
                 SoundCard {
@@ -105,7 +104,7 @@ fun SoundTileScreen(
                 }
             }
 
-            item { SoundSectionTitle(stringResource(R.string.sound_tile_section_collapse)) }
+            item { LabelSectionTitle(stringResource(R.string.sound_tile_section_collapse)) }
 
             item {
                 SoundCard {
@@ -274,17 +273,6 @@ private fun FlowChips(content: @Composable FlowRowScope.() -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content
-    )
-}
-
-@Composable
-private fun SoundSectionTitle(title: String) {
-    Text(
-        text = title.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
-        letterSpacing = 0.5.sp,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 4.dp)
     )
 }
 

@@ -142,7 +142,7 @@ fun ScreenshotActionsScreen(
                 }
             }
 
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_tile)) }
+            item { LabelSectionTitle(stringResource(R.string.screenshot_section_tile)) }
 
             item {
                 ScreenshotCard {
@@ -154,7 +154,7 @@ fun ScreenshotActionsScreen(
                 }
             }
 
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_feedback)) }
+            item { LabelSectionTitle(stringResource(R.string.screenshot_section_feedback)) }
 
             item {
                 ScreenshotCard {
@@ -171,7 +171,7 @@ fun ScreenshotActionsScreen(
                 }
             }
 
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_notification)) }
+            item { LabelSectionTitle(stringResource(R.string.screenshot_section_notification)) }
 
             item {
                 ScreenshotCard {
@@ -254,7 +254,7 @@ fun ScreenshotActionsScreen(
                 }
             }
 
-            item { ScreenshotSectionTitle(stringResource(R.string.screenshot_section_overlay)) }
+            item { LabelSectionTitle(stringResource(R.string.screenshot_section_overlay)) }
 
             item {
                 ScreenshotCard {
@@ -409,17 +409,6 @@ private fun ScreenshotInfoRow(
             )
         }
     }
-}
-
-@Composable
-private fun ScreenshotSectionTitle(title: String) {
-    Text(
-        text = title.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
-        letterSpacing = 0.5.sp,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 4.dp)
-    )
 }
 
 @Composable
