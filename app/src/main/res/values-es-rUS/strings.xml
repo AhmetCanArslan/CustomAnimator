@@ -88,7 +88,9 @@
     <string name="show_selected_only">Mostrar solo las seleccionadas</string>
     <string name="clear">Borrar</string>
     <string name="action_succeeded">¡Listo!</string>
-    <string name="action_failed">La acción falló. Asegúrate de que Shizuku esté en ejecución y el permiso concedido.</string>
+    <string name="action_failed">La acción falló.</string>
+    <string name="action_failed_shizuku_not_running">La acción falló. Shizuku no está en ejecución.</string>
+    <string name="action_failed_shizuku_permission">La acción falló. No se concedió el permiso de Shizuku.</string>
     <string name="working">Procesando…</string>
     <string name="width_presets">Presets de Ancho Guardados</string>
     <string name="no_width_presets_saved">Aún no hay presets de ancho guardados. ¡Toca + para crear uno!</string>

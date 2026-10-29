@@ -25,6 +25,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +68,7 @@ fun CarrierNameScreen(
             val message = when (outcome) {
                 is CarrierNameManager.Outcome.Success -> resources.getString(R.string.action_succeeded)
                 is CarrierNameManager.Outcome.Failure -> {
-                    val failureText = resources.getString(R.string.action_failed)
+                    val failureText = ShizukuHelper.failureMessage(context)
                     outcome.message?.let { "$failureText: $it" } ?: failureText
                 }
             }

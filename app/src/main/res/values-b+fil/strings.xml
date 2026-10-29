@@ -88,7 +88,9 @@
     <string name="show_selected_only">Ipakita lang ang napili</string>
     <string name="clear">I-clear</string>
     <string name="action_succeeded">Tapos na!</string>
-    <string name="action_failed">Nabigo ang aksyon. Tiyaking tumatakbo ang Shizuku at ipinagkaloob na ang pahintulot.</string>
+    <string name="action_failed">Nabigo ang aksyon.</string>
+    <string name="action_failed_shizuku_not_running">Nabigo ang aksyon. Hindi tumatakbo ang Shizuku.</string>
+    <string name="action_failed_shizuku_permission">Nabigo ang aksyon. Hindi pa naibibigay ang pahintulot ng Shizuku.</string>
     <string name="working">Ginagawa…</string>
     <string name="width_presets">Mga Naka-save na Width Preset</string>
     <string name="no_width_presets_saved">Wala pang naka-save na width preset. I-tap ang + para gumawa ng isa!</string>

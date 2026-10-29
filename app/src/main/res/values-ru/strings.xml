@@ -88,7 +88,9 @@
     <string name="show_selected_only">Показывать только выбранные</string>
     <string name="clear">Очистить</string>
     <string name="action_succeeded">Готово!</string>
-    <string name="action_failed">Действие не выполнено. Убедитесь, что Shizuku запущен и разрешение предоставлено.</string>
+    <string name="action_failed">Действие не выполнено.</string>
+    <string name="action_failed_shizuku_not_running">Действие не выполнено. Shizuku не запущен.</string>
+    <string name="action_failed_shizuku_permission">Действие не выполнено. Разрешение Shizuku не предоставлено.</string>
     <string name="working">Выполняется…</string>
     <string name="width_presets">Сохранённые пресеты ширины</string>
     <string name="no_width_presets_saved">Пресеты ширины ещё не сохранены. Нажмите +, чтобы создать!</string>

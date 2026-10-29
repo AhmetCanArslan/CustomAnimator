@@ -88,7 +88,9 @@
     <string name="show_selected_only">Tampilkan yang dipilih saja</string>
     <string name="clear">Hapus</string>
     <string name="action_succeeded">Selesai!</string>
-    <string name="action_failed">Tindakan gagal. Pastikan Shizuku berjalan dan izin telah diberikan.</string>
+    <string name="action_failed">Tindakan gagal.</string>
+    <string name="action_failed_shizuku_not_running">Tindakan gagal. Shizuku tidak berjalan.</string>
+    <string name="action_failed_shizuku_permission">Tindakan gagal. Izin Shizuku belum diberikan.</string>
     <string name="working">Memproses…</string>
     <string name="width_presets">Preset Lebar Tersimpan</string>
     <string name="no_width_presets_saved">Belum ada preset lebar yang disimpan. Ketuk + untuk membuat satu!</string>

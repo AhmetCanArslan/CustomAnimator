@@ -243,7 +243,9 @@
     <string name="show_selected_only">Show selected only</string>
     <string name="clear">Clear</string>
     <string name="action_succeeded">Done!</string>
-    <string name="action_failed">Action failed. Make sure Shizuku is running and permission is granted.</string>
+    <string name="action_failed">Action failed.</string>
+    <string name="action_failed_shizuku_not_running">Action failed. Shizuku is not running.</string>
+    <string name="action_failed_shizuku_permission">Action failed. Shizuku permission is not granted.</string>
     <string name="working">Working…</string>
     <string name="width_presets">Saved Width Presets</string>
     <string name="no_width_presets_saved">No width presets saved yet. Tap + to create one!</string>

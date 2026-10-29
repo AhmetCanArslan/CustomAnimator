@@ -10,6 +10,7 @@ import android.os.SystemClock
 import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.arslan.customanimator.R
 import rikka.shizuku.Shizuku
 import java.io.BufferedReader
 import java.io.InputStream
@@ -49,6 +50,14 @@ object ShizukuHelper {
     }
     
     fun isShizukuAvailable(): Boolean = runCatching { Shizuku.pingBinder() }.getOrDefault(false)
+
+    fun failureMessage(context: Context): String = context.getString(
+        when {
+            !isShizukuAvailable() -> R.string.action_failed_shizuku_not_running
+            !hasShizukuPermission() -> R.string.action_failed_shizuku_permission
+            else -> R.string.action_failed
+        }
+    )
 
     fun hasShizukuPermission(): Boolean {
         awaitStartupBinder()

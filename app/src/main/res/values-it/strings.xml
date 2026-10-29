@@ -87,7 +87,9 @@
     <string name="show_selected_only">Mostra solo selezionate</string>
     <string name="clear">Cancella</string>
     <string name="action_succeeded">Fatto!</string>
-    <string name="action_failed">Azione non riuscita. Assicurati che Shizuku sia in esecuzione e che l\'autorizzazione sia concessa.</string>
+    <string name="action_failed">Azione non riuscita.</string>
+    <string name="action_failed_shizuku_not_running">Azione non riuscita. Shizuku non è in esecuzione.</string>
+    <string name="action_failed_shizuku_permission">Azione non riuscita. L\'autorizzazione Shizuku non è stata concessa.</string>
     <string name="working">Elaborazione…</string>
     <string name="width_presets">Preset di larghezza salvati</string>
     <string name="no_width_presets_saved">Nessun preset di larghezza salvato. Tocca + per crearne uno!</string>

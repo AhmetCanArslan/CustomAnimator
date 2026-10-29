@@ -88,7 +88,9 @@
     <string name="show_selected_only">Yalnızca seçilenleri göster</string>
     <string name="clear">Temizle</string>
     <string name="action_succeeded">Tamamlandı!</string>
-    <string name="action_failed">İşlem başarısız. Shizuku\'nun çalıştığından ve izin verildiğinden emin olun.</string>
+    <string name="action_failed">İşlem başarısız.</string>
+    <string name="action_failed_shizuku_not_running">İşlem başarısız. Shizuku çalışmıyor.</string>
+    <string name="action_failed_shizuku_permission">İşlem başarısız. Shizuku izni verilmemiş.</string>
     <string name="working">İşleniyor…</string>
     <string name="width_presets">Kaydedilmiş Genişlik Ön Ayarları</string>
     <string name="no_width_presets_saved">Henüz kaydedilmiş genişlik ön ayarı yok. Oluşturmak için + simgesine dokunun!</string>

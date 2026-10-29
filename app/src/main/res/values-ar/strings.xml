@@ -233,7 +233,9 @@
     <string name="show_selected_only">إظهار المحدد فقط</string>
     <string name="clear">مسح</string>
     <string name="action_succeeded">تم!</string>
-    <string name="action_failed">فشل الإجراء. تأكد من أن شيزوكو يعمل وأن الإذن ممنوح.</string>
+    <string name="action_failed">فشل الإجراء.</string>
+    <string name="action_failed_shizuku_not_running">فشل الإجراء. شيزوكو لا يعمل.</string>
+    <string name="action_failed_shizuku_permission">فشل الإجراء. لم يُمنح إذن شيزوكو.</string>
     <string name="working">جارٍ العمل…</string>
     <string name="width_presets">إعدادات العرض المحفوظة</string>
     <string name="no_width_presets_saved">لا توجد إعدادات عرض محفوظة بعد. اضغط + لإنشاء واحد!</string>
