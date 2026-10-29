@@ -1,6 +1,7 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import com.arslan.customanimator.R
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -32,6 +33,25 @@ class NoShizukuResilienceTest {
     fun shizukuIsReportedUnavailableWithoutABinder() {
         assertFalse(ShizukuHelper.isShizukuAvailable())
         assertFalse(ShizukuHelper.hasShizukuPermission())
+    }
+
+    @Test
+    fun failureMessageSaysShizukuIsNotRunning() {
+        assertEquals(
+            context.getString(R.string.action_failed_shizuku_not_running),
+            ShizukuHelper.failureMessage(context)
+        )
+        assertFalse(ShizukuHelper.isPermissionDeniedForever())
+    }
+
+    @Test
+    fun userServiceCallsReturnNullWithoutShizuku() {
+        assertNull(runBlocking { CarrierNameManager.resetCarrierName(context, 1) as? CarrierNameManager.Outcome.Success })
+        assertNull(runBlocking { HotspotManager.readState(context) })
+        assertEquals(
+            WifiConfigReader.Result.Error(R.string.developer_needs_shizuku, needsShizukuPermission = true),
+            runBlocking { WifiConfigReader.readSavedNetworks(context) }
+        )
     }
 
     @Test
