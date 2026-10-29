@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Layers
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
@@ -86,7 +85,6 @@ fun ToolsScreenContent(
 
     var canWriteSystemSettings by remember { mutableStateOf(ShizukuHelper.canWriteSystemSettings(context)) }
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
-    var clockSecondsEnabled by remember { mutableStateOf(DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)) }
     var rotationSuggestionsDisabled by remember { mutableStateOf(DeveloperOptionsManager.isRotationSuggestionsDisabled(contentResolver)) }
     var highVolumeWarningDisabled by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningDisabled(context)) }
     var highVolumeWarningPending by remember { mutableStateOf(DeveloperOptionsManager.isHighVolumeWarningPendingRestart(context)) }
@@ -99,7 +97,6 @@ fun ToolsScreenContent(
             if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
                 canWriteSystemSettings = ShizukuHelper.canWriteSystemSettings(context)
                 fancyImeDisabled = DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)
-                clockSecondsEnabled = DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
                 rotationSuggestionsDisabled = DeveloperOptionsManager.isRotationSuggestionsDisabled(contentResolver)
                 DeveloperOptionsManager.reapplyHighVolumeWarning(context)
                 highVolumeWarningDisabled = DeveloperOptionsManager.isHighVolumeWarningDisabled(context)
@@ -378,25 +375,6 @@ fun ToolsScreenContent(
                             )
                         }
                     )
-                },
-                {
-                    ToggleRow(
-                        icon = Icons.Filled.Schedule,
-                        title = stringResource(R.string.show_clock_seconds),
-                        description = stringResource(R.string.show_clock_seconds_desc),
-                        checked = clockSecondsEnabled,
-                        enabled = secureToggleEnabled,
-                        onCheckedChange = { newValue ->
-                            applyToggle(
-                                newValue,
-                                { clockSecondsEnabled = it },
-                                { DeveloperOptionsManager.setClockSeconds(context, contentResolver, newValue) }
-                            )
-                        }
-                    )
-                    if (DeveloperOptionsManager.isOneUi()) {
-                        InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note), dismissKey = "clock_seconds_samsung")
-                    }
                 },
                 {
                     ToggleRow(

@@ -55,11 +55,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.StatusBarIconsManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
@@ -145,6 +147,7 @@ private val statusBarIconSections = listOf(
 fun StatusBarIconsScreen(
     onBack: () -> Unit,
     hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -155,13 +158,33 @@ fun StatusBarIconsScreen(
 
     var hiddenSlots by remember { mutableStateOf(emptySet<String>()) }
     var isLoading by remember { mutableStateOf(true) }
+    var clockSecondsEnabled by remember { mutableStateOf(false) }
 
     LaunchedEffect(hasShizukuPermission) {
         val current = withContext(Dispatchers.IO) {
             StatusBarIconsManager.getHiddenSlots(contentResolver)
         }
+        val clockSeconds = withContext(Dispatchers.IO) {
+            DeveloperOptionsManager.isClockSecondsEnabled(contentResolver)
+        }
         hiddenSlots = current
+        clockSecondsEnabled = clockSeconds
         isLoading = false
+    }
+
+    val applyClockSeconds: (Boolean) -> Unit = { enabled ->
+        clockSecondsEnabled = enabled
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) {
+                DeveloperOptionsManager.setClockSeconds(context, contentResolver, enabled)
+            }
+            if (success) {
+                maybeShowInterstitial(context)
+            } else {
+                clockSecondsEnabled = !enabled
+                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     val applySlot: (String, Boolean) -> Unit = { slot, visible ->
@@ -254,6 +277,24 @@ fun StatusBarIconsScreen(
                             enabled = hasShizukuPermission && !isLoading,
                             onClick = { applyAll(false) }
                         )
+                    }
+                }
+            }
+
+            item {
+                AppCard(contentPadding = 0.dp) {
+                    Column {
+                        ToggleRow(
+                            icon = Icons.Filled.Schedule,
+                            title = stringResource(R.string.show_clock_seconds),
+                            description = stringResource(R.string.show_clock_seconds_desc),
+                            checked = clockSecondsEnabled,
+                            enabled = (hasShizukuPermission || hasWriteSecureSettings) && !isLoading,
+                            onCheckedChange = applyClockSeconds
+                        )
+                        if (DeveloperOptionsManager.isOneUi()) {
+                            InfoNote(text = stringResource(R.string.show_clock_seconds_samsung_note), dismissKey = "clock_seconds_samsung")
+                        }
                     }
                 }
             }
