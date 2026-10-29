@@ -108,6 +108,9 @@ object ShizukuHelper {
         }
     }
 
+    fun isPermissionDeniedForever(): Boolean =
+        runCatching { Shizuku.pingBinder() && Shizuku.shouldShowRequestPermissionRationale() }.getOrDefault(false)
+
     fun requestShizukuPermission(context: Context) {
         try {
             Shizuku.requestPermission(0)

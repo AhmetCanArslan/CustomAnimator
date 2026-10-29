@@ -69,6 +69,10 @@ object ShizukuState {
     }
 
     fun requestPermission(context: Context) {
+        if (ShizukuHelper.isPermissionDeniedForever()) {
+            SetupHelper.openShizukuApp(context)
+            return
+        }
         ShizukuHelper.requestShizukuPermission(context)
         ShizukuHelper.markShizukuRequested(context)
     }
@@ -77,7 +81,8 @@ object ShizukuState {
         val context = appContext ?: return
         refresh()
         if (!ShizukuHelper.hasShizukuPermission() && !ShizukuHelper.hasShizukuBeenRequested(context)) {
-            requestPermission(context)
+            ShizukuHelper.requestShizukuPermission(context)
+            ShizukuHelper.markShizukuRequested(context)
         }
         scope.launch { AppShortcutManager.warmUp(context) }
     }
