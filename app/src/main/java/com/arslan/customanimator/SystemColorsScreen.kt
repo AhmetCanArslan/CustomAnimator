@@ -56,6 +56,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.ShizukuHelper
 
 private const val PALETTE_SETTLE_MS = 600L
 
@@ -106,7 +107,7 @@ fun SystemColorsScreen(
     LaunchedEffect(hasShizukuPermission) { state.load(context) }
 
     val showFailure: () -> Unit = {
-        Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
     }
     val writePalette: (SystemPalette) -> Unit = { palette ->
         coroutineScope.runAction(context, { SystemColorsManager.applyPalette(context, palette) }) { success ->

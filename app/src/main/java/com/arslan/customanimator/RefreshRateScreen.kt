@@ -29,6 +29,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -94,7 +95,7 @@ fun RefreshRateScreen(
             } else {
                 minRate = previousMin
                 peakRate = previousPeak
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }

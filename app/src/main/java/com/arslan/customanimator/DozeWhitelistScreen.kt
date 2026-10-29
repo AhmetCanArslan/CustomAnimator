@@ -19,6 +19,7 @@ import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +55,7 @@ fun DozeWhitelistScreen(
                 maybeShowInterstitial(context)
             } else {
                 whitelisted = previous
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -24,6 +24,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
+import com.arslan.customanimator.utils.ShizukuHelper
 
 private const val DRIVER_NATIVE = "native"
 private const val DRIVER_ANGLE = "angle"
@@ -58,7 +59,7 @@ fun GraphicsApiOverrideScreen(
             }
             if (!success) {
                 selections = previous
-                Toast.makeText(context, resources.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }
