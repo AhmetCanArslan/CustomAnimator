@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
+import com.arslan.customanimator.utils.ShizukuUserService
 import rikka.shizuku.Shizuku
 
 class AppMonitorConnection(
@@ -14,13 +15,9 @@ class AppMonitorConnection(
     private val onConnectionLost: () -> Unit
 ) {
 
-    private val args = Shizuku.UserServiceArgs(
-        ComponentName(context.packageName, AppMonitorUserService::class.java.name)
+    private val args = ShizukuUserService.args(
+        context, AppMonitorUserService::class.java, "monitor", daemon = false, revision = SERVICE_VERSION
     )
-        .daemon(false)
-        .processNameSuffix("monitor")
-        .debuggable(false)
-        .version(SERVICE_VERSION)
 
     private var bound = false
 

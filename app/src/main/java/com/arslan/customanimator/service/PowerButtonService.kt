@@ -26,6 +26,7 @@ import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.ButtonRemapperManager
 import com.arslan.customanimator.utils.ButtonTrigger
 import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.utils.ShizukuUserService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -76,11 +77,7 @@ class PowerButtonService : Service() {
     private var userService: IPowerButtonUserService? = null
 
     private val args by lazy {
-        Shizuku.UserServiceArgs(ComponentName(packageName, PowerButtonUserService::class.java.name))
-            .daemon(false)
-            .processNameSuffix("power_button")
-            .debuggable(false)
-            .version(SERVICE_VERSION)
+        ShizukuUserService.args(this, PowerButtonUserService::class.java, "power_button", daemon = false, revision = SERVICE_VERSION)
     }
 
     private val listener = object : IPowerButtonListener.Stub() {
