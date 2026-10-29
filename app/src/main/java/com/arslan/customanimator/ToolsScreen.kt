@@ -208,7 +208,6 @@ fun ToolsScreenContent(
                         onClick = onNavigateToAutoActions
                     )
                 }
-            
             )
 
             cardSection(
@@ -287,29 +286,6 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.button_remapper),
                         description = stringResource(R.string.button_remapper_desc),
                         onClick = onNavigateToButtonRemapper
-                    )
-                },
-                {
-                    ActionRow(
-                        icon = Icons.Filled.RestartAlt,
-                        title = stringResource(R.string.restart_system_ui),
-                        description = stringResource(R.string.restart_system_ui_desc),
-                        buttonLabel = stringResource(R.string.restart),
-                        enabled = hasShizukuPermission,
-                        onClick = {
-                            coroutineScope.launch {
-                                val success = withContext(Dispatchers.IO) {
-                                    DeveloperOptionsManager.restartSystemUi()
-                                }
-                                if (!success) {
-                                    Toast.makeText(
-                                        context,
-                                        resources.getString(R.string.action_failed),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
                     )
                 }
             )
@@ -498,8 +474,30 @@ fun ToolsScreenContent(
                             }
                         }
                     )
+                },
+                {
+                    ActionRow(
+                        icon = Icons.Filled.RestartAlt,
+                        title = stringResource(R.string.restart_system_ui),
+                        description = stringResource(R.string.restart_system_ui_desc),
+                        buttonLabel = stringResource(R.string.restart),
+                        enabled = hasShizukuPermission,
+                        onClick = {
+                            coroutineScope.launch {
+                                val success = withContext(Dispatchers.IO) {
+                                    DeveloperOptionsManager.restartSystemUi()
+                                }
+                                if (!success) {
+                                    Toast.makeText(
+                                        context,
+                                        resources.getString(R.string.action_failed),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    )
                 }
-            
             )
 
             item {
