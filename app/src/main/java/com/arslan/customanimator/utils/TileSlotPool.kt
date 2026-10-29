@@ -55,4 +55,13 @@ abstract class TileSlotPool(private val slotClasses: List<Class<out TileService>
             )
         }
     }
+
+    fun requestAddTile(context: Context, slot: Int, label: String, iconKey: String) {
+        requestAddTile(
+            context,
+            slot,
+            label,
+            Icon.createWithResource(context.applicationContext, TerminalTileIcons.resFor(iconKey))
+        )
+    }
 }

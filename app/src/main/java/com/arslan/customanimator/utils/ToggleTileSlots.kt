@@ -1,7 +1,6 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
-import android.graphics.drawable.Icon
 import com.arslan.customanimator.service.ToggleTileService1
 import com.arslan.customanimator.service.ToggleTileService10
 import com.arslan.customanimator.service.ToggleTileService11
@@ -34,14 +33,5 @@ object ToggleTileSlots : TileSlotPool(
 
     fun sync(context: Context, manager: ToggleTileManager) {
         sync(context, manager.getTiles().map { it.slot }.toSet())
-    }
-
-    fun requestAddTile(context: Context, slot: Int, label: String, iconKey: String) {
-        requestAddTile(
-            context,
-            slot,
-            label,
-            Icon.createWithResource(context.applicationContext, TerminalTileIcons.resFor(iconKey))
-        )
     }
 }

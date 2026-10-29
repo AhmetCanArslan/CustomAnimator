@@ -1,7 +1,6 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
-import android.graphics.drawable.Icon
 import com.arslan.customanimator.service.TerminalTileService1
 import com.arslan.customanimator.service.TerminalTileService2
 import com.arslan.customanimator.service.TerminalTileService3
@@ -20,14 +19,5 @@ object TerminalTileSlots : TileSlotPool(
 
     fun sync(context: Context, presetManager: TerminalPresetManager) {
         sync(context, presetManager.getAllPresets().mapNotNull { it.tile?.slot }.toSet())
-    }
-
-    fun requestAddTile(context: Context, slot: Int, label: String, iconKey: String) {
-        requestAddTile(
-            context,
-            slot,
-            label,
-            Icon.createWithResource(context.applicationContext, TerminalTileIcons.resFor(iconKey))
-        )
     }
 }
