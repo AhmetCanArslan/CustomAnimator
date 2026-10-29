@@ -228,7 +228,7 @@ class NoShizukuResilienceTest {
     @Test
     fun debloatStoreRemembersAndForgetsRemovedPackages() {
         val store = DebloatStore(context)
-        store.clearAll()
+        store.all().forEach { store.forget(it.packageName) }
         store.record("com.example.bloat", "Bloat", true)
         store.record("com.example.other", "Other", false)
 
@@ -239,7 +239,7 @@ class NoShizukuResilienceTest {
 
         store.forget("com.example.bloat")
         assertEquals(1, store.all().size)
-        store.clearAll()
+        store.forget("com.example.other")
         assertTrue(store.all().isEmpty())
     }
 }

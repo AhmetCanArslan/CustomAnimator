@@ -62,11 +62,6 @@ class DebloatStore(context: Context) {
         return records
     }
 
-    @Synchronized
-    fun clearAll() {
-        prefs.edit().remove(KEY_ENTRIES).apply()
-    }
-
     private companion object {
         const val PREFS_NAME = "debloater_state"
         const val KEY_ENTRIES = "entries"
