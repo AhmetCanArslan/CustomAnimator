@@ -1,6 +1,8 @@
 package com.arslan.customanimator.service
 
 import com.arslan.customanimator.service.VolumeKeyDetector.Companion.COMBO_WINDOW_MS
+import com.arslan.customanimator.service.VolumeKeyDetector.Companion.KEY_REPEAT_DELAY_MS
+import com.arslan.customanimator.service.VolumeKeyDetector.Companion.KEY_REPEAT_TIMEOUT_MS
 import com.arslan.customanimator.service.VolumeKeyDetector.Companion.LONG_PRESS_MS
 import com.arslan.customanimator.service.VolumeKeyDetector.Companion.VOLUME_DOWN
 import com.arslan.customanimator.service.VolumeKeyDetector.Companion.VOLUME_UP
@@ -24,6 +26,10 @@ class VolumeKeyDetectorTest {
 
                 override fun releaseKey(code: Int) {
                     events += "up $code"
+                }
+
+                override fun repeatKey(code: Int) {
+                    events += "repeat $code"
                 }
 
                 override fun trigger(trigger: ButtonTrigger) {
@@ -65,6 +71,23 @@ class VolumeKeyDetectorTest {
         detector.onTimeout(COMBO_WINDOW_MS)
         detector.onUp(VOLUME_UP, 600)
         assertEquals(listOf("down $VOLUME_UP", "up $VOLUME_UP"), events)
+    }
+
+    @Test
+    fun heldKeyRepeatsUntilReleased() {
+        detector.triggers = setOf(ButtonTrigger.VOLUME_COMBO)
+        detector.onDown(VOLUME_UP, 0)
+        detector.onTimeout(COMBO_WINDOW_MS)
+        detector.onTimeout(KEY_REPEAT_TIMEOUT_MS - 1)
+        assertEquals(listOf("down $VOLUME_UP"), events)
+
+        detector.onTimeout(KEY_REPEAT_TIMEOUT_MS)
+        detector.onTimeout(KEY_REPEAT_TIMEOUT_MS + KEY_REPEAT_DELAY_MS)
+        detector.onUp(VOLUME_UP, KEY_REPEAT_TIMEOUT_MS + KEY_REPEAT_DELAY_MS + 10)
+        detector.onTimeout(2_000)
+
+        assertEquals(listOf("down $VOLUME_UP", "repeat $VOLUME_UP", "repeat $VOLUME_UP", "up $VOLUME_UP"), events)
+        assertEquals(PowerPressDetector.NO_DEADLINE, detector.deadline)
     }
 
     @Test
@@ -189,7 +212,7 @@ class VolumeKeyDetectorTest {
         detector.onTimeout(LONG_PRESS_MS)
         detector.onUp(VOLUME_DOWN, 600)
         detector.onPowerUp()
-        assertEquals(listOf("down $VOLUME_DOWN", "up $VOLUME_DOWN"), events)
+        assertEquals(listOf("down $VOLUME_DOWN", "repeat $VOLUME_DOWN", "up $VOLUME_DOWN"), events)
     }
 
     @Test

@@ -45,6 +45,13 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             inject(KeyEvent.changeTimeRepeat(KeyEvent.changeAction(down, KeyEvent.ACTION_UP), SystemClock.uptimeMillis(), 0))
         }
 
+        override fun repeatKey(code: Int) {
+            val down = forwardedDowns[code] ?: return
+            val repeat = KeyEvent.changeTimeRepeat(down, SystemClock.uptimeMillis(), down.repeatCount + 1)
+            forwardedDowns[code] = repeat
+            inject(repeat)
+        }
+
         override fun trigger(trigger: ButtonTrigger) {
             notifyListener { it.onVolumeTrigger(trigger.name) }
         }

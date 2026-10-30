@@ -7,6 +7,7 @@ class VolumeKeyDetector(private val output: Output) {
     interface Output {
         fun pressKey(code: Int)
         fun releaseKey(code: Int)
+        fun repeatKey(code: Int)
         fun trigger(trigger: ButtonTrigger)
     }
 
@@ -54,7 +55,7 @@ class VolumeKeyDetector(private val output: Output) {
 
     fun onTimeout(now: Long) {
         keys.filterValues { it.deadline != PowerPressDetector.NO_DEADLINE && now >= it.deadline }
-            .forEach { (code, key) -> expire(code, key) }
+            .forEach { (code, key) -> expire(code, key, now) }
     }
 
     fun onPowerDown(now: Long) {
@@ -105,25 +106,32 @@ class VolumeKeyDetector(private val output: Output) {
         }
     }
 
-    private fun expire(code: Int, key: Key) {
+    private fun expire(code: Int, key: Key, now: Long) {
+        when (key.phase) {
+            Phase.WAITING_SECOND -> tap(code)
+            Phase.FORWARDED -> {
+                key.deadline = now + KEY_REPEAT_DELAY_MS
+                output.repeatKey(code)
+            }
+            Phase.DOWN -> expireHeld(code, key)
+            Phase.SWALLOWED -> Unit
+        }
+    }
+
+    private fun expireHeld(code: Int, key: Key) {
         val longTrigger = longTriggers.getValue(code)
-        when {
-            key.phase == Phase.WAITING_SECOND -> tap(code)
-            key.phase != Phase.DOWN -> Unit
-            longTrigger in triggers -> {
-                swallow(key)
-                output.trigger(longTrigger)
-            }
-            else -> {
-                key.phase = Phase.FORWARDED
-                key.deadline = PowerPressDetector.NO_DEADLINE
-                output.pressKey(code)
-            }
+        if (longTrigger in triggers) {
+            swallow(key)
+            output.trigger(longTrigger)
+        } else {
+            key.phase = Phase.FORWARDED
+            key.deadline = key.downAt + KEY_REPEAT_TIMEOUT_MS
+            output.pressKey(code)
         }
     }
 
     private fun forward(code: Int, now: Long) {
-        keys[code] = Key(Phase.FORWARDED, now, PowerPressDetector.NO_DEADLINE)
+        keys[code] = Key(Phase.FORWARDED, now, now + KEY_REPEAT_TIMEOUT_MS)
         output.pressKey(code)
     }
 
@@ -145,6 +153,8 @@ class VolumeKeyDetector(private val output: Output) {
         const val VOLUME_UP = 115
         const val COMBO_WINDOW_MS = 100L
         const val LONG_PRESS_MS = 500L
+        const val KEY_REPEAT_TIMEOUT_MS = 400L
+        const val KEY_REPEAT_DELAY_MS = 50L
 
         private val doubleTriggers = mapOf(
             VOLUME_UP to ButtonTrigger.VOLUME_UP_DOUBLE,
