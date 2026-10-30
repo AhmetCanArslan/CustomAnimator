@@ -2,6 +2,10 @@
 
 <img src="docs/banner.jpg" alt="Custom Animator M3: animation scales, screen density and dozens of tweaks. Material 3 Expressive. No root. No ads.">
 
+<br><br>
+
+<img src="docs/icon.png" width="128" alt="Custom Animator M3 app logo">
+
 # Custom Animator M3
 
 **A Material 3 Expressive system tweaker for Android: animation scales, screen density and a toolbox of per-app and system tweaks, all without root.**
