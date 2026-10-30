@@ -1,0 +1,245 @@
+package com.riyadmondol2006.customanimator.utils
+
+import android.content.Context
+import com.riyadmondol2006.customanimator.R
+import androidx.test.core.app.ApplicationProvider
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+import com.riyadmondol2006.customanimator.data.DebloatAppInfo
+import com.riyadmondol2006.customanimator.data.DebloatGroup
+import com.riyadmondol2006.customanimator.data.DebloatRisk
+import com.riyadmondol2006.customanimator.data.DebloatState
+import com.riyadmondol2006.customanimator.data.ShortcutEntry
+import com.riyadmondol2006.customanimator.data.ShortcutType
+import kotlinx.coroutines.runBlocking
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+
+@RunWith(RobolectricTestRunner::class)
+class NoShizukuResilienceTest {
+
+    private lateinit var context: Context
+
+    @Before
+    fun setUp() {
+        context = ApplicationProvider.getApplicationContext()
+    }
+
+    @Test
+    fun shizukuIsReportedUnavailableWithoutABinder() {
+        assertFalse(ShizukuHelper.isShizukuAvailable())
+        assertFalse(ShizukuHelper.hasShizukuPermission())
+    }
+
+    @Test
+    fun failureMessageSaysShizukuIsNotRunning() {
+        assertEquals(
+            context.getString(R.string.action_failed_shizuku_not_running),
+            ShizukuHelper.failureMessage(context)
+        )
+        assertFalse(ShizukuHelper.isPermissionDeniedForever())
+    }
+
+    @Test
+    fun userServiceCallsReturnNullWithoutShizuku() {
+        assertNull(runBlocking { CarrierNameManager.resetCarrierName(context, 1) as? CarrierNameManager.Outcome.Success })
+        assertNull(runBlocking { HotspotManager.readState(context) })
+        assertEquals(
+            WifiConfigReader.Result.Error(R.string.developer_needs_shizuku, needsShizukuPermission = true),
+            runBlocking { WifiConfigReader.readSavedNetworks(context) }
+        )
+    }
+
+    @Test
+    fun shellCommandsFailSafelyInsteadOfCrashing() {
+        assertFalse(ShizukuHelper.executeShellCommand(arrayOf("echo", "hello")))
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("echo", "hello"))
+        assertFalse(result.isSuccess)
+        assertTrue(result.exitCode != 0)
+    }
+
+    @Test
+    fun shizukuShortcutsRefuseToLaunch() {
+        val command = ShortcutEntry(id = "command", type = ShortcutType.COMMAND, label = "Command", command = "echo hello")
+        val activity = ShortcutEntry(
+            id = "activity",
+            type = ShortcutType.ACTIVITY,
+            label = "Activity",
+            packageName = "com.example",
+            activityName = "com.example.Hidden",
+            viaShizuku = true
+        )
+
+        assertFalse(ShizukuHelper.isRunningAsRoot())
+        val appShortcut = ShortcutEntry(
+            id = "appShortcut",
+            type = ShortcutType.APP_SHORTCUT,
+            label = "App shortcut",
+            packageName = "com.example",
+            shortcutId = "compose"
+        )
+        assertFalse(runBlocking { ShortcutMaker.launch(context, command) })
+        assertFalse(runBlocking { ShortcutMaker.launch(context, activity) })
+        assertFalse(runBlocking { ShortcutMaker.launch(context, appShortcut) })
+        assertTrue(runBlocking { AppShortcutManager.listShortcuts(context, "com.example") }.isEmpty())
+    }
+
+    @Test
+    fun hwuiTweaksReportDefaultsAndRefuseToApply() {
+        assertEquals(HwuiTweaksManager.RENDERER_DEFAULT, HwuiTweaksManager.getRenderer())
+        assertEquals(HwuiTweaksManager.TEXTURE_CACHE_DEFAULT, HwuiTweaksManager.getTextureCacheSize())
+        assertFalse(HwuiTweaksManager.isOverdrawDebugEnabled())
+
+        assertFalse(HwuiTweaksManager.setRenderer(HwuiTweaksManager.RENDERER_SKIA_VK))
+        assertFalse(HwuiTweaksManager.setTextureCacheSize(96))
+        assertFalse(HwuiTweaksManager.setHwOverlaysDisabled(context, true))
+        assertFalse(HwuiTweaksManager.areHwOverlaysDisabled(context))
+    }
+
+    @Test
+    fun textureCacheOptionsStayOrderedAndSane() {
+        val options = HwuiTweaksManager.textureCacheOptions
+        assertEquals(HwuiTweaksManager.TEXTURE_CACHE_DEFAULT, options.first())
+        assertEquals(options.sorted(), options)
+        assertEquals(options.distinct(), options)
+        assertTrue(options.drop(1).all { it in 8..256 })
+    }
+
+    @Test
+    fun dozeWhitelistIsEmptyAndWritesFailWithoutShizuku() {
+        assertTrue(DozeWhitelistManager.getWhitelist().isEmpty())
+        assertTrue(DozeWhitelistManager.getWhitelistedPackages().isEmpty())
+        assertFalse(DozeWhitelistManager.add("com.example.app"))
+        assertFalse(DozeWhitelistManager.setWhitelisted("com.example.app", true))
+    }
+
+    @Test
+    fun gameModeRefusesToTurnOnWithoutShizukuAndStaysOff() {
+        assertFalse(GameModeController.canApply(context))
+        assertFalse(GameModeController.isActive(context))
+        assertFalse(GameModeController.setActive(context, true).succeeded)
+        assertFalse(GameModeController.isActive(context))
+    }
+
+    @Test
+    fun threadingApplyIsANoOpWithoutShizuku() {
+        val manager = AppThreadingManager(context)
+        manager.getConfigs().keys.forEach { manager.setConfig(it, AppThreadingConfig()) }
+        val config = AppThreadingConfig(ThreadAffinityMode.BIG, ThreadPriority.HIGH)
+        manager.setConfig("com.example.game", config)
+        assertFalse(manager.apply("com.example.game", config).isSuccess)
+        assertEquals(1, manager.getConfigs().size)
+    }
+
+    @Test
+    fun debloaterListsNothingAndRefusesEveryChangeWithoutShizuku() {
+        assertTrue(DebloatManager.loadApps(context).isEmpty())
+
+        val target = DebloatAppInfo(
+            packageName = "com.example.bloat",
+            label = "Bloat",
+            apkPath = null,
+            isSystemApp = true,
+            state = DebloatState.ACTIVE,
+            risk = DebloatRisk.RECOMMENDED,
+            group = DebloatGroup.PARTNER,
+            isProtected = false,
+            isRestorable = true,
+            isChangedByApp = false,
+            description = null
+        )
+
+        assertNull(DebloatManager.exportApk(target))
+        assertFalse(DebloatManager.remove(context, target))
+        assertFalse(DebloatManager.disable(context, target))
+        assertFalse(DebloatManager.restore(context, target))
+        assertEquals(0, DebloatManager.restoreAll(context))
+        assertEquals(0, DebloatManager.changedPackageCount(context))
+    }
+
+    @Test
+    fun iconChangerRefusesToInstallOrExportWithoutShizuku() {
+        val layer = android.graphics.Bitmap.createBitmap(8, 8, android.graphics.Bitmap.Config.ARGB_8888)
+        val steps = mutableListOf<IconChangerManager.Step>()
+
+        val outcome = IconChangerManager.changeIcon(context, "com.example.app", layer, 0, steps::add)
+
+        assertEquals(IconChangerManager.Outcome.NO_SHIZUKU, outcome)
+        assertEquals(IconChangerManager.Outcome.NO_SHIZUKU, IconChangerManager.installBlocker(context, "com.example.app"))
+        assertTrue(steps.isEmpty())
+        assertNull(IconChangerManager.exportApk(context, "com.example.app", layer, 0))
+        assertFalse(IconChangerManager.keepsData(context, "com.example.app"))
+    }
+
+    @Test
+    fun apkInstallerRefusesToInstallWithoutShizuku() {
+        val app = com.riyadmondol2006.customanimator.data.ApkInstallerPackage(
+            packageName = "com.example.app",
+            label = "Example",
+            versionName = "1.0",
+            installedVersion = null,
+            sizeBytes = 0,
+            icon = null,
+            apks = emptyList()
+        )
+
+        val result = ApkInstallerManager.install(context, app, ApkInstallerManager.Option.entries.toSet())
+
+        assertEquals(ApkInstallerManager.Outcome.NO_SHIZUKU, result.outcome)
+        assertEquals(ApkInstallerManager.Outcome.NO_SHIZUKU, ApkInstallerManager.installBlocker(context))
+    }
+
+    @Test
+    fun debloaterNeverTouchesProtectedPackages() {
+        val blocked = DebloatProtection.protectedPackages(context)
+        assertTrue(blocked.contains(context.packageName))
+
+        val protectedApp = DebloatAppInfo(
+            packageName = "com.android.systemui",
+            label = "System UI",
+            apkPath = null,
+            isSystemApp = true,
+            state = DebloatState.ACTIVE,
+            risk = DebloatRisk.UNSAFE,
+            group = DebloatGroup.SYSTEM,
+            isProtected = true,
+            isRestorable = true,
+            isChangedByApp = false,
+            description = null
+        )
+        assertFalse(DebloatManager.remove(context, protectedApp))
+        assertFalse(DebloatManager.disable(context, protectedApp))
+    }
+
+    @Test
+    fun remoteListIsAbsentUntilItIsDownloaded() {
+        DebloatRemoteList.clear(context)
+        assertFalse(DebloatRemoteList.isAvailable(context))
+        assertEquals(0, DebloatRemoteList.entryCount(context))
+        assertEquals(0L, DebloatRemoteList.updatedAtMs(context))
+        assertTrue(DebloatRemoteList.load(context, setOf("com.example.bloat")).isEmpty())
+        assertTrue(DebloatRemoteList.load(context, emptySet()).isEmpty())
+    }
+
+    @Test
+    fun debloatStoreRemembersAndForgetsRemovedPackages() {
+        val store = DebloatStore(context)
+        store.all().forEach { store.forget(it.packageName) }
+        store.record("com.example.bloat", "Bloat", true)
+        store.record("com.example.other", "Other", false)
+
+        assertEquals(2, store.all().size)
+        assertEquals("Bloat", store.labelFor("com.example.bloat"))
+        assertTrue(store.all().first { it.packageName == "com.example.bloat" }.removed)
+        assertFalse(store.all().first { it.packageName == "com.example.other" }.removed)
+
+        store.forget("com.example.bloat")
+        assertEquals(1, store.all().size)
+        store.forget("com.example.other")
+        assertTrue(store.all().isEmpty())
+    }
+}

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
     <string name="profiles_beta">БЕТА</string>
 
     <!-- Main Activity Strings -->
@@ -133,7 +133,7 @@
     <string name="error">Ошибка: %s</string>
     <string name="use_adb_command">Использовать команду ADB</string>
     <string name="adb_description">Подключитесь к компьютеру и выполните эту команду один раз:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 См. «Сведения о разрешении» в меню для пошаговых инструкций.</string>
     <string name="copy_command">Копировать команду</string>
     <string name="close">Закрыть</string>
@@ -175,13 +175,6 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="information">Информация</string>
-    <string name="ad_info_title">Поддержка разработки</string>
-    <string name="ad_info_message">Привет! 👋\n\nЧтобы приложение оставалось бесплатным и развивалось, я добавил рекламу: небольшой баннер внизу экрана и иногда полноэкранное объявление после применения изменения или повторного открытия приложения.\n\nЧастота показов ограничена, чтобы не мешать вам.\n\nСпасибо за понимание и поддержку. ❤️</string>
-    <string name="ad_info_ok">Понятно</string>
-    <string name="rate_dialog_title">Нравится приложение?</string>
-    <string name="rate_dialog_message">Если вам нравится Custom Animator, оцените его в Play Store. Ваша поддержка действительно важна!</string>
-    <string name="rate_dialog_rate">Оценить</string>
-    <string name="rate_dialog_later">Позже</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Для терминала требуется подключение Shizuku.</string>
@@ -448,28 +441,6 @@
     <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь, запишите, что меняете, до изменения.</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_privacy_policy_desc">Узнайте, как приложение обрабатывает ваши данные</string>
-    <string name="settings_privacy_options">Настройки конфиденциальности</string>
-    <string name="settings_privacy_options_desc">Изменить согласие на персонализацию рекламы</string>
-    <string name="settings_premium">Премиум</string>
-    <string name="remove_ads">Убрать рекламу</string>
-    <string name="remove_ads_desc">Разовая покупка, убирающая всю рекламу</string>
-    <string name="remove_ads_desc_price">Разовая покупка: %1$s</string>
-    <string name="remove_ads_owned">Куплено. Спасибо за поддержку!</string>
-    <string name="remove_ads_thanks">Реклама убрана. Спасибо!</string>
-    <string name="remove_ads_pending">Покупка обрабатывается. Реклама исчезнет после завершения.</string>
-    <string name="remove_ads_unavailable">Покупка сейчас недоступна. Попробуйте позже.</string>
-    <string name="remove_ads_restore">Восстановить покупку</string>
-    <string name="remove_ads_restore_desc">Уже покупали? Восстановите на этом устройстве</string>
-    <string name="remove_ads_restored">Покупка восстановлена</string>
-    <string name="remove_ads_nothing_to_restore">Предыдущих покупок не найдено</string>
-    <string name="remove_ads_prompt_title">Не хотите рекламу?</string>
-    <string name="remove_ads_prompt_body">Уберите её разовой покупкой и поддержите разработку!</string>
-    <string name="remove_ads_prompt_body_price">Убрать за %1$s, один раз</string>
-    <string name="remove_ads_prompt_dismiss">Скрыть</string>
-    <string name="remove_ads_support_title">Пожалуйста, поддержите разработку</string>
-    <string name="remove_ads_support_message">Это приложение бесплатное и постоянно улучшается. Поддержите разработку разовой покупкой — она также уберёт всю рекламу.</string>
-    <string name="remove_ads_support_buy_price">Убрать рекламу за %1$s</string>
-    <string name="ad_info_remove_ads_hint">Если вы предпочитаете не видеть рекламу, её можно убрать навсегда разовой покупкой в любой момент, в разделе Настройки › Премиум.</string>
     <string name="fps_meter_hint">Перетащите счётчик, чтобы переместить его. Выключите, чтобы убрать наложение.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Разрешите наложение поверх других приложений, чтобы показать счётчик FPS.</string>
@@ -656,10 +627,6 @@
     <string name="carrier_name_needs_phone_permission">Для чтения SIM-слотов требуется разрешение на телефон.</string>
     <string name="carrier_name_note">Название применяется как переопределение конфигурации оператора и действует до перезагрузки устройства. Нажмите «Сброс», чтобы вернуть исходное название.</string>
 
-    <string name="contact_developer">Связаться с разработчиком</string>
-    <string name="contact_developer_desc">Пишите нам с отзывами, предложениями и жалобами</string>
-    <string name="contact_developer_subject">Custom Animator: обратная связь</string>
-    <string name="contact_developer_no_app">Почтовое приложение не найдено</string>
     <string name="onboarding_disclaimer_title">Используйте на свой риск</string>
     <string name="onboarding_disclaimer_body">Приложение изменяет системные настройки. В зависимости от устройства и прошивки это может повлиять на время работы батареи, уведомления, будильники, фоновые приложения и стабильность.</string>
     <string name="onboarding_disclaimer_highlight">Разработчик не несёт никакой ответственности за потерю данных, сбои или ущерб, которые могут возникнуть при использовании этого приложения. Все изменения вы вносите на свой страх и риск.</string>
@@ -867,7 +834,7 @@
     <string name="pn_logs_create_rule_title">Создать правило из уведомления?</string>
     <string name="changelog_title">Что нового</string>
     <string name="changelog_version">Версия %1$s</string>
-    <string name="changelog_feedback_note">Возможно, не всё работает идеально. Если вы нашли ошибку или хотите оставить отзыв, напишите мне: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Возможно, не всё работает идеально. Если вы нашли ошибку или хотите оставить отзыв, создайте issue: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Фоновая служба</string>
     <string name="pn_notification_persistent_settings_hint">Нажмите здесь, чтобы отключить это уведомление.</string>
     <string name="settings_appearance">Оформление</string>
@@ -1281,10 +1248,6 @@
     <string name="boost_cancel">Отмена</string>
     <string name="boost_cancelled">Оптимизация отменена</string>
     <string name="boost_running_label">Оптимизация…</string>
-    <string name="boost_ad_reward_denied">Досмотрите рекламу, чтобы разблокировать оптимизацию</string>
-    <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
-    <string name="optimizer_clean_watch_ad">Реклама и очистка</string>
-    <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
     <string name="developer_title">Разработчик</string>
     <string name="tools_title">Инструменты</string>
     <string name="tools_section_apps">Приложения</string>
@@ -1296,12 +1259,8 @@
     <string name="more_compile_booster_desc">Перекомпиляция приложений для быстрого запуска</string>
     <string name="more_auto_actions_desc">Автоматическая остановка и правила разрешений</string>
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
-    <string name="reward_free_unlock">Сейчас нет доступной рекламы, поэтому в этот раз бесплатно</string>
     <string name="reward_unlock_denied">Досмотрите рекламу, чтобы открыть это на 3 минуты</string>
-    <string name="game_mode_ad_desc">Посмотрите короткую рекламу, чтобы включить игровой режим</string>
     <string name="game_mode_select_games_first">Сначала выберите хотя бы одну игру</string>
-    <string name="compile_all_apps_with_ad">Реклама и компиляция</string>
-    <string name="game_mode_turn_on_with_ad">Реклама и включение</string>
     <string name="system_meter_title">Системный монитор</string>
     <string name="system_meter_overlay">Наложение</string>
     <string name="system_meter_metrics">Метрики</string>
@@ -1754,7 +1713,6 @@
     <string name="shortcut_place_shortcut">Ярлык</string>
     <string name="shortcut_place_widget">Виджет</string>
     <string name="shortcut_widget_unsupported">Ваш лаунчер не позволяет приложениям добавлять виджеты.</string>
-    <string name="shortcut_watch_ad_add">Посмотреть рекламу и добавить</string>
     <string name="shortcut_change_app">Сменить приложение</string>
     <string name="shortcut_pick_app">Выберите приложение</string>
     <string name="shortcut_pick_screen">Выберите экран</string>

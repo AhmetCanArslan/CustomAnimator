@@ -8,7 +8,7 @@
     android:targetCellHeight="2"
     android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_notifications"
-    android:configure="com.arslan.customanimator.notify.widget.NotificationWidgetConfigureActivity"
+    android:configure="com.riyadmondol2006.customanimator.notify.widget.NotificationWidgetConfigureActivity"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:description="@string/pn_widget_description"

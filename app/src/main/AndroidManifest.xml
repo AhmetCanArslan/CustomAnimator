@@ -19,8 +19,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.TURN_SCREEN_ON" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -51,10 +51,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomAnimator">
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${admobAppId}" />
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
@@ -884,7 +880,7 @@
     </application>
 
     <instrumentation
-        android:name="com.arslan.customanimator.service.CarrierConfigInstrumentation"
+        android:name="com.riyadmondol2006.customanimator.service.CarrierConfigInstrumentation"
         android:targetPackage="${applicationId}" />
 
 </manifest>

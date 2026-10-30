@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
     <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
@@ -132,7 +132,7 @@ Durata animatore: %3$.2f</string>
     <string name="error">Errore: %s</string>
     <string name="use_adb_command">Usa comando ADB</string>
     <string name="adb_description">Collegati a un computer ed esegui questo comando una volta:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Consulta \'Dettagli autorizzazione\' nel menu per le istruzioni complete passo dopo passo.</string>
     <string name="copy_command">Copia comando</string>
     <string name="close">Chiudi</string>
@@ -175,13 +175,6 @@ Durata animatore: %3$.2f</string>
     <string name="no">No</string>
     <string name="information">Informazione</string>
     <string name="auto_actions">Azioni automatiche</string>
-    <string name="ad_info_title">Sostieni lo sviluppo</string>
-    <string name="ad_info_message">Ciao! 👋\n\nPer mantenere questa app gratuita e continuare a migliorarla, ho aggiunto degli annunci: un piccolo banner in fondo allo schermo e occasionalmente un annuncio a schermo intero dopo aver applicato una modifica o riaperto l\'app.\n\nLa loro frequenza è limitata, così non ti disturbano.\n\nGrazie per la comprensione e il supporto. ❤️</string>
-    <string name="ad_info_ok">Ho capito</string>
-    <string name="rate_dialog_title">Ti piace l\'app?</string>
-    <string name="rate_dialog_message">Se Custom Animator ti piace, dedica un momento a valutarla sul Play Store. Il tuo supporto fa davvero la differenza!</string>
-    <string name="rate_dialog_rate">Valuta</string>
-    <string name="rate_dialog_later">Più tardi</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Il terminale richiede che Shizuku sia connesso.</string>
@@ -468,28 +461,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="onboarding_experimental_highlight">Se qualcosa non funziona bene, usa l\'opzione di reset nella sezione corrispondente o nelle Impostazioni per tornare ai valori originali. Nel dubbio, annota cosa hai cambiato prima di cambiarlo.</string>
     <string name="settings_privacy_policy">Informativa sulla Privacy</string>
     <string name="settings_privacy_policy_desc">Leggi come l\'app tratta i tuoi dati</string>
-    <string name="settings_privacy_options">Opzioni sulla privacy</string>
-    <string name="settings_privacy_options_desc">Modifica le tue scelte di consenso sulla personalizzazione degli annunci</string>
-    <string name="settings_premium">Premium</string>
-    <string name="remove_ads">Rimuovi gli annunci</string>
-    <string name="remove_ads_desc">Acquisto singolo che rimuove tutti gli annunci</string>
-    <string name="remove_ads_desc_price">Acquisto singolo: %1$s</string>
-    <string name="remove_ads_owned">Acquistato. Grazie per il supporto!</string>
-    <string name="remove_ads_thanks">Annunci rimossi. Grazie!</string>
-    <string name="remove_ads_pending">Acquisto in sospeso. Gli annunci verranno rimossi al completamento.</string>
-    <string name="remove_ads_unavailable">L\'acquisto non è disponibile al momento. Riprova più tardi.</string>
-    <string name="remove_ads_restore">Ripristina acquisto</string>
-    <string name="remove_ads_restore_desc">Lo hai già acquistato? Ripristinalo su questo dispositivo</string>
-    <string name="remove_ads_restored">Acquisto ripristinato</string>
-    <string name="remove_ads_nothing_to_restore">Nessun acquisto precedente trovato</string>
-    <string name="remove_ads_prompt_title">Preferisci senza annunci?</string>
-    <string name="remove_ads_prompt_body">Rimuovili con un acquisto singolo e sostieni lo sviluppo!</string>
-    <string name="remove_ads_prompt_body_price">Rimuovili per %1$s, una volta sola</string>
-    <string name="remove_ads_prompt_dismiss">Nascondi</string>
-    <string name="remove_ads_support_title">Sostieni lo sviluppo</string>
-    <string name="remove_ads_support_message">Questa app è gratuita e in costante miglioramento. Sostieni lo sviluppo con un acquisto singolo: rimuove anche tutti gli annunci.</string>
-    <string name="remove_ads_support_buy_price">Rimuovi gli annunci per %1$s</string>
-    <string name="ad_info_remove_ads_hint">Se preferisci non vedere annunci, puoi rimuoverli per sempre con un acquisto singolo, quando vuoi, da Impostazioni › Premium.</string>
     <string name="fps_meter_hint">Trascina il contatore per spostarlo. Disattiva per rimuovere l\'overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Consenti la visualizzazione sopra le altre app per mostrare il contatore FPS.</string>
@@ -676,10 +647,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="carrier_name_needs_phone_permission">Per leggere gli slot SIM serve l\'autorizzazione telefono.</string>
     <string name="carrier_name_note">Il nome viene applicato come override della configurazione operatore fino al riavvio del dispositivo. Usa Reimposta per ripristinare il nome originale.</string>
 
-    <string name="contact_developer">Contatta lo sviluppatore</string>
-    <string name="contact_developer_desc">Scrivici per opinioni, suggerimenti e reclami</string>
-    <string name="contact_developer_subject">Feedback su Custom Animator</string>
-    <string name="contact_developer_no_app">Nessuna app di posta trovata</string>
     <string name="onboarding_disclaimer_title">Usa a tuo rischio</string>
     <string name="onboarding_disclaimer_body">Questa app modifica impostazioni di sistema. A seconda del dispositivo e della ROM, ciò può influire su autonomia, notifiche, sveglie, app in background e stabilità.</string>
     <string name="onboarding_disclaimer_highlight">Lo sviluppatore non si assume alcuna responsabilità per perdite di dati, malfunzionamenti o danni derivanti dall\'uso di questa app. Tutto ciò che modifichi qui lo fai a tuo rischio.</string>
@@ -887,7 +854,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="pn_logs_create_rule_title">Creare una regola dalla notifica?</string>
     <string name="changelog_title">Novità</string>
     <string name="changelog_version">Versione %1$s</string>
-    <string name="changelog_feedback_note">Non tutto potrebbe funzionare alla perfezione. Se trovi un bug o vuoi lasciare un feedback, scrivimi: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Non tutto potrebbe funzionare alla perfezione. Se trovi un bug o vuoi lasciare un feedback, apri una issue: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Servizio in background</string>
     <string name="pn_notification_persistent_settings_hint">Tocca qui per disattivare questa notifica.</string>
     <string name="settings_appearance">Aspetto</string>
@@ -1299,10 +1266,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="boost_cancel">Annulla</string>
     <string name="boost_cancelled">Ottimizzazione annullata</string>
     <string name="boost_running_label">Ottimizzazione…</string>
-    <string name="boost_ad_reward_denied">Completa l’annuncio per sbloccare l’ottimizzazione</string>
-    <string name="boost_watch_ad">Guarda l’annuncio e ottimizza</string>
-    <string name="optimizer_clean_watch_ad">Guarda annuncio e pulisci</string>
-    <string name="boost_ad_unavailable">Impossibile caricare l’annuncio. Controlla la connessione e riprova.</string>
     <string name="developer_title">Sviluppatore</string>
     <string name="tools_title">Strumenti</string>
     <string name="tools_section_apps">App</string>
@@ -1314,12 +1277,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="more_compile_booster_desc">Ricompila le app per avvii più rapidi</string>
     <string name="more_auto_actions_desc">Regole automatiche di arresto forzato e permessi</string>
     <string name="game_mode_fixed_performance">La modalità prestazioni fisse è attiva mentre la Modalità Gioco è accesa.</string>
-    <string name="reward_free_unlock">Nessun annuncio disponibile al momento, quindi questa volta è gratis</string>
     <string name="reward_unlock_denied">Completa l\'annuncio per sbloccarlo per 3 minuti</string>
-    <string name="game_mode_ad_desc">Guarda un breve annuncio per attivare la modalità gioco</string>
     <string name="game_mode_select_games_first">Seleziona prima almeno un gioco</string>
-    <string name="compile_all_apps_with_ad">Guarda annuncio e compila</string>
-    <string name="game_mode_turn_on_with_ad">Guarda annuncio e attiva</string>
     <string name="system_meter_title">Monitor di sistema</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metriche</string>
@@ -1772,7 +1731,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="shortcut_place_shortcut">Scorciatoia</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Il tuo launcher non consente alle app di aggiungere widget.</string>
-    <string name="shortcut_watch_ad_add">Guarda annuncio e aggiungi</string>
     <string name="shortcut_change_app">Cambia app</string>
     <string name="shortcut_pick_app">Scegli una app</string>
     <string name="shortcut_pick_screen">Scegli una schermata</string>

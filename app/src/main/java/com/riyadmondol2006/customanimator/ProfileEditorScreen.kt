@@ -1,0 +1,1020 @@
+package com.riyadmondol2006.customanimator
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import com.riyadmondol2006.customanimator.data.BatteryTweak
+import com.riyadmondol2006.customanimator.data.Profile
+import com.riyadmondol2006.customanimator.data.ProfileAnimation
+import com.riyadmondol2006.customanimator.data.ProfileBattery
+import com.riyadmondol2006.customanimator.data.ProfileTileConfig
+import com.riyadmondol2006.customanimator.ui.components.AppCard
+import com.riyadmondol2006.customanimator.ui.components.SectionHeader
+import com.riyadmondol2006.customanimator.ui.components.TileIconPickerDialog
+import com.riyadmondol2006.customanimator.utils.BatteryTweaksManager
+import com.riyadmondol2006.customanimator.utils.ProfileActions
+import com.riyadmondol2006.customanimator.utils.ProfileManager
+import com.riyadmondol2006.customanimator.utils.TerminalTileIcons
+import java.util.Locale
+import kotlin.math.roundToInt
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.riyadmondol2006.customanimator.ui.components.ScreenTopBar
+import com.riyadmondol2006.customanimator.ui.components.AppSlider
+import androidx.compose.material3.ButtonDefaults
+import com.riyadmondol2006.customanimator.ui.components.AppSwitch
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfileEditorScreen(
+    profileId: String?,
+    onBack: () -> Unit,
+    onSaved: () -> Unit
+) {
+    val context = LocalContext.current
+    val manager = remember { ProfileManager(context) }
+    val existing = remember(profileId) { profileId?.let { manager.getProfile(it) } }
+    val listState = rememberLazyListState()
+
+    var name by remember { mutableStateOf(existing?.name ?: "") }
+    var iconKey by remember {
+        mutableStateOf(existing?.iconKey ?: ProfileManager.DEFAULT_ICON_KEY)
+    }
+    var showIconPicker by remember { mutableStateOf(false) }
+
+    var animationEnabled by remember { mutableStateOf(existing?.animation != null) }
+    var windowScale by remember { mutableStateOf(existing?.animation?.windowAnimationScale ?: 0.5f) }
+    var transitionScale by remember { mutableStateOf(existing?.animation?.transitionAnimationScale ?: 0.5f) }
+    var animatorScale by remember { mutableStateOf(existing?.animation?.animatorDurationScale ?: 0.5f) }
+
+    var widthEnabled by remember { mutableStateOf(existing?.smallestWidthDp != null) }
+    var widthReset by remember { mutableStateOf((existing?.smallestWidthDp ?: 1) <= 0) }
+    var widthText by remember {
+        mutableStateOf(existing?.smallestWidthDp?.takeIf { it > 0 }?.toString() ?: "411")
+    }
+
+    var batteryEnabled by remember { mutableStateOf(existing?.battery != null) }
+    var saverPresetId by remember { mutableStateOf(existing?.battery?.saverPresetId) }
+    var dozePresetId by remember { mutableStateOf(existing?.battery?.dozePresetId) }
+    var saverStateIncluded by remember { mutableStateOf(existing?.battery?.batterySaverOn != null) }
+    var saverStateOn by remember { mutableStateOf(existing?.battery?.batterySaverOn ?: false) }
+    var triggerIncluded by remember { mutableStateOf(existing?.battery?.triggerLevel != null) }
+    var triggerLevel by remember { mutableStateOf((existing?.battery?.triggerLevel ?: 15).toFloat()) }
+    var automaticPowerSaveModeIncluded by remember { mutableStateOf(existing?.battery?.automaticPowerSaveMode != null) }
+    var automaticPowerSaveMode by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.automaticPowerSaveMode
+                ?: BatteryTweaksManager.getGlobalInt(context.contentResolver, BatteryTweaksManager.KEY_AUTOMATIC_POWER_SAVE_MODE, 0)
+        )
+    }
+    var stickyIncluded by remember { mutableStateOf(existing?.battery?.sticky != null) }
+    var sticky by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.sticky
+                ?: BatteryTweaksManager.getGlobalInt(context.contentResolver, BatteryTweaksManager.KEY_LOW_POWER_STICKY, 0) == 1
+        )
+    }
+    var stickyAutoDisableIncluded by remember { mutableStateOf(existing?.battery?.stickyAutoDisable != null) }
+    var stickyAutoDisable by remember(profileId) {
+        mutableStateOf(
+            existing?.battery?.stickyAutoDisable
+                ?: BatteryTweaksManager.getGlobalInt(
+                    context.contentResolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_ENABLED,
+                    1
+                ) == 1
+        )
+    }
+    var stickyLevelIncluded by remember { mutableStateOf(existing?.battery?.stickyAutoDisableLevel != null) }
+    var stickyLevel by remember(profileId) {
+        mutableStateOf(
+            (existing?.battery?.stickyAutoDisableLevel
+                ?: BatteryTweaksManager.getGlobalInt(
+                    context.contentResolver,
+                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_LEVEL,
+                    90
+                )).toFloat()
+        )
+    }
+    val currentPolicyValues = remember(profileId) {
+        BatteryTweaksManager.parseConstants(
+            BatteryTweaksManager.getGlobalString(
+                context.contentResolver,
+                BatteryTweaksManager.KEY_BATTERY_SAVER_CONSTANTS
+            )
+        )
+    }
+    val policyValues = remember {
+        mutableStateMapOf<String, String>().apply {
+            existing?.battery?.policy?.forEach { (key, value) -> put(key, value) }
+        }
+    }
+    val batteryToggles = remember {
+        mutableStateMapOf<String, Boolean>().apply {
+            existing?.battery?.toggles?.forEach { (key, value) -> put(key, value) }
+        }
+    }
+
+    var developerEnabled by remember { mutableStateOf(existing?.developer?.isNotEmpty() == true) }
+    val devToggles = remember {
+        mutableStateMapOf<String, Boolean>().apply {
+            existing?.developer?.forEach { (key, value) -> put(key, value) }
+        }
+    }
+
+    var commandsEnabled by remember { mutableStateOf(existing?.commands?.isNotEmpty() == true) }
+    var commandsText by remember { mutableStateOf(existing?.commands?.joinToString("\n") ?: "") }
+
+    var tileLabel by remember { mutableStateOf(existing?.tile?.label ?: "") }
+    var tileToast by remember { mutableStateOf(existing?.tile?.showToast ?: true) }
+    var tileCollapse by remember { mutableStateOf(existing?.tile?.collapsePanel ?: true) }
+
+    val freeSlot = remember(profileId) { manager.firstFreeSlot(excludingProfileId = profileId) }
+    val tileSlot = existing?.tile?.slot ?: freeSlot
+
+    val trimmedName = name.trim()
+    fun policyDefault(tweak: BatteryTweak): String = when (tweak) {
+        is BatteryTweak.Toggle -> tweak.default.toString()
+        is BatteryTweak.FloatRange -> tweak.default.toString()
+        is BatteryTweak.Choice -> tweak.default.toString()
+        is BatteryTweak.IntRange -> tweak.default.toString()
+    }
+
+    fun currentPolicyValue(tweak: BatteryTweak): String =
+        currentPolicyValues[tweak.key] ?: policyDefault(tweak)
+
+    val buildProfile: () -> Profile = {
+        val battery = if (batteryEnabled) {
+            ProfileBattery(
+                saverPresetId = saverPresetId,
+                dozePresetId = dozePresetId,
+                batterySaverOn = if (saverStateIncluded) saverStateOn else null,
+                triggerLevel = if (triggerIncluded) triggerLevel.roundToInt() else null,
+                automaticPowerSaveMode = if (automaticPowerSaveModeIncluded) automaticPowerSaveMode else null,
+                sticky = if (stickyIncluded) sticky else null,
+                stickyAutoDisable = if (stickyAutoDisableIncluded) stickyAutoDisable else null,
+                stickyAutoDisableLevel = if (stickyLevelIncluded) stickyLevel.roundToInt() else null,
+                policy = policyValues.toMap(),
+                toggles = batteryToggles.toMap()
+            ).takeIf { !it.isEmpty }
+        } else {
+            null
+        }
+
+        Profile(
+            id = existing?.id ?: manager.newId(),
+            name = trimmedName,
+            iconKey = iconKey,
+            animation = if (animationEnabled) {
+                ProfileAnimation(windowScale, transitionScale, animatorScale)
+            } else {
+                null
+            },
+            smallestWidthDp = if (widthEnabled) {
+                if (widthReset) 0 else widthText.toIntOrNull()?.coerceIn(200, 2000)
+            } else {
+                null
+            },
+            battery = battery,
+            developer = if (developerEnabled) devToggles.toMap() else emptyMap(),
+            commands = if (commandsEnabled) parseProfileCommands(commandsText) else emptyList(),
+            tile = tileSlot?.let { slot ->
+                ProfileTileConfig(
+                    slot = slot,
+                    label = tileLabel.trim().ifBlank { trimmedName },
+                    showToast = tileToast,
+                    collapsePanel = tileCollapse
+                )
+            }
+        )
+    }
+
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            ScreenTopBar(
+                title = stringResource(
+                    if (existing == null) R.string.profile_editor_new else R.string.profile_editor_edit
+                ),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
+            )
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = {
+                    if (trimmedName.isEmpty()) return@ExtendedFloatingActionButton
+                    manager.saveProfile(buildProfile())
+                    onSaved()
+                },
+                icon = { Icon(Icons.Default.Check, contentDescription = null) },
+                text = { Text(stringResource(R.string.save)) }
+            )
+        }
+    ) { padding ->
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 110.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            item {
+                AppCard {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(56.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primaryContainer)
+                                .clickable { showIconPicker = true },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(TerminalTileIcons.resFor(iconKey)),
+                                contentDescription = stringResource(R.string.profile_icon),
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                        Spacer(Modifier.width(14.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            OutlinedTextField(
+                                value = name,
+                                onValueChange = { name = it },
+                                label = { Text(stringResource(R.string.profile_name)) },
+                                singleLine = true,
+                                isError = trimmedName.isEmpty(),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+                    TextButton(onClick = { showIconPicker = true }, shapes = ButtonDefaults.shapes()) {
+                        Text(stringResource(R.string.profile_icon_change))
+                    }
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_animation)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_animation),
+                    description = stringResource(R.string.profile_include_animation_desc),
+                    enabled = animationEnabled,
+                    onEnabledChange = { animationEnabled = it }
+                ) {
+                    ScaleSlider(
+                        title = stringResource(R.string.window_animation_scale),
+                        value = windowScale,
+                        onValueChange = { windowScale = it }
+                    )
+                    ScaleSlider(
+                        title = stringResource(R.string.transition_animation_scale),
+                        value = transitionScale,
+                        onValueChange = { transitionScale = it }
+                    )
+                    ScaleSlider(
+                        title = stringResource(R.string.animator_duration_scale),
+                        value = animatorScale,
+                        onValueChange = { animatorScale = it }
+                    )
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_width)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_width),
+                    description = stringResource(R.string.profile_include_width_desc),
+                    enabled = widthEnabled,
+                    onEnabledChange = { widthEnabled = it }
+                ) {
+                    ProfileSwitchRow(
+                        title = stringResource(R.string.profile_width_reset),
+                        description = stringResource(R.string.profile_width_reset_desc),
+                        checked = widthReset,
+                        onCheckedChange = { widthReset = it }
+                    )
+                    if (!widthReset) {
+                        OutlinedTextField(
+                            value = widthText,
+                            onValueChange = { input ->
+                                widthText = input.filter { it.isDigit() }.take(4)
+                            },
+                            label = { Text(stringResource(R.string.profile_width_dp)) },
+                            supportingText = { Text(stringResource(R.string.profile_width_dp_helper)) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            singleLine = true,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_battery)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_battery),
+                    description = stringResource(R.string.profile_include_battery_desc),
+                    enabled = batteryEnabled,
+                    onEnabledChange = { batteryEnabled = it }
+                ) {
+                    PresetDropdown(
+                        title = stringResource(R.string.bt_section_presets),
+                        selectedId = saverPresetId,
+                        options = BatteryTweaksManager.saverPresets.map { it.id to stringResource(it.titleRes) },
+                        onSelected = { saverPresetId = it }
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    PresetDropdown(
+                        title = stringResource(R.string.bt_section_doze),
+                        selectedId = dozePresetId,
+                        options = BatteryTweaksManager.dozePresets.map { it.id to stringResource(it.titleRes) },
+                        onSelected = { dozePresetId = it }
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    HorizontalDivider()
+                    IncludeSwitchRow(
+                        title = stringResource(R.string.bt_low_power),
+                        description = stringResource(R.string.bt_low_power_desc),
+                        included = saverStateIncluded,
+                        value = saverStateOn,
+                        onIncludedChange = { saverStateIncluded = it },
+                        onValueChange = { saverStateOn = it }
+                    )
+                    IncludeRow(
+                        title = stringResource(R.string.bt_trigger_level),
+                        description = stringResource(R.string.bt_trigger_level_desc),
+                        included = triggerIncluded,
+                        onIncludedChange = { triggerIncluded = it }
+                    ) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "${triggerLevel.roundToInt()}%",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            AppSlider(
+                                value = triggerLevel,
+                                onValueChange = { triggerLevel = it },
+                                valueRange = 0f..75f,
+                                steps = 14
+                            )
+                        }
+                    }
+                    IncludeRow(
+                        title = stringResource(R.string.bt_auto_mode),
+                        description = stringResource(R.string.bt_auto_mode_desc),
+                        included = automaticPowerSaveModeIncluded,
+                        onIncludedChange = { included ->
+                            automaticPowerSaveModeIncluded = included
+                            if (included) {
+                                automaticPowerSaveMode = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_AUTOMATIC_POWER_SAVE_MODE,
+                                    automaticPowerSaveMode
+                                )
+                            }
+                        }
+                    ) {
+                        InlineChoiceDropdown(
+                            selected = automaticPowerSaveMode,
+                            options = listOf(
+                                stringResource(R.string.bt_auto_mode_percentage),
+                                stringResource(R.string.bt_auto_mode_routine)
+                            ),
+                            onSelected = { automaticPowerSaveMode = it }
+                        )
+                    }
+                    IncludeSwitchRow(
+                        title = stringResource(R.string.bt_sticky),
+                        description = stringResource(R.string.bt_sticky_desc),
+                        included = stickyIncluded,
+                        value = sticky,
+                        onIncludedChange = { included ->
+                            stickyIncluded = included
+                            if (included) {
+                                sticky = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_LOW_POWER_STICKY,
+                                    if (sticky) 1 else 0
+                                ) == 1
+                            }
+                        },
+                        onValueChange = { sticky = it }
+                    )
+                    IncludeSwitchRow(
+                        title = stringResource(R.string.bt_sticky_auto_disable),
+                        description = stringResource(R.string.bt_sticky_auto_disable_desc),
+                        included = stickyAutoDisableIncluded,
+                        value = stickyAutoDisable,
+                        onIncludedChange = { included ->
+                            stickyAutoDisableIncluded = included
+                            if (included) {
+                                stickyAutoDisable = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_ENABLED,
+                                    if (stickyAutoDisable) 1 else 0
+                                ) == 1
+                            }
+                        },
+                        onValueChange = { stickyAutoDisable = it }
+                    )
+                    IncludeRow(
+                        title = stringResource(R.string.bt_sticky_level),
+                        description = stringResource(R.string.bt_sticky_level_desc),
+                        included = stickyLevelIncluded,
+                        onIncludedChange = { included ->
+                            stickyLevelIncluded = included
+                            if (included) {
+                                stickyLevel = BatteryTweaksManager.getGlobalInt(
+                                    context.contentResolver,
+                                    BatteryTweaksManager.KEY_STICKY_AUTO_DISABLE_LEVEL,
+                                    stickyLevel.roundToInt()
+                                ).toFloat()
+                            }
+                        }
+                    ) {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "${stickyLevel.roundToInt()}%",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            AppSlider(
+                                value = stickyLevel,
+                                onValueChange = { stickyLevel = it },
+                                valueRange = 10f..100f,
+                                steps = 0
+                            )
+                        }
+                    }
+                    HorizontalDivider()
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(R.string.bt_show_advanced),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    BatteryTweaksManager.policyTweaks.forEach { tweak ->
+                        when (tweak) {
+                            is BatteryTweak.Toggle -> IncludeSwitchRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                value = policyValues[tweak.key]?.toBooleanStrictOrNull() ?: tweak.default,
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                },
+                                onValueChange = { policyValues[tweak.key] = it.toString() }
+                            )
+
+                            is BatteryTweak.FloatRange -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                var value = policyValues[tweak.key]?.toFloatOrNull() ?: tweak.default
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = String.format(Locale.US, "%.2f", value),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    AppSlider(
+                                        value = value,
+                                        onValueChange = {
+                                            value = it
+                                            policyValues[tweak.key] = it.toString()
+                                        },
+                                        valueRange = tweak.min..tweak.max,
+                                        steps = 8
+                                    )
+                                }
+                            }
+
+                            is BatteryTweak.Choice -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                InlineChoiceDropdown(
+                                    selected = policyValues[tweak.key]?.toIntOrNull() ?: tweak.default,
+                                    options = tweak.optionLabels.map { stringResource(it) },
+                                    onSelected = { policyValues[tweak.key] = it.toString() }
+                                )
+                            }
+
+                            is BatteryTweak.IntRange -> IncludeRow(
+                                title = stringResource(tweak.titleRes),
+                                description = stringResource(tweak.descriptionRes),
+                                included = policyValues.containsKey(tweak.key),
+                                onIncludedChange = { included ->
+                                    if (included) policyValues[tweak.key] = currentPolicyValue(tweak)
+                                    else policyValues.remove(tweak.key)
+                                }
+                            ) {
+                                var value = policyValues[tweak.key]?.toIntOrNull() ?: tweak.default
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = value.toString(),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    AppSlider(
+                                        value = value.toFloat(),
+                                        onValueChange = {
+                                            value = it.roundToInt()
+                                            policyValues[tweak.key] = value.toString()
+                                        },
+                                        valueRange = tweak.min.toFloat()..tweak.max.toFloat(),
+                                        steps = ((tweak.max - tweak.min) / tweak.step - 1).coerceAtLeast(0)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    HorizontalDivider()
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(R.string.bt_section_background),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    ProfileActions.batteryToggles.forEach { toggle ->
+                        IncludeSwitchRow(
+                            title = stringResource(toggle.titleRes),
+                            description = stringResource(toggle.descriptionRes),
+                            included = batteryToggles.containsKey(toggle.key),
+                            value = batteryToggles[toggle.key] ?: false,
+                            onIncludedChange = { included ->
+                                if (included) {
+                                    batteryToggles[toggle.key] = toggle.read(context)
+                                } else {
+                                    batteryToggles.remove(toggle.key)
+                                }
+                            },
+                            onValueChange = { batteryToggles[toggle.key] = it }
+                        )
+                    }
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_developer)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_developer),
+                    description = stringResource(R.string.profile_include_developer_desc),
+                    enabled = developerEnabled,
+                    onEnabledChange = { developerEnabled = it }
+                ) {
+                    ProfileActions.devActions.filter { it.available() }.forEach { action ->
+                        IncludeCheckboxRow(
+                            title = stringResource(action.titleRes),
+                            description = stringResource(action.descriptionRes),
+                            included = devToggles.containsKey(action.key),
+                            onIncludedChange = { included ->
+                                if (included) {
+                                    devToggles[action.key] = runCatching { action.read(context) }
+                                        .getOrDefault(false)
+                                } else {
+                                    devToggles.remove(action.key)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_terminal)) }
+            item {
+                SectionCard(
+                    title = stringResource(R.string.profile_include_commands),
+                    description = stringResource(R.string.profile_include_commands_desc),
+                    enabled = commandsEnabled,
+                    onEnabledChange = { commandsEnabled = it }
+                ) {
+                    OutlinedTextField(
+                        value = commandsText,
+                        onValueChange = { commandsText = it },
+                        label = { Text(stringResource(R.string.profile_commands_label)) },
+                        supportingText = { Text(stringResource(R.string.profile_commands_helper)) },
+                        textStyle = MaterialTheme.typography.bodyMedium.copy(fontFamily = FontFamily.Monospace),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.None,
+                            autoCorrectEnabled = false
+                        ),
+                        minLines = 3,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+
+            item { SectionHeader(title = stringResource(R.string.profile_section_tile)) }
+            item {
+                AppCard {
+                    OutlinedTextField(
+                        value = tileLabel,
+                        onValueChange = { tileLabel = it },
+                        label = { Text(stringResource(R.string.terminal_tile_label)) },
+                        supportingText = { Text(stringResource(R.string.terminal_tile_label_helper)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    ProfileSwitchRow(
+                        title = stringResource(R.string.terminal_tile_toast),
+                        description = stringResource(R.string.preset_tile_toast_description),
+                        checked = tileToast,
+                        onCheckedChange = { tileToast = it }
+                    )
+                    ProfileSwitchRow(
+                        title = stringResource(R.string.terminal_tile_collapse),
+                        description = stringResource(R.string.preset_tile_collapse_description),
+                        checked = tileCollapse,
+                        onCheckedChange = { tileCollapse = it }
+                    )
+                }
+
+                if (tileSlot == null) {
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(
+                            R.string.terminal_tile_slots_full,
+                            ProfileManager.MAX_TILE_SLOTS
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        }
+    }
+
+    if (showIconPicker) {
+        TileIconPickerDialog(
+            selectedKey = iconKey,
+            onDismiss = { showIconPicker = false },
+            onSelect = {
+                iconKey = it
+                showIconPicker = false
+            },
+            title = stringResource(R.string.profile_icon)
+        )
+    }
+}
+
+private fun parseProfileCommands(text: String): List<String> =
+    text.lines().map { it.trim() }.filter { it.isNotEmpty() }
+
+@Composable
+private fun SectionCard(
+    title: String,
+    description: String,
+    enabled: Boolean,
+    onEnabledChange: (Boolean) -> Unit,
+    enabledToggleAllowed: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    AppCard(highlighted = enabled) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            Spacer(Modifier.width(12.dp))
+            AppSwitch(
+                checked = enabled,
+                onCheckedChange = onEnabledChange,
+                enabled = enabledToggleAllowed
+            )
+        }
+        AnimatedVisibility(visible = enabled) {
+            Column {
+                Spacer(Modifier.height(10.dp))
+                content()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScaleSlider(title: String, value: Float, onValueChange: (Float) -> Unit) {
+    Column(modifier = Modifier.padding(vertical = 6.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = String.format(Locale.US, "%.2fx", value),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        AppSlider(
+            value = value,
+            onValueChange = { onValueChange((it * 20f).roundToInt() / 20f) },
+            valueRange = 0f..5f,
+            steps = 99
+        )
+    }
+}
+
+@Composable
+private fun ProfileSwitchRow(
+    title: String,
+    description: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 52.dp)
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = title, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        AppSwitch(checked = checked, onCheckedChange = onCheckedChange)
+    }
+}
+
+@Composable
+private fun IncludeSwitchRow(
+    title: String,
+    description: String,
+    included: Boolean,
+    value: Boolean,
+    onIncludedChange: (Boolean) -> Unit,
+    onValueChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = included, onCheckedChange = onIncludedChange)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (included) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(Modifier.width(8.dp))
+        AppSwitch(checked = value, onCheckedChange = onValueChange, enabled = included)
+    }
+}
+
+@Composable
+private fun IncludeCheckboxRow(
+    title: String,
+    description: String,
+    included: Boolean,
+    onIncludedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 56.dp)
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (included) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                }
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(Modifier.width(8.dp))
+        Checkbox(checked = included, onCheckedChange = onIncludedChange)
+    }
+}
+
+@Composable
+private fun IncludeRow(
+    title: String,
+    description: String,
+    included: Boolean,
+    onIncludedChange: (Boolean) -> Unit,
+    content: @Composable () -> Unit
+) {
+    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(checked = included, onCheckedChange = onIncludedChange)
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (included) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        AnimatedVisibility(visible = included) {
+            Box(modifier = Modifier.padding(start = 48.dp, end = 8.dp)) {
+                content()
+            }
+        }
+    }
+}
+
+@Composable
+private fun PresetDropdown(
+    title: String,
+    selectedId: String?,
+    options: List<Pair<String, String>>,
+    onSelected: (String?) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val noneLabel = stringResource(R.string.profile_no_change)
+    val selectedLabel = options.firstOrNull { it.first == selectedId }?.second ?: noneLabel
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(4.dp))
+        Box {
+            OutlinedButton(
+                onClick = { expanded = true },
+                modifier = Modifier.fillMaxWidth(),
+                shapes = ButtonDefaults.shapes()
+            ) {
+                Text(
+                    text = selectedLabel,
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+            }
+            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                DropdownMenuItem(
+                    text = { Text(noneLabel) },
+                    onClick = {
+                        onSelected(null)
+                        expanded = false
+                    }
+                )
+                options.forEach { (id, label) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onSelected(id)
+                            expanded = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun InlineChoiceDropdown(
+    selected: Int,
+    options: List<String>,
+    onSelected: (Int) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Box(modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(
+            onClick = { expanded = true },
+            modifier = Modifier.fillMaxWidth(),
+            shapes = ButtonDefaults.shapes()
+        ) {
+            Text(
+                text = options.getOrElse(selected) { options.firstOrNull().orEmpty() },
+                modifier = Modifier.weight(1f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEachIndexed { index, option ->
+                DropdownMenuItem(
+                    text = { Text(option) },
+                    onClick = {
+                        onSelected(index)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
+}

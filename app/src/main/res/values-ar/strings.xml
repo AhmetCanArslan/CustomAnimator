@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
 
     <!-- Main Activity Strings -->
     <string name="advanced_mode">الوضع المتقدم</string>
@@ -278,7 +278,7 @@
     <string name="error">خطأ: %s</string>
     <string name="use_adb_command">استخدام أمر ADB</string>
     <string name="adb_description">اتصل بجهاز كمبيوتر ونفّذ هذا الأمر مرة واحدة:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 راجع \'تفاصيل الإذن\' في القائمة للحصول على إرشادات كاملة خطوة بخطوة.</string>
     <string name="copy_command">نسخ الأمر</string>
     <string name="close">إغلاق</string>
@@ -321,13 +321,6 @@
     <string name="no">لا</string>
     <string name="information">معلومات</string>
     <string name="auto_actions">إجراءات تلقائية</string>
-    <string name="ad_info_title">ادعم التطوير</string>
-    <string name="ad_info_message">مرحبًا! 👋\n\nللحفاظ على هذا التطبيق مجانيًا ومواصلة تحسينه، أضفت إعلانات: لافتة صغيرة أسفل الشاشة، وأحيانًا إعلان بملء الشاشة بعد تطبيق تغيير أو إعادة فتح التطبيق.\n\nوهي محدودة التكرار حتى لا تزعجك.\n\nشكرًا لتفهمك ودعمك. ❤️</string>
-    <string name="ad_info_ok">فهمت</string>
-    <string name="rate_dialog_title">هل يعجبك التطبيق؟</string>
-    <string name="rate_dialog_message">إذا أعجبك Custom Animator، فيرجى تخصيص لحظة لتقييمه على متجر Play. دعمك يحدث فرقًا حقًا!</string>
-    <string name="rate_dialog_rate">تقييم</string>
-    <string name="rate_dialog_later">لاحقًا</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">تتطلب الطرفية اتصال شيزوكو.</string>
@@ -646,28 +639,6 @@
     <string name="onboarding_experimental_highlight">إذا حدث خلل، استخدم خيار إعادة التعيين في القسم ذي الصلة أو في الإعدادات للعودة إلى القيم الأصلية. عند الشك، دوّن ما غيرته قبل تغييره.</string>
     <string name="settings_privacy_policy">سياسة الخصوصية</string>
     <string name="settings_privacy_policy_desc">اقرأ كيف يتعامل التطبيق مع بياناتك</string>
-    <string name="settings_privacy_options">خيارات الخصوصية</string>
-    <string name="settings_privacy_options_desc">غيّر خيارات موافقة تخصيص الإعلانات</string>
-    <string name="settings_premium">النسخة المدفوعة</string>
-    <string name="remove_ads">إزالة الإعلانات</string>
-    <string name="remove_ads_desc">شراء لمرة واحدة يزيل جميع الإعلانات</string>
-    <string name="remove_ads_desc_price">شراء لمرة واحدة: %1$s</string>
-    <string name="remove_ads_owned">تم الشراء. شكرًا لدعمك!</string>
-    <string name="remove_ads_thanks">تمت إزالة الإعلانات. شكرًا لك!</string>
-    <string name="remove_ads_pending">الشراء قيد الانتظار. ستُزال الإعلانات بمجرد اكتماله.</string>
-    <string name="remove_ads_unavailable">الشراء غير متاح الآن. يرجى المحاولة لاحقًا.</string>
-    <string name="remove_ads_restore">استعادة الشراء</string>
-    <string name="remove_ads_restore_desc">هل اشتريته بالفعل؟ استعده على هذا الجهاز</string>
-    <string name="remove_ads_restored">تمت استعادة الشراء</string>
-    <string name="remove_ads_nothing_to_restore">لم يتم العثور على شراء سابق</string>
-    <string name="remove_ads_prompt_title">تفضّل تجربة بلا إعلانات؟</string>
-    <string name="remove_ads_prompt_body">أزلها بشراء لمرة واحدة وساعد في التطوير!</string>
-    <string name="remove_ads_prompt_body_price">أزلها مقابل %1$s، مرة واحدة</string>
-    <string name="remove_ads_prompt_dismiss">إخفاء هذا</string>
-    <string name="remove_ads_support_title">يرجى دعم التطوير</string>
-    <string name="remove_ads_support_message">هذا التطبيق مجاني ويُحسَّن باستمرار. يرجى دعم التطوير بشراء لمرة واحدة — فهو يزيل جميع الإعلانات أيضًا.</string>
-    <string name="remove_ads_support_buy_price">إزالة الإعلانات مقابل %1$s</string>
-    <string name="ad_info_remove_ads_hint">إذا كنت تفضّل عدم رؤية الإعلانات إطلاقًا، يمكنك إزالتها نهائيًا بشراء لمرة واحدة، في أي وقت، من الإعدادات › النسخة المدفوعة.</string>
     <string name="sound_tile_label">الصوت</string>
     <string name="sound_tile">مربع الصوت في الإعدادات السريعة</string>
     <string name="sound_tile_desc">زر في الإعدادات السريعة للوحة الصوت أو منتقي مخرجات الوسائط</string>
@@ -696,10 +667,6 @@
     <string name="aod_tile_subtitle_off">معطلة</string>
     <string name="aod_tile_unsupported">غير مدعومة على هذا الجهاز</string>
 
-    <string name="contact_developer">التواصل مع المطور</string>
-    <string name="contact_developer_desc">تواصل معنا بملاحظاتك واقتراحاتك وشكاويك</string>
-    <string name="contact_developer_subject">ملاحظات حول Custom Animator</string>
-    <string name="contact_developer_no_app">لم يتم العثور على تطبيق بريد</string>
     <string name="onboarding_disclaimer_title">استخدم على مسؤوليتك</string>
     <string name="onboarding_disclaimer_body">يغيّر هذا التطبيق إعدادات على مستوى النظام. اعتمادًا على جهازك ونظامك، قد يؤثر ذلك على عمر البطارية والإشعارات والمنبهات وتطبيقات الخلفية والاستقرار.</string>
     <string name="onboarding_disclaimer_highlight">لا يتحمل المطور أي مسؤولية عن أي فقدان بيانات أو عطل أو ضرر قد ينتج عن استخدام هذا التطبيق. كل ما تغيره هنا، تغيره على مسؤوليتك.</string>
@@ -911,7 +878,7 @@
     <string name="pn_nav_logging">السجل</string>
     <string name="changelog_title">ما الجديد</string>
     <string name="changelog_version">الإصدار %1$s</string>
-    <string name="changelog_feedback_note">قد لا يعمل كل شيء بشكل مثالي. لأي خطأ أو ملاحظة راسلني: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">قد لا يعمل كل شيء بشكل مثالي. لأي خطأ أو ملاحظة افتح بلاغًا هنا: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">خدمة الخلفية</string>
     <string name="pn_notification_persistent_settings_hint">اضغط هنا لإيقاف تشغيل هذا الإشعار.</string>
     <string name="settings_appearance">المظهر</string>
@@ -1319,10 +1286,6 @@
     <string name="boost_cancel">إلغاء</string>
     <string name="boost_cancelled">تم إلغاء التحسين</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
-    <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
-    <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
-    <string name="optimizer_clean_watch_ad">شاهد إعلانًا ونظّف</string>
-    <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
     <string name="tools_section_apps">التطبيقات</string>
@@ -1334,12 +1297,8 @@
     <string name="more_compile_booster_desc">إعادة تجميع التطبيقات لتشغيل أسرع</string>
     <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
-    <string name="reward_free_unlock">لا يوجد إعلان متاح الآن، لذا هذه المرة مجانية</string>
     <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>
-    <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
-    <string name="compile_all_apps_with_ad">إعلان ثم تجميع</string>
-    <string name="game_mode_turn_on_with_ad">إعلان ثم تشغيل</string>
     <string name="system_meter_title">مقياس النظام</string>
     <string name="system_meter_overlay">الطبقة</string>
     <string name="system_meter_metrics">القياسات</string>
@@ -1792,7 +1751,6 @@
     <string name="shortcut_place_shortcut">اختصار</string>
     <string name="shortcut_place_widget">أداة</string>
     <string name="shortcut_widget_unsupported">المشغّل لديك لا يسمح للتطبيقات بإضافة الأدوات.</string>
-    <string name="shortcut_watch_ad_add">شاهد إعلانًا وأضِف</string>
     <string name="shortcut_change_app">تغيير التطبيق</string>
     <string name="shortcut_pick_app">اختر تطبيقًا</string>
     <string name="shortcut_pick_screen">اختر شاشة</string>

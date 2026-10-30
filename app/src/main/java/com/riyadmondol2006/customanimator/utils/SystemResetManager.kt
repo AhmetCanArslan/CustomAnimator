@@ -1,0 +1,63 @@
+package com.riyadmondol2006.customanimator.utils
+
+import android.content.ContentResolver
+import android.content.Context
+import com.riyadmondol2006.customanimator.service.CompileBoosterService
+import com.riyadmondol2006.customanimator.service.ForegroundAppWatcherService
+import com.riyadmondol2006.customanimator.service.PowerButtonService
+
+object SystemResetManager {
+
+    data class ResetResult(
+        val animationScales: Boolean,
+        val density: Boolean,
+        val rotation: Boolean,
+        val tweaks: Boolean,
+        val angle: Boolean,
+        val permissions: Boolean
+    ) {
+        val allSucceeded: Boolean
+            get() = animationScales && density && rotation && tweaks && angle && permissions
+    }
+
+    fun revertEverything(context: Context, contentResolver: ContentResolver): ResetResult {
+        ForegroundAppWatcherService.stop(context)
+        CompileBoosterService.stop(context)
+
+        val scales = SettingsManager.applyAllScales(context, contentResolver, 1.0f, 1.0f, 1.0f)
+        val density = SettingsManager.setSmallestWidth(contentResolver, context, 0).success
+        val rotation = DeveloperOptionsManager.resetRotation(context, contentResolver)
+
+        val fancyIme = DeveloperOptionsManager.setFancyImeAnimations(context, contentResolver, false)
+        val clockSeconds = DeveloperOptionsManager.setClockSeconds(context, contentResolver, false)
+        val dontKeepActivities = DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, false)
+        val bgLimit = DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, false)
+        val powerLongPress = ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
+        val systemColors = SystemColorsManager.restoreBaseline(context)
+        ButtonRemapperManager.clearServiceActions(context)
+        PowerButtonService.sync(context)
+
+        val angle = DeveloperOptionsManager.clearAngleDriverSelections(context, contentResolver)
+        val permissions = regrantRevokedPermissions(context)
+
+        return ResetResult(
+            animationScales = scales,
+            density = density,
+            rotation = rotation,
+            tweaks = fancyIme && clockSeconds && dontKeepActivities && bgLimit && powerLongPress && systemColors,
+            angle = angle,
+            permissions = permissions
+        )
+    }
+
+    private fun regrantRevokedPermissions(context: Context): Boolean {
+        val store = RevokedPermissionsStore(context)
+        val revoked = store.getAllRevoked()
+        if (revoked.isEmpty()) return true
+        val allSucceeded = revoked.entries.all { (pkg, permissions) ->
+            permissions.all { DeveloperOptionsManager.grantPermission(pkg, it) }
+        }
+        if (allSucceeded) store.clearAll()
+        return allSucceeded
+    }
+}

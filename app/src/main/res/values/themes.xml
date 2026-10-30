@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.CustomAnimator" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
 
     <style name="Theme.CustomAnimator.Transparent" parent="android:Theme.Material.NoActionBar">

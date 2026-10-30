@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:sessionService="com.arslan.customanimator.service.PowerAssistSessionService"
-    android:recognitionService="com.arslan.customanimator.service.PowerAssistRecognitionService"
+    android:sessionService="com.riyadmondol2006.customanimator.service.PowerAssistSessionService"
+    android:recognitionService="com.riyadmondol2006.customanimator.service.PowerAssistRecognitionService"
     android:supportsAssist="true" />

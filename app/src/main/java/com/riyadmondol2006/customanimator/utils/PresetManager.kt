@@ -1,0 +1,144 @@
+package com.riyadmondol2006.customanimator.utils
+
+import android.content.Context
+import com.riyadmondol2006.customanimator.data.AnimatorPreset
+import com.riyadmondol2006.customanimator.data.PresetTileConfig
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.UUID
+
+class PresetManager(context: Context) {
+    
+    private val appContext = context.applicationContext
+    private val sharedPreferences = appContext.getSharedPreferences("animator_presets", Context.MODE_PRIVATE)
+    private val presetsKey = "presets_list"
+    
+    fun savePreset(
+        name: String,
+        windowScale: Float,
+        transitionScale: Float,
+        animatorScale: Float
+    ): Boolean {
+        return try {
+            val presets = sharedPreferences.getJsonArray(presetsKey)
+            val preset = AnimatorPreset(
+                id = UUID.randomUUID().toString(),
+                name = name,
+                windowAnimationScale = windowScale,
+                transitionAnimationScale = transitionScale,
+                animatorDurationScale = animatorScale
+            )
+            
+            val presetJson = JSONObject().apply {
+                put("id", preset.id)
+                put("name", preset.name)
+                put("windowAnimationScale", preset.windowAnimationScale.toString())
+                put("transitionAnimationScale", preset.transitionAnimationScale.toString())
+                put("animatorDurationScale", preset.animatorDurationScale.toString())
+            }
+            
+            presets.put(presetJson)
+            sharedPreferences.edit().putString(presetsKey, presets.toString()).apply()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+    
+    fun getAllPresets(): List<AnimatorPreset> {
+        return try {
+            val presets = sharedPreferences.getJsonArray(presetsKey)
+            val list = mutableListOf<AnimatorPreset>()
+            for (i in 0 until presets.length()) {
+                val json = presets.getJSONObject(i)
+                list.add(
+                    AnimatorPreset(
+                        id = json.getString("id"),
+                        name = json.getString("name"),
+                        windowAnimationScale = json.getString("windowAnimationScale").toFloat(),
+                        transitionAnimationScale = json.getString("transitionAnimationScale").toFloat(),
+                        animatorDurationScale = json.getString("animatorDurationScale").toFloat(),
+                        tile = PresetTileJson.read(json)
+                    )
+                )
+            }
+            list
+        } catch (e: Exception) {
+            e.printStackTrace()
+            emptyList()
+        }
+    }
+    
+    fun deletePreset(id: String): Boolean {
+        return try {
+            val presets = sharedPreferences.getJsonArray(presetsKey)
+            var foundIndex = -1
+            for (i in 0 until presets.length()) {
+                if (presets.getJSONObject(i).getString("id") == id) {
+                    foundIndex = i
+                    break
+                }
+            }
+            
+            if (foundIndex >= 0) {
+                val newPresets = JSONArray()
+                for (i in 0 until presets.length()) {
+                    if (i != foundIndex) {
+                        newPresets.put(presets.getJSONObject(i))
+                    }
+                }
+                sharedPreferences.edit().putString(presetsKey, newPresets.toString()).apply()
+                AnimationTileSlots.sync(appContext, this)
+                true
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+    
+    fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
+        return try {
+            val presets = sharedPreferences.getJsonArray(presetsKey)
+            var index = -1
+            for (i in 0 until presets.length()) {
+                if (presets.getJSONObject(i).getString("id") == id) {
+                    index = i
+                    break
+                }
+            }
+            if (index < 0) return false
+
+            val resolved = when {
+                config == null -> null
+                config.slot in 0 until PresetTileJson.MAX_TILE_SLOTS -> config
+                else -> {
+                    val free = firstFreeSlot(excludingPresetId = id) ?: return false
+                    config.copy(slot = free)
+                }
+            }
+
+            val json = presets.getJSONObject(index)
+            json.remove(PresetTileJson.KEY)
+            PresetTileJson.write(json, resolved)
+            presets.put(index, json)
+            sharedPreferences.edit().putString(presetsKey, presets.toString()).apply()
+            AnimationTileSlots.sync(appContext, this)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun getPresetForSlot(slot: Int): AnimatorPreset? =
+        getAllPresets().firstOrNull { it.tile?.slot == slot }
+
+    fun firstFreeSlot(excludingPresetId: String? = null): Int? =
+        PresetTileJson.firstFreeSlot(
+            getAllPresets().filter { it.id != excludingPresetId }.mapNotNull { it.tile?.slot }
+        )
+}

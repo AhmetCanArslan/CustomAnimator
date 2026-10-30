@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
     <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
@@ -133,7 +133,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="error">Error: %s</string>
     <string name="use_adb_command">Gumamit ng ADB Command</string>
     <string name="adb_description">Kumonekta sa computer at patakbuhin ang command na ito nang isang beses:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Tingnan ang \'Mga Detalye ng Pahintulot\' sa menu para sa kumpletong hakbang-hakbang na tagubilin.</string>
     <string name="copy_command">Kopyahin ang Command</string>
     <string name="close">Isara</string>
@@ -175,13 +175,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="yes">Oo</string>
     <string name="no">Hindi</string>
     <string name="information">Impormasyon</string>
-    <string name="ad_info_title">Suportahan ang Pag-develop</string>
-    <string name="ad_info_message">Kumusta! 👋\n\nUpang manatiling libre ang app at patuloy itong mapabuti, nagdagdag ako ng mga ad: maliit na banner sa ibaba ng screen, at paminsan-minsan ay full-screen na ad pagkatapos mong maglapat ng pagbabago o muling buksan ang app.\n\nLimitado ang dalas nito para hindi makaabala.\n\nSalamat sa iyong pang-unawa at suporta. ❤️</string>
-    <string name="ad_info_ok">Naunawaan</string>
-    <string name="rate_dialog_title">Nage-enjoy ka ba sa App?</string>
-    <string name="rate_dialog_message">Kung gusto mo ang Custom Animator, maglaan ng sandali para i-rate ito sa Play Store. Malaki ang naidudulot ng iyong suporta!</string>
-    <string name="rate_dialog_rate">I-rate</string>
-    <string name="rate_dialog_later">Mamaya</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Kailangan ng terminal na nakakonekta ang Shizuku.</string>
@@ -448,28 +441,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Kung may mali, gamitin ang reset sa kaukulang seksyon o sa Mga Setting para bumalik sa orihinal na halaga. Kapag may pagdududa, itala kung ano ang binago mo bago mo baguhin.</string>
     <string name="settings_privacy_policy">Patakaran sa Privacy</string>
     <string name="settings_privacy_policy_desc">Basahin kung paano hinahawakan ng app ang iyong data</string>
-    <string name="settings_privacy_options">Mga Opsyon sa Privacy</string>
-    <string name="settings_privacy_options_desc">Baguhin ang iyong pahintulot sa personalisasyon ng ad</string>
-    <string name="settings_premium">Premium</string>
-    <string name="remove_ads">Alisin ang mga Ad</string>
-    <string name="remove_ads_desc">Isang beses na pagbili na nag-aalis ng lahat ng ad</string>
-    <string name="remove_ads_desc_price">Isang beses na pagbili: %1$s</string>
-    <string name="remove_ads_owned">Nabili na. Salamat sa suporta!</string>
-    <string name="remove_ads_thanks">Naalis na ang mga ad. Salamat!</string>
-    <string name="remove_ads_pending">Nakabinbin ang pagbili. Maaalis ang mga ad kapag natapos na.</string>
-    <string name="remove_ads_unavailable">Hindi available ang pagbili ngayon. Subukan ulit mamaya.</string>
-    <string name="remove_ads_restore">Ibalik ang Pagbili</string>
-    <string name="remove_ads_restore_desc">Nabili mo na? Ibalik ito sa device na ito</string>
-    <string name="remove_ads_restored">Naibalik ang pagbili</string>
-    <string name="remove_ads_nothing_to_restore">Walang nakitang naunang pagbili</string>
-    <string name="remove_ads_prompt_title">Ayaw mo ba ng mga ad?</string>
-    <string name="remove_ads_prompt_body">Alisin ang mga ito sa isang beses na pagbili at tumulong sa pag-develop!</string>
-    <string name="remove_ads_prompt_body_price">Alisin sa halagang %1$s, isang beses lang</string>
-    <string name="remove_ads_prompt_dismiss">Itago ito</string>
-    <string name="remove_ads_support_title">Pakisuportahan ang pag-develop</string>
-    <string name="remove_ads_support_message">Libre ang app na ito at patuloy na pinapabuti. Suportahan ang pag-develop sa isang beses na pagbili — inaalis din nito ang lahat ng ad.</string>
-    <string name="remove_ads_support_buy_price">Alisin ang mga ad sa halagang %1$s</string>
-    <string name="ad_info_remove_ads_hint">Kung mas gusto mong walang makitang ad, puwede mo itong alisin nang permanente sa isang beses na pagbili, anumang oras, sa Mga Setting › Premium.</string>
     <string name="fps_meter_hint">I-drag ang counter para ilipat ito. I-off ito para alisin ang overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Payagan ang pagpapakita sa ibabaw ng ibang app para makita ang FPS meter.</string>
@@ -656,10 +627,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="carrier_name_needs_phone_permission">Kailangan ng pahintulot sa telepono para mabasa ang mga SIM slot.</string>
     <string name="carrier_name_note">Inilalapat ang pangalan bilang carrier config override hanggang mag-restart ang device. Gamitin ang I-reset para ibalik ang orihinal na pangalan.</string>
 
-    <string name="contact_developer">Makipag-ugnayan sa Developer</string>
-    <string name="contact_developer_desc">Mangyaring makipag-ugnayan para sa inyong puna, mungkahi, at reklamo</string>
-    <string name="contact_developer_subject">Feedback para sa Custom Animator</string>
-    <string name="contact_developer_no_app">Walang nakitang email app</string>
     <string name="onboarding_disclaimer_title">Gamitin sa Sarili Mong Panganib</string>
     <string name="onboarding_disclaimer_body">Binabago ng app na ito ang mga setting sa antas ng sistema. Depende sa iyong device at ROM, maaari nitong maapektuhan ang baterya, mga notification, alarma, background apps, at katatagan.</string>
     <string name="onboarding_disclaimer_highlight">Walang anumang pananagutan ang developer sa pagkawala ng data, depekto, o pinsalang maaaring idulot ng paggamit ng app na ito. Lahat ng babaguhin mo rito ay nasa iyong sariling panganib.</string>
@@ -867,7 +834,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Gumawa ng rule mula sa notification?</string>
     <string name="changelog_title">Mga bago</string>
     <string name="changelog_version">Bersyon %1$s</string>
-    <string name="changelog_feedback_note">Maaaring hindi perpekto ang lahat. Kung may makita kang bug o may feedback ka, mag-email sa akin: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Maaaring hindi perpekto ang lahat. Kung may makita kang bug o may feedback ka, magbukas ng issue: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Background service</string>
     <string name="pn_notification_persistent_settings_hint">I-tap dito para i-off ang notification na ito.</string>
     <string name="settings_appearance">Hitsura</string>
@@ -1279,10 +1246,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_cancel">Kanselahin</string>
     <string name="boost_cancelled">Kinansela ang optimization</string>
     <string name="boost_running_label">Ino-optimize…</string>
-    <string name="boost_ad_reward_denied">Tapusin ang ad para ma-unlock ang pag-optimize</string>
-    <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
-    <string name="optimizer_clean_watch_ad">Manood ng ad at maglinis</string>
-    <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Mga tool</string>
     <string name="tools_section_apps">Mga app</string>
@@ -1294,12 +1257,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="more_compile_booster_desc">I-recompile ang mga app para mas mabilis magbukas</string>
     <string name="more_auto_actions_desc">Mga awtomatikong panuntunan sa force stop at pahintulot</string>
     <string name="game_mode_fixed_performance">Naka-on ang fixed performance mode habang bukas ang Game Mode.</string>
-    <string name="reward_free_unlock">Walang available na ad ngayon, kaya libre ito ngayong beses</string>
     <string name="reward_unlock_denied">Tapusin ang ad para ma-unlock ito nang 3 minuto</string>
-    <string name="game_mode_ad_desc">Manood ng maikling ad para i-on ang game mode</string>
     <string name="game_mode_select_games_first">Pumili muna ng kahit isang laro</string>
-    <string name="compile_all_apps_with_ad">Manood ng ad at i-compile</string>
-    <string name="game_mode_turn_on_with_ad">Manood ng ad at i-on</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Mga sukat</string>
@@ -1752,7 +1711,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_place_shortcut">Shortcut</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Hindi pinapayagan ng launcher mo ang mga app na magdagdag ng widget.</string>
-    <string name="shortcut_watch_ad_add">Manood ng ad at idagdag</string>
     <string name="shortcut_change_app">Palitan ang app</string>
     <string name="shortcut_pick_app">Pumili ng app</string>
     <string name="shortcut_pick_screen">Pumili ng screen</string>
