@@ -249,6 +249,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     private fun onKey(code: Int, value: Int) {
         val detector = detector ?: return
         val now = SystemClock.elapsedRealtime()
+        if (code == EvdevDevice.KEY_POWER) notifyListener { it.onPowerKey() }
         when {
             code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> {
                 volumeDetector.onPowerDown(now)
