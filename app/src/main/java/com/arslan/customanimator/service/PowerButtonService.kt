@@ -46,6 +46,7 @@ class PowerButtonService : Service() {
         private const val SERVICE_VERSION = 7
         private const val RECONNECT_BASE_DELAY_MS = 2000L
         private const val MAX_RECONNECT_ATTEMPTS = 5
+        private const val PRESS_WAKE_MARGIN_MS = 1000L
 
         fun sync(context: Context) {
             val appContext = context.applicationContext
@@ -76,6 +77,15 @@ class PowerButtonService : Service() {
     @Volatile
     private var userService: IPowerButtonUserService? = null
 
+    @Volatile
+    private var pressWakeMs = PRESS_WAKE_MARGIN_MS
+
+    private val pressWakeLock by lazy {
+        (getSystemService(Context.POWER_SERVICE) as PowerManager)
+            .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CustomAnimator:PowerPress")
+            .apply { setReferenceCounted(false) }
+    }
+
     private val args by lazy {
         ShizukuUserService.args(this, PowerButtonUserService::class.java, "power_button", daemon = false, revision = SERVICE_VERSION)
     }
@@ -87,6 +97,10 @@ class PowerButtonService : Service() {
 
         override fun onVolumeTrigger(trigger: String?) {
             ButtonTrigger.fromName(trigger)?.let { scope.launch { perform(it) } }
+        }
+
+        override fun onPowerKey() {
+            pressWakeLock.acquire(pressWakeMs)
         }
     }
 
@@ -170,6 +184,7 @@ class PowerButtonService : Service() {
         val started = withContext(Dispatchers.IO) {
             val triggers = ButtonRemapperManager.activeServiceTriggers(applicationContext)
             val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
+            pressWakeMs = windowMs + PRESS_WAKE_MARGIN_MS
             val powerDoublePress = ButtonTrigger.POWER_DOUBLE_PRESS in triggers
             val volumeTriggers = triggers.filter { it in ButtonTrigger.volume }.map { it.name }.toTypedArray()
             val volumeScreenOff = ButtonRemapperManager.isVolumeScreenOff(applicationContext)
@@ -263,6 +278,7 @@ class PowerButtonService : Service() {
         Shizuku.removeBinderDeadListener(binderDeadListener)
         Shizuku.removeRequestPermissionResultListener(permissionResultListener)
         disconnect()
+        if (pressWakeLock.isHeld) pressWakeLock.release()
         try {
             unregisterReceiver(screenReceiver)
         } catch (e: IllegalArgumentException) {
