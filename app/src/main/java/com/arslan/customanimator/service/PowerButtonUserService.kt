@@ -209,7 +209,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             pollFds.forEachIndexed { index, pollFd ->
                 if (pollFd.revents.toInt() and OsConstants.POLLIN != 0) drain(devices[index], buffer)
             }
-            val now = SystemClock.uptimeMillis()
+            val now = SystemClock.elapsedRealtime()
             detector?.onTimeout(now)
             volumeDetector.onTimeout(now)
         }
@@ -222,7 +222,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         if (deadline == null) {
             -1
         } else {
-            (deadline - SystemClock.uptimeMillis()).coerceAtLeast(0).toInt()
+            (deadline - SystemClock.elapsedRealtime()).coerceAtLeast(0).toInt()
         }
     }
 
@@ -248,7 +248,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
 
     private fun onKey(code: Int, value: Int) {
         val detector = detector ?: return
-        val now = SystemClock.uptimeMillis()
+        val now = SystemClock.elapsedRealtime()
         when {
             code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> {
                 volumeDetector.onPowerDown(now)
