@@ -22,6 +22,7 @@ class PowerPressDetector(
 
     fun onPowerDown(now: Long) {
         if (holding) return
+        onTimeout(now)
         pressing = true
         if (otherKeysDown > 0) {
             startHold()

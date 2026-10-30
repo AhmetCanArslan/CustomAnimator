@@ -82,6 +82,16 @@ class PowerPressDetectorTest {
     }
 
     @Test
+    fun aPressAfterAnExpiredWindowReplaysTheEarlierPressInsteadOfCountingAsDouble() {
+        val second = 10 + TIMEOUT + 500
+        press(at = 0)
+        press(at = second)
+
+        assertEquals(listOf("replay 1"), events)
+        assertEquals(second + 10 + TIMEOUT, detector.deadline)
+    }
+
+    @Test
     fun holdingThePowerButtonBecomesARealLongPress() {
         detector.onPowerDown(0)
         detector.onTimeout(TIMEOUT)
@@ -141,7 +151,7 @@ class PowerPressDetectorTest {
         press(at = 720)
         detector.onTimeout(730)
 
-        assertEquals(listOf("hold down", "hold up", "replay 2"), events)
+        assertEquals(listOf("hold down", "hold up", "replay 1", "replay 1"), events)
     }
 
     private fun press(at: Long) {
