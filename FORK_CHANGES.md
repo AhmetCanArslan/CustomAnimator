@@ -20,7 +20,7 @@ To see the raw diff: [compare upstream with this fork](https://github.com/AhmetC
 |---|---|---|
 | App name | CustomAnimator | **Custom Animator M3** |
 | Package | `com.arslan.customanimator` | **`com.riyadmondol2006.customanimator`** (source, AIDL and JNI moved too) |
-| Icon | Traced bitmap mark on black | **New icon**: an app window zooming open with an "M3" mark, on an indigo-to-violet gradient, plus a monochrome layer for Android 13+ themed icons |
+| Icon | Traced bitmap mark on black | **New icon**: a dot morphing into a rounded square as it moves (a Material 3 shape morph) on an indigo-to-violet gradient, plus a monochrome layer for Android 13+ themed icons |
 | Version | 3.8 (198) | 4.0-M3 (200 + CI run number) |
 | Distribution | Google Play | Signed APKs on GitHub Releases |
 | Feedback | Developer e-mail | GitHub issues |

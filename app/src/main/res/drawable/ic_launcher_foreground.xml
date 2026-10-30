@@ -4,11 +4,14 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Custom Animator M3 mark: an app window zooming open, trailed by two ghost frames. -->
-    <path android:fillColor="#FFFFFF" android:fillAlpha="0.2" android:pathData="M34.0,65.0 H39.0 A4,4 0 0 1 43.0,69.0 V74.0 A4,4 0 0 1 39.0,78.0 H34.0 A4,4 0 0 1 30.0,74.0 V69.0 A4,4 0 0 1 34.0,65.0 Z" />
-    <path android:fillColor="#FFFFFF" android:fillAlpha="0.4" android:pathData="M41.0,51.5 H50.0 A6.5,6.5 0 0 1 56.5,58.0 V67.0 A6.5,6.5 0 0 1 50.0,73.5 H41.0 A6.5,6.5 0 0 1 34.5,67.0 V58.0 A6.5,6.5 0 0 1 41.0,51.5 Z" />
-    <path android:fillColor="#FFFFFF" android:pathData="M51.0,33.0 H65.0 A10,10 0 0 1 75.0,43.0 V57.0 A10,10 0 0 1 65.0,67.0 H51.0 A10,10 0 0 1 41.0,57.0 V43.0 A10,10 0 0 1 51.0,33.0 Z" />
-    <group android:translateX="45.684" android:translateY="56.520" android:scaleX="0.01615" android:scaleY="0.01615">
-        <path android:fillColor="#3F33C8" android:pathData="M66 0V-745H216L495 -375H425L696 -745H846V0H691V-574L753 -560L466 -190H446L169 -560L221 -574V0ZM1184 12Q1122 12 1066.0 -11.5Q1010 -35 971.0 -78.0Q932 -121 919 -179L1056 -225Q1073 -177 1106.0 -152.5Q1139 -128 1184 -128Q1221 -128 1247.5 -142.0Q1274 -156 1289.0 -181.5Q1304 -207 1304 -241Q1304 -275 1289.5 -299.5Q1275 -324 1248.5 -337.5Q1222 -351 1184 -351Q1162 -351 1140.0 -346.0Q1118 -341 1100 -332L1064 -407L1255 -615H964V-745H1429V-625L1233 -402L1238 -465Q1305 -465 1354.5 -437.5Q1404 -410 1431.5 -361.0Q1459 -312 1459 -247Q1459 -173 1423.0 -114.0Q1387 -55 1325.0 -21.5Q1263 12 1184 12Z" />
+    <!-- Custom Animator M3 mark: a dot morphing into a rounded square as it moves, Material 3 shape-morph style. -->
+    <group android:rotation="0" android:pivotX="34.225" android:pivotY="73.775">
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.32" android:pathData="M34.225,69.275 H34.225 A4.5,4.5 0 0 1 38.725,73.775 V73.775 A4.5,4.5 0 0 1 34.225,78.275 H34.225 A4.5,4.5 0 0 1 29.725,73.775 V73.775 A4.5,4.5 0 0 1 34.225,69.275 Z" />
+    </group>
+    <group android:rotation="-14" android:pivotX="45.784" android:pivotY="62.216">
+        <path android:fillColor="#FFFFFF" android:fillAlpha="0.60" android:pathData="M43.644,54.566 H47.924 A5.51,5.51 0 0 1 53.434,60.076 V64.356 A5.51,5.51 0 0 1 47.924,69.866 H43.644 A5.51,5.51 0 0 1 38.134,64.356 V60.076 A5.51,5.51 0 0 1 43.644,54.566 Z" />
+    </group>
+    <group android:rotation="-28" android:pivotX="65.559" android:pivotY="42.441">
+        <path android:fillColor="#FFFFFF" android:fillAlpha="1.00" android:pathData="M58.649,28.041 H72.469 A7.49,7.49 0 0 1 79.959,35.531 V49.351 A7.49,7.49 0 0 1 72.469,56.841 H58.649 A7.49,7.49 0 0 1 51.159,49.351 V35.531 A7.49,7.49 0 0 1 58.649,28.041 Z" />
     </group>
 </vector>

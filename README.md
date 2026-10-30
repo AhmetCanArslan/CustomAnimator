@@ -40,7 +40,7 @@ Everything below is new in this fork compared with [upstream CustomAnimator 3.8]
 | | Upstream | Custom Animator M3 |
 |---|---|---|
 | **Name & package** | CustomAnimator, `com.arslan.customanimator` | Custom Animator M3, `com.riyadmondol2006.customanimator` |
-| **Icon** | Traced bitmap mark | New mark: an app window zooming open with an "M3" badge, themed-icon ready |
+| **Icon** | Traced bitmap mark | New shape-morph mark (a dot growing into a rounded square), themed-icon ready |
 | **Look** | Wallpaper colours, tab chips under the title | Own palettes (Aurora, Ocean, Ember, Meadow, Graphite, Wallpaper), Plus Jakarta Sans, floating bottom dock |
 | **Dark mode** | Standard dark | Standard dark, plus optional **pure black** for OLED |
 | **Animation scales** | Sliders could show stale values and re-apply them; bad manual input was ignored | Live sync with the system, input validation, 0×–5× with one-tap quick picks |
