@@ -1,0 +1,341 @@
+package com.riyadmondol2006.customanimator
+
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.BorderAll
+import androidx.compose.material.icons.automirrored.filled.FormatTextdirectionRToL
+import androidx.compose.material.icons.filled.LayersClear
+import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.SensorsOff
+import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.Usb
+import androidx.compose.material.icons.filled.WifiTethering
+import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.riyadmondol2006.customanimator.utils.DeveloperOptionsManager
+import com.riyadmondol2006.customanimator.utils.ShizukuHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.riyadmondol2006.customanimator.utils.LocalShizukuPermission
+import com.riyadmondol2006.customanimator.utils.LocalWriteSecureSettings
+import com.riyadmondol2006.customanimator.ui.components.AppCard
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DeveloperScreenContent(
+    modifier: Modifier = Modifier,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
+    listState: LazyListState = rememberLazyListState()
+) {
+    val context = LocalContext.current
+    val resources = LocalResources.current
+    val openSetup = LocalOpenSetupGuide.current
+    val contentResolver = context.contentResolver
+    val coroutineScope = rememberCoroutineScope()
+
+    var adbEnabled by remember { mutableStateOf(DeveloperOptionsManager.isAdbEnabled(contentResolver)) }
+    var adbWifiEnabled by remember { mutableStateOf(DeveloperOptionsManager.isAdbWifiEnabled(contentResolver)) }
+    var dontKeepActivities by remember { mutableStateOf(DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)) }
+    var limitBackgroundProcesses by remember { mutableStateOf(false) }
+
+    var canWriteSystemSettings by remember { mutableStateOf(ShizukuHelper.canWriteSystemSettings(context)) }
+    var showTouches by remember { mutableStateOf(DeveloperOptionsManager.isShowTouchesEnabled(contentResolver)) }
+    var pointerLocation by remember { mutableStateOf(DeveloperOptionsManager.isPointerLocationEnabled(contentResolver)) }
+    var forceRtl by remember { mutableStateOf(DeveloperOptionsManager.isForceRtlEnabled(contentResolver)) }
+    var layoutBounds by remember { mutableStateOf(false) }
+    var gpuProfiling by remember { mutableStateOf(false) }
+    var sensorsOff by remember { mutableStateOf(false) }
+
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                adbEnabled = DeveloperOptionsManager.isAdbEnabled(contentResolver)
+                adbWifiEnabled = DeveloperOptionsManager.isAdbWifiEnabled(contentResolver)
+                dontKeepActivities = DeveloperOptionsManager.isAlwaysFinishActivitiesEnabled(contentResolver)
+                coroutineScope.launch {
+                    limitBackgroundProcesses = withContext(Dispatchers.IO) {
+                        DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
+                    }
+                }
+                canWriteSystemSettings = ShizukuHelper.canWriteSystemSettings(context)
+                showTouches = DeveloperOptionsManager.isShowTouchesEnabled(contentResolver)
+                pointerLocation = DeveloperOptionsManager.isPointerLocationEnabled(contentResolver)
+                forceRtl = DeveloperOptionsManager.isForceRtlEnabled(contentResolver)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    LaunchedEffect(hasShizukuPermission) {
+        if (!hasShizukuPermission) return@LaunchedEffect
+        withContext(Dispatchers.IO) {
+            limitBackgroundProcesses = DeveloperOptionsManager.isBackgroundProcessLimitEnabled(contentResolver)
+            layoutBounds = DeveloperOptionsManager.isLayoutBoundsEnabled()
+            gpuProfiling = DeveloperOptionsManager.isGpuProfilingEnabled()
+            sensorsOff = DeveloperOptionsManager.isSensorsOffEnabled()
+        }
+    }
+
+    val secureToggleEnabled = hasShizukuPermission || hasWriteSecureSettings
+    val systemToggleEnabled = hasShizukuPermission || canWriteSystemSettings
+
+    val writeSettingsLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        canWriteSystemSettings = ShizukuHelper.canWriteSystemSettings(context)
+    }
+
+    val applyToggle: (Boolean, (Boolean) -> Unit, () -> Boolean) -> Unit = { newValue, setState, action ->
+        setState(newValue)
+        coroutineScope.launch {
+            val success = withContext(Dispatchers.IO) { action() }
+            if (!success) {
+                setState(!newValue)
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            if (!hasShizukuPermission) {
+                item {
+                    SetupNudgeCard(
+                        message = stringResource(R.string.developer_needs_shizuku),
+                        onOpenSetup = openSetup
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
+
+            if (!hasShizukuPermission && !canWriteSystemSettings) {
+                item {
+                    AppCard(contentPadding = 0.dp) {
+                        ActionRow(
+                            icon = Icons.Filled.EditNote,
+                            title = stringResource(R.string.write_settings_permission),
+                            description = stringResource(R.string.write_settings_permission_desc),
+                            buttonLabel = stringResource(R.string.grant),
+                            enabled = true,
+                            onClick = {
+                                launchSettingsSafely(context) {
+                                    writeSettingsLauncher.launch(ShizukuHelper.writeSystemSettingsIntent(context))
+                                }
+                            }
+                        )
+                    }
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
+
+            cardSection(
+                R.string.developer_section_debugging,
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Usb,
+                        title = stringResource(R.string.usb_debugging),
+                        description = stringResource(R.string.usb_debugging_desc),
+                        checked = adbEnabled,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { adbEnabled = it },
+                                { DeveloperOptionsManager.setAdbEnabled(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        HorizontalDivider(modifier = Modifier.padding(start = 16.dp))
+                        ToggleRow(
+                            icon = Icons.Filled.WifiTethering,
+                            title = stringResource(R.string.wireless_debugging),
+                            description = stringResource(R.string.wireless_debugging_desc),
+                            checked = adbWifiEnabled,
+                            enabled = secureToggleEnabled,
+                            onCheckedChange = { newValue ->
+                                applyToggle(
+                                    newValue,
+                                    { adbWifiEnabled = it },
+                                    { DeveloperOptionsManager.setAdbWifiEnabled(context, contentResolver, newValue) }
+                                )
+                            }
+                        )
+                    }
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.SensorsOff,
+                        title = stringResource(R.string.sensors_off),
+                        description = stringResource(R.string.sensors_off_desc),
+                        checked = sensorsOff,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { sensorsOff = it },
+                                { DeveloperOptionsManager.setSensorsOff(newValue) }
+                            )
+                        }
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.tools_section_apps,
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.LayersClear,
+                        title = stringResource(R.string.dont_keep_activities),
+                        description = stringResource(R.string.dont_keep_activities_desc),
+                        checked = dontKeepActivities,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { dontKeepActivities = it },
+                                { DeveloperOptionsManager.setAlwaysFinishActivities(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.Memory,
+                        title = stringResource(R.string.limit_background_processes),
+                        description = stringResource(R.string.limit_background_processes_desc),
+                        checked = limitBackgroundProcesses,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { limitBackgroundProcesses = it },
+                                { DeveloperOptionsManager.setBackgroundProcessLimit(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                }
+            )
+
+            cardSection(
+                R.string.developer_section_drawing,
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.TouchApp,
+                        title = stringResource(R.string.show_taps),
+                        description = stringResource(R.string.show_taps_desc),
+                        checked = showTouches,
+                        enabled = systemToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { showTouches = it },
+                                { DeveloperOptionsManager.setShowTouches(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.MyLocation,
+                        title = stringResource(R.string.pointer_location),
+                        description = stringResource(R.string.pointer_location_desc),
+                        checked = pointerLocation,
+                        enabled = systemToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { pointerLocation = it },
+                                { DeveloperOptionsManager.setPointerLocation(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.BorderAll,
+                        title = stringResource(R.string.show_layout_bounds),
+                        description = stringResource(R.string.show_layout_bounds_desc),
+                        checked = layoutBounds,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { layoutBounds = it },
+                                { DeveloperOptionsManager.setLayoutBounds(newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.Filled.BarChart,
+                        title = stringResource(R.string.gpu_profiling),
+                        description = stringResource(R.string.gpu_profiling_desc),
+                        checked = gpuProfiling,
+                        enabled = hasShizukuPermission,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { gpuProfiling = it },
+                                { DeveloperOptionsManager.setGpuProfiling(newValue) }
+                            )
+                        }
+                    )
+                },
+                {
+                    ToggleRow(
+                        icon = Icons.AutoMirrored.Filled.FormatTextdirectionRToL,
+                        title = stringResource(R.string.force_rtl),
+                        description = stringResource(R.string.force_rtl_desc),
+                        checked = forceRtl,
+                        enabled = secureToggleEnabled,
+                        onCheckedChange = { newValue ->
+                            applyToggle(
+                                newValue,
+                                { forceRtl = it },
+                                { DeveloperOptionsManager.setForceRtl(context, contentResolver, newValue) }
+                            )
+                        }
+                    )
+                    InfoNote(text = stringResource(R.string.developer_tiles_restart_note), dismissKey = "developer_tiles_restart")
+                }
+            
+            )
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}

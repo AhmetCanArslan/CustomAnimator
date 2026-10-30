@@ -1,0 +1,48 @@
+package com.riyadmondol2006.customanimator.service
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import com.riyadmondol2006.customanimator.utils.DeveloperOptionsManager
+
+class BootReceiver : BroadcastReceiver() {
+
+    override fun onReceive(context: Context, intent: Intent) {
+        when (intent.action) {
+            Intent.ACTION_BOOT_COMPLETED,
+            Intent.ACTION_MY_PACKAGE_REPLACED -> {
+                Log.d(TAG, "Restoring watcher after ${intent.action}")
+                try {
+                    ForegroundAppWatcherService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore foreground app watcher", e)
+                }
+                try {
+                    ScreenshotWatcherService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore screenshot watcher", e)
+                }
+                try {
+                    BatteryAlertService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore battery alert service", e)
+                }
+                try {
+                    PowerButtonService.sync(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to restore power button service", e)
+                }
+                try {
+                    DeveloperOptionsManager.reapplyHighVolumeWarning(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to reapply high volume warning", e)
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val TAG = "BootReceiver"
+    }
+}

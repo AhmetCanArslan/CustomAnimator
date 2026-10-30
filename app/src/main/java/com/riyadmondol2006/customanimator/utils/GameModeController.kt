@@ -1,0 +1,290 @@
+package com.riyadmondol2006.customanimator.utils
+
+import android.content.ContentResolver
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.os.Build
+import android.provider.Settings
+import android.view.Display
+import com.riyadmondol2006.customanimator.widget.GameModeWidgetProvider
+import org.json.JSONArray
+import org.json.JSONObject
+
+object GameModeController {
+
+    private const val PREFS_NAME = "game_mode_prefs"
+    private const val KEY_ACTIVE = "active"
+    private const val KEY_TOUCHED_APPS = "touched_apps"
+    private const val KEY_TOUCHED_GAMES = "touched_games"
+    private const val KEY_BACKGROUND_LIMIT = "previous_background_limit"
+    private const val KEY_MASTER_SYNC = "previous_master_sync"
+    private const val KEY_MIN_REFRESH_RATE = "previous_min_refresh_rate"
+    private const val KEY_HWUI_APPLIED = "hwui_applied"
+    private const val KEY_PREVIOUS_TEXTURE_CACHE = "previous_texture_cache"
+    private const val KEY_PREVIOUS_FORCE_GPU = "previous_force_gpu"
+
+    private const val GAME_TEXTURE_CACHE_MB = 96
+
+    private const val MIN_REFRESH_RATE_KEY = "min_refresh_rate"
+    private const val NO_SAVED_REFRESH_RATE = -1f
+
+    private const val FIELD_PACKAGE = "package"
+    private const val FIELD_BUCKET = "bucket"
+    private const val FIELD_BACKGROUND = "background"
+    private const val DEFAULT_BUCKET = "active"
+    private const val DEFAULT_BACKGROUND_MODE = "allow"
+    private const val UNSET_BACKGROUND_MODE = "default"
+    private const val BACKGROUND_OP = "RUN_ANY_IN_BACKGROUND"
+    private val RESTORABLE_BUCKETS = 10..45
+    private val BACKGROUND_MODE_REGEX = Regex("""^$BACKGROUND_OP: (\w+)""", RegexOption.MULTILINE)
+
+    data class Result(val succeeded: Boolean)
+
+    private class TouchedApp(val packageName: String, val bucket: String?, val backgroundMode: String?)
+
+    private fun prefs(context: Context) =
+        context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    fun canApply(context: Context): Boolean = ShizukuHelper.hasShizukuPermission()
+
+    fun isActive(context: Context): Boolean = prefs(context).getBoolean(KEY_ACTIVE, false)
+
+    fun setActive(context: Context, active: Boolean): Result {
+        val result = if (active) enable(context) else disable(context)
+        GameModeWidgetProvider.updateAll(context.applicationContext)
+        return result
+    }
+
+    private fun enable(context: Context): Result {
+        val appContext = context.applicationContext
+        if (!canApply(appContext)) return Result(false)
+
+        val resolver = appContext.contentResolver
+        val games = GameModeManager(appContext).getSelectedPackages()
+        val excluded = GameModeExclusionManager(appContext).getSelectedPackages()
+        val targets = GameModeTargets.resolve(appContext, games, excluded)
+
+        var restricted = 0
+        fun record(success: Boolean) {
+            if (success) restricted++
+        }
+
+        val previous = decodeTouched(prefs(appContext).getString(KEY_TOUCHED_APPS, null))
+            .associateBy { it.packageName }
+            .takeIf { isActive(appContext) }
+            .orEmpty()
+        val touched = targets.map { packageName ->
+            previous[packageName] ?: TouchedApp(packageName, currentBucket(packageName), currentBackgroundMode(packageName))
+        } + previous.values.filter { it.packageName !in targets }
+
+        val boostHwui = games.isNotEmpty()
+        val previousTextureCache = if (boostHwui) HwuiTweaksManager.getTextureCacheSize() else 0
+
+        prefs(appContext).edit()
+            .putBoolean(KEY_HWUI_APPLIED, boostHwui)
+            .putInt(KEY_PREVIOUS_TEXTURE_CACHE, previousTextureCache)
+            .putBoolean(KEY_BACKGROUND_LIMIT, DeveloperOptionsManager.isBackgroundProcessLimitEnabled(resolver))
+            .putBoolean(KEY_MASTER_SYNC, isMasterSyncEnabled())
+            .putFloat(KEY_MIN_REFRESH_RATE, currentMinRefreshRate(resolver))
+            .putString(KEY_TOUCHED_APPS, encodeTouched(touched))
+            .putString(KEY_TOUCHED_GAMES, encode(games.toList()))
+            .putBoolean(KEY_ACTIVE, true)
+            .apply()
+
+        targets.forEach { packageName ->
+            record(setStandbyBucket(packageName, "restricted"))
+            record(setBackgroundOps(packageName, "ignore"))
+        }
+
+        games.forEach { packageName -> setGameMode(packageName, "performance") }
+
+        if (boostHwui) {
+            HwuiTweaksManager.setTextureCacheSize(GAME_TEXTURE_CACHE_MB)
+            games.forEach { packageName -> forceStop(packageName) }
+        }
+
+        DeveloperOptionsManager.setBackgroundProcessLimit(appContext, resolver, true)
+        setMasterSync(false)
+        CaffeineManager.setActive(appContext, resolver, true)
+        peakRefreshRate(appContext)?.let { rate -> writeMinRefreshRate(rate.toString()) }
+
+        DeveloperOptionsManager.clearAllAppCaches()
+        MemoryBooster.compact()
+        val fixedPerformanceEnabled = setFixedPerformanceMode(true)
+
+        return Result((targets.isEmpty() || restricted > 0) && fixedPerformanceEnabled)
+    }
+
+    private fun disable(context: Context): Result {
+        val appContext = context.applicationContext
+        if (!canApply(appContext)) return Result(false)
+
+        val resolver = appContext.contentResolver
+        val prefs = prefs(appContext)
+        val targets = decodeTouched(prefs.getString(KEY_TOUCHED_APPS, null))
+        val games = decode(prefs.getString(KEY_TOUCHED_GAMES, null))
+
+        var restored = 0
+        fun record(success: Boolean) {
+            if (success) restored++
+        }
+
+        targets.forEach { app ->
+            record(setStandbyBucket(app.packageName, app.bucket ?: DEFAULT_BUCKET))
+            record(setBackgroundOps(app.packageName, app.backgroundMode ?: DEFAULT_BACKGROUND_MODE))
+        }
+
+        games.forEach { packageName -> setGameMode(packageName, "standard") }
+
+        if (prefs.getBoolean(KEY_HWUI_APPLIED, false)) {
+            HwuiTweaksManager.setTextureCacheSize(prefs.getInt(KEY_PREVIOUS_TEXTURE_CACHE, HwuiTweaksManager.TEXTURE_CACHE_DEFAULT))
+        }
+
+        DeveloperOptionsManager.setBackgroundProcessLimit(
+            appContext, resolver, prefs.getBoolean(KEY_BACKGROUND_LIMIT, false)
+        )
+        setMasterSync(prefs.getBoolean(KEY_MASTER_SYNC, true))
+        CaffeineManager.setActive(appContext, resolver, false)
+
+        val previousRate = prefs.getFloat(KEY_MIN_REFRESH_RATE, NO_SAVED_REFRESH_RATE)
+        if (previousRate <= 0f) {
+            ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "system", MIN_REFRESH_RATE_KEY))
+        } else {
+            writeMinRefreshRate(previousRate.toString())
+        }
+
+        val fixedPerformanceDisabled = setFixedPerformanceMode(false)
+
+        prefs.edit()
+            .remove(KEY_TOUCHED_APPS)
+            .remove(KEY_TOUCHED_GAMES)
+            .remove(KEY_BACKGROUND_LIMIT)
+            .remove(KEY_MASTER_SYNC)
+            .remove(KEY_MIN_REFRESH_RATE)
+            .remove(KEY_HWUI_APPLIED)
+            .remove(KEY_PREVIOUS_TEXTURE_CACHE)
+            .remove(KEY_PREVIOUS_FORCE_GPU)
+            .putBoolean(KEY_ACTIVE, false)
+            .apply()
+
+        return Result((targets.isEmpty() || restored > 0) && fixedPerformanceDisabled)
+    }
+
+    private fun forceStop(packageName: String): Boolean =
+        ShizukuHelper.executeShellCommand(arrayOf("am", "force-stop", packageName))
+
+    private fun setStandbyBucket(packageName: String, bucket: String): Boolean =
+        ShizukuHelper.executeShellCommand(arrayOf("am", "set-standby-bucket", packageName, bucket))
+
+    private fun setBackgroundOps(packageName: String, mode: String): Boolean =
+        ShizukuHelper.executeShellCommand(
+            arrayOf("cmd", "appops", "set", packageName, BACKGROUND_OP, mode)
+        )
+
+    private fun currentBucket(packageName: String): String? {
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("am", "get-standby-bucket", packageName))
+        if (!result.isSuccess) return null
+        return result.output.trim().toIntOrNull()?.takeIf { it in RESTORABLE_BUCKETS }?.toString()
+    }
+
+    private fun currentBackgroundMode(packageName: String): String? {
+        val result = ShizukuHelper.executeShellCommandWithOutput(
+            arrayOf("cmd", "appops", "get", packageName, BACKGROUND_OP)
+        )
+        if (!result.isSuccess) return null
+        return BACKGROUND_MODE_REGEX.find(result.output)?.groupValues?.get(1) ?: UNSET_BACKGROUND_MODE
+    }
+
+    private fun setGameMode(packageName: String, mode: String): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "game", "mode", mode, packageName))
+    }
+
+    private fun setFixedPerformanceMode(enabled: Boolean): Boolean =
+        ShizukuHelper.executeShellCommand(
+            arrayOf("cmd", "power", "set-fixed-performance-mode-enabled", enabled.toString())
+        )
+
+    private fun isMasterSyncEnabled(): Boolean = try {
+        ContentResolver.getMasterSyncAutomatically()
+    } catch (e: Exception) {
+        true
+    }
+
+    private fun setMasterSync(enabled: Boolean): Boolean = try {
+        ContentResolver.setMasterSyncAutomatically(enabled)
+        true
+    } catch (e: Exception) {
+        false
+    }
+
+    private fun currentMinRefreshRate(resolver: ContentResolver): Float = try {
+        Settings.System.getFloat(resolver, MIN_REFRESH_RATE_KEY, NO_SAVED_REFRESH_RATE)
+    } catch (e: Exception) {
+        NO_SAVED_REFRESH_RATE
+    }
+
+    private fun writeMinRefreshRate(value: String): Boolean =
+        ShizukuHelper.executeShellCommand(arrayOf("settings", "put", "system", MIN_REFRESH_RATE_KEY, value))
+
+    private fun peakRefreshRate(context: Context): Float? {
+        return try {
+            val display = context.getSystemService(DisplayManager::class.java)
+                ?.getDisplay(Display.DEFAULT_DISPLAY) ?: return null
+            display.supportedModes.maxOfOrNull { it.refreshRate }?.takeIf { it > 0f }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun encode(packages: List<String>): String {
+        val array = JSONArray()
+        packages.forEach { array.put(it) }
+        return array.toString()
+    }
+
+    private fun encodeTouched(apps: List<TouchedApp>): String {
+        val array = JSONArray()
+        apps.forEach { app ->
+            array.put(
+                JSONObject()
+                    .put(FIELD_PACKAGE, app.packageName)
+                    .putOpt(FIELD_BUCKET, app.bucket)
+                    .putOpt(FIELD_BACKGROUND, app.backgroundMode)
+            )
+        }
+        return array.toString()
+    }
+
+    private fun decodeTouched(raw: String?): List<TouchedApp> {
+        if (raw.isNullOrBlank()) return emptyList()
+        return try {
+            val array = JSONArray(raw)
+            (0 until array.length()).mapNotNull { index ->
+                when (val item = array.get(index)) {
+                    is JSONObject -> item.optString(FIELD_PACKAGE).takeIf { it.isNotBlank() }?.let { packageName ->
+                        TouchedApp(
+                            packageName,
+                            item.optString(FIELD_BUCKET).takeIf { it.isNotBlank() },
+                            item.optString(FIELD_BACKGROUND).takeIf { it.isNotBlank() }
+                        )
+                    }
+                    is String -> TouchedApp(item, null, null)
+                    else -> null
+                }
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun decode(raw: String?): List<String> {
+        if (raw.isNullOrBlank()) return emptyList()
+        return try {
+            val array = JSONArray(raw)
+            (0 until array.length()).map { array.getString(it) }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+}

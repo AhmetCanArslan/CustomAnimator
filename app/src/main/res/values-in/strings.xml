@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
     <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
@@ -133,7 +133,7 @@ Durasi Animator: %3$.2f</string>
     <string name="error">Kesalahan: %s</string>
     <string name="use_adb_command">Gunakan Perintah ADB</string>
     <string name="adb_description">Hubungkan ke komputer dan jalankan perintah ini sekali:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Lihat \'Detail Izin\' di menu untuk petunjuk langkah demi langkah lengkap.</string>
     <string name="copy_command">Salin Perintah</string>
     <string name="close">Tutup</string>
@@ -175,13 +175,6 @@ Durasi Animator: %3$.2f</string>
     <string name="yes">Ya</string>
     <string name="no">Tidak</string>
     <string name="information">Informasi</string>
-    <string name="ad_info_title">Dukung Pengembangan</string>
-    <string name="ad_info_message">Hai! 👋\n\nAgar aplikasi ini tetap gratis dan terus berkembang, saya menambahkan iklan: banner kecil di bagian bawah layar, dan sesekali iklan layar penuh setelah Anda menerapkan perubahan atau membuka kembali aplikasi.\n\nFrekuensinya dibatasi agar tidak mengganggu.\n\nTerima kasih atas pengertian dan dukungan Anda. ❤️</string>
-    <string name="ad_info_ok">Oke</string>
-    <string name="rate_dialog_title">Menikmati Aplikasinya?</string>
-    <string name="rate_dialog_message">Jika Anda menyukai Custom Animator, luangkan waktu sejenak untuk memberi peringkat di Play Store. Dukungan Anda sangat berarti!</string>
-    <string name="rate_dialog_rate">Beri Nilai</string>
-    <string name="rate_dialog_later">Nanti</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Terminal memerlukan Shizuku yang terhubung.</string>
@@ -448,28 +441,6 @@ Durasi Animator: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Jika ada yang bermasalah, gunakan opsi setel ulang di bagian terkait atau di Pengaturan untuk kembali ke nilai bawaan. Jika ragu, catat apa yang Anda ubah sebelum mengubahnya.</string>
     <string name="settings_privacy_policy">Kebijakan Privasi</string>
     <string name="settings_privacy_policy_desc">Baca cara aplikasi menangani data Anda</string>
-    <string name="settings_privacy_options">Opsi Privasi</string>
-    <string name="settings_privacy_options_desc">Ubah pilihan persetujuan personalisasi iklan Anda</string>
-    <string name="settings_premium">Premium</string>
-    <string name="remove_ads">Hapus Iklan</string>
-    <string name="remove_ads_desc">Pembelian sekali bayar yang menghapus semua iklan</string>
-    <string name="remove_ads_desc_price">Pembelian sekali bayar: %1$s</string>
-    <string name="remove_ads_owned">Sudah dibeli. Terima kasih atas dukungannya!</string>
-    <string name="remove_ads_thanks">Iklan dihapus. Terima kasih!</string>
-    <string name="remove_ads_pending">Pembelian tertunda. Iklan akan dihapus setelah selesai.</string>
-    <string name="remove_ads_unavailable">Pembelian tidak tersedia saat ini. Coba lagi nanti.</string>
-    <string name="remove_ads_restore">Pulihkan Pembelian</string>
-    <string name="remove_ads_restore_desc">Sudah membeli? Pulihkan di perangkat ini</string>
-    <string name="remove_ads_restored">Pembelian dipulihkan</string>
-    <string name="remove_ads_nothing_to_restore">Tidak ada pembelian sebelumnya</string>
-    <string name="remove_ads_prompt_title">Lebih suka tanpa iklan?</string>
-    <string name="remove_ads_prompt_body">Hapus dengan pembelian sekali bayar dan dukung pengembangan!</string>
-    <string name="remove_ads_prompt_body_price">Hapus seharga %1$s, sekali bayar</string>
-    <string name="remove_ads_prompt_dismiss">Sembunyikan</string>
-    <string name="remove_ads_support_title">Mohon Dukung Pengembangan</string>
-    <string name="remove_ads_support_message">Aplikasi ini gratis dan terus dikembangkan. Dukung pengembangan dengan pembelian sekali bayar — sekaligus menghapus semua iklan.</string>
-    <string name="remove_ads_support_buy_price">Hapus iklan seharga %1$s</string>
-    <string name="ad_info_remove_ads_hint">Jika Anda lebih suka tidak melihat iklan sama sekali, Anda bisa menghapusnya secara permanen dengan pembelian sekali bayar, kapan saja, lewat Pengaturan › Premium.</string>
     <string name="fps_meter_hint">Seret penghitung untuk memindahkannya. Matikan ini untuk menghapus overlay.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">Izinkan tampil di atas aplikasi lain untuk menampilkan meter FPS.</string>
@@ -656,10 +627,6 @@ Durasi Animator: %3$.2f</string>
     <string name="carrier_name_needs_phone_permission">Membaca slot SIM memerlukan izin telepon.</string>
     <string name="carrier_name_note">Nama diterapkan sebagai penggantian konfigurasi operator hingga perangkat dimulai ulang. Gunakan Setel Ulang untuk mengembalikan nama asli.</string>
 
-    <string name="contact_developer">Hubungi Pengembang</string>
-    <string name="contact_developer_desc">Silakan hubungi kami untuk masukan, saran, dan keluhan</string>
-    <string name="contact_developer_subject">Masukan untuk Custom Animator</string>
-    <string name="contact_developer_no_app">Aplikasi email tidak ditemukan</string>
     <string name="onboarding_disclaimer_title">Gunakan dengan Risiko Sendiri</string>
     <string name="onboarding_disclaimer_body">Aplikasi ini mengubah pengaturan tingkat sistem. Tergantung perangkat dan ROM Anda, hal itu dapat memengaruhi daya tahan baterai, notifikasi, alarm, aplikasi latar belakang, dan stabilitas.</string>
     <string name="onboarding_disclaimer_highlight">Pengembang tidak bertanggung jawab atas kehilangan data, kerusakan, atau gangguan apa pun yang mungkin timbul dari penggunaan aplikasi ini. Semua perubahan yang Anda lakukan di sini menjadi risiko Anda sendiri.</string>
@@ -867,7 +834,7 @@ Durasi Animator: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Buat aturan dari notifikasi ini?</string>
     <string name="changelog_title">Yang baru</string>
     <string name="changelog_version">Versi %1$s</string>
-    <string name="changelog_feedback_note">Mungkin tidak semuanya berjalan sempurna. Jika menemukan bug atau punya masukan, kirim email ke saya: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Mungkin tidak semuanya berjalan sempurna. Jika menemukan bug atau punya masukan, buka issue di: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Layanan latar belakang</string>
     <string name="pn_notification_persistent_settings_hint">Ketuk di sini untuk menonaktifkan notifikasi ini.</string>
     <string name="settings_appearance">Tampilan</string>
@@ -1279,10 +1246,6 @@ Durasi Animator: %3$.2f</string>
     <string name="boost_cancel">Batal</string>
     <string name="boost_cancelled">Optimalisasi dibatalkan</string>
     <string name="boost_running_label">Mengoptimalkan…</string>
-    <string name="boost_ad_reward_denied">Selesaikan iklan untuk membuka optimalisasi</string>
-    <string name="boost_watch_ad">Tonton iklan &amp; optimalkan</string>
-    <string name="optimizer_clean_watch_ad">Tonton iklan &amp; bersihkan</string>
-    <string name="boost_ad_unavailable">Iklan tidak dapat dimuat. Periksa koneksi Anda dan coba lagi.</string>
     <string name="developer_title">Pengembang</string>
     <string name="tools_title">Alat</string>
     <string name="tools_section_apps">Aplikasi</string>
@@ -1294,12 +1257,8 @@ Durasi Animator: %3$.2f</string>
     <string name="more_compile_booster_desc">Kompilasi ulang aplikasi agar terbuka lebih cepat</string>
     <string name="more_auto_actions_desc">Aturan hentikan paksa dan izin otomatis</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>
-    <string name="reward_free_unlock">Tidak ada iklan yang tersedia saat ini, jadi kali ini gratis</string>
     <string name="reward_unlock_denied">Selesaikan iklan untuk membuka ini selama 3 menit</string>
-    <string name="game_mode_ad_desc">Tonton iklan singkat untuk menyalakan mode game</string>
     <string name="game_mode_select_games_first">Pilih setidaknya satu game dulu</string>
-    <string name="compile_all_apps_with_ad">Tonton iklan &amp; kompilasi</string>
-    <string name="game_mode_turn_on_with_ad">Tonton iklan &amp; nyalakan</string>
     <string name="system_meter_title">Meteran Sistem</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrik</string>
@@ -1752,7 +1711,6 @@ Durasi Animator: %3$.2f</string>
     <string name="shortcut_place_shortcut">Pintasan</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Launcher Anda tidak mengizinkan aplikasi menambahkan widget.</string>
-    <string name="shortcut_watch_ad_add">Tonton iklan &amp; tambahkan</string>
     <string name="shortcut_change_app">Ganti aplikasi</string>
     <string name="shortcut_pick_app">Pilih aplikasi</string>
     <string name="shortcut_pick_screen">Pilih layar</string>

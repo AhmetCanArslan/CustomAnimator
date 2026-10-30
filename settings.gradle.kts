@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CustomAnimator"
+rootProject.name = "CustomAnimator-M3"
 include(":app")
  

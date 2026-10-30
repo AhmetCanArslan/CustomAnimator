@@ -1,0 +1,729 @@
+package com.riyadmondol2006.customanimator
+
+import android.content.Intent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
+import com.riyadmondol2006.customanimator.data.TerminalPreset
+import com.riyadmondol2006.customanimator.data.TerminalTileConfig
+import com.riyadmondol2006.customanimator.ui.components.TileSetupDialog
+import com.riyadmondol2006.customanimator.ui.components.TileSetupDraft
+import com.riyadmondol2006.customanimator.ui.components.TileSetupInitial
+import com.riyadmondol2006.customanimator.utils.CommandSuggestions
+import com.riyadmondol2006.customanimator.utils.ShizukuHelper
+import com.riyadmondol2006.customanimator.utils.TerminalPresetManager
+import com.riyadmondol2006.customanimator.utils.TerminalTileIcons
+import com.riyadmondol2006.customanimator.utils.TerminalTileSlots
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.riyadmondol2006.customanimator.utils.LocalShizukuPermission
+import com.riyadmondol2006.customanimator.ui.components.AppCard
+
+@Composable
+fun TerminalScreenContent(
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    listState: LazyListState = rememberLazyListState(),
+    command: TextFieldValue,
+    onCommandChange: (TextFieldValue) -> Unit,
+    history: List<String>,
+    onHistoryChange: (List<String>) -> Unit,
+    isActive: Boolean = true
+) {
+    val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
+    val coroutineScope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val presetManager = remember { TerminalPresetManager(context) }
+
+    LaunchedEffect(isActive) {
+        if (!isActive) focusManager.clearFocus(force = true)
+    }
+
+    var output by rememberSaveable { mutableStateOf("") }
+    var exitCode by rememberSaveable { mutableStateOf<Int?>(null) }
+    var isRunning by remember { mutableStateOf(false) }
+    var presets by remember { mutableStateOf(presetManager.getAllPresets()) }
+
+    var editingPreset by remember { mutableStateOf<TerminalPreset?>(null) }
+
+    var tilePreset by remember { mutableStateOf<TerminalPreset?>(null) }
+
+    var showRiskDialog by remember {
+        mutableStateOf(!com.riyadmondol2006.customanimator.utils.SettingsManager.hasAcceptedTerminalRisk(context))
+    }
+
+    val canRun = hasShizukuPermission && !isRunning
+
+    val run: (String) -> Unit = { raw ->
+        val trimmed = raw.trim()
+        if (trimmed.isNotEmpty() && canRun) {
+            onHistoryChange((listOf(trimmed) + history.filterNot { it == trimmed }).take(50))
+            isRunning = true
+            exitCode = null
+            output = "$ $trimmed"
+            coroutineScope.launch {
+                val result = withContext(Dispatchers.IO) {
+                    ShizukuHelper.executeShellCommandWithOutput(arrayOf("sh", "-c", trimmed))
+                }
+                output = if (result.output.isBlank()) {
+                    "$ $trimmed"
+                } else {
+                    "$ $trimmed\n${result.output}"
+                }
+                exitCode = result.exitCode
+                isRunning = false
+            }
+        }
+    }
+
+    LazyColumn(
+        state = listState,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            },
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item {
+            Text(
+                text = stringResource(R.string.terminal_disclaimer),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+        if (!hasShizukuPermission) {
+            item {
+                SetupNudgeCard(
+                    message = stringResource(R.string.terminal_needs_shizuku),
+                    onOpenSetup = openSetup
+                )
+            }
+        }
+
+        item {
+            CommandField(
+                value = command,
+                onValueChange = onCommandChange,
+                enabled = hasShizukuPermission,
+                isScreenActive = isActive,
+                history = history,
+                onHistorySelected = { selected ->
+                    onCommandChange(
+                        TextFieldValue(
+                            text = selected,
+                            selection = TextRange(selected.length)
+                        )
+                    )
+                    focusManager.clearFocus()
+                    run(selected)
+                },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            focusManager.clearFocus()
+                            run(command.text)
+                        },
+                        enabled = canRun && command.text.isNotBlank(),
+                        shapes = IconButtonDefaults.shapes()
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Send,
+                            contentDescription = stringResource(R.string.terminal_run)
+                        )
+                    }
+                }
+            )
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.terminal_presets),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                TextButton(
+                    onClick = { editingPreset = TerminalPreset(id = "", name = "", command = command.text.trim()) },
+                    shapes = ButtonDefaults.shapes()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Text(stringResource(R.string.terminal_save_current))
+                }
+            }
+        }
+
+        if (presets.isEmpty()) {
+            item {
+                Text(
+                    text = stringResource(R.string.terminal_no_presets),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        } else {
+            items(presets, key = { it.id }) { preset ->
+                PresetCard(
+                    preset = preset,
+                    canRun = canRun,
+                    onRun = { run(preset.command) },
+                    onEdit = { editingPreset = preset },
+                    onConfigureTile = { tilePreset = preset },
+                    onDelete = {
+                        presetManager.deletePreset(preset.id)
+                        presets = presetManager.getAllPresets()
+                    }
+                )
+            }
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.terminal_output),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    if (isRunning) {
+                        Spacer(Modifier.width(8.dp))
+                        CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+                    } else {
+                        exitCode?.let {
+                            Spacer(Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(R.string.terminal_exit_code, it),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = if (it == 0) {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                } else {
+                                    MaterialTheme.colorScheme.error
+                                }
+                            )
+                        }
+                    }
+                }
+                if (output.isNotEmpty()) {
+                    TextButton(onClick = { output = ""; exitCode = null }, shapes = ButtonDefaults.shapes()) {
+                        Text(stringResource(R.string.terminal_clear_output))
+                    }
+                }
+            }
+        }
+
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+                SelectionContainer {
+                    Text(
+                        text = output.ifEmpty { stringResource(R.string.terminal_output_empty) },
+                        modifier = Modifier.padding(12.dp),
+                        fontFamily = FontFamily.Monospace,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
+    }
+
+    editingPreset?.let { preset ->
+        PresetDialog(
+            preset = preset,
+            isScreenActive = isActive,
+            onDismiss = { editingPreset = null },
+            onConfirm = { name, cmd ->
+                if (preset.id.isEmpty()) {
+                    presetManager.savePreset(name, cmd)
+                } else {
+                    presetManager.updatePreset(preset.id, name, cmd)
+                }
+                presets = presetManager.getAllPresets()
+                editingPreset = null
+            }
+        )
+    }
+
+    if (showRiskDialog) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(stringResource(R.string.risk_dialog_title)) },
+            text = {
+                Text(
+                    text = stringResource(R.string.risk_dialog_terminal),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    com.riyadmondol2006.customanimator.utils.SettingsManager.markTerminalRiskAccepted(context)
+                    showRiskDialog = false
+                }, shapes = ButtonDefaults.shapes()) {
+                    Text(stringResource(R.string.risk_dialog_accept))
+                }
+            }
+        )
+    }
+
+    tilePreset?.let { preset ->
+        val existing = preset.tile
+        val slot = remember(preset.id, presets) {
+            existing?.slot ?: presetManager.firstFreeSlot(excludingPresetId = preset.id)
+        }
+        val toConfig: (TileSetupDraft) -> TerminalTileConfig? = { draft ->
+            slot?.let {
+                TerminalTileConfig(
+                    slot = it,
+                    label = draft.label,
+                    iconKey = draft.iconKey,
+                    showToast = draft.showToast,
+                    collapsePanel = draft.collapsePanel
+                )
+            }
+        }
+        val store: (TerminalTileConfig?) -> Unit = { config ->
+            presetManager.setTileConfig(preset.id, config)
+            presets = presetManager.getAllPresets()
+            tilePreset = null
+        }
+        TileSetupDialog(
+            tileName = preset.name,
+            initial = TileSetupInitial(
+                enabled = existing != null,
+                label = existing?.label.orEmpty(),
+                iconKey = existing?.iconKey ?: TerminalTileIcons.DEFAULT_KEY,
+                showToast = existing?.showToast ?: true,
+                collapsePanel = existing?.collapsePanel ?: true
+            ),
+            slot = slot,
+            maxSlots = TerminalPresetManager.MAX_TILE_SLOTS,
+            canRequestAdd = TerminalTileSlots.canRequestAdd(),
+            onDismiss = { tilePreset = null },
+            onSave = { draft -> store(draft?.let(toConfig)) },
+            onSaveAndAdd = { draft ->
+                val config = toConfig(draft) ?: return@TileSetupDialog
+                store(config)
+                TerminalTileSlots.requestAddTile(
+                    context = context,
+                    slot = config.slot,
+                    label = config.label.ifBlank { preset.name },
+                    iconKey = config.iconKey
+                )
+            }
+        )
+    }
+}
+
+@Composable
+private fun CommandField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    enabled: Boolean,
+    isScreenActive: Boolean = true,
+    history: List<String> = emptyList(),
+    onHistorySelected: (String) -> Unit = {},
+    trailingIcon: @Composable (() -> Unit)? = null
+) {
+    val density = LocalDensity.current
+    val context = LocalContext.current
+    val cursor = value.selection.end
+
+    var installedPackages by remember { mutableStateOf(emptyList<String>()) }
+    LaunchedEffect(Unit) {
+        installedPackages = withContext(Dispatchers.IO) {
+            runCatching {
+                val launcherIntent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                context.packageManager.queryIntentActivities(launcherIntent, 0)
+                    .mapNotNull { it.activityInfo?.packageName }
+                    .distinct()
+                    .sorted()
+            }.getOrDefault(emptyList())
+        }
+    }
+
+    val suggestions = remember(value.text, cursor, installedPackages) {
+        CommandSuggestions.suggest(value.text, cursor, installedPackages).take(60)
+    }
+
+    var focused by remember { mutableStateOf(false) }
+    var showHistory by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+    var fieldSize by remember { mutableStateOf(IntSize.Zero) }
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(value.text, cursor) {
+        showHistory = false
+    }
+    LaunchedEffect(showHistory, suggestions.firstOrNull()?.token, history.firstOrNull()) {
+        if (listState.firstVisibleItemIndex > 0) listState.scrollToItem(0)
+    }
+
+    val mounted = enabled && focused && isScreenActive
+    val fieldWidth = with(density) { fieldSize.width.toDp() }
+
+    Box(modifier = Modifier.fillMaxWidth()) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onSizeChanged { fieldSize = it }
+                .focusRequester(focusRequester)
+                .onFocusChanged {
+                    if (it.isFocused && !focused) showHistory = false
+                    focused = it.isFocused
+                },
+            enabled = enabled,
+            label = { Text(stringResource(R.string.terminal_command_hint)) },
+            textStyle = LocalTextStyle.current.copy(fontFamily = FontFamily.Monospace),
+            maxLines = 4,
+            trailingIcon = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (history.isNotEmpty()) {
+                        IconButton(onClick = {
+                            focusRequester.requestFocus()
+                            showHistory = !showHistory
+                        }, shapes = IconButtonDefaults.shapes()) {
+                            Icon(
+                                imageVector = Icons.Default.History,
+                                contentDescription = stringResource(R.string.terminal_history)
+                            )
+                        }
+                    }
+                    if (value.text.isNotEmpty()) {
+                        IconButton(onClick = { onValueChange(TextFieldValue("")) }, shapes = IconButtonDefaults.shapes()) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = stringResource(R.string.terminal_clear_command)
+                            )
+                        }
+                    }
+                    trailingIcon?.invoke()
+                }
+            }
+        )
+
+        if (mounted) {
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(0, fieldSize.height),
+                onDismissRequest = { },
+                properties = PopupProperties(
+                    focusable = false,
+                    dismissOnClickOutside = false
+                )
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .width(fieldWidth)
+                        .heightIn(max = 360.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    tonalElevation = 3.dp,
+                    shadowElevation = 6.dp
+                ) {
+                    LazyColumn(state = listState) {
+                        if (showHistory && history.isNotEmpty()) {
+                            items(history, key = { it }) { command ->
+                                HistoryRow(
+                                    command = command,
+                                    onClick = { onHistorySelected(command) }
+                                )
+                            }
+                        } else {
+                            items(suggestions, key = { it.token }) { suggestion ->
+                                SuggestionRow(
+                                    suggestion = suggestion,
+                                    onClick = {
+                                        val (text, newCursor) = CommandSuggestions.apply(
+                                            value.text,
+                                            cursor,
+                                            suggestion.token
+                                        )
+                                        onValueChange(
+                                            TextFieldValue(
+                                                text = text,
+                                                selection = TextRange(newCursor)
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SuggestionRow(
+    suggestion: CommandSuggestions.Suggestion,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text = suggestion.token,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelLarge,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        if (suggestion.description.isNotEmpty()) {
+            Text(
+                text = suggestion.description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+}
+
+@Composable
+private fun HistoryRow(
+    command: String,
+    onClick: () -> Unit
+) {
+    Text(
+        text = command,
+        fontFamily = FontFamily.Monospace,
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    )
+}
+
+@Composable
+private fun PresetCard(
+    preset: TerminalPreset,
+    canRun: Boolean,
+    onRun: () -> Unit,
+    onEdit: () -> Unit,
+    onConfigureTile: () -> Unit,
+    onDelete: () -> Unit
+) {
+    var menuExpanded by remember { mutableStateOf(false) }
+
+    AppCard(contentPadding = 0.dp) {
+        Row(
+            modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = preset.name,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+                    preset.tile?.let { tile ->
+                        Spacer(Modifier.width(6.dp))
+                        TileBadge(iconKey = tile.iconKey)
+                    }
+                }
+                Text(
+                    text = preset.command,
+                    fontFamily = FontFamily.Monospace,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            IconButton(onClick = onRun, enabled = canRun, shapes = IconButtonDefaults.shapes()) {
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = stringResource(R.string.terminal_run)
+                )
+            }
+            Box {
+                IconButton(onClick = { menuExpanded = true }, shapes = IconButtonDefaults.shapes()) {
+                    Icon(
+                        imageVector = Icons.Default.MoreVert,
+                        contentDescription = stringResource(R.string.terminal_preset_options)
+                    )
+                }
+                DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.terminal_edit_preset)) },
+                        leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
+                        onClick = {
+                            menuExpanded = false
+                            onEdit()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.terminal_tile_menu)) },
+                        leadingIcon = { Icon(Icons.Default.Widgets, contentDescription = null) },
+                        onClick = {
+                            menuExpanded = false
+                            onConfigureTile()
+                        }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.terminal_delete_preset)) },
+                        leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
+                        onClick = {
+                            menuExpanded = false
+                            onDelete()
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PresetDialog(
+    preset: TerminalPreset,
+    isScreenActive: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (String, String) -> Unit
+) {
+    var name by remember { mutableStateOf(preset.name) }
+    var command by remember {
+        mutableStateOf(
+            TextFieldValue(preset.command, TextRange(preset.command.length))
+        )
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                stringResource(
+                    if (preset.id.isEmpty()) R.string.terminal_add_preset else R.string.terminal_edit_preset
+                )
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.terminal_preset_name)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                CommandField(
+                    value = command,
+                    onValueChange = { command = it },
+                    enabled = true,
+                    isScreenActive = isScreenActive
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(name.trim(), command.text.trim()) },
+                enabled = name.isNotBlank() && command.text.isNotBlank(),
+                shapes = ButtonDefaults.shapes()
+            ) {
+                Text(stringResource(R.string.save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
+                Text(stringResource(R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun TileBadge(iconKey: String) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(horizontal = 8.dp, vertical = 3.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(TerminalTileIcons.resFor(iconKey)),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            modifier = Modifier.size(13.dp)
+        )
+        Spacer(Modifier.width(4.dp))
+        Text(
+            text = stringResource(R.string.terminal_tile_badge),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+    }
+}

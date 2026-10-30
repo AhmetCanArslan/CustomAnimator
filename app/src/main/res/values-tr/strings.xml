@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
     <string name="profiles_beta">BETA</string>
 
     <!-- Main Activity Strings -->
@@ -133,7 +133,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="error">Hata: %s</string>
     <string name="use_adb_command">ADB Komutu Kullan</string>
     <string name="adb_description">Bir bilgisayara bağlanın ve bu komutu bir kez çalıştırın:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 Adım adım talimatların tamamı için menüdeki \'İzin Ayrıntıları\' bölümüne bakın.</string>
     <string name="copy_command">Komutu Kopyala</string>
     <string name="close">Kapat</string>
@@ -175,13 +175,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="information">Bilgi</string>
-    <string name="ad_info_title">Geliştirmeyi Destekleyin</string>
-    <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için reklam ekledim: ekranın altında küçük bir banner ve ara sıra, bir değişiklik uyguladıktan veya uygulamayı yeniden açtıktan sonra tam ekran bir reklam.\n\nSıklıkları sınırlıdır, yolunuza çıkmazlar.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
-    <string name="ad_info_ok">Anladım</string>
-    <string name="rate_dialog_title">Uygulamayı Beğendiniz mi?</string>
-    <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
-    <string name="rate_dialog_rate">Derecelendir</string>
-    <string name="rate_dialog_later">Sonra</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">Terminal için Shizuku bağlantısı gerekir.</string>
@@ -448,28 +441,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Bir şey ters giderse ilgili bölümdeki ya da Ayarlar\'daki sıfırlama seçeneğiyle varsayılan değerlere dönün. Emin değilseniz, değiştirmeden önce neyi değiştirdiğinizi not alın.</string>
     <string name="settings_privacy_policy">Gizlilik Politikası</string>
     <string name="settings_privacy_policy_desc">Uygulamanın verilerinizi nasıl işlediğini okuyun</string>
-    <string name="settings_privacy_options">Gizlilik Seçenekleri</string>
-    <string name="settings_privacy_options_desc">Reklam kişiselleştirme onay tercihlerinizi değiştirin</string>
-    <string name="settings_premium">Premium</string>
-    <string name="remove_ads">Reklamları Kaldır</string>
-    <string name="remove_ads_desc">Tüm reklamları kaldıran tek seferlik satın alma</string>
-    <string name="remove_ads_desc_price">Tek seferlik satın alma: %1$s</string>
-    <string name="remove_ads_owned">Satın alındı. Desteğiniz için teşekkürler!</string>
-    <string name="remove_ads_thanks">Reklamlar kaldırıldı. Teşekkürler!</string>
-    <string name="remove_ads_pending">Satın alma beklemede. Tamamlandığında reklamlar kaldırılacak.</string>
-    <string name="remove_ads_unavailable">Satın alma şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.</string>
-    <string name="remove_ads_restore">Satın Almayı Geri Yükle</string>
-    <string name="remove_ads_restore_desc">Daha önce satın aldıysanız bu cihazda geri yükleyin</string>
-    <string name="remove_ads_restored">Satın alma geri yüklendi</string>
-    <string name="remove_ads_nothing_to_restore">Önceki bir satın alma bulunamadı</string>
-    <string name="remove_ads_prompt_title">Reklamsız mı tercih edersiniz?</string>
-    <string name="remove_ads_prompt_body">Tek seferlik bir satın alma ile reklamları kaldırın ve geliştirmeye destek olun!</string>
-    <string name="remove_ads_prompt_body_price">Tek seferlik %1$s ödeyerek kaldırın</string>
-    <string name="remove_ads_prompt_dismiss">Bunu gizle</string>
-    <string name="remove_ads_support_title">Lütfen Geliştirmeyi Destekleyin</string>
-    <string name="remove_ads_support_message">Bu uygulama ücretsiz ve sürekli geliştiriliyor. Tek seferlik bir satın alma ile geliştirmeyi destekleyin — aynı zamanda tüm reklamları da kaldırır.</string>
-    <string name="remove_ads_support_buy_price">Reklamları %1$s karşılığında kaldır</string>
-    <string name="ad_info_remove_ads_hint">Reklamları hiç görmek istemiyorsanız, istediğiniz zaman Ayarlar › Premium bölümünden tek seferlik bir satın alma ile kalıcı olarak kaldırabilirsiniz.</string>
     <string name="fps_meter_hint">Sayacı sürükleyerek taşıyabilirsiniz. Katmanı kaldırmak için bunu kapatın.</string>
     <string name="fps_overlay_value">%1$d FPS</string>
     <string name="fps_overlay_permission_needed">FPS göstergesi için diğer uygulamaların üzerinde göstermeye izin verin.</string>
@@ -656,10 +627,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="carrier_name_needs_phone_permission">SIM yuvalarınızı okumak için telefon izni gerekir.</string>
     <string name="carrier_name_note">Ad, operatör yapılandırmasının üzerine yazılarak uygulanır ve cihaz yeniden başlatılana kadar geçerli kalır. Özgün adı geri getirmek için Sıfırla\'ya dokunun.</string>
 
-    <string name="contact_developer">Geliştiriciye Ulaşın</string>
-    <string name="contact_developer_desc">Görüş, öneri ve şikayetleriniz için lütfen bize ulaşın</string>
-    <string name="contact_developer_subject">Custom Animator Geri Bildirim</string>
-    <string name="contact_developer_no_app">E-posta uygulaması bulunamadı</string>
     <string name="onboarding_disclaimer_title">Sorumluluk Size Ait</string>
     <string name="onboarding_disclaimer_body">Bu uygulama sistem düzeyinde ayarları değiştirir. Cihazınıza ve ROM\'unuza bağlı olarak bu; pil ömrünü, bildirimleri, alarmları, arka plan uygulamalarını ve kararlılığı etkileyebilir.</string>
     <string name="onboarding_disclaimer_highlight">Geliştirici, bu uygulamanın kullanımından doğabilecek veri kaybı, arıza veya zarardan hiçbir sorumluluk kabul etmez. Burada yaptığınız tüm değişiklikler kendi sorumluluğunuzdadır.</string>
@@ -867,7 +834,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="pn_logs_create_rule_title">Bildirimden kural oluşturulsun mu?</string>
     <string name="changelog_title">Yenilikler</string>
     <string name="changelog_version">Sürüm %1$s</string>
-    <string name="changelog_feedback_note">Her şey kusursuz çalışmayabilir. Bir hatayla karşılaşırsanız veya geri bildiriminiz varsa bana e-posta gönderin: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Her şey kusursuz çalışmayabilir. Bir hatayla karşılaşırsanız veya geri bildiriminiz varsa bir issue açın: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Arka plan hizmeti</string>
     <string name="pn_notification_persistent_settings_hint">Bu bildirimi kapatmak için buraya dokunun.</string>
     <string name="settings_appearance">Görünüm</string>
@@ -1287,10 +1254,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_cancel">İptal</string>
     <string name="boost_cancelled">Optimizasyon iptal edildi</string>
     <string name="boost_running_label">Optimize ediliyor…</string>
-    <string name="boost_ad_reward_denied">Optimizasyonu açmak için reklamı sonuna kadar izleyin</string>
-    <string name="boost_watch_ad">Reklam izle ve optimize et</string>
-    <string name="optimizer_clean_watch_ad">Reklam izle ve temizle</string>
-    <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
     <string name="developer_title">Geliştirici</string>
     <string name="tools_title">Araçlar</string>
     <string name="tools_section_apps">Uygulamalar</string>
@@ -1302,12 +1265,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
     <string name="more_auto_actions_desc">Otomatik zorla durdurma ve izin kuralları</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
-    <string name="reward_free_unlock">Şu an gösterilecek reklam yok, bu seferlik ücretsiz</string>
     <string name="reward_unlock_denied">Bunu 3 dakikalığına açmak için reklamı sonuna kadar izleyin</string>
-    <string name="game_mode_ad_desc">Oyun modunu açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_select_games_first">Önce en az bir oyun seçin</string>
-    <string name="compile_all_apps_with_ad">Reklam izle ve derle</string>
-    <string name="game_mode_turn_on_with_ad">Reklam izle ve aç</string>
     <string name="system_meter_title">Sistem Göstergesi</string>
     <string name="system_meter_overlay">Katman</string>
     <string name="system_meter_metrics">Ölçümler</string>
@@ -1760,7 +1719,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_place_shortcut">Kısayol</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Başlatıcınız uygulamaların widget eklemesine izin vermiyor.</string>
-    <string name="shortcut_watch_ad_add">Reklam izle ve ekle</string>
     <string name="shortcut_change_app">Uygulamayı değiştir</string>
     <string name="shortcut_pick_app">Bir uygulama seçin</string>
     <string name="shortcut_pick_screen">Bir ekran seçin</string>

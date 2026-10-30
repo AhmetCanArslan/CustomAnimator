@@ -1,0 +1,122 @@
+name: Build
+
+on:
+  push:
+    branches: ["**"]
+    tags-ignore: ["**"]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+      - "LICENSE"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build APKs
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    outputs:
+      version_name: ${{ steps.version.outputs.name }}
+      version_code: ${{ steps.version.outputs.code }}
+      signed: ${{ steps.keystore.outputs.signed }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Compute version
+        id: version
+        run: |
+          name=$(sed -n 's/^ *versionName = "\(.*\)"/\1/p' app/build.gradle.kts)
+          code=$((200 + GITHUB_RUN_NUMBER))
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "VERSION_CODE=$code" >> "$GITHUB_ENV"
+          echo "Building $name ($code)"
+
+      - name: Decode signing keystore
+        id: keystore
+        env:
+          KEYSTORE_B64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "No signing secrets available; the release APK will be unsigned."
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "$KEYSTORE_B64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+          echo "SIGNING_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          echo "signed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build debug and release
+        env:
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: ./gradlew :app:assembleDebug :app:assembleRelease --stacktrace
+
+      - name: Run unit tests
+        run: ./gradlew :app:testDebugUnitTest
+
+      - name: Collect APKs
+        run: |
+          mkdir -p dist
+          base="CustomAnimator-M3-${{ steps.version.outputs.name }}-${{ steps.version.outputs.code }}"
+          cp app/build/outputs/apk/debug/app-debug.apk "dist/$base-debug.apk"
+          release=$(ls app/build/outputs/apk/release/*.apk | head -n1)
+          if [ "${{ steps.keystore.outputs.signed }}" = "true" ]; then
+            cp "$release" "dist/$base.apk"
+          else
+            cp "$release" "dist/$base-unsigned.apk"
+          fi
+          (cd dist && sha256sum *.apk > SHA256SUMS.txt)
+          ls -l dist
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f "$RUNNER_TEMP/release.jks"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: CustomAnimator-M3-${{ steps.version.outputs.name }}-${{ steps.version.outputs.code }}
+          path: dist/
+          if-no-files-found: error
+
+  release:
+    name: Publish release
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.build.outputs.signed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: CustomAnimator-M3-${{ needs.build.outputs.version_name }}-${{ needs.build.outputs.version_code }}
+          path: dist
+
+      - uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ needs.build.outputs.version_name }}-${{ needs.build.outputs.version_code }}
+          target_commitish: ${{ github.sha }}
+          name: Custom Animator M3 ${{ needs.build.outputs.version_name }} (build ${{ needs.build.outputs.version_code }})
+          generate_release_notes: true
+          make_latest: true
+          files: |
+            dist/*.apk
+            dist/SHA256SUMS.txt

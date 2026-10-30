@@ -1,3 +1,10 @@
+## 200 - 4.0-M3
+- Custom Animator M3: a fork of CustomAnimator by Ahmet Can Arslan, maintained by riyadmondol2006.
+- New look: own colour palettes (Aurora, Ocean, Ember, Meadow, Graphite or Wallpaper), Plus Jakarta Sans typeface, a floating bottom dock, a new icon and an optional pure black dark mode.
+- No ads and no purchases. Game Mode, Compile Booster, the Optimizer and shortcuts are unlocked for everyone.
+- Animation scales now stay in sync when they are changed from a tile, a profile or Developer options, and invalid values are rejected.
+- Stability and Android 12–17 compatibility fixes across services, tiles, notification rules and widgets.
+
 ## 195 - 3.8
 - Shortcuts (Tools): pin apps, hidden activities, app long-press shortcuts, files, folders, photos, links and commands to your home screen.
 - Button Remapper (Tools): choose what holding the power button does, including custom actions like the flashlight or a screenshot.

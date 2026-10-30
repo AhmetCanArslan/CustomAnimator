@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CustomAnimator</string>
+    <string name="app_name">Custom Animator M3</string>
 
     <!-- Main Activity Strings -->
     <string name="advanced_mode">Advanced Mode</string>
@@ -288,7 +288,7 @@ Animator Duration: %3$.2f</string>
     <string name="error">Error: %s</string>
     <string name="use_adb_command">Use ADB Command</string>
     <string name="adb_description">Connect to a computer and run this command once:</string>
-    <string name="adb_command">adb shell pm grant com.arslan.customanimator android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant com.arslan.customanimator android.permission.SET_ANIMATION_SCALE</string>
+    <string name="adb_command">adb shell pm grant %1$s android.permission.WRITE_SECURE_SETTINGS\nadb shell pm grant %1$s android.permission.SET_ANIMATION_SCALE</string>
     <string name="see_permission_details">📖 See \'Permission Details\' in the menu for complete step-by-step instructions.</string>
     <string name="copy_command">Copy Command</string>
     <string name="close">Close</string>
@@ -308,6 +308,7 @@ Animator Duration: %3$.2f</string>
 
     <!-- Toast Messages -->
     <string name="animation_scales_updated">Animation scales updated successfully!</string>
+    <string name="invalid_scale_value">Enter a value between 0 and 5</string>
     <string name="error_applying_preset">Error applying preset: %s</string>
     <string name="preset_loaded_applied">Preset loaded and applied!</string>
     <string name="preset_deleted">Preset deleted!</string>
@@ -331,13 +332,6 @@ Animator Duration: %3$.2f</string>
     <string name="no">No</string>
     <string name="information">Information</string>
     <string name="auto_actions">Auto Actions</string>
-    <string name="ad_info_title">Support Development</string>
-    <string name="ad_info_message">Hi! 👋\n\nTo keep this app free and continue improving it, I\'ve added ads: a small banner at the bottom of the screen, and occasionally a full-screen ad after you apply a change or reopen the app.\n\nThey are frequency-capped so they stay out of your way.\n\nThank you for your understanding and support. ❤️</string>
-    <string name="ad_info_ok">Got it</string>
-    <string name="rate_dialog_title">Enjoying the App?</string>
-    <string name="rate_dialog_message">If you like Custom Animator, please take a moment to rate it on the Play Store. Your support really makes a difference!</string>
-    <string name="rate_dialog_rate">Rate</string>
-    <string name="rate_dialog_later">Later</string>
 
     <!-- Terminal Strings -->
     <string name="terminal_needs_shizuku">The terminal requires Shizuku to be connected.</string>
@@ -659,28 +653,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_experimental_highlight">If something misbehaves, use the reset option in the relevant section or in Settings to return to stock values. When in doubt, note down what you changed before changing it.</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_privacy_policy_desc">Read how the app handles your data</string>
-    <string name="settings_privacy_options">Privacy Options</string>
-    <string name="settings_privacy_options_desc">Change your ad personalisation consent choices</string>
-    <string name="settings_premium">Premium</string>
-    <string name="remove_ads">Remove Ads</string>
-    <string name="remove_ads_desc">One-time purchase that removes all ads</string>
-    <string name="remove_ads_desc_price">One-time purchase: %1$s</string>
-    <string name="remove_ads_owned">Purchased. Thank you for the support!</string>
-    <string name="remove_ads_thanks">Ads removed. Thank you!</string>
-    <string name="remove_ads_pending">Purchase pending. Ads will be removed once it completes.</string>
-    <string name="remove_ads_unavailable">Purchase is not available right now. Please try again later.</string>
-    <string name="remove_ads_restore">Restore Purchase</string>
-    <string name="remove_ads_restore_desc">Already bought it? Restore it on this device</string>
-    <string name="remove_ads_restored">Purchase restored</string>
-    <string name="remove_ads_nothing_to_restore">No previous purchase found</string>
-    <string name="remove_ads_prompt_title">Prefer no ads?</string>
-    <string name="remove_ads_prompt_body">Remove them with a one-time purchase and help development!</string>
-    <string name="remove_ads_prompt_body_price">Remove them for %1$s, once</string>
-    <string name="remove_ads_prompt_dismiss">Hide this</string>
-    <string name="remove_ads_support_title">Please Support Development</string>
-    <string name="remove_ads_support_message">This app is free and constantly improved. Please support development with a one-time purchase — it also removes all ads.</string>
-    <string name="remove_ads_support_buy_price">Remove Ads for %1$s</string>
-    <string name="ad_info_remove_ads_hint">If you would rather not see ads at all, you can remove them permanently with a one-time purchase, anytime, from Settings › Premium.</string>
     <string name="sound_tile_label">Sound</string>
     <string name="sound_tile">Sound QS tile</string>
     <string name="sound_tile_desc">Quick Settings button for the volume panel or the media output picker</string>
@@ -709,10 +681,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="aod_tile_subtitle_off">Off</string>
     <string name="aod_tile_unsupported">Not supported on this device</string>
 
-    <string name="contact_developer">Contact Developer</string>
-    <string name="contact_developer_desc">Please reach out with your feedback, suggestions and complaints</string>
-    <string name="contact_developer_subject">Custom Animator Feedback</string>
-    <string name="contact_developer_no_app">No email app found</string>
     <string name="onboarding_disclaimer_title">Use at Your Own Risk</string>
     <string name="onboarding_disclaimer_body">This app changes system-level settings. Depending on your device and ROM, that can affect battery life, notifications, alarms, background apps and stability.</string>
     <string name="onboarding_disclaimer_highlight">The developer accepts no responsibility for any data loss, malfunction or damage that may result from using this app. Everything you change here, you change at your own risk.</string>
@@ -924,7 +892,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="pn_nav_logging">History</string>
     <string name="changelog_title">What’s New</string>
     <string name="changelog_version">Version %1$s</string>
-    <string name="changelog_feedback_note">Not everything may work perfectly. If you hit a bug or have any feedback, email me: ahmetcanarslandev@gmail.com</string>
+    <string name="changelog_feedback_note">Not everything may work perfectly. If you hit a bug or have feedback, open an issue: github.com/riyadmondol2006/CustomAnimator-M3/issues</string>
     <string name="pn_service_channel_group">Background service</string>
     <string name="pn_notification_persistent_settings_hint">Tap here to turn this notification off.</string>
     <string name="settings_appearance">Appearance</string>
@@ -1334,16 +1302,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_cancel">Cancel</string>
     <string name="boost_cancelled">Optimization cancelled</string>
     <string name="boost_running_label">Optimizing…</string>
-    <string name="boost_ad_reward_denied">Finish the ad to unlock the optimization</string>
-    <string name="boost_watch_ad">Watch ad &amp; optimize</string>
-    <string name="optimizer_clean_watch_ad">Watch ad &amp; clean</string>
-    <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
-    <string name="reward_free_unlock">No ad available right now, so this one is free</string>
     <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
-    <string name="game_mode_ad_desc">Watch a short ad to turn on game mode</string>
     <string name="game_mode_select_games_first">Select at least one game first</string>
-    <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
-    <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrics</string>
@@ -1789,7 +1749,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_place_shortcut">Shortcut</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Your launcher does not let apps add widgets.</string>
-    <string name="shortcut_watch_ad_add">Watch ad &amp; add</string>
     <string name="shortcut_change_app">Change app</string>
     <string name="shortcut_pick_app">Choose an app</string>
     <string name="shortcut_pick_screen">Choose a screen</string>
@@ -1931,4 +1890,21 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="live_activity_permissions">Live activity permissions</string>
     <string name="live_activity_permission_needed">Live activity needs Shizuku and permission to display over other apps.</string>
     <string name="live_activity_value" translatable="false">%1$s\n%2$s</string>
+    <string name="report_issue">Report an issue</string>
+    <string name="report_issue_desc">Found a bug or have an idea? Open an issue on GitHub</string>
+    <string name="source_code">Source code</string>
+    <string name="source_code_desc">Custom Animator M3 is open source under GPL-3.0</string>
+    <string name="no_browser_found">No browser found to open the link</string>
+    <string name="home_wordmark" translatable="false">Custom Animator</string>
+    <string name="home_wordmark_tag" translatable="false">M3</string>
+    <string name="settings_palette">Colour palette</string>
+    <string name="settings_palette_desc">Pick the app\'s accent. Wallpaper follows your system colours.</string>
+    <string name="palette_aurora">Aurora</string>
+    <string name="palette_ocean">Ocean</string>
+    <string name="palette_ember">Ember</string>
+    <string name="palette_meadow">Meadow</string>
+    <string name="palette_graphite">Graphite</string>
+    <string name="palette_wallpaper">Wallpaper</string>
+    <string name="settings_pure_black">Pure black</string>
+    <string name="settings_pure_black_desc">Use true black backgrounds in dark theme. Saves power on OLED screens.</string>
 </resources>
