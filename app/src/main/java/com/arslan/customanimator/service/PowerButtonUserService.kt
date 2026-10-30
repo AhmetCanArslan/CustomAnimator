@@ -277,11 +277,6 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
                 detector?.onOtherKeyDown()
                 volumeDetector.onDown(code, now)
             }
-            KEY_REPEAT -> forwardedDowns[code]?.let {
-                val repeat = KeyEvent.changeTimeRepeat(it, now, it.repeatCount + 1)
-                forwardedDowns[code] = repeat
-                inject(repeat)
-            }
             KEY_UP -> {
                 detector?.onOtherKeyUp()
                 volumeDetector.onUp(code, now)
@@ -308,7 +303,6 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         const val INJECT_ASYNC = 0
         const val KEY_UP = 0
         const val KEY_DOWN = 1
-        const val KEY_REPEAT = 2
         const val EVENTS_PER_READ = 64
         const val REPLAY_GAP_MS = 60L
         val TIME_SIZE = if (Process.is64Bit()) 16 else 8
