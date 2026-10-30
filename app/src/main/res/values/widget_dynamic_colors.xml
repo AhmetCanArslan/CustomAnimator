@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="widget_dynamic_background">#FFFFFFFF</color>
+    <color name="widget_dynamic_text">#FF000000</color>
+    <color name="widget_dynamic_accent">#FF6750A4</color>
+</resources>

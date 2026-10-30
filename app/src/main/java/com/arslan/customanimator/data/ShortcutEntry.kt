@@ -1,0 +1,81 @@
+package com.arslan.customanimator.data
+
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+
+enum class ShortcutType {
+    APP, ACTIVITY, FILE, LINK, COMMAND, FOLDER, APP_SHORTCUT, APP_SCREEN, QUICK, TOGGLE
+}
+
+data class ShortcutEntry(
+    val id: String,
+    val type: ShortcutType,
+    val label: String,
+    val packageName: String? = null,
+    val activityName: String? = null,
+    val uri: String? = null,
+    val mimeType: String? = null,
+    val command: String? = null,
+    val viaShizuku: Boolean = false,
+    val legacyIcon: Boolean = false,
+    val shortcutId: String? = null,
+    val screen: String? = null,
+    val actionKey: String? = null
+) {
+    val needsShizuku: Boolean get() = viaShizuku || type == ShortcutType.COMMAND || type == ShortcutType.TOGGLE
+
+    val startsActivity: Boolean
+        get() = type != ShortcutType.COMMAND && type != ShortcutType.QUICK && type != ShortcutType.TOGGLE
+
+    val opensDirectly: Boolean
+        get() = !viaShizuku && startsActivity && type != ShortcutType.APP_SHORTCUT
+}
+
+data class ShortcutActivityInfo(
+    val name: String,
+    val label: String,
+    val exported: Boolean,
+    val permission: String?
+) {
+    val needsRoot: Boolean get() = !exported
+    val needsShizuku: Boolean get() = !exported || permission != null
+}
+
+data class AppShortcutInfo(
+    val id: String,
+    val label: String,
+    val iconResId: Int,
+    val hasIconFile: Boolean,
+    val adaptiveIcon: Boolean,
+    val needsShizuku: Boolean = true
+)
+
+data class StaticShortcut(
+    val id: String,
+    val label: String,
+    val iconResId: Int,
+    val intents: List<Intent>
+)
+
+data class ShortcutHandlerInfo(
+    val packageName: String,
+    val activityName: String,
+    val label: String,
+    val icon: Drawable?
+)
+
+data class ShortcutFileInfo(
+    val name: String,
+    val mimeType: String?
+)
+
+data class ShortcutIconPack(
+    val packageName: String,
+    val label: String
+)
+
+class ShortcutIconImage(
+    val bitmap: Bitmap,
+    val legacy: Boolean = false
+)

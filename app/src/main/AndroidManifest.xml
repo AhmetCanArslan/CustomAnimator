@@ -2,18 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+    <uses-permission
+        android:name="android.permission.SET_ANIMATION_SCALE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
 
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+        <intent>
+            <action android:name="org.adw.launcher.THEMES" />
+        </intent>
+        <intent>
+            <action android:name="com.novalauncher.THEME" />
         </intent>
     </queries>
 
@@ -27,19 +52,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomAnimator">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobAppId}" />
+
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
             android:authorities="${applicationId}.shizuku"
             android:multiprocess="false"
-            android:exported="true" />
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+
+        <receiver
+            android:name=".service.BootReceiver"
+            android:exported="true"
+            android:directBootAware="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <service
-            android:name=".service.AutoForceStopService"
+            android:name=".service.ForegroundAppWatcherService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Force-stops user-selected apps when they leave the foreground (dev tool)" />
+                android:value="Applies user-selected per-app tweaks (density, refresh rate, CPU affinity, force-stop, permissions) as apps enter and leave the foreground (dev tool)" />
+        </service>
+
+        <service
+            android:name=".service.PowerButtonService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Runs the action the user assigned to a double press of the power button" />
         </service>
 
         <service
@@ -51,10 +101,671 @@
                 android:value="Force-compiles installed apps in the background (dev tool)" />
         </service>
 
+        <service
+            android:name=".service.FpsOverlayService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Draws a real-time FPS counter over other apps (dev tool)" />
+        </service>
+
+        <service
+            android:name=".service.LiveActivityService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Shows the name of the activity currently on screen over other apps (dev tool)" />
+        </service>
+
+        <service
+            android:name=".service.ScreenshotWatcherService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Watches the screenshot folder to offer copy and delete actions for new screenshots" />
+        </service>
+
+        <service
+            android:name=".service.BatteryAlertService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Watches the battery level to alert the user at their chosen percentage" />
+        </service>
+
+        <service
+            android:name=".service.RestartSystemUiTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_restart_alt"
+            android:label="@string/restart_system_ui_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ScreenshotTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_screenshot"
+            android:label="@string/screenshot_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".screenshot.ScreenshotActionActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:noHistory="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".service.ShortcutLaunchActivity"
+            android:exported="true"
+            android:permission="android.permission.INJECT_EVENTS"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service
+            android:name=".service.PowerAssistService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <meta-data
+                android:name="android.voice_interaction"
+                android:resource="@xml/power_assist_service" />
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.PowerAssistSessionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION" />
+
+        <service
+            android:name=".service.PowerAssistRecognitionService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".service.ShareActionsActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.CustomAnimator.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/screenshot_file_paths" />
+        </provider>
+
+        <service
+            android:name=".service.GameModeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_videogame_asset"
+            android:label="@string/game_mode_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.CaffeineTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_caffeine"
+            android:label="@string/caffeine_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.SoundTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_volume_up"
+            android:label="@string/sound_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".service.SoundTileLongPressActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.AlwaysOnDisplayTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tile_aod"
+            android:label="@string/aod_tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService6"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService7"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService8"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService9"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService10"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService11"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.ToggleTileService12"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_bolt"
+            android:label="@string/qs_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".service.TerminalTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.TerminalTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.TerminalTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.TerminalTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.TerminalTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_terminal"
+            android:label="@string/terminal_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.WidthTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.WidthTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.WidthTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.WidthTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.WidthTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_smartphone"
+            android:label="@string/width_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.AnimationTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.AnimationTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.AnimationTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.AnimationTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.AnimationTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_animation"
+            android:label="@string/animation_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.ProfileTileService1"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.ProfileTileService2"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.ProfileTileService3"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.ProfileTileService4"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
+        <service
+            android:name=".service.ProfileTileService5"
+            android:exported="true"
+            android:enabled="false"
+            android:icon="@drawable/ic_tile_tune"
+            android:label="@string/profile_tile_default_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+                    <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="false" />
+</service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.CustomAnimator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,6 +773,118 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".notify.service.NotifyListenerService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/pn_title"
+            android:foregroundServiceType="specialUse"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Listens for notifications to run user-defined flash, wake and widget rules and keep the notification history" />
+        </service>
+
+        <activity
+            android:name=".notify.ui.ScreenFlashActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@style/Theme.CustomAnimator.Transparent"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true" />
+
+        <receiver
+            android:name=".notify.widget.NotificationWidgetProvider"
+            android:exported="false"
+            android:label="@string/pn_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/notification_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".notify.widget.NotificationWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".notify.widget.NotificationWidgetConfigureActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CustomAnimator">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".widget.BoostWidgetProvider"
+            android:exported="false"
+            android:label="@string/boost_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/boost_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.ShortcutWidgetProvider"
+            android:exported="false"
+            android:enabled="@bool/shortcut_widget_enabled"
+            tools:targetApi="o"
+            android:label="@string/shortcuts">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/shortcut_widget_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.GameModeWidgetProvider"
+            android:exported="false"
+            android:label="@string/game_mode_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/game_mode_widget_info" />
+        </receiver>
+
+        <service
+            android:name=".service.GameModeToggleService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Applies and reverts Game Mode restrictions from a home screen widget (dev tool)" />
+        </service>
+
+        <service
+            android:name=".service.BoostService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Clears app caches and force-stops background apps from a home screen widget (dev tool)" />
+        </service>
+
     </application>
+
+    <instrumentation
+        android:name="com.arslan.customanimator.service.CarrierConfigInstrumentation"
+        android:targetPackage="${applicationId}" />
 
 </manifest>

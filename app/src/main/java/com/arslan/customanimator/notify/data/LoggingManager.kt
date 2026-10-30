@@ -1,0 +1,145 @@
+package com.arslan.customanimator.notify.data
+
+import android.content.Context
+import androidx.annotation.Keep
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+@Keep
+class LoggingManager private constructor(context: Context) {
+
+    private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val gson = Gson()
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private var pendingPersist: Job? = null
+
+    private val entries: MutableList<LogEntry> by lazy { loadFromPrefs() }
+
+    @Synchronized
+    fun logNotification(
+        packageName: String,
+        appName: String,
+        title: String,
+        body: String,
+        matchedRules: List<MatchedRuleInfo>
+    ) {
+        val now = System.currentTimeMillis()
+        if (isRecentDuplicate(now, packageName, title, body)) return
+
+        val entry = LogEntry(
+            packageName = packageName,
+            appName = appName,
+            title = title,
+            body = body,
+            matchedRules = matchedRules
+        )
+        entries.add(entry)
+        while (entries.size > MAX_ENTRIES) {
+            entries.removeAt(0)
+        }
+        schedulePersist()
+    }
+
+    @Synchronized
+    fun getLogs(filter: RuleType? = null): List<LogEntry> {
+        val source = if (filter == null) {
+            entries
+        } else {
+            entries.filter { entry -> entry.matchedRules.any { it.ruleType == filter } }
+        }
+        return source.reversed()
+    }
+
+    @Synchronized
+    fun deleteLog(id: String) {
+        entries.removeAll { it.id == id }
+        persist()
+    }
+
+    @Synchronized
+    fun clearLogs() {
+        entries.clear()
+        persist()
+    }
+
+    @Synchronized
+    fun purgeOlderThan(days: Int) {
+        if (days <= 0) return
+        val cutoff = System.currentTimeMillis() - days * 86_400_000L
+        val before = entries.size
+        entries.removeAll { it.timestamp < cutoff }
+        if (entries.size != before) persist()
+    }
+
+    private fun isRecentDuplicate(now: Long, packageName: String, title: String, body: String): Boolean {
+        for (index in entries.indices.reversed()) {
+            val entry = entries[index]
+            if (now - entry.timestamp >= DEDUP_WINDOW_MS) return false
+            if (entry.packageName == packageName && entry.title == title && entry.body == body) return true
+        }
+        return false
+    }
+
+    private fun schedulePersist() {
+        if (pendingPersist?.isActive == true) return
+        pendingPersist = scope.launch {
+            delay(PERSIST_DELAY_MS)
+            flush()
+        }
+    }
+
+    @Synchronized
+    private fun flush() {
+        pendingPersist = null
+        write()
+    }
+
+    @Synchronized
+    fun flushPending() {
+        if (pendingPersist == null) return
+        persist()
+    }
+
+    private fun persist() {
+        pendingPersist?.cancel()
+        pendingPersist = null
+        write()
+    }
+
+    private fun write() {
+        val json = gson.toJson(entries)
+        prefs.edit().putString(LOG_ENTRIES_KEY, json).apply()
+    }
+
+    private fun loadFromPrefs(): MutableList<LogEntry> {
+        val json = prefs.getString(LOG_ENTRIES_KEY, null) ?: return mutableListOf()
+        return try {
+            val type = object : TypeToken<MutableList<LogEntry>>() {}.type
+            gson.fromJson(json, type) ?: mutableListOf()
+        } catch (e: Exception) {
+            mutableListOf()
+        }
+    }
+
+    companion object {
+        private const val PREFS_NAME = "prime_notify_logs"
+        private const val LOG_ENTRIES_KEY = "log_entries_list"
+        private const val MAX_ENTRIES = 500
+        private const val DEDUP_WINDOW_MS = 3_000L
+        private const val PERSIST_DELAY_MS = 20_000L
+
+        @Volatile
+        private var instance: LoggingManager? = null
+
+        fun getInstance(context: Context): LoggingManager =
+            instance ?: synchronized(this) {
+                instance ?: LoggingManager(context.applicationContext).also { instance = it }
+            }
+    }
+}

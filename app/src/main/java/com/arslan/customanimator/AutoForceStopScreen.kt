@@ -1,21 +1,18 @@
 package com.arslan.customanimator
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
@@ -23,113 +20,53 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.InstalledAppInfo
-import com.arslan.customanimator.service.AutoForceStopService
+import com.arslan.customanimator.service.ForegroundAppWatcherService
+import com.arslan.customanimator.utils.AppIconBitmaps
 import com.arslan.customanimator.utils.AutoForceStopManager
-import com.arslan.customanimator.utils.InstalledAppsProvider
-import com.arslan.customanimator.utils.PermissionDisablerManager
-import com.arslan.customanimator.utils.ShizukuHelper
-import com.arslan.customanimator.utils.UsageAccessHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuAvailable
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutoForceStopScreen(
     onBack: () -> Unit,
-    isShizukuAvailable: Boolean,
-    hasShizukuPermission: Boolean,
+    isShizukuAvailable: Boolean = LocalShizukuAvailable.current,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val openSetup = LocalOpenSetupGuide.current
     val manager = remember { AutoForceStopManager(context) }
-    val otherManager = remember { PermissionDisablerManager(context) }
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
     var selectedPackages by remember { mutableStateOf(manager.getSelectedPackages()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var hasUsageAccess by remember { mutableStateOf(UsageAccessHelper.hasUsageAccess(context)) }
-    var searchQuery by remember { mutableStateOf("") }
-    var showSelectedOnly by remember { mutableStateOf(false) }
-    val filteredApps by remember(apps, searchQuery, showSelectedOnly, selectedPackages) {
-        derivedStateOf {
-            apps
-                .filter {
-                    searchQuery.isBlank() ||
-                        it.label.contains(searchQuery, ignoreCase = true) ||
-                        it.packageName.contains(searchQuery, ignoreCase = true)
-                }
-                .filter { !showSelectedOnly || selectedPackages.contains(it.packageName) }
-        }
-    }
+    val appList = rememberAppListState(selectedPackages = selectedPackages)
 
-    LaunchedEffect(Unit) {
-        apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        isLoading = false
-    }
-
-    // Re-check usage access whenever the screen resumes to the composition
-    // (e.g. after returning from the Usage Access settings screen).
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
-            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
-                hasUsageAccess = UsageAccessHelper.hasUsageAccess(context)
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-
-    val prerequisitesMet = hasShizukuPermission && hasUsageAccess
-
-    val notificationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { /* proceed regardless; service still runs without a visible notification if denied */ }
+    val requestNotificationPermission = rememberNotificationPermissionRequest()
 
     val syncServiceState: () -> Unit = {
-        if (selectedPackages.isNotEmpty() && prerequisitesMet) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                androidx.core.content.ContextCompat.checkSelfPermission(
-                    context, Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-            AutoForceStopService.start(context)
-        } else if (otherManager.getSelectedPackages().isEmpty()) {
-            AutoForceStopService.stop(context)
-        }
+        if (selectedPackages.isNotEmpty()) requestNotificationPermission()
+        ForegroundAppWatcherService.sync(context)
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.auto_force_stop),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.auto_force_stop),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,
@@ -139,86 +76,47 @@ fun AutoForceStopScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (!hasShizukuPermission) {
-                item {
-                    WarningCard(
-                        message = stringResource(R.string.developer_needs_shizuku),
-                        actionLabel = stringResource(R.string.grant_shizuku_permission),
-                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
-                    )
-                }
+            item(key = "info") {
+                InfoCard(
+                    dismissKey = "auto_force_stop_info",
+                    texts = listOf(stringResource(R.string.close_apps_info)),
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer
+                )
             }
 
-            if (!hasUsageAccess) {
+            if (!hasShizukuPermission) {
                 item {
-                    WarningCard(
-                        message = stringResource(R.string.auto_force_stop_needs_usage_access),
-                        actionLabel = stringResource(R.string.open_usage_access_settings),
-                        onAction = { UsageAccessHelper.openUsageAccessSettings(context) }
+                    SetupNudgeCard(
+                        message = stringResource(R.string.developer_needs_shizuku),
+                        onOpenSetup = openSetup
                     )
                 }
             }
 
             item {
                 Text(
-                    text = if (selectedPackages.isNotEmpty() && prerequisitesMet) {
+                    text = if (selectedPackages.isNotEmpty() && hasShizukuPermission) {
                         stringResource(R.string.auto_force_stop_status_active, selectedPackages.size)
                     } else if (selectedPackages.isNotEmpty()) {
                         stringResource(R.string.auto_force_stop_status_paused)
                     } else {
                         stringResource(R.string.auto_force_stop_desc)
                     },
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showSelectedOnly = showSelectedOnly,
-                        onShowSelectedOnlyChange = { showSelectedOnly = it }
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+            appList(appList) { app ->
+                AppRow(
+                    app = app,
+                    checked = selectedPackages.contains(app.packageName),
+                    onCheckedChange = {
+                        selectedPackages = manager.togglePackage(app.packageName)
+                        syncServiceState()
                     }
-                }
-            } else if (apps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    AppRow(
-                        app = app,
-                        checked = selectedPackages.contains(app.packageName),
-                        onCheckedChange = {
-                            selectedPackages = manager.togglePackage(app.packageName)
-                            syncServiceState()
-                        }
-                    )
-                }
+                )
             }
 
             item {
@@ -234,21 +132,23 @@ fun AppSearchBar(
     onSearchQueryChange: (String) -> Unit,
     showSelectedOnly: Boolean = false,
     onShowSelectedOnlyChange: (Boolean) -> Unit = {},
-    showFilterCheckbox: Boolean = true
+    showFilterCheckbox: Boolean = true,
+    placeholder: String? = null
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val focused by interactionSource.collectIsFocusedAsState()
     Column {
         OutlinedTextField(
             value = searchQuery,
             onValueChange = onSearchQueryChange,
             modifier = Modifier.fillMaxWidth(),
-            placeholder = { Text(stringResource(R.string.search_apps)) },
+            placeholder = { Text(placeholder ?: stringResource(R.string.search_apps)) },
             singleLine = true,
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = null)
-            },
+            leadingIcon = { AnimatedSearchIcon(focused) },
+            interactionSource = interactionSource,
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { onSearchQueryChange("") }) {
+                    IconButton(onClick = { onSearchQueryChange("") }, shapes = IconButtonDefaults.shapes()) {
                         Icon(imageVector = Icons.Filled.Clear, contentDescription = stringResource(R.string.clear))
                     }
                 }
@@ -269,13 +169,42 @@ fun AppSearchBar(
                 )
                 Text(
                     text = stringResource(R.string.show_selected_only),
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
     }
 }
+
+@Composable
+private fun AnimatedSearchIcon(focused: Boolean) {
+    val progress by animateFloatAsState(
+        targetValue = if (focused) 1f else 0f,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "searchIconFocus"
+    )
+    val tint by animateColorAsState(
+        targetValue = if (focused) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
+        label = "searchIconTint"
+    )
+    Icon(
+        imageVector = Icons.Filled.Search,
+        contentDescription = null,
+        tint = tint,
+        modifier = Modifier.graphicsLayer {
+            val scale = 1f + progress * SEARCH_ICON_FOCUS_SCALE
+            scaleX = scale
+            scaleY = scale
+            rotationZ = progress * SEARCH_ICON_FOCUS_ROTATION
+        }
+    )
+}
+
+private const val SEARCH_ICON_FOCUS_SCALE = 0.15f
+private const val SEARCH_ICON_FOCUS_ROTATION = -20f
 
 @Composable
 fun WarningCard(message: String, actionLabel: String, onAction: () -> Unit) {
@@ -295,14 +224,14 @@ fun WarningCard(message: String, actionLabel: String, onAction: () -> Unit) {
                 )
                 Text(
                     text = message,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.weight(1f)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onAction, modifier = Modifier.align(Alignment.End)) {
-                Text(actionLabel, fontSize = 12.sp)
+            Button(onClick = onAction, modifier = Modifier.align(Alignment.End), shapes = ButtonDefaults.shapes()) {
+                Text(actionLabel, style = MaterialTheme.typography.bodySmall,)
             }
         }
     }
@@ -314,7 +243,7 @@ fun AppRow(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+    AppCard(contentPadding = 0.dp) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -322,11 +251,10 @@ fun AppRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
+            AppIcon(packageName = app.packageName, modifier = Modifier.size(36.dp))
             Text(
                 text = app.label,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.weight(1f)
             )
             Checkbox(checked = checked, onCheckedChange = onCheckedChange)
@@ -335,19 +263,33 @@ fun AppRow(
 }
 
 @Composable
+fun AppIcon(packageName: String, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    var bitmap by remember(packageName) { mutableStateOf(AppIconBitmaps.cached(packageName)) }
+    LaunchedEffect(packageName) {
+        if (bitmap == null) bitmap = AppIconBitmaps.load(context, packageName)
+    }
+    AppIconImage(bitmap, modifier)
+}
+
+@Composable
 fun AppIcon(icon: Drawable?, modifier: Modifier = Modifier) {
     if (icon == null) {
         Box(modifier = modifier)
         return
     }
-    val bitmap = remember(icon) {
-        val width = icon.intrinsicWidth.coerceAtLeast(1)
-        val height = icon.intrinsicHeight.coerceAtLeast(1)
-        val bmp = android.graphics.Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bmp)
-        icon.setBounds(0, 0, canvas.width, canvas.height)
-        icon.draw(canvas)
-        bmp.asImageBitmap()
+    var bitmap by remember(icon) { mutableStateOf(AppIconBitmaps.cached(icon)) }
+    LaunchedEffect(icon) {
+        if (bitmap == null) bitmap = AppIconBitmaps.load(icon)
     }
-    Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
+    AppIconImage(bitmap, modifier)
+}
+
+@Composable
+private fun AppIconImage(bitmap: ImageBitmap?, modifier: Modifier) {
+    if (bitmap == null) {
+        Box(modifier = modifier)
+    } else {
+        Image(bitmap = bitmap, contentDescription = null, modifier = modifier)
+    }
 }

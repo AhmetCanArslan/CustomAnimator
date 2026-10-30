@@ -4,28 +4,27 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.utils.DeveloperOptionsManager
-import com.arslan.customanimator.utils.InstalledAppsProvider
-import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
+import com.arslan.customanimator.utils.ShizukuHelper
 
 private const val DRIVER_NATIVE = "native"
 private const val DRIVER_ANGLE = "angle"
@@ -34,36 +33,22 @@ private const val DRIVER_ANGLE = "angle"
 @Composable
 fun GraphicsApiOverrideScreen(
     onBack: () -> Unit,
-    hasShizukuPermission: Boolean,
-    hasWriteSecureSettings: Boolean,
+    hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
+    val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
     val actionsEnabled = hasShizukuPermission || hasWriteSecureSettings
 
-    var apps by remember { mutableStateOf<List<InstalledAppInfo>>(emptyList()) }
-    var isLoading by remember { mutableStateOf(true) }
-    var searchQuery by remember { mutableStateOf("") }
     var selections by remember {
         mutableStateOf(DeveloperOptionsManager.getAngleDriverSelections(contentResolver))
     }
 
-    val filteredApps by remember(apps, searchQuery) {
-        derivedStateOf {
-            apps.filter {
-                searchQuery.isBlank() ||
-                    it.label.contains(searchQuery, ignoreCase = true) ||
-                    it.packageName.contains(searchQuery, ignoreCase = true)
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        apps = withContext(Dispatchers.IO) { InstalledAppsProvider.getLaunchableApps(context) }
-        isLoading = false
-    }
+    val appList = rememberAppListState()
 
     val onDriverSelected: (String, String?) -> Unit = { packageName, driver ->
         val previous = selections
@@ -74,32 +59,21 @@ fun GraphicsApiOverrideScreen(
             }
             if (!success) {
                 selections = previous
-                Toast.makeText(context, context.getString(R.string.action_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.graphics_api_override),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
-                        )
-                    }
-                }
+            ScreenTopBar(
+                title = stringResource(R.string.graphics_api_override),
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
             )
-        },
-        bottomBar = { BannerAdView() }
+        }
     ) { paddingValues ->
         LazyColumn(
             state = listState,
@@ -110,35 +84,17 @@ fun GraphicsApiOverrideScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Info,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                        Text(
-                            text = stringResource(R.string.graphics_api_override_disclaimer),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
+                InfoCard(
+                    dismissKey = "graphics_api_override_disclaimer",
+                    texts = listOf(stringResource(R.string.graphics_api_override_disclaimer))
+                )
             }
 
             if (!actionsEnabled) {
                 item {
-                    WarningCard(
+                    SetupNudgeCard(
                         message = stringResource(R.string.developer_needs_shizuku),
-                        actionLabel = stringResource(R.string.grant_shizuku_permission),
-                        onAction = { ShizukuHelper.requestShizukuPermission(context) }
+                        onOpenSetup = openSetup
                     )
                 }
             }
@@ -146,45 +102,18 @@ fun GraphicsApiOverrideScreen(
             item {
                 Text(
                     text = stringResource(R.string.graphics_api_override_desc),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            if (!isLoading && apps.isNotEmpty()) {
-                item {
-                    AppSearchBar(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = { searchQuery = it },
-                        showFilterCheckbox = false
-                    )
-                }
-            }
-
-            if (isLoading) {
-                item {
-                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
-                    }
-                }
-            } else if (filteredApps.isEmpty()) {
-                item {
-                    Text(
-                        stringResource(R.string.no_apps_found),
-                        fontSize = 13.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-            } else {
-                items(filteredApps, key = { it.packageName }) { app ->
-                    DriverSelectionRow(
-                        app = app,
-                        selectedDriver = selections[app.packageName],
-                        enabled = actionsEnabled,
-                        onDriverSelected = { driver -> onDriverSelected(app.packageName, driver) }
-                    )
-                }
+            appList(appList) { app ->
+                DriverSelectionRow(
+                    app = app,
+                    selectedDriver = selections[app.packageName],
+                    enabled = actionsEnabled,
+                    onDriverSelected = { driver -> onDriverSelected(app.packageName, driver) }
+                )
             }
 
             item {
@@ -202,47 +131,30 @@ private fun DriverSelectionRow(
     enabled: Boolean,
     onDriverSelected: (String?) -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(12.dp)) {
+    AppCard(contentPadding = 0.dp) {
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppIcon(icon = app.icon, modifier = Modifier.size(36.dp))
+                AppIcon(packageName = app.packageName, modifier = Modifier.size(36.dp))
                 Text(
                     text = app.label,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.weight(1f)
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                SegmentedButton(
-                    selected = selectedDriver == null,
-                    onClick = { onDriverSelected(null) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_default), fontSize = 11.sp)
-                }
-                SegmentedButton(
-                    selected = selectedDriver == DRIVER_NATIVE,
-                    onClick = { onDriverSelected(DRIVER_NATIVE) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_native), fontSize = 11.sp)
-                }
-                SegmentedButton(
-                    selected = selectedDriver == DRIVER_ANGLE,
-                    onClick = { onDriverSelected(DRIVER_ANGLE) },
-                    enabled = enabled,
-                    shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
-                ) {
-                    Text(stringResource(R.string.driver_angle), fontSize = 11.sp)
-                }
-            }
+            ConnectedChoiceGroup(
+                options = listOf(
+                    null to stringResource(R.string.driver_default),
+                    DRIVER_NATIVE to stringResource(R.string.driver_native),
+                    DRIVER_ANGLE to stringResource(R.string.driver_angle)
+                ),
+                selected = selectedDriver,
+                onSelect = onDriverSelected,
+                enabled = enabled
+            )
         }
     }
 }

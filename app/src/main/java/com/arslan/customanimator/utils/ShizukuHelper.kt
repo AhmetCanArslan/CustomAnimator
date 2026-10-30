@@ -1,16 +1,23 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
+import android.net.Uri
+import android.os.Looper
+import android.os.Process
+import android.os.SystemClock
+import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
+import com.arslan.customanimator.R
 import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuProvider
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.reflect.Method
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 data class ShellResult(val exitCode: Int, val output: String) {
     val isSuccess: Boolean get() = exitCode == 0
@@ -19,31 +26,91 @@ data class ShellResult(val exitCode: Int, val output: String) {
 object ShizukuHelper {
     private const val TAG = "ShizukuHelper"
 
-    // Keep the log bounded so commands like logcat or dumpsys can't OOM the UI. The screen keeps
-    // output in rememberSaveable, so this also has to stay well under the ~1 MB binder limit that
-    // savedInstanceState is parceled through on rotation.
     private const val MAX_OUTPUT_LINES = 2000
     private const val MAX_OUTPUT_CHARS = 64_000
-    
-    fun isShizukuAvailable(): Boolean {
-        return try {
-            Shizuku.checkSelfPermission() >= 0 || 
-            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && 
-             Shizuku.getVersion() > 0)
+    private const val STARTUP_BINDER_WAIT_MS = 3_000L
+
+    private val startupBinder = CountDownLatch(1)
+
+    private val newProcessMethod: Method by lazy {
+        Shizuku::class.java.getDeclaredMethod(
+            "newProcess",
+            Array<String>::class.java,
+            Array<String>::class.java,
+            String::class.java
+        ).apply { isAccessible = true }
+    }
+
+    init {
+        try {
+            Shizuku.addBinderReceivedListenerSticky { startupBinder.countDown() }
         } catch (e: Exception) {
-            Log.d(TAG, "Shizuku not available: ${e.message}")
-            false
+            Log.d(TAG, "Shizuku binder listener unavailable: ${e.message}")
         }
     }
     
+    fun isShizukuAvailable(): Boolean = runCatching { Shizuku.pingBinder() }.getOrDefault(false)
+
+    fun failureMessage(context: Context): String = context.getString(
+        when {
+            !isShizukuAvailable() -> R.string.action_failed_shizuku_not_running
+            !hasShizukuPermission() -> R.string.action_failed_shizuku_permission
+            else -> R.string.action_failed
+        }
+    )
+
     fun hasShizukuPermission(): Boolean {
+        awaitStartupBinder()
+        return isPermissionGranted()
+    }
+
+    fun isRunningAsRoot(): Boolean {
         return try {
-            Shizuku.checkSelfPermission() == 0
+            hasShizukuPermission() && Shizuku.getUid() == 0
         } catch (e: Exception) {
             false
         }
     }
+
+    private fun isPermissionGranted(): Boolean {
+        return try {
+            Shizuku.pingBinder() && Shizuku.checkSelfPermission() == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun awaitStartupBinder() {
+        if (Looper.myLooper() == Looper.getMainLooper() || Shizuku.pingBinder()) return
+        val remaining = Process.getStartElapsedRealtime() + STARTUP_BINDER_WAIT_MS -
+            SystemClock.elapsedRealtime()
+        if (remaining <= 0) return
+        try {
+            startupBinder.await(remaining, TimeUnit.MILLISECONDS)
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+        }
+    }
     
+    fun awaitShizukuPermission(timeoutMs: Long): Boolean {
+        if (isPermissionGranted()) return true
+        val latch = CountDownLatch(1)
+        val listener = Shizuku.OnBinderReceivedListener { latch.countDown() }
+        return try {
+            Shizuku.addBinderReceivedListenerSticky(listener)
+            latch.await(timeoutMs, TimeUnit.MILLISECONDS)
+            isPermissionGranted()
+        } catch (e: Exception) {
+            Log.d(TAG, "Waiting for Shizuku binder failed: ${e.message}")
+            false
+        } finally {
+            runCatching { Shizuku.removeBinderReceivedListener(listener) }
+        }
+    }
+
+    fun isPermissionDeniedForever(): Boolean =
+        runCatching { Shizuku.pingBinder() && Shizuku.shouldShowRequestPermissionRationale() }.getOrDefault(false)
+
     fun requestShizukuPermission(context: Context) {
         try {
             Shizuku.requestPermission(0)
@@ -60,29 +127,17 @@ object ShizukuHelper {
             }
             
             val packageName = context.packageName
-            
-            // Use reflection to access the private newProcess method
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
+
+            val granted = executeShellCommand(
+                arrayOf("pm", "grant", packageName, "android.permission.WRITE_SECURE_SETTINGS")
             )
-            newProcessMethod.isAccessible = true
-            
-            @Suppress("UNCHECKED_CAST")
-            val process = newProcessMethod.invoke(
-                null,
-                arrayOf("pm", "grant", packageName, "android.permission.WRITE_SECURE_SETTINGS"),
-                null,
-                null
-            ) as Any // ShizukuRemoteProcess
-            
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val result = waitForMethod.invoke(process) as Int
-            
-            Log.d(TAG, "Grant permission result: $result")
-            result == 0
+
+            val animationScaleGranted = executeShellCommand(
+                arrayOf("pm", "grant", packageName, "android.permission.SET_ANIMATION_SCALE")
+            )
+            Log.d(TAG, "SET_ANIMATION_SCALE grant result: $animationScaleGranted")
+
+            granted
         } catch (e: Exception) {
             Log.e(TAG, "Failed to grant permission via Shizuku: ${e.message}", e)
             false
@@ -110,44 +165,24 @@ object ShizukuHelper {
         }
     }
 
-    fun executeShellCommand(command: Array<String>): Boolean {
+    fun canWriteSystemSettings(context: Context): Boolean {
         return try {
-            if (!hasShizukuPermission()) {
-                Log.d(TAG, "Shizuku permission not granted for command: ${command.joinToString(" ")}")
-                return false
-            }
-
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
-            )
-            newProcessMethod.isAccessible = true
-
-            @Suppress("UNCHECKED_CAST")
-            val process = newProcessMethod.invoke(
-                null,
-                command,
-                null,
-                null
-            ) as Any
-
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val result = waitForMethod.invoke(process) as Int
-            Log.d(TAG, "Shizuku command result=$result, cmd=${command.joinToString(" ")}")
-            result == 0
+            Settings.System.canWrite(context)
         } catch (e: Exception) {
-            Log.e(TAG, "Failed Shizuku shell command: ${command.joinToString(" ")}", e)
             false
         }
     }
 
-    /**
-     * Runs a command and returns its exit code together with stdout + stderr merged.
-     *
-     * Blocking — always call from [kotlinx.coroutines.Dispatchers.IO].
-     */
+    fun writeSystemSettingsIntent(context: Context): Intent {
+        return Intent(
+            Settings.ACTION_MANAGE_WRITE_SETTINGS,
+            Uri.parse("package:${context.packageName}")
+        )
+    }
+
+    fun executeShellCommand(command: Array<String>): Boolean =
+        executeShellCommandWithOutput(command).isSuccess
+
     fun executeShellCommandWithOutput(command: Array<String>): ShellResult {
         return try {
             if (!hasShizukuPermission()) {
@@ -155,69 +190,44 @@ object ShizukuHelper {
                 return ShellResult(-1, "Shizuku permission not granted")
             }
 
-            val newProcessMethod: Method = Shizuku::class.java.getDeclaredMethod(
-                "newProcess",
-                Array<String>::class.java,
-                Array<String>::class.java,
-                String::class.java
-            )
-            newProcessMethod.isAccessible = true
-
-            val process = newProcessMethod.invoke(null, command, null, null) as Any
-
-            val stdout = readStreamMethod(process, "getInputStream")
-            val stderr = readStreamMethod(process, "getErrorStream")
-
-            // Both pipes must be drained concurrently: draining stdout to EOF while stderr fills
-            // its buffer deadlocks the remote process on output-heavy commands like dumpsys.
-            val lines = mutableListOf<String>()
-            val stdoutThread = drainInto(stdout, lines)
-            val stderrThread = drainInto(stderr, lines)
-            stdoutThread.join()
-            stderrThread.join()
-
-            val waitForMethod = process.javaClass.getDeclaredMethod("waitFor")
-            val exitCode = waitForMethod.invoke(process) as Int
-
-            Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
-            ShellResult(exitCode, truncate(lines))
+            val process = newProcess(command)
+            try {
+                runCatching { process.outputStream.close() }
+                val lines = ArrayDeque<String>()
+                val stderrThread = Thread { drainInto(process.errorStream, lines) }
+                stderrThread.start()
+                drainInto(process.inputStream, lines)
+                stderrThread.join()
+                val exitCode = process.waitFor()
+                Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
+                ShellResult(exitCode, truncate(lines))
+            } finally {
+                process.destroy()
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Failed Shizuku shell command: ${command.joinToString(" ")}", e)
             ShellResult(-1, e.message ?: e.javaClass.simpleName)
         }
     }
 
-    private fun readStreamMethod(process: Any, name: String): InputStream? {
-        return try {
-            val method = process.javaClass.getDeclaredMethod(name)
-            method.isAccessible = true
-            method.invoke(process) as? InputStream
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to obtain $name from Shizuku process", e)
-            null
-        }
-    }
+    private fun newProcess(command: Array<String>): java.lang.Process =
+        newProcessMethod.invoke(null, command, null, null) as java.lang.Process
 
-    private fun drainInto(stream: InputStream?, sink: MutableList<String>): Thread {
-        val thread = Thread {
-            if (stream == null) return@Thread
-            try {
-                BufferedReader(InputStreamReader(stream)).use { reader ->
-                    while (true) {
-                        val line = reader.readLine() ?: break
-                        synchronized(sink) {
-                            sink.add(line)
-                            // Drop from the top so a runaway command keeps only its tail.
-                            if (sink.size > MAX_OUTPUT_LINES) sink.removeAt(0)
-                        }
+    private fun drainInto(stream: InputStream?, sink: ArrayDeque<String>) {
+        if (stream == null) return
+        try {
+            BufferedReader(InputStreamReader(stream)).use { reader ->
+                while (true) {
+                    val line = reader.readLine() ?: break
+                    synchronized(sink) {
+                        sink.addLast(line)
+                        if (sink.size > MAX_OUTPUT_LINES) sink.removeFirst()
                     }
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed reading Shizuku process stream", e)
             }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed reading Shizuku process stream", e)
         }
-        thread.start()
-        return thread
     }
 
     private fun truncate(lines: List<String>): String {

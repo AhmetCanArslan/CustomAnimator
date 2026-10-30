@@ -1,7 +1,6 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
-import android.content.Intent
 import org.json.JSONArray
 
 abstract class SelectedAppsManager(protected val context: Context, prefsName: String) {
@@ -9,20 +8,12 @@ abstract class SelectedAppsManager(protected val context: Context, prefsName: St
     private val sharedPreferences = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
     private val selectedKey = "selected_packages"
 
-    private fun launcherPackageName(): String? {
-        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
-        return try {
-            context.packageManager.resolveActivity(intent, 0)?.activityInfo?.packageName
-        } catch (e: Exception) {
-            null
-        }
+    private val unsafePackages: Set<String> by lazy {
+        InstalledAppsProvider.getUnsafeToKillPackages(context)
     }
 
     private fun sanitize(packages: Set<String>): Set<String> {
-        val launcherPackage = launcherPackageName()
-        return packages.filterTo(mutableSetOf()) {
-            it != context.packageName && it != launcherPackage
-        }
+        return packages.filterTo(mutableSetOf()) { it !in unsafePackages }
     }
 
     fun getSelectedPackages(): Set<String> {
@@ -44,10 +35,6 @@ abstract class SelectedAppsManager(protected val context: Context, prefsName: St
         val array = JSONArray()
         sanitized.forEach { array.put(it) }
         sharedPreferences.edit().putString(selectedKey, array.toString()).apply()
-    }
-
-    fun isPackageSelected(packageName: String): Boolean {
-        return getSelectedPackages().contains(packageName)
     }
 
     fun togglePackage(packageName: String): Set<String> {

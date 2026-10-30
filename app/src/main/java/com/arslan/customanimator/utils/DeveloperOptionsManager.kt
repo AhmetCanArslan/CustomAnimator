@@ -3,10 +3,11 @@ package com.arslan.customanimator.utils
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
+import com.arslan.customanimator.data.InstalledAppInfo
 
 object DeveloperOptionsManager {
 
-    private fun putGlobalInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
+    internal fun putGlobalInt(context: Context, contentResolver: ContentResolver, key: String, value: Int): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = ShizukuHelper.executeShellCommand(arrayOf("settings", "put", "global", key, value.toString()))
             if (success) return true
@@ -18,7 +19,7 @@ object DeveloperOptionsManager {
         }
     }
 
-    private fun putGlobalString(context: Context, contentResolver: ContentResolver, key: String, value: String?): Boolean {
+    internal fun putGlobalString(context: Context, contentResolver: ContentResolver, key: String, value: String?): Boolean {
         if (ShizukuHelper.hasShizukuPermission()) {
             val success = if (value == null) {
                 ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "global", key))
@@ -58,7 +59,6 @@ object DeveloperOptionsManager {
         }
     }
 
-    // USB debugging
     fun isAdbEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, Settings.Global.ADB_ENABLED, 0) == 1
@@ -71,7 +71,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, Settings.Global.ADB_ENABLED, if (enabled) 1 else 0)
     }
 
-    // Wireless (WiFi) debugging - Android 11+
     fun isAdbWifiEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, "adb_wifi_enabled", 0) == 1
@@ -84,7 +83,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, "adb_wifi_enabled", if (enabled) 1 else 0)
     }
 
-    // "Don't keep activities"
     fun isAlwaysFinishActivitiesEnabled(contentResolver: ContentResolver): Boolean {
         return try {
             Settings.Global.getInt(contentResolver, Settings.Global.ALWAYS_FINISH_ACTIVITIES, 0) == 1
@@ -97,7 +95,6 @@ object DeveloperOptionsManager {
         return putGlobalInt(context, contentResolver, Settings.Global.ALWAYS_FINISH_ACTIVITIES, if (enabled) 1 else 0)
     }
 
-    // Limit background processes (max cached processes kept alive by the system)
     private const val AM_CONSTANTS_KEY = "activity_manager_constants"
     private const val MAX_CACHED_PROCESSES_LIMITED = 1
 
@@ -115,9 +112,107 @@ object DeveloperOptionsManager {
         return putGlobalString(context, contentResolver, AM_CONSTANTS_KEY, value)
     }
 
-    // Quick actions
+    private const val SHOW_TOUCHES_KEY = "show_touches"
+    private const val POINTER_LOCATION_KEY = "pointer_location"
+    private const val FORCE_RTL_KEY = "debug_force_rtl"
+    private const val LAYOUT_BOUNDS_PROP = "debug.layout"
+    private const val GPU_PROFILE_PROP = "debug.hwui.profile"
+    private const val GPU_PROFILE_ON = "visual_bars"
+
+    private fun getProp(name: String): String {
+        val result = ShizukuHelper.executeShellCommandWithOutput(arrayOf("getprop", name))
+        return if (result.isSuccess) result.output.trim() else ""
+    }
+
+    private fun setProp(name: String, value: String): Boolean {
+        if (!ShizukuHelper.executeShellCommand(arrayOf("setprop", name, value))) return false
+        ShizukuHelper.executeShellCommand(arrayOf("service", "call", "activity", "1599295570"))
+        return true
+    }
+
+    fun isShowTouchesEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.System.getInt(contentResolver, SHOW_TOUCHES_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setShowTouches(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putSystemInt(context, contentResolver, SHOW_TOUCHES_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isPointerLocationEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.System.getInt(contentResolver, POINTER_LOCATION_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setPointerLocation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putSystemInt(context, contentResolver, POINTER_LOCATION_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isForceRtlEnabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Global.getInt(contentResolver, FORCE_RTL_KEY, 0) == 1
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setForceRtl(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
+        return putGlobalInt(context, contentResolver, FORCE_RTL_KEY, if (enabled) 1 else 0)
+    }
+
+    fun isLayoutBoundsEnabled(): Boolean = getProp(LAYOUT_BOUNDS_PROP) == "true"
+
+    fun setLayoutBounds(enabled: Boolean): Boolean {
+        return setProp(LAYOUT_BOUNDS_PROP, if (enabled) "true" else "false")
+    }
+
+    fun isGpuProfilingEnabled(): Boolean = getProp(GPU_PROFILE_PROP) == GPU_PROFILE_ON
+
+    fun setGpuProfiling(enabled: Boolean): Boolean {
+        return setProp(GPU_PROFILE_PROP, if (enabled) GPU_PROFILE_ON else "false")
+    }
+
+    private const val TXN_GET_SENSOR_PRIVACY = "6"
+    private const val TXN_SET_SENSOR_PRIVACY = "9"
+
+    private fun serviceCall(vararg args: String): Int? {
+        val result = ShizukuHelper.executeShellCommandWithOutput(
+            arrayOf("service", "call", "sensor_privacy", *args)
+        )
+        if (!result.isSuccess) return null
+        val words = Regex("[0-9a-f]{8}").findAll(result.output.substringAfter("Parcel(")).toList()
+        return if (words.size == 2) words.last().value.toLongOrNull(16)?.toInt() else null
+    }
+
+    fun isSensorsOffEnabled(): Boolean = serviceCall(TXN_GET_SENSOR_PRIVACY) == 1
+
+    fun setSensorsOff(enabled: Boolean): Boolean {
+        serviceCall(TXN_SET_SENSOR_PRIVACY, "i32", if (enabled) "1" else "0")
+        return isSensorsOffEnabled() == enabled
+    }
+
     fun clearAllAppCaches(): Boolean {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "trim-caches", "999000000000"))
+    }
+
+    fun forceStopBackgroundApps(context: Context): Boolean {
+        return closableBackgroundApps(context).all { forceStopApp(it.packageName) }
+    }
+
+    fun closeBackgroundApps(context: Context): Int {
+        return closableBackgroundApps(context).count { forceStopApp(it.packageName) }
+    }
+
+    private fun closableBackgroundApps(context: Context): List<InstalledAppInfo> {
+        val skip = CloseAppsExclusionManager(context).getSelectedPackages() +
+            InstalledAppsProvider.getUnsafeToKillPackages(context)
+        return InstalledAppsProvider.getLaunchableApps(context).filterNot { skip.contains(it.packageName) }
     }
 
     fun forceStopApp(packageName: String): Boolean {
@@ -132,16 +227,21 @@ object DeveloperOptionsManager {
         return ShizukuHelper.executeShellCommand(arrayOf("pm", "grant", packageName, permission))
     }
 
-    // Compile Booster
-    fun compileApp(packageName: String): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-f", packageName))
+    fun compileApp(
+        packageName: String,
+        filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT,
+        force: Boolean = true
+    ): Boolean {
+        val args = mutableListOf("cmd", "package", "compile", "-m", filter.value)
+        if (force) args.add("-f")
+        args.add(packageName)
+        return ShizukuHelper.executeShellCommand(args.toTypedArray())
     }
 
-    fun compileAllApps(): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", "speed", "-a"))
+    fun compileAllApps(filter: CompileFilterManager.CompileFilter = CompileFilterManager.DEFAULT): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("cmd", "package", "compile", "-m", filter.value, "-f", "-a"))
     }
 
-    // Graphics API Override (per-app ANGLE driver selection)
     private const val FANCY_IME_ANIMATIONS_KEY = "fancy_ime_animations"
     private const val CLOCK_SECONDS_KEY = "clock_seconds"
     private const val ACCELEROMETER_ROTATION_KEY = "accelerometer_rotation"
@@ -159,16 +259,98 @@ object DeveloperOptionsManager {
         return putSecureInt(context, contentResolver, FANCY_IME_ANIMATIONS_KEY, if (disabled) 0 else 1)
     }
 
+    private const val ROTATION_SUGGESTIONS_KEY = "show_rotation_suggestions"
+
+    fun isRotationSuggestionsDisabled(contentResolver: ContentResolver): Boolean {
+        return try {
+            Settings.Secure.getInt(contentResolver, ROTATION_SUGGESTIONS_KEY, 1) == 0
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun setRotationSuggestions(context: Context, contentResolver: ContentResolver, disabled: Boolean): Boolean {
+        return putSecureInt(context, contentResolver, ROTATION_SUGGESTIONS_KEY, if (disabled) 0 else 1)
+    }
+
+    private const val ONEUI_CLOCK_SECONDS_KEY = "clockshow_second"
+
+    fun isOneUi(): Boolean = android.os.Build.MANUFACTURER.equals("samsung", ignoreCase = true)
+
     fun isClockSecondsEnabled(contentResolver: ContentResolver): Boolean {
         return try {
-            Settings.Secure.getInt(contentResolver, CLOCK_SECONDS_KEY, 0) == 1
+            if (isOneUi() && Settings.System.getInt(contentResolver, ONEUI_CLOCK_SECONDS_KEY, -1) != -1) {
+                Settings.System.getInt(contentResolver, ONEUI_CLOCK_SECONDS_KEY, 0) == 1
+            } else {
+                Settings.Secure.getInt(contentResolver, CLOCK_SECONDS_KEY, 0) == 1
+            }
         } catch (e: Exception) {
             false
         }
     }
 
     fun setClockSeconds(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
-        return putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, if (enabled) 1 else 0)
+        val value = if (enabled) 1 else 0
+        val secure = putSecureInt(context, contentResolver, CLOCK_SECONDS_KEY, value)
+        if (!isOneUi()) return secure
+        val system = putSystemInt(context, contentResolver, ONEUI_CLOCK_SECONDS_KEY, value)
+        return secure || system
+    }
+
+    private const val SAFE_VOLUME_STATE_KEY = "audio_safe_volume_state"
+    private const val SAFE_VOLUME_DISABLED = 1
+    private const val SAFE_VOLUME_ACTIVE = 3
+
+    private const val SAFE_VOLUME_PREFS = "high_volume_warning"
+    private const val SAFE_VOLUME_PREF_KEY = "disabled"
+    private const val SAFE_VOLUME_BOOT_KEY = "changed_at_boot"
+
+    private fun safeVolumePrefs(context: Context) =
+        context.getSharedPreferences(SAFE_VOLUME_PREFS, Context.MODE_PRIVATE)
+
+    private fun bootCount(contentResolver: ContentResolver): Int {
+        return try {
+            Settings.Global.getInt(contentResolver, Settings.Global.BOOT_COUNT, -1)
+        } catch (e: Exception) {
+            -1
+        }
+    }
+
+    fun isHighVolumeWarningDisabled(context: Context): Boolean {
+        return safeVolumePrefs(context).getBoolean(SAFE_VOLUME_PREF_KEY, false)
+    }
+
+    fun isHighVolumeWarningPendingRestart(context: Context): Boolean {
+        val changedAt = safeVolumePrefs(context).getInt(SAFE_VOLUME_BOOT_KEY, -1)
+        if (changedAt < 0) return false
+        val current = bootCount(context.contentResolver)
+        return current < 0 || current == changedAt
+    }
+
+    fun setHighVolumeWarningDisabled(context: Context, contentResolver: ContentResolver, disabled: Boolean): Boolean {
+        val applied = putGlobalInt(
+            context,
+            contentResolver,
+            SAFE_VOLUME_STATE_KEY,
+            if (disabled) SAFE_VOLUME_DISABLED else SAFE_VOLUME_ACTIVE
+        )
+        if (applied) {
+            safeVolumePrefs(context).edit()
+                .putBoolean(SAFE_VOLUME_PREF_KEY, disabled)
+                .putInt(SAFE_VOLUME_BOOT_KEY, bootCount(contentResolver))
+                .apply()
+        }
+        return applied
+    }
+
+    fun reapplyHighVolumeWarning(context: Context) {
+        if (!isHighVolumeWarningDisabled(context)) return
+        putGlobalInt(context, context.contentResolver, SAFE_VOLUME_STATE_KEY, SAFE_VOLUME_DISABLED)
+    }
+
+    fun restartSystemUi(): Boolean {
+        return ShizukuHelper.executeShellCommand(arrayOf("killall", "com.android.systemui")) ||
+            ShizukuHelper.executeShellCommand(arrayOf("am", "crash", "com.android.systemui"))
     }
 
     fun isAutoRotationEnabled(contentResolver: ContentResolver): Boolean {
@@ -180,10 +362,22 @@ object DeveloperOptionsManager {
     }
 
     fun setAutoRotation(context: Context, contentResolver: ContentResolver, enabled: Boolean): Boolean {
-        if (ShizukuHelper.hasShizukuPermission() && !enabled) {
-            ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "enabled"))
+        if (ShizukuHelper.hasShizukuPermission()) {
+            ShizukuHelper.executeShellCommand(
+                arrayOf("wm", "set-fix-to-user-rotation", if (enabled) "disabled" else "enabled")
+            )
         }
         return putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, if (enabled) 1 else 0)
+    }
+
+    fun resetRotation(context: Context, contentResolver: ContentResolver): Boolean {
+        if (ShizukuHelper.hasShizukuPermission()) {
+            ShizukuHelper.executeShellCommand(arrayOf("wm", "set-fix-to-user-rotation", "disabled"))
+            ShizukuHelper.executeShellCommand(arrayOf("settings", "delete", "system", "user_rotation"))
+        }
+        val rotation = putSystemInt(context, contentResolver, USER_ROTATION_KEY, 0)
+        val auto = putSystemInt(context, contentResolver, ACCELEROMETER_ROTATION_KEY, 1)
+        return rotation && auto
     }
 
     fun getUserRotation(contentResolver: ContentResolver): Int {
@@ -213,6 +407,12 @@ object DeveloperOptionsManager {
         } catch (e: Exception) {
             emptyMap()
         }
+    }
+
+    fun clearAngleDriverSelections(context: Context, contentResolver: ContentResolver): Boolean {
+        val pkgs = putGlobalString(context, contentResolver, ANGLE_PKGS_KEY, null)
+        val values = putGlobalString(context, contentResolver, ANGLE_VALUES_KEY, null)
+        return pkgs && values
     }
 
     fun setAngleDriverSelection(

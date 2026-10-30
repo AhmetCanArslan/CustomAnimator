@@ -1,0 +1,85 @@
+## 195 - 3.8
+- Shortcuts (Tools): pin apps, hidden activities, app long-press shortcuts, files, folders, photos, links and commands to your home screen.
+- Button Remapper (Tools): choose what holding the power button does, including custom actions like the flashlight or a screenshot.
+- APK Icon Changer and APK Extractor (Tools): change an installed app's icon, or save any app's APK to Download/CustomAnimator.
+- WhatsApp Cleaner (Optimizer): delete old WhatsApp media and backups by category and age.
+- OTP Copier (Tools): verification codes in notifications are copied automatically.
+- Save on device (Tools): share anything to this app to save it to a folder or copy it.
+- Notification Filters (Notifications): filters can now remove matching notifications; rules, filters and history are on one screen.
+- Screenshot actions (Tools): no photo access needed anymore. Choose your screenshots folder once, and delete removes the screenshot right away with no confirmation dialog.
+- Game Mode: new Excluded list for apps that should keep running. Profiles can run shell commands, and icon pickers now offer 1,150+ icons.
+- Faster app lists and Debloater, less background work, smaller app. Fixed black bars with per-app width, the keyboard covering content and Back navigation.
+
+## 190 - 3.7
+- Per-app features (Auto Force-Stop, Permission Disabler, per-app width, refresh rate and threading) no longer need Usage Access — the foreground app is now detected through Shizuku, instantly and without polling.
+- Optimizer: new Exclusion List for apps that Close Background Apps and Performance Booster should never force-stop, confirmation before closing apps or clearing caches, and a count of closed apps.
+- Screenshot notifications can now dismiss themselves automatically after a delay you choose.
+- Carrier name changes are more reliable.
+- Fewer ads: full-screen ads are limited to 2 per day, at least 20 minutes apart; if no rewarded ad is available, the feature unlocks for free.
+- Force GPU rendering removed from HWUI tweaks, as it has no effect on current Android versions.
+- Fixes: more accurate smallest width values, and Quick Settings tiles update as soon as Shizuku connects.
+
+## 189 - 3.6
+- Debloater (Tools): list every preinstalled app and remove, disable or restore it for this user — with risk levels, protection for critical system apps, APK export and one-tap Restore all.
+- Optional community package list: download the Universal Debloater Alliance list for more detailed descriptions and risk ratings.
+- Battery Health (Battery tab): see capacity, cycles, temperature, current and Doze details.
+- Shizuku status is now tracked in one place, so permission state stays fresh on every screen.
+- App-open ads removed: no more full-screen ad when you open the app.
+
+## 186 - 3.5
+- Status Bar Icon Manager (Tools): toggle 40+ icons — clock, battery, Wi-Fi, hotspot, NFC and more — grouped by Status, Connectivity, Sound and System, with Show all / Hide all.
+- New Optimizer tab (replaces Boost & Cleaner): Cleaner frees space and memory in one tap, Performance Booster does a deeper step-by-step tune-up — now in one screen.
+- Rebuilt Quick Settings tiles: Placed vs. Add a tile lists, expandable categories with counts, advanced options and a simpler custom toggle builder; new Restart System UI tile, Sound tile now managed here.
+- Smoother navigation: HomeTopBar extracted, ExpressiveNavBar refreshed and animation preview re-timed for less jank.
+- More reliable tiles & permissions: all tiles share BaseTileService and Shizuku now uses awaitShizukuPermission for stable binder handling.
+- More reliable hotspot: turning the hotspot on/off and changing its settings now works more consistently, especially on newer Android versions.
+
+## 181 - 3.4
+- Per-app refresh rate: set a screen refresh rate for each app and it switches automatically.
+- Quick Settings tiles: build your own toggle tiles, pick their icons and add them to the Quick Settings panel.
+- All per-app features now share a single background service, so they use less battery.
+- Faster app detection and smaller fixes
+
+## 179 - 3.3
+- System Meter: a floating overlay showing FPS, CPU, GPU, RAM and battery while you use your phone.
+- Cleaner: find and free up space from caches and leftover files.
+- Doze Whitelist: choose which apps are allowed to keep running while the phone is idle.
+- HWUI Tweaks: adjust hardware rendering properties for smoother drawing.
+- Battery alerts: get notified when the battery reaches the levels you set.
+- Reworked navigation, refreshed info cards and status labels across the app.
+
+## 177 - 3.2
+- Screenshot actions: copy or delete a new screenshot from a notification or a floating button, plus a "Copy screenshot" Quick Settings tile.
+- Hotspot Manager: start or stop the hotspot, see and block connected devices, edit name, password, security, band and limits, share by QR, with a Quick Settings tile.
+- Sound tile: a Quick Settings tile that opens the volume panel or the media output picker on press or long press.
+- Game Mode: restricts background apps while your games run, with a Quick Settings tile and a home screen widget.
+- Compilation mode: choose how apps are compiled (Everything, Speed, Speed profile, Verify).
+- Per-app width: set a different smallest width for each app and apply it automatically while the app is in the foreground.
+- Game Mode improvements: more reliable background-app tracking and improved notifications.
+- Expanded terminal command suggestions and Arabic language support.
+- Boost: a new System performance boost page to maximize your mobile performance.
+
+## 174 - 3.1
+- Profiles: bundle animation scales, screen width, battery presets and developer toggles into one profile and apply it with a tap.
+- Notification widget: a home screen widget listing the notifications matched by the new "Show on widget" rule action.
+- Boost widget: one tap clears app caches and closes background apps, showing the freed storage and RAM; tiny, normal and wide layouts.
+- Per-app DPI: set a DPI for each app, applied automatically when the app comes to the foreground and reverted when it leaves.
+- Always On Display: new AOD Quick Settings tile.
+- Developer: added "Disable rotation suggestions" and "Remove high volume warning", applied again after a reboot.
+- Rules: notification permissions are now requested based on the actions your rules actually use.
+
+## 170 - 3.0
+- Notifications: new notification listener, tab, test notification and permission flow.
+- Rules: per-app rules, title and text keywords, multiple actions, conditions, cooldowns and conflict detection.
+- Actions: camera flash, custom patterns, screen wake, pocket mode, AOD and full-screen flash.
+- Screen flash: 12 colors, durations, tap to stop, lock screen support and overlays.
+- AOD and wake: safe restoring, stopping on unlock or dismiss and proximity-aware wake.
+- History: search, action filters, auto-delete, clear and delete, and create-rule shortcuts.
+- Permissions: one live screen for Shizuku, secure settings, notifications, camera, overlay and battery access.
+- FPS: draggable real-time FPS overlay that remembers its position.
+- Wi-Fi: saved passwords, search, connection status, QR codes, copy and secure export.
+- Quick Settings: Caffeine, Terminal, Animation and Width preset tiles with five slots each, with live states, labels and icons.
+- Developer: Sensors off, Show taps, Pointer location, Layout bounds, GPU profiling and Force RTL.
+- Alarm Revealer and per-SIM carrier name customization.
+- Terminal: risk consent, autocomplete, package suggestions, saved presets, output, exit codes and a 50-command history.
+- Shizuku: permission checks now verify the live binder.

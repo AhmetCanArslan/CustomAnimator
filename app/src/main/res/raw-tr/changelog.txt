@@ -1,0 +1,85 @@
+## 195 - 3.8
+- Kısayollar (Araçlar): uygulamaları, gizli etkinlikleri, uygulamaların uzun basma kısayollarını, dosyaları, klasörleri, fotoğrafları, bağlantıları ve komutları ana ekrana sabitle.
+- Tuş Atama (Araçlar): güç tuşuna basılı tutunca ne olacağını seç; el feneri veya ekran görüntüsü gibi özel işlemler de var.
+- APK Simge Değiştirici ve APK Çıkarıcı (Araçlar): yüklü bir uygulamanın simgesini değiştir ya da APK'sını Download/CustomAnimator klasörüne kaydet.
+- WhatsApp Temizleyici (Optimizasyon): eski WhatsApp medyasını ve yedeklerini kategoriye ve yaşa göre sil.
+- OTP Kopyalayıcı (Araçlar): bildirimlerdeki doğrulama kodları otomatik kopyalanır.
+- Cihaza kaydet (Araçlar): herhangi bir şeyi bu uygulamayla paylaşarak bir klasöre kaydet veya kopyala.
+- Bildirim Filtreleri (Bildirimler): filtreler artık eşleşen bildirimleri kaldırabiliyor; kurallar, filtreler ve geçmiş tek ekranda.
+- Ekran görüntüsü eylemleri (Araçlar): artık fotoğraf erişimi gerekmiyor. Ekran görüntüsü klasörünü bir kez seçin; silme, ekran görüntüsünü onay penceresi olmadan hemen kaldırır.
+- Oyun Modu: arka planda çalışmaya devam edecek uygulamalar için yeni Hariç tutulanlar listesi. Profiller kabuk komutu çalıştırabiliyor, simge seçicilerde artık 1.150'den fazla simge var.
+- Daha hızlı uygulama listeleri ve Debloater, daha az arka plan işi, daha küçük uygulama. Uygulamaya özel genişlikteki siyah şeritler, içeriği kapatan klavye ve Geri gezinmesi düzeltildi.
+
+## 190 - 3.7
+- Uygulamaya özel özellikler (Otomatik Durdurma, İzin Devre Dışı Bırakıcı, uygulamaya özel genişlik, yenileme hızı ve iş parçacığı) artık Kullanım Erişimi gerektirmiyor — ön plandaki uygulama artık Shizuku üzerinden, anında ve sürekli sorgulama yapmadan algılanıyor.
+- Optimize Edici: Arka Plan Uygulamalarını Kapat ve Performans Artırıcı'nın asla durdurmayacağı uygulamalar için yeni Hariç Tutma Listesi, uygulamaları kapatmadan veya önbelleği temizlemeden önce onay ve kapatılan uygulama sayısı.
+- Ekran görüntüsü bildirimleri artık seçtiğin süre sonunda kendiliğinden kapanabiliyor.
+- Operatör adı değiştirme daha güvenilir.
+- Daha az reklam: tam ekran reklamlar günde en fazla 2 ve en az 20 dakika arayla; ödüllü reklam yoksa özellik ücretsiz açılıyor.
+- Güncel Android sürümlerinde etkisi olmadığı için GPU oluşturmayı zorla, HWUI ayarlarından kaldırıldı.
+- Düzeltmeler: daha doğru en küçük genişlik değerleri; Hızlı Ayarlar kartları Shizuku bağlanır bağlanmaz güncelleniyor.
+
+## 189 - 3.6
+- Debloater (Araçlar): önyüklü uygulamaları listele; bu kullanıcı için kaldır, devre dışı bırak veya geri yükle — risk seviyeleri, kritik sistem uygulamaları için koruma, APK dışa aktarma ve tek dokunuşla Tümünü geri yükle.
+- İsteğe bağlı topluluk paket listesi: daha ayrıntılı açıklamalar ve risk değerlendirmeleri için Universal Debloater Alliance listesini indir.
+- Pil Sağlığı (Pil sekmesi): kapasite, şarj döngüsü, sıcaklık, akım ve Doze ayrıntılarını gör.
+- Shizuku durumu artık tek yerden izleniyor; izin durumu tüm ekranlarda güncel kalıyor.
+- Uygulama açılış reklamları kaldırıldı: uygulamayı açarken artık tam ekran reklam yok.
+
+## 186 - 3.5
+- Durum Çubuğu Simge Yöneticisi (Araçlar): 40+ simgeyi — saat, pil, Wi-Fi, hotspot, NFC ve daha fazlası — Durum, Bağlantı, Ses ve Sistem gruplarında aç/kapat, Tümünü göster / Tümünü gizle ile.
+- Yeni Optimize Edici sekmesi (Boost ve Cleaner'ın yerini aldı): Temizleyici tek dokunuşla yer ve bellek açar, Performans Artırıcı adım adım daha derin iyileştirme yapar — artık tek ekranda.
+- Yeniden kurulan Hızlı Ayarlar kartları: Ekli ve Eklenecek listeler, sayı gösteren açılır kategoriler, gelişmiş seçenekler ve daha basit özel anahtar oluşturucu; yeni Sistem Arayüzünü Yeniden Başlat kartı, Ses kartı artık burada yönetiliyor.
+- Daha akıcı gezinme: HomeTopBar ayrıldı, ExpressiveNavBar yenilendi ve animasyon önizlemesi daha akıcı zamanlamayla yeniden düzenlendi.
+- Daha güvenilir kartlar ve izinler: tüm kartlar BaseTileService'i paylaşıyor, Shizuku artık kararlı bağlayıcı için awaitShizukuPermission kullanıyor.
+- Daha güvenilir hotspot: hotspot'u açma/kapama ve ayarlarını değiştirme artık özellikle yeni Android sürümlerinde daha tutarlı çalışıyor.
+
+## 181 - 3.4
+- Uygulama başına yenileme hızı: her uygulama için ekran yenileme hızı belirleyin, otomatik olarak geçsin.
+- Hızlı Ayarlar kartları: kendi anahtar kartlarınızı oluşturun, simgelerini seçin ve Hızlı Ayarlar paneline ekleyin.
+- Uygulama başına tüm özellikler artık tek bir arka plan servisini paylaşıyor, daha az pil harcıyor.
+- Daha hızlı uygulama algılama ve küçük düzeltmeler.
+
+## 179 - 3.3
+- Sistem Ölçer: telefonu kullanırken FPS, CPU, GPU, RAM ve pili gösteren kayan bir katman.
+- Temizleyici: önbellekleri ve artık dosyaları bulup yer açın.
+- Doze Beyaz Listesi: telefon boştayken hangi uygulamaların çalışmaya devam edeceğini seçin.
+- HWUI Ayarları: daha akıcı çizim için donanım hızlandırma özelliklerini ayarlayın.
+- Pil uyarıları: belirlediğiniz pil seviyelerinde bildirim alın.
+- Yenilenen gezinme, bilgi kartları ve durum etiketleri.
+
+## 177 - 3.2
+- Ekran görüntüsü işlemleri: yeni ekran görüntüsünü bildirimden veya kayan düğmeden kopyalayın ya da silin; ayrıca "Ekran görüntüsünü kopyala" Hızlı Ayarlar kutusu.
+- Hotspot Yöneticisi: hotspot'u başlatın veya durdurun, bağlı cihazları görün ve engelleyin, ad, parola, güvenlik, bant ve sınırları düzenleyin, QR ile paylaşın; Hızlı Ayarlar kutusuyla birlikte.
+- Ses kutusu: basınca veya basılı tutunca ses panelini ya da medya çıkışı seçiciyi açan Hızlı Ayarlar kutusu.
+- Oyun Modu: oyunlarınız çalışırken arka plan uygulamalarını kısıtlar; Hızlı Ayarlar kutusu ve ana ekran widget'ı ile.
+- Derleme modu: uygulamaların nasıl derleneceğini seçin (Her şey, Hız, Hız (profil), Doğrulama).
+- Uygulama başına genişlik: her uygulama için farklı bir en küçük genişlik ayarlayın ve uygulama ön plandayken otomatik olarak uygulayın.
+- Oyun Modu iyileştirmeleri: daha güvenilir arka plan uygulaması takibi ve geliştirilmiş bildirimler.
+- Genişletilmiş terminal komut önerileri ve Arapça dil desteği.
+- Boost: telefon performansınızı en üst düzeye çıkaran yeni Sistem performans artırma sayfası.
+
+## 174 - 3.1
+- Profiller: animasyon ölçeklerini, ekran genişliğini, pil ön ayarlarını ve geliştirici seçeneklerini tek bir profilde toplayın ve tek dokunuşla uygulayın.
+- Bildirim widget'ı: yeni "Widget'ta göster" kural eylemiyle eşleşen bildirimleri listeleyen ana ekran widget'ı.
+- Hızlandırma widget'ı: tek dokunuşla uygulama önbelleklerini temizler ve arka plan uygulamalarını kapatır, boşalan depolama ve RAM'i gösterir; küçük, normal ve geniş düzenler.
+- Uygulamaya özel DPI: her uygulama için bir DPI belirleyin; uygulama öne geldiğinde otomatik uygulanır, çıkınca geri alınır.
+- Always On Display: yeni AOD Hızlı Ayarlar kutusu.
+- Geliştirici: "Döndürme önerilerini kapat" ve "Yüksek ses uyarısını kaldır" eklendi, yeniden başlatmadan sonra tekrar uygulanır.
+- Kurallar: bildirim izinleri artık yalnızca kurallarınızın gerçekten kullandığı eylemlere göre istenir.
+
+## 170 - 3.0
+- Bildirimler: yeni bildirim dinleyicisi, sekme, test bildirimi ve izin akışı.
+- Kurallar: uygulamaya özel kurallar, başlık ve metin anahtar kelimeleri, birden çok eylem, koşullar, bekleme süreleri ve çakışma tespiti.
+- Eylemler: kamera flaşı, özel desenler, ekranı uyandırma, cep modu, AOD ve tam ekran flaş.
+- Ekran flaşı: 12 renk, süreler, dokunarak durdurma, kilit ekranı desteği ve kaplamalar.
+- AOD ve uyandırma: güvenli geri yükleme, kilit açılınca veya kapatılınca durma ve yakınlık sensörüne duyarlı uyandırma.
+- Geçmiş: arama, eylem filtreleri, otomatik silme, temizleme ve silme, kural oluşturma kısayolları.
+- İzinler: Shizuku, güvenli ayarlar, bildirimler, kamera, kaplama ve pil erişimi için tek bir canlı ekran.
+- FPS: konumunu hatırlayan, sürüklenebilir gerçek zamanlı FPS kaplaması.
+- Wi-Fi: kayıtlı parolalar, arama, bağlantı durumu, QR kodları, kopyalama ve güvenli dışa aktarma.
+- Hızlı Ayarlar: her biri beş yuvalı Kafein, Terminal, Animasyon ve Genişlik ön ayar kutuları; canlı durum, etiket ve simgelerle.
+- Geliştirici: Sensörleri kapat, Dokunmaları göster, İşaretçi konumu, Düzen sınırları, GPU profili ve RTL'yi zorla.
+- Alarm Gösterici ve SIM'e göre operatör adı özelleştirme.
+- Terminal: risk onayı, otomatik tamamlama, paket önerileri, kayıtlı ön ayarlar, çıktı, çıkış kodları ve 50 komutluk geçmiş.
+- Shizuku: izin kontrolleri artık canlı bağlantıyı doğruluyor.

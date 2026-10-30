@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.arslan.customanimator.MainActivity
 import com.arslan.customanimator.R
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
+import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.DeveloperOptionsManager
 import com.arslan.customanimator.utils.InstalledAppsProvider
 import com.arslan.customanimator.utils.ShizukuHelper
@@ -24,11 +25,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
-/**
- * Foreground service that force-compiles every launchable app one by one, surviving
- * navigation away from the app. Progress is published both to a notification (visible
- * across app switches) and to [CompileBoosterProgressTracker] (for live in-app UI).
- */
 class CompileBoosterService : Service() {
 
     companion object {
@@ -71,6 +67,7 @@ class CompileBoosterService : Service() {
     }
 
     private suspend fun runCompileAll() {
+        CompileBoosterProgressTracker.prepare()
         val apps = InstalledAppsProvider.getLaunchableApps(applicationContext)
         val total = apps.size
         if (total == 0) {
@@ -78,8 +75,8 @@ class CompileBoosterService : Service() {
             return
         }
 
-        CompileBoosterProgressTracker.update(isRunning = true, current = 0, total = total, currentLabel = "")
-        var successCount = 0
+        val filter = CompileFilterManager.getFilter(applicationContext)
+        CompileBoosterProgressTracker.start(total)
 
         for ((index, app) in apps.withIndex()) {
             kotlinx.coroutines.currentCoroutineContext().ensureActive()
@@ -90,19 +87,21 @@ class CompileBoosterService : Service() {
                 return
             }
 
-            CompileBoosterProgressTracker.update(isRunning = true, current = index, total = total, currentLabel = app.label)
+            CompileBoosterProgressTracker.compiling(app.packageName, app.label)
             updateNotification(index, total, app.label)
 
-            val success = DeveloperOptionsManager.compileApp(app.packageName)
-            if (success) successCount++
+            val success = DeveloperOptionsManager.compileApp(app.packageName, filter)
+            CompileBoosterProgressTracker.record(
+                CompileBoosterProgressTracker.CompileResult(app.packageName, app.label, success)
+            )
         }
 
-        Log.d(TAG, "Compiled $successCount/$total apps")
+        Log.d(TAG, "Compiled $total apps with ${filter.value}, ${CompileBoosterProgressTracker.progress.value.failedCount} failed")
         finish()
     }
 
     private fun finish() {
-        CompileBoosterProgressTracker.reset()
+        CompileBoosterProgressTracker.finish()
         stopSelf()
     }
 
@@ -158,7 +157,7 @@ class CompileBoosterService : Service() {
     override fun onDestroy() {
         compileJob?.cancel()
         job.cancel()
-        CompileBoosterProgressTracker.reset()
+        CompileBoosterProgressTracker.finish()
         super.onDestroy()
     }
 }

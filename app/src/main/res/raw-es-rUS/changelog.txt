@@ -1,0 +1,85 @@
+## 195 - 3.8
+- Accesos directos (Herramientas): fija en la pantalla de inicio apps, actividades ocultas, accesos de pulsación larga, archivos, carpetas, fotos, enlaces y comandos.
+- Reasignar botones (Herramientas): elige qué hace mantener presionado el botón de encendido, con acciones personalizadas como la linterna o una captura.
+- Cambiador de ícono de APK y Extractor de APK (Herramientas): cambia el ícono de una app instalada o guarda el APK de cualquier app en Download/CustomAnimator.
+- Limpiador de WhatsApp (Optimizador): borra archivos multimedia y copias de seguridad antiguas de WhatsApp por categoría y antigüedad.
+- Copiador de OTP (Herramientas): los códigos de verificación de las notificaciones se copian automáticamente.
+- Guardar en el dispositivo (Herramientas): comparte cualquier cosa con esta app para guardarla en una carpeta o copiarla.
+- Filtros de notificaciones (Notificaciones): los filtros ahora pueden quitar las notificaciones coincidentes; reglas, filtros e historial están en una sola pantalla.
+- Acciones de captura (Herramientas): ya no se necesita acceso a fotos. Elige la carpeta de capturas una vez; borrar elimina la captura al instante sin diálogo de confirmación.
+- Modo juego: nueva lista de Excluidas para apps que deben seguir funcionando. Los Perfiles pueden ejecutar comandos de shell y los selectores de íconos ahora ofrecen más de 1150 íconos.
+- Listas de apps y Debloater más rápidos, menos trabajo en segundo plano y app más pequeña. Se corrigieron las barras negras con ancho por app, el teclado que tapaba el contenido y la navegación con Atrás.
+
+## 190 - 3.7
+- Las funciones por app (Forzar detención automática, Desactivador de permisos, ancho, frecuencia de actualización e hilos por app) ya no necesitan Acceso de uso: la app en primer plano ahora se detecta mediante Shizuku, al instante y sin sondeo.
+- Optimizador: nueva Lista de exclusión para apps que Cerrar apps en segundo plano y el Potenciador nunca deben detener, confirmación antes de cerrar apps o borrar cachés y recuento de apps cerradas.
+- Las notificaciones de captura de pantalla ahora pueden descartarse solas tras el tiempo que elijas.
+- Cambiar el nombre del operador es más fiable.
+- Menos anuncios: como máximo 2 anuncios a pantalla completa al día, con al menos 20 minutos entre ellos; si no hay anuncio con recompensa disponible, la función se desbloquea gratis.
+- Se quitó Forzar renderizado por GPU de los ajustes HWUI, ya que no tiene efecto en las versiones actuales de Android.
+- Correcciones: valores de ancho mínimo más precisos y los mosaicos de Ajustes rápidos se actualizan en cuanto Shizuku se conecta.
+
+## 189 - 3.6
+- Debloater (Herramientas): lista todas las apps preinstaladas y quítalas, desactívalas o restáuralas para este usuario, con niveles de riesgo, protección de las apps críticas del sistema, exportación de APK y Restaurar todo con un toque.
+- Lista de paquetes de la comunidad (opcional): descarga la lista de Universal Debloater Alliance para obtener descripciones y niveles de riesgo más detallados.
+- Salud de la batería (pestaña Batería): consulta capacidad, ciclos, temperatura, corriente y detalles de Doze.
+- El estado de Shizuku ahora se controla en un solo lugar, así que los permisos se mantienen actualizados en todas las pantallas.
+- Se eliminaron los anuncios de apertura: ya no aparece un anuncio a pantalla completa al abrir la app.
+
+## 186 - 3.5
+- Gestor de iconos de la barra de estado (Herramientas): activa 40+ iconos — reloj, batería, Wi-Fi, hotspot, NFC y más — agrupados en Estado, Conectividad, Sonido y Sistema, con Mostrar todo / Ocultar todo.
+- Nueva pestaña Optimizador (reemplaza Boost y Cleaner): Limpiador libera espacio y memoria con un toque, Potenciador hace una optimización profunda paso a paso — ahora en una sola pantalla.
+- Mosaicos de Ajustes rápidos reconstruidos: listas Colocados vs. Añadir, categorías expandibles con conteo, opciones avanzadas y creador de interruptor más simple; nuevo mosaico Reiniciar interfaz del sistema, el mosaico de Sonido ahora se gestiona aquí.
+- Navegación más fluida: HomeTopBar extraído, ExpressiveNavBar renovada y previsualización de animación re-temporizada.
+- Mosaicos y permisos más fiables: todos comparten BaseTileService y Shizuku ahora usa awaitShizukuPermission para un binder estable.
+- Punto de acceso más fiable: encender/apagar el hotspot y cambiar su configuración ahora funciona con mayor consistencia, sobre todo en versiones recientes de Android.
+
+## 181 - 3.4
+- Frecuencia de actualización por app: define una frecuencia para cada app y cambia automáticamente.
+- Mosaicos de Ajustes rápidos: crea tus propios interruptores, elige sus iconos y agrégalos al panel de Ajustes rápidos.
+- Todas las funciones por app ahora comparten un solo servicio en segundo plano, así consumen menos batería.
+- Detección de apps más rápida y correcciones menores.
+
+## 179 - 3.3
+- Medidor del sistema: una superposición flotante que muestra FPS, CPU, GPU, RAM y batería mientras usas el teléfono.
+- Limpiador: encuentra y libera espacio de cachés y archivos sobrantes.
+- Lista blanca de Doze: elige qué apps pueden seguir funcionando mientras el teléfono está inactivo.
+- Ajustes HWUI: modifica las propiedades de renderizado por hardware para un dibujado más fluido.
+- Alertas de batería: recibe una notificación cuando la batería llegue a los niveles que definas.
+- Navegación rediseñada, tarjetas de información y etiquetas de estado renovadas en toda la app.
+
+## 177 - 3.2
+- Acciones de captura de pantalla: copia o elimina una captura nueva desde una notificación o un botón flotante, más una baldosa de Ajustes rápidos "Copiar captura".
+- Administrador de Hotspot: enciende o apaga el hotspot, mira y bloquea los dispositivos conectados, edita nombre, contraseña, seguridad, banda y límites, comparte por QR, con baldosa de Ajustes rápidos.
+- Baldosa de sonido: una baldosa de Ajustes rápidos que abre el panel de volumen o el selector de salida de medios al tocarla o mantenerla presionada.
+- Modo Juego: restringe las apps en segundo plano mientras juegas, con baldosa de Ajustes rápidos y widget de pantalla de inicio.
+- Modo de compilación: elige cómo se compilan las apps (Everything, Speed, Speed profile, Verify).
+- Ancho por app: establece un ancho mínimo diferente para cada app y aplícalo automáticamente mientras está en primer plano.
+- Mejoras del Modo Juego: seguimiento más fiable de las apps en segundo plano y notificaciones mejoradas.
+- Sugerencias de comandos ampliadas en el terminal y compatibilidad con árabe.
+- Boost: una nueva página de mejora del rendimiento del sistema para maximizar el rendimiento de tu teléfono.
+
+## 174 - 3.1
+- Perfiles: agrupa escalas de animación, ancho de pantalla, ajustes de batería y opciones de desarrollador en un perfil y aplícalo con un toque.
+- Widget de notificaciones: un widget de pantalla principal con las notificaciones que coinciden con la nueva acción de regla "Mostrar en el widget".
+- Widget de optimización: con un toque limpia la caché de las apps y cierra las apps en segundo plano, mostrando el almacenamiento y la RAM liberados; diseños pequeño, normal y ancho.
+- DPI por app: define un DPI para cada app, que se aplica automáticamente cuando la app pasa a primer plano y se revierte al salir.
+- Always On Display: nuevo mosaico de AOD en Configuración rápida.
+- Desarrollador: se agregaron "Desactivar sugerencias de rotación" y "Quitar la advertencia de volumen alto", que se vuelven a aplicar tras reiniciar.
+- Reglas: los permisos de notificación ahora se solicitan según las acciones que tus reglas realmente usan.
+
+## 170 - 3.0
+- Notificaciones: nuevo detector de notificaciones, pestaña, notificación de prueba y flujo de permisos.
+- Reglas: reglas por app, palabras clave en título y texto, varias acciones, condiciones, tiempos de espera y detección de conflictos.
+- Acciones: flash de la cámara, patrones personalizados, activar la pantalla, modo bolsillo, AOD y destello de pantalla completa.
+- Destello de pantalla: 12 colores, duraciones, tocar para detener, compatibilidad con la pantalla de bloqueo y superposiciones.
+- AOD y activación: restauración segura, detención al desbloquear o descartar y activación según el sensor de proximidad.
+- Historial: búsqueda, filtros de acciones, borrado automático, limpiar y eliminar, y accesos directos para crear reglas.
+- Permisos: una sola pantalla en vivo para Shizuku, configuración segura, notificaciones, cámara, superposición y batería.
+- FPS: superposición de FPS en tiempo real que se puede arrastrar y recuerda su posición.
+- Wi-Fi: contraseñas guardadas, búsqueda, estado de conexión, códigos QR, copiar y exportación segura.
+- Configuración rápida: mosaicos de Cafeína, Terminal, Animación y ajustes de Ancho con cinco espacios cada uno, con estados, etiquetas e íconos en vivo.
+- Desarrollador: Sensores desactivados, Mostrar toques, Ubicación del puntero, Límites de diseño, Perfil de GPU y Forzar RTL.
+- Revelador de alarmas y personalización del nombre del operador por SIM.
+- Terminal: aceptación de riesgos, autocompletado, sugerencias de paquetes, ajustes guardados, salida, códigos de salida e historial de 50 comandos.
+- Shizuku: las comprobaciones de permisos ahora verifican la conexión activa.

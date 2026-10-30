@@ -3,7 +3,6 @@ package com.arslan.customanimator
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
@@ -11,27 +10,40 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.core.content.ContextCompat
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeveloperMode
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Straighten
+import androidx.compose.material.icons.filled.BatterySaver
 import androidx.compose.material.icons.filled.Terminal
+import androidx.compose.material.icons.filled.Widgets
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Speed
+import androidx.compose.material.icons.filled.VideogameAsset
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
@@ -39,90 +51,267 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.ui.Modifier
+import com.arslan.customanimator.ui.theme.AppShapes
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.shape.CircleShape
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.TextFieldValue
+import com.arslan.customanimator.notify.data.RulesManager
+import com.arslan.customanimator.notify.ui.AddEditRuleSection
+import com.arslan.customanimator.notify.ui.CreatePatternSection
+import com.arslan.customanimator.notify.ui.IgnoredNotificationsSection
+import com.arslan.customanimator.notify.ui.LoggingSection
+import com.arslan.customanimator.notify.ui.NotifyHomeSection
+import com.arslan.customanimator.notify.ui.RulesSection
+import com.arslan.customanimator.service.ForegroundAppWatcherService
+import com.arslan.customanimator.ui.components.ExpressiveTopNavBar
+import com.arslan.customanimator.ui.components.StatusPill
+import com.arslan.customanimator.ui.components.StatusTone
+import com.arslan.customanimator.ui.theme.MonoNumeralLarge
+import com.arslan.customanimator.ui.components.NavBarItem
+import com.arslan.customanimator.ui.components.NavBarItems
 import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import com.arslan.customanimator.ui.theme.Motion
+import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 import com.arslan.customanimator.utils.PresetManager
+import com.arslan.customanimator.utils.ChangelogManager
 import com.arslan.customanimator.utils.SettingsManager
-import com.arslan.customanimator.utils.ShizukuHelper
+import com.arslan.customanimator.data.AnimatorPreset
+import com.arslan.customanimator.data.WidthPreset
+import com.arslan.customanimator.utils.AnimationTileSlots
+import com.arslan.customanimator.utils.TerminalPresetManager
+import com.arslan.customanimator.utils.TileNumberIcon
+import com.arslan.customanimator.utils.WidthTileSlots
+import com.arslan.customanimator.utils.TerminalTileSlots
+import com.arslan.customanimator.utils.ToggleTileManager
+import com.arslan.customanimator.utils.ToggleTileSlots
 import com.arslan.customanimator.utils.WidthPresetManager
-import rikka.shizuku.Shizuku
+import com.arslan.customanimator.utils.LocalShizukuAvailable
+import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import com.arslan.customanimator.utils.ProvideShizukuState
+import com.arslan.customanimator.utils.ShizukuState
+import com.arslan.customanimator.utils.AppScreenShortcuts
+import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.R
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.ScaleSlider
+import androidx.compose.material.icons.filled.Check
 
 class MainActivity : ComponentActivity() {
-    private val shizukuRequestListener = Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
-        if (grantResult == 0) {
-            // Permission granted
-            ShizukuHelper.grantWriteSecureSettingsPermission(this)
-        }
-    }
-    
+    var shortcutTarget by mutableStateOf<SearchTarget?>(null)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (savedInstanceState == null) readShortcutTarget(intent)
+        initBilling(this)
         initAds(this)
 
-        // Add Shizuku listener
-        Shizuku.addRequestPermissionResultListener(shizukuRequestListener)
-        
-        // Request Shizuku permission on first launch if available and not yet requested
-        if (ShizukuHelper.isShizukuAvailable() && !ShizukuHelper.hasShizukuBeenRequested(this) && !ShizukuHelper.hasShizukuPermission()) {
-            ShizukuHelper.requestShizukuPermission(this)
-            ShizukuHelper.markShizukuRequested(this)
-        }
-        
+        syncBackgroundState()
+
+        ShizukuState.start(this)
+
         setContent {
             CustomAnimatorTheme {
+                ProvideShizukuState {
+                PreloadInstalledApps()
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    AnimatorSelectorScreen(this)
+                    var showOnboarding by rememberSaveable {
+                        mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
+                    }
+                    var changelog by remember {
+                        mutableStateOf(ChangelogManager.unseenReleases(this))
+                    }
+                    if (showOnboarding) {
+                        OnboardingScreen(
+                            onFinished = {
+                                SettingsManager.markOnboardingCompleted(this)
+                                SettingsManager.markAdInfoDialogShown(this)
+                                SettingsManager.markRateDialogLater(this)
+                                ChangelogManager.markCurrentSeen(this)
+                                changelog = emptyList()
+                                showOnboarding = false
+                            }
+                        )
+                    } else {
+                        AnimatorSelectorScreen(this)
+
+                        if (changelog.isNotEmpty()) {
+                            ChangelogDialog(
+                                releases = changelog,
+                                onDismiss = {
+                                    ChangelogManager.markCurrentSeen(this)
+                                    changelog = emptyList()
+                                }
+                            )
+                        }
+                    }
+                }
                 }
             }
         }
     }
-    
-    override fun onResume() {
-        super.onResume()
-        // Check if Shizuku permission was granted and try to grant WRITE_SECURE_SETTINGS
-        if (ShizukuHelper.hasShizukuPermission()) {
-            val hasSecureSettings = ContextCompat.checkSelfPermission(
-                this,
-                "android.permission.WRITE_SECURE_SETTINGS"
-            ) == PackageManager.PERMISSION_GRANTED
-            
-            if (!hasSecureSettings) {
-                ShizukuHelper.grantWriteSecureSettingsPermission(this)
-            }
+
+    private fun syncBackgroundState() {
+        val appContext = applicationContext
+        lifecycleScope.launch(Dispatchers.IO) {
+            ForegroundAppWatcherService.sync(appContext)
+            RulesManager(appContext).hasProximitySensor()
+            TerminalTileSlots.sync(appContext, TerminalPresetManager(appContext))
+            ToggleTileSlots.sync(appContext, ToggleTileManager(appContext))
+            WidthTileSlots.sync(appContext, WidthPresetManager(appContext))
+            AnimationTileSlots.sync(appContext, PresetManager(appContext))
+            AppScreenShortcuts.publish(appContext)
         }
     }
-    
-    override fun onDestroy() {
-        super.onDestroy()
-        Shizuku.removeRequestPermissionResultListener(shizukuRequestListener)
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        readShortcutTarget(intent)
+    }
+
+    private fun readShortcutTarget(intent: Intent?) {
+        val key = intent?.getStringExtra(EXTRA_SCREEN) ?: return
+        ShortcutManagerCompat.reportShortcutUsed(this, key)
+        shortcutTarget = searchTargetOf(key)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initBilling(this)
+        preloadInterstitial(this)
+        ShizukuState.refresh()
+    }
+
+    companion object {
+        const val EXTRA_SCREEN = "com.arslan.customanimator.extra.SCREEN"
     }
 }
 
+private const val WIDTH_REVERT_MS = 15_000L
+
 enum class HomeTab {
-    ANIMATION, WIDTH, DEVELOPER, TERMINAL
+    ANIMATION, WIDTH, OPTIMIZER, GAME_MODE, SYSTEM_METER, BATTERY, TOOLS, DEVELOPER, TERMINAL
 }
 
 enum class HomeScreen {
-    MAIN, SETTINGS, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE
+    MAIN, SETTINGS, PROFILES, PROFILE_EDITOR, AUTO_FORCE_STOP, AUTO_PERMISSION_DISABLER, GRAPHICS_API_OVERRIDE,
+    HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
+    WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
+    NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
+    AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
+    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, APK_INSTALLER, ACTIVITY_MANAGER, COMPILE_BOOSTER
+}
+
+internal fun HomeTab.labelRes(): Int = when (this) {
+    HomeTab.ANIMATION -> R.string.nav_animation
+    HomeTab.WIDTH -> R.string.nav_width
+    HomeTab.OPTIMIZER -> R.string.optimizer_title
+    HomeTab.GAME_MODE -> R.string.game_mode
+    HomeTab.SYSTEM_METER -> R.string.system_meter_title
+    HomeTab.BATTERY -> R.string.nav_battery
+    HomeTab.TOOLS -> R.string.tools_title
+    HomeTab.DEVELOPER -> R.string.developer_title
+    HomeTab.TERMINAL -> R.string.nav_terminal
+}
+
+internal fun HomeTab.icon(): ImageVector = when (this) {
+    HomeTab.ANIMATION -> Icons.Default.PlayArrow
+    HomeTab.WIDTH -> Icons.Default.Straighten
+    HomeTab.OPTIMIZER -> Icons.Default.Bolt
+    HomeTab.GAME_MODE -> Icons.Default.VideogameAsset
+    HomeTab.SYSTEM_METER -> Icons.Default.Speed
+    HomeTab.BATTERY -> Icons.Default.BatterySaver
+    HomeTab.TOOLS -> Icons.Default.Build
+    HomeTab.DEVELOPER -> Icons.Default.DeveloperMode
+    HomeTab.TERMINAL -> Icons.Default.Terminal
+}
+
+private val NOTIFY_SCREENS = setOf(
+    HomeScreen.NOTIFY_RULES,
+    HomeScreen.NOTIFY_IGNORED,
+    HomeScreen.NOTIFY_ADD_EDIT_RULE,
+    HomeScreen.NOTIFY_CREATE_PATTERN
+)
+
+private val SUB_SCREEN_PARENTS = mapOf(
+    HomeScreen.AUTO_FORCE_STOP to HomeScreen.AUTO_ACTIONS,
+    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS,
+    HomeScreen.SOUND_TILE to HomeScreen.QS_TILES
+)
+
+private val SUB_SCREEN_TABS = mapOf(
+    HomeScreen.DEBLOATER to HomeTab.TOOLS,
+    HomeScreen.COMPILE_BOOSTER to HomeTab.TOOLS,
+    HomeScreen.SHORTCUTS to HomeTab.TOOLS,
+    HomeScreen.GRAPHICS_API_OVERRIDE to HomeTab.TOOLS,
+    HomeScreen.HWUI_TWEAKS to HomeTab.TOOLS,
+    HomeScreen.APP_THREADING to HomeTab.TOOLS,
+    HomeScreen.DOZE_WHITELIST to HomeTab.BATTERY,
+    HomeScreen.BATTERY_HEALTH to HomeTab.BATTERY,
+    HomeScreen.WIFI_PASSWORDS to HomeTab.TOOLS,
+    HomeScreen.HOTSPOT_MANAGER to HomeTab.TOOLS,
+    HomeScreen.ALARM_REVEALER to HomeTab.TOOLS,
+    HomeScreen.CARRIER_NAME to HomeTab.TOOLS,
+    HomeScreen.OTP_COPIER to HomeTab.TOOLS,
+    HomeScreen.STATUS_BAR_ICONS to HomeTab.TOOLS,
+    HomeScreen.SYSTEM_COLORS to HomeTab.TOOLS,
+    HomeScreen.BUTTON_REMAPPER to HomeTab.TOOLS,
+    HomeScreen.ICON_CHANGER to HomeTab.TOOLS,
+    HomeScreen.APK_EXTRACTOR to HomeTab.TOOLS,
+    HomeScreen.APK_INSTALLER to HomeTab.TOOLS,
+    HomeScreen.ACTIVITY_MANAGER to HomeTab.TOOLS,
+    HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
+    HomeScreen.QS_TILES to HomeTab.TOOLS,
+    HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH,
+    HomeScreen.CLOSE_APPS_EXCLUSIONS to HomeTab.OPTIMIZER,
+    HomeScreen.WHATSAPP_CLEANER to HomeTab.OPTIMIZER
+)
+
+private val ROOT_LEVEL_SCREENS = setOf(HomeScreen.NOTIFY_HOME)
+
+private val DEFAULT_RETURN_SCREENS = mapOf(
+    HomeScreen.SETUP_GUIDE to HomeScreen.MAIN,
+    HomeScreen.PROFILES to HomeScreen.MAIN,
+    HomeScreen.NOTIFY_LOGGING to HomeScreen.NOTIFY_HOME,
+    HomeScreen.PERMISSIONS to HomeScreen.SETTINGS
+)
+
+private val BANNERLESS_SCREENS = setOf(HomeScreen.PROFILES, HomeScreen.PROFILE_EDITOR)
+
+private fun HomeScreen.navDepth(): Int = when (this) {
+    HomeScreen.MAIN -> 0
+    HomeScreen.SETTINGS, HomeScreen.SETUP_GUIDE, HomeScreen.PROFILES, HomeScreen.PER_APP_WIDTH -> 1
+    HomeScreen.PERMISSIONS, HomeScreen.PROFILE_EDITOR, HomeScreen.NOTIFY_RULES, HomeScreen.NOTIFY_LOGGING -> 2
+    HomeScreen.NOTIFY_IGNORED, HomeScreen.NOTIFY_ADD_EDIT_RULE -> 3
+    HomeScreen.NOTIFY_CREATE_PATTERN -> 4
+    else -> if (this in SUB_SCREEN_PARENTS) 3 else if (this in SUB_SCREEN_TABS) 2 else 1
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -131,16 +320,15 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val context = activity
     val contentResolver = context.contentResolver
     val presetManager = remember { PresetManager(context) }
+    val coroutineScope = rememberCoroutineScope()
+    var isApplyingSettings by remember { mutableStateOf(false) }
     val widthPresetManager = remember { WidthPresetManager(context) }
     val focusManager = LocalFocusManager.current
     
-    // Shizuku state and permission state
-    val isShizukuAvailable = remember { ShizukuHelper.isShizukuAvailable() }
-    val hasShizukuPermission = remember { mutableStateOf(ShizukuHelper.hasShizukuPermission()) }
-    val hasWriteSecureSettings = remember { mutableStateOf(ShizukuHelper.hasWriteSecureSettingsPermission(context)) }
-    var showPermissionDetailsDialog by remember { mutableStateOf(false) }
+    val isShizukuAvailable = LocalShizukuAvailable.current
+    val hasShizukuPermission = LocalShizukuPermission.current
+    val hasWriteSecureSettings = LocalWriteSecureSettings.current
     
-    // Current values from system settings
     var windowAnimScale by remember {
         mutableStateOf(SettingsManager.getWindowAnimationScale(contentResolver))
     }
@@ -151,7 +339,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         mutableStateOf(SettingsManager.getAnimatorDurationScale(contentResolver))
     }
     
-    // UI state
     var windowInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", windowAnimScale)) }
     var transitionInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", transitionAnimScale)) }
     var animatorInputValue by remember { mutableStateOf(String.format(java.util.Locale.US, "%.2f", animatorDurScale)) }
@@ -160,47 +347,126 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var allPresets by remember { mutableStateOf(presetManager.getAllPresets()) }
     var showPresetDialog by remember { mutableStateOf(false) }
     var expandedPresetId by remember { mutableStateOf<String?>(null) }
-    var currentScreen by rememberSaveable { mutableStateOf(HomeScreen.MAIN) }
+    var currentScreen by rememberSaveable {
+        mutableStateOf(
+            SettingsManager.getLastScreen(context)?.let { saved ->
+                HomeScreen.entries.firstOrNull { it.name == saved }
+            } ?: HomeScreen.MAIN
+        )
+    }
+    val setupGuideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var returnScreens by rememberSaveable { mutableStateOf(DEFAULT_RETURN_SCREENS) }
+    val openRemembering: (HomeScreen) -> Unit = { destination ->
+        if (currentScreen != destination) {
+            returnScreens = returnScreens + (destination to currentScreen)
+            currentScreen = destination
+        }
+    }
+    val returnFromCurrent: () -> Unit = {
+        currentScreen = returnScreens.getValue(currentScreen)
+    }
+    val openSetupGuide: () -> Unit = { openRemembering(HomeScreen.SETUP_GUIDE) }
     val developerTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val toolsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val homeNavListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val systemMeterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val debloaterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val compileBoosterListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val shortcutsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val whatsAppCleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val hwuiTweaksListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val appThreadingListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val dozeWhitelistListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val batteryHealthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val perAppWidthListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val refreshRateListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val qsTilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val gameModeListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val wifiPasswordsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val alarmRevealerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val hotspotManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val carrierNameListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val otpCopierListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val statusBarIconsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val systemColorsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val buttonRemapperListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val iconChangerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val apkExtractorListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val apkInstallerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val activityManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val profilesListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var editingProfileId by rememberSaveable { mutableStateOf<String?>(null) }
+    var profilesRefreshToken by rememberSaveable { mutableIntStateOf(0) }
+    var editingRuleId by rememberSaveable { mutableStateOf<String?>(null) }
+    var notifyRuleReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_RULES) }
+    var notifyIgnoredReturnScreen by rememberSaveable { mutableStateOf(HomeScreen.NOTIFY_LOGGING) }
     val terminalTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    var selectedTab by rememberSaveable { mutableStateOf(HomeTab.ANIMATION) }
+    val batteryTabListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    var terminalCommand by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(""))
+    }
+    var terminalHistory by rememberSaveable { mutableStateOf(emptyList<String>()) }
+    var selectedTab by rememberSaveable {
+        mutableStateOf(
+            SettingsManager.getLastTab(context)?.let { saved ->
+                HomeTab.entries.firstOrNull { it.name == saved }
+            } ?: HomeTab.ANIMATION
+        )
+    }
+
+    LaunchedEffect(currentScreen) {
+        ShizukuState.refresh()
+        if (currentScreen != HomeScreen.SETUP_GUIDE) {
+            SettingsManager.setLastScreen(context, currentScreen.name)
+        }
+    }
+
+    LaunchedEffect(selectedTab) {
+        SettingsManager.setLastTab(context, selectedTab.name)
+    }
     var widthPresetName by remember { mutableStateOf("") }
     var allWidthPresets by remember { mutableStateOf(widthPresetManager.getAllPresets()) }
     var showWidthPresetDialog by remember { mutableStateOf(false) }
+    var widthTilePreset by remember { mutableStateOf<WidthPreset?>(null) }
+    var widthRevertTarget by rememberSaveable { mutableIntStateOf(-1) }
+    var widthRevertDeadline by rememberSaveable { mutableLongStateOf(0L) }
+    var widthRevertNow by remember { mutableLongStateOf(0L) }
+    var animationTilePreset by remember { mutableStateOf<AnimatorPreset?>(null) }
     var inputMode by remember { mutableStateOf(SettingsManager.getInputMode(context)) }
     var isSimpleMode by remember { mutableStateOf(SettingsManager.getSimpleMode(context)) }
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
-    // Ad disclosure and Play Store rating prompts only ship in the playstore flavor.
     var showAdInfoDialog by remember {
-        mutableStateOf(BuildConfig.HAS_ADS && !SettingsManager.hasShownAdInfoDialog(context))
+        mutableStateOf(!isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
     }
     var showRateDialog by remember {
         mutableStateOf(
-            BuildConfig.HAS_ADS
-                && SettingsManager.hasShownAdInfoDialog(context)
+            SettingsManager.hasShownAdInfoDialog(context)
                 && SettingsManager.shouldShowRateDialog(context)
+        )
+    }
+    var showRemoveAdsSupportDialog by remember {
+        mutableStateOf(
+            !isAdFreeNow()
+                && SettingsManager.hasCompletedOnboarding(context)
+                && SettingsManager.hasShownAdInfoDialog(context)
+                && SettingsManager.shouldShowRemoveAdsSupportDialog(context)
         )
     }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
     
-    // Smallest Width state
     var smallestWidth by remember { mutableStateOf(SettingsManager.getSmallestWidth(context)) }
     var smallestWidthInputValue by remember { mutableStateOf(if (smallestWidth > 0) smallestWidth.toString() else "") }
     
-    // Animation state for fade in/out when mode changes
-    var shouldShowContent by remember { mutableStateOf(true) }
-    var pendingInputMode by remember { mutableStateOf<String?>(null) }
-    val contentAlpha by animateFloatAsState(
-        targetValue = if (shouldShowContent) 1f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = "content fade animation"
-    )
-
     val showPermissionError: (String) -> Unit = { message ->
         permissionErrorMessage = message
         showPermissionDialog = true
@@ -230,22 +496,35 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 
     val applyAnimationScalesAndHandleResult: (Float, Float, Float, () -> Unit) -> Unit = { windowScale, transitionScale, animatorScale, onSuccess ->
-        try {
-            val success = SettingsManager.applyAllScales(
-                context,
-                contentResolver,
-                windowScale,
-                transitionScale,
-                animatorScale
-            )
-
-            if (!success) {
-                showDefaultShizukuRecommendation()
-            } else {
-                onSuccess()
+        isApplyingSettings = true
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                try {
+                    Result.success(
+                        SettingsManager.applyAllScales(
+                            context,
+                            contentResolver,
+                            windowScale,
+                            transitionScale,
+                            animatorScale
+                        )
+                    )
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
             }
-        } catch (e: Exception) {
-            showPermissionError(e.message ?: context.getString(R.string.unknown_error))
+            isApplyingSettings = false
+            result.fold(
+                onSuccess = { success ->
+                    if (success) {
+                        onSuccess()
+                        maybeShowInterstitial(context)
+                    } else {
+                        showDefaultShizukuRecommendation()
+                    }
+                },
+                onFailure = { e -> showPermissionError(e.message ?: context.getString(R.string.unknown_error)) }
+            )
         }
     }
 
@@ -276,25 +555,18 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
     
-    // Fade the home-screen cards on mode change (cosmetic only, doesn't gate state)
-    var isFirstModeRender by remember { mutableStateOf(true) }
-    LaunchedEffect(inputMode) {
-        if (isFirstModeRender) {
-            isFirstModeRender = false
-        } else {
-            shouldShowContent = false
-            delay(150)
-            shouldShowContent = true
+    val changeInputMode: (String) -> Unit = { newMode ->
+        if (newMode != inputMode) {
+            inputMode = newMode
+            SettingsManager.setInputMode(context, inputMode)
+            if (inputMode == "manual") {
+                windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
+                transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
+                animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
+            }
         }
     }
-    
-    // Check permission status when Permission Details dialog is opened
-    LaunchedEffect(showPermissionDetailsDialog) {
-        if (showPermissionDetailsDialog) {
-            hasWriteSecureSettings.value = ShizukuHelper.hasWriteSecureSettingsPermission(context)
-        }
-    }
-    
+
     val toggleSimpleMode: (Boolean) -> Unit = { newSimpleMode ->
         isSimpleMode = newSimpleMode
         SettingsManager.setSimpleMode(context, isSimpleMode)
@@ -306,7 +578,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    // Double-back-to-exit on the home screen
     var backPressedOnce by remember { mutableStateOf(false) }
     LaunchedEffect(backPressedOnce) {
         if (backPressedOnce) {
@@ -315,17 +586,60 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    BackHandler(
-        enabled = currentScreen == HomeScreen.AUTO_FORCE_STOP ||
-            currentScreen == HomeScreen.AUTO_PERMISSION_DISABLER ||
-            currentScreen == HomeScreen.GRAPHICS_API_OVERRIDE
-    ) {
+    val notifyBack: () -> Unit = {
+        when (currentScreen) {
+            HomeScreen.NOTIFY_IGNORED -> currentScreen = notifyIgnoredReturnScreen
+            HomeScreen.NOTIFY_ADD_EDIT_RULE -> currentScreen = notifyRuleReturnScreen
+            HomeScreen.NOTIFY_CREATE_PATTERN -> currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            else -> currentScreen = HomeScreen.NOTIFY_HOME
+        }
+    }
+
+    val backToTab: (HomeTab) -> Unit = { tab ->
         currentScreen = HomeScreen.MAIN
-        selectedTab = HomeTab.DEVELOPER
+        selectedTab = tab
+    }
+
+    var showSearch by rememberSaveable { mutableStateOf(false) }
+    val openSearchScreen: (HomeScreen) -> Unit = { screen ->
+        when (screen) {
+            HomeScreen.NOTIFY_IGNORED -> notifyIgnoredReturnScreen = HomeScreen.NOTIFY_HOME
+            HomeScreen.PROFILES -> profilesRefreshToken++
+            else -> Unit
+        }
+        if (screen in DEFAULT_RETURN_SCREENS) openRemembering(screen) else currentScreen = screen
+    }
+    val openSearchTarget: (SearchTarget) -> Unit = { target ->
+        showSearch = false
+        when (target) {
+            is SearchTarget.Tab -> backToTab(target.tab)
+            is SearchTarget.Screen -> openSearchScreen(target.screen)
+        }
+    }
+    LaunchedEffect(activity.shortcutTarget) {
+        activity.shortcutTarget?.let { target ->
+            activity.shortcutTarget = null
+            openSearchTarget(target)
+        }
+    }
+
+    BackHandler(enabled = currentScreen in SUB_SCREEN_PARENTS) {
+        SUB_SCREEN_PARENTS[currentScreen]?.let { currentScreen = it }
+    }
+    BackHandler(enabled = currentScreen in SUB_SCREEN_TABS) {
+        SUB_SCREEN_TABS[currentScreen]?.let(backToTab)
+    }
+    BackHandler(enabled = currentScreen in ROOT_LEVEL_SCREENS) {
+        currentScreen = HomeScreen.MAIN
+    }
+    BackHandler(enabled = currentScreen in DEFAULT_RETURN_SCREENS, onBack = returnFromCurrent)
+    BackHandler(enabled = currentScreen == HomeScreen.PROFILE_EDITOR) {
+        currentScreen = HomeScreen.PROFILES
     }
     BackHandler(enabled = currentScreen == HomeScreen.SETTINGS) {
         currentScreen = HomeScreen.MAIN
     }
+    BackHandler(enabled = currentScreen in NOTIFY_SCREENS) { notifyBack() }
     BackHandler(enabled = currentScreen == HomeScreen.MAIN) {
         if (backPressedOnce) {
             activity.finish()
@@ -335,182 +649,357 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
+    CompositionLocalProvider(LocalOpenSetupGuide provides openSetupGuide) {
+    Box(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
     AnimatedContent(
         targetState = currentScreen,
+        modifier = Modifier
+            .weight(1f)
+            .consumeWindowInsets(PaddingValues(bottom = bottomBarHeight)),
         transitionSpec = {
-            if (targetState.ordinal > initialState.ordinal) {
-                (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
-                    (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
-            } else {
-                (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
-                    (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
+            val forward = when {
+                returnScreens[targetState] == initialState -> true
+                returnScreens[initialState] == targetState -> false
+                targetState.navDepth() != initialState.navDepth() -> targetState.navDepth() > initialState.navDepth()
+                else -> targetState.ordinal > initialState.ordinal
             }
+            horizontalPagerTransition(forward)
         },
         label = "screen transition"
     ) { targetScreen ->
     if (targetScreen == HomeScreen.SETTINGS) {
         SettingsScreen(
             onBack = { currentScreen = HomeScreen.MAIN },
-            isSimpleMode = isSimpleMode,
-            onSimpleModeChange = toggleSimpleMode,
-            inputMode = inputMode,
-            onInputModeChange = { newMode ->
-                if (newMode != inputMode) {
-                    inputMode = newMode
-                    SettingsManager.setInputMode(context, inputMode)
-                    if (inputMode == "manual") {
-                        windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                        transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                        animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                    }
-                }
+            onNavigateToPermissions = { openRemembering(HomeScreen.PERMISSIONS) }
+        )
+    } else if (targetScreen == HomeScreen.PROFILES) {
+        ProfilesScreen(
+            onBack = returnFromCurrent,
+            onCreate = {
+                editingProfileId = null
+                currentScreen = HomeScreen.PROFILE_EDITOR
             },
-            isShizukuAvailable = isShizukuAvailable,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
-            onShowPermissionDetails = { showPermissionDetailsDialog = true }
+            onEdit = { id ->
+                editingProfileId = id
+                currentScreen = HomeScreen.PROFILE_EDITOR
+            },
+            refreshToken = profilesRefreshToken,
+            listState = profilesListState
+        )
+    } else if (targetScreen == HomeScreen.PROFILE_EDITOR) {
+        ProfileEditorScreen(
+            profileId = editingProfileId,
+            onBack = { currentScreen = HomeScreen.PROFILES },
+            onSaved = {
+                profilesRefreshToken++
+                currentScreen = HomeScreen.PROFILES
+            }
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
+            onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = autoForceStopListState
         )
     } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         AutoPermissionDisablerScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
-            isShizukuAvailable = isShizukuAvailable,
-            hasShizukuPermission = hasShizukuPermission.value,
+            onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
             listState = autoPermissionDisablerListState
+        )
+    } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
+        CloseAppsExclusionsScreen(
+            onBack = { backToTab(HomeTab.OPTIMIZER) },
+            listState = closeAppsExclusionsListState
+        )
+    } else if (targetScreen == HomeScreen.WHATSAPP_CLEANER) {
+        WhatsAppCleanerScreen(
+            onBack = { backToTab(HomeTab.OPTIMIZER) },
+            listState = whatsAppCleanerListState
+        )
+    } else if (targetScreen == HomeScreen.DEBLOATER) {
+        DebloaterScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = debloaterListState
+        )
+    } else if (targetScreen == HomeScreen.COMPILE_BOOSTER) {
+        CompileBoosterScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = compileBoosterListState
+        )
+    } else if (targetScreen == HomeScreen.SHORTCUTS) {
+        ShortcutsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = shortcutsListState
+        )
+    } else if (targetScreen == HomeScreen.ICON_CHANGER) {
+        IconChangerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = iconChangerListState
+        )
+    } else if (targetScreen == HomeScreen.APK_EXTRACTOR) {
+        ApkExtractorScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = apkExtractorListState
+        )
+    } else if (targetScreen == HomeScreen.APK_INSTALLER) {
+        ApkInstallerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = apkInstallerListState
+        )
+    } else if (targetScreen == HomeScreen.ACTIVITY_MANAGER) {
+        ActivityManagerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = activityManagerListState
         )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
-            onBack = { currentScreen = HomeScreen.MAIN },
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
+            onBack = { backToTab(HomeTab.TOOLS) },
             listState = graphicsApiOverrideListState
         )
+    } else if (targetScreen == HomeScreen.HWUI_TWEAKS) {
+        HwuiTweaksScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = hwuiTweaksListState
+        )
+    } else if (targetScreen == HomeScreen.APP_THREADING) {
+        AppThreadingScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = appThreadingListState
+        )
+    } else if (targetScreen == HomeScreen.DOZE_WHITELIST) {
+        DozeWhitelistScreen(
+            onBack = { backToTab(HomeTab.BATTERY) },
+            listState = dozeWhitelistListState
+        )
+    } else if (targetScreen == HomeScreen.BATTERY_HEALTH) {
+        BatteryHealthScreen(
+            onBack = { backToTab(HomeTab.BATTERY) },
+            listState = batteryHealthListState
+        )
+    } else if (targetScreen == HomeScreen.PER_APP_WIDTH) {
+        PerAppWidthScreen(
+            onBack = { backToTab(HomeTab.WIDTH) },
+            listState = perAppWidthListState
+        )
+    } else if (targetScreen == HomeScreen.REFRESH_RATE) {
+        RefreshRateScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = refreshRateListState
+        )
+    } else if (targetScreen == HomeScreen.QS_TILES) {
+        QsTilesScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = qsTilesListState,
+            onOpenTab = { tab -> backToTab(tab) },
+            onOpenProfiles = { openRemembering(HomeScreen.PROFILES) },
+            onOpenSoundTile = { currentScreen = HomeScreen.SOUND_TILE },
+            onOpenScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS }
+        )
+    } else if (targetScreen == HomeScreen.WIFI_PASSWORDS) {
+        WifiPasswordsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = wifiPasswordsListState
+        )
+    } else if (targetScreen == HomeScreen.HOTSPOT_MANAGER) {
+        HotspotManagerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = hotspotManagerListState
+        )
+    } else if (targetScreen == HomeScreen.ALARM_REVEALER) {
+        AlarmRevealerScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = alarmRevealerListState
+        )
+    } else if (targetScreen == HomeScreen.CARRIER_NAME) {
+        CarrierNameScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = carrierNameListState
+        )
+    } else if (targetScreen == HomeScreen.BUTTON_REMAPPER) {
+        ButtonRemapperScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = buttonRemapperListState
+        )
+    } else if (targetScreen == HomeScreen.OTP_COPIER) {
+        OtpCopierScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = otpCopierListState
+        )
+    } else if (targetScreen == HomeScreen.STATUS_BAR_ICONS) {
+        StatusBarIconsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = statusBarIconsListState
+        )
+    } else if (targetScreen == HomeScreen.SYSTEM_COLORS) {
+        SystemColorsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = systemColorsListState
+        )
+    } else if (targetScreen == HomeScreen.SCREENSHOT_ACTIONS) {
+        ScreenshotActionsScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = screenshotActionsListState
+        )
+    } else if (targetScreen == HomeScreen.SOUND_TILE) {
+        SoundTileScreen(
+            onBack = { currentScreen = HomeScreen.QS_TILES },
+            listState = soundTileListState
+        )
+    } else if (targetScreen == HomeScreen.SETUP_GUIDE) {
+        SetupGuideScreen(
+            onBack = returnFromCurrent,
+            listState = setupGuideListState
+        )
+    } else if (targetScreen == HomeScreen.PERMISSIONS) {
+        PermissionsScreen(
+            onBack = returnFromCurrent,
+            listState = permissionsListState
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_RULES) {
+        RulesSection(
+            onNavigateBack = notifyBack,
+            onNavigateToAddEditRule = { ruleId ->
+                editingRuleId = ruleId
+                notifyRuleReturnScreen = HomeScreen.NOTIFY_RULES
+                currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_LOGGING) {
+        LoggingSection(
+            onNavigateBack = returnFromCurrent,
+            onNavigateToIgnored = {
+                notifyIgnoredReturnScreen = HomeScreen.NOTIFY_LOGGING
+                currentScreen = HomeScreen.NOTIFY_IGNORED
+            },
+            onNavigateToAddEditRule = {
+                editingRuleId = null
+                notifyRuleReturnScreen = HomeScreen.NOTIFY_LOGGING
+                currentScreen = HomeScreen.NOTIFY_ADD_EDIT_RULE
+            }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_IGNORED) {
+        IgnoredNotificationsSection(onNavigateBack = notifyBack)
+    } else if (targetScreen == HomeScreen.NOTIFY_ADD_EDIT_RULE) {
+        AddEditRuleSection(
+            ruleId = editingRuleId,
+            onNavigateBack = notifyBack,
+            onNavigateToCreatePattern = { currentScreen = HomeScreen.NOTIFY_CREATE_PATTERN }
+        )
+    } else if (targetScreen == HomeScreen.NOTIFY_CREATE_PATTERN) {
+        CreatePatternSection(onNavigateBack = notifyBack)
+    } else if (targetScreen == HomeScreen.NOTIFY_HOME) {
+        SubScreen(
+            title = stringResource(R.string.pn_title),
+            onBack = { currentScreen = HomeScreen.MAIN }
+        ) {
+            NotifyHomeSection(
+                onNavigateToRules = { currentScreen = HomeScreen.NOTIFY_RULES },
+                onNavigateToFilters = {
+                    notifyIgnoredReturnScreen = HomeScreen.NOTIFY_HOME
+                    currentScreen = HomeScreen.NOTIFY_IGNORED
+                },
+                onNavigateToHistory = { openRemembering(HomeScreen.NOTIFY_LOGGING) }
+            )
+        }
+    } else if (targetScreen == HomeScreen.AUTO_ACTIONS) {
+        SubScreen(
+            title = stringResource(R.string.auto_actions),
+            onBack = { backToTab(HomeTab.TOOLS) }
+        ) {
+            AutoActionsScreenContent(
+                onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
+                onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
+                listState = autoActionsListState
+            )
+        }
     } else {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        stringResource(R.string.app_name),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+            HomeTopBar(
+                selectedTab = selectedTab,
+                onSelectTab = { selectedTab = it },
+                onOpenNotify = { currentScreen = HomeScreen.NOTIFY_HOME },
+                onOpenNotifyHistory = { openRemembering(HomeScreen.NOTIFY_LOGGING) },
+                onOpenProfiles = {
+                    profilesRefreshToken++
+                    openRemembering(HomeScreen.PROFILES)
                 },
-                actions = {
-                    if (selectedTab == HomeTab.ANIMATION || selectedTab == HomeTab.WIDTH) {
-                        IconButton(
-                            onClick = {
-                                if (selectedTab == HomeTab.ANIMATION) {
-                                    showPresetDialog = true
-                                } else {
-                                    showWidthPresetDialog = true
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = stringResource(R.string.new_preset)
-                            )
-                        }
-                    }
-                    IconButton(onClick = { currentScreen = HomeScreen.SETTINGS }) {
-                        Icon(
-                            imageVector = Icons.Default.Settings,
-                            contentDescription = stringResource(R.string.settings)
-                        )
-                    }
-                }
+                onOpenSettings = { currentScreen = HomeScreen.SETTINGS },
+                onOpenSearch = { showSearch = true },
+                navListState = homeNavListState
             )
         },
-        bottomBar = {
-            Column {
-                BannerAdView()
-                NavigationBar {
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.ANIMATION,
-                    onClick = { selectedTab = HomeTab.ANIMATION },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = null
-                        )
-                    },
-                    label = { Text(stringResource(R.string.nav_animation)) }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.WIDTH,
-                    onClick = { selectedTab = HomeTab.WIDTH },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Straighten,
-                            contentDescription = null
-                        )
-                    },
-                    label = { Text(stringResource(R.string.nav_width)) }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.DEVELOPER,
-                    onClick = { selectedTab = HomeTab.DEVELOPER },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.DeveloperMode,
-                            contentDescription = null
-                        )
-                    },
-                    label = { Text(stringResource(R.string.nav_developer)) }
-                )
-                NavigationBarItem(
-                    selected = selectedTab == HomeTab.TERMINAL,
-                    onClick = { selectedTab = HomeTab.TERMINAL },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Terminal,
-                            contentDescription = null
-                        )
-                    },
-                    label = { Text(stringResource(R.string.nav_terminal)) }
-                )
-                }
-            }
-        }
+        bottomBar = { RemoveAdsPrompt() }
     ) { paddingValues ->
         AnimatedContent(
             targetState = selectedTab,
             transitionSpec = {
-                if (targetState.ordinal > initialState.ordinal) {
-                    (slideInHorizontally(tween(300)) { width -> width } + fadeIn(tween(300))) togetherWith
-                        (slideOutHorizontally(tween(300)) { width -> -width } + fadeOut(tween(300)))
-                } else {
-                    (slideInHorizontally(tween(300)) { width -> -width } + fadeIn(tween(300))) togetherWith
-                        (slideOutHorizontally(tween(300)) { width -> width } + fadeOut(tween(300)))
-                }
+                horizontalPagerTransition(targetState.ordinal > initialState.ordinal)
             },
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .consumeWindowInsets(paddingValues)
+                .imePadding(),
             label = "tab transition"
         ) { targetTab ->
-        if (targetTab == HomeTab.DEVELOPER) {
+        if (targetTab == HomeTab.TERMINAL) {
+        TerminalScreenContent(
+            listState = terminalTabListState,
+            command = terminalCommand,
+            onCommandChange = { terminalCommand = it },
+            history = terminalHistory,
+            onHistoryChange = { terminalHistory = it },
+            isActive = targetScreen == currentScreen && targetTab == selectedTab
+        )
+        } else if (targetTab == HomeTab.OPTIMIZER) {
+        OptimizerScreenContent(
+            onNavigateToCloseAppsExclusions = { currentScreen = HomeScreen.CLOSE_APPS_EXCLUSIONS },
+            onNavigateToWhatsAppCleaner = { currentScreen = HomeScreen.WHATSAPP_CLEANER }
+        )
+        } else if (targetTab == HomeTab.DEVELOPER) {
         DeveloperScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            hasWriteSecureSettings = hasWriteSecureSettings.value,
-            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
-            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
-            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
             listState = developerTabListState
         )
-        } else if (targetTab == HomeTab.TERMINAL) {
-        TerminalScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            listState = terminalTabListState
+        } else if (targetTab == HomeTab.TOOLS) {
+        ToolsScreenContent(
+            onNavigateToGraphicsApiOverride = { currentScreen = HomeScreen.GRAPHICS_API_OVERRIDE },
+            onNavigateToHwuiTweaks = { currentScreen = HomeScreen.HWUI_TWEAKS },
+            onNavigateToAppThreading = { currentScreen = HomeScreen.APP_THREADING },
+            onNavigateToRefreshRate = { currentScreen = HomeScreen.REFRESH_RATE },
+            onNavigateToQsTiles = { currentScreen = HomeScreen.QS_TILES },
+            onNavigateToWifiPasswords = { currentScreen = HomeScreen.WIFI_PASSWORDS },
+            onNavigateToHotspotManager = { currentScreen = HomeScreen.HOTSPOT_MANAGER },
+            onNavigateToAlarmRevealer = { currentScreen = HomeScreen.ALARM_REVEALER },
+            onNavigateToCarrierName = { currentScreen = HomeScreen.CARRIER_NAME },
+            onNavigateToOtpCopier = { currentScreen = HomeScreen.OTP_COPIER },
+            onNavigateToStatusBarIcons = { currentScreen = HomeScreen.STATUS_BAR_ICONS },
+            onNavigateToSystemColors = { currentScreen = HomeScreen.SYSTEM_COLORS },
+            onNavigateToButtonRemapper = { currentScreen = HomeScreen.BUTTON_REMAPPER },
+            onNavigateToScreenshotActions = { currentScreen = HomeScreen.SCREENSHOT_ACTIONS },
+            onNavigateToDebloater = { currentScreen = HomeScreen.DEBLOATER },
+            onNavigateToCompileBooster = { currentScreen = HomeScreen.COMPILE_BOOSTER },
+            onNavigateToShortcuts = { currentScreen = HomeScreen.SHORTCUTS },
+            onNavigateToIconChanger = { currentScreen = HomeScreen.ICON_CHANGER },
+            onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },
+            onNavigateToApkInstaller = { currentScreen = HomeScreen.APK_INSTALLER },
+            onNavigateToActivityManager = { currentScreen = HomeScreen.ACTIVITY_MANAGER },
+            onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
+            listState = toolsListState
         )
-        } else if (targetTab == HomeTab.TERMINAL) {
-        TerminalScreenContent(
-            hasShizukuPermission = hasShizukuPermission.value,
-            listState = terminalTabListState
+        } else if (targetTab == HomeTab.SYSTEM_METER) {
+        SystemMeterScreenContent(listState = systemMeterListState)
+        } else if (targetTab == HomeTab.GAME_MODE) {
+        GameModeScreenContent(
+            listState = gameModeListState
+        )
+        } else if (targetTab == HomeTab.BATTERY) {
+        BatteryScreenContent(
+            onNavigateToDozeWhitelist = { currentScreen = HomeScreen.DOZE_WHITELIST },
+            onNavigateToBatteryHealth = { currentScreen = HomeScreen.BATTERY_HEALTH },
+            listState = batteryTabListState
         )
         } else if (targetTab == HomeTab.WIDTH) {
         LazyColumn(
@@ -526,14 +1015,17 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!hasWriteSecureSettings) {
+                item {
+                    SetupNudgeCard(
+                        message = stringResource(R.string.setup_nudge_home),
+                        onOpenSetup = openSetupGuide
+                    )
+                }
+            }
 
-            // Smallest Width Card
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)
-                ) {
+                AppCard(contentPadding = 0.dp) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -543,41 +1035,58 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             Column {
                                 Text(
                                     text = stringResource(R.string.smallest_width),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.SemiBold
+                                    style = MaterialTheme.typography.titleMedium,
                                 )
                                 Text(
                                     text = stringResource(
                                         R.string.smallest_width_current,
                                         SettingsManager.getSmallestWidth(context)
                                     ),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            IconButton(
-                                onClick = {
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, 0)
-                                    if (result.success) {
-                                        smallestWidth = SettingsManager.getSmallestWidth(context)
-                                        smallestWidthInputValue = ""
-                                        showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
-                                    } else {
-                                        showDefaultShizukuRecommendation()
-                                    }
-                                },
-                                modifier = Modifier.size(32.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Refresh,
-                                    contentDescription = stringResource(R.string.smallest_width_reset)
-                                )
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                IconButton(
+                                    onClick = { showWidthPresetDialog = true },
+                                    modifier = Modifier.size(32.dp),
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Add,
+                                        contentDescription = stringResource(R.string.new_preset)
+                                    )
+                                }
+                                IconButton(
+                                    onClick = {
+                                        isApplyingSettings = true
+                                        coroutineScope.launch {
+                                            val result = withContext(Dispatchers.IO) {
+                                                SettingsManager.setSmallestWidth(contentResolver, context, 0)
+                                            }
+                                            isApplyingSettings = false
+                                            if (result.success) {
+                                                smallestWidth = SettingsManager.getSmallestWidth(context)
+                                                smallestWidthInputValue = ""
+                                                showSmallestWidthSuccess(result, context.getString(R.string.smallest_width_reset))
+                                            } else {
+                                                showDefaultShizukuRecommendation()
+                                            }
+                                        }
+                                    },
+                                    modifier = Modifier.size(32.dp),
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = stringResource(R.string.smallest_width_reset)
+                                    )
+                                }
                             }
                         }
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
-                        // Input + Apply row (70/30)
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -593,7 +1102,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 label = { Text(stringResource(R.string.dp_short)) },
-                                modifier = Modifier.weight(0.7f),
+                                modifier = Modifier.weight(1f),
                                 singleLine = true,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                             )
@@ -610,50 +1119,97 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                         return@Button
                                     }
 
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
-                                    if (result.success) {
-                                        smallestWidth = targetSmallestWidth
-                                        smallestWidthInputValue = targetSmallestWidth.toString()
-                                        showSmallestWidthSuccess(
-                                            result,
-                                            context.getString(R.string.smallest_width_applied, targetSmallestWidth)
-                                        )
-                                    } else {
-                                        showDefaultShizukuRecommendation()
+                                    isApplyingSettings = true
+                                    val previousSmallestWidth =
+                                        SettingsManager.getSmallestWidth(context)
+                                    coroutineScope.launch {
+                                        val result = withContext(Dispatchers.IO) {
+                                            SettingsManager.setSmallestWidth(contentResolver, context, targetSmallestWidth)
+                                        }
+                                        isApplyingSettings = false
+                                        if (result.success) {
+                                            if (!result.usedWriteSecureFallback &&
+                                                previousSmallestWidth != targetSmallestWidth
+                                            ) {
+                                                widthRevertTarget = previousSmallestWidth
+                                                widthRevertDeadline =
+                                                    System.currentTimeMillis() + WIDTH_REVERT_MS
+                                            }
+                                            smallestWidth = targetSmallestWidth
+                                            smallestWidthInputValue = targetSmallestWidth.toString()
+                                            showSmallestWidthSuccess(
+                                                result,
+                                                context.getString(R.string.smallest_width_applied, targetSmallestWidth)
+                                            )
+                                        } else {
+                                            showDefaultShizukuRecommendation()
+                                        }
                                     }
                                 },
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .height(56.dp)
+                                enabled = !isApplyingSettings,
+                                modifier = Modifier.heightIn(min = 56.dp),
+                                shapes = ButtonDefaults.shapes()
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp)
+                                Text(
+                                    stringResource(R.string.apply_settings),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 1
+                                )
                             }
                         }
                     }
                 }
             }
 
-            // Width Presets List Header
+            item {
+                Card(
+                    shape = AppShapes.card,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                    onClick = { currentScreen = HomeScreen.PER_APP_WIDTH },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.per_app_width),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                            Text(
+                                text = stringResource(R.string.per_app_width_desc),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        FilledTonalIconButton(onClick = { currentScreen = HomeScreen.PER_APP_WIDTH }, shapes = IconButtonDefaults.shapes()) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = stringResource(R.string.per_app_width_button)
+                            )
+                        }
+                    }
+                }
+            }
+
             if (allWidthPresets.isNotEmpty()) {
                 item {
                     Text(
                         text = stringResource(R.string.width_presets),
-                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
 
-            // Width Presets List
             if (allWidthPresets.isNotEmpty()) {
-                items(allWidthPresets) { widthPreset ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .graphicsLayer(alpha = contentAlpha)
-                    ) {
+                items(allWidthPresets, key = { it.id }) { widthPreset ->
+                    AppCard(modifier = Modifier.animateItem(), contentPadding = 0.dp) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -662,50 +1218,80 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    widthPreset.name,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        widthPreset.name,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        modifier = Modifier.weight(1f, fill = false)
+                                    )
+                                    widthPreset.tile?.let {
+                                        Spacer(Modifier.width(6.dp))
+                                        PresetTileBadge(TileNumberIcon.widthText(widthPreset.widthDp))
+                                    }
+                                }
                                 Text(
                                     stringResource(R.string.preset_width_value, widthPreset.widthDp),
-                                    fontSize = 12.sp,
-                                    color = Color.Gray
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
-                            Button(
-                                onClick = {
-                                    val result = SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
-                                    if (result.success) {
-                                        smallestWidth = widthPreset.widthDp
-                                        smallestWidthInputValue = widthPreset.widthDp.toString()
-                                        if (result.usedWriteSecureFallback) {
-                                            if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
-                                                showWriteSecureWidthConfirmDialog = true
-                                            }
-                                        } else {
-                                            Toast.makeText(context, context.getString(R.string.width_preset_loaded_applied), Toast.LENGTH_SHORT).show()
-                                        }
-                                    } else {
-                                        showDefaultShizukuRecommendation()
-                                    }
-                                },
-                                modifier = Modifier.height(42.dp)
-                            ) {
-                                Text(stringResource(R.string.load), fontSize = 12.sp)
+                            IconButton(onClick = { widthTilePreset = widthPreset }, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    imageVector = Icons.Default.Widgets,
+                                    contentDescription = stringResource(R.string.terminal_tile_menu)
+                                )
                             }
-                            Button(
+                            IconButton(
                                 onClick = {
                                     widthPresetManager.deletePreset(widthPreset.id)
                                     allWidthPresets = widthPresetManager.getAllPresets()
                                     Toast.makeText(context, context.getString(R.string.width_preset_deleted), Toast.LENGTH_SHORT).show()
                                 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.error
-                                ),
-                                modifier = Modifier.height(42.dp)
+                                shapes = IconButtonDefaults.shapes()
                             ) {
-                                Text(stringResource(R.string.delete), fontSize = 12.sp)
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = stringResource(R.string.delete),
+                                    tint = MaterialTheme.colorScheme.error
+                                )
+                            }
+                            Button(
+                                onClick = {
+                                    isApplyingSettings = true
+                                    val previousSmallestWidth =
+                                        SettingsManager.getSmallestWidth(context)
+                                    coroutineScope.launch {
+                                        val result = withContext(Dispatchers.IO) {
+                                            SettingsManager.setSmallestWidth(contentResolver, context, widthPreset.widthDp)
+                                        }
+                                        isApplyingSettings = false
+                                        if (result.success) {
+                                            if (!result.usedWriteSecureFallback &&
+                                                previousSmallestWidth != widthPreset.widthDp
+                                            ) {
+                                                widthRevertTarget = previousSmallestWidth
+                                                widthRevertDeadline =
+                                                    System.currentTimeMillis() + WIDTH_REVERT_MS
+                                            }
+                                            smallestWidth = widthPreset.widthDp
+                                            smallestWidthInputValue = widthPreset.widthDp.toString()
+                                            if (result.usedWriteSecureFallback) {
+                                                if (SettingsManager.shouldShowWriteSecureWidthConfirmDialog(context)) {
+                                                    showWriteSecureWidthConfirmDialog = true
+                                                }
+                                            } else {
+                                                Toast.makeText(context, context.getString(R.string.width_preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                            }
+                                        } else {
+                                            showDefaultShizukuRecommendation()
+                                        }
+                                    }
+                                },
+                                enabled = !isApplyingSettings,
+                                modifier = Modifier.heightIn(min = 42.dp),
+                                shapes = ButtonDefaults.shapes()
+                            ) {
+                                Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                             }
                         }
                     }
@@ -714,11 +1300,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         stringResource(R.string.no_width_presets_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
-                            .graphicsLayer(alpha = contentAlpha)
                     )
                 }
             }
@@ -741,21 +1326,33 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 },
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (!hasWriteSecureSettings) {
+                item {
+                    SetupNudgeCard(
+                        message = stringResource(R.string.setup_nudge_home),
+                        onOpenSetup = openSetupGuide
+                    )
+                }
+            }
 
-            // Animation Speed Preview
             item {
                 SyncedAnimationPreview(
                     currentScale = windowAnimScale,
-                    modifier = Modifier.graphicsLayer(alpha = contentAlpha)
+                )
+            }
+
+            item {
+                AnimationModeSelectors(
+                    isSimpleMode = isSimpleMode,
+                    onSimpleModeChange = toggleSimpleMode,
+                    inputMode = inputMode,
+                    onInputModeChange = changeInputMode,
                 )
             }
             
-            // Animation Sliders
             if (inputMode == "slider") {
                 item {
-                    Card(modifier = Modifier
-                        .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)) {
+                    AppCard(contentPadding = 0.dp) {
                         Column(modifier = Modifier.padding(16.dp)) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -764,226 +1361,113 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     text = stringResource(R.string.animation_scale_slider),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                IconButton(
-                                    onClick = {
-                                        resetAnimationScalesToDefault()
-                                    },
-                                    modifier = Modifier.size(32.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = stringResource(R.string.restore_to_default)
-                                    )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(
+                                        onClick = { showPresetDialog = true },
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Add,
+                                            contentDescription = stringResource(R.string.new_preset)
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            resetAnimationScalesToDefault()
+                                        },
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = stringResource(R.string.restore_to_default)
+                                        )
+                                    }
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
                         
-                        // Window Animation Slider
-                        val sliderLabel = if (isSimpleMode) stringResource(R.string.animation_scale_applies_to_all) else stringResource(R.string.window_animation_scale)
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                sliderLabel,
-                                String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                            ),
-                            fontSize = 12.sp
+                        ScaleSlider(
+                            label = if (isSimpleMode) {
+                                stringResource(R.string.animation_scale_applies_to_all)
+                            } else {
+                                stringResource(R.string.window_animation_scale)
+                            },
+                            value = windowAnimScale,
+                            onValueChange = { scale ->
+                                windowAnimScale = scale
+                                windowInputValue = String.format(java.util.Locale.US, "%.2f", scale)
+                                if (isSimpleMode) {
+                                    transitionAnimScale = scale
+                                    transitionInputValue = windowInputValue
+                                    animatorDurScale = scale
+                                    animatorInputValue = windowInputValue
+                                }
+                            },
+                            valueRange = 0f..5f
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    windowAnimScale = (windowAnimScale - 0.01f).coerceAtLeast(0f)
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = windowAnimScale
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
-                                value = windowAnimScale,
-                                onValueChange = { 
-                                    windowAnimScale = it
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", it)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = it
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = it
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Button(
-                                onClick = {
-                                    windowAnimScale = (windowAnimScale + 0.01f).coerceAtMost(5f)
-                                    windowInputValue = String.format(java.util.Locale.US, "%.2f", windowAnimScale)
-                                    if (isSimpleMode) {
-                                        transitionAnimScale = windowAnimScale
-                                        transitionInputValue = windowInputValue
-                                        animatorDurScale = windowAnimScale
-                                        animatorInputValue = windowInputValue
-                                    }
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
                         if (!isSimpleMode) {
                             Spacer(modifier = Modifier.height(16.dp))
-                        
-                        // Transition Animation Slider
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                stringResource(R.string.transition_animation_scale),
-                                String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                            ),
-                            fontSize = 12.sp
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    transitionAnimScale = (transitionAnimScale - 0.01f).coerceAtLeast(0f)
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
+                            ScaleSlider(
+                                label = stringResource(R.string.transition_animation_scale),
                                 value = transitionAnimScale,
-                                onValueChange = { 
-                                    transitionAnimScale = it
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", it)
+                                onValueChange = { scale ->
+                                    transitionAnimScale = scale
+                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", scale)
                                 },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
+                                valueRange = 0f..5f
                             )
-                            Button(
-                                onClick = {
-                                    transitionAnimScale = (transitionAnimScale + 0.01f).coerceAtMost(5f)
-                                    transitionInputValue = String.format(java.util.Locale.US, "%.2f", transitionAnimScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        // Animator Duration Slider
-                        Text(
-                            stringResource(
-                                R.string.labeled_value,
-                                stringResource(R.string.animator_duration_scale),
-                                String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                            ),
-                            fontSize = 12.sp
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Button(
-                                onClick = {
-                                    animatorDurScale = (animatorDurScale - 0.01f).coerceAtLeast(0f)
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.minus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                            Slider(
+                            Spacer(modifier = Modifier.height(16.dp))
+                            ScaleSlider(
+                                label = stringResource(R.string.animator_duration_scale),
                                 value = animatorDurScale,
-                                onValueChange = { 
-                                    animatorDurScale = it
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", it)
+                                onValueChange = { scale ->
+                                    animatorDurScale = scale
+                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", scale)
                                 },
-                                valueRange = 0f..5.0f,
-                                modifier = Modifier.weight(1f)
+                                valueRange = 0f..5f
                             )
-                            Button(
-                                onClick = {
-                                    animatorDurScale = (animatorDurScale + 0.01f).coerceAtMost(5f)
-                                    animatorInputValue = String.format(java.util.Locale.US, "%.2f", animatorDurScale)
-                                },
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .padding(0.dp),
-                                contentPadding = PaddingValues(0.dp)
-                            ) {
-                                Text(stringResource(R.string.plus_symbol), fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                            }
-                        }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Button(
+                            onClick = { applySelectedAnimationScales() },
+                            enabled = !isApplyingSettings,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = ButtonDefaults.MediumContainerHeight),
+                            contentPadding = ButtonDefaults.MediumContentPadding,
+                            shapes = ButtonDefaults.shapes()
                         ) {
-                            Spacer(modifier = Modifier.weight(0.7f))
-                            Button(
-                                onClick = {
-                                    applySelectedAnimationScales()
-                                },
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .height(50.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                            }
+                            Icon(
+                                imageVector = Icons.Filled.Check,
+                                contentDescription = null,
+                                modifier = Modifier.size(ButtonDefaults.MediumIconSize)
+                            )
+                            Spacer(modifier = Modifier.width(ButtonDefaults.MediumIconSpacing))
+                            Text(
+                                stringResource(R.string.apply_settings),
+                                style = MaterialTheme.typography.titleMedium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
                 }
                 }
             }
             
-            // Manual Input Fields
             if (inputMode == "manual") {
                 item {
-                    Card(modifier = Modifier
+                    Card(
+                        shape = AppShapes.card,
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                        modifier = Modifier
                         .fillMaxWidth()
-                        .graphicsLayer(alpha = contentAlpha)
                         .pointerInput(Unit) {
                             detectTapGestures(
                                 onTap = {
@@ -999,20 +1483,32 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                             ) {
                                 Text(
                                     text = stringResource(R.string.animation_header),
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.SemiBold,
+                                    style = MaterialTheme.typography.labelLarge,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                IconButton(
-                                    onClick = {
-                                        resetAnimationScalesToDefault()
-                                    },
-                                    modifier = Modifier.size(32.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = stringResource(R.string.restore_to_default)
-                                    )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(
+                                        onClick = { showPresetDialog = true },
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Add,
+                                            contentDescription = stringResource(R.string.new_preset)
+                                        )
+                                    }
+                                    IconButton(
+                                        onClick = {
+                                            resetAnimationScalesToDefault()
+                                        },
+                                        modifier = Modifier.size(32.dp),
+                                        shapes = IconButtonDefaults.shapes()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Refresh,
+                                            contentDescription = stringResource(R.string.restore_to_default)
+                                        )
+                                    }
                                 }
                             }
                             Spacer(modifier = Modifier.height(12.dp))
@@ -1041,7 +1537,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     }
                                 },
                                 label = { Text(inputLabel) },
-                                modifier = Modifier.weight(0.7f),
+                                modifier = Modifier.weight(1f),
                                 singleLine = true,
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                             )
@@ -1050,14 +1546,19 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 onClick = {
                                     applySelectedAnimationScales()
                                 },
-                                modifier = Modifier
-                                    .weight(0.3f)
-                                    .height(56.dp),
+                                enabled = !isApplyingSettings,
+                                modifier = Modifier.heightIn(min = 56.dp),
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.primary
-                                )
+                                ),
+                                shapes = ButtonDefaults.shapes()
                             ) {
-                                Text(stringResource(R.string.apply_settings), fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    stringResource(R.string.apply_settings),
+                                    style = MaterialTheme.typography.titleSmall,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                             }
                         }
                         if (!isSimpleMode) {
@@ -1099,32 +1600,26 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 }
             }
             
-            // Presets List Header
             if (allPresets.isNotEmpty()) {
                 item {
                     Text(
                         text = stringResource(R.string.saved_presets),
-                        modifier = Modifier.graphicsLayer(alpha = contentAlpha),
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
             
-            // Presets List
             if (allPresets.isNotEmpty()) {
-                items(allPresets) { preset ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .graphicsLayer(alpha = contentAlpha)
-                            .background(
-                                if (expandedPresetId == preset.id)
-                                    MaterialTheme.colorScheme.primaryContainer
-                                else
-                                    Color.Transparent
-                            )
+                items(allPresets, key = { it.id }) { preset ->
+                    AppCard(
+                        modifier = Modifier.animateItem(),
+                        containerColor = if (expandedPresetId == preset.id) {
+                            MaterialTheme.colorScheme.primaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.surfaceContainer
+                        },
+                        contentPadding = 0.dp
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Row(
@@ -1136,29 +1631,61 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                     modifier = Modifier.weight(1f),
                                     verticalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    Text(
-                                        preset.name,
-                                        fontSize = 14.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            preset.name,
+                                            style = MaterialTheme.typography.labelLarge,
+                                            modifier = Modifier.weight(1f, fill = false)
+                                        )
+                                        preset.tile?.let {
+                                            Spacer(Modifier.width(6.dp))
+                                            PresetTileBadge(
+                                                TileNumberIcon.animationText(
+                                                    preset.windowAnimationScale,
+                                                    preset.transitionAnimationScale,
+                                                    preset.animatorDurationScale
+                                                )
+                                            )
+                                        }
+                                    }
                                     Text(
                                         stringResource(R.string.preset_window_animation_value, preset.windowAnimationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         stringResource(R.string.preset_transition_animation_value, preset.transitionAnimationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                     Text(
                                         stringResource(R.string.preset_animator_duration_value, preset.animatorDurationScale),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                                IconButton(onClick = { animationTilePreset = preset }, shapes = IconButtonDefaults.shapes()) {
+                                    Icon(
+                                        imageVector = Icons.Default.Widgets,
+                                        contentDescription = stringResource(R.string.terminal_tile_menu)
+                                    )
+                                }
+                                IconButton(
+                                    onClick = {
+                                        presetManager.deletePreset(preset.id)
+                                        allPresets = presetManager.getAllPresets()
+                                        Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
+                                    },
+                                    shapes = IconButtonDefaults.shapes()
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.delete),
+                                        tint = MaterialTheme.colorScheme.error
                                     )
                                 }
                                 Column(
-                                    modifier = Modifier.width(112.dp),
+                                    modifier = Modifier.widthIn(min = 88.dp, max = 132.dp),
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
                                     horizontalAlignment = Alignment.End
                                 ) {
@@ -1170,49 +1697,50 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                             windowInputValue = String.format(java.util.Locale.US, "%.2f", preset.windowAnimationScale)
                                             transitionInputValue = String.format(java.util.Locale.US, "%.2f", preset.transitionAnimationScale)
                                             animatorInputValue = String.format(java.util.Locale.US, "%.2f", preset.animatorDurationScale)
-                                            try {
-                                                val success = SettingsManager.applyAllScales(
-                                                    context,
-                                                    contentResolver,
-                                                    preset.windowAnimationScale,
-                                                    preset.transitionAnimationScale,
-                                                    preset.animatorDurationScale
-                                                )
-
-                                                if (!success) {
-                                                    showDefaultShizukuRecommendation()
-                                                    return@Button
+                                            isApplyingSettings = true
+                                            coroutineScope.launch {
+                                                val result = withContext(Dispatchers.IO) {
+                                                    try {
+                                                        Result.success(
+                                                            SettingsManager.applyAllScales(
+                                                                context,
+                                                                contentResolver,
+                                                                preset.windowAnimationScale,
+                                                                preset.transitionAnimationScale,
+                                                                preset.animatorDurationScale
+                                                            )
+                                                        )
+                                                    } catch (e: Exception) {
+                                                        Result.failure(e)
+                                                    }
                                                 }
-                                            } catch (e: Exception) {
-                                                Toast.makeText(
-                                                    context,
-                                                    context.getString(R.string.error_applying_preset, e.message),
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                                return@Button
+                                                isApplyingSettings = false
+                                                result.fold(
+                                                    onSuccess = { success ->
+                                                        if (success) {
+                                                            Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
+                                                            maybeShowInterstitial(context)
+                                                        } else {
+                                                            showDefaultShizukuRecommendation()
+                                                        }
+                                                    },
+                                                    onFailure = { e ->
+                                                        Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.error_applying_preset, e.message),
+                                                            Toast.LENGTH_SHORT
+                                                        ).show()
+                                                    }
+                                                )
                                             }
-                                            Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
                                         },
+                                        enabled = !isApplyingSettings,
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(42.dp)
+                                            .heightIn(min = 42.dp),
+                                        shapes = ButtonDefaults.shapes()
                                     ) {
-                                        Text(stringResource(R.string.load), fontSize = 12.sp)
-                                    }
-                                    Button(
-                                        onClick = {
-                                            presetManager.deletePreset(preset.id)
-                                            allPresets = presetManager.getAllPresets()
-                                            Toast.makeText(context, context.getString(R.string.preset_deleted), Toast.LENGTH_SHORT).show()
-                                        },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.error
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(42.dp)
-                                    ) {
-                                        Text(stringResource(R.string.delete), fontSize = 12.sp)
+                                        Text(stringResource(R.string.load), style = MaterialTheme.typography.bodySmall, maxLines = 1)
                                     }
                                 }
                             }
@@ -1223,11 +1751,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 item {
                     Text(
                         stringResource(R.string.no_presets_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
                             .padding(16.dp)
-                            .graphicsLayer(alpha = contentAlpha)
                     )
                 }
             }
@@ -1241,66 +1768,84 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     }
     }
+    Box(
+        modifier = Modifier.onSizeChanged { size ->
+            bottomBarHeight = with(density) { size.height.toDp() }
+        }
+    ) {
+        if (currentScreen !in BANNERLESS_SCREENS) BannerAdView()
+    }
+    }
+    AnimatedVisibility(
+        visible = showSearch,
+        enter = Motion.popIn(TransformOrigin(1f, 0f)),
+        exit = Motion.popOut(TransformOrigin(1f, 0f))
+    ) {
+        AppSearchScreen(onClose = { showSearch = false }, onOpen = openSearchTarget)
+    }
+    }
+    }
 
-    // Permission Error Dialog
     if (showPermissionDialog) {
         AlertDialog(
             onDismissRequest = { showPermissionDialog = false },
             title = { Text(stringResource(R.string.permission_required)) },
             text = {
-                Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                ) {
                     Text(
                         stringResource(R.string.write_secure_settings_permission),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier.padding(bottom = 6.dp)
                     )
                     Text(
                         stringResource(R.string.permission_description),
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
                     Text(
                         stringResource(R.string.one_time_only),
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 4.dp)
                     )
                     Text(
                         stringResource(R.string.one_time_description),
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
                     
-                    if (isShizukuAvailable && hasShizukuPermission.value) {
+                    if (isShizukuAvailable && hasShizukuPermission) {
                         Text(
                             stringResource(R.string.shizuku_ready),
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = Color.Green,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
                             stringResource(R.string.shizuku_ready_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
-                    } else if (isShizukuAvailable && !hasShizukuPermission.value) {
+                    } else if (isShizukuAvailable && !hasShizukuPermission) {
                         Text(
                             stringResource(R.string.shizuku_available),
-                            fontSize = 13.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.padding(bottom = 4.dp)
                         )
                         Text(
                             stringResource(R.string.shizuku_available_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -1308,30 +1853,28 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     if (permissionErrorMessage.isNotEmpty()) {
                         Text(
                             stringResource(R.string.error, permissionErrorMessage),
-                            fontSize = 11.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
                     
-                    // Only show permission granting instructions if permission is not granted
-                    if (!hasWriteSecureSettings.value) {
+                    if (!hasWriteSecureSettings) {
                         Text(
                             stringResource(R.string.use_adb_command),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
                         Text(
                             stringResource(R.string.adb_description),
-                            fontSize = 12.sp,
-                            color = Color.Gray,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(bottom = 6.dp)
                         )
                         SelectionContainer {
                             Text(
                                 stringResource(R.string.adb_command),
-                                fontSize = 10.sp,
+                                style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
                                 modifier = Modifier
@@ -1343,7 +1886,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         
                         Text(
                             stringResource(R.string.see_permission_details),
-                            fontSize = 11.sp,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
                             modifier = Modifier.padding(top = 12.dp)
@@ -1361,7 +1904,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         )
                         clipboard.setPrimaryClip(clip)
                         Toast.makeText(context, context.getString(R.string.command_copied), Toast.LENGTH_SHORT).show()
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.copy_command))
                 }
@@ -1371,7 +1915,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = { showPermissionDialog = false },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.close))
                 }
@@ -1389,7 +1934,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     onClick = {
                         SettingsManager.setSkipWriteSecureWidthConfirmDialog(context, true)
                         showWriteSecureWidthConfirmDialog = false
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.yes))
                 }
@@ -1402,7 +1948,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.no))
                 }
@@ -1417,16 +1964,52 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 showAdInfoDialog = false
             },
             title = { Text(stringResource(R.string.ad_info_title)) },
-            text = { Text(stringResource(R.string.ad_info_message)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(stringResource(R.string.ad_info_message))
+                    Text(
+                        text = stringResource(R.string.ad_info_remove_ads_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
             confirmButton = {
                 Button(
                     onClick = {
                         SettingsManager.markAdInfoDialogShown(context)
                         showAdInfoDialog = false
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.ad_info_ok))
                 }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        SettingsManager.markAdInfoDialogShown(context)
+                        showAdInfoDialog = false
+                        startRemoveAdsPurchase(context)
+                    },
+                    shapes = ButtonDefaults.shapes()
+                ) {
+                    Text(stringResource(R.string.remove_ads))
+                }
+            }
+        )
+    }
+
+    if (showRemoveAdsSupportDialog) {
+        RemoveAdsSupportDialog(
+            onBuy = {
+                SettingsManager.markRemoveAdsSupportDialogLater(context)
+                showRemoveAdsSupportDialog = false
+                startRemoveAdsPurchase(context)
+            },
+            onDismiss = {
+                SettingsManager.markRemoveAdsSupportDialogLater(context)
+                showRemoveAdsSupportDialog = false
             }
         )
     }
@@ -1453,7 +2036,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                 Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}"))
                             )
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.rate_dialog_rate))
                 }
@@ -1466,7 +2050,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.rate_dialog_later))
                 }
@@ -1481,7 +2066,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             text = { Text(stringResource(R.string.write_secure_not_supported_message)) },
             confirmButton = {
                 Button(
-                    onClick = { showWriteSecureWidthUnsupportedDialog = false }
+                    onClick = { showWriteSecureWidthUnsupportedDialog = false },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.ok))
                 }
@@ -1489,123 +2075,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
     
-    // Permission Details Dialog
-    if (showPermissionDetailsDialog && isShizukuAvailable) {
-        AlertDialog(
-            onDismissRequest = { showPermissionDetailsDialog = false },
-            title = { Text(stringResource(R.string.permission_details_title)) },
-            text = {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        stringResource(R.string.write_secure_settings_permission),
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
-                    
-                    if (hasWriteSecureSettings.value) {
-                        Text(
-                            stringResource(R.string.granted),
-                            fontSize = 13.sp,
-                            color = Color.Green,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        Text(
-                            stringResource(R.string.granted_description),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 16.dp),
-                            lineHeight = 16.sp
-                        )
-                    } else {
-                        Text(
-                            stringResource(R.string.not_granted),
-                            fontSize = 13.sp,
-                            color = Color(0xFFE74C3C),
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        Text(
-                            stringResource(R.string.permission_purpose),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 12.dp),
-                            lineHeight = 16.sp
-                        )
-                        Text(
-                            stringResource(R.string.note_one_time),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
-                    }
-                    
-                    // Only show permission granting instructions if permission is not granted
-                    if (!hasWriteSecureSettings.value) {
-                        Divider(modifier = Modifier.padding(vertical = 12.dp))
-                        
-                        Text(
-                            stringResource(R.string.how_to_grant),
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.option_adb),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.adb_steps),
-                            fontSize = 12.sp,
-                            lineHeight = 16.sp
-                        )
-                        
-                        SelectionContainer {
-                            Text(
-                                stringResource(R.string.adb_command),
-                                fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.primary,
-                                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    .padding(8.dp)
-                                    .fillMaxWidth()
-                            )
-                        }
-                        
-                        Text(
-                            stringResource(R.string.option_shizuku),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(bottom = 6.dp)
-                        )
-                        
-                        Text(
-                            stringResource(R.string.shizuku_steps),
-                            fontSize = 12.sp,
-                            modifier = Modifier.padding(bottom = 12.dp),
-                            lineHeight = 16.sp
-                        )
-                    }
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = { showPermissionDetailsDialog = false }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
-        )
-    }
     
-    // Preset Creation Dialog
     if (showPresetDialog) {
         AlertDialog(
             onDismissRequest = { showPresetDialog = false },
@@ -1622,12 +2092,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(R.string.current_values_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         stringResource(R.string.preset_values, windowAnimScale, transitionAnimScale, animatorDurScale),
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             },
@@ -1648,7 +2118,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         } else {
                             Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save))
                 }
@@ -1661,7 +2132,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -1669,7 +2141,121 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
 
-    // Width Preset Creation Dialog
+    LaunchedEffect(widthRevertDeadline) {
+        if (widthRevertDeadline > 0L) {
+            while (System.currentTimeMillis() < widthRevertDeadline) {
+                widthRevertNow = System.currentTimeMillis()
+                kotlinx.coroutines.delay(250)
+            }
+            val target = widthRevertTarget
+            widthRevertDeadline = 0L
+            widthRevertTarget = -1
+            if (target >= 0) {
+                withContext(Dispatchers.IO) {
+                    SettingsManager.setSmallestWidth(contentResolver, context, target)
+                }
+                smallestWidth = SettingsManager.getSmallestWidth(context)
+                smallestWidthInputValue = smallestWidth.toString()
+            }
+        }
+    }
+
+    if (widthRevertDeadline > 0L) {
+        val secondsLeft = ((widthRevertDeadline - widthRevertNow).coerceAtLeast(0L) / 1000L).toInt() + 1
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text(stringResource(R.string.width_revert_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.width_revert_body,
+                        widthRevertTarget,
+                        secondsLeft
+                    )
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    widthRevertDeadline = 0L
+                    widthRevertTarget = -1
+                }, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.width_revert_keep)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    val target = widthRevertTarget
+                    widthRevertDeadline = 0L
+                    widthRevertTarget = -1
+                    coroutineScope.launch {
+                        withContext(Dispatchers.IO) {
+                            SettingsManager.setSmallestWidth(contentResolver, context, target)
+                        }
+                        smallestWidth = SettingsManager.getSmallestWidth(context)
+                        smallestWidthInputValue = smallestWidth.toString()
+                    }
+                }, shapes = ButtonDefaults.shapes()) { Text(stringResource(R.string.width_revert_now)) }
+            }
+        )
+    }
+
+    widthTilePreset?.let { preset ->
+        PresetTileDialog(
+            presetName = preset.name,
+            numberText = TileNumberIcon.widthText(preset.widthDp),
+            existing = preset.tile,
+            freeSlot = widthPresetManager.firstFreeSlot(excludingPresetId = preset.id),
+            canRequestAdd = WidthTileSlots.canRequestAdd(),
+            onDismiss = { widthTilePreset = null },
+            onSave = { config ->
+                widthPresetManager.setTileConfig(preset.id, config)
+                allWidthPresets = widthPresetManager.getAllPresets()
+                widthTilePreset = null
+            },
+            onSaveAndAdd = { config ->
+                widthPresetManager.setTileConfig(preset.id, config)
+                allWidthPresets = widthPresetManager.getAllPresets()
+                WidthTileSlots.requestAddTile(
+                    context,
+                    config.slot,
+                    config.label.ifBlank { preset.name },
+                    TileNumberIcon.create(TileNumberIcon.widthText(preset.widthDp))
+                )
+                widthTilePreset = null
+            }
+        )
+    }
+
+    animationTilePreset?.let { preset ->
+        val numberText = TileNumberIcon.animationText(
+            preset.windowAnimationScale,
+            preset.transitionAnimationScale,
+            preset.animatorDurationScale
+        )
+        PresetTileDialog(
+            presetName = preset.name,
+            numberText = numberText,
+            existing = preset.tile,
+            freeSlot = presetManager.firstFreeSlot(excludingPresetId = preset.id),
+            canRequestAdd = AnimationTileSlots.canRequestAdd(),
+            onDismiss = { animationTilePreset = null },
+            onSave = { config ->
+                presetManager.setTileConfig(preset.id, config)
+                allPresets = presetManager.getAllPresets()
+                animationTilePreset = null
+            },
+            onSaveAndAdd = { config ->
+                presetManager.setTileConfig(preset.id, config)
+                allPresets = presetManager.getAllPresets()
+                AnimationTileSlots.requestAddTile(
+                    context,
+                    config.slot,
+                    config.label.ifBlank { preset.name },
+                    TileNumberIcon.create(numberText)
+                )
+                animationTilePreset = null
+            }
+        )
+    }
+
     if (showWidthPresetDialog) {
         AlertDialog(
             onDismissRequest = { showWidthPresetDialog = false },
@@ -1686,12 +2272,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(R.string.current_width_saved),
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         stringResource(R.string.preset_width_value, smallestWidth),
-                        fontSize = 12.sp
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             },
@@ -1707,7 +2293,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         } else {
                             Toast.makeText(context, context.getString(R.string.enter_preset_name), Toast.LENGTH_SHORT).show()
                         }
-                    }
+                    },
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.save))
                 }
@@ -1720,7 +2307,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary
-                    )
+                    ),
+                    shapes = ButtonDefaults.shapes()
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
@@ -1729,35 +2317,130 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SubScreen(
+    title: String,
+    onBack: () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {},
+    content: @Composable () -> Unit
+) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            ScreenTopBar(
+                title = title,
+                onBack = onBack,
+                scrollBehavior = scrollBehavior,
+                actions = actions
+            )
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            content()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeTopBar(
+    selectedTab: HomeTab,
+    onSelectTab: (HomeTab) -> Unit,
+    onOpenNotify: () -> Unit,
+    onOpenNotifyHistory: () -> Unit,
+    onOpenProfiles: () -> Unit,
+    onOpenSettings: () -> Unit,
+    onOpenSearch: () -> Unit,
+    navListState: LazyListState
+) {
+    Column {
+        TopAppBar(
+            title = {
+                Text(
+                    stringResource(R.string.app_name),
+                    style = MaterialTheme.typography.headlineMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            },
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+                titleContentColor = MaterialTheme.colorScheme.onBackground,
+                actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            actions = {
+                IconButton(onClick = onOpenSearch, shapes = IconButtonDefaults.shapes()) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = stringResource(R.string.search_app)
+                    )
+                }
+                HomeOverflowMenu(
+                    onOpenNotify = onOpenNotify,
+                    onOpenNotifyHistory = onOpenNotifyHistory,
+                    onOpenProfiles = onOpenProfiles,
+                    onOpenSettings = onOpenSettings
+                )
+            }
+        )
+        ExpressiveTopNavBar(
+            items = rememberHomeNavItems(),
+            selectedIndex = selectedTab.ordinal,
+            onSelect = { onSelectTab(HomeTab.entries[it]) },
+            listState = navListState
+        )
+    }
+}
+
+@Composable
+private fun HomeOverflowMenu(
+    onOpenNotify: () -> Unit,
+    onOpenNotifyHistory: () -> Unit,
+    onOpenProfiles: () -> Unit,
+    onOpenSettings: () -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val select: (() -> Unit) -> Unit = { action ->
+        expanded = false
+        action()
+    }
+    Box {
+        IconButton(onClick = { expanded = true }, shapes = IconButtonDefaults.shapes()) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = stringResource(R.string.shortcut_more_options)
+            )
+        }
+        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            IconMenuItem(Icons.Default.Notifications, R.string.pn_title) { select(onOpenNotify) }
+            IconMenuItem(Icons.Default.History, R.string.pn_logs_title) { select(onOpenNotifyHistory) }
+            IconMenuItem(Icons.Default.AccountCircle, R.string.profiles_title) { select(onOpenProfiles) }
+            IconMenuItem(Icons.Default.Settings, R.string.settings) { select(onOpenSettings) }
+        }
+    }
+}
+
+@Composable
+private fun rememberHomeNavItems(): NavBarItems {
+    val labels = HomeTab.entries.map { stringResource(it.labelRes()) }
+    return remember(labels) {
+        NavBarItems(HomeTab.entries.map { NavBarItem(it.icon(), labels[it.ordinal]) })
+    }
+}
+
 @Composable
 fun SyncedAnimationPreview(
     currentScale: Float,
     modifier: Modifier = Modifier
 ) {
-    // Base durations
-    val baseSlideMs = 300f
-    val pauseMs = 600f
-    val restMs = 400f
-
-    // Slide-in durations per card (each at own speed, squared for clearer difference)
-    val slideIn1x = baseSlideMs
-    val slideInCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
-
-    // Slide-out durations per card (each at own speed, squared for clearer difference)
-    val slideOut1x = baseSlideMs
-    val slideOutCurrent = if (currentScale <= 0f) 0f else baseSlideMs * (currentScale * currentScale)
-
-    // Phase timeline (absolute ms):
-    // 0 → maxSlideIn             : slide in (each at own speed, faster waits)
-    // maxSlideIn → +pauseMs      : both paused at center
-    // slideOutStart → +maxSlideOut: slide out (each at own speed, faster waits)
-    // maxSlideOut end → +restMs  : rest before restart
-    val maxSlideIn = maxOf(slideIn1x, slideInCurrent)
-    val slideOutStart = maxSlideIn + pauseMs
-    val maxSlideOut = maxOf(slideOut1x, slideOutCurrent)
-    val totalCycleMs = slideOutStart + maxSlideOut + restMs
-
-    var elapsedMs by remember { mutableFloatStateOf(0f) }
+    val timings = remember(currentScale) { PreviewTimings.of(currentScale) }
+    val elapsedMs = remember { mutableFloatStateOf(0f) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     var isAppForeground by remember { mutableStateOf(true) }
@@ -1776,38 +2459,65 @@ fun SyncedAnimationPreview(
         }
     }
 
-    LaunchedEffect(currentScale, isAppForeground) {
+    LaunchedEffect(timings, isAppForeground) {
         if (!isAppForeground) return@LaunchedEffect
-        
-        elapsedMs = 0f
+
+        elapsedMs.floatValue = 0f
         var last = withFrameNanos { it }
         while (true) {
             withFrameNanos { now ->
                 val dt = (now - last) / 1_000_000f
                 last = now
-                // Cap dt at a reasonable amount to prevent large jumps 
-                // when returning to the app before lifecycle state updates
-                val step = if (dt > 500f) 0f else dt
-                elapsedMs += step
-                if (elapsedMs >= totalCycleMs) {
-                    elapsedMs %= totalCycleMs
-                }
+                val step = if (dt > MAX_FRAME_STEP_MS) 0f else dt
+                elapsedMs.floatValue = (elapsedMs.floatValue + step) % timings.totalCycleMs
             }
         }
     }
 
-    Card(modifier = modifier.fillMaxWidth()) {
+    Card(
+        shape = AppShapes.card,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+        modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.anim_hero_current),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = String.format(java.util.Locale.US, "%.2fx", currentScale),
+                        style = MonoNumeralLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                val tone = when {
+                    currentScale <= 0f -> StatusTone.INFO
+                    currentScale < 0.95f -> StatusTone.ACTIVE
+                    currentScale <= 1.05f -> StatusTone.NEUTRAL
+                    else -> StatusTone.WARNING
+                }
+                val toneLabel = when {
+                    currentScale <= 0f -> R.string.anim_hero_off
+                    currentScale < 0.95f -> R.string.anim_hero_fast
+                    currentScale <= 1.05f -> R.string.anim_hero_normal
+                    else -> R.string.anim_hero_slow
+                }
+                StatusPill(text = stringResource(toneLabel), tone = tone)
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 AppOpenCloseCard(
                     label = stringResource(R.string.preview_default_scale_label),
-                    slideInMs = slideIn1x,
-                    slideOutStartMs = slideOutStart,
-                    slideOutMs = slideOut1x,
-                    totalCycleMs = totalCycleMs,
+                    slideInMs = timings.slideInDefault,
+                    slideOutStartMs = timings.slideOutStartMs,
+                    slideOutMs = timings.slideOutDefault,
                     elapsedMs = elapsedMs,
                     animOff = false,
                     isPrimary = true,
@@ -1818,10 +2528,9 @@ fun SyncedAnimationPreview(
                         R.string.preview_current_scale_label,
                         String.format(java.util.Locale.US, "%.2f", currentScale)
                     ),
-                    slideInMs = slideInCurrent,
-                    slideOutStartMs = slideOutStart,
-                    slideOutMs = slideOutCurrent,
-                    totalCycleMs = totalCycleMs,
+                    slideInMs = timings.slideInCurrent,
+                    slideOutStartMs = timings.slideOutStartMs,
+                    slideOutMs = timings.slideOutCurrent,
                     elapsedMs = elapsedMs,
                     animOff = currentScale <= 0f,
                     isPrimary = false,
@@ -1838,46 +2547,21 @@ private fun AppOpenCloseCard(
     slideInMs: Float,
     slideOutStartMs: Float,
     slideOutMs: Float,
-    totalCycleMs: Float,
-    elapsedMs: Float,
+    elapsedMs: FloatState,
     animOff: Boolean,
     isPrimary: Boolean,
     modifier: Modifier = Modifier
 ) {
-    val progress: Float  // 0 = scaled down/bottom, 1 = scaled up/centered
-
-    when {
-        animOff -> {
-            progress = 1f
-        }
-        elapsedMs < slideInMs -> {
-            // Popping in from bottom (at own speed)
-            val frac = decelerateInterpolation(elapsedMs / slideInMs)
-            progress = frac
-        }
-        elapsedMs < slideOutStartMs -> {
-            // Waiting at center (own slide-in done, waiting for slower + pause)
-            progress = 1f
-        }
-        elapsedMs < slideOutStartMs + slideOutMs -> {
-            // Popping out to bottom (at own speed)
-            val frac = accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
-            progress = 1f - frac
-        }
-        else -> {
-            // Rest phase — scaled down
-            progress = 0f
-        }
-    }
-
     val accentColor = if (isPrimary) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
     val surfaceColor = MaterialTheme.colorScheme.surfaceVariant
+    val progress = {
+        previewProgress(elapsedMs.floatValue, slideInMs, slideOutStartMs, slideOutMs, animOff)
+    }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Text(
             text = label,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.SemiBold,
+            style = MaterialTheme.typography.labelSmall,
             color = accentColor,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -1894,24 +2578,76 @@ private fun AppOpenCloseCard(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
                     .height(80.dp)
-                    .graphicsLayer(
-                        scaleX = 0.4f + 0.6f * progress,
-                        scaleY = 0.4f + 0.6f * progress,
-                        translationY = (1f - progress) * 100f,
-                        alpha = progress
-                    )
+                    .graphicsLayer {
+                        val value = progress()
+                        scaleX = PREVIEW_MIN_SCALE + PREVIEW_SCALE_RANGE * value
+                        scaleY = PREVIEW_MIN_SCALE + PREVIEW_SCALE_RANGE * value
+                        translationY = (1f - value) * PREVIEW_SLIDE_PX
+                        alpha = value
+                    }
                     .background(accentColor, RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = if (progress > 0.3f) stringResource(R.string.preview_app_text) else "",
+                    text = stringResource(R.string.preview_app_text),
                     color = MaterialTheme.colorScheme.onPrimary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.graphicsLayer {
+                        alpha = if (progress() > PREVIEW_TEXT_THRESHOLD) 1f else 0f
+                    }
                 )
             }
         }
     }
+}
+
+@Immutable
+private data class PreviewTimings(
+    val slideInDefault: Float,
+    val slideInCurrent: Float,
+    val slideOutDefault: Float,
+    val slideOutCurrent: Float,
+    val slideOutStartMs: Float,
+    val totalCycleMs: Float
+) {
+    companion object {
+        fun of(currentScale: Float): PreviewTimings {
+            val scaled = if (currentScale <= 0f) 0f else BASE_SLIDE_MS * currentScale * currentScale
+            val slideOutStart = maxOf(BASE_SLIDE_MS, scaled) + PAUSE_MS
+            return PreviewTimings(
+                slideInDefault = BASE_SLIDE_MS,
+                slideInCurrent = scaled,
+                slideOutDefault = BASE_SLIDE_MS,
+                slideOutCurrent = scaled,
+                slideOutStartMs = slideOutStart,
+                totalCycleMs = slideOutStart + maxOf(BASE_SLIDE_MS, scaled) + REST_MS
+            )
+        }
+    }
+}
+
+private const val BASE_SLIDE_MS = 300f
+private const val PAUSE_MS = 600f
+private const val REST_MS = 400f
+private const val MAX_FRAME_STEP_MS = 500f
+private const val PREVIEW_MIN_SCALE = 0.4f
+private const val PREVIEW_SCALE_RANGE = 0.6f
+private const val PREVIEW_SLIDE_PX = 100f
+private const val PREVIEW_TEXT_THRESHOLD = 0.3f
+
+private fun previewProgress(
+    elapsedMs: Float,
+    slideInMs: Float,
+    slideOutStartMs: Float,
+    slideOutMs: Float,
+    animOff: Boolean
+): Float = when {
+    animOff -> 1f
+    elapsedMs < slideInMs -> decelerateInterpolation(elapsedMs / slideInMs)
+    elapsedMs < slideOutStartMs -> 1f
+    elapsedMs < slideOutStartMs + slideOutMs ->
+        1f - accelerateInterpolation((elapsedMs - slideOutStartMs) / slideOutMs)
+    else -> 0f
 }
 
 private fun decelerateInterpolation(input: Float): Float {
@@ -1920,4 +2656,108 @@ private fun decelerateInterpolation(input: Float): Float {
 
 private fun accelerateInterpolation(input: Float): Float {
     return input * input
+}
+
+@Composable
+fun AnimationModeSelectors(
+    isSimpleMode: Boolean,
+    onSimpleModeChange: (Boolean) -> Unit,
+    inputMode: String,
+    onInputModeChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var scaleModeExpanded by remember { mutableStateOf(false) }
+    var inputModeExpanded by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        ModeDropdownChip(
+            label = stringResource(if (isSimpleMode) R.string.simple_mode else R.string.advanced_mode),
+            expanded = scaleModeExpanded,
+            onExpandedChange = { scaleModeExpanded = it },
+            modifier = Modifier.weight(1f)
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.simple_mode)) },
+                onClick = {
+                    scaleModeExpanded = false
+                    onSimpleModeChange(true)
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.advanced_mode)) },
+                onClick = {
+                    scaleModeExpanded = false
+                    onSimpleModeChange(false)
+                }
+            )
+        }
+        ModeDropdownChip(
+            label = stringResource(if (inputMode == "manual") R.string.use_manual_input else R.string.use_sliders),
+            expanded = inputModeExpanded,
+            onExpandedChange = { inputModeExpanded = it },
+            modifier = Modifier.weight(1f)
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.use_sliders)) },
+                onClick = {
+                    inputModeExpanded = false
+                    onInputModeChange("slider")
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.use_manual_input)) },
+                onClick = {
+                    inputModeExpanded = false
+                    onInputModeChange("manual")
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ModeDropdownChip(
+    label: String,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    menuItems: @Composable ColumnScope.() -> Unit
+) {
+    Box(modifier = modifier) {
+        Surface(
+            onClick = { onExpandedChange(true) },
+            shape = AppShapes.card,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelLarge,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+                Icon(
+                    imageVector = Icons.Filled.ArrowDropDown,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { onExpandedChange(false) },
+            content = menuItems
+        )
+    }
 }

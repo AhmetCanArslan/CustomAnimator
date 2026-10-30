@@ -5,5 +5,6 @@ data class AnimatorPreset(
     val name: String,
     val windowAnimationScale: Float,
     val transitionAnimationScale: Float,
-    val animatorDurationScale: Float
+    val animatorDurationScale: Float,
+    val tile: PresetTileConfig? = null
 )

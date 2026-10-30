@@ -1,0 +1,218 @@
+package com.arslan.customanimator.notify.ui
+
+import android.content.Context
+import android.os.Build
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.FilterAlt
+import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.arslan.customanimator.R
+import com.arslan.customanimator.PermissionSection
+import com.arslan.customanimator.notifyRequiredPermissions
+import com.arslan.customanimator.permissionEntries
+import com.arslan.customanimator.rememberPermissionRefresh
+import com.arslan.customanimator.rememberPermissionRequester
+import com.arslan.customanimator.notify.data.IgnoreManager
+import com.arslan.customanimator.notify.data.RulesManager
+import com.arslan.customanimator.notify.service.isPrimeNotifyServiceEnabled
+import com.arslan.customanimator.notify.service.setPrimeNotifyServiceEnabled
+import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.DividerSoft
+import com.arslan.customanimator.ui.components.SettingRow
+import com.arslan.customanimator.ui.components.ToggleRow
+import com.arslan.customanimator.ui.theme.CustomAnimatorTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+private const val TEST_NOTIFICATION_DELAY_SECONDS = 4
+
+@Composable
+fun NotifyHomeSection(
+    modifier: Modifier = Modifier,
+    onNavigateToRules: () -> Unit = {},
+    onNavigateToFilters: () -> Unit = {},
+    onNavigateToHistory: () -> Unit = {}
+) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val refresh = rememberPermissionRefresh()
+    val refreshState = refresh.intValue
+    val requestPermission = rememberPermissionRequester(onChanged = { refresh.intValue++ })
+    val permissions = key(refreshState) { permissionEntries(notifyRequiredPermissions(context)) }
+    val allPermissionsGranted = permissions.all { it.granted }
+    val ruleCount = remember(refreshState) { RulesManager(context).getRules().size }
+    val filters = remember(refreshState) { IgnoreManager(context).getRules() }
+
+    var isServiceActive by remember { mutableStateOf(isPrimeNotifyServiceEnabled(context)) }
+    var remainingSeconds by remember { mutableIntStateOf(0) }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        if (!allPermissionsGranted) {
+            PermissionSection(
+                title = stringResource(R.string.permissions_title),
+                entries = permissions,
+                onGrant = requestPermission
+            )
+        }
+
+        AppCard(contentPadding = 16.dp, highlighted = isServiceActive) {
+            ToggleRow(
+                title = stringResource(R.string.pn_service_title),
+                subtitle = stringResource(
+                    if (isServiceActive) R.string.pn_service_active_desc else R.string.pn_service_disabled_desc
+                ),
+                icon = Icons.Filled.Notifications,
+                checked = isServiceActive,
+                enabled = isServiceActive || allPermissionsGranted,
+                onCheckedChange = {
+                    isServiceActive = it
+                    setPrimeNotifyServiceEnabled(context, it)
+                }
+            )
+        }
+
+        AppCard(contentPadding = 16.dp) {
+            NotifyNavigationRow(
+                icon = Icons.Filled.Bolt,
+                title = stringResource(R.string.pn_rules),
+                subtitle = stringResource(R.string.pn_rules_desc, ruleCount),
+                onClick = onNavigateToRules
+            )
+            DividerSoft()
+            NotifyNavigationRow(
+                icon = Icons.Filled.FilterAlt,
+                title = stringResource(R.string.pn_filters),
+                subtitle = stringResource(
+                    R.string.pn_filters_desc,
+                    filters.size,
+                    filters.count { it.blocksNotification }
+                ),
+                onClick = onNavigateToFilters
+            )
+            DividerSoft()
+            NotifyNavigationRow(
+                icon = Icons.Filled.History,
+                title = stringResource(R.string.pn_nav_logging),
+                subtitle = stringResource(R.string.pn_history_desc),
+                onClick = onNavigateToHistory
+            )
+        }
+
+        AppCard(contentPadding = 16.dp) {
+            SettingRow(
+                title = stringResource(R.string.pn_send_test_notification),
+                subtitle = if (remainingSeconds > 0) {
+                    stringResource(R.string.pn_sending_in_seconds, remainingSeconds)
+                } else {
+                    stringResource(R.string.pn_send_test_notification_desc)
+                },
+                icon = Icons.AutoMirrored.Filled.Send,
+                enabled = remainingSeconds == 0,
+                onClick = {
+                    coroutineScope.launch {
+                        remainingSeconds = TEST_NOTIFICATION_DELAY_SECONDS
+                        while (remainingSeconds > 0) {
+                            delay(1000)
+                            remainingSeconds--
+                        }
+                        sendTestNotification(context)
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun NotifyNavigationRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
+    SettingRow(
+        title = title,
+        subtitle = subtitle,
+        icon = icon,
+        onClick = onClick,
+        trailing = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun NotifyHomeSectionPreview() {
+    CustomAnimatorTheme {
+        NotifyHomeSection()
+    }
+}
+
+
+private fun sendTestNotification(context: Context) {
+    val channelId = "notify_test_channel"
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = context.getString(R.string.pn_test_notification_channel)
+        val descriptionText = context.getString(R.string.pn_test_notification_channel_desc)
+        val importance = android.app.NotificationManager.IMPORTANCE_HIGH
+        val channel = android.app.NotificationChannel(channelId, name, importance).apply {
+            description = descriptionText
+            enableVibration(true)
+        }
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(android.R.drawable.ic_dialog_info)
+        .setContentTitle(context.getString(R.string.pn_test_notification_title))
+        .setContentText(context.getString(R.string.pn_test_notification_text))
+        .setPriority(NotificationCompat.PRIORITY_MAX)
+        .setDefaults(NotificationCompat.DEFAULT_ALL)
+        .setAutoCancel(true)
+
+    with(NotificationManagerCompat.from(context)) {
+        try {
+            notify(4502, builder.build())
+        } catch (e: SecurityException) {
+        }
+    }
+}

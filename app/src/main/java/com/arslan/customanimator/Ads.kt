@@ -1,0 +1,604 @@
+package com.arslan.customanimator
+
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.key
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
+import java.util.Calendar
+import java.util.concurrent.atomic.AtomicBoolean
+
+private val BANNER_AD_UNIT_ID: String
+    get() = if (BuildConfig.DEBUG) {
+        "ca-app-pub-3940256099942544/6300978111"
+    } else {
+        BuildConfig.BANNER_AD_UNIT_ID
+    }
+
+private val INTERSTITIAL_AD_UNIT_ID: String
+    get() = if (BuildConfig.DEBUG) {
+        "ca-app-pub-3940256099942544/1033173712"
+    } else {
+        BuildConfig.INTERSTITIAL_AD_UNIT_ID
+    }
+
+private val REWARDED_AD_UNIT_ID: String
+    get() = if (BuildConfig.DEBUG) {
+        "ca-app-pub-3940256099942544/5224354917"
+    } else {
+        BuildConfig.REWARDED_AD_UNIT_ID
+    }
+
+private const val ADS_PREFS = "custom_animator_ads"
+
+private val isMobileAdsInitialized = AtomicBoolean(false)
+
+fun initAds(activity: Activity) {
+    if (isAdFreeNow()) {
+        Log.d("Ads", "Skipped: ads removed by purchase")
+        return
+    }
+    AdsConsent.gather(activity) {
+        initializeMobileAds(activity)
+    }
+}
+
+private fun initializeMobileAds(activity: Activity) {
+    if (!AdsConsent.canRequestAds(activity)) {
+        Log.d("Ads", "Initialization deferred: consent not obtained")
+        return
+    }
+    if (!isMobileAdsInitialized.compareAndSet(false, true)) return
+
+    Thread {
+        MobileAds.initialize(activity.applicationContext) {
+            activity.runOnUiThread {
+                InterstitialAds.preload(activity)
+            }
+        }
+    }.start()
+}
+
+object AdsConsent {
+    private const val TAG = "AdsConsent"
+
+    private var consentInformation: ConsentInformation? = null
+    private var isUpdating = false
+    private val waiters = mutableListOf<(Boolean) -> Unit>()
+
+    fun gather(activity: Activity, onReady: () -> Unit) {
+        refresh(activity) { onReady() }
+    }
+
+    fun refresh(activity: Activity, onDone: (Boolean) -> Unit) {
+        waiters.add(onDone)
+        if (isUpdating) return
+        isUpdating = true
+
+        val info = UserMessagingPlatform.getConsentInformation(activity)
+        consentInformation = info
+
+        info.requestConsentInfoUpdate(
+            activity,
+            ConsentRequestParameters.Builder().build(),
+            {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) { formError ->
+                    if (formError != null) {
+                        Log.w(TAG, "Consent form error: ${formError.errorCode} ${formError.message}")
+                    }
+                    isUpdating = false
+                    notifyWaiters(info.canRequestAds())
+                }
+            },
+            { requestError ->
+                Log.w(TAG, "Consent info update failed: ${requestError.errorCode} ${requestError.message}")
+                isUpdating = false
+                notifyWaiters(info.canRequestAds())
+            }
+        )
+    }
+
+    private fun notifyWaiters(canRequestAds: Boolean) {
+        val pending = waiters.toList()
+        waiters.clear()
+        pending.forEach { it(canRequestAds) }
+    }
+
+    fun canRequestAds(context: Context): Boolean {
+        val info = consentInformation
+            ?: UserMessagingPlatform.getConsentInformation(context).also { consentInformation = it }
+        return info.canRequestAds()
+    }
+
+    fun isPrivacyOptionsRequired(): Boolean {
+        return consentInformation?.privacyOptionsRequirementStatus ==
+            ConsentInformation.PrivacyOptionsRequirementStatus.REQUIRED
+    }
+
+    fun showPrivacyOptions(activity: Activity) {
+        UserMessagingPlatform.showPrivacyOptionsForm(activity) { error ->
+            if (error != null) {
+                Log.w(TAG, "Privacy options error: ${error.errorCode} ${error.message}")
+            }
+        }
+    }
+}
+
+object NewUserGrace {
+    private const val GRACE_MS = 2L * 24 * 60 * 60 * 1000
+
+    fun isActive(context: Context): Boolean {
+        val installedAtMs = context.packageManager
+            .getPackageInfo(context.packageName, 0)
+            .firstInstallTime
+        return System.currentTimeMillis() - installedAtMs < GRACE_MS
+    }
+}
+
+private object AdBudget {
+    private const val KEY_DAY = "ads_day_of_year"
+    private const val KEY_FULLSCREEN_TODAY = "ads_fullscreen_today"
+    private const val KEY_LAST_FULLSCREEN = "ads_last_fullscreen"
+
+    private const val MAX_FULLSCREEN_PER_DAY = 2
+    private const val MIN_GAP_MS = 20L * 60 * 1000
+
+    private fun remainingToday(prefs: android.content.SharedPreferences, today: Int): Int {
+        if (prefs.getInt(KEY_DAY, -1) != today) return MAX_FULLSCREEN_PER_DAY
+        return MAX_FULLSCREEN_PER_DAY - prefs.getInt(KEY_FULLSCREEN_TODAY, 0)
+    }
+
+    fun canShow(context: Context): Boolean {
+        if (NewUserGrace.isActive(context)) {
+            Log.d("Ads", "Skipped: new user grace period")
+            return false
+        }
+        val prefs = context.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
+        val now = System.currentTimeMillis()
+        val lastShown = prefs.getLong(KEY_LAST_FULLSCREEN, 0L)
+        if (lastShown in 1..now && now - lastShown < MIN_GAP_MS) {
+            Log.d("Ads", "Skipped: ${(now - lastShown) / 1000}s since the last full-screen ad")
+            return false
+        }
+        if (remainingToday(prefs, Calendar.getInstance().get(Calendar.DAY_OF_YEAR)) <= 0) {
+            Log.d("Ads", "Skipped: daily full-screen budget spent")
+            return false
+        }
+        return true
+    }
+
+    fun record(context: Context) {
+        val prefs = context.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+        val shownToday = if (prefs.getInt(KEY_DAY, -1) == today) {
+            prefs.getInt(KEY_FULLSCREEN_TODAY, 0)
+        } else {
+            0
+        }
+        prefs.edit()
+            .putInt(KEY_DAY, today)
+            .putInt(KEY_FULLSCREEN_TODAY, shownToday + 1)
+            .putLong(KEY_LAST_FULLSCREEN, System.currentTimeMillis())
+            .apply()
+    }
+}
+
+private val hasUsedCollapsibleBanner = AtomicBoolean(false)
+
+private fun bannerAdRequest(): AdRequest {
+    val builder = AdRequest.Builder()
+    if (hasUsedCollapsibleBanner.compareAndSet(false, true)) {
+        val extras = Bundle().apply { putString("collapsible", "bottom") }
+        builder.addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+    }
+    return builder.build()
+}
+
+object FullScreenAdState {
+    @Volatile
+    var isShowing: Boolean = false
+}
+
+@Composable
+fun BannerAdView() {
+    val isAdFree by rememberIsAdFree()
+    if (isAdFree) {
+        Spacer(modifier = Modifier.fillMaxWidth().navigationBarsPadding())
+        return
+    }
+
+    val screenWidthDp = LocalConfiguration.current.screenWidthDp
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    key(screenWidthDp) {
+        val adViewHolder = remember { arrayOfNulls<AdView>(1) }
+
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_PAUSE -> adViewHolder[0]?.pause()
+                    Lifecycle.Event.ON_RESUME -> adViewHolder[0]?.resume()
+                    else -> Unit
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+                adViewHolder[0]?.destroy()
+                adViewHolder[0] = null
+            }
+        }
+
+        AndroidView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding(),
+            factory = { context ->
+                val adSize = AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, screenWidthDp)
+                AdView(context).apply {
+                    setAdSize(adSize)
+                    adUnitId = BANNER_AD_UNIT_ID
+                    adListener = object : AdListener() {
+                        override fun onAdLoaded() {
+                            Log.d("BannerAd", "Ad loaded successfully")
+                        }
+
+                        override fun onAdFailedToLoad(error: LoadAdError) {
+                            Log.e("BannerAd", "Ad failed to load: ${error.code} ${error.message}")
+                        }
+                    }
+                    loadAd(bannerAdRequest())
+                    adViewHolder[0] = this
+                }
+            }
+        )
+    }
+}
+
+object InterstitialAds {
+    private const val KEY_ACTION_COUNT = "interstitial_action_count"
+    private const val KEY_PENDING = "interstitial_pending"
+
+    private const val FREE_ACTIONS = 20
+    private const val ACTIONS_PER_AD = 12
+
+    private const val TAG = "InterstitialAd"
+
+    private const val LAUNCH_GRACE_MS = 2L * 60 * 1000
+
+    private val processStartElapsedMs = SystemClock.elapsedRealtime()
+
+    private var ad: InterstitialAd? = null
+    private var isLoading = false
+
+    fun preload(context: Context) {
+        if (isAdFreeNow()) return
+        if (NewUserGrace.isActive(context)) return
+        if (ad != null || isLoading) {
+            Log.d(TAG, "preload skipped (ready=${ad != null}, loading=$isLoading)")
+            return
+        }
+        if (!AdsConsent.canRequestAds(context)) {
+            Log.d(TAG, "preload skipped: consent not obtained")
+            return
+        }
+        isLoading = true
+        Log.d(TAG, "Loading")
+        InterstitialAd.load(
+            context.applicationContext,
+            INTERSTITIAL_AD_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(loaded: InterstitialAd) {
+                    isLoading = false
+                    ad = loaded
+                    Log.d(TAG, "Loaded and ready")
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    isLoading = false
+                    ad = null
+                    Log.e(TAG, "Failed to load: ${error.code} ${error.message}")
+                }
+            }
+        )
+    }
+
+    fun maybeShow(context: Context) {
+        if (isAdFreeNow()) return
+        if (NewUserGrace.isActive(context)) return
+        val activity = context.findActivity()
+        if (activity == null) {
+            Log.w(TAG, "Skipped: no Activity behind the context")
+            return
+        }
+        if (FullScreenAdState.isShowing) {
+            Log.d(TAG, "Skipped: another full-screen ad is showing")
+            return
+        }
+        val prefs = activity.getSharedPreferences(ADS_PREFS, Context.MODE_PRIVATE)
+
+        val actionCount = prefs.getInt(KEY_ACTION_COUNT, 0) + 1
+        prefs.edit().putInt(KEY_ACTION_COUNT, actionCount).apply()
+
+        if (actionCount <= FREE_ACTIONS) {
+            Log.d(TAG, "Skipped: free action $actionCount/$FREE_ACTIONS")
+            return
+        }
+
+        var isPending = prefs.getBoolean(KEY_PENDING, false)
+        if ((actionCount - FREE_ACTIONS) % ACTIONS_PER_AD == 0 && !isPending) {
+            isPending = true
+            prefs.edit().putBoolean(KEY_PENDING, true).apply()
+        }
+
+        if (!isPending) {
+            Log.d(TAG, "Skipped: action $actionCount, waiting for every ${ACTIONS_PER_AD}th")
+            preload(activity)
+            return
+        }
+
+        val sinceLaunchMs = SystemClock.elapsedRealtime() - processStartElapsedMs
+        if (sinceLaunchMs < LAUNCH_GRACE_MS) {
+            Log.d(TAG, "Skipped: only ${sinceLaunchMs}ms since launch (grace $LAUNCH_GRACE_MS ms)")
+            return
+        }
+
+        if (!AdBudget.canShow(activity)) return
+
+        val loaded = ad
+        if (loaded == null) {
+            Log.d(TAG, "Deferred: no ad ready, will show at the next trigger")
+            preload(activity)
+            return
+        }
+
+        Log.d(TAG, "Showing (action $actionCount)")
+
+        ad = null
+        loaded.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdShowedFullScreenContent() {
+                FullScreenAdState.isShowing = true
+            }
+
+            override fun onAdDismissedFullScreenContent() {
+                FullScreenAdState.isShowing = false
+                Log.d(TAG, "Dismissed")
+                preload(activity)
+            }
+
+            override fun onAdFailedToShowFullScreenContent(error: com.google.android.gms.ads.AdError) {
+                FullScreenAdState.isShowing = false
+                Log.e(TAG, "Failed to show: ${error.code} ${error.message}")
+                preload(activity)
+            }
+        }
+        prefs.edit()
+            .putBoolean(KEY_PENDING, false)
+            .apply()
+        AdBudget.record(activity)
+        loaded.show(activity)
+    }
+}
+
+object RewardedAds {
+    private const val TAG = "RewardedAd"
+
+    private var ad: RewardedAd? = null
+    private var isLoading = false
+    private val waiters = mutableListOf<(LoadOutcome) -> Unit>()
+
+    enum class Result { REWARDED, CANCELLED, UNAVAILABLE, NOT_READY, ERROR }
+
+    private enum class LoadOutcome { READY, NO_FILL, FAILED }
+
+    fun preload(context: Context) {
+        load(context, null)
+    }
+
+    private fun load(context: Context, onReady: ((LoadOutcome) -> Unit)?) {
+        if (isAdFreeNow()) {
+            onReady?.invoke(LoadOutcome.FAILED)
+            return
+        }
+        if (ad != null) {
+            onReady?.invoke(LoadOutcome.READY)
+            return
+        }
+        if (!AdsConsent.canRequestAds(context)) {
+            Log.d(TAG, "Consent not granted, skipping load")
+            onReady?.invoke(LoadOutcome.NO_FILL)
+            return
+        }
+        if (onReady != null) waiters.add(onReady)
+        if (isLoading) return
+        isLoading = true
+        RewardedAd.load(
+            context.applicationContext,
+            REWARDED_AD_UNIT_ID,
+            AdRequest.Builder().build(),
+            object : RewardedAdLoadCallback() {
+                override fun onAdLoaded(loaded: RewardedAd) {
+                    isLoading = false
+                    ad = loaded
+                    Log.d(TAG, "Loaded and ready")
+                    notifyWaiters(LoadOutcome.READY)
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    isLoading = false
+                    ad = null
+                    Log.e(TAG, "Failed to load: ${error.code} ${error.message}")
+                    val noFill = error.code == AdRequest.ERROR_CODE_NO_FILL ||
+                        error.code == AdRequest.ERROR_CODE_MEDIATION_NO_FILL
+                    notifyWaiters(if (noFill) LoadOutcome.NO_FILL else LoadOutcome.FAILED)
+                }
+            }
+        )
+    }
+
+    private fun notifyWaiters(outcome: LoadOutcome) {
+        val pending = waiters.toList()
+        waiters.clear()
+        pending.forEach { it(outcome) }
+    }
+
+    fun show(context: Context, onResult: (Result) -> Unit) {
+        show(context, true, onResult)
+    }
+
+    private fun show(context: Context, allowConsentRetry: Boolean, onResult: (Result) -> Unit) {
+        if (isAdFreeNow()) {
+            onResult(Result.REWARDED)
+            return
+        }
+        val activity = context.findActivity()
+        if (activity == null) {
+            onResult(Result.ERROR)
+            return
+        }
+        if (FullScreenAdState.isShowing) {
+            onResult(Result.ERROR)
+            return
+        }
+        if (allowConsentRetry && !AdsConsent.canRequestAds(activity)) {
+            Log.d(TAG, "Consent unresolved, retrying before show")
+            AdsConsent.refresh(activity) { canRequestAds ->
+                if (canRequestAds) {
+                    initializeMobileAds(activity)
+                    show(activity, false, onResult)
+                } else {
+                    onResult(Result.UNAVAILABLE)
+                }
+            }
+            return
+        }
+        val loaded = ad
+        if (loaded == null) {
+            load(context) { outcome ->
+                when (outcome) {
+                    LoadOutcome.READY -> show(context, false, onResult)
+                    LoadOutcome.NO_FILL -> onResult(Result.UNAVAILABLE)
+                    LoadOutcome.FAILED -> onResult(Result.NOT_READY)
+                }
+            }
+            return
+        }
+        ad = null
+        var rewarded = false
+        loaded.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdShowedFullScreenContent() {
+                FullScreenAdState.isShowing = true
+            }
+
+            override fun onAdDismissedFullScreenContent() {
+                FullScreenAdState.isShowing = false
+                preload(activity)
+                onResult(if (rewarded) Result.REWARDED else Result.CANCELLED)
+            }
+
+            override fun onAdFailedToShowFullScreenContent(error: AdError) {
+                FullScreenAdState.isShowing = false
+                Log.e(TAG, "Failed to show: ${error.code} ${error.message}")
+                preload(activity)
+                onResult(Result.ERROR)
+            }
+        }
+        loaded.show(activity) {
+            rewarded = true
+        }
+    }
+
+    fun prepare(context: Context) {
+        if (isAdFreeNow()) return
+        val activity = context.findActivity() ?: return
+        if (AdsConsent.canRequestAds(activity)) {
+            preload(activity)
+            return
+        }
+        AdsConsent.refresh(activity) { canRequestAds ->
+            if (canRequestAds) {
+                initializeMobileAds(activity)
+                preload(activity)
+            }
+        }
+    }
+}
+
+private fun Context.findActivity(): Activity? {
+    var current: Context? = this
+    while (current is ContextWrapper) {
+        if (current is Activity) return current
+        current = current.baseContext
+    }
+    return null
+}
+
+fun maybeShowInterstitial(context: Context) = InterstitialAds.maybeShow(context)
+
+fun preloadInterstitial(context: Context) = InterstitialAds.preload(context)
+
+fun isPrivacyOptionsRequired(): Boolean = AdsConsent.isPrivacyOptionsRequired()
+
+fun showPrivacyOptions(activity: Activity) = AdsConsent.showPrivacyOptions(activity)
+
+fun requestReward(context: Context, onRewarded: () -> Unit) {
+    RewardedAds.show(context) { result ->
+        when (result) {
+            RewardedAds.Result.REWARDED -> onRewarded()
+            RewardedAds.Result.UNAVAILABLE -> {
+                showFreeUnlockToast(context)
+                onRewarded()
+            }
+            RewardedAds.Result.CANCELLED -> android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.reward_unlock_denied),
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+            RewardedAds.Result.NOT_READY, RewardedAds.Result.ERROR -> android.widget.Toast.makeText(
+                context,
+                context.getString(R.string.boost_ad_unavailable),
+                android.widget.Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+}
+
+fun showFreeUnlockToast(context: Context) {
+    android.widget.Toast.makeText(
+        context,
+        context.getString(R.string.reward_free_unlock),
+        android.widget.Toast.LENGTH_LONG
+    ).show()
+}

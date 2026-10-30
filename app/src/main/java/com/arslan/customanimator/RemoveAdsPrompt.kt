@@ -1,0 +1,156 @@
+package com.arslan.customanimator
+
+import android.app.Activity
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.utils.SettingsManager
+import kotlinx.coroutines.delay
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.IconButtonDefaults
+import com.arslan.customanimator.ui.theme.Motion
+
+@Composable
+fun RemoveAdsPrompt(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val isAdFree by rememberIsAdFree()
+    val price by rememberRemoveAdsPrice()
+    var visible by remember { mutableStateOf(SettingsManager.shouldShowRemoveAdsPrompt(context)) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(SettingsManager.promoRecheckDelayMs(context))
+            visible = SettingsManager.shouldShowRemoveAdsPrompt(context)
+        }
+    }
+
+    AnimatedVisibility(
+        visible = !isAdFree && visible,
+        enter = Motion.expandIn(),
+        exit = Motion.collapseOut()
+    ) {
+        Surface(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 6.dp),
+            shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            tonalElevation = 2.dp,
+            onClick = { startRemoveAdsPurchase(context) }
+        ) {
+            Row(
+                modifier = Modifier.padding(start = 14.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Block,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(20.dp)
+                )
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(R.string.remove_ads_prompt_title),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = price?.let { stringResource(R.string.remove_ads_prompt_body_price, it) }
+                            ?: stringResource(R.string.remove_ads_prompt_body),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+                IconButton(
+                    onClick = {
+                        SettingsManager.dismissRemoveAdsPrompt(context)
+                        visible = false
+                    },
+                    shapes = IconButtonDefaults.shapes()
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = stringResource(R.string.remove_ads_prompt_dismiss),
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RemoveAdsSupportDialog(
+    onBuy: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val price by rememberRemoveAdsPrice()
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.remove_ads_support_title)) },
+        text = { Text(stringResource(R.string.remove_ads_support_message)) },
+        confirmButton = {
+            Button(onClick = onBuy, shapes = ButtonDefaults.shapes()) {
+                Text(
+                    text = price?.let { stringResource(R.string.remove_ads_support_buy_price, it) }
+                        ?: stringResource(R.string.remove_ads)
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, shapes = ButtonDefaults.shapes()) {
+                Text(stringResource(R.string.rate_dialog_later))
+            }
+        }
+    )
+}
+
+fun startRemoveAdsPurchase(context: android.content.Context) {
+    val activity = context as? Activity
+    if (activity == null) {
+        Toast.makeText(context, R.string.remove_ads_unavailable, Toast.LENGTH_SHORT).show()
+        return
+    }
+    launchRemoveAdsPurchase(activity) { result ->
+        val message = when (result) {
+            Billing.PurchaseResult.PURCHASED -> R.string.remove_ads_thanks
+            Billing.PurchaseResult.PENDING -> R.string.remove_ads_pending
+            Billing.PurchaseResult.CANCELLED -> null
+            Billing.PurchaseResult.ERROR -> R.string.remove_ads_unavailable
+        }
+        message?.let { Toast.makeText(activity, it, Toast.LENGTH_SHORT).show() }
+    }
+}

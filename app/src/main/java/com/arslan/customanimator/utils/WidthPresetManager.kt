@@ -1,6 +1,7 @@
 package com.arslan.customanimator.utils
 
 import android.content.Context
+import com.arslan.customanimator.data.PresetTileConfig
 import com.arslan.customanimator.data.WidthPreset
 import org.json.JSONArray
 import org.json.JSONObject
@@ -8,12 +9,13 @@ import java.util.UUID
 
 class WidthPresetManager(context: Context) {
 
-    private val sharedPreferences = context.getSharedPreferences("width_presets", Context.MODE_PRIVATE)
+    private val appContext = context.applicationContext
+    private val sharedPreferences = appContext.getSharedPreferences("width_presets", Context.MODE_PRIVATE)
     private val presetsKey = "width_presets_list"
 
     fun savePreset(name: String, widthDp: Int): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val preset = WidthPreset(
                 id = UUID.randomUUID().toString(),
                 name = name,
@@ -37,7 +39,7 @@ class WidthPresetManager(context: Context) {
 
     fun getAllPresets(): List<WidthPreset> {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             val list = mutableListOf<WidthPreset>()
             for (i in 0 until presets.length()) {
                 val json = presets.getJSONObject(i)
@@ -45,7 +47,8 @@ class WidthPresetManager(context: Context) {
                     WidthPreset(
                         id = json.getString("id"),
                         name = json.getString("name"),
-                        widthDp = json.getInt("widthDp")
+                        widthDp = json.getInt("widthDp"),
+                        tile = PresetTileJson.read(json)
                     )
                 )
             }
@@ -58,7 +61,7 @@ class WidthPresetManager(context: Context) {
 
     fun deletePreset(id: String): Boolean {
         return try {
-            val presets = getAllPresetsJson()
+            val presets = sharedPreferences.getJsonArray(presetsKey)
             var foundIndex = -1
             for (i in 0 until presets.length()) {
                 if (presets.getJSONObject(i).getString("id") == id) {
@@ -75,6 +78,7 @@ class WidthPresetManager(context: Context) {
                     }
                 }
                 sharedPreferences.edit().putString(presetsKey, newPresets.toString()).apply()
+                WidthTileSlots.sync(appContext, this)
                 true
             } else {
                 false
@@ -85,12 +89,45 @@ class WidthPresetManager(context: Context) {
         }
     }
 
-    private fun getAllPresetsJson(): JSONArray {
+    fun setTileConfig(id: String, config: PresetTileConfig?): Boolean {
         return try {
-            val presetStr = sharedPreferences.getString(presetsKey, "[]") ?: "[]"
-            JSONArray(presetStr)
+            val presets = sharedPreferences.getJsonArray(presetsKey)
+            var index = -1
+            for (i in 0 until presets.length()) {
+                if (presets.getJSONObject(i).getString("id") == id) {
+                    index = i
+                    break
+                }
+            }
+            if (index < 0) return false
+
+            val resolved = when {
+                config == null -> null
+                config.slot in 0 until PresetTileJson.MAX_TILE_SLOTS -> config
+                else -> {
+                    val free = firstFreeSlot(excludingPresetId = id) ?: return false
+                    config.copy(slot = free)
+                }
+            }
+
+            val json = presets.getJSONObject(index)
+            json.remove(PresetTileJson.KEY)
+            PresetTileJson.write(json, resolved)
+            presets.put(index, json)
+            sharedPreferences.edit().putString(presetsKey, presets.toString()).apply()
+            WidthTileSlots.sync(appContext, this)
+            true
         } catch (e: Exception) {
-            JSONArray()
+            e.printStackTrace()
+            false
         }
     }
+
+    fun getPresetForSlot(slot: Int): WidthPreset? =
+        getAllPresets().firstOrNull { it.tile?.slot == slot }
+
+    fun firstFreeSlot(excludingPresetId: String? = null): Int? =
+        PresetTileJson.firstFreeSlot(
+            getAllPresets().filter { it.id != excludingPresetId }.mapNotNull { it.tile?.slot }
+        )
 }
