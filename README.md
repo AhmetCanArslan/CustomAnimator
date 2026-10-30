@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/icon.png" width="112" alt="Custom Animator M3 icon">
+<img src="docs/banner.jpg" alt="Custom Animator M3: animation scales, screen density and dozens of tweaks. Material 3 Expressive. No root. No ads.">
 
 # Custom Animator M3
 
@@ -8,8 +8,11 @@
 
 [![Build](https://github.com/riyadmondol2006/CustomAnimator-M3/actions/workflows/build.yml/badge.svg)](https://github.com/riyadmondol2006/CustomAnimator-M3/actions/workflows/build.yml)
 [![Latest release](https://img.shields.io/github/v/release/riyadmondol2006/CustomAnimator-M3?label=release)](https://github.com/riyadmondol2006/CustomAnimator-M3/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/riyadmondol2006/CustomAnimator-M3/total?label=downloads)](https://github.com/riyadmondol2006/CustomAnimator-M3/releases)
 [![License: GPL v3](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 ![Min SDK](https://img.shields.io/badge/Android-7.0%2B-3DDC84?logo=android&logoColor=white)
+
+**[⬇ Download the latest APK](https://github.com/riyadmondol2006/CustomAnimator-M3/releases/latest)**
 
 </div>
 
@@ -19,31 +22,34 @@
 ## Screenshots
 
 <div align="center">
-  <img src="docs/screenshots/m3-animation.png" width="24%" alt="Animation scales with the floating dock">
+  <img src="docs/screenshots/m3-animation.png" width="24%" alt="Animation scales with quick picks and the floating dock">
+  <img src="docs/screenshots/m3-light.png" width="24%" alt="Animation tab in the light theme">
+  <img src="docs/screenshots/m3-width.png" width="24%" alt="Smallest width and per-app width">
+  <img src="docs/screenshots/m3-optimizer.png" width="24%" alt="Optimizer: performance booster and cleaner">
+  <br><br>
+  <img src="docs/screenshots/m3-battery.png" width="24%" alt="Battery health and battery saver tweaks">
   <img src="docs/screenshots/m3-tools.png" width="24%" alt="Tools tab">
-  <img src="docs/screenshots/m3-settings.png" width="24%" alt="Settings with colour palettes">
-  <img src="docs/screenshots/m3-light.png" width="24%" alt="Light theme">
+  <img src="docs/screenshots/m3-developer.png" width="24%" alt="Developer options">
+  <img src="docs/screenshots/m3-settings.png" width="24%" alt="Settings with colour palettes and pure black mode">
 </div>
 
-## What's different in M3
+## Changes from the original
+
+Everything below is new in this fork compared with [upstream CustomAnimator 3.8](https://github.com/AhmetCanArslan/CustomAnimator). **[Read the full list of changes → FORK_CHANGES.md](FORK_CHANGES.md)**, or [compare the code](https://github.com/AhmetCanArslan/CustomAnimator/compare/main...riyadmondol2006:CustomAnimator-M3:main).
 
 | | Upstream | Custom Animator M3 |
 |---|---|---|
-| **Look** | Wallpaper colours, top tab chips | Own colour identity (Aurora, Ocean, Ember, Meadow, Graphite, or Wallpaper), Plus Jakarta Sans type, a floating bottom dock, new icon |
-| **Dark mode** | Standard dark | Standard dark, plus an optional **pure black** mode for OLED |
+| **Name & package** | CustomAnimator, `com.arslan.customanimator` | Custom Animator M3, `com.riyadmondol2006.customanimator` |
+| **Icon** | Traced bitmap mark | New mark: an app window zooming open with an "M3" badge, themed-icon ready |
+| **Look** | Wallpaper colours, tab chips under the title | Own palettes (Aurora, Ocean, Ember, Meadow, Graphite, Wallpaper), Plus Jakarta Sans, floating bottom dock |
+| **Dark mode** | Standard dark | Standard dark, plus optional **pure black** for OLED |
+| **Animation scales** | Sliders could show stale values and re-apply them; bad manual input was ignored | Live sync with the system, input validation, 0×–5× with one-tap quick picks |
 | **Ads / IAP** | AdMob banners, interstitials, rewarded ads, "Remove ads" purchase | **None.** No ads, no billing, no consent SDK, no `AD_ID` permission |
 | **Gated features** | Game Mode, Compile Booster, Optimizer and shortcuts behind a rewarded ad | All unlocked |
+| **Stability** | | Around 45 fixes: background foreground-service crashes, a notification flash that blocked touches, lock-screen tile security, Android 14+ wake-up and more |
+| **Broken tweaks** | Force RTL, Charging sounds, Airplane mode, background process limit, alarm list, memory compaction and others reported success but did nothing | Fixed (checked on Android 17) |
 | **Distribution** | Google Play | Signed APKs on [GitHub Releases](https://github.com/riyadmondol2006/CustomAnimator-M3/releases), built by CI on every push |
-| **Toolchain** | AGP 9.3, Kotlin 2.4.20, Gradle 9.7 | AGP 9.5, Kotlin 2.4.21, Gradle 9.8, NDK 30, Compose BOM 2026.09 |
-
-On top of that, the fork includes a round of stability and compatibility fixes. A few examples:
-
-- The animation scale sliders now stay in sync with the system when scales are changed from a Quick Settings tile, a profile or Developer options. Invalid manual values are rejected instead of being silently ignored.
-- Simple mode no longer overwrites your transition and animator values behind your back, and preset names no longer wrap letter by letter.
-- Fixes for Android 12–17: foreground-service crashes from the background, a full-screen notification flash that blocked touches, screen wake-up on Android 14+, Quick Settings tiles that could run shell commands from the lock screen, and more.
-- Fixed tweaks that reported success but did nothing: Force RTL, Charging sounds, Airplane mode, Limit background processes, the alarm list and memory compaction.
-
-See the [commit history](https://github.com/riyadmondol2006/CustomAnimator-M3/commits/main) for the full list.
+| **Toolchain** | Gradle 9.7, AGP 9.3, Kotlin 2.4.20, NDK 28 | Gradle 9.8, AGP 9.5, Kotlin 2.4.21, NDK 30, Compose BOM 2026.09 |
 
 ## Features
 
