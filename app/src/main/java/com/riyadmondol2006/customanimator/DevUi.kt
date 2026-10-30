@@ -51,15 +51,7 @@ internal fun DevSectionTitle(title: String) {
 }
 
 @Composable
-internal fun LabelSectionTitle(title: String) {
-    Text(
-        text = title.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
-        letterSpacing = 0.5.sp,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 4.dp)
-    )
-}
+internal fun LabelSectionTitle(title: String) = DevSectionTitle(title)
 
 @Composable
 internal fun UnsupportedCard(text: String) {
