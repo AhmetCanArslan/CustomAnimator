@@ -127,6 +127,7 @@ internal fun NavigationRow(
     title: String,
     description: String,
     enabled: Boolean = true,
+    onDisabledClick: (() -> Unit)? = null,
     onClick: () -> Unit
 ) {
     Row(
@@ -134,7 +135,9 @@ internal fun NavigationRow(
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .alpha(if (enabled) 1f else 0.5f)
-            .clickable(enabled = enabled, onClick = onClick)
+            .clickable(enabled = enabled || onDisabledClick != null) {
+                if (enabled) onClick() else onDisabledClick?.invoke()
+            }
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically
