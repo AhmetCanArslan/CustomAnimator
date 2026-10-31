@@ -200,7 +200,6 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.TOOLS.screen(HomeScreen.ACTIVITY_MANAGER, R.string.activity_manager, R.string.activity_manager_desc, Icons.Filled.Layers),
     HomeTab.TOOLS.screen(HomeScreen.DEBLOATER, R.string.debloater, R.string.debloater_desc, Icons.Filled.DeleteSweep),
     HomeTab.TOOLS.screen(HomeScreen.COMPILE_BOOSTER, R.string.compile_booster, R.string.more_compile_booster_desc, Icons.Filled.Speed),
-    HomeTab.TOOLS.screen(HomeScreen.AUTO_ACTIONS, R.string.auto_actions, R.string.more_auto_actions_desc, Icons.Filled.PlaylistRemove),
     HomeTab.TOOLS.screen(HomeScreen.AUTO_FORCE_STOP, R.string.auto_force_stop, R.string.auto_force_stop_desc, Icons.Filled.PlaylistRemove),
     HomeTab.TOOLS.screen(HomeScreen.AUTO_PERMISSION_DISABLER, R.string.auto_permission_disabler, R.string.auto_permission_disabler_desc, Icons.Filled.Shield),
     HomeTab.TOOLS.screen(HomeScreen.GRAPHICS_API_OVERRIDE, R.string.graphics_api_override, R.string.graphics_api_override_desc, Icons.Filled.VideogameAsset),

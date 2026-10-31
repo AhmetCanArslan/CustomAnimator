@@ -10,7 +10,6 @@ import com.arslan.customanimator.ActivityManagerScreen
 import com.arslan.customanimator.ApkExtractorScreen
 import com.arslan.customanimator.ApkInstallerScreen
 import com.arslan.customanimator.AppThreadingScreen
-import com.arslan.customanimator.AutoActionsScreenContent
 import com.arslan.customanimator.AutoForceStopScreen
 import com.arslan.customanimator.AutoPermissionDisablerScreen
 import com.arslan.customanimator.BatteryScreenContent
@@ -96,15 +95,6 @@ class ScreenLayoutTest {
     }
 
     @Test
-    fun autoActionsScreenFitsSmallPhones() = screenFits {
-        AutoActionsScreenContent(
-            hasShizukuPermission = false,
-            onNavigateToAutoForceStop = {},
-            onNavigateToAutoPermissionDisabler = {}
-        )
-    }
-
-    @Test
     fun debloaterScreenFitsSmallPhones() = screenFits(R.string.debloater) {
         DebloaterScreen(onBack = {}, hasShizukuPermission = false)
     }
@@ -181,7 +171,8 @@ class ScreenLayoutTest {
             onNavigateToApkExtractor = {},
             onNavigateToApkInstaller = {},
             onNavigateToActivityManager = {},
-            onNavigateToAutoActions = {},
+            onNavigateToAutoForceStop = {},
+            onNavigateToAutoPermissionDisabler = {},
             onNavigateToWifiPasswords = {},
             onNavigateToHotspotManager = {},
             onNavigateToAlarmRevealer = {},

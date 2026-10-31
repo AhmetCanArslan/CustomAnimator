@@ -36,7 +36,6 @@
     <string name="close_apps_confirm_title">Arka Plan Uygulamaları Kapatılsın mı?</string>
     <string name="close_apps_confirm_message">Bu, yüklü diğer tüm uygulamaları zorla durdurur. O uygulamalardaki kaydedilmemiş işler kaybolabilir.</string>
     <string name="apps_closed_count">%1$d uygulama kapatıldı</string>
-    <string name="auto_actions">Otomatik İşlemler</string>
     <string name="auto_force_stop">Otomatik Zorla Durdurma</string>
     <string name="auto_force_stop_desc">Seçilen uygulamaları ön plandan çıktığı anda zorla durdurur</string>
     <string name="auto_force_stop_status_active">Otomatik zorla durdurma %1$d uygulama için etkin</string>
@@ -1300,7 +1299,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="tools_section_system_ui">Sistem arayüzü</string>
     <string name="tools_section_connectivity">Bağlantı</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
-    <string name="more_auto_actions_desc">Otomatik zorla durdurma ve izin kuralları</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
     <string name="reward_free_unlock">Şu an gösterilecek reklam yok, bu seferlik ücretsiz</string>
     <string name="reward_unlock_denied">Bunu 3 dakikalığına açmak için reklamı sonuna kadar izleyin</string>

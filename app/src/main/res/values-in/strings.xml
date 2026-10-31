@@ -36,7 +36,6 @@
     <string name="close_apps_confirm_title">Tutup Aplikasi Latar Belakang?</string>
     <string name="close_apps_confirm_message">Ini akan memaksa menghentikan semua aplikasi terpasang lainnya. Pekerjaan yang belum disimpan di aplikasi tersebut dapat hilang.</string>
     <string name="apps_closed_count">%1$d aplikasi ditutup</string>
-    <string name="auto_actions">Tindakan Otomatis</string>
     <string name="auto_force_stop">Hentikan Paksa Otomatis</string>
     <string name="auto_force_stop_desc">Paksa hentikan aplikasi terpilih segera setelah keluar dari latar depan</string>
     <string name="auto_force_stop_status_active">Hentikan paksa otomatis aktif untuk %1$d aplikasi</string>
@@ -1292,7 +1291,6 @@ Durasi Animator: %3$.2f</string>
     <string name="tools_section_system_ui">UI sistem</string>
     <string name="tools_section_connectivity">Konektivitas</string>
     <string name="more_compile_booster_desc">Kompilasi ulang aplikasi agar terbuka lebih cepat</string>
-    <string name="more_auto_actions_desc">Aturan hentikan paksa dan izin otomatis</string>
     <string name="game_mode_fixed_performance">Mode performa tetap aktif selama Mode Game menyala.</string>
     <string name="reward_free_unlock">Tidak ada iklan yang tersedia saat ini, jadi kali ini gratis</string>
     <string name="reward_unlock_denied">Selesaikan iklan untuk membuka ini selama 3 menit</string>

@@ -36,7 +36,6 @@
     <string name="close_apps_confirm_title">Fechar Apps em Segundo Plano?</string>
     <string name="close_apps_confirm_message">Isso forçará a parada de todos os outros apps instalados. Trabalhos não salvos nesses apps podem ser perdidos.</string>
     <string name="apps_closed_count">%1$d apps fechados</string>
-    <string name="auto_actions">Ações Automáticas</string>
     <string name="auto_force_stop">Parada Forçada Automática</string>
     <string name="auto_force_stop_desc">Força a parada dos apps selecionados assim que saem do primeiro plano</string>
     <string name="auto_force_stop_status_active">Parada forçada automática ativa para %1$d app(s)</string>
@@ -1292,7 +1291,6 @@ Duração do Animador: %3$.2f</string>
     <string name="tools_section_system_ui">Interface do sistema</string>
     <string name="tools_section_connectivity">Conectividade</string>
     <string name="more_compile_booster_desc">Recompile apps para abrirem mais rápido</string>
-    <string name="more_auto_actions_desc">Regras automáticas de parada forçada e permissões</string>
     <string name="game_mode_fixed_performance">O modo de desempenho fixo fica ativo enquanto o Modo Jogo está ligado.</string>
     <string name="reward_free_unlock">Nenhum anúncio disponível agora, então desta vez é grátis</string>
     <string name="reward_unlock_denied">Termine o anúncio para desbloquear isto por 3 minutos</string>

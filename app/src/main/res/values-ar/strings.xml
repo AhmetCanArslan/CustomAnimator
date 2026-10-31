@@ -320,7 +320,6 @@
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="information">معلومات</string>
-    <string name="auto_actions">إجراءات تلقائية</string>
     <string name="ad_info_title">ادعم التطوير</string>
     <string name="ad_info_message">مرحبًا! 👋\n\nللحفاظ على هذا التطبيق مجانيًا ومواصلة تحسينه، أضفت إعلانات: لافتة صغيرة أسفل الشاشة، وأحيانًا إعلان بملء الشاشة بعد تطبيق تغيير أو إعادة فتح التطبيق.\n\nوهي محدودة التكرار حتى لا تزعجك.\n\nشكرًا لتفهمك ودعمك. ❤️</string>
     <string name="ad_info_ok">فهمت</string>
@@ -1332,7 +1331,6 @@
     <string name="tools_section_system_ui">واجهة النظام</string>
     <string name="tools_section_connectivity">الاتصال</string>
     <string name="more_compile_booster_desc">إعادة تجميع التطبيقات لتشغيل أسرع</string>
-    <string name="more_auto_actions_desc">قواعد الإيقاف القسري والأذونات التلقائية</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
     <string name="reward_free_unlock">لا يوجد إعلان متاح الآن، لذا هذه المرة مجانية</string>
     <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>

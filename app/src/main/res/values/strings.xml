@@ -24,7 +24,6 @@
     <string name="tools_section_system_ui">System UI</string>
     <string name="tools_section_connectivity">Connectivity</string>
     <string name="more_compile_booster_desc">Recompile apps for faster launches</string>
-    <string name="more_auto_actions_desc">Automatic force stop and permission rules</string>
     <string name="developer_section_debugging">Debugging</string>
     <string name="developer_section_drawing">Input &amp; drawing</string>
     <string name="developer_needs_shizuku">These actions require Shizuku to be connected.</string>
@@ -330,7 +329,6 @@ Animator Duration: %3$.2f</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="information">Information</string>
-    <string name="auto_actions">Auto Actions</string>
     <string name="ad_info_title">Support Development</string>
     <string name="ad_info_message">Hi! 👋\n\nTo keep this app free and continue improving it, I\'ve added ads: a small banner at the bottom of the screen, and occasionally a full-screen ad after you apply a change or reopen the app.\n\nThey are frequency-capped so they stay out of your way.\n\nThank you for your understanding and support. ❤️</string>
     <string name="ad_info_ok">Got it</string>

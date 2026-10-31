@@ -174,7 +174,6 @@ Durata animatore: %3$.2f</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="information">Informazione</string>
-    <string name="auto_actions">Azioni automatiche</string>
     <string name="ad_info_title">Sostieni lo sviluppo</string>
     <string name="ad_info_message">Ciao! 👋\n\nPer mantenere questa app gratuita e continuare a migliorarla, ho aggiunto degli annunci: un piccolo banner in fondo allo schermo e occasionalmente un annuncio a schermo intero dopo aver applicato una modifica o riaperto l\'app.\n\nLa loro frequenza è limitata, così non ti disturbano.\n\nGrazie per la comprensione e il supporto. ❤️</string>
     <string name="ad_info_ok">Ho capito</string>
@@ -1312,7 +1311,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="tools_section_system_ui">Interfaccia di sistema</string>
     <string name="tools_section_connectivity">Connettività</string>
     <string name="more_compile_booster_desc">Ricompila le app per avvii più rapidi</string>
-    <string name="more_auto_actions_desc">Regole automatiche di arresto forzato e permessi</string>
     <string name="game_mode_fixed_performance">La modalità prestazioni fisse è attiva mentre la Modalità Gioco è accesa.</string>
     <string name="reward_free_unlock">Nessun annuncio disponibile al momento, quindi questa volta è gratis</string>
     <string name="reward_unlock_denied">Completa l\'annuncio per sbloccarlo per 3 minuti</string>

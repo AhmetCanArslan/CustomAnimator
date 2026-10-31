@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.WebAsset
 import androidx.compose.material.icons.filled.Palette
@@ -74,7 +75,8 @@ fun ToolsScreenContent(
     onNavigateToApkExtractor: () -> Unit,
     onNavigateToApkInstaller: () -> Unit,
     onNavigateToActivityManager: () -> Unit,
-    onNavigateToAutoActions: () -> Unit,
+    onNavigateToAutoForceStop: () -> Unit,
+    onNavigateToAutoPermissionDisabler: () -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
@@ -168,9 +170,17 @@ fun ToolsScreenContent(
                 {
                     NavigationRow(
                         icon = Icons.Filled.PlaylistRemove,
-                        title = stringResource(R.string.auto_actions),
-                        description = stringResource(R.string.more_auto_actions_desc),
-                        onClick = onNavigateToAutoActions
+                        title = stringResource(R.string.auto_force_stop),
+                        description = stringResource(R.string.auto_force_stop_desc),
+                        onClick = onNavigateToAutoForceStop
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Shield,
+                        title = stringResource(R.string.auto_permission_disabler),
+                        description = stringResource(R.string.auto_permission_disabler_desc),
+                        onClick = onNavigateToAutoPermissionDisabler
                     )
                 }
             )

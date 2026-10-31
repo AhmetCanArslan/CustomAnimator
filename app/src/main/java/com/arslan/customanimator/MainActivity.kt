@@ -223,7 +223,7 @@ enum class HomeScreen {
     HWUI_TWEAKS, APP_THREADING, DOZE_WHITELIST, BATTERY_HEALTH,
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
-    AUTO_ACTIONS, QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
+    QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
     BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, APK_INSTALLER, ACTIVITY_MANAGER, COMPILE_BOOSTER
 }
 
@@ -259,8 +259,6 @@ private val NOTIFY_SCREENS = setOf(
 )
 
 private val SUB_SCREEN_PARENTS = mapOf(
-    HomeScreen.AUTO_FORCE_STOP to HomeScreen.AUTO_ACTIONS,
-    HomeScreen.AUTO_PERMISSION_DISABLER to HomeScreen.AUTO_ACTIONS,
     HomeScreen.SOUND_TILE to HomeScreen.QS_TILES
 )
 
@@ -286,7 +284,8 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.APK_INSTALLER to HomeTab.TOOLS,
     HomeScreen.ACTIVITY_MANAGER to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
-    HomeScreen.AUTO_ACTIONS to HomeTab.TOOLS,
+    HomeScreen.AUTO_FORCE_STOP to HomeTab.TOOLS,
+    HomeScreen.AUTO_PERMISSION_DISABLER to HomeTab.TOOLS,
     HomeScreen.REFRESH_RATE to HomeTab.TOOLS,
     HomeScreen.QS_TILES to HomeTab.TOOLS,
     HomeScreen.PER_APP_WIDTH to HomeTab.WIDTH,
@@ -375,7 +374,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val shortcutsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val closeAppsExclusionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val whatsAppCleanerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
-    val autoActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoForceStopListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val autoPermissionDisablerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val graphicsApiOverrideListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -701,12 +699,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     } else if (targetScreen == HomeScreen.AUTO_FORCE_STOP) {
         AutoForceStopScreen(
-            onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             listState = autoForceStopListState
         )
     } else if (targetScreen == HomeScreen.AUTO_PERMISSION_DISABLER) {
         AutoPermissionDisablerScreen(
-            onBack = { currentScreen = HomeScreen.AUTO_ACTIONS },
+            onBack = { backToTab(HomeTab.TOOLS) },
             listState = autoPermissionDisablerListState
         )
     } else if (targetScreen == HomeScreen.CLOSE_APPS_EXCLUSIONS) {
@@ -904,17 +902,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onNavigateToHistory = { openRemembering(HomeScreen.NOTIFY_LOGGING) }
             )
         }
-    } else if (targetScreen == HomeScreen.AUTO_ACTIONS) {
-        SubScreen(
-            title = stringResource(R.string.auto_actions),
-            onBack = { backToTab(HomeTab.TOOLS) }
-        ) {
-            AutoActionsScreenContent(
-                onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
-                onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
-                listState = autoActionsListState
-            )
-        }
     } else {
     Scaffold(
         topBar = {
@@ -986,7 +973,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },
             onNavigateToApkInstaller = { currentScreen = HomeScreen.APK_INSTALLER },
             onNavigateToActivityManager = { currentScreen = HomeScreen.ACTIVITY_MANAGER },
-            onNavigateToAutoActions = { currentScreen = HomeScreen.AUTO_ACTIONS },
+            onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
+            onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             listState = toolsListState
         )
         } else if (targetTab == HomeTab.SYSTEM_METER) {
