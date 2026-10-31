@@ -18,6 +18,7 @@ import com.arslan.customanimator.CompileBoosterScreen
 import com.arslan.customanimator.WhatsAppCleanerScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
+import com.arslan.customanimator.ButtonRemapperScreen
 import com.arslan.customanimator.LiveUpdatesScreen
 import com.arslan.customanimator.OtpCopierScreen
 import com.arslan.customanimator.DebloaterScreen
@@ -235,6 +236,11 @@ class ScreenLayoutTest {
     @Test
     fun liveUpdatesScreenFitsSmallPhones() = screenFits(R.string.live_updates) {
         LiveUpdatesScreen(onBack = {})
+    }
+
+    @Test
+    fun buttonRemapperScreenFitsSmallPhones() = screenFits(R.string.button_remapper) {
+        ButtonRemapperScreen(onBack = {}, hasShizukuPermission = true, hasWriteSecureSettings = true)
     }
 
     @Test

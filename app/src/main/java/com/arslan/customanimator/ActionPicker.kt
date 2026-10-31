@@ -183,6 +183,11 @@ private fun ActionRow(
 
 @Composable
 internal fun ActionChip(entry: ShortcutEntry) {
+    LabelChip(label = entry.label) { modifier -> ActionIcon(entry = entry, modifier = modifier) }
+}
+
+@Composable
+internal fun LabelChip(label: String, icon: @Composable (Modifier) -> Unit) {
     Surface(
         shape = AppShapes.chip,
         color = MaterialTheme.colorScheme.secondaryContainer,
@@ -193,9 +198,9 @@ internal fun ActionChip(entry: ShortcutEntry) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            ActionIcon(entry = entry, modifier = Modifier.size(20.dp))
+            icon(Modifier.size(20.dp))
             Text(
-                text = entry.label,
+                text = label,
                 style = MaterialTheme.typography.labelLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

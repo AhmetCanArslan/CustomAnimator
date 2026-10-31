@@ -1,27 +1,38 @@
 package com.arslan.customanimator
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeDown
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Assistant
 import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.SwapVert
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.OfflineBolt
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.PowerOff
+import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -30,22 +41,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.arslan.customanimator.service.PowerButtonService
-import com.arslan.customanimator.ui.components.SliderRow
 import com.arslan.customanimator.data.ShortcutEntry
+import com.arslan.customanimator.service.PowerButtonService
 import com.arslan.customanimator.ui.components.IconBadge
+import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.SliderRow
 import com.arslan.customanimator.utils.ButtonRemapperManager
-import com.arslan.customanimator.utils.ButtonTrigger
 import com.arslan.customanimator.utils.ButtonRemapperManager.PowerLongPress
+import com.arslan.customanimator.utils.ButtonTrigger
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.utils.LocalWriteSecureSettings
+import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.arslan.customanimator.ui.components.ScreenTopBar
-import com.arslan.customanimator.utils.ShizukuHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +66,6 @@ fun ButtonRemapperScreen(
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
-    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
@@ -76,6 +85,7 @@ fun ButtonRemapperScreen(
     var pickerTrigger by remember { mutableStateOf(ButtonTrigger.POWER_LONG_PRESS) }
     var doublePressWindowMs by remember { mutableIntStateOf(ButtonRemapperManager.getDoublePressWindowMs(context)) }
     val requestNotificationPermission = rememberNotificationPermissionRequest()
+    var showLongPressSheet by remember { mutableStateOf(false) }
     val defaultPowerLongPress = remember { ButtonRemapperManager.getDefaultPowerLongPress() }
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -149,6 +159,34 @@ fun ButtonRemapperScreen(
 
     ShortcutStepHost(state = actionPicker, hasShizukuPermission = hasShizukuPermission, onSource = openSource)
 
+    if (showLongPressSheet) {
+        LongPressSheet(
+            choice = powerLongPress,
+            deviceDefault = defaultPowerLongPress,
+            enabled = actionsEnabled,
+            customEnabled = hasShizukuPermission,
+            onSelected = { behavior ->
+                showLongPressSheet = false
+                applyChoice(LongPressChoice(behavior, null)) {
+                    ButtonRemapperManager.setPowerLongPress(context, contentResolver, behavior)
+                }
+            },
+            onCustom = {
+                showLongPressSheet = false
+                pickAction(ButtonTrigger.POWER_LONG_PRESS, powerLongPress.action)
+            },
+            onDismiss = { showLongPressSheet = false }
+        )
+    }
+
+    val assigned: (ButtonTrigger) -> Boolean = { trigger ->
+        if (trigger == ButtonTrigger.POWER_LONG_PRESS) {
+            powerLongPress.behavior != null || powerLongPress.action != null
+        } else {
+            serviceActions[trigger] != null
+        }
+    }
+
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -193,75 +231,43 @@ fun ButtonRemapperScreen(
             }
             gap(SECTION_GAP)
 
-            sectionTitle(R.string.button_remapper_power_long_press)
-            cardRows({
-                PowerLongPressOptions(
-                    choice = powerLongPress,
-                    deviceDefault = defaultPowerLongPress,
-                    enabled = actionsEnabled,
-                    customEnabled = hasShizukuPermission,
-                    onSelected = { behavior ->
-                        applyChoice(LongPressChoice(behavior, null)) {
-                            ButtonRemapperManager.setPowerLongPress(context, contentResolver, behavior)
+            RemapKey.entries.forEach { key ->
+                val header: List<@Composable () -> Unit> = key.header?.let { header ->
+                    listOf<@Composable () -> Unit>({ KeyHeader(icon = header.icon, title = stringResource(header.labelRes)) })
+                }.orEmpty()
+                val rows = key.gestures.map { slot ->
+                    @Composable {
+                        val trigger = slot.trigger
+                        val isLongPress = trigger == ButtonTrigger.POWER_LONG_PRESS
+                        GestureRow(
+                            gesture = slot.gesture,
+                            assigned = assigned(trigger),
+                            enabled = if (isLongPress) actionsEnabled else hasShizukuPermission,
+                            onClick = {
+                                if (isLongPress) {
+                                    showLongPressSheet = true
+                                } else {
+                                    pickAction(trigger, serviceActions[trigger])
+                                }
+                            },
+                            onClear = {
+                                if (isLongPress) {
+                                    applyChoice(LongPressChoice(null, null)) {
+                                        ButtonRemapperManager.setPowerLongPress(context, contentResolver, null)
+                                    }
+                                } else {
+                                    applyServiceAction(trigger, null)
+                                }
+                            }
+                        ) {
+                            if (isLongPress) LongPressValue(powerLongPress) else ActionValue(serviceActions[trigger])
                         }
-                    },
-                    onCustomClick = { pickAction(ButtonTrigger.POWER_LONG_PRESS, powerLongPress.action) }
-                )
-            })
-            gap(SECTION_GAP)
-
-            sectionTitle(R.string.button_remapper_power_double_press)
-            cardRows({
-                PowerDoublePressOptions(
-                    action = serviceActions[ButtonTrigger.POWER_DOUBLE_PRESS],
-                    enabled = hasShizukuPermission,
-                    onDefault = { applyServiceAction(ButtonTrigger.POWER_DOUBLE_PRESS, null) },
-                    onCustomClick = {
-                        pickAction(ButtonTrigger.POWER_DOUBLE_PRESS, serviceActions[ButtonTrigger.POWER_DOUBLE_PRESS])
                     }
-                )
-            })
-            gap(SECTION_GAP)
-
-            sectionTitle(R.string.button_remapper_volume_buttons)
-            VolumeKey.entries.forEach { key ->
-                cardRows(
-                    { VolumeKeyHeader(key = key, enabled = hasShizukuPermission) },
-                    {
-                        GestureRow(
-                            title = stringResource(R.string.button_gesture_double_press),
-                            hint = stringResource(R.string.button_gesture_double_hint),
-                            action = serviceActions[key.doublePress],
-                            enabled = hasShizukuPermission,
-                            onPick = { pickAction(key.doublePress, serviceActions[key.doublePress]) },
-                            onClear = { applyServiceAction(key.doublePress, null) }
-                        )
-                    },
-                    {
-                        GestureRow(
-                            title = stringResource(R.string.button_gesture_long_press),
-                            hint = stringResource(R.string.button_gesture_long_hint),
-                            action = serviceActions[key.longPress],
-                            enabled = hasShizukuPermission,
-                            onPick = { pickAction(key.longPress, serviceActions[key.longPress]) },
-                            onClear = { applyServiceAction(key.longPress, null) }
-                        )
-                    }
-                )
+                }
+                cardRows(*(header + rows).toTypedArray())
                 gap(GROUP_GAP)
             }
-            cardRows({
-                GestureRow(
-                    title = stringResource(R.string.button_remapper_volume_combo),
-                    hint = stringResource(R.string.button_gesture_combo_hint),
-                    action = serviceActions[ButtonTrigger.VOLUME_COMBO],
-                    enabled = hasShizukuPermission,
-                    onPick = { pickAction(ButtonTrigger.VOLUME_COMBO, serviceActions[ButtonTrigger.VOLUME_COMBO]) },
-                    onClear = { applyServiceAction(ButtonTrigger.VOLUME_COMBO, null) },
-                    leading = { IconBadge(icon = Icons.Filled.SwapVert, size = 40.dp) }
-                )
-            })
-            gap(SECTION_GAP)
+            gap(SECTION_GAP - GROUP_GAP)
 
             sectionTitle(R.string.settings)
             val screenOffRow: @Composable () -> Unit = {
@@ -287,7 +293,7 @@ fun ButtonRemapperScreen(
                     }
                 )
             }
-            if (DOUBLE_PRESS_TRIGGERS.any { serviceActions[it] != null }) {
+            if (MULTI_PRESS_TRIGGERS.any { serviceActions[it] != null }) {
                 cardRows(screenOffRow, windowRow)
             } else {
                 cardRows(screenOffRow)
@@ -298,80 +304,166 @@ fun ButtonRemapperScreen(
 }
 
 @Composable
-private fun PowerLongPressOptions(
+private fun KeyHeader(icon: ImageVector, title: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconBadge(icon = icon, size = 36.dp)
+        Text(text = title, style = MaterialTheme.typography.titleMedium)
+    }
+}
+
+@Composable
+private fun GestureRow(
+    gesture: Gesture,
+    assigned: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    onClear: () -> Unit,
+    value: @Composable () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .alpha(if (enabled) 1f else DISABLED_ALPHA)
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        GestureGlyph(gesture = gesture, color = MaterialTheme.colorScheme.primary, modifier = Modifier.width(GLYPH_WIDTH))
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(text = stringResource(gesture.titleRes), style = MaterialTheme.typography.titleSmall)
+            value()
+        }
+        if (assigned) {
+            IconButton(onClick = onClear, enabled = enabled, shapes = IconButtonDefaults.shapes()) {
+                Icon(imageVector = Icons.Filled.Close, contentDescription = stringResource(R.string.clear))
+            }
+        } else {
+            Box(modifier = Modifier.minimumInteractiveComponentSize(), contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = Icons.Filled.ChevronRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun GestureGlyph(gesture: Gesture, color: Color, modifier: Modifier) {
+    Row(
+        modifier = modifier.height(MARK_SIZE),
+        horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        when (gesture) {
+            Gesture.LONG -> Mark(width = MARK_LONG, height = MARK_SIZE, color = color)
+            Gesture.COMBO -> {
+                Mark(width = MARK_SIZE, height = MARK_SIZE, color = color)
+                Mark(width = MARK_SIZE, height = 2.dp, color = color)
+                Mark(width = MARK_SIZE, height = MARK_SIZE, color = color)
+            }
+            else -> repeat(gesture.presses) { Mark(width = MARK_SIZE, height = MARK_SIZE, color = color) }
+        }
+    }
+}
+
+@Composable
+private fun Mark(width: Dp, height: Dp, color: Color) {
+    Box(
+        modifier = Modifier
+            .size(width = width, height = height)
+            .clip(CircleShape)
+            .background(color)
+    )
+}
+
+@Composable
+private fun ActionValue(action: ShortcutEntry?) {
+    if (action == null) DefaultValue() else ActionChip(entry = action)
+}
+
+@Composable
+private fun LongPressValue(choice: LongPressChoice) {
+    val action = choice.action
+    val behavior = choice.behavior
+    when {
+        action != null -> ActionChip(entry = action)
+        behavior != null -> LabelChip(label = stringResource(behavior.labelRes())) { modifier ->
+            Icon(imageVector = behavior.icon(), contentDescription = null, modifier = modifier)
+        }
+        else -> DefaultValue()
+    }
+}
+
+@Composable
+private fun DefaultValue() {
+    Text(
+        text = stringResource(R.string.button_remapper_system_default),
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+}
+
+@Composable
+private fun LongPressSheet(
     choice: LongPressChoice,
     deviceDefault: PowerLongPress?,
     enabled: Boolean,
     customEnabled: Boolean,
     onSelected: (PowerLongPress?) -> Unit,
-    onCustomClick: () -> Unit
+    onCustom: () -> Unit,
+    onDismiss: () -> Unit
 ) {
-    val customAction = choice.action
-    val customSelected = customAction != null
-    RemapOptions {
-        RemapOptionRow(
-            selected = !customSelected && choice.behavior == null,
-            label = stringResource(R.string.button_remapper_system_default),
-            description = if (deviceDefault == null) {
-                stringResource(R.string.button_remapper_system_default_desc)
-            } else {
-                stringResource(
-                    R.string.button_remapper_system_default_known,
-                    stringResource(deviceDefault.labelRes())
-                )
-            },
-            enabled = enabled,
-            onClick = { onSelected(null) }
-        )
-        PowerLongPress.entries.forEach { behavior ->
-            RemapOptionRow(
-                selected = !customSelected && choice.behavior == behavior,
-                label = stringResource(behavior.labelRes()),
-                description = stringResource(behavior.descriptionRes()),
+    val custom = choice.action != null
+    val defaultSubtitle = if (deviceDefault == null) {
+        stringResource(R.string.button_remapper_system_default_desc)
+    } else {
+        stringResource(R.string.button_remapper_system_default_known, stringResource(deviceDefault.labelRes()))
+    }
+    val customSubtitle = stringResource(R.string.button_remapper_custom_desc)
+    PickerSheet(
+        title = stringResource(R.string.button_remapper_power_long_press),
+        subtitle = null,
+        onDismiss = onDismiss
+    ) {
+        item {
+            PickerRow(
+                title = stringResource(R.string.button_remapper_system_default),
+                subtitle = defaultSubtitle,
+                selected = !custom && choice.behavior == null,
                 enabled = enabled,
-                onClick = { onSelected(behavior) }
+                onClick = { onSelected(null) },
+                leading = { IconBadge(icon = Icons.Filled.PhoneAndroid, size = 40.dp) }
             )
         }
-        RemapOptionRow(
-            selected = customSelected,
-            label = stringResource(R.string.button_remapper_custom),
-            description = if (customAction != null) {
-                stringResource(R.string.button_remapper_custom_selected, customAction.label)
-            } else {
-                stringResource(R.string.button_remapper_custom_desc)
-            },
-            enabled = customEnabled,
-            onClick = onCustomClick
-        )
-    }
-}
-
-@Composable
-private fun PowerDoublePressOptions(
-    action: ShortcutEntry?,
-    enabled: Boolean,
-    onDefault: () -> Unit,
-    onCustomClick: () -> Unit
-) {
-    RemapOptions {
-        RemapOptionRow(
-            selected = action == null,
-            label = stringResource(R.string.button_remapper_system_default),
-            description = stringResource(R.string.button_remapper_system_default_desc),
-            enabled = enabled,
-            onClick = onDefault
-        )
-        RemapOptionRow(
-            selected = action != null,
-            label = stringResource(R.string.button_remapper_custom),
-            description = if (action != null) {
-                stringResource(R.string.button_remapper_double_press_selected, action.label)
-            } else {
-                stringResource(R.string.button_remapper_double_press_desc)
-            },
-            enabled = enabled,
-            onClick = onCustomClick
-        )
+        items(PowerLongPress.entries) { behavior ->
+            PickerRow(
+                title = stringResource(behavior.labelRes()),
+                subtitle = "",
+                selected = !custom && choice.behavior == behavior,
+                enabled = enabled,
+                onClick = { onSelected(behavior) },
+                leading = { IconBadge(icon = behavior.icon(), size = 40.dp) }
+            )
+        }
+        item {
+            PickerRow(
+                title = stringResource(R.string.button_remapper_custom),
+                subtitle = customSubtitle,
+                selected = custom,
+                enabled = customEnabled,
+                onClick = onCustom,
+                leading = { IconBadge(icon = Icons.Filled.TouchApp, size = 40.dp) }
+            )
+        }
     }
 }
 
@@ -391,106 +483,6 @@ private fun DoublePressWindowSlider(windowMs: Int, enabled: Boolean, onWindowCha
     )
 }
 
-@Composable
-private fun VolumeKeyHeader(key: VolumeKey, enabled: Boolean) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(if (enabled) 1f else DISABLED_ALPHA)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconBadge(icon = key.icon, size = 40.dp)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = stringResource(key.titleRes), style = MaterialTheme.typography.titleMedium)
-            Text(
-                text = stringResource(R.string.button_remapper_volume_tap_hint),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
-@Composable
-private fun GestureRow(
-    title: String,
-    hint: String,
-    action: ShortcutEntry?,
-    enabled: Boolean,
-    onPick: () -> Unit,
-    onClear: () -> Unit,
-    leading: (@Composable () -> Unit)? = null
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .alpha(if (enabled) 1f else DISABLED_ALPHA)
-            .clickable(enabled = enabled, onClick = onPick)
-            .padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        leading?.invoke()
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text(text = title, style = MaterialTheme.typography.titleSmall)
-            if (action == null) {
-                Text(
-                    text = hint,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            } else {
-                ActionChip(entry = action)
-            }
-        }
-        if (action == null) {
-            FilledTonalIconButton(onClick = onPick, enabled = enabled, shapes = IconButtonDefaults.shapes()) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.button_remapper_custom_pick))
-            }
-        } else {
-            IconButton(onClick = onClear, enabled = enabled, shapes = IconButtonDefaults.shapes()) {
-                Icon(imageVector = Icons.Filled.Close, contentDescription = stringResource(R.string.clear))
-            }
-        }
-    }
-}
-
-@Composable
-private fun RemapOptions(content: @Composable ColumnScope.() -> Unit) {
-    Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp), content = content)
-}
-
-@Composable
-private fun RemapOptionRow(
-    selected: Boolean,
-    label: String,
-    description: String,
-    enabled: Boolean,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .clickable(enabled = enabled, onClick = onClick)
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        RadioButton(selected = selected, onClick = onClick, enabled = enabled)
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = label, style = MaterialTheme.typography.bodyMedium)
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-    }
-}
-
 private const val DOUBLE_PRESS_WINDOW_STEPS =
     (ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MAX_MS - ButtonRemapperManager.DOUBLE_PRESS_WINDOW_MIN_MS) /
         ButtonRemapperManager.DOUBLE_PRESS_WINDOW_STEP_MS - 1
@@ -498,24 +490,49 @@ private const val DOUBLE_PRESS_WINDOW_STEPS =
 private const val DISABLED_ALPHA = 0.5f
 private val SECTION_GAP = 24.dp
 private val GROUP_GAP = 12.dp
+private val MARK_SIZE = 10.dp
+private val GLYPH_WIDTH = 40.dp
+private val MARK_LONG = 34.dp
 
-private enum class VolumeKey(
-    val titleRes: Int,
-    val icon: ImageVector,
-    val doublePress: ButtonTrigger,
-    val longPress: ButtonTrigger
-) {
-    UP(
-        R.string.button_remapper_volume_up,
-        Icons.AutoMirrored.Filled.VolumeUp,
-        ButtonTrigger.VOLUME_UP_DOUBLE,
-        ButtonTrigger.VOLUME_UP_LONG
+private enum class Gesture(val titleRes: Int, val presses: Int = 0) {
+    DOUBLE(R.string.button_gesture_double_press, 2),
+    TRIPLE(R.string.button_gesture_triple_press, 3),
+    LONG(R.string.button_gesture_long_press),
+    COMBO(R.string.button_remapper_volume_combo)
+}
+
+private data class GestureSlot(val gesture: Gesture, val trigger: ButtonTrigger)
+
+private class KeyHeaderSpec(val labelRes: Int, val icon: ImageVector)
+
+private enum class RemapKey(val header: KeyHeaderSpec?, val gestures: List<GestureSlot>) {
+    POWER(
+        KeyHeaderSpec(R.string.button_remapper_key_power, Icons.Filled.PowerSettingsNew),
+        listOf(
+            GestureSlot(Gesture.DOUBLE, ButtonTrigger.POWER_DOUBLE_PRESS),
+            GestureSlot(Gesture.TRIPLE, ButtonTrigger.POWER_TRIPLE_PRESS),
+            GestureSlot(Gesture.LONG, ButtonTrigger.POWER_LONG_PRESS)
+        )
     ),
-    DOWN(
-        R.string.button_remapper_volume_down,
-        Icons.AutoMirrored.Filled.VolumeDown,
-        ButtonTrigger.VOLUME_DOWN_DOUBLE,
-        ButtonTrigger.VOLUME_DOWN_LONG
+    VOLUME_UP(
+        KeyHeaderSpec(R.string.button_remapper_volume_up, Icons.AutoMirrored.Filled.VolumeUp),
+        listOf(
+            GestureSlot(Gesture.DOUBLE, ButtonTrigger.VOLUME_UP_DOUBLE),
+            GestureSlot(Gesture.TRIPLE, ButtonTrigger.VOLUME_UP_TRIPLE),
+            GestureSlot(Gesture.LONG, ButtonTrigger.VOLUME_UP_LONG)
+        )
+    ),
+    VOLUME_DOWN(
+        KeyHeaderSpec(R.string.button_remapper_volume_down, Icons.AutoMirrored.Filled.VolumeDown),
+        listOf(
+            GestureSlot(Gesture.DOUBLE, ButtonTrigger.VOLUME_DOWN_DOUBLE),
+            GestureSlot(Gesture.TRIPLE, ButtonTrigger.VOLUME_DOWN_TRIPLE),
+            GestureSlot(Gesture.LONG, ButtonTrigger.VOLUME_DOWN_LONG)
+        )
+    ),
+    BOTH(
+        null,
+        listOf(GestureSlot(Gesture.COMBO, ButtonTrigger.VOLUME_COMBO))
     )
 }
 
@@ -523,8 +540,7 @@ private fun LazyListScope.gap(height: Dp) {
     item { Spacer(modifier = Modifier.height(height)) }
 }
 
-private val DOUBLE_PRESS_TRIGGERS =
-    listOf(ButtonTrigger.POWER_DOUBLE_PRESS, ButtonTrigger.VOLUME_UP_DOUBLE, ButtonTrigger.VOLUME_DOWN_DOUBLE)
+private val MULTI_PRESS_TRIGGERS = ButtonTrigger.service.filter { it.presses > 0 }
 
 private data class LongPressChoice(val behavior: PowerLongPress?, val action: ShortcutEntry?)
 
@@ -537,11 +553,11 @@ private fun PowerLongPress.labelRes(): Int = when (this) {
     PowerLongPress.SHUT_DOWN -> R.string.button_remapper_shut_down
 }
 
-private fun PowerLongPress.descriptionRes(): Int = when (this) {
-    PowerLongPress.POWER_MENU -> R.string.button_remapper_power_menu_desc
-    PowerLongPress.ASSISTANT -> R.string.button_remapper_assistant_desc
-    PowerLongPress.VOICE_ASSIST -> R.string.button_remapper_voice_assist_desc
-    PowerLongPress.NOTHING -> R.string.button_remapper_nothing_desc
-    PowerLongPress.SHUT_DOWN_CONFIRM -> R.string.button_remapper_shut_down_confirm_desc
-    PowerLongPress.SHUT_DOWN -> R.string.button_remapper_shut_down_desc
+private fun PowerLongPress.icon(): ImageVector = when (this) {
+    PowerLongPress.POWER_MENU -> Icons.Filled.PowerSettingsNew
+    PowerLongPress.ASSISTANT -> Icons.Filled.Assistant
+    PowerLongPress.VOICE_ASSIST -> Icons.Filled.Mic
+    PowerLongPress.NOTHING -> Icons.Filled.Block
+    PowerLongPress.SHUT_DOWN_CONFIRM -> Icons.Filled.PowerOff
+    PowerLongPress.SHUT_DOWN -> Icons.Filled.OfflineBolt
 }
