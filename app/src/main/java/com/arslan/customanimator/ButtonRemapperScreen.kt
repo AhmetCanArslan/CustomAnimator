@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeDown
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Assistant
-import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Close
@@ -81,7 +80,6 @@ fun ButtonRemapperScreen(
     var serviceActions by remember {
         mutableStateOf(ButtonTrigger.service.associateWith { ButtonRemapperManager.getAction(context, it) })
     }
-    var volumeScreenOff by remember { mutableStateOf(ButtonRemapperManager.isVolumeScreenOff(context)) }
     var pickerTrigger by remember { mutableStateOf(ButtonTrigger.POWER_LONG_PRESS) }
     var doublePressWindowMs by remember { mutableIntStateOf(ButtonRemapperManager.getDoublePressWindowMs(context)) }
     val requestNotificationPermission = rememberNotificationPermissionRequest()
@@ -269,36 +267,20 @@ fun ButtonRemapperScreen(
             }
             gap(SECTION_GAP - GROUP_GAP)
 
-            sectionTitle(R.string.settings)
-            val screenOffRow: @Composable () -> Unit = {
-                ToggleRow(
-                    icon = Icons.Filled.Bedtime,
-                    title = stringResource(R.string.button_remapper_volume_screen_off),
-                    description = stringResource(R.string.button_remapper_volume_screen_off_desc),
-                    checked = volumeScreenOff,
-                    enabled = hasShizukuPermission,
-                    onCheckedChange = { enabled ->
-                        volumeScreenOff = enabled
-                        syncService { ButtonRemapperManager.setVolumeScreenOff(context, enabled) }
-                    }
-                )
-            }
-            val windowRow: @Composable () -> Unit = {
-                DoublePressWindowSlider(
-                    windowMs = doublePressWindowMs,
-                    enabled = hasShizukuPermission,
-                    onWindowChange = { windowMs ->
-                        doublePressWindowMs = windowMs
-                        syncService { ButtonRemapperManager.setDoublePressWindowMs(context, windowMs) }
-                    }
-                )
-            }
             if (MULTI_PRESS_TRIGGERS.any { serviceActions[it] != null }) {
-                cardRows(screenOffRow, windowRow)
-            } else {
-                cardRows(screenOffRow)
+                sectionTitle(R.string.settings)
+                cardRows({
+                    DoublePressWindowSlider(
+                        windowMs = doublePressWindowMs,
+                        enabled = hasShizukuPermission,
+                        onWindowChange = { windowMs ->
+                            doublePressWindowMs = windowMs
+                            syncService { ButtonRemapperManager.setDoublePressWindowMs(context, windowMs) }
+                        }
+                    )
+                })
+                gap(SECTION_GAP)
             }
-            gap(SECTION_GAP)
         }
     }
 }

@@ -90,8 +90,6 @@
     <string name="button_gesture_double_press">ضغطة مزدوجة</string>
     <string name="button_gesture_long_press">ضغطة مطولة</string>
     <string name="button_gesture_triple_press">ضغطة ثلاثية</string>
-    <string name="button_remapper_volume_screen_off">أزرار الصوت والشاشة مطفأة</string>
-    <string name="button_remapper_volume_screen_off_desc">تستمر إجراءات أزرار الصوت في العمل والشاشة مطفأة. غير ممكن على الأجهزة التي تشترك فيها أزرار الصوت مع زر التشغيل في جهاز الإدخال نفسه.</string>
     <string name="qs_toggle_battery_saver">توفير شحن البطارية</string>
     <string name="qs_toggle_battery_saver_desc">تشغيل توفير شحن البطارية أو إيقافه</string>
     <string name="shortcut_tile_action">إجراء</string>

@@ -664,8 +664,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="button_gesture_double_press">Doppia pressione</string>
     <string name="button_gesture_long_press">Pressione prolungata</string>
     <string name="button_gesture_triple_press">Tripla pressione</string>
-    <string name="button_remapper_volume_screen_off">Tasti del volume a schermo spento</string>
-    <string name="button_remapper_volume_screen_off_desc">Le azioni dei tasti del volume funzionano anche a schermo spento. Non è possibile sui dispositivi in cui i tasti del volume condividono il dispositivo di input con il tasto di accensione.</string>
     <string name="qs_toggle_battery_saver">Risparmio energetico</string>
     <string name="qs_toggle_battery_saver_desc">Attiva o disattiva il risparmio energetico</string>
     <string name="shortcut_tile_action">Azione</string>

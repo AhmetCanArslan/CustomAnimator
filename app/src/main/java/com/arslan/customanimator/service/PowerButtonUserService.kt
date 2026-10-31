@@ -58,7 +58,6 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     })
     private val grabbedDevices = HashSet<EvdevDevice>()
     private var interactive = false
-    private var volumeScreenOff = false
     private var powerMultiPress = false
     private var grabPending = false
     private var holdDownTime = 0L
@@ -123,8 +122,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     override fun start(
         listener: IPowerButtonListener?,
         doublePressWindowMs: Int,
-        triggers: Array<String>?,
-        volumeScreenOff: Boolean
+        triggers: Array<String>?
     ): Boolean {
         val active = triggers.orEmpty().mapNotNull(ButtonTrigger::fromName)
         val pressCounts = active.filter { it in ButtonTrigger.power }.mapTo(HashSet()) { it.presses }
@@ -132,7 +130,6 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             if (pressCounts.isEmpty()) PowerPressDetector.PASS_THROUGH else doublePressWindowMs.toLong()
         synchronized(lock) {
             this.listener = listener
-            this.volumeScreenOff = volumeScreenOff
             powerMultiPress = pressCounts.isNotEmpty()
             volumeDetector.triggers = active.filterTo(HashSet()) { it in ButtonTrigger.volume }
             volumeDetector.doublePressWindowMs = doublePressWindowMs.toLong()
@@ -161,7 +158,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     private fun wantsGrab(device: EvdevDevice): Boolean = when {
         device.hasPower -> (interactive || powerMultiPress) && !grabPending
         volumeDetector.triggers.isEmpty() -> false
-        else -> interactive || volumeScreenOff
+        else -> true
     }
 
     private fun applyGrabs(): Boolean = devices.map { applyGrab(it, wantsGrab(it)) }.all { it }
@@ -266,7 +263,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
 
     private fun onKey(code: Int, value: Int, now: Long) {
         val detector = detector ?: return
-        if (code == EvdevDevice.KEY_POWER) notifyListener { it.onPowerKey() }
+        notifyListener { it.onButtonKey() }
         when {
             code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> {
                 volumeDetector.onPowerDown(now)

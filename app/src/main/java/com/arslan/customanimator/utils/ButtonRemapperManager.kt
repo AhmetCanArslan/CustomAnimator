@@ -35,7 +35,6 @@ object ButtonRemapperManager {
     private const val LEGACY_TYPE_SUFFIX = "_action_type"
     private const val LEGACY_VALUE_SUFFIX = "_action_value"
     private const val KEY_DOUBLE_PRESS_WINDOW = "double_press_window_ms"
-    private const val KEY_VOLUME_SCREEN_OFF = "volume_screen_off"
     private const val KEY_PREVIOUS_ASSISTANT = "previous_assistant"
     private const val KEY_PREVIOUS_RECOGNIZER = "previous_recognizer"
     private const val UNSET = -1
@@ -117,12 +116,6 @@ object ButtonRemapperManager {
 
     fun clearServiceActions(context: Context) {
         ButtonTrigger.service.forEach { setAction(context, it, null) }
-    }
-
-    fun isVolumeScreenOff(context: Context): Boolean = prefs(context).getBoolean(KEY_VOLUME_SCREEN_OFF, false)
-
-    fun setVolumeScreenOff(context: Context, enabled: Boolean) {
-        prefs(context).edit().putBoolean(KEY_VOLUME_SCREEN_OFF, enabled).commit()
     }
 
     fun getDoublePressWindowMs(context: Context): Int =

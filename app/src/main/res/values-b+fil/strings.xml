@@ -644,8 +644,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="button_gesture_double_press">Double press</string>
     <string name="button_gesture_long_press">Long press</string>
     <string name="button_gesture_triple_press">Tatlong pindot</string>
-    <string name="button_remapper_volume_screen_off">Mga volume key kapag nakapatay ang screen</string>
-    <string name="button_remapper_volume_screen_off_desc">Gumagana pa rin ang mga aksyon ng volume key kahit nakapatay ang screen. Hindi posible sa mga device kung saan kapareho ng power button ang input device ng mga volume key.</string>
     <string name="qs_toggle_battery_saver">Battery saver</string>
     <string name="qs_toggle_battery_saver_desc">I-on o i-off ang battery saver</string>
     <string name="shortcut_tile_action">Aksyon</string>

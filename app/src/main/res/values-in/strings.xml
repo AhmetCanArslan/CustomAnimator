@@ -644,8 +644,6 @@ Durasi Animator: %3$.2f</string>
     <string name="button_gesture_double_press">Tekan dua kali</string>
     <string name="button_gesture_long_press">Tekan lama</string>
     <string name="button_gesture_triple_press">Tekan tiga kali</string>
-    <string name="button_remapper_volume_screen_off">Tombol volume saat layar mati</string>
-    <string name="button_remapper_volume_screen_off_desc">Tindakan tombol volume tetap berjalan saat layar mati. Tidak dapat dilakukan di perangkat yang tombol volumenya berbagi perangkat input dengan tombol daya.</string>
     <string name="qs_toggle_battery_saver">Penghemat baterai</string>
     <string name="qs_toggle_battery_saver_desc">Aktifkan atau nonaktifkan penghemat baterai</string>
     <string name="shortcut_tile_action">Tindakan</string>

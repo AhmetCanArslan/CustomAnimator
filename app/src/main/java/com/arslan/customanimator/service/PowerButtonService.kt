@@ -95,7 +95,7 @@ class PowerButtonService : Service() {
             ButtonTrigger.fromName(trigger)?.let { scope.launch { perform(it) } }
         }
 
-        override fun onPowerKey() {
+        override fun onButtonKey() {
             pressWakeLock.acquire(pressWakeMs)
         }
     }
@@ -182,8 +182,7 @@ class PowerButtonService : Service() {
             val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
             pressWakeMs = windowMs + PRESS_WAKE_MARGIN_MS
             val triggerNames = triggers.map { it.name }.toTypedArray()
-            val volumeScreenOff = ButtonRemapperManager.isVolumeScreenOff(applicationContext)
-            runCatching { service?.start(listener, windowMs, triggerNames, volumeScreenOff) == true }
+            runCatching { service?.start(listener, windowMs, triggerNames) == true }
                 .getOrDefault(false)
         }
         if (!started) {

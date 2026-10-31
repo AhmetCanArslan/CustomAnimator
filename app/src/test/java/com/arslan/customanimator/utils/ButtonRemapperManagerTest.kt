@@ -226,13 +226,6 @@ class ButtonRemapperManagerTest {
     }
 
     @Test
-    fun volumeScreenOffIsOffUntilEnabled() {
-        assertFalse(ButtonRemapperManager.isVolumeScreenOff(context))
-        ButtonRemapperManager.setVolumeScreenOff(context, true)
-        assertTrue(ButtonRemapperManager.isVolumeScreenOff(context))
-    }
-
-    @Test
     fun corruptStoredActionReadsAsNoAction() {
         remapperPrefs().edit().putString("double_press_action", "{not json").commit()
         assertNull(ButtonRemapperManager.getAction(context, ButtonTrigger.POWER_DOUBLE_PRESS))

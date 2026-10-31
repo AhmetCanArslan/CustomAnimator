@@ -644,8 +644,6 @@
     <string name="button_gesture_double_press">Двойное нажатие</string>
     <string name="button_gesture_long_press">Долгое нажатие</string>
     <string name="button_gesture_triple_press">Тройное нажатие</string>
-    <string name="button_remapper_volume_screen_off">Кнопки громкости при выключенном экране</string>
-    <string name="button_remapper_volume_screen_off_desc">Действия кнопок громкости работают и при выключенном экране. Невозможно на устройствах, где кнопки громкости и кнопка питания относятся к одному устройству ввода.</string>
     <string name="qs_toggle_battery_saver">Экономия заряда</string>
     <string name="qs_toggle_battery_saver_desc">Включить или выключить экономию заряда</string>
     <string name="shortcut_tile_action">Действие</string>

@@ -644,8 +644,6 @@ Duración del Animador: %3$.2f</string>
     <string name="button_gesture_double_press">Doble pulsación</string>
     <string name="button_gesture_long_press">Pulsación larga</string>
     <string name="button_gesture_triple_press">Triple pulsación</string>
-    <string name="button_remapper_volume_screen_off">Botones de volumen con la pantalla apagada</string>
-    <string name="button_remapper_volume_screen_off_desc">Las acciones de los botones de volumen siguen funcionando con la pantalla apagada. No es posible en dispositivos donde los botones de volumen comparten dispositivo de entrada con el botón de encendido.</string>
     <string name="qs_toggle_battery_saver">Ahorro de batería</string>
     <string name="qs_toggle_battery_saver_desc">Activa o desactiva el ahorro de batería</string>
     <string name="shortcut_tile_action">Acción</string>
