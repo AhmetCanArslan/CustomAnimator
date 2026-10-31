@@ -43,7 +43,7 @@ class PowerButtonService : Service() {
         private const val TAG = "PowerButtonService"
         private const val CHANNEL_ID = "power_button_channel"
         private const val NOTIF_ID = 4203
-        private const val SERVICE_VERSION = 10
+        private const val SERVICE_VERSION = 11
         private const val RECONNECT_BASE_DELAY_MS = 2000L
         private const val MAX_RECONNECT_ATTEMPTS = 5
         private const val PRESS_WAKE_MARGIN_MS = 1000L
@@ -91,11 +91,7 @@ class PowerButtonService : Service() {
     }
 
     private val listener = object : IPowerButtonListener.Stub() {
-        override fun onDoublePress() {
-            scope.launch { perform(ButtonTrigger.POWER_DOUBLE_PRESS) }
-        }
-
-        override fun onVolumeTrigger(trigger: String?) {
+        override fun onTrigger(trigger: String?) {
             ButtonTrigger.fromName(trigger)?.let { scope.launch { perform(it) } }
         }
 
@@ -185,10 +181,9 @@ class PowerButtonService : Service() {
             val triggers = ButtonRemapperManager.activeServiceTriggers(applicationContext)
             val windowMs = ButtonRemapperManager.getDoublePressWindowMs(applicationContext)
             pressWakeMs = windowMs + PRESS_WAKE_MARGIN_MS
-            val powerDoublePress = ButtonTrigger.POWER_DOUBLE_PRESS in triggers
-            val volumeTriggers = triggers.filter { it in ButtonTrigger.volume }.map { it.name }.toTypedArray()
+            val triggerNames = triggers.map { it.name }.toTypedArray()
             val volumeScreenOff = ButtonRemapperManager.isVolumeScreenOff(applicationContext)
-            runCatching { service?.start(listener, windowMs, powerDoublePress, volumeTriggers, volumeScreenOff) == true }
+            runCatching { service?.start(listener, windowMs, triggerNames, volumeScreenOff) == true }
                 .getOrDefault(false)
         }
         if (!started) {

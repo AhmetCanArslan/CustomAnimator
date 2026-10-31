@@ -13,6 +13,7 @@ class PowerPressDetectorTest {
     fun setUp() {
         detector = PowerPressDetector(
             TIMEOUT,
+            setOf(2),
             object : PowerPressDetector.Output {
                 override fun replayPresses(count: Int) {
                     events += "replay $count"
@@ -26,8 +27,8 @@ class PowerPressDetectorTest {
                     events += "hold up"
                 }
 
-                override fun doublePress() {
-                    events += "double"
+                override fun multiPress(count: Int) {
+                    events += if (count == 2) "double" else "triple"
                 }
             }
         )
@@ -79,6 +80,45 @@ class PowerPressDetectorTest {
         detector.onTimeout(410 + TIMEOUT)
 
         assertEquals(listOf("double", "replay 5"), events)
+    }
+
+    @Test
+    fun tripleRunsOnTheThirdReleaseAndDoubleWaitsForTheWindowWhenBothAreSet() {
+        detector.pressCounts = setOf(2, 3)
+        press(at = 0)
+        press(at = 100)
+        assertEquals(emptyList<String>(), events)
+
+        detector.onTimeout(110 + TIMEOUT)
+        assertEquals(listOf("double"), events)
+
+        events.clear()
+        press(at = 1000)
+        press(at = 1100)
+        press(at = 1200)
+        assertEquals(listOf("triple"), events)
+
+        detector.onTimeout(1210 + TIMEOUT)
+        assertEquals(listOf("triple"), events)
+    }
+
+    @Test
+    fun withOnlyTripleSetTwoPressesAreReplayed() {
+        detector.pressCounts = setOf(3)
+        press(at = 0)
+        press(at = 100)
+        detector.onTimeout(110 + TIMEOUT)
+
+        assertEquals(listOf("replay 2"), events)
+    }
+
+    @Test
+    fun morePressesThanTripleAreStillReplayedForEmergencyGestures() {
+        detector.pressCounts = setOf(2, 3)
+        (0 until 5).forEach { press(at = it * 100L) }
+        detector.onTimeout(410 + TIMEOUT)
+
+        assertEquals(listOf("triple", "replay 5"), events)
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.arslan.customanimator.service
 
 class PowerPressDetector(
     var multiPressTimeoutMs: Long,
+    var pressCounts: Set<Int>,
     private val output: Output
 ) {
 
@@ -9,7 +10,7 @@ class PowerPressDetector(
         fun replayPresses(count: Int)
         fun holdDown()
         fun holdUp()
-        fun doublePress()
+        fun multiPress(count: Int)
     }
 
     var deadline = NO_DEADLINE
@@ -40,7 +41,7 @@ class PowerPressDetector(
         if (!pressing) return
         pressing = false
         presses++
-        if (isDoublePress()) output.doublePress()
+        if (presses == pressCounts.maxOrNull()) output.multiPress(presses)
         deadline = now + multiPressTimeoutMs
     }
 
@@ -74,10 +75,12 @@ class PowerPressDetector(
         output.holdDown()
     }
 
-    private fun isDoublePress() = presses == DOUBLE_PRESS && multiPressTimeoutMs != PASS_THROUGH
-
     private fun replayPending() {
-        if (presses > 0 && !isDoublePress()) output.replayPresses(presses)
+        when {
+            presses == 0 || presses == pressCounts.maxOrNull() -> Unit
+            presses in pressCounts -> output.multiPress(presses)
+            else -> output.replayPresses(presses)
+        }
         presses = 0
         deadline = NO_DEADLINE
     }
@@ -85,6 +88,5 @@ class PowerPressDetector(
     companion object {
         const val NO_DEADLINE = -1L
         const val PASS_THROUGH = 0L
-        private const val DOUBLE_PRESS = 2
     }
 }

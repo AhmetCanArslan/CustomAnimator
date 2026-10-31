@@ -53,13 +53,13 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
         }
 
         override fun trigger(trigger: ButtonTrigger) {
-            notifyListener { it.onVolumeTrigger(trigger.name) }
+            notifyListener { it.onTrigger(trigger.name) }
         }
     })
     private val grabbedDevices = HashSet<EvdevDevice>()
     private var interactive = false
     private var volumeScreenOff = false
-    private var powerDoublePress = false
+    private var powerMultiPress = false
     private var grabPending = false
     private var holdDownTime = 0L
     private val forwardedDowns = HashMap<Int, KeyEvent>()
@@ -99,8 +99,9 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             inject(powerEvent(KeyEvent.ACTION_UP, holdDownTime))
         }
 
-        override fun doublePress() {
-            notifyListener { it.onDoublePress() }
+        override fun multiPress(count: Int) {
+            val trigger = ButtonTrigger.power.firstOrNull { it.presses == count } ?: return
+            notifyListener { it.onTrigger(trigger.name) }
         }
     }
 
@@ -122,25 +123,28 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     override fun start(
         listener: IPowerButtonListener?,
         doublePressWindowMs: Int,
-        powerDoublePress: Boolean,
-        volumeTriggers: Array<String>?,
+        triggers: Array<String>?,
         volumeScreenOff: Boolean
     ): Boolean {
-        val multiPressTimeoutMs = if (powerDoublePress) doublePressWindowMs.toLong() else PowerPressDetector.PASS_THROUGH
+        val active = triggers.orEmpty().mapNotNull(ButtonTrigger::fromName)
+        val pressCounts = active.filter { it in ButtonTrigger.power }.mapTo(HashSet()) { it.presses }
+        val multiPressTimeoutMs =
+            if (pressCounts.isEmpty()) PowerPressDetector.PASS_THROUGH else doublePressWindowMs.toLong()
         synchronized(lock) {
             this.listener = listener
             this.volumeScreenOff = volumeScreenOff
-            this.powerDoublePress = powerDoublePress
-            volumeDetector.triggers = volumeTriggers.orEmpty().mapNotNull(ButtonTrigger::fromName).toSet()
+            powerMultiPress = pressCounts.isNotEmpty()
+            volumeDetector.triggers = active.filterTo(HashSet()) { it in ButtonTrigger.volume }
             volumeDetector.doublePressWindowMs = doublePressWindowMs.toLong()
             detector?.let {
                 it.multiPressTimeoutMs = multiPressTimeoutMs
+                it.pressCounts = pressCounts
                 applyGrabs()
                 return true
             }
             devices = EvdevDevice.openButtonDevices()
             if (devices.isEmpty()) return false
-            detector = PowerPressDetector(multiPressTimeoutMs, output)
+            detector = PowerPressDetector(multiPressTimeoutMs, pressCounts, output)
         }
         thread(name = "power-button-reader") { readLoop() }
         return true
@@ -155,7 +159,7 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
     }
 
     private fun wantsGrab(device: EvdevDevice): Boolean = when {
-        device.hasPower -> (interactive || powerDoublePress) && !grabPending
+        device.hasPower -> (interactive || powerMultiPress) && !grabPending
         volumeDetector.triggers.isEmpty() -> false
         else -> interactive || volumeScreenOff
     }
