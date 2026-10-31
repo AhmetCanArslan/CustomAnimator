@@ -2,6 +2,7 @@ package com.arslan.customanimator
 
 import android.Manifest
 import android.content.ClipData
+import android.app.NotificationManager
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -22,6 +23,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryFull
+import androidx.compose.material.icons.filled.Downloading
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Layers
@@ -56,6 +58,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.arslan.customanimator.notify.data.RuleType
 import com.arslan.customanimator.notify.data.RulesManager
 import com.arslan.customanimator.screenshot.ScreenshotFolder
+import com.arslan.customanimator.utils.LiveUpdatesManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import com.arslan.customanimator.utils.ShizukuState
 import com.arslan.customanimator.utils.LocalShizukuAvailable
@@ -73,7 +76,8 @@ enum class AppPermission {
     POST_NOTIFICATIONS,
     OVERLAY,
     BATTERY_UNRESTRICTED,
-    SCREENSHOT_FOLDER
+    SCREENSHOT_FOLDER,
+    PROMOTED_NOTIFICATIONS
 }
 
 data class PermissionEntry(
@@ -108,6 +112,10 @@ fun isPermissionGranted(context: Context, permission: AppPermission): Boolean = 
             ?.isIgnoringBatteryOptimizations(context.packageName) == true
 
     AppPermission.SCREENSHOT_FOLDER -> ScreenshotFolder.hasAccess(context)
+
+    AppPermission.PROMOTED_NOTIFICATIONS ->
+        !LiveUpdatesManager.isSupported() ||
+            context.getSystemService(NotificationManager::class.java).canPostPromotedNotifications()
 }
 
 private val NOTIFY_BASE_REQUIRED = listOf(
@@ -133,6 +141,12 @@ fun notifyRequiredPermissions(context: Context): List<AppPermission> {
 
 val LIVE_ACTIVITY_PERMISSIONS = listOf(AppPermission.SHIZUKU, AppPermission.OVERLAY)
 
+val LIVE_UPDATES_PERMISSIONS = listOf(
+    AppPermission.NOTIFICATION_ACCESS,
+    AppPermission.POST_NOTIFICATIONS,
+    AppPermission.PROMOTED_NOTIFICATIONS
+)
+
 val SCREENSHOT_PERMISSIONS = listOf(
     AppPermission.SCREENSHOT_FOLDER,
     AppPermission.POST_NOTIFICATIONS,
@@ -141,9 +155,10 @@ val SCREENSHOT_PERMISSIONS = listOf(
 
 private val SYSTEM_PERMISSIONS = listOf(AppPermission.SHIZUKU, AppPermission.SECURE_SETTINGS)
 
-private val NOTIFICATION_PERMISSIONS = listOf(
+private val NOTIFICATION_PERMISSIONS = listOfNotNull(
     AppPermission.NOTIFICATION_ACCESS,
-    AppPermission.POST_NOTIFICATIONS
+    AppPermission.POST_NOTIFICATIONS,
+    AppPermission.PROMOTED_NOTIFICATIONS.takeIf { LiveUpdatesManager.isSupported() }
 )
 
 private val OTHER_PERMISSIONS = listOf(
@@ -159,7 +174,8 @@ private val PERMISSION_ICONS = mapOf(
     AppPermission.POST_NOTIFICATIONS to Icons.Filled.Notifications,
     AppPermission.OVERLAY to Icons.Filled.Layers,
     AppPermission.BATTERY_UNRESTRICTED to Icons.Filled.BatteryFull,
-    AppPermission.SCREENSHOT_FOLDER to Icons.Filled.Folder
+    AppPermission.SCREENSHOT_FOLDER to Icons.Filled.Folder,
+    AppPermission.PROMOTED_NOTIFICATIONS to Icons.Filled.Downloading
 )
 
 private val PERMISSION_TITLES = mapOf(
@@ -169,7 +185,8 @@ private val PERMISSION_TITLES = mapOf(
     AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications,
     AppPermission.OVERLAY to R.string.pn_permission_overlay_title,
     AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background,
-    AppPermission.SCREENSHOT_FOLDER to R.string.screenshot_perm_folder
+    AppPermission.SCREENSHOT_FOLDER to R.string.screenshot_perm_folder,
+    AppPermission.PROMOTED_NOTIFICATIONS to R.string.permission_live_updates
 )
 
 private val PERMISSION_DESCRIPTIONS = mapOf(
@@ -179,7 +196,8 @@ private val PERMISSION_DESCRIPTIONS = mapOf(
     AppPermission.POST_NOTIFICATIONS to R.string.pn_permission_post_notifications_desc,
     AppPermission.OVERLAY to R.string.permission_overlay_desc,
     AppPermission.BATTERY_UNRESTRICTED to R.string.pn_permission_run_background_desc,
-    AppPermission.SCREENSHOT_FOLDER to R.string.permission_screenshot_folder_desc
+    AppPermission.SCREENSHOT_FOLDER to R.string.permission_screenshot_folder_desc,
+    AppPermission.PROMOTED_NOTIFICATIONS to R.string.permission_live_updates_desc
 )
 
 private fun descriptionOf(permission: AppPermission, granted: Boolean, isShizukuAvailable: Boolean): Int = when {
@@ -255,6 +273,10 @@ private fun settingsIntentOf(context: Context, permission: AppPermission): Inten
     if (permission == AppPermission.NOTIFICATION_ACCESS) {
         return Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
     }
+    if (permission == AppPermission.PROMOTED_NOTIFICATIONS) {
+        return Intent(Settings.ACTION_APP_NOTIFICATION_PROMOTION_SETTINGS)
+            .putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+    }
     val action = if (permission == AppPermission.OVERLAY) {
         Settings.ACTION_MANAGE_OVERLAY_PERMISSION
     } else {
@@ -313,6 +335,7 @@ fun rememberPermissionRequester(
             AppPermission.SCREENSHOT_FOLDER -> screenshotFolderLauncher.launch(ScreenshotFolder.initialUri)
 
             AppPermission.NOTIFICATION_ACCESS,
+            AppPermission.PROMOTED_NOTIFICATIONS,
             AppPermission.OVERLAY,
             AppPermission.BATTERY_UNRESTRICTED ->
                 settingsLauncher.launch(settingsIntentOf(context, permission))

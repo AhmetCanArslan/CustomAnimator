@@ -18,6 +18,7 @@ import com.arslan.customanimator.CompileBoosterScreen
 import com.arslan.customanimator.WhatsAppCleanerScreen
 import com.arslan.customanimator.OptimizerScreenContent
 import com.arslan.customanimator.CarrierNameScreen
+import com.arslan.customanimator.LiveUpdatesScreen
 import com.arslan.customanimator.OtpCopierScreen
 import com.arslan.customanimator.DebloaterScreen
 import com.arslan.customanimator.StatusBarIconsScreen
@@ -178,6 +179,7 @@ class ScreenLayoutTest {
             onNavigateToAlarmRevealer = {},
             onNavigateToCarrierName = {},
             onNavigateToOtpCopier = {},
+            onNavigateToLiveUpdates = {},
             onNavigateToStatusBarIcons = {},
             onNavigateToSystemColors = {},
             onNavigateToButtonRemapper = {}
@@ -228,6 +230,11 @@ class ScreenLayoutTest {
     @Test
     fun otpCopierScreenFitsSmallPhones() = screenFits(R.string.otp_copier) {
         OtpCopierScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun liveUpdatesScreenFitsSmallPhones() = screenFits(R.string.live_updates) {
+        LiveUpdatesScreen(onBack = {})
     }
 
     @Test

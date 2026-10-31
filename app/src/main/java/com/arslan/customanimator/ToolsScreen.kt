@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Unarchive
 import androidx.compose.material.icons.filled.InstallMobile
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Memory
+import androidx.compose.material.icons.filled.Downloading
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.Keyboard
@@ -36,12 +37,14 @@ import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material.icons.filled.Widgets
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.utils.DeveloperOptionsManager
+import com.arslan.customanimator.utils.LiveUpdatesManager
 import com.arslan.customanimator.utils.ShizukuHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,6 +68,7 @@ fun ToolsScreenContent(
     onNavigateToAlarmRevealer: () -> Unit,
     onNavigateToCarrierName: () -> Unit,
     onNavigateToOtpCopier: () -> Unit,
+    onNavigateToLiveUpdates: () -> Unit,
     onNavigateToStatusBarIcons: () -> Unit,
     onNavigateToSystemColors: () -> Unit,
     onNavigateToButtonRemapper: () -> Unit,
@@ -84,6 +88,8 @@ fun ToolsScreenContent(
     val openSetup = LocalOpenSetupGuide.current
     val contentResolver = context.contentResolver
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val liveUpdatesUnsupported = stringResource(R.string.live_updates_unsupported)
 
     var canWriteSystemSettings by remember { mutableStateOf(ShizukuHelper.canWriteSystemSettings(context)) }
     var fancyImeDisabled by remember { mutableStateOf(DeveloperOptionsManager.isFancyImeAnimationsDisabled(contentResolver)) }
@@ -245,6 +251,18 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.otp_copier),
                         description = stringResource(R.string.otp_copier_desc),
                         onClick = onNavigateToOtpCopier
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Downloading,
+                        title = stringResource(R.string.live_updates),
+                        description = stringResource(R.string.live_updates_desc),
+                        enabled = LiveUpdatesManager.isSupported(),
+                        onDisabledClick = {
+                            coroutineScope.launch { snackbarHostState.showSnackbar(liveUpdatesUnsupported) }
+                        },
+                        onClick = onNavigateToLiveUpdates
                     )
                 },
                 {
@@ -496,5 +514,6 @@ fun ToolsScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
+        SnackbarHost(snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
     }
 }

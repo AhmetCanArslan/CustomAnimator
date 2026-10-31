@@ -58,6 +58,7 @@ import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Downloading
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.PlaylistRemove
 import androidx.compose.material.icons.filled.PowerSettingsNew
@@ -219,6 +220,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.TOOLS.row(R.string.save_to_device, R.string.save_to_device_desc, Icons.Filled.SaveAlt),
     HomeTab.TOOLS.screen(HomeScreen.SCREENSHOT_ACTIONS, R.string.screenshot_actions, R.string.screenshot_actions_desc, Icons.Filled.Screenshot),
     HomeTab.TOOLS.screen(HomeScreen.OTP_COPIER, R.string.otp_copier, R.string.otp_copier_desc, Icons.Filled.Password),
+    HomeTab.TOOLS.screen(HomeScreen.LIVE_UPDATES, R.string.live_updates, R.string.live_updates_desc, Icons.Filled.Downloading),
     HomeTab.TOOLS.screen(HomeScreen.ALARM_REVEALER, R.string.alarm_revealer, R.string.alarm_revealer_desc, Icons.Filled.Alarm),
     HomeTab.TOOLS.row(R.string.disable_keyboard_animation, R.string.disable_keyboard_animation_desc, Icons.Filled.Keyboard),
     HomeTab.TOOLS.row(R.string.disable_rotation_suggestions, R.string.disable_rotation_suggestions_desc, Icons.Filled.ScreenRotation),
