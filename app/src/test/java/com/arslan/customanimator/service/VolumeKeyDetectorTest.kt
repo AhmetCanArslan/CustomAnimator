@@ -203,6 +203,48 @@ class VolumeKeyDetectorTest {
     }
 
     @Test
+    fun triplePressRunsOnTheThirdPressAndDoubleWaitsForTheWindow() {
+        detector.triggers = setOf(ButtonTrigger.VOLUME_DOWN_DOUBLE, ButtonTrigger.VOLUME_DOWN_TRIPLE)
+        tap(VOLUME_DOWN, 0)
+        tap(VOLUME_DOWN, 100)
+        assertEquals(emptyList<String>(), events)
+        detector.onTimeout(150 + WINDOW)
+        assertEquals(listOf("VOLUME_DOWN_DOUBLE"), events)
+
+        events.clear()
+        tap(VOLUME_DOWN, 1_000)
+        tap(VOLUME_DOWN, 1_100)
+        detector.onDown(VOLUME_DOWN, 1_200)
+        assertEquals(listOf("VOLUME_DOWN_TRIPLE"), events)
+
+        detector.onUp(VOLUME_DOWN, 1_250)
+        detector.onTimeout(5_000)
+        assertEquals(listOf("VOLUME_DOWN_TRIPLE"), events)
+        assertEquals(PowerPressDetector.NO_DEADLINE, detector.deadline)
+    }
+
+    @Test
+    fun withOnlyTripleSetTwoTapsAreReplayed() {
+        detector.triggers = setOf(ButtonTrigger.VOLUME_UP_TRIPLE)
+        tap(VOLUME_UP, 0)
+        tap(VOLUME_UP, 100)
+        detector.onTimeout(150 + WINDOW)
+
+        assertEquals(listOf("down $VOLUME_UP", "up $VOLUME_UP", "down $VOLUME_UP", "up $VOLUME_UP"), events)
+    }
+
+    @Test
+    fun tapThenHoldReplaysTheTapBeforeTheHold() {
+        detector.triggers = setOf(ButtonTrigger.VOLUME_UP_TRIPLE)
+        tap(VOLUME_UP, 0)
+        detector.onDown(VOLUME_UP, 100)
+        detector.onTimeout(100 + WINDOW)
+        detector.onUp(VOLUME_UP, 800)
+
+        assertEquals(listOf("down $VOLUME_UP", "up $VOLUME_UP", "down $VOLUME_UP", "up $VOLUME_UP"), events)
+    }
+
+    @Test
     fun powerKeyFlushesPendingVolumeKeysSoTheScreenshotChordWorks() {
         detector.triggers = setOf(ButtonTrigger.VOLUME_DOWN_LONG)
         detector.onDown(VOLUME_DOWN, 0)
@@ -235,6 +277,11 @@ class VolumeKeyDetectorTest {
 
         assertEquals(emptyList<String>(), events)
         assertEquals(PowerPressDetector.NO_DEADLINE, detector.deadline)
+    }
+
+    private fun tap(code: Int, at: Long) {
+        detector.onDown(code, at)
+        detector.onUp(code, at + 50)
     }
 
     private companion object {

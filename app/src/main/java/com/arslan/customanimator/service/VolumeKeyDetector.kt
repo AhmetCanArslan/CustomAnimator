@@ -11,9 +11,9 @@ class VolumeKeyDetector(private val output: Output) {
         fun trigger(trigger: ButtonTrigger)
     }
 
-    private enum class Phase { DOWN, WAITING_SECOND, FORWARDED, SWALLOWED }
+    private enum class Phase { DOWN, WAITING_NEXT, FORWARDED, SWALLOWED }
 
-    private class Key(var phase: Phase, val downAt: Long, var deadline: Long)
+    private class Key(var phase: Phase, var downAt: Long, var deadline: Long, var presses: Int = 1)
 
     var triggers: Set<ButtonTrigger> = emptySet()
     var doublePressWindowMs = 250L
@@ -32,9 +32,8 @@ class VolumeKeyDetector(private val output: Output) {
         }
         if (fireCombo(code, now)) return
         val key = keys[code]
-        if (key?.phase == Phase.WAITING_SECOND) {
-            swallow(key)
-            output.trigger(doubleTriggers.getValue(code))
+        if (key?.phase == Phase.WAITING_NEXT) {
+            pressAgain(code, key, now)
             return
         }
         keys[code] = Key(Phase.DOWN, now, now + holdDelay(code))
@@ -49,7 +48,7 @@ class VolumeKeyDetector(private val output: Output) {
             }
             Phase.SWALLOWED -> keys.remove(code)
             Phase.DOWN -> released(code, key, now)
-            Phase.WAITING_SECOND -> Unit
+            Phase.WAITING_NEXT -> Unit
         }
     }
 
@@ -62,8 +61,14 @@ class VolumeKeyDetector(private val output: Output) {
         chordHeld = true
         keys.entries.toList().forEach { (code, key) ->
             when (key.phase) {
-                Phase.DOWN -> forward(code, now)
-                Phase.WAITING_SECOND -> tap(code)
+                Phase.DOWN -> {
+                    settle(code, key.presses - 1)
+                    forward(code, now)
+                }
+                Phase.WAITING_NEXT -> {
+                    keys.remove(code)
+                    settle(code, key.presses)
+                }
                 else -> Unit
             }
         }
@@ -79,7 +84,25 @@ class VolumeKeyDetector(private val output: Output) {
     }
 
     private fun intercepts(code: Int): Boolean =
-        ButtonTrigger.VOLUME_COMBO in triggers || doubleTriggers[code] in triggers || longTriggers[code] in triggers
+        ButtonTrigger.VOLUME_COMBO in triggers || lastPressCount(code) > 0 || longTriggers[code] in triggers
+
+    private fun lastPressCount(code: Int): Int =
+        pressTriggers.getValue(code).filter { it in triggers }.maxOfOrNull { it.presses } ?: 0
+
+    private fun pressTrigger(code: Int, presses: Int): ButtonTrigger? =
+        pressTriggers.getValue(code).firstOrNull { it.presses == presses && it in triggers }
+
+    private fun pressAgain(code: Int, key: Key, now: Long) {
+        key.presses++
+        if (key.presses == lastPressCount(code)) {
+            swallow(key)
+            pressTrigger(code, key.presses)?.let(output::trigger)
+            return
+        }
+        key.phase = Phase.DOWN
+        key.downAt = now
+        key.deadline = now + holdDelay(code)
+    }
 
     private fun fireCombo(code: Int, now: Long): Boolean {
         if (ButtonTrigger.VOLUME_COMBO !in triggers) return false
@@ -93,13 +116,13 @@ class VolumeKeyDetector(private val output: Output) {
 
     private fun holdDelay(code: Int): Long = when {
         longTriggers[code] in triggers -> LONG_PRESS_MS
-        doubleTriggers[code] in triggers -> doublePressWindowMs
+        lastPressCount(code) > 0 -> doublePressWindowMs
         else -> COMBO_WINDOW_MS
     }
 
     private fun released(code: Int, key: Key, now: Long) {
-        if (doubleTriggers[code] in triggers) {
-            key.phase = Phase.WAITING_SECOND
+        if (lastPressCount(code) > key.presses) {
+            key.phase = Phase.WAITING_NEXT
             key.deadline = now + doublePressWindowMs
         } else {
             tap(code)
@@ -108,7 +131,10 @@ class VolumeKeyDetector(private val output: Output) {
 
     private fun expire(code: Int, key: Key, now: Long) {
         when (key.phase) {
-            Phase.WAITING_SECOND -> tap(code)
+            Phase.WAITING_NEXT -> {
+                keys.remove(code)
+                settle(code, key.presses)
+            }
             Phase.FORWARDED -> {
                 key.deadline = now + KEY_REPEAT_DELAY_MS
                 output.repeatKey(code)
@@ -119,6 +145,8 @@ class VolumeKeyDetector(private val output: Output) {
     }
 
     private fun expireHeld(code: Int, key: Key) {
+        settle(code, key.presses - 1)
+        key.presses = 1
         val longTrigger = longTriggers.getValue(code)
         if (longTrigger in triggers) {
             swallow(key)
@@ -137,8 +165,19 @@ class VolumeKeyDetector(private val output: Output) {
 
     private fun tap(code: Int) {
         keys.remove(code)
-        output.pressKey(code)
-        output.releaseKey(code)
+        settle(code, 1)
+    }
+
+    private fun settle(code: Int, presses: Int) {
+        val trigger = pressTrigger(code, presses)
+        if (trigger != null) {
+            output.trigger(trigger)
+            return
+        }
+        repeat(presses) {
+            output.pressKey(code)
+            output.releaseKey(code)
+        }
     }
 
     private fun swallow(key: Key) {
@@ -156,9 +195,9 @@ class VolumeKeyDetector(private val output: Output) {
         const val KEY_REPEAT_TIMEOUT_MS = 400L
         const val KEY_REPEAT_DELAY_MS = 50L
 
-        private val doubleTriggers = mapOf(
-            VOLUME_UP to ButtonTrigger.VOLUME_UP_DOUBLE,
-            VOLUME_DOWN to ButtonTrigger.VOLUME_DOWN_DOUBLE
+        private val pressTriggers = mapOf(
+            VOLUME_UP to listOf(ButtonTrigger.VOLUME_UP_DOUBLE, ButtonTrigger.VOLUME_UP_TRIPLE),
+            VOLUME_DOWN to listOf(ButtonTrigger.VOLUME_DOWN_DOUBLE, ButtonTrigger.VOLUME_DOWN_TRIPLE)
         )
         private val longTriggers = mapOf(
             VOLUME_UP to ButtonTrigger.VOLUME_UP_LONG,
