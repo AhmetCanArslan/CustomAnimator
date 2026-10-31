@@ -45,7 +45,7 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
                 return null
             }
             val keys = nativeKeyCodes(descriptor.fd).toSet()
-            if (keys.isNotEmpty() && keys.all { it == KEY_POWER || it in forwardedKeys }) {
+            if (keys.isNotEmpty() && keys.all { it == KEY_POWER || it in forwardedKeys } && nativeUseBootClock(descriptor.fd)) {
                 return EvdevDevice(descriptor, KEY_POWER in keys)
             }
             descriptor.close()
@@ -54,6 +54,9 @@ class EvdevDevice private constructor(private val descriptor: ParcelFileDescript
 
         @JvmStatic
         private external fun nativeGrab(fd: Int, grab: Boolean): Boolean
+
+        @JvmStatic
+        private external fun nativeUseBootClock(fd: Int): Boolean
 
         @JvmStatic
         private external fun nativeKeyCodes(fd: Int): IntArray

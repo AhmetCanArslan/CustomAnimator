@@ -2,10 +2,17 @@
 #include <linux/input.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <time.h>
 
 JNIEXPORT jboolean JNICALL
 Java_com_arslan_customanimator_service_EvdevDevice_nativeGrab(JNIEnv *env, jclass clazz, jint fd, jboolean grab) {
     return ioctl(fd, EVIOCGRAB, grab ? 1 : 0) == 0 ? JNI_TRUE : JNI_FALSE;
+}
+
+JNIEXPORT jboolean JNICALL
+Java_com_arslan_customanimator_service_EvdevDevice_nativeUseBootClock(JNIEnv *env, jclass clazz, jint fd) {
+    int clock = CLOCK_BOOTTIME;
+    return ioctl(fd, EVIOCSCLOCKID, &clock) == 0 ? JNI_TRUE : JNI_FALSE;
 }
 
 JNIEXPORT jintArray JNICALL

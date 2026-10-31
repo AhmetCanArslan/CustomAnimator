@@ -244,22 +244,28 @@ class PowerButtonUserService : IPowerButtonUserService.Stub() {
             val type = events.getShort(offset + TIME_SIZE).toInt()
             val code = events.getShort(offset + TIME_SIZE + 2).toInt()
             val value = events.getInt(offset + TIME_SIZE + 4)
-            if (type == EvdevDevice.EV_KEY) handleKey(device, code, value)
+            if (type == EvdevDevice.EV_KEY) handleKey(device, code, value, eventTimeMs(events, offset))
         }
     }
 
-    private fun handleKey(device: EvdevDevice, code: Int, value: Int) {
+    private fun eventTimeMs(events: ByteBuffer, offset: Int): Long =
+        if (Process.is64Bit()) {
+            events.getLong(offset) * 1000 + events.getLong(offset + 8) / 1000
+        } else {
+            events.getInt(offset).toLong() * 1000 + events.getInt(offset + 4) / 1000
+        }
+
+    private fun handleKey(device: EvdevDevice, code: Int, value: Int, now: Long) {
         if (device in grabbedDevices) {
-            onKey(code, value)
+            onKey(code, value, now)
         } else if (grabPending && code == EvdevDevice.KEY_POWER && value == KEY_UP) {
             grabPending = false
             applyGrabs()
         }
     }
 
-    private fun onKey(code: Int, value: Int) {
+    private fun onKey(code: Int, value: Int, now: Long) {
         val detector = detector ?: return
-        val now = SystemClock.elapsedRealtime()
         if (code == EvdevDevice.KEY_POWER) notifyListener { it.onPowerKey() }
         when {
             code == EvdevDevice.KEY_POWER && value == KEY_DOWN -> {
