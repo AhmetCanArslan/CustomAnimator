@@ -1859,6 +1859,8 @@ Animatör Süresi: %3$.2f</string>
     <string name="whatsapp_cleaner_desc">Eski WhatsApp fotoğraflarını, videolarını ve diğer medyayı silerek yer açın</string>
     <string name="whatsapp_cleaner_info">Dosyalar WhatsApp medya klasöründen kalıcı olarak silinir. Sohbetleriniz kalır, ancak silinen medya artık sohbetlerden açılamaz.</string>
     <string name="whatsapp_cleaner_not_found">Bu cihazda WhatsApp medya klasörü bulunamadı.</string>
+    <string name="whatsapp_cleaner_open_in_files">Dosyalar\'da aç</string>
+    <string name="whatsapp_cleaner_no_files_app">Bu klasörü açabilecek bir dosya uygulaması yok.</string>
     <string name="whatsapp_cleaner_empty">Burada temizlenecek bir şey yok.</string>
     <string name="whatsapp_cleaner_usage">%1$d dosya · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Tümü</string>

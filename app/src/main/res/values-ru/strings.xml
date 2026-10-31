@@ -1853,6 +1853,8 @@
     <string name="whatsapp_cleaner_desc">Удалите старые фото, видео и другие медиафайлы WhatsApp, чтобы освободить место</string>
     <string name="whatsapp_cleaner_info">Файлы удаляются из папки медиа WhatsApp безвозвратно. Чаты останутся, но удалённые медиафайлы больше нельзя будет открыть из них.</string>
     <string name="whatsapp_cleaner_not_found">Папка медиа WhatsApp на этом устройстве не найдена.</string>
+    <string name="whatsapp_cleaner_open_in_files">Открыть в «Файлах»</string>
+    <string name="whatsapp_cleaner_no_files_app">Нет приложения «Файлы», которое может открыть эту папку.</string>
     <string name="whatsapp_cleaner_empty">Здесь нечего очищать.</string>
     <string name="whatsapp_cleaner_usage">Файлов: %1$d · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Любая давность</string>

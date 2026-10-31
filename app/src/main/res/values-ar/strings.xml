@@ -1891,6 +1891,8 @@
     <string name="whatsapp_cleaner_desc">احذف صور واتساب ومقاطع الفيديو والوسائط القديمة لتوفير مساحة</string>
     <string name="whatsapp_cleaner_info">تُحذف الملفات نهائيًا من مجلد وسائط واتساب. تبقى محادثاتك، لكن لن يمكن فتح الوسائط المحذوفة منها بعد الآن.</string>
     <string name="whatsapp_cleaner_not_found">لم يُعثر على مجلد وسائط واتساب على هذا الجهاز.</string>
+    <string name="whatsapp_cleaner_open_in_files">فتح في الملفات</string>
+    <string name="whatsapp_cleaner_no_files_app">لا يوجد تطبيق ملفات يمكنه فتح هذا المجلد.</string>
     <string name="whatsapp_cleaner_empty">لا يوجد شيء لتنظيفه هنا.</string>
     <string name="whatsapp_cleaner_usage">%1$d ملف · %2$s</string>
     <string name="whatsapp_cleaner_age_any">أي عمر</string>

@@ -1851,6 +1851,8 @@ Duração do Animador: %3$.2f</string>
     <string name="whatsapp_cleaner_desc">Apague fotos, vídeos e outras mídias antigas do WhatsApp para liberar espaço</string>
     <string name="whatsapp_cleaner_info">Os arquivos são apagados definitivamente da pasta de mídia do WhatsApp. Suas conversas continuam, mas as mídias apagadas não poderão mais ser abertas por elas.</string>
     <string name="whatsapp_cleaner_not_found">Nenhuma pasta de mídia do WhatsApp foi encontrada neste dispositivo.</string>
+    <string name="whatsapp_cleaner_open_in_files">Abrir no Arquivos</string>
+    <string name="whatsapp_cleaner_no_files_app">Nenhum app de arquivos pode abrir esta pasta.</string>
     <string name="whatsapp_cleaner_empty">Não há nada para limpar aqui.</string>
     <string name="whatsapp_cleaner_usage">%1$d arquivos · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Qualquer data</string>

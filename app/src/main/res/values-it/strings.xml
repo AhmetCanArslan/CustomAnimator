@@ -1871,6 +1871,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="whatsapp_cleaner_desc">Elimina foto, video e altri file multimediali vecchi di WhatsApp per liberare spazio</string>
     <string name="whatsapp_cleaner_info">I file vengono eliminati definitivamente dalla cartella multimediale di WhatsApp. Le chat restano, ma i file eliminati non potranno più essere aperti da lì.</string>
     <string name="whatsapp_cleaner_not_found">Nessuna cartella multimediale di WhatsApp trovata su questo dispositivo.</string>
+    <string name="whatsapp_cleaner_open_in_files">Apri in File</string>
+    <string name="whatsapp_cleaner_no_files_app">Nessuna app File può aprire questa cartella.</string>
     <string name="whatsapp_cleaner_empty">Qui non c’è niente da pulire.</string>
     <string name="whatsapp_cleaner_usage">%1$d file · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Qualsiasi data</string>

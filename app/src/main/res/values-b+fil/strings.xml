@@ -1851,6 +1851,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="whatsapp_cleaner_desc">I-delete ang mga lumang larawan, video at iba pang media ng WhatsApp para lumuwag ang storage</string>
     <string name="whatsapp_cleaner_info">Permanenteng nade-delete ang mga file mula sa media folder ng WhatsApp. Mananatili ang mga chat mo, pero hindi na mabubuksan mula roon ang na-delete na media.</string>
     <string name="whatsapp_cleaner_not_found">Walang nakitang media folder ng WhatsApp sa device na ito.</string>
+    <string name="whatsapp_cleaner_open_in_files">Buksan sa Files</string>
+    <string name="whatsapp_cleaner_no_files_app">Walang files app na makakapagbukas ng folder na ito.</string>
     <string name="whatsapp_cleaner_empty">Walang lilinisin dito.</string>
     <string name="whatsapp_cleaner_usage">%1$d (na) file · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Kahit gaano katagal</string>

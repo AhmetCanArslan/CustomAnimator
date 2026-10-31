@@ -21,7 +21,7 @@ class WhatsAppCleanerManagerTest {
     @Test
     fun scanOutputIsParsedPerTargetAndAge() {
         val scans = WhatsAppCleanerManager.parseScan(
-            "ROOT\nIMAGES/RECEIVED 12 4 96 5 2 0 1 0 300 0 0 0\nIMAGES/SENT 0 0 0 0 0 0 0 0 0 0 0 0\n" +
+            "ROOT /sdcard/Android/media/com.whatsapp/WhatsApp\nIMAGES/RECEIVED 12 4 96 5 2 0 1 0 300 0 0 0\nIMAGES/SENT 0 0 0 0 0 0 0 0 0 0 0 0\n" +
                 "VOICE_NOTES/RECEIVED 3 0 900 3 0 900 0 0 0 0 0 0"
         )
         val anyAge = scans.getValue(0)
@@ -37,9 +37,24 @@ class WhatsAppCleanerManagerTest {
     }
 
     @Test
+    fun firstFoundRootIsOpenedInFiles() {
+        val scan = WhatsAppCleanerManager.parseScan("ROOT /sdcard/WhatsApp\nROOT /sdcard/Android/media/com.whatsapp/WhatsApp")
+            .getValue(0)
+        val rootPath = scan.rootPath!!
+
+        assertEquals("/sdcard/WhatsApp", rootPath)
+        assertEquals("primary:WhatsApp", WhatsAppCleanerManager.folderDocumentId(rootPath, null))
+        assertEquals(
+            "primary:WhatsApp/Media/WhatsApp Images",
+            WhatsAppCleanerManager.folderDocumentId(rootPath, WhatsAppMediaCategory.IMAGES)
+        )
+        assertTrue(WhatsAppCleanerManager.scanScript().contains("do [ -d \"\$r/Media\" ] && echo \"ROOT \$r\"; done"))
+    }
+
+    @Test
     fun foldersLargerThanTheShellIntegerRangeKeepTheirSize() {
         val scans = WhatsAppCleanerManager.parseScan(
-            "ROOT\nIMAGES/PRIVATE 6000 3500000 123 0 0 0 0 0 0 0 0 0"
+            "ROOT /sdcard/Android/media/com.whatsapp/WhatsApp\nIMAGES/PRIVATE 6000 3500000 123 0 0 0 0 0 0 0 0 0"
         )
         val privateImages = WhatsAppMediaTarget(WhatsAppMediaCategory.IMAGES, WhatsAppMediaPart.PRIVATE)
         val script = WhatsAppCleanerManager.scanScript()
@@ -93,7 +108,7 @@ class WhatsAppCleanerManagerTest {
         val statusOther = WhatsAppMediaTarget(WhatsAppMediaCategory.STATUSES, WhatsAppMediaPart.RECEIVED, WhatsAppMediaKind.OTHER)
         val sentPdf = WhatsAppMediaTarget(WhatsAppMediaCategory.DOCUMENTS, WhatsAppMediaPart.SENT, WhatsAppMediaKind.PDF)
         val scans = WhatsAppCleanerManager.parseScan(
-            "ROOT\nSTATUSES/RECEIVED/PHOTOS 4 0 800 0 0 0 0 0 0 0 0 0\nDOCUMENTS/SENT/PDF 1 2 0 0 0 0 0 0 0 0 0 0"
+            "ROOT /sdcard/Android/media/com.whatsapp/WhatsApp\nSTATUSES/RECEIVED/PHOTOS 4 0 800 0 0 0 0 0 0 0 0 0\nDOCUMENTS/SENT/PDF 1 2 0 0 0 0 0 0 0 0 0 0"
         )
 
         assertEquals(3, WhatsAppMediaCategory.STATUSES.targets.size)

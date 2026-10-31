@@ -9,7 +9,7 @@ object ScreenshotFolder {
 
     private const val ACCESS =
         Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-    private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
+    const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
     private const val DEFAULT_DOCUMENT_ID = "primary:Pictures/Screenshots"
 
     val initialUri: Uri =

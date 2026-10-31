@@ -1890,6 +1890,8 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="whatsapp_cleaner_desc">Delete old WhatsApp photos, videos and other media to free up space</string>
     <string name="whatsapp_cleaner_info">Files are deleted from the WhatsApp media folder for good. Your chats stay, but deleted media can no longer be opened from them.</string>
     <string name="whatsapp_cleaner_not_found">No WhatsApp media folder was found on this device.</string>
+    <string name="whatsapp_cleaner_open_in_files">Open in Files</string>
+    <string name="whatsapp_cleaner_no_files_app">No files app can open this folder.</string>
     <string name="whatsapp_cleaner_empty">Nothing to clean here.</string>
     <string name="whatsapp_cleaner_usage">%1$d files · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Any age</string>

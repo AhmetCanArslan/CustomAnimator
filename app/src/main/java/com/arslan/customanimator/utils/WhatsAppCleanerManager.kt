@@ -90,9 +90,12 @@ data class WhatsAppMediaUsage(val fileCount: Int, val bytes: Long) {
 }
 
 data class WhatsAppScan(
-    val isMediaFolderFound: Boolean,
+    val rootPath: String?,
     val usage: Map<WhatsAppMediaTarget, WhatsAppMediaUsage>
 ) {
+    val isMediaFolderFound: Boolean
+        get() = rootPath != null
+
     val total: WhatsAppMediaUsage
         get() = usageOf(usage.keys)
 
@@ -114,6 +117,8 @@ object WhatsAppCleanerManager {
     private const val MEDIA_FOLDER = "Media"
 
     private const val ROOT_MARKER = "ROOT"
+    private const val SDCARD = "/sdcard/"
+    private const val PRIMARY_VOLUME = "primary:"
     private const val KEY_SEPARATOR = "/"
     private const val SECONDS_PER_DAY = 86400
     private const val FIELDS_PER_AGE = 3
@@ -141,8 +146,8 @@ object WhatsAppCleanerManager {
         val split = "p=000\$s; h=\${p%???}; l=\${p#\"\$h\"};"
         val counter = "count() { $reset while read s m; do $split a=\$(( (now-m)/$SECONDS_PER_DAY )); $tally done; " +
             "echo \"\$1 $report\"; }"
-        val rootCheck = APP_ROOTS.joinToString(" || ") { "[ -d ${quote("$it/$MEDIA_FOLDER")} ]" } +
-            " && echo $ROOT_MARKER"
+        val rootCheck = "for r in ${APP_ROOTS.joinToString(" ") { quote(it) }}; do " +
+            "[ -d \"\$r/$MEDIA_FOLDER\" ] && echo \"$ROOT_MARKER \$r\"; done"
         val scans = allTargets.map { target ->
             "find ${directoriesOf(target).joinToString(" ") { quote(it) }} ${fileFilterOf(target)} " +
                 "-exec stat -c '%s %Y' {} + 2>/dev/null | count ${keyOf(target)}"
@@ -159,13 +164,17 @@ object WhatsAppCleanerManager {
     internal fun parseScan(output: String): Map<Int, WhatsAppScan> {
         val lines = output.lines().map { it.trim() }
         val rows = lines.mapNotNull { parseUsages(it) }
+        val rootPath = lines.firstOrNull { it.startsWith("$ROOT_MARKER ") }?.removePrefix("$ROOT_MARKER ")
         return AGE_OPTIONS_DAYS.withIndex().associate { (index, days) ->
             days to WhatsAppScan(
-                isMediaFolderFound = ROOT_MARKER in lines,
+                rootPath = rootPath,
                 usage = rows.associate { (target, usages) -> target to usages[index] }
             )
         }
     }
+
+    fun folderDocumentId(rootPath: String, category: WhatsAppMediaCategory?): String =
+        PRIMARY_VOLUME + listOfNotNull(rootPath.removePrefix(SDCARD), category?.folder).joinToString("/")
 
     private fun parseUsages(line: String): Pair<WhatsAppMediaTarget, List<WhatsAppMediaUsage>>? {
         val fields = line.split(" ")

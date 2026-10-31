@@ -1851,6 +1851,8 @@ Duración del Animador: %3$.2f</string>
     <string name="whatsapp_cleaner_desc">Borra fotos, videos y otros archivos antiguos de WhatsApp para liberar espacio</string>
     <string name="whatsapp_cleaner_info">Los archivos se borran definitivamente de la carpeta multimedia de WhatsApp. Tus chats se conservan, pero los archivos borrados ya no se podrán abrir desde ellos.</string>
     <string name="whatsapp_cleaner_not_found">No se encontró la carpeta multimedia de WhatsApp en este dispositivo.</string>
+    <string name="whatsapp_cleaner_open_in_files">Abrir en Archivos</string>
+    <string name="whatsapp_cleaner_no_files_app">Ninguna app de archivos puede abrir esta carpeta.</string>
     <string name="whatsapp_cleaner_empty">No hay nada que limpiar aquí.</string>
     <string name="whatsapp_cleaner_usage">%1$d archivos · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Cualquier antigüedad</string>

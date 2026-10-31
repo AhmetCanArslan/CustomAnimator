@@ -1,5 +1,9 @@
 package com.arslan.customanimator
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.provider.DocumentsContract
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -18,6 +22,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.EmojiEmotions
+import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Gif
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Image
@@ -42,6 +47,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.arslan.customanimator.screenshot.ScreenshotFolder
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.DividerSoft
 import com.arslan.customanimator.ui.components.HeroCard
@@ -181,7 +187,10 @@ fun WhatsAppCleanerScreen(
                         minAgeDays = days
                         selected = selected.intersect(scans?.get(days)?.targetsWithFiles().orEmpty().toSet())
                     },
-                    onSelectionChange = { selected = it }
+                    onSelectionChange = { selected = it },
+                    onOpenFolder = { rootPath, category ->
+                        openInFiles(context, WhatsAppCleanerManager.folderDocumentId(rootPath, category))
+                    }
                 )
             }
         }
@@ -199,6 +208,16 @@ fun WhatsAppCleanerScreen(
     }
 }
 
+private fun openInFiles(context: Context, documentId: String) {
+    val folder = DocumentsContract.buildDocumentUri(ScreenshotFolder.EXTERNAL_STORAGE_AUTHORITY, documentId)
+    val intent = Intent(Intent.ACTION_VIEW).setDataAndType(folder, DocumentsContract.Document.MIME_TYPE_DIR)
+    try {
+        context.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(context, R.string.whatsapp_cleaner_no_files_app, Toast.LENGTH_SHORT).show()
+    }
+}
+
 private fun categoriesWithFiles(scan: WhatsAppScan): List<Pair<WhatsAppMediaCategory, List<WhatsAppMediaTarget>>> =
     scan.targetsWithFiles().groupBy { it.category }.toList()
 
@@ -209,7 +228,8 @@ private fun LazyListScope.scanResult(
     selected: Set<WhatsAppMediaTarget>,
     enabled: Boolean,
     onAgeChange: (Int) -> Unit,
-    onSelectionChange: (Set<WhatsAppMediaTarget>) -> Unit
+    onSelectionChange: (Set<WhatsAppMediaTarget>) -> Unit,
+    onOpenFolder: (String, WhatsAppMediaCategory?) -> Unit
 ) {
     val scan = scans?.get(minAgeDays)
     if (scans == null || scan == null) {
@@ -220,12 +240,19 @@ private fun LazyListScope.scanResult(
         }
         return
     }
-    if (!scan.isMediaFolderFound) {
+    val rootPath = scan.rootPath
+    if (rootPath == null) {
         item { MessageCard(stringResource(R.string.whatsapp_cleaner_not_found)) }
         return
     }
     item(key = "summary") {
-        SummaryCard(scans = scans, minAgeDays = minAgeDays, enabled = enabled, onAgeChange = onAgeChange)
+        SummaryCard(
+            scans = scans,
+            minAgeDays = minAgeDays,
+            enabled = enabled,
+            onAgeChange = onAgeChange,
+            onOpenFolder = { onOpenFolder(rootPath, null) }
+        )
     }
     if (categories.isEmpty()) {
         item { MessageCard(stringResource(R.string.whatsapp_cleaner_empty)) }
@@ -243,7 +270,8 @@ private fun LazyListScope.scanResult(
                     scan = scan,
                     selected = selected,
                     enabled = enabled,
-                    onSelectionChange = onSelectionChange
+                    onSelectionChange = onSelectionChange,
+                    onOpenFolder = { onOpenFolder(rootPath, category) }
                 )
             }
         }
@@ -278,7 +306,8 @@ private fun SummaryCard(
     scans: Map<Int, WhatsAppScan>,
     minAgeDays: Int,
     enabled: Boolean,
-    onAgeChange: (Int) -> Unit
+    onAgeChange: (Int) -> Unit,
+    onOpenFolder: () -> Unit
 ) {
     HeroCard(title = usageText(scans.getValue(WhatsAppCleanerManager.AGE_OPTIONS_DAYS.first()).total)) {
         Column(
@@ -301,6 +330,15 @@ private fun SummaryCard(
                         )
                     }
                 }
+            }
+            OutlinedButton(
+                onClick = onOpenFolder,
+                modifier = Modifier.fillMaxWidth(),
+                shapes = ButtonDefaults.shapes()
+            ) {
+                Icon(imageVector = Icons.Filled.FolderOpen, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(R.string.whatsapp_cleaner_open_in_files))
             }
         }
     }
@@ -354,7 +392,8 @@ private fun CategoryCard(
     scan: WhatsAppScan,
     selected: Set<WhatsAppMediaTarget>,
     enabled: Boolean,
-    onSelectionChange: (Set<WhatsAppMediaTarget>) -> Unit
+    onSelectionChange: (Set<WhatsAppMediaTarget>) -> Unit,
+    onOpenFolder: () -> Unit
 ) {
     val selectedCount = targets.count { it in selected }
     val state = when (selectedCount) {
@@ -379,6 +418,12 @@ private fun CategoryCard(
                     text = usageText(scan.usageOf(targets)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            IconButton(onClick = onOpenFolder, shapes = IconButtonDefaults.shapes()) {
+                Icon(
+                    imageVector = Icons.Filled.FolderOpen,
+                    contentDescription = stringResource(R.string.whatsapp_cleaner_open_in_files)
                 )
             }
             TriStateCheckbox(

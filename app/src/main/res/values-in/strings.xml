@@ -1851,6 +1851,8 @@ Durasi Animator: %3$.2f</string>
     <string name="whatsapp_cleaner_desc">Hapus foto, video, dan media WhatsApp lama untuk melapangkan ruang</string>
     <string name="whatsapp_cleaner_info">File dihapus secara permanen dari folder media WhatsApp. Chat Anda tetap ada, tetapi media yang dihapus tidak dapat lagi dibuka dari chat.</string>
     <string name="whatsapp_cleaner_not_found">Folder media WhatsApp tidak ditemukan di perangkat ini.</string>
+    <string name="whatsapp_cleaner_open_in_files">Buka di File</string>
+    <string name="whatsapp_cleaner_no_files_app">Tidak ada aplikasi file yang dapat membuka folder ini.</string>
     <string name="whatsapp_cleaner_empty">Tidak ada yang perlu dibersihkan di sini.</string>
     <string name="whatsapp_cleaner_usage">%1$d file · %2$s</string>
     <string name="whatsapp_cleaner_age_any">Semua umur</string>
