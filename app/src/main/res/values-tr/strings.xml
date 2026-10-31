@@ -1501,6 +1501,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="qs_tiles_builtin_game_mode_desc">Oyun modunu aç veya kapat</string>
     <string name="qs_tiles_builtin_caffeine_desc">Ekranı açık tut</string>
     <string name="qs_tiles_builtin_aod_desc">Her zaman açık ekranı aç/kapat</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Sistem göstergesi katmanını göster veya gizle</string>
     <string name="qs_tiles_available_section">Kutucuk ekle</string>
     <string name="qs_tiles_available_section_desc">Hızlı Ayarlar paneline eklemek için + simgesine dokunun.</string>
     <string name="qs_tiles_add_custom_desc">Kendi AÇ ve KAPAT komutlarınızla bir anahtar oluşturun</string>

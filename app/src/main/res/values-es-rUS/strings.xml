@@ -1493,6 +1493,7 @@ Duración del Animador: %3$.2f</string>
     <string name="qs_tiles_builtin_game_mode_desc">Activa o desactiva el modo juego</string>
     <string name="qs_tiles_builtin_caffeine_desc">Mantén la pantalla encendida</string>
     <string name="qs_tiles_builtin_aod_desc">Activa o desactiva la pantalla siempre activa</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Muestra u oculta la superposición del medidor del sistema</string>
     <string name="qs_tiles_available_section">Agregar un mosaico</string>
     <string name="qs_tiles_available_section_desc">Toca + para colocarlo en el panel de Ajustes rápidos.</string>
     <string name="qs_tiles_add_custom_desc">Crea un interruptor con tus comandos de encendido y apagado</string>

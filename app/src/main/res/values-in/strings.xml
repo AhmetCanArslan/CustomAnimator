@@ -1493,6 +1493,7 @@ Durasi Animator: %3$.2f</string>
     <string name="qs_tiles_builtin_game_mode_desc">Nyalakan atau matikan mode game</string>
     <string name="qs_tiles_builtin_caffeine_desc">Jaga layar tetap menyala</string>
     <string name="qs_tiles_builtin_aod_desc">Nyalakan atau matikan layar selalu aktif</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Tampilkan atau sembunyikan overlay meteran sistem</string>
     <string name="qs_tiles_available_section">Tambahkan ubin</string>
     <string name="qs_tiles_available_section_desc">Ketuk + untuk menaruhnya di panel Setelan Cepat.</string>
     <string name="qs_tiles_add_custom_desc">Buat sakelar dengan perintah ON dan OFF Anda sendiri</string>

@@ -1533,6 +1533,7 @@
     <string name="qs_tiles_builtin_game_mode_desc">تشغيل وضع الألعاب أو إيقافه</string>
     <string name="qs_tiles_builtin_caffeine_desc">إبقاء الشاشة قيد التشغيل</string>
     <string name="qs_tiles_builtin_aod_desc">تشغيل الشاشة الدائمة أو إيقافها</string>
+    <string name="qs_tiles_builtin_system_meter_desc">إظهار أو إخفاء طبقة مقياس النظام</string>
     <string name="qs_tiles_available_section">إضافة مربع</string>
     <string name="qs_tiles_available_section_desc">اضغط على + لوضعه في لوحة الإعدادات السريعة.</string>
     <string name="qs_tiles_add_custom_desc">أنشئ مفتاحًا بأوامر التشغيل والإيقاف الخاصة بك</string>

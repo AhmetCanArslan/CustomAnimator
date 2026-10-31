@@ -1537,6 +1537,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="qs_tiles_builtin_game_mode_desc">Switch game mode on or off</string>
     <string name="qs_tiles_builtin_caffeine_desc">Keep the screen awake</string>
     <string name="qs_tiles_builtin_aod_desc">Toggle always on display</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Show or hide the system meter overlay</string>
     <string name="qs_tiles_builtin_sound_desc">Switch the sound mode from the panel</string>
     <string name="qs_tiles_cat_display">Display toggles</string>
     <string name="qs_tiles_cat_network">Connectivity toggles</string>

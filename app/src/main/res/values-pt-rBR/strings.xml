@@ -1493,6 +1493,7 @@ Duração do Animador: %3$.2f</string>
     <string name="qs_tiles_builtin_game_mode_desc">Ative ou desative o modo jogo</string>
     <string name="qs_tiles_builtin_caffeine_desc">Mantenha a tela ligada</string>
     <string name="qs_tiles_builtin_aod_desc">Ative ou desative a tela sempre ativa</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Mostre ou oculte a sobreposição do medidor do sistema</string>
     <string name="qs_tiles_available_section">Adicionar um bloco</string>
     <string name="qs_tiles_available_section_desc">Toque em + para colocá-lo no painel de Configurações rápidas.</string>
     <string name="qs_tiles_add_custom_desc">Crie um alternador com seus comandos de ligar e desligar</string>

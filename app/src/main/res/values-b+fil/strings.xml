@@ -1493,6 +1493,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="qs_tiles_builtin_game_mode_desc">I-on o i-off ang game mode</string>
     <string name="qs_tiles_builtin_caffeine_desc">Panatilihing bukas ang screen</string>
     <string name="qs_tiles_builtin_aod_desc">I-on o i-off ang always on display</string>
+    <string name="qs_tiles_builtin_system_meter_desc">Ipakita o itago ang overlay ng system meter</string>
     <string name="qs_tiles_available_section">Magdagdag ng tile</string>
     <string name="qs_tiles_available_section_desc">I-tap ang + para ilagay ito sa Quick Settings panel.</string>
     <string name="qs_tiles_add_custom_desc">Gumawa ng toggle mula sa sarili mong ON at OFF na command</string>

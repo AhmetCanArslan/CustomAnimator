@@ -16,6 +16,7 @@ import com.arslan.customanimator.service.GameModeTileService
 import com.arslan.customanimator.service.RestartSystemUiTileService
 import com.arslan.customanimator.service.ScreenshotTileService
 import com.arslan.customanimator.service.SoundTileService
+import com.arslan.customanimator.service.SystemMeterTileService
 
 object BuiltInTiles {
 
@@ -69,6 +70,13 @@ object BuiltInTiles {
             R.string.qs_tiles_builtin_aod_desc,
             R.drawable.ic_tile_aod,
             AlwaysOnDisplayTileService::class.java
+        ),
+        Entry(
+            "system_meter",
+            R.string.system_meter_title,
+            R.string.qs_tiles_builtin_system_meter_desc,
+            R.drawable.ic_tile_speed,
+            SystemMeterTileService::class.java
         )
     )
 
