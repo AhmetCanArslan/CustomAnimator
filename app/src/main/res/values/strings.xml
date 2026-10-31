@@ -127,6 +127,7 @@
     <string name="carrier_name_note">The name is applied as a carrier config override until the device restarts. Use Reset to restore the original name.</string>
     <string name="otp_copier">OTP Copier</string>
     <string name="otp_copier_desc">Copy verification codes from notifications automatically</string>
+    <string name="live_updates">Live Updates</string>
     <string name="otp_copier_enable">Copy codes automatically</string>
     <string name="otp_copier_enable_desc">Puts the code on the clipboard as soon as its notification arrives</string>
     <string name="otp_copier_toast">Show a message when copied</string>

@@ -32,6 +32,7 @@ import com.arslan.customanimator.notify.data.ScreenFlashColor
 import com.arslan.customanimator.notify.data.WidgetNotification
 import com.arslan.customanimator.notify.data.WidgetNotificationStore
 import com.arslan.customanimator.notify.widget.NotificationWidgetProvider
+import com.arslan.customanimator.utils.LiveUpdatesManager
 import com.arslan.customanimator.utils.OtpCopierManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,6 +95,11 @@ class NotifyListenerService : NotificationListenerService() {
         super.onDestroy()
     }
 
+    override fun onListenerConnected() {
+        super.onListenerConnected()
+        LiveUpdatesManager.reconcile(this, activeNotifications.orEmpty())
+    }
+
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         if (sbn != null) handlePosted(sbn)
         super.onNotificationPosted(sbn)
@@ -112,6 +118,7 @@ class NotifyListenerService : NotificationListenerService() {
         if (!isOwnPackage && OtpCopierManager.isEnabled(this)) {
             OtpCopierManager.onNotification(this, sbn.key, "${posted.title}\n${posted.body}")
         }
+        if (!isOwnPackage) LiveUpdatesManager.onPosted(this, sbn)
 
         val shouldProcess = NotificationGate.shouldProcess(
             isServiceEnabled = isPrimeNotifyServiceEnabled(this),
@@ -253,6 +260,11 @@ class NotifyListenerService : NotificationListenerService() {
         }
         appLabels[packageName] = label
         return label
+    }
+
+    override fun onNotificationRemoved(sbn: StatusBarNotification?, rankingMap: RankingMap?, reason: Int) {
+        if (sbn != null) LiveUpdatesManager.onRemoved(this, sbn, reason)
+        super.onNotificationRemoved(sbn, rankingMap, reason)
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification?) {

@@ -510,6 +510,7 @@ Durasi Animator: %3$.2f</string>
     <string name="aod_tile_unsupported">Tidak didukung di perangkat ini</string>
     <string name="otp_copier">Penyalin OTP</string>
     <string name="otp_copier_desc">Menyalin kode verifikasi dari notifikasi secara otomatis</string>
+    <string name="live_updates">Pembaruan Langsung</string>
     <string name="otp_copier_enable">Salin kode secara otomatis</string>
     <string name="otp_copier_enable_desc">Menaruh kode di papan klip begitu notifikasinya tiba</string>
     <string name="otp_copier_toast">Tampilkan pesan saat disalin</string>

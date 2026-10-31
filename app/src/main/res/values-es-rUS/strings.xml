@@ -510,6 +510,7 @@ Duración del Animador: %3$.2f</string>
     <string name="aod_tile_unsupported">No compatible con este dispositivo</string>
     <string name="otp_copier">Copiador de OTP</string>
     <string name="otp_copier_desc">Copia automáticamente los códigos de verificación de las notificaciones</string>
+    <string name="live_updates">Actualizaciones en vivo</string>
     <string name="otp_copier_enable">Copiar códigos automáticamente</string>
     <string name="otp_copier_enable_desc">Pone el código en el portapapeles en cuanto llega su notificación</string>
     <string name="otp_copier_toast">Mostrar un mensaje al copiar</string>

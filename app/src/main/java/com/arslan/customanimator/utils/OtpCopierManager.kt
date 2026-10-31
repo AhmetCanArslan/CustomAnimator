@@ -186,6 +186,7 @@ object OtpCopierManager {
     private fun copy(context: Context, code: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText(CLIP_LABEL, code))
+        LiveUpdatesManager.onCodeCopied(context, code)
         if (!isToastEnabled(context)) return
         Toast.makeText(context, context.getString(R.string.otp_copier_copied, code), Toast.LENGTH_SHORT).show()
     }

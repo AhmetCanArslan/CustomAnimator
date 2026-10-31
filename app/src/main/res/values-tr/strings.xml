@@ -510,6 +510,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="aod_tile_unsupported">Bu cihazda desteklenmiyor</string>
     <string name="otp_copier">OTP Kopyalayıcı</string>
     <string name="otp_copier_desc">Bildirimlerdeki doğrulama kodlarını otomatik kopyalar</string>
+    <string name="live_updates">Canlı Güncellemeler</string>
     <string name="otp_copier_enable">Kodları otomatik kopyala</string>
     <string name="otp_copier_enable_desc">Bildirim gelir gelmez kodu panoya koyar</string>
     <string name="otp_copier_toast">Kopyalanınca mesaj göster</string>

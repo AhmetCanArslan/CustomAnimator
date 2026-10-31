@@ -530,6 +530,7 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="aod_tile_unsupported">Non supportato su questo dispositivo</string>
     <string name="otp_copier">Copia OTP</string>
     <string name="otp_copier_desc">Copia automaticamente i codici di verifica dalle notifiche</string>
+    <string name="live_updates">Aggiornamenti in tempo reale</string>
     <string name="otp_copier_enable">Copia i codici automaticamente</string>
     <string name="otp_copier_enable_desc">Mette il codice negli appunti appena arriva la notifica</string>
     <string name="otp_copier_toast">Mostra un messaggio alla copia</string>
