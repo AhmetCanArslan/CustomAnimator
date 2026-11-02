@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Desain Material 3 Expressive baru: bilah aplikasi, bentuk, sakelar, penggeser, grup pilihan, dan animasi baru di semua layar.
+- Pemetaan Tombol: tekan dua kali dan tiga kali tombol daya, serta kombinasi, dua kali, tiga kali, dan tekan lama tombol volume, masing-masing dengan aksi apa pun. Tombol volume tetap berfungsi saat layar mati.
+- Aksi: pilih dari katalog aksi cepat dan sakelar (senter, penghemat baterai, dan lainnya) atau buka layar aplikasi dari Pintasan dan Pemetaan Tombol.
+- Pembaruan Langsung (Alat, Android 16): mencerminkan notifikasi progres dan navigasi sebagai notifikasi langsung yang dipromosikan.
+- Pembersih Tautan: saat membagikan tautan ke aplikasi, muncul Bersihkan tautan yang menghapus pelacak dengan aturan ClearURLs.
+- Warna Sistem (Alat): ubah warna aksen dan gaya palet sistem.
+- Manajer Aktivitas (Alat): telusuri aktivitas, jalankan, atau tambahkan sebagai pintasan, dengan overlay opsional aktivitas saat ini.
+- Pemasang APK (Alat): pasang file APK, APKS, dan XAPK melalui Shizuku.
+- Pencarian Aplikasi: temukan aplikasi atau pengaturan apa pun dari bilah beranda.
+- Pintasan: tambahkan pintasan sebagai widget untuk menyembunyikan lencana aplikasi dan gunakan ikon asli aplikasi.
+- Compile Booster kini layar penuh dengan hasil per aplikasi.
+- Pengekstrak APK: pilih folder tempat APK disimpan.
+- Ubin Pengukur Sistem, folder WhatsApp terbuka di File, detail log notifikasi, dan alasan yang lebih jelas saat aksi Shizuku gagal.
+- Overlay tangkapan layar meluncur masuk dari tepi dan ditutup dengan menggeser ke tepi.
+- Perbaikan: layanan Shizuku lebih andal setelah pembaruan aplikasi dan perubahan nama operator.
+
 ## 195 - 3.8
 - Pintasan (Alat): sematkan aplikasi, aktivitas tersembunyi, pintasan tekan lama aplikasi, file, folder, foto, tautan, dan perintah ke layar utama.
 - Pemetaan Ulang Tombol (Alat): pilih apa yang terjadi saat tombol daya ditahan, termasuk tindakan kustom seperti senter atau tangkapan layar.

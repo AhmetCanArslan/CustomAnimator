@@ -1,3 +1,20 @@
+## 199 - 3.9
+- New Material 3 Expressive design: new app bars, shapes, switches, sliders, choice groups and motion on every screen.
+- Button Remapper: double and triple press on the power button, plus volume combo, double, triple and long press, each with any action. Volume keys keep working with the screen off.
+- Actions: pick from a catalog of quick actions and toggles (flashlight, battery saver and more), or open a screen of this app, from Shortcuts and the Button Remapper.
+- Live Updates (Tools, Android 16): mirror progress and navigation notifications as promoted live notifications.
+- Link Cleaner: sharing a link to this app now offers Clean link, which removes trackers using the ClearURLs rules.
+- System Colors (Tools): change the system accent color and palette style.
+- Activity Manager (Tools): browse activities, launch them or add them as shortcuts, with an optional live overlay of the current activity.
+- APK Installer (Tools): install APK, APKS and XAPK files through Shizuku.
+- App Search: find any app or setting from the home bar.
+- Shortcuts: add a shortcut as a home-screen widget to hide the app badge, and use the app's original icons.
+- Compile Booster is now a full screen with per-app results.
+- APK Extractor: choose the folder where APKs are saved.
+- System Meter tile, WhatsApp folders open in Files, a notification log detail view and a clearer reason when a Shizuku action fails.
+- Screenshot overlay slides in from the edge and dismisses with a swipe to the edge.
+- Fixes: more reliable Shizuku services after app updates and carrier name changes.
+
 ## 195 - 3.8
 - Shortcuts (Tools): pin apps, hidden activities, app long-press shortcuts, files, folders, photos, links and commands to your home screen.
 - Button Remapper (Tools): choose what holding the power button does, including custom actions like the flashlight or a screenshot.

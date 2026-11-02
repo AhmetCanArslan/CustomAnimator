@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Nuovo design Material 3 Expressive: nuove barre, forme, interruttori, cursori, gruppi di scelta e animazioni in ogni schermata.
+- Rimappatura pulsanti: doppia e tripla pressione del tasto di accensione, più combinazione, doppia, tripla e pressione lunga dei tasti volume, ciascuna con l'azione che vuoi. I tasti volume funzionano a schermo spento.
+- Azioni: scegli dal catalogo di azioni rapide e interruttori (torcia, risparmio energetico e altro) oppure apri una schermata dell'app da Scorciatoie e Rimappatura pulsanti.
+- Aggiornamenti in tempo reale (Strumenti, Android 16): replica le notifiche di avanzamento e navigazione come notifiche live in evidenza.
+- Pulizia link: condividendo un link con l'app compare Pulisci link, che rimuove i tracker con le regole di ClearURLs.
+- Colori di sistema (Strumenti): cambia il colore d'accento e lo stile della tavolozza di sistema.
+- Gestione attività (Strumenti): sfoglia le attività, avviale o aggiungile come scorciatoie, con un overlay facoltativo dell'attività corrente.
+- Installatore APK (Strumenti): installa file APK, APKS e XAPK tramite Shizuku.
+- Ricerca app: trova qualsiasi app o impostazione dalla barra iniziale.
+- Scorciatoie: aggiungi una scorciatoia come widget per nascondere il badge dell'app e usa le icone originali delle app.
+- Compile Booster ora è una schermata intera con risultati per app.
+- Estrattore APK: scegli la cartella in cui salvare gli APK.
+- Riquadro Misuratore di sistema, le cartelle di WhatsApp si aprono in File, dettaglio del registro notifiche e un motivo più chiaro quando un'azione Shizuku fallisce.
+- L'overlay degli screenshot scorre dal bordo e si chiude trascinando verso il bordo.
+- Correzioni: servizi Shizuku più affidabili dopo gli aggiornamenti dell'app e modifiche del nome operatore.
+
 ## 195 - 3.8
 - Scorciatoie (Strumenti): aggiungi alla schermata Home app, activity nascoste, scorciatoie a pressione prolungata, file, cartelle, foto, link e comandi.
 - Rimappatura tasti (Strumenti): scegli cosa fa la pressione prolungata del tasto di accensione, comprese azioni personalizzate come torcia o screenshot.

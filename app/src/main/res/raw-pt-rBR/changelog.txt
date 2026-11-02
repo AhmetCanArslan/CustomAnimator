@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Novo design Material 3 Expressive: novas barras, formas, interruptores, controles deslizantes, grupos de escolha e animações em todas as telas.
+- Remapeador de botões: toque duplo e triplo no botão de energia, além de combinação, toque duplo, triplo e pressão longa nos botões de volume, cada um com a ação que você quiser. Os botões de volume funcionam com a tela desligada.
+- Ações: escolha no catálogo de ações rápidas e alternâncias (lanterna, economia de bateria e mais) ou abra uma tela do app em Atalhos e Remapeador de botões.
+- Atualizações ao vivo (Ferramentas, Android 16): espelha notificações de progresso e navegação como notificações ao vivo em destaque.
+- Limpador de links: ao compartilhar um link com o app aparece Limpar link, que remove rastreadores com as regras do ClearURLs.
+- Cores do sistema (Ferramentas): altere a cor de destaque e o estilo da paleta do sistema.
+- Gerenciador de atividades (Ferramentas): explore atividades, abra-as ou adicione como atalhos, com uma sobreposição opcional da atividade atual.
+- Instalador de APK (Ferramentas): instale arquivos APK, APKS e XAPK pelo Shizuku.
+- Busca de apps: encontre qualquer app ou configuração pela barra inicial.
+- Atalhos: adicione um atalho como widget para ocultar o selo do app e use os ícones originais dos apps.
+- O Compile Booster agora é uma tela completa com resultados por app.
+- Extrator de APK: escolha a pasta onde os APKs são salvos.
+- Bloco Medidor do sistema, pastas do WhatsApp abrem em Arquivos, detalhe do registro de notificações e um motivo mais claro quando uma ação do Shizuku falha.
+- A sobreposição de capturas desliza a partir da borda e é dispensada deslizando até a borda.
+- Correções: serviços do Shizuku mais confiáveis após atualizar o app e alterações do nome da operadora.
+
 ## 195 - 3.8
 - Atalhos (Ferramentas): fixe na tela inicial apps, atividades ocultas, atalhos de toque longo, arquivos, pastas, fotos, links e comandos.
 - Remapear botões (Ferramentas): escolha o que acontece ao segurar o botão liga/desliga, incluindo ações personalizadas como lanterna ou captura de tela.

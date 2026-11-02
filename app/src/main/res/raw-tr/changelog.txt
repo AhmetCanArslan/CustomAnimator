@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Yeni Material 3 Expressive tasarım: tüm ekranlarda yeni uygulama çubukları, şekiller, anahtarlar, kaydırıcılar, seçim grupları ve hareketler.
+- Tuş Atama: güç tuşuna çift ve üçlü basma, ayrıca ses tuşu kombinasyonu, çift, üçlü ve uzun basma; her biri için istediğin işlem. Ses tuşları ekran kapalıyken de çalışır.
+- İşlemler: Kısayollar ve Tuş Atama'da hızlı işlem ve düğme kataloğundan (el feneri, pil tasarrufu ve daha fazlası) seç ya da uygulamanın bir ekranını aç.
+- Canlı Güncellemeler (Araçlar, Android 16): ilerleme ve navigasyon bildirimlerini öne çıkarılan canlı bildirim olarak yansıtır.
+- Bağlantı Temizleyici: bu uygulamaya bir bağlantı paylaşınca ClearURLs kurallarıyla izleyicileri temizleyen Bağlantıyı temizle seçeneği çıkar.
+- Sistem Renkleri (Araçlar): sistem vurgu rengini ve palet stilini değiştir.
+- Etkinlik Yöneticisi (Araçlar): etkinliklere göz at, başlat ya da kısayol olarak ekle; isteğe bağlı canlı etkinlik katmanı.
+- APK Yükleyici (Araçlar): APK, APKS ve XAPK dosyalarını Shizuku ile yükle.
+- Uygulama Arama: ana çubuktan herhangi bir uygulamayı veya ayarı bul.
+- Kısayollar: uygulama rozetini gizlemek için kısayolu ana ekrana widget olarak ekle, uygulamanın orijinal simgelerini kullan.
+- Derleme Hızlandırıcı artık uygulama bazında sonuçlar gösteren tam bir ekran.
+- APK Çıkarıcı: APK'ların kaydedileceği klasörü seç.
+- Sistem Ölçer karosu, WhatsApp klasörleri Dosyalar'da açılır, bildirim günlüğü ayrıntı görünümü ve Shizuku işlemi başarısız olunca daha net neden.
+- Ekran görüntüsü katmanı kenardan kayarak gelir ve kenara kaydırınca kapanır.
+- Düzeltmeler: uygulama güncellemelerinden sonra daha güvenilir Shizuku servisleri ve operatör adı değişiklikleri.
+
 ## 195 - 3.8
 - Kısayollar (Araçlar): uygulamaları, gizli etkinlikleri, uygulamaların uzun basma kısayollarını, dosyaları, klasörleri, fotoğrafları, bağlantıları ve komutları ana ekrana sabitle.
 - Tuş Atama (Araçlar): güç tuşuna basılı tutunca ne olacağını seç; el feneri veya ekran görüntüsü gibi özel işlemler de var.

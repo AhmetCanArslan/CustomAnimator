@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Nuevo diseño Material 3 Expressive: nuevas barras, formas, interruptores, controles deslizantes, grupos de opciones y animaciones en todas las pantallas.
+- Reasignación de botones: doble y triple pulsación del botón de encendido, además de combinación, doble, triple y pulsación larga de los botones de volumen, cada una con la acción que quieras. Los botones de volumen funcionan con la pantalla apagada.
+- Acciones: elige del catálogo de acciones rápidas e interruptores (linterna, ahorro de batería y más) o abre una pantalla de la app desde Accesos directos y Reasignación de botones.
+- Actualizaciones en vivo (Herramientas, Android 16): refleja las notificaciones de progreso y navegación como notificaciones en vivo destacadas.
+- Limpiador de enlaces: al compartir un enlace con la app aparece Limpiar enlace, que quita rastreadores con las reglas de ClearURLs.
+- Colores del sistema (Herramientas): cambia el color de acento y el estilo de paleta del sistema.
+- Administrador de actividades (Herramientas): explora actividades, ábrelas o agrégalas como accesos directos, con una superposición opcional de la actividad actual.
+- Instalador de APK (Herramientas): instala archivos APK, APKS y XAPK con Shizuku.
+- Búsqueda de apps: encuentra cualquier app o ajuste desde la barra de inicio.
+- Accesos directos: agrega un acceso directo como widget para ocultar la insignia de la app y usa los íconos originales de las apps.
+- Compile Booster ahora es una pantalla completa con resultados por app.
+- Extractor de APK: elige la carpeta donde se guardan los APK.
+- Mosaico Medidor del sistema, las carpetas de WhatsApp se abren en Archivos, detalle del registro de notificaciones y un motivo más claro cuando falla una acción de Shizuku.
+- La superposición de capturas entra deslizándose desde el borde y se descarta deslizando hacia el borde.
+- Correcciones: servicios de Shizuku más confiables tras actualizar la app y cambios del nombre del operador.
+
 ## 195 - 3.8
 - Accesos directos (Herramientas): fija en la pantalla de inicio apps, actividades ocultas, accesos de pulsación larga, archivos, carpetas, fotos, enlaces y comandos.
 - Reasignar botones (Herramientas): elige qué hace mantener presionado el botón de encendido, con acciones personalizadas como la linterna o una captura.

@@ -1,3 +1,20 @@
+## 199 - 3.9
+- Bagong Material 3 Expressive na disenyo: bagong app bar, hugis, switch, slider, choice group, at galaw sa bawat screen.
+- Button Remapper: double at triple press ng power button, pati combo, double, triple, at long press ng volume keys, bawat isa may anumang aksyon. Gumagana ang volume keys kahit patay ang screen.
+- Mga Aksyon: pumili sa catalog ng mabilis na aksyon at toggle (flashlight, battery saver, at iba pa) o magbukas ng screen ng app mula sa Shortcuts at Button Remapper.
+- Live Updates (Tools, Android 16): sinasalamin ang progress at navigation notification bilang promoted live notification.
+- Link Cleaner: kapag nag-share ng link sa app, may Linisin ang link na nag-aalis ng trackers gamit ang ClearURLs rules.
+- System Colors (Tools): baguhin ang accent color at palette style ng system.
+- Activity Manager (Tools): mag-browse ng activities, buksan ang mga ito o idagdag bilang shortcut, na may opsyonal na overlay ng kasalukuyang activity.
+- APK Installer (Tools): mag-install ng APK, APKS, at XAPK files gamit ang Shizuku.
+- App Search: hanapin ang anumang app o setting mula sa home bar.
+- Shortcuts: idagdag ang shortcut bilang widget para itago ang app badge, at gamitin ang orihinal na icon ng mga app.
+- Full screen na ang Compile Booster na may resulta kada app.
+- APK Extractor: piliin ang folder kung saan sine-save ang mga APK.
+- System Meter tile, bumubukas sa Files ang mga WhatsApp folder, detalye ng notification log, at mas malinaw na dahilan kapag pumalya ang Shizuku action.
+- Dumudulas mula sa gilid ang screenshot overlay at isinasara sa pag-swipe sa gilid.
+- Mga ayos: mas maaasahang Shizuku services pagkatapos mag-update ng app at pagbabago ng carrier name.
+
 ## 195 - 3.8
 - Mga Shortcut (Mga tool): i-pin sa home screen ang mga app, nakatagong activity, long-press shortcut ng app, file, folder, larawan, link at command.
 - Button Remapper (Mga tool): piliin ang gagawin ng matagal na pagpindot sa power button, kasama ang custom na aksyon gaya ng flashlight o screenshot.
