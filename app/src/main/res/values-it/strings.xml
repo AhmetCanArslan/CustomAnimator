@@ -1733,7 +1733,6 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="link_cleaner_share">Condividi</string>
     <string name="link_cleaner_copy">Copia</string>
     <string name="link_cleaner_copied">Link pulito copiato</string>
-    <string name="link_cleaner_rules_failed">Impossibile scaricare le regole di pulizia dei link</string>
     <string name="link_cleaner_credit">Regole da ClearURLs, usate con licenza LGPL-3.0.</string>
     <string name="save_to_device">Salva sul dispositivo</string>
     <string name="save_to_device_desc">Condividi qualsiasi cosa con questa app per conservarne una copia sul dispositivo. Scegli una cartella per salvare lì automaticamente oppure decidi ogni volta dove salvare.</string>

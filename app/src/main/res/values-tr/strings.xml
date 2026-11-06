@@ -1721,7 +1721,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="link_cleaner_share">Paylaş</string>
     <string name="link_cleaner_copy">Kopyala</string>
     <string name="link_cleaner_copied">Temiz link kopyalandı</string>
-    <string name="link_cleaner_rules_failed">Link temizleme kuralları indirilemedi</string>
     <string name="link_cleaner_credit">Kurallar ClearURLs\'den, LGPL-3.0 kapsamında kullanılır.</string>
     <string name="save_to_device">Cihaza kaydet</string>
     <string name="save_to_device_desc">Bir kopyasını cihazınızda saklamak için herhangi bir şeyi bu uygulamayla paylaşın. Otomatik kaydedilecek bir klasör seçin ya da her seferinde nereye kaydedileceğini belirleyin.</string>

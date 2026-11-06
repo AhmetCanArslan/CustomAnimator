@@ -1715,7 +1715,6 @@
     <string name="link_cleaner_share">Поделиться</string>
     <string name="link_cleaner_copy">Копировать</string>
     <string name="link_cleaner_copied">Чистая ссылка скопирована</string>
-    <string name="link_cleaner_rules_failed">Не удалось загрузить правила очистки ссылок</string>
     <string name="link_cleaner_credit">Правила из ClearURLs, используются по лицензии LGPL-3.0.</string>
     <string name="save_to_device">Сохранить на устройстве</string>
     <string name="save_to_device_desc">Поделитесь чем угодно с этим приложением, чтобы сохранить копию на устройстве. Выберите папку для автоматического сохранения или указывайте место каждый раз.</string>

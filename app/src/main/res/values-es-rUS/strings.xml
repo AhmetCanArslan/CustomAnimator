@@ -1713,7 +1713,6 @@ Duración del Animador: %3$.2f</string>
     <string name="link_cleaner_share">Compartir</string>
     <string name="link_cleaner_copy">Copiar</string>
     <string name="link_cleaner_copied">Enlace limpio copiado</string>
-    <string name="link_cleaner_rules_failed">No se pudieron descargar las reglas de limpieza de enlaces</string>
     <string name="link_cleaner_credit">Reglas de ClearURLs, usadas bajo LGPL-3.0.</string>
     <string name="save_to_device">Guardar en el dispositivo</string>
     <string name="save_to_device_desc">Comparte cualquier cosa con esta app para guardar una copia en tu dispositivo. Elige una carpeta para guardar ahí automáticamente o decide dónde guardar cada vez.</string>
