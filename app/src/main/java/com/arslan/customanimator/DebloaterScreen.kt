@@ -380,7 +380,6 @@ private fun reportResult(context: android.content.Context, done: Int, total: Int
         context.getString(R.string.debloater_result, done, total - done),
         android.widget.Toast.LENGTH_LONG
     ).show()
-    maybeShowInterstitial(context)
 }
 
 @Composable

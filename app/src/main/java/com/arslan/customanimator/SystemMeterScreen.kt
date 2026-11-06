@@ -150,7 +150,6 @@ fun SystemMeterScreenContent(
                                     ).show()
                                 } else if (FpsOverlayManager.canDrawOverlay(context)) {
                                     startMeter()
-                                    maybeShowInterstitial(context)
                                 } else {
                                     Toast.makeText(
                                         context,

@@ -127,7 +127,6 @@ fun WhatsAppCleanerScreen(
             if (deleted) {
                 val message = resources.getString(R.string.whatsapp_cleaner_freed, BoostStats.formatSize(context, freed))
                 Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-                maybeShowInterstitial(context)
             } else {
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }

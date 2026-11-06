@@ -71,7 +71,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.LogEntry
 import com.arslan.customanimator.notify.data.MatchedRuleInfo
@@ -338,7 +337,6 @@ fun LoggingSection(
                     bodyIsRegex = bodyIsRegex,
                     blocksNotification = blocksNotification
                 )
-                maybeShowInterstitial(context)
                 ignoreTarget = null
             }
         )

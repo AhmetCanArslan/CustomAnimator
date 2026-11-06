@@ -118,7 +118,6 @@ fun OtpCopierScreen(
             val success = withContext(Dispatchers.IO) { OtpCopierManager.grantSensitiveAccess(context) }
             if (success) {
                 hasSensitiveAccess = true
-                maybeShowInterstitial(context)
             } else {
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }

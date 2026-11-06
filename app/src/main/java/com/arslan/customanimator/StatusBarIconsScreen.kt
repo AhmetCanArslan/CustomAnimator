@@ -179,9 +179,7 @@ fun StatusBarIconsScreen(
             val success = withContext(Dispatchers.IO) {
                 DeveloperOptionsManager.setClockSeconds(context, contentResolver, enabled)
             }
-            if (success) {
-                maybeShowInterstitial(context)
-            } else {
+            if (!success) {
                 clockSecondsEnabled = !enabled
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
@@ -195,9 +193,7 @@ fun StatusBarIconsScreen(
             val success = withContext(Dispatchers.IO) {
                 StatusBarIconsManager.setSlotHidden(contentResolver, slot, !visible)
             }
-            if (success) {
-                maybeShowInterstitial(context)
-            } else {
+            if (!success) {
                 hiddenSlots = previous
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }

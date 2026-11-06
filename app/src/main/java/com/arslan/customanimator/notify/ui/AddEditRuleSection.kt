@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.activity.compose.PredictiveBackHandler
 import kotlin.coroutines.cancellation.CancellationException
 import androidx.compose.material.icons.filled.Warning
-import com.arslan.customanimator.maybeShowInterstitial
 import com.arslan.customanimator.R
 import com.arslan.customanimator.notify.data.*
 import com.arslan.customanimator.ui.components.ScreenTopBar
@@ -403,7 +402,6 @@ fun AddEditRuleSection(
                                 }
                                 shouldDiscardDraft[0] = true
                                 AddEditRuleDraft.clear(context, draftKey)
-                                maybeShowInterstitial(context)
                                 onNavigateBack()
                             }
                         },

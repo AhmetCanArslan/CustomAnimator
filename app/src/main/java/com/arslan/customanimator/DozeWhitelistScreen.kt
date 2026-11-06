@@ -52,7 +52,6 @@ fun DozeWhitelistScreen(
             }
             if (success) {
                 whitelisted = withContext(Dispatchers.IO) { DozeWhitelistManager.getWhitelistedPackages() }
-                maybeShowInterstitial(context)
             } else {
                 whitelisted = previous
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()

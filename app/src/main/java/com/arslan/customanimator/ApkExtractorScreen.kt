@@ -59,7 +59,6 @@ fun ApkExtractorScreen(
                 resources.getString(R.string.apk_extractor_failed)
             }
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            if (folder != null) maybeShowInterstitial(context)
         }
     }
     val storagePermission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->

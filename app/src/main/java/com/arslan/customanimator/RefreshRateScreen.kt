@@ -91,7 +91,6 @@ fun RefreshRateScreen(
             }
             if (success) {
                 activeRate = RefreshRateManager.getActiveRate(context)
-                maybeShowInterstitial(context)
             } else {
                 minRate = previousMin
                 peakRate = previousPeak

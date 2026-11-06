@@ -128,9 +128,8 @@ fun BatteryScreenContent(
 
     fun write(action: () -> Boolean) {
         coroutineScope.launch {
-            val success = withContext(Dispatchers.IO) { action() }
+            withContext(Dispatchers.IO) { action() }
             refreshToken++
-            if (success) maybeShowInterstitial(context)
         }
     }
 

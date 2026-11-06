@@ -518,7 +518,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onSuccess = { success ->
                     if (success) {
                         onSuccess()
-                        maybeShowInterstitial(context)
                     } else {
                         showDefaultShizukuRecommendation()
                     }
@@ -1715,7 +1714,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                                                     onSuccess = { success ->
                                                         if (success) {
                                                             Toast.makeText(context, context.getString(R.string.preset_loaded_applied), Toast.LENGTH_SHORT).show()
-                                                            maybeShowInterstitial(context)
                                                         } else {
                                                             showDefaultShizukuRecommendation()
                                                         }

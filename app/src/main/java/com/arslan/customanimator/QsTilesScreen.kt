@@ -120,7 +120,6 @@ fun QsTilesScreen(
         } else {
             reload()
             ToggleTileSlots.requestAddTile(context, added.slot, added.label, added.iconKey)
-            maybeShowInterstitial(context)
         }
     }
 

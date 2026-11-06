@@ -80,7 +80,6 @@ fun ApkInstallerScreen(
             if (result.outcome != ApkInstallerManager.Outcome.DONE) return@launch
             selected = null
             withContext(Dispatchers.IO) { ApkInstallerManager.discard(context) }
-            maybeShowInterstitial(context)
         }
     }
 

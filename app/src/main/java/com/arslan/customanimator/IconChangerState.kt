@@ -128,7 +128,7 @@ internal class IconChangerState(private val context: Context, private val scope:
             progress = null
             toast(context.getString(outcome.messageRes()))
             if (outcome != IconChangerManager.Outcome.DONE) return@launch
-            maybeShowInterstitial(context)
+            if (!isPremiumNow()) PremiumLimits.recordIconChange(context)
             clearApp()
             installs++
         }

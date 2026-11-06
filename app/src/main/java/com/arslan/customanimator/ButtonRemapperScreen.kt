@@ -103,9 +103,7 @@ fun ButtonRemapperScreen(
         powerLongPress = choice
         coroutineScope.launch {
             val success = withContext(Dispatchers.IO) { write() }
-            if (success) {
-                maybeShowInterstitial(context)
-            } else {
+            if (!success) {
                 powerLongPress = previous
                 Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
             }
@@ -128,7 +126,6 @@ fun ButtonRemapperScreen(
                 ButtonRemapperManager.setAction(context, trigger, action)
                 PowerButtonService.sync(context)
             }
-            maybeShowInterstitial(context)
         }
     }
 

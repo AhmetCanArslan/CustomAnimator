@@ -110,7 +110,7 @@ fun SystemColorsScreen(
         Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
     }
     val writePalette: (SystemPalette) -> Unit = { palette ->
-        coroutineScope.runAction(context, { SystemColorsManager.applyPalette(context, palette) }) { success ->
+        coroutineScope.runAction({ SystemColorsManager.applyPalette(context, palette) }) { success ->
             if (success) state.appliedPalette = palette
             if (!success && state.palette == palette) {
                 state.palette = state.appliedPalette
@@ -134,7 +134,7 @@ fun SystemColorsScreen(
         if (contrast == state.contrast) return@applyContrast
         val previous = state.contrast
         state.contrast = contrast
-        coroutineScope.runAction(context, { SystemColorsManager.applyContrast(context, contrast) }) { success ->
+        coroutineScope.runAction({ SystemColorsManager.applyContrast(context, contrast) }) { success ->
             if (!success) {
                 state.contrast = previous
                 showFailure()
@@ -144,7 +144,7 @@ fun SystemColorsScreen(
     val applyDarkMode: (SystemDarkMode) -> Unit = { mode ->
         val previous = state.darkMode
         state.darkMode = mode
-        coroutineScope.runAction(context, { SystemColorsManager.applyDarkMode(mode) }) { success ->
+        coroutineScope.runAction({ SystemColorsManager.applyDarkMode(mode) }) { success ->
             if (!success) {
                 state.darkMode = previous
                 showFailure()
@@ -152,7 +152,7 @@ fun SystemColorsScreen(
         }
     }
     val restore: () -> Unit = {
-        coroutineScope.runAction(context, { SystemColorsManager.restoreBaseline(context) }) { success ->
+        coroutineScope.runAction({ SystemColorsManager.restoreBaseline(context) }) { success ->
             if (success) {
                 coroutineScope.launch { state.load(context) }
             } else {
@@ -287,14 +287,12 @@ fun SystemColorsScreen(
 }
 
 private fun CoroutineScope.runAction(
-    context: Context,
     action: () -> Boolean,
     onResult: (Boolean) -> Unit
 ) {
     launch {
         val success = withContext(Dispatchers.IO) { action() }
         onResult(success)
-        if (success) maybeShowInterstitial(context)
     }
 }
 
