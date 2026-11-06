@@ -57,10 +57,6 @@ fun ShortcutsScreen(
     val coroutineScope = rememberCoroutineScope()
     val state = remember { ShortcutsState(context, coroutineScope) }
 
-    LaunchedEffect(Unit) {
-        RewardedAds.preload(context)
-    }
-
     LaunchedEffect(hasShizukuPermission) {
         state.load(hasShizukuPermission)
     }

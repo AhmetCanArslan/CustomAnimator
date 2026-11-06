@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.automirrored.filled.AddToHomeScreen
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Widgets
@@ -85,6 +86,7 @@ internal fun ShortcutStepHost(state: ShortcutsState, hasShizukuPermission: Boole
         is ShortcutStep.Confirm -> ConfirmShortcutDialog(
             step = step,
             canAddWidget = state.canAddWidget,
+            shortcutCount = state.shortcuts.size,
             onConfirm = state::confirm,
             onTest = state::launch,
             onDismiss = state::dismiss
@@ -375,6 +377,7 @@ private fun HandlerPickerSheet(
 private fun ConfirmShortcutDialog(
     step: ShortcutStep.Confirm,
     canAddWidget: Boolean,
+    shortcutCount: Int,
     onConfirm: (ShortcutEntry, Bitmap, Boolean) -> Unit,
     onTest: (ShortcutEntry) -> Unit,
     onDismiss: () -> Unit
@@ -384,13 +387,11 @@ private fun ConfirmShortcutDialog(
     var value by remember(entry.id) { mutableStateOf(entry.inputValue()) }
     var icon by remember(entry.id) { mutableStateOf(ShortcutIconImage(step.icon, entry.legacyIcon)) }
     var showIconPicker by remember(entry.id) { mutableStateOf(false) }
-    var rewarded by remember(entry.id) { mutableStateOf(false) }
     var choosingPlacement by remember(entry.id) { mutableStateOf(false) }
     val valueLabelRes = entry.valueLabelRes()
     val isValid = label.isNotBlank() && (valueLabelRes == null || value.isNotBlank())
     val context = LocalContext.current
-    val isAdFree by rememberIsAdFree()
-    val needsAd = !step.editing && !isAdFree && !rewarded
+    val shortcutLocked = !step.editing && rememberShortcutLimitReached(shortcutCount)
     val save: (Boolean) -> Unit = { asWidget ->
         onConfirm(entry.withInput(label, value).copy(legacyIcon = icon.legacy), icon.bitmap, asWidget)
     }
@@ -462,20 +463,15 @@ private fun ConfirmShortcutDialog(
         },
         confirmButton = {
             Button(
-                onClick = {
-                    if (needsAd) {
-                        requestReward(context) {
-                            rewarded = true
-                            proceed()
-                        }
-                    } else {
-                        proceed()
-                    }
-                },
+                onClick = { if (step.editing) proceed() else runWithShortcutLimit(context, shortcutCount, proceed) },
                 enabled = isValid,
                 shapes = ButtonDefaults.shapes()
             ) {
-                Text(stringResource(confirmLabelRes(step.editing, needsAd)))
+                if (shortcutLocked) {
+                    Icon(Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                }
+                Text(stringResource(confirmLabelRes(step.editing)))
             }
         },
         dismissButton = {
@@ -513,11 +509,8 @@ private fun ShortcutPlacementDialog(onPick: (Boolean) -> Unit, onDismiss: () -> 
     )
 }
 
-private fun confirmLabelRes(editing: Boolean, needsAd: Boolean): Int = when {
-    editing -> R.string.save
-    needsAd -> R.string.shortcut_watch_ad_add
-    else -> R.string.shortcut_add_to_home
-}
+private fun confirmLabelRes(editing: Boolean): Int =
+    if (editing) R.string.save else R.string.shortcut_add_to_home
 
 private fun ShortcutActivityInfo.isLaunchable(hasShizukuPermission: Boolean, isRoot: Boolean): Boolean = when {
     needsRoot -> isRoot
