@@ -102,22 +102,11 @@ class ShareActionsActivity : ComponentActivity() {
     private fun cleanLink(text: String) {
         sheet = sheet?.copy(isCleaning = true)
         lifecycleScope.launch {
-            val providers = withContext(Dispatchers.IO) { loadRules() }
-            if (providers.isEmpty()) {
-                Toast.makeText(applicationContext, R.string.link_cleaner_rules_failed, Toast.LENGTH_SHORT).show()
-                sheet = sheet?.copy(isCleaning = false)
-            } else {
-                sheet = sheet?.copy(isCleaning = false, cleaned = LinkCleaner.clean(text, providers))
+            val cleaned = withContext(Dispatchers.IO) {
+                LinkCleaner.clean(text, LinkCleanerRules.load(applicationContext))
             }
+            sheet = sheet?.copy(isCleaning = false, cleaned = cleaned)
         }
-    }
-
-    private fun loadRules(): List<LinkCleaner.Provider> {
-        val hadRules = LinkCleanerRules.isAvailable(applicationContext)
-        if (!hadRules) LinkCleanerRules.download(applicationContext)
-        val providers = LinkCleanerRules.load(applicationContext)
-        if (hadRules) backgroundScope.launch { LinkCleanerRules.download(applicationContext) }
-        return providers
     }
 
     private fun copyCleaned(text: String) {
