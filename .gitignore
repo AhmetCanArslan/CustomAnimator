@@ -12,3 +12,5 @@ app/release/
 .idea/.gitignore
 app/playstore/release/
 app/github/release/
+
+docs/features/
