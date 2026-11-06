@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,6 +19,7 @@ import com.arslan.customanimator.utils.GameModeController
 import com.arslan.customanimator.utils.GameModeExclusionManager
 import com.arslan.customanimator.utils.GameModeManager
 import com.arslan.customanimator.utils.GameModeTargets
+import com.arslan.customanimator.utils.PremiumLimits
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,11 +48,7 @@ fun GameModeScreenContent(
     var isBusy by remember { mutableStateOf(false) }
     var isActive by remember { mutableStateOf(GameModeController.isActive(context)) }
     var targetCount by remember { mutableStateOf(0) }
-    val isAdFree by rememberIsAdFree()
-
-    LaunchedEffect(Unit) { RewardedAds.prepare(context) }
-
-
+    val gameModeLocked = rememberUseLimitReached(PremiumLimits.Limited.GAME_MODE)
 
     val appList = rememberAppListState(selectedPackages = listedPackages)
 
@@ -116,9 +115,9 @@ fun GameModeScreenContent(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        if (!isActive && !isAdFree) {
+                        if (!isActive && gameModeLocked) {
                             Text(
-                                text = stringResource(R.string.game_mode_ad_desc),
+                                text = stringResource(R.string.premium_use_limit),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -137,20 +136,22 @@ fun GameModeScreenContent(
                                         resources.getString(R.string.game_mode_select_games_first),
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    isAdFree -> toggle(true)
-                                    else -> requestReward(context) { toggle(true) }
+                                    else -> runWithUseLimit(context, PremiumLimits.Limited.GAME_MODE) { toggle(true) }
                                 }
                             },
                             enabled = !isBusy,
                             modifier = Modifier.fillMaxWidth(),
                             shapes = ButtonDefaults.shapes()
                         ) {
+                            if (!isActive && gameModeLocked) {
+                                Icon(Icons.Filled.Lock, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(Modifier.width(8.dp))
+                            }
                             Text(
                                 text = when {
                                     isBusy -> stringResource(R.string.working)
                                     isActive -> stringResource(R.string.game_mode_turn_off)
-                                    isAdFree -> stringResource(R.string.game_mode_turn_on)
-                                    else -> stringResource(R.string.game_mode_turn_on_with_ad)
+                                    else -> stringResource(R.string.game_mode_turn_on)
                                 }
                             )
                         }

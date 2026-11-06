@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Error
@@ -42,6 +43,7 @@ import com.arslan.customanimator.ui.theme.LocalExtendedColors
 import com.arslan.customanimator.utils.CompileBoosterProgressTracker
 import com.arslan.customanimator.utils.CompileFilterManager
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.PremiumLimits
 import java.text.NumberFormat
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
@@ -92,11 +94,9 @@ fun CompileBoosterScreen(
     val openSetup = LocalOpenSetupGuide.current
     val progress by CompileBoosterProgressTracker.progress.collectAsState()
     var compileFilter by remember { mutableStateOf(CompileFilterManager.getFilter(context)) }
-    val isAdFree by rememberIsAdFree()
+    val boosterLocked = rememberUseLimitReached(PremiumLimits.Limited.BOOSTER)
     val startCompileBooster = rememberCompileBoosterStarter()
     val phase = progress.phase
-
-    LaunchedEffect(Unit) { RewardedAds.prepare(context) }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     Scaffold(
@@ -111,14 +111,12 @@ fun CompileBoosterScreen(
         bottomBar = {
             when (phase) {
                 CompilePhase.IDLE -> CompileActionButton(
-                    icon = Icons.Filled.Speed,
-                    label = stringResource(
-                        if (isAdFree) R.string.compile_all_apps else R.string.compile_all_apps_with_ad
-                    ),
+                    icon = if (boosterLocked) Icons.Filled.Lock else Icons.Filled.Speed,
+                    label = stringResource(R.string.compile_all_apps),
                     enabled = hasShizukuPermission,
                     onClick = {
                         CompileFilterManager.setFilter(context, compileFilter)
-                        if (isAdFree) startCompileBooster() else requestReward(context) { startCompileBooster() }
+                        runWithUseLimit(context, PremiumLimits.Limited.BOOSTER, startCompileBooster)
                     }
                 )
                 CompilePhase.PREPARING, CompilePhase.RUNNING -> CompileActionButton(

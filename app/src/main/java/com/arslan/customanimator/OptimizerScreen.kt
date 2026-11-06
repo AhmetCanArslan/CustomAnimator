@@ -17,7 +17,7 @@ import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.PlayCircleOutline
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.StopCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.BoostSnapshot
 import com.arslan.customanimator.utils.BoostStats
+import com.arslan.customanimator.utils.PremiumLimits
 import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.utils.CloseAppsExclusionManager
 import com.arslan.customanimator.utils.CompileFilterManager
@@ -115,15 +116,11 @@ private fun OptimizerHome(
     val scope = rememberCoroutineScope()
 
     val hasShizukuPermission = LocalShizukuPermission.current
-    val isAdFree by rememberIsAdFree()
+    val boosterLocked = rememberUseLimitReached(PremiumLimits.Limited.BOOSTER)
+    val cleanerLocked = rememberUseLimitReached(PremiumLimits.Limited.CLEANER)
 
     var isCleaning by remember { mutableStateOf(false) }
-    var isPreparingAd by remember { mutableStateOf(false) }
     var cleanOutcome by remember { mutableStateOf<CleanOutcome?>(null) }
-
-    LaunchedEffect(Unit) {
-        if (!isAdFree) RewardedAds.prepare(context)
-    }
 
     fun startClean() {
         if (isCleaning) return
@@ -145,23 +142,8 @@ private fun OptimizerHome(
         }
     }
 
-    val gatedStart: (() -> Unit) -> Unit = { action ->
-        if (isAdFree) {
-            action()
-        } else {
-            isPreparingAd = true
-            RewardedAds.show(context) { result ->
-                isPreparingAd = false
-                when (result) {
-                    RewardedAds.Result.REWARDED -> action()
-                    RewardedAds.Result.UNAVAILABLE -> {
-                        showFreeUnlockToast(context)
-                        action()
-                    }
-                    else -> showAdFailure(context, result)
-                }
-            }
-        }
+    val gatedStart: (PremiumLimits.Limited, () -> Unit) -> Unit = { feature, action ->
+        runWithUseLimit(context, feature, action)
     }
 
     Column(
@@ -187,11 +169,10 @@ private fun OptimizerHome(
             icon = Icons.Filled.Bolt,
             title = stringResource(R.string.optimizer_performance_booster),
             description = stringResource(R.string.optimizer_performance_booster_desc),
-            buttonLabel = stringResource(if (isAdFree) R.string.boost_start else R.string.boost_watch_ad),
-            adSupported = !isAdFree,
-            busy = isPreparingAd,
-            enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
-            onClick = { gatedStart(onOpenBooster) }
+            buttonLabel = stringResource(R.string.boost_start),
+            locked = boosterLocked,
+            enabled = hasShizukuPermission && !isCleaning,
+            onClick = { gatedStart(PremiumLimits.Limited.BOOSTER, onOpenBooster) }
         )
 
         ActionCard(
@@ -199,21 +180,17 @@ private fun OptimizerHome(
             title = stringResource(R.string.optimizer_cleaner),
             description = stringResource(R.string.optimizer_cleaner_desc),
             buttonLabel = stringResource(
-                when {
-                    isCleaning -> R.string.optimizer_cleaning_label
-                    isAdFree -> R.string.optimizer_clean_start
-                    else -> R.string.optimizer_clean_watch_ad
-                }
+                if (isCleaning) R.string.optimizer_cleaning_label else R.string.optimizer_clean_start
             ),
-            adSupported = !isAdFree,
-            busy = isCleaning || isPreparingAd,
-            enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
-            onClick = { gatedStart(::startClean) }
+            locked = cleanerLocked,
+            busy = isCleaning,
+            enabled = hasShizukuPermission && !isCleaning,
+            onClick = { gatedStart(PremiumLimits.Limited.CLEANER, ::startClean) }
         )
 
         QuickActionsCard(
-            enabled = hasShizukuPermission && !isCleaning && !isPreparingAd,
-            runGated = gatedStart,
+            enabled = hasShizukuPermission && !isCleaning,
+            runGated = { action -> gatedStart(PremiumLimits.Limited.CLEANER, action) },
             onNavigateToCloseAppsExclusions = onNavigateToCloseAppsExclusions,
             onNavigateToWhatsAppCleaner = onNavigateToWhatsAppCleaner
         )
@@ -350,10 +327,10 @@ private fun ActionCard(
     title: String,
     description: String,
     buttonLabel: String,
-    adSupported: Boolean,
-    busy: Boolean,
+    locked: Boolean,
     enabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    busy: Boolean = false
 ) {
     AppCard(contentPadding = 0.dp) {
         Column(
@@ -394,7 +371,7 @@ private fun ActionCard(
                     )
                 } else {
                     Icon(
-                        imageVector = if (adSupported) Icons.Filled.PlayCircleOutline else icon,
+                        imageVector = if (locked) Icons.Filled.Lock else icon,
                         contentDescription = null,
                         modifier = Modifier.size(20.dp)
                     )
@@ -547,15 +524,6 @@ private fun rememberSpinnerTick(isRunning: Boolean): Int {
         }
     }
     return tick
-}
-
-private fun showAdFailure(context: Context, result: RewardedAds.Result) {
-    val message = if (result == RewardedAds.Result.CANCELLED) {
-        R.string.boost_ad_reward_denied
-    } else {
-        R.string.boost_ad_unavailable
-    }
-    Toast.makeText(context, context.getString(message), Toast.LENGTH_SHORT).show()
 }
 
 private fun runClean(context: Context): CleanOutcome {
