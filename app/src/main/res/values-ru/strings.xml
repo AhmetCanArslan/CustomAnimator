@@ -1895,4 +1895,8 @@
     <string name="live_activity_notif_title">Текущая активность отображается</string>
     <string name="live_activity_permissions">Разрешения для текущей активности</string>
     <string name="live_activity_permission_needed">Для показа текущей активности нужны Shizuku и разрешение на показ поверх других приложений.</string>
+    <string name="section_more_apps">Ещё от Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">Жесты на краях экрана запускают любое действие: от «Назад» и скриншота до ваших ярлыков.</string>
+    <string name="app_shizuwall_desc">Брандмауэр для Android без VPN. Блокируйте приложениям доступ к сети через Shizuku.</string>
+    <string name="more_apps_open">Открыть в Google Play</string>
 </resources>

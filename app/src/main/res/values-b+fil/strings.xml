@@ -1893,4 +1893,8 @@ Tagal ng Animator: %3$.2f</string>
     <string name="live_activity_notif_title">Tumatakbo ang live activity</string>
     <string name="live_activity_permissions">Mga pahintulot ng live activity</string>
     <string name="live_activity_permission_needed">Kailangan ng live activity ang Shizuku at pahintulot na magpakita sa ibabaw ng ibang app.</string>
+    <string name="section_more_apps">Higit pa mula kay Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">Mga edge gesture na nagpapatakbo ng anumang aksyon, mula back at screenshot hanggang sa sarili mong shortcut.</string>
+    <string name="app_shizuwall_desc">Android firewall na walang VPN. I-block ang mga app sa network, gamit ang Shizuku.</string>
+    <string name="more_apps_open">Buksan sa Google Play</string>
 </resources>

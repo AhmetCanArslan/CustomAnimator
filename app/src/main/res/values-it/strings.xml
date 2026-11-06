@@ -1913,4 +1913,8 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="live_activity_notif_title">Attività live attiva</string>
     <string name="live_activity_permissions">Autorizzazioni attività live</string>
     <string name="live_activity_permission_needed">L\'attività live richiede Shizuku e l\'autorizzazione a mostrarsi sopra le altre app.</string>
+    <string name="section_more_apps">Altro da Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">Gesti sui bordi che eseguono qualsiasi azione, da indietro e screenshot ai tuoi collegamenti.</string>
+    <string name="app_shizuwall_desc">Firewall per Android senza VPN. Blocca le app dalla rete, grazie a Shizuku.</string>
+    <string name="more_apps_open">Apri su Google Play</string>
 </resources>

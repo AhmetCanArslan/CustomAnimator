@@ -1935,4 +1935,10 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="live_activity_permissions">Live activity permissions</string>
     <string name="live_activity_permission_needed">Live activity needs Shizuku and permission to display over other apps.</string>
     <string name="live_activity_value" translatable="false">%1$s\n%2$s</string>
+    <string name="section_more_apps">More from Ahmet Can Arslan</string>
+    <string name="app_flowactions_name" translatable="false">Flow</string>
+    <string name="app_flowactions_desc">Edge gestures that run any action, from back and screenshot to your own shortcuts.</string>
+    <string name="app_shizuwall_name" translatable="false">ShizuWall</string>
+    <string name="app_shizuwall_desc">Android firewall without VPN. Block apps from the network, powered by Shizuku.</string>
+    <string name="more_apps_open">Open on Google Play</string>
 </resources>

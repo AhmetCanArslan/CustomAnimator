@@ -1933,4 +1933,8 @@
     <string name="live_activity_notif_title">النشاط المباشر يعمل</string>
     <string name="live_activity_permissions">أذونات النشاط المباشر</string>
     <string name="live_activity_permission_needed">يحتاج النشاط المباشر إلى Shizuku وإذن العرض فوق التطبيقات الأخرى.</string>
+    <string name="section_more_apps">المزيد من Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">إيماءات الحواف لتشغيل أي إجراء، من الرجوع ولقطة الشاشة إلى اختصاراتك الخاصة.</string>
+    <string name="app_shizuwall_desc">جدار حماية لأندرويد بدون VPN. امنع التطبيقات من الوصول إلى الشبكة، بالاعتماد على Shizuku.</string>
+    <string name="more_apps_open">فتح في Google Play</string>
 </resources>

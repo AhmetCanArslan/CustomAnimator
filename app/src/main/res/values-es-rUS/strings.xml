@@ -1893,4 +1893,8 @@ Duración del Animador: %3$.2f</string>
     <string name="live_activity_notif_title">Actividad en vivo activa</string>
     <string name="live_activity_permissions">Permisos de actividad en vivo</string>
     <string name="live_activity_permission_needed">La actividad en vivo necesita Shizuku y permiso para mostrarse sobre otras apps.</string>
+    <string name="section_more_apps">Más de Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">Gestos en los bordes que ejecutan cualquier acción, desde atrás y captura de pantalla hasta tus propios atajos.</string>
+    <string name="app_shizuwall_desc">Firewall para Android sin VPN. Bloquea el acceso a la red de las apps con Shizuku.</string>
+    <string name="more_apps_open">Abrir en Google Play</string>
 </resources>

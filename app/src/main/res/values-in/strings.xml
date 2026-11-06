@@ -1893,4 +1893,8 @@ Durasi Animator: %3$.2f</string>
     <string name="live_activity_notif_title">Aktivitas langsung berjalan</string>
     <string name="live_activity_permissions">Izin aktivitas langsung</string>
     <string name="live_activity_permission_needed">Aktivitas langsung memerlukan Shizuku dan izin tampil di atas aplikasi lain.</string>
+    <string name="section_more_apps">Lainnya dari Ahmet Can Arslan</string>
+    <string name="app_flowactions_desc">Gestur tepi layar untuk menjalankan aksi apa pun, dari kembali dan tangkapan layar hingga pintasan buatanmu.</string>
+    <string name="app_shizuwall_desc">Firewall Android tanpa VPN. Blokir akses jaringan aplikasi, ditenagai Shizuku.</string>
+    <string name="more_apps_open">Buka di Google Play</string>
 </resources>
