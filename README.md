@@ -31,7 +31,7 @@ Custom Animator is distributed through the [Google Play Store](https://play.goog
 
 ## Privacy
 
-Custom Animator does not collect personal data or usage analytics; presets and settings stay on your device. The app serves AdMob banner and interstitial ads, which are subject to Google's own data handling; a one-time in-app purchase removes them. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
+Custom Animator does not collect personal data or usage analytics; presets and settings stay on your device. The app shows no ads; a one-time in-app purchase unlocks Premium. See [PRIVACY_POLICY.md](PRIVACY_POLICY.md) for details.
 
 ## License
 

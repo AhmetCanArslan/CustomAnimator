@@ -1,13 +1,13 @@
 # Privacy Policy
 
 **App:** CustomAnimator (`com.arslan.customanimator`)
-**Last Updated:** August 2026
+**Last Updated:** November 2026
 
 ## Summary
 
 CustomAnimator does not collect, store, or transmit your personal data. There is no account, no login, no analytics, no crash reporting, and no telemetry of any kind. Everything the app creates — presets, rules, notification logs, ignore lists — is written to the app's own private storage on your device and stays there.
 
-No feature of the app sends your data over the network. Advertising and in-app purchases are the only components that use a network connection at all, and they are described in "Third-Party Services" below.
+No feature of the app sends your data over the network. The in-app purchase is the only component that uses a network connection at all, and it is described in "Third-Party Services" below.
 
 ## What the App Stores
 
@@ -52,7 +52,6 @@ Each permission is used only for the feature named next to it. No permission is 
 | `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_DATA_SYNC`, `FOREGROUND_SERVICE_SPECIAL_USE` | Keep the notification listener and other background features alive. |
 | `RECEIVE_BOOT_COMPLETED` | Restart enabled services after a reboot. |
 | `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` | Ask you to exempt the app so battery saver does not kill the listener. |
-| `com.google.android.gms.permission.AD_ID` | Let Google AdMob read the device advertising identifier for ad serving. Not requested once the ad removal purchase is active. |
 
 ## Shizuku and Shell Access
 
@@ -60,12 +59,11 @@ Some features (secure settings, Wi-Fi passwords, the built-in terminal) run shel
 
 ## Third-Party Services
 
-The app uses no analytics, crash reporting, or tracking SDKs. The only third-party components are Google AdMob (advertising) and Google Play Billing (the optional ad-removal purchase). Every published build of CustomAnimator includes them. AdMob serves banner, interstitial and app-open ads, and the app declares the `AD_ID` permission so Google can read the device's advertising identifier. These Google SDKs connect to the network and may process that identifier and standard ad-request data under Google's own privacy policy, which the developer does not control:
+The app shows no ads and uses no analytics, crash reporting, or tracking SDKs. The only third-party component is Google Play Billing, which handles the optional one-time Premium purchase. It connects to the network under Google's own privacy policy, which the developer does not control:
 
 - Google Privacy Policy — https://policies.google.com/privacy
-- How Google uses data from apps that use its services — https://policies.google.com/technologies/partner-sites
 
-Where required by law, the app shows a consent form (Google UMP) before serving personalised ads, and you can change your choice later from **Settings → Privacy Options**, which appears whenever your region requires it. Purchasing the ad removal option disables all ad loading entirely, including the advertising identifier request. The developer receives no personal data from either SDK.
+The developer receives no personal data from Google Play Billing.
 
 ## Changes to This Policy
 
