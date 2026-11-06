@@ -1921,6 +1921,8 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         )
     }
 
+    PremiumPromptDialog(enabled = !showRateDialog)
+
     if (showRateDialog) {
         AlertDialog(
             onDismissRequest = {

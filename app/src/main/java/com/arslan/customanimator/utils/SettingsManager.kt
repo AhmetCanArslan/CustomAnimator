@@ -20,6 +20,7 @@ object SettingsManager {
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
     private const val KEY_RATE_DIALOG_RATED = "rate_dialog_rated"
+    private const val KEY_PREMIUM_PROMPT_NEXT_SHOW = "premium_prompt_next_show"
 
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
@@ -108,6 +109,15 @@ object SettingsManager {
 
     fun setLastSeenChangelogVersion(context: Context, versionCode: Int) {
         getPrefs(context).edit().putInt(KEY_LAST_CHANGELOG_VERSION, versionCode).apply()
+    }
+
+    fun shouldShowPremiumPrompt(context: Context, nowMs: Long = System.currentTimeMillis()): Boolean =
+        nowMs >= getPrefs(context).getLong(KEY_PREMIUM_PROMPT_NEXT_SHOW, 0L)
+
+    fun markPremiumPromptHandled(context: Context, nowMs: Long = System.currentTimeMillis()) {
+        getPrefs(context).edit()
+            .putLong(KEY_PREMIUM_PROMPT_NEXT_SHOW, nowMs + 24L * 60 * 60 * 1000)
+            .apply()
     }
 
     fun shouldShowRateDialog(context: Context): Boolean {
