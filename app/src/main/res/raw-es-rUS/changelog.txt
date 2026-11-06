@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Se quitaron todos los anuncios y se añadió Premium, una compra única. Si compraste Quitar anuncios, ya tienes Premium.
 - Nuevo diseño Material 3 Expressive: nuevas barras, formas, interruptores, controles deslizantes, grupos de opciones y animaciones en todas las pantallas.
 - Reasignación de botones: doble y triple pulsación del botón de encendido, además de combinación, doble, triple y pulsación larga de los botones de volumen, cada una con la acción que quieras. Los botones de volumen funcionan con la pantalla apagada.
 - Acciones: elige del catálogo de acciones rápidas e interruptores (linterna, ahorro de batería y más) o abre una pantalla de la app desde Accesos directos y Reasignación de botones.

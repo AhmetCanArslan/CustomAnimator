@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Tüm reklamlar kaldırıldı ve tek seferlik satın alınan Premium eklendi. Reklamları Kaldır'ı aldıysan zaten Premium'sun.
 - Yeni Material 3 Expressive tasarım: tüm ekranlarda yeni uygulama çubukları, şekiller, anahtarlar, kaydırıcılar, seçim grupları ve hareketler.
 - Tuş Atama: güç tuşuna çift ve üçlü basma, ayrıca ses tuşu kombinasyonu, çift, üçlü ve uzun basma; her biri için istediğin işlem. Ses tuşları ekran kapalıyken de çalışır.
 - İşlemler: Kısayollar ve Tuş Atama'da hızlı işlem ve düğme kataloğundan (el feneri, pil tasarrufu ve daha fazlası) seç ya da uygulamanın bir ekranını aç.

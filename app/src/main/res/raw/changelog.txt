@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Removed every ad and added Premium, a one-time purchase. If you bought Remove Ads, you already have Premium.
 - New Material 3 Expressive design: new app bars, shapes, switches, sliders, choice groups and motion on every screen.
 - Button Remapper: double and triple press on the power button, plus volume combo, double, triple and long press, each with any action. Volume keys keep working with the screen off.
 - Actions: pick from a catalog of quick actions and toggles (flashlight, battery saver and more), or open a screen of this app, from Shortcuts and the Button Remapper.

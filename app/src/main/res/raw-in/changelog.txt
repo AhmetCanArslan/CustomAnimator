@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Semua iklan dihapus dan Premium ditambahkan, pembelian sekali bayar. Jika Anda membeli Hapus Iklan, Anda sudah memiliki Premium.
 - Desain Material 3 Expressive baru: bilah aplikasi, bentuk, sakelar, penggeser, grup pilihan, dan animasi baru di semua layar.
 - Pemetaan Tombol: tekan dua kali dan tiga kali tombol daya, serta kombinasi, dua kali, tiga kali, dan tekan lama tombol volume, masing-masing dengan aksi apa pun. Tombol volume tetap berfungsi saat layar mati.
 - Aksi: pilih dari katalog aksi cepat dan sakelar (senter, penghemat baterai, dan lainnya) atau buka layar aplikasi dari Pintasan dan Pemetaan Tombol.

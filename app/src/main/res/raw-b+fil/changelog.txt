@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Inalis ang lahat ng ad at idinagdag ang Premium, isang beses na bayad. Kung bumili ka ng Remove Ads, may Premium ka na.
 - Bagong Material 3 Expressive na disenyo: bagong app bar, hugis, switch, slider, choice group, at galaw sa bawat screen.
 - Button Remapper: double at triple press ng power button, pati combo, double, triple, at long press ng volume keys, bawat isa may anumang aksyon. Gumagana ang volume keys kahit patay ang screen.
 - Mga Aksyon: pumili sa catalog ng mabilis na aksyon at toggle (flashlight, battery saver, at iba pa) o magbukas ng screen ng app mula sa Shortcuts at Button Remapper.

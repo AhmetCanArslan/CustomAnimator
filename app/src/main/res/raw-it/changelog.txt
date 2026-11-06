@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Rimossa ogni pubblicità e aggiunto Premium, un acquisto una tantum. Se hai acquistato Rimuovi pubblicità, hai già Premium.
 - Nuovo design Material 3 Expressive: nuove barre, forme, interruttori, cursori, gruppi di scelta e animazioni in ogni schermata.
 - Rimappatura pulsanti: doppia e tripla pressione del tasto di accensione, più combinazione, doppia, tripla e pressione lunga dei tasti volume, ciascuna con l'azione che vuoi. I tasti volume funzionano a schermo spento.
 - Azioni: scegli dal catalogo di azioni rapide e interruttori (torcia, risparmio energetico e altro) oppure apri una schermata dell'app da Scorciatoie e Rimappatura pulsanti.

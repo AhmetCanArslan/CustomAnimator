@@ -1,4 +1,5 @@
-## 199 - 3.9
+## 200 - 4.0
+- Todos os anúncios foram removidos e o Premium foi adicionado, uma compra única. Se você comprou Remover anúncios, já tem o Premium.
 - Novo design Material 3 Expressive: novas barras, formas, interruptores, controles deslizantes, grupos de escolha e animações em todas as telas.
 - Remapeador de botões: toque duplo e triplo no botão de energia, além de combinação, toque duplo, triplo e pressão longa nos botões de volume, cada um com a ação que você quiser. Os botões de volume funcionam com a tela desligada.
 - Ações: escolha no catálogo de ações rápidas e alternâncias (lanterna, economia de bateria e mais) ou abra uma tela do app em Atalhos e Remapeador de botões.
