@@ -13,6 +13,7 @@ import com.arslan.customanimator.data.InstalledAppInfo
 import com.arslan.customanimator.data.ShortcutIconImage
 import com.arslan.customanimator.utils.IconChangerManager
 import com.arslan.customanimator.utils.ShortcutMaker
+import com.arslan.customanimator.utils.PremiumLimits
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -86,6 +87,10 @@ internal class IconChangerState(private val context: Context, private val scope:
     }
 
     fun askToApply() {
+        runWithIconChangeLimit(context, ::checkAndConfirm)
+    }
+
+    private fun checkAndConfirm() {
         val target = app ?: return
         scope.launch {
             val blocker = withContext(Dispatchers.IO) { IconChangerManager.installBlocker(context, target.packageName) }
@@ -135,6 +140,10 @@ internal class IconChangerState(private val context: Context, private val scope:
     }
 
     fun export() {
+        runWithIconChangeLimit(context, ::exportApk)
+    }
+
+    private fun exportApk() {
         val target = app ?: return
         val picked = image ?: return
         progress = IconChangerProgress.REBUILDING
