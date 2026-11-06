@@ -40,6 +40,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Image
+import androidx.annotation.StringRes
+import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
@@ -293,6 +298,13 @@ fun SettingsScreen(
                 )
             }
 
+            SettingsSection(title = stringResource(R.string.section_more_apps)) {
+                MORE_APPS.forEachIndexed { index, app ->
+                    if (index > 0) SettingDivider()
+                    MoreAppRow(app)
+                }
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
@@ -377,6 +389,60 @@ private fun SettingsSection(
         ) {
             content()
         }
+    }
+}
+
+private data class MoreApp(
+    val packageName: String,
+    @DrawableRes val icon: Int,
+    @StringRes val name: Int,
+    @StringRes val description: Int
+)
+
+private val MORE_APPS = listOf(
+    MoreApp("com.arslan.flowactions", R.drawable.promo_flowactions, R.string.app_flowactions_name, R.string.app_flowactions_desc),
+    MoreApp("com.arslan.shizuwall", R.drawable.promo_shizuwall, R.string.app_shizuwall_name, R.string.app_shizuwall_desc)
+)
+
+@Composable
+private fun MoreAppRow(app: MoreApp) {
+    val context = LocalContext.current
+    val interactionSource = remember { MutableInteractionSource() }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .pressScale(interactionSource, 0.985f)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                onClick = {
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${app.packageName}"))
+                    )
+                }
+            )
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(app.icon),
+            contentDescription = null,
+            modifier = Modifier.size(44.dp).clip(RoundedCornerShape(12.dp))
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = stringResource(app.name), style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = stringResource(app.description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Image(
+            painter = painterResource(R.drawable.ic_google_play),
+            contentDescription = stringResource(R.string.more_apps_open),
+            modifier = Modifier.size(20.dp)
+        )
     }
 }
 
