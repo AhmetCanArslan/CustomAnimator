@@ -1,6 +1,7 @@
 package com.arslan.customanimator
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -22,6 +23,7 @@ import kotlinx.coroutines.withContext
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
+import com.arslan.customanimator.ui.theme.horizontalPagerTransition
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -174,16 +176,24 @@ fun GameModeScreenContent(
             }
 
             item {
-                Text(
-                    text = when {
-                        editingExclusions && excludedApps.isEmpty() -> stringResource(R.string.game_mode_select_excluded)
-                        editingExclusions -> stringResource(R.string.game_mode_excluded_count, excludedApps.size)
-                        selectedGames.isEmpty() -> stringResource(R.string.game_mode_select_games)
-                        else -> stringResource(R.string.game_mode_games_count, selectedGames.size)
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                val listHint = when {
+                    editingExclusions && excludedApps.isEmpty() -> stringResource(R.string.game_mode_select_excluded)
+                    editingExclusions -> stringResource(R.string.game_mode_excluded_count, excludedApps.size)
+                    selectedGames.isEmpty() -> stringResource(R.string.game_mode_select_games)
+                    else -> stringResource(R.string.game_mode_games_count, selectedGames.size)
+                }
+                AnimatedContent(
+                    targetState = editingExclusions to listHint,
+                    transitionSpec = { horizontalPagerTransition(targetState.first) },
+                    contentKey = { it.first },
+                    label = "gameModeListHint"
+                ) { (_, hint) ->
+                    Text(
+                        text = hint,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
 
             appList(appList) { app ->
