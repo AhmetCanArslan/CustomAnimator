@@ -68,8 +68,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.TextFieldValue
 import com.arslan.customanimator.notify.data.RulesManager
@@ -303,7 +301,6 @@ private val DEFAULT_RETURN_SCREENS = mapOf(
     HomeScreen.PERMISSIONS to HomeScreen.SETTINGS
 )
 
-private val BANNERLESS_SCREENS = setOf(HomeScreen.PROFILES, HomeScreen.PROFILE_EDITOR)
 
 private fun HomeScreen.navDepth(): Int = when (this) {
     HomeScreen.MAIN -> 0
@@ -648,17 +645,12 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
         }
     }
 
-    var bottomBarHeight by remember { mutableStateOf(0.dp) }
-    val density = LocalDensity.current
-
     CompositionLocalProvider(LocalOpenSetupGuide provides openSetupGuide) {
     Box(modifier = Modifier.fillMaxSize()) {
     Column(modifier = Modifier.fillMaxSize()) {
     AnimatedContent(
         targetState = currentScreen,
-        modifier = Modifier
-            .weight(1f)
-            .consumeWindowInsets(PaddingValues(bottom = bottomBarHeight)),
+        modifier = Modifier.weight(1f),
         transitionSpec = {
             val forward = when {
                 returnScreens[targetState] == initialState -> true
@@ -924,8 +916,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 onOpenSearch = { showSearch = true },
                 navListState = homeNavListState
             )
-        },
-        bottomBar = { RemoveAdsPrompt() }
+        }
     ) { paddingValues ->
         AnimatedContent(
             targetState = selectedTab,
@@ -1761,13 +1752,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     }
     }
     }
-    }
-    Box(
-        modifier = Modifier.onSizeChanged { size ->
-            bottomBarHeight = with(density) { size.height.toDp() }
-        }
-    ) {
-        if (currentScreen !in BANNERLESS_SCREENS) BannerAdView()
     }
     }
     AnimatedVisibility(
