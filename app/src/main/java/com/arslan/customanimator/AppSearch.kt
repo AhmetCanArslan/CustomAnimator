@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.BatteryChargingFull
 import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Bookmarks
@@ -249,7 +250,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     section(R.string.settings, HomeScreen.SETTINGS, R.string.backup_app_data, R.string.backup_app_data_desc, Icons.Filled.Save),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.restore_app_data, R.string.restore_app_data_desc, Icons.Filled.Restore),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.revert_everything, R.string.revert_everything_desc, Icons.Filled.SettingsBackupRestore),
-    section(R.string.settings, HomeScreen.SETTINGS, R.string.remove_ads, R.string.remove_ads_desc, Icons.Filled.Block),
+    section(R.string.settings, HomeScreen.SETTINGS, R.string.settings_premium, R.string.premium_desc, Icons.Filled.WorkspacePremium),
     section(R.string.settings, HomeScreen.SETTINGS, R.string.contact_developer, R.string.contact_developer_desc, Icons.Filled.Email),
     section(R.string.settings, HomeScreen.PERMISSIONS, R.string.permissions_title, null, Icons.Filled.Security),
     section(R.string.settings, HomeScreen.SETUP_GUIDE, R.string.setup_open, R.string.setup_open_desc, Icons.AutoMirrored.Filled.HelpOutline)

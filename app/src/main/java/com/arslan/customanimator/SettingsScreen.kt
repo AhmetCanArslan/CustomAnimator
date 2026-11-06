@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.PrivacyTip
-import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Restore
 import androidx.compose.material.icons.filled.Save
@@ -99,8 +99,8 @@ fun SettingsScreen(
         Toast.makeText(context, resources.getString(res), Toast.LENGTH_SHORT).show()
     }
 
-    val isAdFree by rememberIsAdFree()
-    val removeAdsPrice by rememberRemoveAdsPrice()
+    val isPremium by rememberIsPremium()
+    val premiumPrice by rememberPremiumPrice()
     var isRestoring by remember { mutableStateOf(false) }
 
     val backupLauncher = rememberLauncherForActivityResult(
@@ -185,36 +185,36 @@ fun SettingsScreen(
             }
 
             SettingsSection(title = stringResource(R.string.settings_premium)) {
-                if (isAdFree) {
+                if (isPremium) {
                     ActionSettingRow(
                         icon = Icons.Filled.CheckCircle,
-                        title = stringResource(R.string.remove_ads),
-                        description = stringResource(R.string.remove_ads_owned),
+                        title = stringResource(R.string.settings_premium),
+                        description = stringResource(R.string.premium_owned),
                         descriptionColor = LocalExtendedColors.current.success,
                         onClick = {}
                     )
                 } else {
                     ActionSettingRow(
-                        icon = Icons.Filled.Block,
-                        title = stringResource(R.string.remove_ads),
-                        description = removeAdsPrice?.let {
-                            stringResource(R.string.remove_ads_desc_price, it)
-                        } ?: stringResource(R.string.remove_ads_desc),
-                        onClick = { startRemoveAdsPurchase(context) }
+                        icon = Icons.Filled.WorkspacePremium,
+                        title = stringResource(R.string.settings_premium),
+                        description = premiumPrice?.let {
+                            stringResource(R.string.premium_desc_price, it)
+                        } ?: stringResource(R.string.premium_desc),
+                        onClick = { startPremiumPurchase(context) }
                     )
                     SettingDivider()
                     ActionSettingRow(
                         icon = Icons.Filled.ShoppingCart,
-                        title = stringResource(R.string.remove_ads_restore),
-                        description = stringResource(R.string.remove_ads_restore_desc),
+                        title = stringResource(R.string.premium_restore),
+                        description = stringResource(R.string.premium_restore_desc),
                         onClick = {
                             if (isRestoring) return@ActionSettingRow
                             isRestoring = true
                             restorePurchases { owned ->
                                 isRestoring = false
                                 toast(
-                                    if (owned) R.string.remove_ads_restored
-                                    else R.string.remove_ads_nothing_to_restore
+                                    if (owned) R.string.premium_restored
+                                    else R.string.premium_nothing_to_restore
                                 )
                             }
                         }

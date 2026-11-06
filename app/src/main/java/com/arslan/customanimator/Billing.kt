@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -28,14 +29,14 @@ private fun ProductDetails.oneTimeOffer(): ProductDetails.OneTimePurchaseOfferDe
         ?: oneTimePurchaseOfferDetails
 
 object Billing {
-    const val REMOVE_ADS_PRODUCT_ID = "remove_ads"
+    const val PREMIUM_PRODUCT_ID = "remove_ads"
 
     private const val TAG = "Billing"
     private const val PREFS = "custom_animator_billing"
-    private const val KEY_AD_FREE = "ad_free"
+    private const val KEY_PREMIUM = "ad_free"
 
-    private val _isAdFree = MutableStateFlow(false)
-    val isAdFree: StateFlow<Boolean> = _isAdFree.asStateFlow()
+    private val _isPremium = MutableStateFlow(false)
+    val isPremium: StateFlow<Boolean> = _isPremium.asStateFlow()
 
     private val _price = MutableStateFlow<String?>(null)
     val price: StateFlow<String?> = _price.asStateFlow()
@@ -73,9 +74,9 @@ object Billing {
     fun init(context: Context) {
         val appContext = context.applicationContext
         appContextRef = appContext
-        _isAdFree.value = appContext
+        _isPremium.value = appContext
             .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_AD_FREE, false)
+            .getBoolean(KEY_PREMIUM, false)
         if (!isChecking) queryPurchases()
     }
 
@@ -86,13 +87,13 @@ object Billing {
                 if (_price.value == null) loadProduct(billing) { }
                 loadPurchases(billing) {
                     isChecking = false
-                    onDone?.invoke(_isAdFree.value)
+                    onDone?.invoke(_isPremium.value)
                 }
                 release()
             },
             onFailed = {
                 isChecking = false
-                onDone?.invoke(_isAdFree.value)
+                onDone?.invoke(_isPremium.value)
             }
         )
     }
@@ -186,7 +187,7 @@ object Billing {
             .setProductList(
                 listOf(
                     QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId(REMOVE_ADS_PRODUCT_ID)
+                        .setProductId(PREMIUM_PRODUCT_ID)
                         .setProductType(BillingClient.ProductType.INAPP)
                         .build()
                 )
@@ -196,7 +197,7 @@ object Billing {
         billing.queryProductDetailsAsync(params) { result, details ->
             mainHandler.post {
                 val product = if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                    details.productDetailsList.firstOrNull { it.productId == REMOVE_ADS_PRODUCT_ID }
+                    details.productDetailsList.firstOrNull { it.productId == PREMIUM_PRODUCT_ID }
                 } else {
                     Log.w(TAG, "Product query failed: ${result.responseCode} ${result.debugMessage}")
                     null
@@ -229,11 +230,11 @@ object Billing {
 
     private fun applyOwnedPurchases(billing: BillingClient, purchases: List<Purchase>) {
         val owned = purchases.any { purchase ->
-            purchase.products.contains(REMOVE_ADS_PRODUCT_ID) &&
+            purchase.products.contains(PREMIUM_PRODUCT_ID) &&
                 purchase.purchaseState == Purchase.PurchaseState.PURCHASED
         }
         purchases.forEach { handlePurchase(billing, it) }
-        if (!owned) setAdFree(false)
+        if (!owned) setPremium(false)
     }
 
     private fun startPurchaseFlow(activity: Activity, billing: BillingClient, product: ProductDetails?) {
@@ -295,11 +296,11 @@ object Billing {
     }
 
     private fun handlePurchase(billing: BillingClient?, purchase: Purchase): PurchaseResult {
-        if (!purchase.products.contains(REMOVE_ADS_PRODUCT_ID)) return PurchaseResult.ERROR
+        if (!purchase.products.contains(PREMIUM_PRODUCT_ID)) return PurchaseResult.ERROR
 
         return when (purchase.purchaseState) {
             Purchase.PurchaseState.PURCHASED -> {
-                setAdFree(true)
+                setPremium(true)
                 if (!purchase.isAcknowledged && billing != null) acknowledge(billing, purchase)
                 PurchaseResult.PURCHASED
             }
@@ -325,12 +326,12 @@ object Billing {
         }
     }
 
-    private fun setAdFree(value: Boolean) {
-        if (_isAdFree.value == value) return
-        _isAdFree.value = value
+    private fun setPremium(value: Boolean) {
+        if (_isPremium.value == value) return
+        _isPremium.value = value
         appContextRef?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             ?.edit()
-            ?.putBoolean(KEY_AD_FREE, value)
+            ?.putBoolean(KEY_PREMIUM, value)
             ?.apply()
     }
 
@@ -343,15 +344,29 @@ object Billing {
 
 fun initBilling(context: Context) = Billing.init(context)
 
-fun isAdFreeNow(): Boolean = Billing.isAdFree.value
+fun isPremiumNow(): Boolean = Billing.isPremium.value
 
 @Composable
-fun rememberIsAdFree(): State<Boolean> = Billing.isAdFree.collectAsState()
+fun rememberIsPremium(): State<Boolean> = Billing.isPremium.collectAsState()
 
 @Composable
-fun rememberRemoveAdsPrice(): State<String?> = Billing.price.collectAsState()
-
-fun launchRemoveAdsPurchase(activity: Activity, onResult: (Billing.PurchaseResult) -> Unit) =
-    Billing.launchPurchase(activity, onResult)
+fun rememberPremiumPrice(): State<String?> = Billing.price.collectAsState()
 
 fun restorePurchases(onDone: (Boolean) -> Unit) = Billing.queryPurchases(onDone)
+
+fun startPremiumPurchase(context: Context) {
+    val activity = context as? Activity
+    if (activity == null) {
+        Toast.makeText(context, R.string.premium_unavailable, Toast.LENGTH_SHORT).show()
+        return
+    }
+    Billing.launchPurchase(activity) { result ->
+        val message = when (result) {
+            Billing.PurchaseResult.PURCHASED -> R.string.premium_thanks
+            Billing.PurchaseResult.PENDING -> R.string.premium_pending
+            Billing.PurchaseResult.CANCELLED -> null
+            Billing.PurchaseResult.ERROR -> R.string.premium_unavailable
+        }
+        message?.let { Toast.makeText(activity, it, Toast.LENGTH_SHORT).show() }
+    }
+}
