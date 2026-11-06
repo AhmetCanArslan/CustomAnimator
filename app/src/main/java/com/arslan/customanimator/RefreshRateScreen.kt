@@ -253,7 +253,7 @@ fun RefreshRateScreen(
                 PerAppRefreshRateRow(
                     app = app,
                     rate = overrides[app.packageName],
-                    onClick = { editingApp = app },
+                    onClick = { runWithAppLimit(context, overrides.keys, app.packageName) { editingApp = app } },
                     onClear = {
                         manager.setRate(app.packageName, null)
                         overrides = manager.getOverrides()

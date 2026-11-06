@@ -153,7 +153,9 @@ fun AppThreadingScreen(
                     app = app,
                     config = configs[app.packageName] ?: AppThreadingConfig(),
                     enabled = hasShizukuPermission,
-                    onConfigChange = { config -> updateConfig(app.packageName, config) }
+                    onConfigChange = { config ->
+                        runWithAppLimit(context, configs.keys, app.packageName) { updateConfig(app.packageName, config) }
+                    }
                 )
             }
 

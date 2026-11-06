@@ -113,8 +113,10 @@ fun AutoForceStopScreen(
                     app = app,
                     checked = selectedPackages.contains(app.packageName),
                     onCheckedChange = {
-                        selectedPackages = manager.togglePackage(app.packageName)
-                        syncServiceState()
+                        runWithAppLimit(context, selectedPackages, app.packageName) {
+                            selectedPackages = manager.togglePackage(app.packageName)
+                            syncServiceState()
+                        }
                     }
                 )
             }

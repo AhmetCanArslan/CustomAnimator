@@ -131,7 +131,7 @@ fun PerAppWidthScreen(
                 PerAppWidthRow(
                     app = app,
                     widthDp = overrides[app.packageName],
-                    onClick = { editingApp = app },
+                    onClick = { runWithAppLimit(context, overrides.keys, app.packageName) { editingApp = app } },
                     onClear = {
                         manager.setWidth(app.packageName, null)
                         overrides = manager.getOverrides()
