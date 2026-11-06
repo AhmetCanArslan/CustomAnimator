@@ -174,9 +174,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="information">Bilgi</string>
-    <string name="ad_info_title">Geliştirmeyi Destekleyin</string>
-    <string name="ad_info_message">Merhaba! 👋\n\nBu uygulamayı ücretsiz tutmak ve geliştirmeye devam etmek için reklam ekledim: ekranın altında küçük bir banner ve ara sıra, bir değişiklik uyguladıktan veya uygulamayı yeniden açtıktan sonra tam ekran bir reklam.\n\nSıklıkları sınırlıdır, yolunuza çıkmazlar.\n\nAnlayışınız ve desteğiniz için teşekkürler. ❤️</string>
-    <string name="ad_info_ok">Anladım</string>
     <string name="rate_dialog_title">Uygulamayı Beğendiniz mi?</string>
     <string name="rate_dialog_message">Custom Animator\'u beğendiyseniz, Play Store\'da derecelendirmek için bir dakikanızı ayırın. Desteğiniz gerçekten fark yaratıyor!</string>
     <string name="rate_dialog_rate">Derecelendir</string>
@@ -447,8 +444,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Bir şey ters giderse ilgili bölümdeki ya da Ayarlar\'daki sıfırlama seçeneğiyle varsayılan değerlere dönün. Emin değilseniz, değiştirmeden önce neyi değiştirdiğinizi not alın.</string>
     <string name="settings_privacy_policy">Gizlilik Politikası</string>
     <string name="settings_privacy_policy_desc">Uygulamanın verilerinizi nasıl işlediğini okuyun</string>
-    <string name="settings_privacy_options">Gizlilik Seçenekleri</string>
-    <string name="settings_privacy_options_desc">Reklam kişiselleştirme onay tercihlerinizi değiştirin</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Reklamları Kaldır</string>
     <string name="remove_ads_desc">Tüm reklamları kaldıran tek seferlik satın alma</string>
@@ -1289,10 +1284,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="boost_cancel">İptal</string>
     <string name="boost_cancelled">Optimizasyon iptal edildi</string>
     <string name="boost_running_label">Optimize ediliyor…</string>
-    <string name="boost_ad_reward_denied">Optimizasyonu açmak için reklamı sonuna kadar izleyin</string>
-    <string name="boost_watch_ad">Reklam izle ve optimize et</string>
-    <string name="optimizer_clean_watch_ad">Reklam izle ve temizle</string>
-    <string name="boost_ad_unavailable">Reklam yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.</string>
     <string name="developer_title">Geliştirici</string>
     <string name="tools_title">Araçlar</string>
     <string name="tools_section_apps">Uygulamalar</string>
@@ -1303,12 +1294,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="tools_section_connectivity">Bağlantı</string>
     <string name="more_compile_booster_desc">Uygulamaları yeniden derleyerek daha hızlı aç</string>
     <string name="game_mode_fixed_performance">Oyun Modu açıkken sabit performans modu etkinleşir.</string>
-    <string name="reward_free_unlock">Şu an gösterilecek reklam yok, bu seferlik ücretsiz</string>
-    <string name="reward_unlock_denied">Bunu 3 dakikalığına açmak için reklamı sonuna kadar izleyin</string>
-    <string name="game_mode_ad_desc">Oyun modunu açmak için kısa bir reklam izleyin</string>
     <string name="game_mode_select_games_first">Önce en az bir oyun seçin</string>
-    <string name="compile_all_apps_with_ad">Reklam izle ve derle</string>
-    <string name="game_mode_turn_on_with_ad">Reklam izle ve aç</string>
     <string name="system_meter_title">Sistem Göstergesi</string>
     <string name="system_meter_overlay">Katman</string>
     <string name="system_meter_metrics">Ölçümler</string>
@@ -1762,7 +1748,6 @@ Animatör Süresi: %3$.2f</string>
     <string name="shortcut_place_shortcut">Kısayol</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Başlatıcınız uygulamaların widget eklemesine izin vermiyor.</string>
-    <string name="shortcut_watch_ad_add">Reklam izle ve ekle</string>
     <string name="shortcut_change_app">Uygulamayı değiştir</string>
     <string name="shortcut_pick_app">Bir uygulama seçin</string>
     <string name="shortcut_pick_screen">Bir ekran seçin</string>

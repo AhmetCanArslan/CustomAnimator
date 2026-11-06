@@ -174,9 +174,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="yes">Oo</string>
     <string name="no">Hindi</string>
     <string name="information">Impormasyon</string>
-    <string name="ad_info_title">Suportahan ang Pag-develop</string>
-    <string name="ad_info_message">Kumusta! 👋\n\nUpang manatiling libre ang app at patuloy itong mapabuti, nagdagdag ako ng mga ad: maliit na banner sa ibaba ng screen, at paminsan-minsan ay full-screen na ad pagkatapos mong maglapat ng pagbabago o muling buksan ang app.\n\nLimitado ang dalas nito para hindi makaabala.\n\nSalamat sa iyong pang-unawa at suporta. ❤️</string>
-    <string name="ad_info_ok">Naunawaan</string>
     <string name="rate_dialog_title">Nage-enjoy ka ba sa App?</string>
     <string name="rate_dialog_message">Kung gusto mo ang Custom Animator, maglaan ng sandali para i-rate ito sa Play Store. Malaki ang naidudulot ng iyong suporta!</string>
     <string name="rate_dialog_rate">I-rate</string>
@@ -447,8 +444,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Kung may mali, gamitin ang reset sa kaukulang seksyon o sa Mga Setting para bumalik sa orihinal na halaga. Kapag may pagdududa, itala kung ano ang binago mo bago mo baguhin.</string>
     <string name="settings_privacy_policy">Patakaran sa Privacy</string>
     <string name="settings_privacy_policy_desc">Basahin kung paano hinahawakan ng app ang iyong data</string>
-    <string name="settings_privacy_options">Mga Opsyon sa Privacy</string>
-    <string name="settings_privacy_options_desc">Baguhin ang iyong pahintulot sa personalisasyon ng ad</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Alisin ang mga Ad</string>
     <string name="remove_ads_desc">Isang beses na pagbili na nag-aalis ng lahat ng ad</string>
@@ -1281,10 +1276,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="boost_cancel">Kanselahin</string>
     <string name="boost_cancelled">Kinansela ang optimization</string>
     <string name="boost_running_label">Ino-optimize…</string>
-    <string name="boost_ad_reward_denied">Tapusin ang ad para ma-unlock ang pag-optimize</string>
-    <string name="boost_watch_ad">Manood ng ad at mag-optimize</string>
-    <string name="optimizer_clean_watch_ad">Manood ng ad at maglinis</string>
-    <string name="boost_ad_unavailable">Hindi na-load ang ad. Suriin ang iyong koneksyon at subukang muli.</string>
     <string name="developer_title">Developer</string>
     <string name="tools_title">Mga tool</string>
     <string name="tools_section_apps">Mga app</string>
@@ -1295,12 +1286,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="tools_section_connectivity">Koneksyon</string>
     <string name="more_compile_booster_desc">I-recompile ang mga app para mas mabilis magbukas</string>
     <string name="game_mode_fixed_performance">Naka-on ang fixed performance mode habang bukas ang Game Mode.</string>
-    <string name="reward_free_unlock">Walang available na ad ngayon, kaya libre ito ngayong beses</string>
-    <string name="reward_unlock_denied">Tapusin ang ad para ma-unlock ito nang 3 minuto</string>
-    <string name="game_mode_ad_desc">Manood ng maikling ad para i-on ang game mode</string>
     <string name="game_mode_select_games_first">Pumili muna ng kahit isang laro</string>
-    <string name="compile_all_apps_with_ad">Manood ng ad at i-compile</string>
-    <string name="game_mode_turn_on_with_ad">Manood ng ad at i-on</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Mga sukat</string>
@@ -1754,7 +1740,6 @@ Tagal ng Animator: %3$.2f</string>
     <string name="shortcut_place_shortcut">Shortcut</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Hindi pinapayagan ng launcher mo ang mga app na magdagdag ng widget.</string>
-    <string name="shortcut_watch_ad_add">Manood ng ad at idagdag</string>
     <string name="shortcut_change_app">Palitan ang app</string>
     <string name="shortcut_pick_app">Pumili ng app</string>
     <string name="shortcut_pick_screen">Pumili ng screen</string>

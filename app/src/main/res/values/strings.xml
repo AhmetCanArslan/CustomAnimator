@@ -332,9 +332,6 @@ Animator Duration: %3$.2f</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="information">Information</string>
-    <string name="ad_info_title">Support Development</string>
-    <string name="ad_info_message">Hi! 👋\n\nTo keep this app free and continue improving it, I\'ve added ads: a small banner at the bottom of the screen, and occasionally a full-screen ad after you apply a change or reopen the app.\n\nThey are frequency-capped so they stay out of your way.\n\nThank you for your understanding and support. ❤️</string>
-    <string name="ad_info_ok">Got it</string>
     <string name="rate_dialog_title">Enjoying the App?</string>
     <string name="rate_dialog_message">If you like Custom Animator, please take a moment to rate it on the Play Store. Your support really makes a difference!</string>
     <string name="rate_dialog_rate">Rate</string>
@@ -660,8 +657,6 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="onboarding_experimental_highlight">If something misbehaves, use the reset option in the relevant section or in Settings to return to stock values. When in doubt, note down what you changed before changing it.</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
     <string name="settings_privacy_policy_desc">Read how the app handles your data</string>
-    <string name="settings_privacy_options">Privacy Options</string>
-    <string name="settings_privacy_options_desc">Change your ad personalisation consent choices</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Remove Ads</string>
     <string name="remove_ads_desc">One-time purchase that removes all ads</string>
@@ -1335,16 +1330,7 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="boost_cancel">Cancel</string>
     <string name="boost_cancelled">Optimization cancelled</string>
     <string name="boost_running_label">Optimizing…</string>
-    <string name="boost_ad_reward_denied">Finish the ad to unlock the optimization</string>
-    <string name="boost_watch_ad">Watch ad &amp; optimize</string>
-    <string name="optimizer_clean_watch_ad">Watch ad &amp; clean</string>
-    <string name="boost_ad_unavailable">Ad could not be loaded. Check your connection and try again.</string>
-    <string name="reward_free_unlock">No ad available right now, so this one is free</string>
-    <string name="reward_unlock_denied">Finish the ad to unlock this for 3 minutes</string>
-    <string name="game_mode_ad_desc">Watch a short ad to turn on game mode</string>
     <string name="game_mode_select_games_first">Select at least one game first</string>
-    <string name="compile_all_apps_with_ad">Watch ad &amp; compile</string>
-    <string name="game_mode_turn_on_with_ad">Watch ad &amp; turn on</string>
     <string name="system_meter_title">System Meter</string>
     <string name="system_meter_overlay">Overlay</string>
     <string name="system_meter_metrics">Metrics</string>
@@ -1791,7 +1777,6 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="shortcut_place_shortcut">Shortcut</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Your launcher does not let apps add widgets.</string>
-    <string name="shortcut_watch_ad_add">Watch ad &amp; add</string>
     <string name="shortcut_change_app">Change app</string>
     <string name="shortcut_pick_app">Choose an app</string>
     <string name="shortcut_pick_screen">Choose a screen</string>

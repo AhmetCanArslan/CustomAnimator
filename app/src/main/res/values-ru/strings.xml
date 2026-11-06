@@ -174,9 +174,6 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="information">Информация</string>
-    <string name="ad_info_title">Поддержка разработки</string>
-    <string name="ad_info_message">Привет! 👋\n\nЧтобы приложение оставалось бесплатным и развивалось, я добавил рекламу: небольшой баннер внизу экрана и иногда полноэкранное объявление после применения изменения или повторного открытия приложения.\n\nЧастота показов ограничена, чтобы не мешать вам.\n\nСпасибо за понимание и поддержку. ❤️</string>
-    <string name="ad_info_ok">Понятно</string>
     <string name="rate_dialog_title">Нравится приложение?</string>
     <string name="rate_dialog_message">Если вам нравится Custom Animator, оцените его в Play Store. Ваша поддержка действительно важна!</string>
     <string name="rate_dialog_rate">Оценить</string>
@@ -447,8 +444,6 @@
     <string name="onboarding_experimental_highlight">Если что-то работает не так, используйте сброс в соответствующем разделе или в настройках, чтобы вернуть стандартные значения. Если сомневаетесь, запишите, что меняете, до изменения.</string>
     <string name="settings_privacy_policy">Политика конфиденциальности</string>
     <string name="settings_privacy_policy_desc">Узнайте, как приложение обрабатывает ваши данные</string>
-    <string name="settings_privacy_options">Настройки конфиденциальности</string>
-    <string name="settings_privacy_options_desc">Изменить согласие на персонализацию рекламы</string>
     <string name="settings_premium">Премиум</string>
     <string name="remove_ads">Убрать рекламу</string>
     <string name="remove_ads_desc">Разовая покупка, убирающая всю рекламу</string>
@@ -1283,10 +1278,6 @@
     <string name="boost_cancel">Отмена</string>
     <string name="boost_cancelled">Оптимизация отменена</string>
     <string name="boost_running_label">Оптимизация…</string>
-    <string name="boost_ad_reward_denied">Досмотрите рекламу, чтобы разблокировать оптимизацию</string>
-    <string name="boost_watch_ad">Смотреть рекламу и оптимизировать</string>
-    <string name="optimizer_clean_watch_ad">Реклама и очистка</string>
-    <string name="boost_ad_unavailable">Не удалось загрузить рекламу. Проверьте подключение и попробуйте снова.</string>
     <string name="developer_title">Разработчик</string>
     <string name="tools_title">Инструменты</string>
     <string name="tools_section_apps">Приложения</string>
@@ -1297,12 +1288,7 @@
     <string name="tools_section_connectivity">Подключения</string>
     <string name="more_compile_booster_desc">Перекомпиляция приложений для быстрого запуска</string>
     <string name="game_mode_fixed_performance">Пока включён игровой режим, действует режим фиксированной производительности.</string>
-    <string name="reward_free_unlock">Сейчас нет доступной рекламы, поэтому в этот раз бесплатно</string>
-    <string name="reward_unlock_denied">Досмотрите рекламу, чтобы открыть это на 3 минуты</string>
-    <string name="game_mode_ad_desc">Посмотрите короткую рекламу, чтобы включить игровой режим</string>
     <string name="game_mode_select_games_first">Сначала выберите хотя бы одну игру</string>
-    <string name="compile_all_apps_with_ad">Реклама и компиляция</string>
-    <string name="game_mode_turn_on_with_ad">Реклама и включение</string>
     <string name="system_meter_title">Системный монитор</string>
     <string name="system_meter_overlay">Наложение</string>
     <string name="system_meter_metrics">Метрики</string>
@@ -1756,7 +1742,6 @@
     <string name="shortcut_place_shortcut">Ярлык</string>
     <string name="shortcut_place_widget">Виджет</string>
     <string name="shortcut_widget_unsupported">Ваш лаунчер не позволяет приложениям добавлять виджеты.</string>
-    <string name="shortcut_watch_ad_add">Посмотреть рекламу и добавить</string>
     <string name="shortcut_change_app">Сменить приложение</string>
     <string name="shortcut_pick_app">Выберите приложение</string>
     <string name="shortcut_pick_screen">Выберите экран</string>

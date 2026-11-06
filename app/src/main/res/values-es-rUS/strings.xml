@@ -174,9 +174,6 @@ Duración del Animador: %3$.2f</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
     <string name="information">Información</string>
-    <string name="ad_info_title">Apoyar el Desarrollo</string>
-    <string name="ad_info_message">¡Hola! 👋\n\nPara mantener la app gratis y seguir mejorándola, agregué anuncios: un banner pequeño en la parte inferior de la pantalla y, ocasionalmente, un anuncio de pantalla completa después de aplicar un cambio o volver a abrir la app.\n\nSu frecuencia está limitada para no estorbar.\n\nGracias por tu comprensión y apoyo. ❤️</string>
-    <string name="ad_info_ok">Entendido</string>
     <string name="rate_dialog_title">¿Disfrutas la App?</string>
     <string name="rate_dialog_message">Si te gusta Custom Animator, tómate un momento para calificarla en Play Store. ¡Tu apoyo realmente marca la diferencia!</string>
     <string name="rate_dialog_rate">Calificar</string>
@@ -447,8 +444,6 @@ Duración del Animador: %3$.2f</string>
     <string name="onboarding_experimental_highlight">Si algo falla, usa la opción de restablecer en la sección correspondiente o en Configuración para volver a los valores originales. Ante la duda, anota lo que cambiaste antes de cambiarlo.</string>
     <string name="settings_privacy_policy">Política de Privacidad</string>
     <string name="settings_privacy_policy_desc">Lee cómo la app maneja tus datos</string>
-    <string name="settings_privacy_options">Opciones de Privacidad</string>
-    <string name="settings_privacy_options_desc">Cambia tus opciones de consentimiento para anuncios personalizados</string>
     <string name="settings_premium">Premium</string>
     <string name="remove_ads">Quitar anuncios</string>
     <string name="remove_ads_desc">Compra única que elimina todos los anuncios</string>
@@ -1281,10 +1276,6 @@ Duración del Animador: %3$.2f</string>
     <string name="boost_cancel">Cancelar</string>
     <string name="boost_cancelled">Optimización cancelada</string>
     <string name="boost_running_label">Optimizando…</string>
-    <string name="boost_ad_reward_denied">Termina el anuncio para desbloquear la optimización</string>
-    <string name="boost_watch_ad">Ver anuncio y optimizar</string>
-    <string name="optimizer_clean_watch_ad">Ver anuncio y limpiar</string>
-    <string name="boost_ad_unavailable">No se pudo cargar el anuncio. Revisa tu conexión e inténtalo de nuevo.</string>
     <string name="developer_title">Desarrollador</string>
     <string name="tools_title">Herramientas</string>
     <string name="tools_section_apps">Apps</string>
@@ -1295,12 +1286,7 @@ Duración del Animador: %3$.2f</string>
     <string name="tools_section_connectivity">Conectividad</string>
     <string name="more_compile_booster_desc">Recompila apps para que abran más rápido</string>
     <string name="game_mode_fixed_performance">El modo de rendimiento fijo se activa mientras el Modo Juego está encendido.</string>
-    <string name="reward_free_unlock">No hay anuncios disponibles ahora, así que esta vez es gratis</string>
-    <string name="reward_unlock_denied">Termina el anuncio para desbloquear esto por 3 minutos</string>
-    <string name="game_mode_ad_desc">Mira un anuncio corto para activar el modo juego</string>
     <string name="game_mode_select_games_first">Selecciona al menos un juego primero</string>
-    <string name="compile_all_apps_with_ad">Ver anuncio y compilar</string>
-    <string name="game_mode_turn_on_with_ad">Ver anuncio y activar</string>
     <string name="system_meter_title">Medidor del sistema</string>
     <string name="system_meter_overlay">Superposición</string>
     <string name="system_meter_metrics">Métricas</string>
@@ -1754,7 +1740,6 @@ Duración del Animador: %3$.2f</string>
     <string name="shortcut_place_shortcut">Acceso directo</string>
     <string name="shortcut_place_widget">Widget</string>
     <string name="shortcut_widget_unsupported">Tu launcher no permite que las apps agreguen widgets.</string>
-    <string name="shortcut_watch_ad_add">Ver anuncio y agregar</string>
     <string name="shortcut_change_app">Cambiar app</string>
     <string name="shortcut_pick_app">Elige una app</string>
     <string name="shortcut_pick_screen">Elige una pantalla</string>

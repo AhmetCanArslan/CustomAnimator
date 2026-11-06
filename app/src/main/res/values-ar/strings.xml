@@ -323,9 +323,6 @@
     <string name="yes">نعم</string>
     <string name="no">لا</string>
     <string name="information">معلومات</string>
-    <string name="ad_info_title">ادعم التطوير</string>
-    <string name="ad_info_message">مرحبًا! 👋\n\nللحفاظ على هذا التطبيق مجانيًا ومواصلة تحسينه، أضفت إعلانات: لافتة صغيرة أسفل الشاشة، وأحيانًا إعلان بملء الشاشة بعد تطبيق تغيير أو إعادة فتح التطبيق.\n\nوهي محدودة التكرار حتى لا تزعجك.\n\nشكرًا لتفهمك ودعمك. ❤️</string>
-    <string name="ad_info_ok">فهمت</string>
     <string name="rate_dialog_title">هل يعجبك التطبيق؟</string>
     <string name="rate_dialog_message">إذا أعجبك Custom Animator، فيرجى تخصيص لحظة لتقييمه على متجر Play. دعمك يحدث فرقًا حقًا!</string>
     <string name="rate_dialog_rate">تقييم</string>
@@ -648,8 +645,6 @@
     <string name="onboarding_experimental_highlight">إذا حدث خلل، استخدم خيار إعادة التعيين في القسم ذي الصلة أو في الإعدادات للعودة إلى القيم الأصلية. عند الشك، دوّن ما غيرته قبل تغييره.</string>
     <string name="settings_privacy_policy">سياسة الخصوصية</string>
     <string name="settings_privacy_policy_desc">اقرأ كيف يتعامل التطبيق مع بياناتك</string>
-    <string name="settings_privacy_options">خيارات الخصوصية</string>
-    <string name="settings_privacy_options_desc">غيّر خيارات موافقة تخصيص الإعلانات</string>
     <string name="settings_premium">النسخة المدفوعة</string>
     <string name="remove_ads">إزالة الإعلانات</string>
     <string name="remove_ads_desc">شراء لمرة واحدة يزيل جميع الإعلانات</string>
@@ -1321,10 +1316,6 @@
     <string name="boost_cancel">إلغاء</string>
     <string name="boost_cancelled">تم إلغاء التحسين</string>
     <string name="boost_running_label">جارٍ التحسين…</string>
-    <string name="boost_ad_reward_denied">أكمل الإعلان لفتح التحسين</string>
-    <string name="boost_watch_ad">شاهد إعلانًا وحسِّن</string>
-    <string name="optimizer_clean_watch_ad">شاهد إعلانًا ونظّف</string>
-    <string name="boost_ad_unavailable">تعذّر تحميل الإعلان. تحقّق من اتصالك وحاول مرة أخرى.</string>
     <string name="developer_title">المطوّر</string>
     <string name="tools_title">الأدوات</string>
     <string name="tools_section_apps">التطبيقات</string>
@@ -1335,12 +1326,7 @@
     <string name="tools_section_connectivity">الاتصال</string>
     <string name="more_compile_booster_desc">إعادة تجميع التطبيقات لتشغيل أسرع</string>
     <string name="game_mode_fixed_performance">يتم تفعيل وضع الأداء الثابت أثناء تشغيل وضع الألعاب.</string>
-    <string name="reward_free_unlock">لا يوجد إعلان متاح الآن، لذا هذه المرة مجانية</string>
-    <string name="reward_unlock_denied">أكمل الإعلان لفتح هذا لمدة 3 دقائق</string>
-    <string name="game_mode_ad_desc">شاهد إعلانًا قصيرًا لتشغيل وضع الألعاب</string>
     <string name="game_mode_select_games_first">اختر لعبة واحدة على الأقل أولًا</string>
-    <string name="compile_all_apps_with_ad">إعلان ثم تجميع</string>
-    <string name="game_mode_turn_on_with_ad">إعلان ثم تشغيل</string>
     <string name="system_meter_title">مقياس النظام</string>
     <string name="system_meter_overlay">الطبقة</string>
     <string name="system_meter_metrics">القياسات</string>
@@ -1794,7 +1780,6 @@
     <string name="shortcut_place_shortcut">اختصار</string>
     <string name="shortcut_place_widget">أداة</string>
     <string name="shortcut_widget_unsupported">المشغّل لديك لا يسمح للتطبيقات بإضافة الأدوات.</string>
-    <string name="shortcut_watch_ad_add">شاهد إعلانًا وأضِف</string>
     <string name="shortcut_change_app">تغيير التطبيق</string>
     <string name="shortcut_pick_app">اختر تطبيقًا</string>
     <string name="shortcut_pick_screen">اختر شاشة</string>
