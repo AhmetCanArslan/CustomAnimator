@@ -144,8 +144,11 @@ fun ButtonRemapperScreen(
     val actionPicker = remember { ShortcutsState(context, coroutineScope) { onActionPicked(it) } }
     val openSource = rememberShortcutSources(actionPicker, hasShizukuPermission)
     val pickAction: (ButtonTrigger, ShortcutEntry?) -> Unit = { trigger, current ->
-        pickerTrigger = trigger
-        actionPicker.startActionPicker(withSources = true, selected = current)
+        val open = {
+            pickerTrigger = trigger
+            actionPicker.startActionPicker(withSources = true, selected = current)
+        }
+        if (trigger == ButtonTrigger.POWER_LONG_PRESS) open() else runWithButtonPremium(context, current != null, open)
     }
 
     LaunchedEffect(hasShizukuPermission) {
