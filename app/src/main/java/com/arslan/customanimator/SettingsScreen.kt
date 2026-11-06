@@ -272,17 +272,6 @@ fun SettingsScreen(
                     onClick = openSetup
                 )
                 SettingDivider()
-                if (isPrivacyOptionsRequired()) {
-                    ActionSettingRow(
-                        icon = Icons.Filled.PrivacyTip,
-                        title = stringResource(R.string.settings_privacy_options),
-                        description = stringResource(R.string.settings_privacy_options_desc),
-                        onClick = {
-                            (context as? android.app.Activity)?.let { showPrivacyOptions(it) }
-                        }
-                    )
-                    SettingDivider()
-                }
                 ActionSettingRow(
                     icon = Icons.Filled.PrivacyTip,
                     title = stringResource(R.string.settings_privacy_policy),

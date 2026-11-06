@@ -127,7 +127,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         if (savedInstanceState == null) readShortcutTarget(intent)
         initBilling(this)
-        initAds(this)
 
         syncBackgroundState()
 
@@ -200,7 +199,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         initBilling(this)
-        preloadInterstitial(this)
         ShizukuState.refresh()
     }
 

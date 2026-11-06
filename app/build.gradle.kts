@@ -1,48 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.parcelize)
-}
-
-val localProps = rootProject.file("local.properties").takeIf { it.exists() }?.let {
-    Properties().apply { load(it.inputStream()) }
-}
-
-fun propOrEnv(name: String, default: String): String {
-    return localProps?.getProperty(name) ?: System.getenv(name.replace('.', '_')) ?: default
-}
-
-val admobAppId = propOrEnv("admob.app.id", "ca-app-pub-3940256099942544~3347511713")
-val admobBannerId = propOrEnv("admob.banner.id", "ca-app-pub-3940256099942544/6300978111")
-val admobInterstitialId = propOrEnv("admob.interstitial.id", "ca-app-pub-3940256099942544/1033173712")
-val admobRewardedId = propOrEnv("admob.rewarded.id", "ca-app-pub-3940256099942544/5224354917")
-
-val admobTestPublisherPrefix = "ca-app-pub-3940256099942544"
-
-val verifyReleaseAdUnitIds = tasks.register("verifyReleaseAdUnitIds") {
-    val configuredIds = listOf(
-        "admob.app.id" to admobAppId,
-        "admob.banner.id" to admobBannerId,
-        "admob.interstitial.id" to admobInterstitialId,
-        "admob.rewarded.id" to admobRewardedId
-    )
-    doLast {
-        val missing = configuredIds.filter { it.second.startsWith(admobTestPublisherPrefix) }
-        if (missing.isNotEmpty()) {
-            throw GradleException(
-                "Release build would ship AdMob test ad units. Set " +
-                    missing.joinToString(", ") { it.first } +
-                    " in local.properties or the matching environment variables."
-            )
-        }
-    }
-}
-
-tasks.matching { it.name == "assembleRelease" || it.name == "bundleRelease" }.configureEach {
-    dependsOn(verifyReleaseAdUnitIds)
 }
 
 android {
@@ -58,17 +19,11 @@ android {
         versionCode = 199
         versionName = "3.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        manifestPlaceholders["admobAppId"] = admobAppId
-        buildConfigField("String", "BANNER_AD_UNIT_ID", "\"$admobBannerId\"")
-        buildConfigField("String", "INTERSTITIAL_AD_UNIT_ID", "\"$admobInterstitialId\"")
-        buildConfigField("String", "REWARDED_AD_UNIT_ID", "\"$admobRewardedId\"")
     }
 
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
-            manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
         }
         release {
             isMinifyEnabled = true
@@ -144,8 +99,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.material.color.utilities)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.play.services.ads)
-    implementation(libs.user.messaging.platform)
     implementation(libs.billing.ktx)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
