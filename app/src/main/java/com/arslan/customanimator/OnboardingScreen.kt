@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.icons.filled.BatteryAlert
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Gavel
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.Shield
@@ -23,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -38,19 +36,10 @@ private data class OnboardingPage(
     val titleRes: Int,
     val bodyRes: Int,
     val highlightRes: Int?,
-    val requiresConsent: Boolean = false,
-    val offersRemoveAds: Boolean = false
+    val requiresConsent: Boolean = false
 )
 
-private val supportPage = OnboardingPage(
-    icon = Icons.Filled.Favorite,
-    titleRes = R.string.ad_info_title,
-    bodyRes = R.string.ad_info_message,
-    highlightRes = R.string.ad_info_remove_ads_hint,
-    offersRemoveAds = true
-)
-
-private val basePages = listOf(
+private val onboardingPages = listOf(
     OnboardingPage(
         icon = Icons.Filled.Speed,
         titleRes = R.string.onboarding_welcome_title,
@@ -86,14 +75,6 @@ private val basePages = listOf(
 
 @Composable
 fun OnboardingScreen(onFinished: () -> Unit) {
-    val context = LocalContext.current
-    val onboardingPages = remember(isAdFreeNow()) {
-        if (isAdFreeNow()) {
-            basePages
-        } else {
-            basePages.dropLast(1) + supportPage + basePages.last()
-        }
-    }
     var showSetupGuide by rememberSaveable { mutableStateOf(false) }
     var consentAccepted by rememberSaveable { mutableStateOf(false) }
     var lastVisitedPage by rememberSaveable { mutableIntStateOf(0) }
@@ -151,8 +132,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
                 OnboardingPageContent(
                     page = onboardingPages[page],
                     consentAccepted = consentAccepted,
-                    onConsentChange = { consentAccepted = it },
-                    onRemoveAds = { startRemoveAdsPurchase(context) }
+                    onConsentChange = { consentAccepted = it }
                 )
             }
 
@@ -247,8 +227,7 @@ fun OnboardingScreen(onFinished: () -> Unit) {
 private fun OnboardingPageContent(
     page: OnboardingPage,
     consentAccepted: Boolean,
-    onConsentChange: (Boolean) -> Unit,
-    onRemoveAds: () -> Unit
+    onConsentChange: (Boolean) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -294,13 +273,6 @@ private fun OnboardingPageContent(
                     lineHeight = 19.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
-        }
-
-        if (page.offersRemoveAds) {
-            Spacer(Modifier.height(10.dp))
-            OutlinedButton(onClick = onRemoveAds, shapes = ButtonDefaults.shapes()) {
-                Text(stringResource(R.string.remove_ads))
             }
         }
 

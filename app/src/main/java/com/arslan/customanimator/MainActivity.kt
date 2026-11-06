@@ -148,7 +148,6 @@ class MainActivity : ComponentActivity() {
                         OnboardingScreen(
                             onFinished = {
                                 SettingsManager.markOnboardingCompleted(this)
-                                SettingsManager.markAdInfoDialogShown(this)
                                 SettingsManager.markRateDialogLater(this)
                                 ChangelogManager.markCurrentSeen(this)
                                 changelog = emptyList()
@@ -442,21 +441,10 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     var showPermissionDialog by remember { mutableStateOf(false) }
     var permissionErrorMessage by remember { mutableStateOf("") }
     var showWriteSecureWidthConfirmDialog by remember { mutableStateOf(false) }
-    var showAdInfoDialog by remember {
-        mutableStateOf(!isAdFreeNow() && !SettingsManager.hasShownAdInfoDialog(context))
-    }
     var showRateDialog by remember {
         mutableStateOf(
-            SettingsManager.hasShownAdInfoDialog(context)
+            SettingsManager.hasCompletedOnboarding(context)
                 && SettingsManager.shouldShowRateDialog(context)
-        )
-    }
-    var showRemoveAdsSupportDialog by remember {
-        mutableStateOf(
-            !isAdFreeNow()
-                && SettingsManager.hasCompletedOnboarding(context)
-                && SettingsManager.hasShownAdInfoDialog(context)
-                && SettingsManager.shouldShowRemoveAdsSupportDialog(context)
         )
     }
     var showWriteSecureWidthUnsupportedDialog by remember { mutableStateOf(false) }
@@ -1931,63 +1919,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                 ) {
                     Text(stringResource(R.string.no))
                 }
-            }
-        )
-    }
-
-    if (showAdInfoDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                SettingsManager.markAdInfoDialogShown(context)
-                showAdInfoDialog = false
-            },
-            title = { Text(stringResource(R.string.ad_info_title)) },
-            text = {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(stringResource(R.string.ad_info_message))
-                    Text(
-                        text = stringResource(R.string.ad_info_remove_ads_hint),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        SettingsManager.markAdInfoDialogShown(context)
-                        showAdInfoDialog = false
-                    },
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(stringResource(R.string.ad_info_ok))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        SettingsManager.markAdInfoDialogShown(context)
-                        showAdInfoDialog = false
-                        startRemoveAdsPurchase(context)
-                    },
-                    shapes = ButtonDefaults.shapes()
-                ) {
-                    Text(stringResource(R.string.remove_ads))
-                }
-            }
-        )
-    }
-
-    if (showRemoveAdsSupportDialog) {
-        RemoveAdsSupportDialog(
-            onBuy = {
-                SettingsManager.markRemoveAdsSupportDialogLater(context)
-                showRemoveAdsSupportDialog = false
-                startRemoveAdsPurchase(context)
-            },
-            onDismiss = {
-                SettingsManager.markRemoveAdsSupportDialogLater(context)
-                showRemoveAdsSupportDialog = false
             }
         )
     }

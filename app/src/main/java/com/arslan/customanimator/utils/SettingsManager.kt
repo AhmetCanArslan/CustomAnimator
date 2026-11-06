@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.provider.Settings
 import com.arslan.customanimator.ui.theme.ThemeMode
 import java.util.Locale
-import java.util.TimeZone
 import kotlin.math.roundToInt
 
 object SettingsManager {
@@ -19,13 +18,9 @@ object SettingsManager {
     private const val PREFS_NAME = "custom_animator_prefs"
     private const val KEY_INPUT_MODE = "input_mode"
     private const val KEY_SKIP_WRITE_SECURE_WIDTH_CONFIRM = "skip_write_secure_width_confirm"
-    private const val KEY_AD_INFO_DIALOG_SHOWN = "ad_info_dialog_shown"
     private const val KEY_RATE_DIALOG_NEXT_SHOW = "rate_dialog_next_show"
     private const val KEY_RATE_DIALOG_RATED = "rate_dialog_rated"
-    private const val KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL = "remove_ads_prompt_dismissed_until"
-    private const val KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW = "remove_ads_support_next_show"
 
-    private const val DAY_MS = 24L * 60 * 60 * 1000
     private const val KEY_LAST_TAB = "last_tab"
     private const val KEY_LAST_SCREEN = "last_screen"
     private const val KEY_THEME_MODE = "theme_mode"
@@ -113,63 +108,6 @@ object SettingsManager {
 
     fun setLastSeenChangelogVersion(context: Context, versionCode: Int) {
         getPrefs(context).edit().putInt(KEY_LAST_CHANGELOG_VERSION, versionCode).apply()
-    }
-
-    fun hasShownAdInfoDialog(context: Context): Boolean {
-        return getPrefs(context).getBoolean(KEY_AD_INFO_DIALOG_SHOWN, false)
-    }
-
-    fun markAdInfoDialogShown(context: Context) {
-        getPrefs(context).edit().putBoolean(KEY_AD_INFO_DIALOG_SHOWN, true).apply()
-    }
-
-    enum class PromoSurface { SUPPORT_DIALOG, REMOVE_ADS_CARD }
-
-    private fun localDayIndex(nowMs: Long): Long {
-        return (nowMs + TimeZone.getDefault().getOffset(nowMs)) / DAY_MS
-    }
-
-    fun todaysPromoSurface(): PromoSurface {
-        return if (localDayIndex(System.currentTimeMillis()) % 2L == 0L) {
-            PromoSurface.SUPPORT_DIALOG
-        } else {
-            PromoSurface.REMOVE_ADS_CARD
-        }
-    }
-
-    private fun isRemoveAdsPromptDismissed(context: Context): Boolean {
-        return getPrefs(context).getLong(KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL, 0L) > System.currentTimeMillis()
-    }
-
-    fun shouldShowRemoveAdsPrompt(context: Context): Boolean {
-        return todaysPromoSurface() == PromoSurface.REMOVE_ADS_CARD &&
-            !isRemoveAdsPromptDismissed(context)
-    }
-
-    fun promoRecheckDelayMs(context: Context): Long {
-        val now = System.currentTimeMillis()
-        val untilNextDay = DAY_MS - (now + TimeZone.getDefault().getOffset(now)) % DAY_MS
-        val dismissedUntil = getPrefs(context).getLong(KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL, 0L)
-        val untilDismissalEnds = if (dismissedUntil > now) dismissedUntil - now else untilNextDay
-        return minOf(untilNextDay, untilDismissalEnds).coerceAtLeast(1000L)
-    }
-
-    fun dismissRemoveAdsPrompt(context: Context) {
-        getPrefs(context).edit()
-            .putLong(KEY_REMOVE_ADS_PROMPT_DISMISSED_UNTIL, System.currentTimeMillis() + DAY_MS)
-            .apply()
-    }
-
-    fun shouldShowRemoveAdsSupportDialog(context: Context): Boolean {
-        if (todaysPromoSurface() != PromoSurface.SUPPORT_DIALOG) return false
-        val nextShow = getPrefs(context).getLong(KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW, 0L)
-        return nextShow == 0L || System.currentTimeMillis() >= nextShow
-    }
-
-    fun markRemoveAdsSupportDialogLater(context: Context) {
-        getPrefs(context).edit()
-            .putLong(KEY_REMOVE_ADS_SUPPORT_NEXT_SHOW, System.currentTimeMillis() + DAY_MS)
-            .apply()
     }
 
     fun shouldShowRateDialog(context: Context): Boolean {
