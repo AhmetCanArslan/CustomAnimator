@@ -211,6 +211,7 @@ private fun AccentColorDialog(initial: Int, onDismiss: () -> Unit, onConfirm: (I
     val color = hsvColor(hue, saturation, brightness)
     val syncHex: () -> Unit = { hexText = hexOf(color.toArgb()).drop(1) }
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.accent_custom)) },
         text = {

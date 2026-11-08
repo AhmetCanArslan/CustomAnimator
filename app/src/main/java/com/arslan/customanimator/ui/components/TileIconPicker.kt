@@ -54,6 +54,7 @@ fun TileIconPickerDialog(
     var query by remember { mutableStateOf("") }
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = {

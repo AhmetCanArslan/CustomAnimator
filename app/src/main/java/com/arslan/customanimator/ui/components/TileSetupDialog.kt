@@ -85,6 +85,7 @@ fun TileSetupDialog(
     val canSave = !enabled || (slot != null && trimmedLabel.isNotEmpty())
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.terminal_tile_title)) },
         text = {
