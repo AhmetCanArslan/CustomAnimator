@@ -183,7 +183,11 @@ object ShizukuHelper {
     fun executeShellCommand(command: Array<String>): Boolean =
         executeShellCommandWithOutput(command).isSuccess
 
-    fun executeShellCommandWithOutput(command: Array<String>): ShellResult {
+    fun executeShellCommandWithOutput(
+        command: Array<String>,
+        maxLines: Int = MAX_OUTPUT_LINES,
+        maxChars: Int = MAX_OUTPUT_CHARS
+    ): ShellResult {
         return try {
             if (!hasShizukuPermission()) {
                 Log.d(TAG, "Shizuku permission not granted for command: ${command.joinToString(" ")}")
@@ -194,13 +198,13 @@ object ShizukuHelper {
             try {
                 runCatching { process.outputStream.close() }
                 val lines = ArrayDeque<String>()
-                val stderrThread = Thread { drainInto(process.errorStream, lines) }
+                val stderrThread = Thread { drainInto(process.errorStream, lines, maxLines) }
                 stderrThread.start()
-                drainInto(process.inputStream, lines)
+                drainInto(process.inputStream, lines, maxLines)
                 stderrThread.join()
                 val exitCode = process.waitFor()
                 Log.d(TAG, "Shizuku command result=$exitCode, cmd=${command.joinToString(" ")}")
-                ShellResult(exitCode, truncate(lines))
+                ShellResult(exitCode, truncate(lines, maxChars))
             } finally {
                 process.destroy()
             }
@@ -213,7 +217,7 @@ object ShizukuHelper {
     private fun newProcess(command: Array<String>): java.lang.Process =
         newProcessMethod.invoke(null, command, null, null) as java.lang.Process
 
-    private fun drainInto(stream: InputStream?, sink: ArrayDeque<String>) {
+    private fun drainInto(stream: InputStream?, sink: ArrayDeque<String>, maxLines: Int) {
         if (stream == null) return
         try {
             BufferedReader(InputStreamReader(stream)).use { reader ->
@@ -221,7 +225,7 @@ object ShizukuHelper {
                     val line = reader.readLine() ?: break
                     synchronized(sink) {
                         sink.addLast(line)
-                        if (sink.size > MAX_OUTPUT_LINES) sink.removeFirst()
+                        if (sink.size > maxLines) sink.removeFirst()
                     }
                 }
             }
@@ -230,10 +234,10 @@ object ShizukuHelper {
         }
     }
 
-    private fun truncate(lines: List<String>): String {
+    private fun truncate(lines: List<String>, maxChars: Int): String {
         val text = synchronized(lines) { lines.joinToString("\n") }
-        return if (text.length > MAX_OUTPUT_CHARS) {
-            "… output truncated …\n" + text.takeLast(MAX_OUTPUT_CHARS)
+        return if (text.length > maxChars) {
+            "… output truncated …\n" + text.takeLast(maxChars)
         } else {
             text
         }
