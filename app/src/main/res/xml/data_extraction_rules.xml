@@ -8,6 +8,7 @@
         <exclude domain="sharedpref" path="per_app_width_state.xml" />
         <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
         <exclude domain="sharedpref" path="notify_aod_state.xml" />
+        <exclude domain="sharedpref" path="settings_database.xml" />
         <!-- TODO: Use <include> and <exclude> to control what is backed up.
         <include .../>
         <exclude .../>
@@ -23,5 +24,6 @@
         <exclude domain="sharedpref" path="per_app_width_state.xml" />
         <exclude domain="sharedpref" path="per_app_refresh_rate_state.xml" />
         <exclude domain="sharedpref" path="notify_aod_state.xml" />
+        <exclude domain="sharedpref" path="settings_database.xml" />
     </device-transfer>
 </data-extraction-rules>

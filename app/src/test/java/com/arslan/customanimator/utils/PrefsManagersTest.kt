@@ -80,6 +80,39 @@ class PrefsManagersTest {
     }
 
     @Test
+    fun settingsDatabaseBootValuesRoundTripAndReapply() {
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.GLOBAL, "custom_animator_global", "7")
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.SECURE, "custom_animator_secure", "a=b")
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.GLOBAL, "custom_animator_global", "8")
+        assertEquals(setOf("custom_animator_global"), SettingsDatabaseManager.bootKeys(context, SettingsNamespace.GLOBAL))
+        assertEquals(setOf("custom_animator_secure"), SettingsDatabaseManager.bootKeys(context, SettingsNamespace.SECURE))
+        assertTrue(SettingsDatabaseManager.bootKeys(context, SettingsNamespace.SYSTEM).isEmpty())
+
+        assertEquals(2, SettingsDatabaseManager.reapplyBootSettings(context))
+        assertEquals("8", android.provider.Settings.Global.getString(context.contentResolver, "custom_animator_global"))
+        assertEquals("a=b", android.provider.Settings.Secure.getString(context.contentResolver, "custom_animator_secure"))
+
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.GLOBAL, "custom_animator_global", null)
+        assertEquals(
+            listOf(BootSetting(SettingsNamespace.SECURE, "custom_animator_secure", "a=b")),
+            SettingsDatabaseManager.bootSettings(context)
+        )
+    }
+
+    @Test
+    fun settingsDatabaseBootValuesSurviveCorruptStorage() {
+        val prefs = context.getSharedPreferences("settings_database", Context.MODE_PRIVATE)
+        prefs.edit().putString("boot_settings", "{not json").commit()
+        assertTrue(SettingsDatabaseManager.bootSettings(context).isEmpty())
+        prefs.edit().putString(
+            "boot_settings",
+            "[{\"namespace\":\"NOPE\",\"key\":\"a\",\"value\":\"1\"},{\"namespace\":\"GLOBAL\",\"key\":\"bad key\",\"value\":\"1\"},{\"namespace\":\"SYSTEM\",\"key\":\"ok\"},3,{\"namespace\":\"SYSTEM\",\"key\":\"kept\",\"value\":\"\"}]"
+        ).commit()
+        assertEquals(listOf(BootSetting(SettingsNamespace.SYSTEM, "kept", "")), SettingsDatabaseManager.bootSettings(context))
+        assertEquals(0, SettingsDatabaseManager.reapplyBootSettings(context))
+    }
+
+    @Test
     fun threadingConfigsPersistOnlyNonDefaults() {
         val manager = AppThreadingManager(context)
         manager.getConfigs().keys.forEach { manager.setConfig(it, AppThreadingConfig()) }

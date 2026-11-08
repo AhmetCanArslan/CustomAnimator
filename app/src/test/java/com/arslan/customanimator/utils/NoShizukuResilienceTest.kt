@@ -119,6 +119,17 @@ class NoShizukuResilienceTest {
     }
 
     @Test
+    fun systemBootValuesWaitForShizukuInsteadOfFailing() {
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.SYSTEM, "custom_animator_system", "1")
+        SettingsDatabaseManager.setAppliedOnBoot(context, SettingsNamespace.GLOBAL, "custom_animator_global", "2")
+        assertEquals(1, SettingsDatabaseManager.reapplyBootSettings(context))
+        assertNull(android.provider.Settings.System.getString(context.contentResolver, "custom_animator_system"))
+        assertEquals(0, SettingsDatabaseManager.applyPendingShizukuSettings(context))
+        assertFalse(SettingsDatabaseManager.putForBoot(context, SettingsNamespace.SYSTEM, "custom_animator_system", "1"))
+        assertEquals(setOf("custom_animator_system"), SettingsDatabaseManager.bootKeys(context, SettingsNamespace.SYSTEM))
+    }
+
+    @Test
     fun dozeWhitelistIsEmptyAndWritesFailWithoutShizuku() {
         assertTrue(DozeWhitelistManager.getWhitelist().isEmpty())
         assertTrue(DozeWhitelistManager.getWhitelistedPackages().isEmpty())
