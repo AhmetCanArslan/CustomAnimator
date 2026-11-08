@@ -3,7 +3,6 @@ package com.arslan.customanimator
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -30,7 +29,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -59,9 +57,9 @@ import com.arslan.customanimator.utils.TerminalTileSlots
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @Composable
 fun TerminalScreenContent(
@@ -124,10 +122,7 @@ fun TerminalScreenContent(
         state = listState,
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { focusManager.clearFocus() })
-            },
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
@@ -658,12 +653,12 @@ private fun PresetDialog(
     var name by remember { mutableStateOf(preset.name) }
     var command by remember {
         mutableStateOf(
-        modifier = Modifier.clearFocusOnTapOutside(),
             TextFieldValue(preset.command, TextRange(preset.command.length))
         )
     }
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = {
             Text(
