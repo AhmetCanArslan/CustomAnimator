@@ -36,6 +36,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppSlider
 import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @Suppress("DEPRECATION")
 class NotificationWidgetConfigureActivity : ComponentActivity() {
@@ -61,7 +62,7 @@ class NotificationWidgetConfigureActivity : ComponentActivity() {
         setContent {
             CustomAnimatorTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().clearFocusOnTapOutside(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     WidgetConfigureScreen(

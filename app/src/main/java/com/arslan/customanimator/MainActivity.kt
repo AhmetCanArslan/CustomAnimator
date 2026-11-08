@@ -118,6 +118,7 @@ import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
 import com.arslan.customanimator.ui.components.ScaleSlider
 import androidx.compose.material.icons.filled.Check
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 class MainActivity : ComponentActivity() {
     var shortcutTarget by mutableStateOf<SearchTarget?>(null)
@@ -136,7 +137,7 @@ class MainActivity : ComponentActivity() {
             CustomAnimatorTheme {
                 ProvideShizukuState {
                 PreloadInstalledApps()
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(modifier = Modifier.fillMaxSize().clearFocusOnTapOutside(), color = MaterialTheme.colorScheme.background) {
                     var showOnboarding by rememberSaveable {
                         mutableStateOf(!SettingsManager.hasCompletedOnboarding(this))
                     }
