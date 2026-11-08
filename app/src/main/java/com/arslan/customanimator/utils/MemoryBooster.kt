@@ -9,6 +9,6 @@ object MemoryBooster {
     }
 
     fun compact(): Boolean {
-        return ShizukuHelper.executeShellCommand(arrayOf("am", "compact", "all", "full"))
+        return ShizukuHelper.executeShellCommand(arrayOf("am", "compact", "system"))
     }
 }

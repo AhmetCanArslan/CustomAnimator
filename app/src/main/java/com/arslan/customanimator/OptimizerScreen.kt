@@ -627,7 +627,7 @@ private suspend fun trimCaches(context: Context, writer: TerminalWriter, beforeS
 
 private suspend fun compactMemory(writer: TerminalWriter) {
     val memoryOk = withContext(Dispatchers.IO) { MemoryBooster.compact() }
-    writer.line(if (memoryOk) "   · am compact all full OK" else "   · memory compaction FAILED")
+    writer.line(if (memoryOk) "   · am compact system OK" else "   · memory compaction FAILED")
     val syncOk = withContext(Dispatchers.IO) { ShizukuHelper.executeShellCommand(arrayOf("sync")) }
     writer.line(if (syncOk) "   · filesystem buffers flushed" else "   · sync FAILED", STAGE_DELAY_MS)
 }
