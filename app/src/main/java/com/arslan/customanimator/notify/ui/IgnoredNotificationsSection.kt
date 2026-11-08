@@ -69,6 +69,7 @@ import com.arslan.customanimator.ui.components.ScreenTopBar
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.IconButtonDefaults
 import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -460,6 +461,7 @@ private fun FilterAppPickerDialog(onDismiss: () -> Unit, onPick: (AppItem) -> Un
     LaunchedEffect(Unit) { AppListManager.initialize(context) }
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = {
             Text(
@@ -508,6 +510,7 @@ private fun EditIgnoreRuleDialog(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = {
             Row(

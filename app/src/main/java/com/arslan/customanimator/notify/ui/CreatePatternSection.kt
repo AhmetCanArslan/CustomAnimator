@@ -21,6 +21,7 @@ import com.arslan.customanimator.notify.service.FlashManager
 import kotlinx.coroutines.delay
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,6 +167,7 @@ fun CreatePatternSection(
 
     if (showNameDialog) {
         AlertDialog(
+            modifier = Modifier.clearFocusOnTapOutside(),
             onDismissRequest = { showNameDialog = false },
             title = { Text(stringResource(R.string.pn_save_pattern)) },
             text = {
