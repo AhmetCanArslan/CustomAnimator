@@ -1879,4 +1879,22 @@ Tagal ng Animator: %3$.2f</string>
     <string name="app_flowactions_desc">Mga edge gesture na nagpapatakbo ng anumang aksyon, mula back at screenshot hanggang sa sarili mong shortcut.</string>
     <string name="app_shizuwall_desc">Android firewall na walang VPN. I-block ang mga app sa network, gamit ang Shizuku.</string>
     <string name="more_apps_open">Buksan sa Google Play</string>
+    <string name="settings_database">Settings Database</string>
+    <string name="settings_database_desc">Tingnan, i-edit, magdagdag at magbura ng mga setting ng system, secure at global</string>
+    <string name="settings_database_info">Direktang binabasa at isinusulat ang mga value sa settings database ng Android. Maaaring masira ng maling value ang mga feature o kilos ng system, kaya itala ang lumang value bago ito baguhin.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Maghanap ng key at value</string>
+    <string name="settings_database_empty">Walang tumugmang setting</string>
+    <string name="settings_database_empty_value">(walang laman)</string>
+    <string name="settings_database_load_failed">Hindi mabasa ang settings table na ito.</string>
+    <string name="settings_database_add">Magdagdag ng setting</string>
+    <string name="settings_database_edit">I-edit ang setting</string>
+    <string name="settings_database_key">Key</string>
+    <string name="settings_database_value">Value</string>
+    <string name="settings_database_key_invalid">Hindi puwedeng may espasyo o = ang key</string>
+    <string name="settings_database_key_exists">Mayroon na ang key na ito, papalitan ng pag-save ang value nito</string>
+    <string name="settings_database_delete_title">Burahin ang setting?</string>
+    <string name="settings_database_delete_message">Aalisin ang %1$s sa table. Gagamitin ng Android ang built-in na default hanggang may sumulat ulit nito.</string>
 </resources>

@@ -1881,4 +1881,22 @@
     <string name="app_flowactions_desc">Жесты на краях экрана запускают любое действие: от «Назад» и скриншота до ваших ярлыков.</string>
     <string name="app_shizuwall_desc">Брандмауэр для Android без VPN. Блокируйте приложениям доступ к сети через Shizuku.</string>
     <string name="more_apps_open">Открыть в Google Play</string>
+    <string name="settings_database">База данных настроек</string>
+    <string name="settings_database_desc">Просмотр, изменение, добавление и удаление настроек system, secure и global</string>
+    <string name="settings_database_info">Значения читаются и записываются прямо в базу данных настроек Android. Неверное значение может нарушить работу функций или системы, поэтому запишите старое значение перед изменением.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Поиск по ключам и значениям</string>
+    <string name="settings_database_empty">Нет подходящих настроек</string>
+    <string name="settings_database_empty_value">(пусто)</string>
+    <string name="settings_database_load_failed">Не удалось прочитать эту таблицу настроек.</string>
+    <string name="settings_database_add">Добавить настройку</string>
+    <string name="settings_database_edit">Изменить настройку</string>
+    <string name="settings_database_key">Ключ</string>
+    <string name="settings_database_value">Значение</string>
+    <string name="settings_database_key_invalid">Ключ не может содержать пробелы или =</string>
+    <string name="settings_database_key_exists">Такой ключ уже есть, сохранение заменит его значение</string>
+    <string name="settings_database_delete_title">Удалить настройку?</string>
+    <string name="settings_database_delete_message">%1$s удаляется из таблицы. Android использует встроенное значение по умолчанию, пока что-то не запишет его снова.</string>
 </resources>

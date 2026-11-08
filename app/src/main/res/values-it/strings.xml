@@ -1899,4 +1899,22 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="app_flowactions_desc">Gesti sui bordi che eseguono qualsiasi azione, da indietro e screenshot ai tuoi collegamenti.</string>
     <string name="app_shizuwall_desc">Firewall per Android senza VPN. Blocca le app dalla rete, grazie a Shizuku.</string>
     <string name="more_apps_open">Apri su Google Play</string>
+    <string name="settings_database">Database impostazioni</string>
+    <string name="settings_database_desc">Visualizza, modifica, aggiungi ed elimina impostazioni system, secure e global</string>
+    <string name="settings_database_info">I valori vengono letti e scritti direttamente nel database delle impostazioni di Android. Un valore errato può compromettere funzioni o il comportamento del sistema, quindi annota il valore precedente prima di cambiarlo.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Cerca chiavi e valori</string>
+    <string name="settings_database_empty">Nessuna impostazione corrisponde</string>
+    <string name="settings_database_empty_value">(vuoto)</string>
+    <string name="settings_database_load_failed">Impossibile leggere questa tabella delle impostazioni.</string>
+    <string name="settings_database_add">Aggiungi impostazione</string>
+    <string name="settings_database_edit">Modifica impostazione</string>
+    <string name="settings_database_key">Chiave</string>
+    <string name="settings_database_value">Valore</string>
+    <string name="settings_database_key_invalid">Le chiavi non possono contenere spazi o =</string>
+    <string name="settings_database_key_exists">Questa chiave esiste già, salvare ne sostituisce il valore</string>
+    <string name="settings_database_delete_title">Eliminare l\'impostazione?</string>
+    <string name="settings_database_delete_message">%1$s viene rimossa dalla tabella. Android usa il suo valore predefinito finché qualcosa non la riscrive.</string>
 </resources>

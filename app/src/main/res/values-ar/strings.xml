@@ -1919,4 +1919,22 @@
     <string name="app_flowactions_desc">إيماءات الحواف لتشغيل أي إجراء، من الرجوع ولقطة الشاشة إلى اختصاراتك الخاصة.</string>
     <string name="app_shizuwall_desc">جدار حماية لأندرويد بدون VPN. امنع التطبيقات من الوصول إلى الشبكة، بالاعتماد على Shizuku.</string>
     <string name="more_apps_open">فتح في Google Play</string>
+    <string name="settings_database">قاعدة بيانات الإعدادات</string>
+    <string name="settings_database_desc">عرض وتعديل وإضافة وحذف إعدادات system وsecure وglobal</string>
+    <string name="settings_database_info">تُقرأ القيم وتُكتب مباشرة في قاعدة بيانات إعدادات Android. قد تؤدي قيمة خاطئة إلى تعطيل ميزات أو سلوك النظام، لذا دوّن القيمة القديمة قبل تغييرها.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">ابحث في المفاتيح والقيم</string>
+    <string name="settings_database_empty">لا توجد إعدادات مطابقة</string>
+    <string name="settings_database_empty_value">(فارغ)</string>
+    <string name="settings_database_load_failed">تعذرت قراءة جدول الإعدادات هذا.</string>
+    <string name="settings_database_add">إضافة إعداد</string>
+    <string name="settings_database_edit">تعديل الإعداد</string>
+    <string name="settings_database_key">المفتاح</string>
+    <string name="settings_database_value">القيمة</string>
+    <string name="settings_database_key_invalid">لا يمكن أن تحتوي المفاتيح على مسافات أو =</string>
+    <string name="settings_database_key_exists">هذا المفتاح موجود بالفعل، الحفظ يستبدل قيمته</string>
+    <string name="settings_database_delete_title">حذف الإعداد؟</string>
+    <string name="settings_database_delete_message">تتم إزالة %1$s من الجدول. يعود Android إلى قيمته الافتراضية المدمجة حتى يكتبه شيء ما مرة أخرى.</string>
 </resources>

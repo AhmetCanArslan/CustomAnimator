@@ -1879,4 +1879,22 @@ Duração do Animador: %3$.2f</string>
     <string name="app_flowactions_desc">Gestos nas bordas que executam qualquer ação, de voltar e captura de tela até seus próprios atalhos.</string>
     <string name="app_shizuwall_desc">Firewall para Android sem VPN. Bloqueie apps da rede, com tecnologia Shizuku.</string>
     <string name="more_apps_open">Abrir no Google Play</string>
+    <string name="settings_database">Banco de dados de configurações</string>
+    <string name="settings_database_desc">Ver, editar, adicionar e excluir configurações system, secure e global</string>
+    <string name="settings_database_info">Os valores são lidos e gravados diretamente no banco de dados de configurações do Android. Um valor errado pode quebrar recursos ou o comportamento do sistema, então anote o valor antigo antes de alterá-lo.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Pesquisar chaves e valores</string>
+    <string name="settings_database_empty">Nenhuma configuração corresponde</string>
+    <string name="settings_database_empty_value">(vazio)</string>
+    <string name="settings_database_load_failed">Não foi possível ler esta tabela de configurações.</string>
+    <string name="settings_database_add">Adicionar configuração</string>
+    <string name="settings_database_edit">Editar configuração</string>
+    <string name="settings_database_key">Chave</string>
+    <string name="settings_database_value">Valor</string>
+    <string name="settings_database_key_invalid">Chaves não podem conter espaços ou =</string>
+    <string name="settings_database_key_exists">Esta chave já existe, salvar substitui o valor</string>
+    <string name="settings_database_delete_title">Excluir configuração?</string>
+    <string name="settings_database_delete_message">%1$s é removida da tabela. O Android usa o padrão integrado até que algo a grave novamente.</string>
 </resources>

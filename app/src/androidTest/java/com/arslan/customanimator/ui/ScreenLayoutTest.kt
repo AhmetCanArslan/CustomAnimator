@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.arslan.customanimator.AlarmRevealerScreen
 import com.arslan.customanimator.ActivityManagerScreen
+import com.arslan.customanimator.SettingsDatabaseScreen
 import com.arslan.customanimator.ApkExtractorScreen
 import com.arslan.customanimator.ApkInstallerScreen
 import com.arslan.customanimator.AppThreadingScreen
@@ -119,6 +120,11 @@ class ScreenLayoutTest {
     @Test
     fun activityManagerScreenFitsSmallPhones() = screenFits(R.string.activity_manager) {
         ActivityManagerScreen(onBack = {}, hasShizukuPermission = false)
+    }
+
+    @Test
+    fun settingsDatabaseScreenFitsSmallPhones() = screenFits(R.string.settings_database) {
+        SettingsDatabaseScreen(onBack = {}, hasShizukuPermission = false)
     }
 
     @Test

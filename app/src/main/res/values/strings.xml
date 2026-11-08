@@ -1923,4 +1923,22 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="app_shizuwall_name" translatable="false">ShizuWall</string>
     <string name="app_shizuwall_desc">Android firewall without VPN. Block apps from the network, powered by Shizuku.</string>
     <string name="more_apps_open">Open on Google Play</string>
+    <string name="settings_database">Settings Database</string>
+    <string name="settings_database_desc">View, edit, add and delete system, secure and global settings</string>
+    <string name="settings_database_info">Values are read and written directly in Android\'s settings database. A wrong value can break features or system behavior, so note the old value before you change it.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Search keys and values</string>
+    <string name="settings_database_empty">No settings match</string>
+    <string name="settings_database_empty_value">(empty)</string>
+    <string name="settings_database_load_failed">Could not read this settings table.</string>
+    <string name="settings_database_add">Add setting</string>
+    <string name="settings_database_edit">Edit setting</string>
+    <string name="settings_database_key">Key</string>
+    <string name="settings_database_value">Value</string>
+    <string name="settings_database_key_invalid">Keys cannot contain spaces or =</string>
+    <string name="settings_database_key_exists">This key already exists, saving replaces its value</string>
+    <string name="settings_database_delete_title">Delete setting?</string>
+    <string name="settings_database_delete_message">%1$s is removed from the table. Android falls back to its built-in default until something writes it again.</string>
 </resources>

@@ -1887,4 +1887,22 @@ Animatör Süresi: %3$.2f</string>
     <string name="app_flowactions_desc">Kenar hareketleriyle geri, ekran görüntüsü ve kendi kısayollarınız dahil her eylemi çalıştırın.</string>
     <string name="app_shizuwall_desc">VPN olmadan Android güvenlik duvarı. Uygulamaları ağdan engelleyin, Shizuku ile çalışır.</string>
     <string name="more_apps_open">Google Play\'de aç</string>
+    <string name="settings_database">Ayarlar Veritabanı</string>
+    <string name="settings_database_desc">System, secure ve global ayarlarını görüntüle, düzenle, ekle ve sil</string>
+    <string name="settings_database_info">Değerler doğrudan Android ayarlar veritabanından okunur ve yazılır. Yanlış bir değer özellikleri veya sistem davranışını bozabilir, değiştirmeden önce eski değeri not alın.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Anahtar ve değerlerde ara</string>
+    <string name="settings_database_empty">Eşleşen ayar yok</string>
+    <string name="settings_database_empty_value">(boş)</string>
+    <string name="settings_database_load_failed">Bu ayar tablosu okunamadı.</string>
+    <string name="settings_database_add">Ayar ekle</string>
+    <string name="settings_database_edit">Ayarı düzenle</string>
+    <string name="settings_database_key">Anahtar</string>
+    <string name="settings_database_value">Değer</string>
+    <string name="settings_database_key_invalid">Anahtarlar boşluk veya = içeremez</string>
+    <string name="settings_database_key_exists">Bu anahtar zaten var, kaydetmek değerini değiştirir</string>
+    <string name="settings_database_delete_title">Ayar silinsin mi?</string>
+    <string name="settings_database_delete_message">%1$s tablodan kaldırılır. Bir şey onu yeniden yazana kadar Android yerleşik varsayılanını kullanır.</string>
 </resources>

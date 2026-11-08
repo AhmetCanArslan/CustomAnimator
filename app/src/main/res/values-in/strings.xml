@@ -1879,4 +1879,22 @@ Durasi Animator: %3$.2f</string>
     <string name="app_flowactions_desc">Gestur tepi layar untuk menjalankan aksi apa pun, dari kembali dan tangkapan layar hingga pintasan buatanmu.</string>
     <string name="app_shizuwall_desc">Firewall Android tanpa VPN. Blokir akses jaringan aplikasi, ditenagai Shizuku.</string>
     <string name="more_apps_open">Buka di Google Play</string>
+    <string name="settings_database">Database Setelan</string>
+    <string name="settings_database_desc">Lihat, edit, tambah, dan hapus setelan system, secure, dan global</string>
+    <string name="settings_database_info">Nilai dibaca dan ditulis langsung di database setelan Android. Nilai yang salah dapat merusak fitur atau perilaku sistem, jadi catat nilai lama sebelum mengubahnya.</string>
+    <string name="settings_database_system">System</string>
+    <string name="settings_database_secure">Secure</string>
+    <string name="settings_database_global">Global</string>
+    <string name="settings_database_search">Cari kunci dan nilai</string>
+    <string name="settings_database_empty">Tidak ada setelan yang cocok</string>
+    <string name="settings_database_empty_value">(kosong)</string>
+    <string name="settings_database_load_failed">Tidak dapat membaca tabel setelan ini.</string>
+    <string name="settings_database_add">Tambah setelan</string>
+    <string name="settings_database_edit">Edit setelan</string>
+    <string name="settings_database_key">Kunci</string>
+    <string name="settings_database_value">Nilai</string>
+    <string name="settings_database_key_invalid">Kunci tidak boleh berisi spasi atau =</string>
+    <string name="settings_database_key_exists">Kunci ini sudah ada, menyimpan akan mengganti nilainya</string>
+    <string name="settings_database_delete_title">Hapus setelan?</string>
+    <string name="settings_database_delete_message">%1$s dihapus dari tabel. Android memakai nilai default bawaannya sampai ada yang menulisnya lagi.</string>
 </resources>
