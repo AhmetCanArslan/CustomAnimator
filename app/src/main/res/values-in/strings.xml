@@ -1897,4 +1897,9 @@ Durasi Animator: %3$.2f</string>
     <string name="settings_database_key_exists">Kunci ini sudah ada, menyimpan akan mengganti nilainya</string>
     <string name="settings_database_delete_title">Hapus setelan?</string>
     <string name="settings_database_delete_message">%1$s dihapus dari tabel. Android memakai nilai default bawaannya sampai ada yang menulisnya lagi.</string>
+    <string name="settings_database_apply_on_boot">Terapkan saat mulai ulang</string>
+    <string name="settings_database_apply_on_boot_system_note">Kunci System ditulis lagi lewat Shizuku setelah mulai ulang, segera setelah Shizuku berjalan</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Memerlukan izin Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">Android menolak nilai ini melalui Write Secure Settings, jadi tidak dapat diterapkan lagi setelah mulai ulang.</string>
+    <string name="settings_database_on_boot">Saat mulai ulang</string>
 </resources>

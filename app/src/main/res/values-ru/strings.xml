@@ -1899,4 +1899,9 @@
     <string name="settings_database_key_exists">Такой ключ уже есть, сохранение заменит его значение</string>
     <string name="settings_database_delete_title">Удалить настройку?</string>
     <string name="settings_database_delete_message">%1$s удаляется из таблицы. Android использует встроенное значение по умолчанию, пока что-то не запишет его снова.</string>
+    <string name="settings_database_apply_on_boot">Применять после перезагрузки</string>
+    <string name="settings_database_apply_on_boot_system_note">Ключи System записываются заново через Shizuku после перезагрузки, как только Shizuku запущен</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Нужно разрешение Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">Android отклонил это значение через Write Secure Settings, поэтому его нельзя применить заново после перезагрузки.</string>
+    <string name="settings_database_on_boot">При загрузке</string>
 </resources>

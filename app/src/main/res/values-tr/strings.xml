@@ -1905,4 +1905,9 @@ Animatör Süresi: %3$.2f</string>
     <string name="settings_database_key_exists">Bu anahtar zaten var, kaydetmek değerini değiştirir</string>
     <string name="settings_database_delete_title">Ayar silinsin mi?</string>
     <string name="settings_database_delete_message">%1$s tablodan kaldırılır. Bir şey onu yeniden yazana kadar Android yerleşik varsayılanını kullanır.</string>
+    <string name="settings_database_apply_on_boot">Yeniden başlatınca uygula</string>
+    <string name="settings_database_apply_on_boot_system_note">System anahtarları yeniden başlatmadan sonra Shizuku çalışır çalışmaz Shizuku ile tekrar yazılır</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Write Secure Settings izni gerekir</string>
+    <string name="settings_database_boot_unsupported">Android bu değeri Write Secure Settings ile kabul etmedi, bu yüzden yeniden başlatmadan sonra tekrar uygulanamaz.</string>
+    <string name="settings_database_on_boot">Açılışta</string>
 </resources>

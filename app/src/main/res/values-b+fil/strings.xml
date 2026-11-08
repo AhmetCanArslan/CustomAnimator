@@ -1897,4 +1897,9 @@ Tagal ng Animator: %3$.2f</string>
     <string name="settings_database_key_exists">Mayroon na ang key na ito, papalitan ng pag-save ang value nito</string>
     <string name="settings_database_delete_title">Burahin ang setting?</string>
     <string name="settings_database_delete_message">Aalisin ang %1$s sa table. Gagamitin ng Android ang built-in na default hanggang may sumulat ulit nito.</string>
+    <string name="settings_database_apply_on_boot">Ilapat sa pag-reboot</string>
+    <string name="settings_database_apply_on_boot_system_note">Isinusulat ulit ang mga System key gamit ang Shizuku pagkatapos mag-reboot, sa sandaling tumatakbo na ang Shizuku</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Kailangan ang pahintulot na Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">Tinanggihan ng Android ang value na ito sa Write Secure Settings, kaya hindi ito mailalapat ulit pagkatapos mag-reboot.</string>
+    <string name="settings_database_on_boot">Sa pag-reboot</string>
 </resources>

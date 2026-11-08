@@ -1937,4 +1937,9 @@
     <string name="settings_database_key_exists">هذا المفتاح موجود بالفعل، الحفظ يستبدل قيمته</string>
     <string name="settings_database_delete_title">حذف الإعداد؟</string>
     <string name="settings_database_delete_message">تتم إزالة %1$s من الجدول. يعود Android إلى قيمته الافتراضية المدمجة حتى يكتبه شيء ما مرة أخرى.</string>
+    <string name="settings_database_apply_on_boot">تطبيق عند إعادة التشغيل</string>
+    <string name="settings_database_apply_on_boot_system_note">تُكتب مفاتيح System مجددًا عبر Shizuku بعد إعادة التشغيل فور تشغيل Shizuku</string>
+    <string name="settings_database_apply_on_boot_needs_permission">يتطلب إذن Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">رفض Android هذه القيمة عبر Write Secure Settings، لذا لا يمكن إعادة تطبيقها بعد إعادة التشغيل.</string>
+    <string name="settings_database_on_boot">عند التشغيل</string>
 </resources>

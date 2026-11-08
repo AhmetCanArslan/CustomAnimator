@@ -1917,4 +1917,9 @@ Ciò che esegui è interamente sotto la tua responsabilità. Lo sviluppatore di 
     <string name="settings_database_key_exists">Questa chiave esiste già, salvare ne sostituisce il valore</string>
     <string name="settings_database_delete_title">Eliminare l\'impostazione?</string>
     <string name="settings_database_delete_message">%1$s viene rimossa dalla tabella. Android usa il suo valore predefinito finché qualcosa non la riscrive.</string>
+    <string name="settings_database_apply_on_boot">Applica al riavvio</string>
+    <string name="settings_database_apply_on_boot_system_note">Le chiavi System vengono riscritte tramite Shizuku dopo il riavvio, appena Shizuku è in esecuzione</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Richiede il permesso Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">Android ha rifiutato questo valore tramite Write Secure Settings, quindi non può essere riapplicato dopo il riavvio.</string>
+    <string name="settings_database_on_boot">Al riavvio</string>
 </resources>

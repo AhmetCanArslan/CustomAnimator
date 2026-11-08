@@ -1897,4 +1897,9 @@ Duración del Animador: %3$.2f</string>
     <string name="settings_database_key_exists">Esta clave ya existe, guardar reemplaza su valor</string>
     <string name="settings_database_delete_title">¿Borrar ajuste?</string>
     <string name="settings_database_delete_message">%1$s se quita de la tabla. Android usa su valor predeterminado integrado hasta que algo lo vuelva a escribir.</string>
+    <string name="settings_database_apply_on_boot">Aplicar al reiniciar</string>
+    <string name="settings_database_apply_on_boot_system_note">Las claves de System se vuelven a escribir con Shizuku tras reiniciar, en cuanto Shizuku esté en ejecución</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Necesita el permiso Write Secure Settings</string>
+    <string name="settings_database_boot_unsupported">Android rechazó este valor mediante Write Secure Settings, así que no se puede volver a aplicar tras reiniciar.</string>
+    <string name="settings_database_on_boot">Al reiniciar</string>
 </resources>

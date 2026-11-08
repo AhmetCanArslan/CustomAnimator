@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
@@ -16,17 +17,23 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arslan.customanimator.ui.components.ConnectedChoiceGroup
 import com.arslan.customanimator.ui.components.ScreenTopBar
+import com.arslan.customanimator.ui.components.StatusPill
+import com.arslan.customanimator.ui.components.StatusTone
 import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.LocalShizukuPermission
+import com.arslan.customanimator.utils.LocalWriteSecureSettings
 import com.arslan.customanimator.utils.SettingEntry
 import com.arslan.customanimator.utils.SettingsDatabaseManager
 import com.arslan.customanimator.utils.SettingsNamespace
@@ -46,21 +53,25 @@ private sealed interface SettingsDialog {
 fun SettingsDatabaseScreen(
     onBack: () -> Unit,
     hasShizukuPermission: Boolean = LocalShizukuPermission.current,
+    hasWriteSecureSettings: Boolean = LocalWriteSecureSettings.current,
     listState: LazyListState = rememberLazyListState()
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val openSetup = LocalOpenSetupGuide.current
     val coroutineScope = rememberCoroutineScope()
 
     var namespace by rememberSaveable { mutableStateOf(SettingsNamespace.SYSTEM) }
     var query by rememberSaveable { mutableStateOf("") }
     var entries by remember { mutableStateOf(emptyList<SettingEntry>()) }
+    var bootKeys by remember { mutableStateOf(emptySet<String>()) }
     var isLoading by remember { mutableStateOf(false) }
     var loadFailed by remember { mutableStateOf(false) }
     var reloadToken by remember { mutableIntStateOf(0) }
     var dialog by remember { mutableStateOf<SettingsDialog?>(null) }
 
     LaunchedEffect(hasShizukuPermission, namespace, reloadToken) {
+        bootKeys = withContext(Dispatchers.IO) { SettingsDatabaseManager.bootKeys(context, namespace) }
         if (!hasShizukuPermission) {
             entries = emptyList()
             loadFailed = false
@@ -73,26 +84,57 @@ fun SettingsDatabaseScreen(
         isLoading = false
     }
 
-    val applyChange: (List<SettingEntry>, () -> Boolean) -> Unit = { updated, action ->
-        val previous = entries
+    val applyChange: (SettingsChange) -> Unit = { change ->
+        val previousEntries = entries
+        val previousBootKeys = bootKeys
         val target = namespace
-        entries = updated
+        entries = change.entries
+        bootKeys = change.bootKeys
         dialog = null
         coroutineScope.launch {
-            val success = withContext(Dispatchers.IO) { action() }
+            val success = withContext(Dispatchers.IO) { change.action() }
             if (!success) {
-                if (namespace == target) entries = previous
-                Toast.makeText(context, ShizukuHelper.failureMessage(context), Toast.LENGTH_SHORT).show()
+                if (namespace == target) {
+                    entries = previousEntries
+                    bootKeys = previousBootKeys
+                }
+                Toast.makeText(context, change.failureMessage(), Toast.LENGTH_LONG).show()
             }
         }
     }
-    val onSave: (String, String) -> Unit = { key, value ->
+    val shizukuFailure = { ShizukuHelper.failureMessage(context) }
+    val bootFailure: (SettingsNamespace) -> () -> String = { target ->
+        if (SettingsDatabaseManager.usesShizukuOnBoot(target)) {
+            shizukuFailure
+        } else {
+            { resources.getString(R.string.settings_database_boot_unsupported) }
+        }
+    }
+    val onSave: (String, String, Boolean) -> Unit = { key, value, applyOnBoot ->
         val target = namespace
-        applyChange(withEntry(entries, SettingEntry(key, value))) { SettingsDatabaseManager.put(target, key, value) }
+        val updated = withEntry(entries, SettingEntry(key, value))
+        applyChange(
+            if (applyOnBoot) {
+                SettingsChange(updated, bootKeys + key, bootFailure(target)) {
+                    SettingsDatabaseManager.putForBoot(context, target, key, value)
+                        .also { if (it) SettingsDatabaseManager.setAppliedOnBoot(context, target, key, value) }
+                }
+            } else {
+                SettingsChange(updated, bootKeys - key, shizukuFailure) {
+                    SettingsDatabaseManager.put(target, key, value)
+                        .also { if (it) SettingsDatabaseManager.setAppliedOnBoot(context, target, key, null) }
+                }
+            }
+        )
     }
     val onDelete: (SettingEntry) -> Unit = { entry ->
         val target = namespace
-        applyChange(entries.filterNot { it.key == entry.key }) { SettingsDatabaseManager.delete(target, entry.key) }
+        applyChange(
+            SettingsChange(entries.filterNot { it.key == entry.key }, bootKeys - entry.key, shizukuFailure) {
+                SettingsDatabaseManager.delete(target, entry.key)
+                    .also { if (it) SettingsDatabaseManager.setAppliedOnBoot(context, target, entry.key, null) }
+            }
+        )
     }
 
     val filtered = remember(entries, query) { SettingsDatabaseManager.filter(entries, query) }
@@ -161,6 +203,7 @@ fun SettingsDatabaseScreen(
 
             settingsEntries(
                 entries = filtered,
+                bootKeys = bootKeys,
                 isLoading = isLoading,
                 loadFailed = loadFailed,
                 hasShizukuPermission = hasShizukuPermission,
@@ -176,12 +219,22 @@ fun SettingsDatabaseScreen(
     SettingsDatabaseDialogs(
         dialog = dialog,
         existingKeys = remember(entries) { entries.mapTo(HashSet()) { it.key } },
+        bootKeys = bootKeys,
+        canApplyOnBoot = SettingsDatabaseManager.usesShizukuOnBoot(namespace) || hasWriteSecureSettings,
+        bootNoteRes = bootNoteRes(namespace, hasWriteSecureSettings),
         onDismiss = { dialog = null },
         onSave = onSave,
         onRequestDelete = { dialog = SettingsDialog.Delete(it) },
         onDelete = onDelete
     )
 }
+
+private class SettingsChange(
+    val entries: List<SettingEntry>,
+    val bootKeys: Set<String>,
+    val failureMessage: () -> String,
+    val action: () -> Boolean
+)
 
 private fun SettingsNamespace.labelRes(): Int = when (this) {
     SettingsNamespace.SYSTEM -> R.string.settings_database_system
@@ -204,6 +257,7 @@ private fun SettingsDatabaseActions(enabled: Boolean, onRefresh: () -> Unit, onA
 
 private fun LazyListScope.settingsEntries(
     entries: List<SettingEntry>,
+    bootKeys: Set<String>,
     isLoading: Boolean,
     loadFailed: Boolean,
     hasShizukuPermission: Boolean,
@@ -222,13 +276,19 @@ private fun LazyListScope.settingsEntries(
             PickerMessage(stringResource(R.string.settings_database_empty))
         }
         else -> itemsIndexed(entries, key = { _, entry -> entry.key }) { index, entry ->
-            SettingEntryRow(entry = entry, index = index, count = entries.size, onClick = { onClick(entry) })
+            SettingEntryRow(
+                entry = entry,
+                appliedOnBoot = entry.key in bootKeys,
+                index = index,
+                count = entries.size,
+                onClick = { onClick(entry) }
+            )
         }
     }
 }
 
 @Composable
-private fun SettingEntryRow(entry: SettingEntry, index: Int, count: Int, onClick: () -> Unit) {
+private fun SettingEntryRow(entry: SettingEntry, appliedOnBoot: Boolean, index: Int, count: Int, onClick: () -> Unit) {
     Surface(
         color = MaterialTheme.colorScheme.surfaceContainer,
         shape = AppShapes.segment(index, count),
@@ -243,7 +303,15 @@ private fun SettingEntryRow(entry: SettingEntry, index: Int, count: Int, onClick
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            Text(text = entry.key, style = MaterialTheme.typography.titleSmall)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = entry.key, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+                if (appliedOnBoot) {
+                    StatusPill(text = stringResource(R.string.settings_database_on_boot), tone = StatusTone.INFO)
+                }
+            }
             Text(
                 text = entry.value.ifEmpty { stringResource(R.string.settings_database_empty_value) },
                 style = MaterialTheme.typography.bodySmall,
@@ -260,8 +328,11 @@ private fun SettingEntryRow(entry: SettingEntry, index: Int, count: Int, onClick
 private fun SettingsDatabaseDialogs(
     dialog: SettingsDialog?,
     existingKeys: Set<String>,
+    bootKeys: Set<String>,
+    canApplyOnBoot: Boolean,
+    bootNoteRes: Int?,
     onDismiss: () -> Unit,
-    onSave: (String, String) -> Unit,
+    onSave: (String, String, Boolean) -> Unit,
     onRequestDelete: (SettingEntry) -> Unit,
     onDelete: (SettingEntry) -> Unit
 ) {
@@ -269,6 +340,9 @@ private fun SettingsDatabaseDialogs(
         SettingsDialog.Add -> SettingEditDialog(
             entry = null,
             existingKeys = existingKeys,
+            appliedOnBoot = false,
+            canApplyOnBoot = canApplyOnBoot,
+            bootNoteRes = bootNoteRes,
             onDismiss = onDismiss,
             onSave = onSave,
             onDelete = null
@@ -276,6 +350,9 @@ private fun SettingsDatabaseDialogs(
         is SettingsDialog.Edit -> SettingEditDialog(
             entry = dialog.entry,
             existingKeys = existingKeys,
+            appliedOnBoot = dialog.entry.key in bootKeys,
+            canApplyOnBoot = canApplyOnBoot,
+            bootNoteRes = bootNoteRes,
             onDismiss = onDismiss,
             onSave = onSave,
             onDelete = { onRequestDelete(dialog.entry) }
@@ -293,12 +370,16 @@ private fun SettingsDatabaseDialogs(
 private fun SettingEditDialog(
     entry: SettingEntry?,
     existingKeys: Set<String>,
+    appliedOnBoot: Boolean,
+    canApplyOnBoot: Boolean,
+    bootNoteRes: Int?,
     onDismiss: () -> Unit,
-    onSave: (String, String) -> Unit,
+    onSave: (String, String, Boolean) -> Unit,
     onDelete: (() -> Unit)?
 ) {
     var key by rememberSaveable { mutableStateOf(entry?.key.orEmpty()) }
     var value by rememberSaveable { mutableStateOf(entry?.value.orEmpty()) }
+    var applyOnBoot by rememberSaveable { mutableStateOf(appliedOnBoot) }
     val trimmedKey = key.trim()
     val keyValid = SettingsDatabaseManager.isValidKey(trimmedKey)
 
@@ -328,12 +409,18 @@ private fun SettingEditDialog(
                     maxLines = 8,
                     modifier = Modifier.fillMaxWidth()
                 )
+                ApplyOnBootRow(
+                    checked = applyOnBoot,
+                    enabled = canApplyOnBoot,
+                    noteRes = bootNoteRes,
+                    onCheckedChange = { applyOnBoot = it }
+                )
             }
         },
         confirmButton = {
             Button(
-                onClick = { onSave(trimmedKey, value) },
-                enabled = keyValid && value != entry?.value,
+                onClick = { onSave(trimmedKey, value, applyOnBoot) },
+                enabled = keyValid && (value != entry?.value || applyOnBoot != appliedOnBoot),
                 shapes = ButtonDefaults.shapes()
             ) {
                 Text(stringResource(R.string.save))
@@ -356,6 +443,36 @@ private fun SettingEditDialog(
             }
         }
     )
+}
+
+@Composable
+private fun ApplyOnBootRow(checked: Boolean, enabled: Boolean, noteRes: Int?, onCheckedChange: (Boolean) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(AppShapes.card)
+            .toggleable(value = checked, enabled = enabled, role = Role.Checkbox, onValueChange = onCheckedChange),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = checked, onCheckedChange = null, enabled = enabled)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = stringResource(R.string.settings_database_apply_on_boot), style = MaterialTheme.typography.bodyMedium)
+            if (noteRes != null) {
+                Text(
+                    text = stringResource(noteRes),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+private fun bootNoteRes(namespace: SettingsNamespace, hasWriteSecureSettings: Boolean): Int? = when {
+    SettingsDatabaseManager.usesShizukuOnBoot(namespace) -> R.string.settings_database_apply_on_boot_system_note
+    !hasWriteSecureSettings -> R.string.settings_database_apply_on_boot_needs_permission
+    else -> null
 }
 
 private fun keySupportingText(adding: Boolean, invalid: Boolean, exists: Boolean): (@Composable () -> Unit)? {

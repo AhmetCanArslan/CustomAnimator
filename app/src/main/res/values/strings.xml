@@ -1941,4 +1941,9 @@ Ignore a notification from the logs to suppress it in the future.</string>
     <string name="settings_database_key_exists">This key already exists, saving replaces its value</string>
     <string name="settings_database_delete_title">Delete setting?</string>
     <string name="settings_database_delete_message">%1$s is removed from the table. Android falls back to its built-in default until something writes it again.</string>
+    <string name="settings_database_apply_on_boot">Apply on reboot</string>
+    <string name="settings_database_apply_on_boot_system_note">System keys are written again through Shizuku after a reboot, as soon as Shizuku is running</string>
+    <string name="settings_database_apply_on_boot_needs_permission">Needs the Write Secure Settings permission</string>
+    <string name="settings_database_boot_unsupported">Android rejected this value through Write Secure Settings, so it cannot be reapplied after a reboot.</string>
+    <string name="settings_database_on_boot">On reboot</string>
 </resources>
