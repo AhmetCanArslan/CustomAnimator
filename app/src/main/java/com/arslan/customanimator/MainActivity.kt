@@ -220,7 +220,8 @@ enum class HomeScreen {
     WIFI_PASSWORDS, HOTSPOT_MANAGER, ALARM_REVEALER, CARRIER_NAME, OTP_COPIER, LIVE_UPDATES, SCREENSHOT_ACTIONS, SOUND_TILE, PER_APP_WIDTH, REFRESH_RATE, PERMISSIONS, SETUP_GUIDE,
     NOTIFY_HOME, NOTIFY_RULES, NOTIFY_LOGGING, NOTIFY_IGNORED, NOTIFY_ADD_EDIT_RULE, NOTIFY_CREATE_PATTERN,
     QS_TILES, STATUS_BAR_ICONS, SYSTEM_COLORS, DEBLOATER, CLOSE_APPS_EXCLUSIONS, WHATSAPP_CLEANER, SHORTCUTS,
-    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, APK_INSTALLER, ACTIVITY_MANAGER, COMPILE_BOOSTER
+    BUTTON_REMAPPER, ICON_CHANGER, APK_EXTRACTOR, APK_INSTALLER, ACTIVITY_MANAGER, COMPILE_BOOSTER,
+    SETTINGS_DATABASE
 }
 
 internal fun HomeTab.labelRes(): Int = when (this) {
@@ -280,6 +281,7 @@ private val SUB_SCREEN_TABS = mapOf(
     HomeScreen.APK_EXTRACTOR to HomeTab.TOOLS,
     HomeScreen.APK_INSTALLER to HomeTab.TOOLS,
     HomeScreen.ACTIVITY_MANAGER to HomeTab.TOOLS,
+    HomeScreen.SETTINGS_DATABASE to HomeTab.TOOLS,
     HomeScreen.SCREENSHOT_ACTIONS to HomeTab.TOOLS,
     HomeScreen.AUTO_FORCE_STOP to HomeTab.TOOLS,
     HomeScreen.AUTO_PERMISSION_DISABLER to HomeTab.TOOLS,
@@ -394,6 +396,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     val apkExtractorListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val apkInstallerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val activityManagerListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
+    val settingsDatabaseListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val screenshotActionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val soundTileListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
     val permissionsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -732,6 +735,11 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onBack = { backToTab(HomeTab.TOOLS) },
             listState = activityManagerListState
         )
+    } else if (targetScreen == HomeScreen.SETTINGS_DATABASE) {
+        SettingsDatabaseScreen(
+            onBack = { backToTab(HomeTab.TOOLS) },
+            listState = settingsDatabaseListState
+        )
     } else if (targetScreen == HomeScreen.GRAPHICS_API_OVERRIDE) {
         GraphicsApiOverrideScreen(
             onBack = { backToTab(HomeTab.TOOLS) },
@@ -958,6 +966,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
             onNavigateToApkExtractor = { currentScreen = HomeScreen.APK_EXTRACTOR },
             onNavigateToApkInstaller = { currentScreen = HomeScreen.APK_INSTALLER },
             onNavigateToActivityManager = { currentScreen = HomeScreen.ACTIVITY_MANAGER },
+            onNavigateToSettingsDatabase = { currentScreen = HomeScreen.SETTINGS_DATABASE },
             onNavigateToAutoForceStop = { currentScreen = HomeScreen.AUTO_FORCE_STOP },
             onNavigateToAutoPermissionDisabler = { currentScreen = HomeScreen.AUTO_PERMISSION_DISABLER },
             listState = toolsListState
@@ -1988,6 +1997,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
     
     if (showPresetDialog) {
         AlertDialog(
+            modifier = Modifier.clearFocusOnTapOutside(),
             onDismissRequest = { showPresetDialog = false },
             title = { Text(stringResource(R.string.create_new_preset_title)) },
             text = {
@@ -1997,7 +2007,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         onValueChange = { presetName = it },
                         label = { Text(stringResource(R.string.preset_name)) },
                         modifier = Modifier.fillMaxWidth(),
-            modifier = Modifier.clearFocusOnTapOutside(),
                         singleLine = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -2169,6 +2178,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
 
     if (showWidthPresetDialog) {
         AlertDialog(
+            modifier = Modifier.clearFocusOnTapOutside(),
             onDismissRequest = { showWidthPresetDialog = false },
             title = { Text(stringResource(R.string.create_new_width_preset_title)) },
             text = {
@@ -2178,7 +2188,6 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         onValueChange = { widthPresetName = it },
                         label = { Text(stringResource(R.string.preset_name)) },
                         modifier = Modifier.fillMaxWidth(),
-            modifier = Modifier.clearFocusOnTapOutside(),
                         singleLine = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))

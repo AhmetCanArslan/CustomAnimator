@@ -53,6 +53,7 @@ import androidx.compose.material.icons.automirrored.filled.FormatTextdirectionRT
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.Layers
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.LayersClear
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.MonitorHeart
@@ -200,6 +201,7 @@ private fun searchEntries(): List<SearchEntry> = listOf(
     HomeTab.TOOLS.screen(HomeScreen.APK_EXTRACTOR, R.string.apk_extractor, R.string.apk_extractor_desc, Icons.Filled.Unarchive),
     HomeTab.TOOLS.screen(HomeScreen.APK_INSTALLER, R.string.apk_installer, R.string.apk_installer_desc, Icons.Filled.InstallMobile),
     HomeTab.TOOLS.screen(HomeScreen.ACTIVITY_MANAGER, R.string.activity_manager, R.string.activity_manager_desc, Icons.Filled.Layers),
+    HomeTab.TOOLS.screen(HomeScreen.SETTINGS_DATABASE, R.string.settings_database, R.string.settings_database_desc, Icons.Filled.Storage),
     HomeTab.TOOLS.screen(HomeScreen.DEBLOATER, R.string.debloater, R.string.debloater_desc, Icons.Filled.DeleteSweep),
     HomeTab.TOOLS.screen(HomeScreen.COMPILE_BOOSTER, R.string.compile_booster, R.string.more_compile_booster_desc, Icons.Filled.Speed),
     HomeTab.TOOLS.screen(HomeScreen.AUTO_FORCE_STOP, R.string.auto_force_stop, R.string.auto_force_stop_desc, Icons.Filled.PlaylistRemove),

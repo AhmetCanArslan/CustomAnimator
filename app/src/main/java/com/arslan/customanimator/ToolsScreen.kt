@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.ScreenLockRotation
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.Screenshot
 import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.SignalCellularAlt
 import androidx.compose.material.icons.filled.WebAsset
 import androidx.compose.material.icons.filled.Palette
@@ -79,6 +80,7 @@ fun ToolsScreenContent(
     onNavigateToApkExtractor: () -> Unit,
     onNavigateToApkInstaller: () -> Unit,
     onNavigateToActivityManager: () -> Unit,
+    onNavigateToSettingsDatabase: () -> Unit,
     onNavigateToAutoForceStop: () -> Unit,
     onNavigateToAutoPermissionDisabler: () -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -308,6 +310,14 @@ fun ToolsScreenContent(
                         title = stringResource(R.string.alarm_revealer),
                         description = stringResource(R.string.alarm_revealer_desc),
                         onClick = onNavigateToAlarmRevealer
+                    )
+                },
+                {
+                    NavigationRow(
+                        icon = Icons.Filled.Storage,
+                        title = stringResource(R.string.settings_database),
+                        description = stringResource(R.string.settings_database_desc),
+                        onClick = onNavigateToSettingsDatabase
                     )
                 }
             )

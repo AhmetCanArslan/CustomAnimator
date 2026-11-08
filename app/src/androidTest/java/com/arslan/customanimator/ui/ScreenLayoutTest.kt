@@ -179,6 +179,7 @@ class ScreenLayoutTest {
             onNavigateToApkExtractor = {},
             onNavigateToApkInstaller = {},
             onNavigateToActivityManager = {},
+            onNavigateToSettingsDatabase = {},
             onNavigateToAutoForceStop = {},
             onNavigateToAutoPermissionDisabler = {},
             onNavigateToWifiPasswords = {},
