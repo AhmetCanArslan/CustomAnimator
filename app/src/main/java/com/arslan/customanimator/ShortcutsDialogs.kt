@@ -38,6 +38,7 @@ import com.arslan.customanimator.ui.theme.AppShapes
 import com.arslan.customanimator.utils.ShortcutMaker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 private const val DISABLED_ROW_ALPHA = 0.45f
 
@@ -103,6 +104,7 @@ internal fun PickerSheet(
     content: LazyListScope.() -> Unit
 ) {
     ModalBottomSheet(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         sheetState = rememberBottomSheetState(
             initialValue = SheetValue.Hidden,
@@ -423,6 +425,7 @@ private fun ConfirmShortcutDialog(
     }
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         icon = {
             ShortcutIcon(

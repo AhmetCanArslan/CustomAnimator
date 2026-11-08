@@ -37,6 +37,7 @@ import com.arslan.customanimator.utils.TerminalTileIcons
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 private const val BUILT_IN_SOURCE = ""
 private const val ORIGINAL_SOURCE = "original"
@@ -96,6 +97,7 @@ internal fun ShortcutIconPickerSheet(
     }
 
     ModalBottomSheet(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         sheetState = rememberBottomSheetState(
             initialValue = SheetValue.Hidden,
