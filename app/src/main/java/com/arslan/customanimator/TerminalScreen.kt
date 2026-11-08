@@ -59,6 +59,7 @@ import com.arslan.customanimator.utils.TerminalTileSlots
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 import com.arslan.customanimator.utils.LocalShizukuPermission
 import com.arslan.customanimator.ui.components.AppCard
 
@@ -657,6 +658,7 @@ private fun PresetDialog(
     var name by remember { mutableStateOf(preset.name) }
     var command by remember {
         mutableStateOf(
+        modifier = Modifier.clearFocusOnTapOutside(),
             TextFieldValue(preset.command, TextRange(preset.command.length))
         )
     }

@@ -27,6 +27,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -215,6 +216,7 @@ private fun PerAppWidthDialog(
     val previewDensity = if (isValid) SettingsManager.densityForSmallestWidth(context, parsed) else null
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(app.label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         text = {

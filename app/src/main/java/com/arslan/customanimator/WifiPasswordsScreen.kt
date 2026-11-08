@@ -51,6 +51,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppCard
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 private const val QR_SIZE_PX = 640
 private const val CONNECTED_POLL_MS = 5000L
@@ -440,6 +441,7 @@ private fun WifiPasswordDialog(
 ) {
     var password by remember { mutableStateOf("") }
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = {

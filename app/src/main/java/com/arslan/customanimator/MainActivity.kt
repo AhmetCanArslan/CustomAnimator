@@ -1997,6 +1997,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         onValueChange = { presetName = it },
                         label = { Text(stringResource(R.string.preset_name)) },
                         modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.clearFocusOnTapOutside(),
                         singleLine = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -2177,6 +2178,7 @@ fun AnimatorSelectorScreen(activity: MainActivity) {
                         onValueChange = { widthPresetName = it },
                         label = { Text(stringResource(R.string.preset_name)) },
                         modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.clearFocusOnTapOutside(),
                         singleLine = true
                     )
                     Spacer(modifier = Modifier.height(16.dp))

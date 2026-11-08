@@ -55,6 +55,7 @@ import com.arslan.customanimator.utils.LocalShizukuPermission
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.arslan.customanimator.ui.components.ScreenTopBar
 import com.arslan.customanimator.ui.components.AppSwitch
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -508,6 +509,7 @@ private fun ToggleTileDialog(
     val canSave = label.isNotBlank() && onCommand.isNotBlank() && offCommand.isNotBlank()
 
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = {
             Text(

@@ -51,6 +51,7 @@ import com.arslan.customanimator.utils.ButtonActions
 import com.arslan.customanimator.utils.ShortcutMaker
 import com.arslan.customanimator.utils.TerminalTileIcons
 import com.arslan.customanimator.utils.ToggleTilePresets
+import com.arslan.customanimator.ui.components.clearFocusOnTapOutside
 
 private const val IMAGE_MIME = "image/*"
 private const val ANY_MIME = "*/*"
@@ -233,6 +234,7 @@ internal fun ActionValueDialog(
     var value by remember(entry.id) { mutableStateOf(entry.inputValue()) }
     val tile = if (entry.type == ShortcutType.COMMAND) ShortcutTile.COMMAND else ShortcutTile.LINK
     AlertDialog(
+        modifier = Modifier.clearFocusOnTapOutside(),
         onDismissRequest = onDismiss,
         title = { Text(stringResource(tile.titleRes)) },
         text = {
