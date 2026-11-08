@@ -415,35 +415,37 @@ private fun SearchField(
                     .weight(1f)
                     .focusRequester(focusRequester),
                 decorationBox = { innerTextField ->
-                    Box(contentAlignment = Alignment.CenterStart) {
-                        if (query.isEmpty()) {
-                            Text(
-                                text = stringResource(R.string.search_app_hint),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                            if (query.isEmpty()) {
+                                Text(
+                                    text = stringResource(R.string.search_app_hint),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
+                            innerTextField()
                         }
-                        innerTextField()
+                        AnimatedVisibility(
+                            visible = query.isNotEmpty(),
+                            enter = Motion.popIn(),
+                            exit = Motion.popOut()
+                        ) {
+                            IconButton(onClick = {
+                                onQueryChange("")
+                                focusRequester.requestFocus()
+                            }, shapes = IconButtonDefaults.shapes()) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = stringResource(R.string.clear)
+                                )
+                            }
+                        }
                     }
                 }
             )
-            AnimatedVisibility(
-                visible = query.isNotEmpty(),
-                enter = Motion.popIn(),
-                exit = Motion.popOut()
-            ) {
-                IconButton(onClick = {
-                    onQueryChange("")
-                    focusRequester.requestFocus()
-                }, shapes = IconButtonDefaults.shapes()) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(R.string.clear)
-                    )
-                }
-            }
         }
     }
 }
