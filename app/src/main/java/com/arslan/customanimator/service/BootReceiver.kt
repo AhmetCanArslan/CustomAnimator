@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.arslan.customanimator.utils.DeveloperOptionsManager
+import com.arslan.customanimator.utils.SettingsDatabaseManager
+import kotlin.concurrent.thread
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -38,6 +40,25 @@ class BootReceiver : BroadcastReceiver() {
                 } catch (e: Exception) {
                     Log.e(TAG, "Failed to reapply high volume warning", e)
                 }
+                try {
+                    SettingsDatabaseManager.reapplyBootSettings(context.applicationContext)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to reapply settings database values", e)
+                }
+                applyPendingShizukuSettings(context.applicationContext)
+            }
+        }
+    }
+
+    private fun applyPendingShizukuSettings(context: Context) {
+        val pending = goAsync()
+        thread {
+            try {
+                SettingsDatabaseManager.applyPendingShizukuSettings(context)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to reapply settings database values through Shizuku", e)
+            } finally {
+                pending.finish()
             }
         }
     }
