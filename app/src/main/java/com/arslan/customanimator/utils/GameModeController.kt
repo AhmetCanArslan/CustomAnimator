@@ -88,7 +88,7 @@ object GameModeController {
         peakRefreshRate(appContext)?.let { rate -> writeMinRefreshRate(rate.toString()) }
 
         DeveloperOptionsManager.clearAllAppCaches()
-        ShizukuHelper.executeShellCommand(arrayOf("am", "compact", "all", "full"))
+        MemoryBooster.compact()
         val fixedPerformanceEnabled = setFixedPerformanceMode(true)
 
         return Result((targets.isEmpty() || restricted > 0) && fixedPerformanceEnabled)
