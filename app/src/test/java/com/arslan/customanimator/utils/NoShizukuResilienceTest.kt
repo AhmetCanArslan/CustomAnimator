@@ -110,6 +110,15 @@ class NoShizukuResilienceTest {
     }
 
     @Test
+    fun settingsDatabaseReadsNothingAndRefusesWritesWithoutShizuku() {
+        SettingsNamespace.entries.forEach { namespace ->
+            assertNull(SettingsDatabaseManager.list(namespace))
+            assertFalse(SettingsDatabaseManager.put(namespace, "custom_animator_test", "1"))
+            assertFalse(SettingsDatabaseManager.delete(namespace, "custom_animator_test"))
+        }
+    }
+
+    @Test
     fun dozeWhitelistIsEmptyAndWritesFailWithoutShizuku() {
         assertTrue(DozeWhitelistManager.getWhitelist().isEmpty())
         assertTrue(DozeWhitelistManager.getWhitelistedPackages().isEmpty())
