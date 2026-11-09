@@ -1,10 +1,12 @@
 package com.arslan.customanimator.utils
 
+import android.app.Notification
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.arslan.customanimator.R
 
@@ -13,6 +15,7 @@ object OtpCopierManager {
     private const val PREFS_NAME = "otp_copier_prefs"
     private const val KEY_ENABLED = "enabled"
     private const val KEY_SHOW_TOAST = "show_toast"
+    private const val KEY_AUTO_DISMISS = "auto_dismiss"
     private const val KEY_KEYWORDS = "keywords"
     private const val KEY_PATTERNS = "patterns"
     private const val KEY_EXCLUDES = "excludes"
@@ -51,6 +54,12 @@ object OtpCopierManager {
 
     fun setToastEnabled(context: Context, enabled: Boolean) {
         prefs(context).edit().putBoolean(KEY_SHOW_TOAST, enabled).apply()
+    }
+
+    fun isAutoDismissEnabled(context: Context): Boolean = prefs(context).getBoolean(KEY_AUTO_DISMISS, false)
+
+    fun setAutoDismissEnabled(context: Context, enabled: Boolean) {
+        prefs(context).edit().putBoolean(KEY_AUTO_DISMISS, enabled).apply()
     }
 
     fun getKeywords(context: Context): List<String> =
@@ -139,6 +148,14 @@ object OtpCopierManager {
         lastCopied = signature
         copy(context, code)
         return code
+    }
+
+    fun markAsRead(notification: Notification) {
+        val markAsRead = (0 until NotificationCompat.getActionCount(notification))
+            .mapNotNull { NotificationCompat.getAction(notification, it) }
+            .firstOrNull { it.semanticAction == NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ }
+            ?: return
+        runCatching { markAsRead.actionIntent?.send() }
     }
 
     private fun readEntries(context: Context, key: String): List<String>? =

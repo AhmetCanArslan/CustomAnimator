@@ -1,7 +1,11 @@
 package com.arslan.customanimator.utils
 
+import android.app.Application
+import android.app.PendingIntent
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -11,6 +15,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.shadows.ShadowToast
 
 @RunWith(RobolectricTestRunner::class)
@@ -158,6 +163,31 @@ class OtpCopierManagerTest {
         OtpCopierManager.setEnabled(context, true)
         assertEquals("246810", OtpCopierManager.onNotification(context, "returned", "Your code is 246810"))
         assertNull(OtpCopierManager.onNotification(context, "returned", "Your code is 246810"))
+    }
+
+    @Test
+    fun autoDismissIsOffByDefaultAndRoundTrips() {
+        assertFalse(OtpCopierManager.isAutoDismissEnabled(context))
+        OtpCopierManager.setAutoDismissEnabled(context, true)
+        assertTrue(OtpCopierManager.isAutoDismissEnabled(context))
+        OtpCopierManager.setAutoDismissEnabled(context, false)
+    }
+
+    @Test
+    fun markAsReadSendsOnlyTheMarkAsReadAction() {
+        val markAsRead = PendingIntent.getBroadcast(context, 1, Intent("mark_read").setPackage(context.packageName), PendingIntent.FLAG_IMMUTABLE)
+        val open = PendingIntent.getBroadcast(context, 2, Intent("open").setPackage(context.packageName), PendingIntent.FLAG_IMMUTABLE)
+        val notification = NotificationCompat.Builder(context, "test")
+            .addAction(NotificationCompat.Action.Builder(0, "Open", open).build())
+            .addAction(
+                NotificationCompat.Action.Builder(0, "Read", markAsRead)
+                    .setSemanticAction(NotificationCompat.Action.SEMANTIC_ACTION_MARK_AS_READ)
+                    .build()
+            )
+            .build()
+        OtpCopierManager.markAsRead(notification)
+        val sent = shadowOf(context as Application).broadcastIntents.map { it.action }
+        assertEquals(listOf("mark_read"), sent)
     }
 
     @Test
