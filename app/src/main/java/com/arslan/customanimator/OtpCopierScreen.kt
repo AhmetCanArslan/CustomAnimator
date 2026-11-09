@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Sms
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.filled.MarkEmailRead
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -80,6 +81,7 @@ fun OtpCopierScreen(
     var hasNotificationAccess by remember { mutableStateOf(OtpCopierManager.hasNotificationAccess(context)) }
     var isEnabled by remember { mutableStateOf(OtpCopierManager.isEnabled(context)) }
     var isToastEnabled by remember { mutableStateOf(OtpCopierManager.isToastEnabled(context)) }
+    var isAutoDismissEnabled by remember { mutableStateOf(OtpCopierManager.isAutoDismissEnabled(context)) }
     var enableAfterAccess by remember { mutableStateOf(false) }
     var hasSensitiveAccess by remember { mutableStateOf<Boolean?>(null) }
     var keywords by remember { mutableStateOf(OtpCopierManager.getKeywords(context)) }
@@ -159,6 +161,11 @@ fun OtpCopierScreen(
                     onToastEnabledChange = { newValue ->
                         isToastEnabled = newValue
                         OtpCopierManager.setToastEnabled(context, newValue)
+                    },
+                    isAutoDismissEnabled = isAutoDismissEnabled,
+                    onAutoDismissEnabledChange = { newValue ->
+                        isAutoDismissEnabled = newValue
+                        OtpCopierManager.setAutoDismissEnabled(context, newValue)
                     }
                 )
             }
@@ -410,7 +417,9 @@ private fun OtpSwitchCard(
     onEnabledChange: (Boolean) -> Unit,
     onRequestAccess: () -> Unit,
     isToastEnabled: Boolean,
-    onToastEnabledChange: (Boolean) -> Unit
+    onToastEnabledChange: (Boolean) -> Unit,
+    isAutoDismissEnabled: Boolean,
+    onAutoDismissEnabledChange: (Boolean) -> Unit
 ) {
     AppCard(contentPadding = 16.dp, highlighted = isEnabled) {
         ToggleRow(
@@ -440,6 +449,14 @@ private fun OtpSwitchCard(
             icon = Icons.Filled.Notifications,
             checked = isToastEnabled,
             onCheckedChange = onToastEnabledChange
+        )
+        DividerSoft()
+        ToggleRow(
+            title = stringResource(R.string.otp_copier_dismiss),
+            subtitle = stringResource(R.string.otp_copier_dismiss_desc),
+            icon = Icons.Filled.MarkEmailRead,
+            checked = isAutoDismissEnabled,
+            onCheckedChange = onAutoDismissEnabledChange
         )
     }
 }
