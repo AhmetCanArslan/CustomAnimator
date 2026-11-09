@@ -122,10 +122,10 @@ object LiveUpdatesManager {
         cancelMirror(context, sbn.key)
     }
 
-    fun onCodeCopied(context: Context, code: String) {
+    fun onCodeCopied(context: Context, code: String, source: Notification) {
         if (!isSupported() || !isEnabled(context) || !isCodesEnabled(context)) return
         ensureChannel(context)
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_tile_pin)
             .setContentTitle(code)
             .setContentText(context.getString(R.string.otp_copier_copied, code))
@@ -143,8 +143,8 @@ object LiveUpdatesManager {
                     OtpCopyReceiver.pendingIntent(context, code)
                 ).build()
             )
-            .build()
-        notificationManager(context).notify(CODE_ID, notification)
+        addSourceActions(context, builder, source, MAX_ACTIONS - 1)
+        notificationManager(context).notify(CODE_ID, builder.build())
     }
 
     fun reconcile(listener: NotificationListenerService, active: Array<out StatusBarNotification>) {
@@ -222,15 +222,24 @@ object LiveUpdatesManager {
             .setRequestPromotedOngoing(true)
         notification.getLargeIcon()?.let(builder::setLargeIcon)
         if (hideOriginal) builder.setTimeoutAfter(HIDDEN_SOURCE_TIMEOUT_MS)
-        notification.actions.orEmpty().filter { it.remoteInputs.isNullOrEmpty() }.take(MAX_ACTIONS).forEach { action ->
-            val icon = action.getIcon()?.let { IconCompat.createFromIcon(context, it) }
-            builder.addAction(NotificationCompat.Action.Builder(icon, action.title, action.actionIntent).build())
-        }
+        addSourceActions(context, builder, notification, MAX_ACTIONS)
         if (kind == Kind.PROGRESS) applyProgress(builder, source) else applyNavigation(builder, title)
 
         notificationManager(context).notify(sbn.key, MIRROR_ID, builder.build())
         mirroredKeys.add(sbn.key)
         return true
+    }
+
+    private fun addSourceActions(
+        context: Context,
+        builder: NotificationCompat.Builder,
+        source: Notification,
+        limit: Int
+    ) {
+        source.actions.orEmpty().filter { it.remoteInputs.isNullOrEmpty() }.take(limit).forEach { action ->
+            val icon = action.getIcon()?.let { IconCompat.createFromIcon(context, it) }
+            builder.addAction(NotificationCompat.Action.Builder(icon, action.title, action.actionIntent).build())
+        }
     }
 
     private fun applyProgress(builder: NotificationCompat.Builder, source: Source) {
