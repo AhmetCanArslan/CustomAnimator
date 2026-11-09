@@ -122,29 +122,12 @@ object LiveUpdatesManager {
         cancelMirror(context, sbn.key)
     }
 
-    fun onCodeCopied(context: Context, code: String, source: Notification) {
+    data class CodeSource(val notification: Notification, val appLabel: String)
+
+    fun onCodeCopied(context: Context, code: String, source: CodeSource) {
         if (!isSupported() || !isEnabled(context) || !isCodesEnabled(context)) return
         ensureChannel(context)
-        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_tile_pin)
-            .setContentTitle(code)
-            .setContentText(context.getString(R.string.otp_copier_copied, code))
-            .setCategory(NotificationCompat.CATEGORY_STATUS)
-            .setShortCriticalText(code)
-            .setTimeoutAfter(CODE_TIMEOUT_MS)
-            .setOngoing(true)
-            .setSilent(true)
-            .setShowWhen(false)
-            .setRequestPromotedOngoing(true)
-            .addAction(
-                NotificationCompat.Action.Builder(
-                    IconCompat.createWithResource(context, R.drawable.ic_tile_content_copy),
-                    context.getString(R.string.otp_copier_copy),
-                    OtpCopyReceiver.pendingIntent(context, code)
-                ).build()
-            )
-        addSourceActions(context, builder, source, MAX_ACTIONS - 1)
-        notificationManager(context).notify(CODE_ID, builder.build())
+        notificationManager(context).notify(CODE_ID, buildCodeNotification(context, code, source))
     }
 
     fun reconcile(listener: NotificationListenerService, active: Array<out StatusBarNotification>) {
@@ -222,7 +205,7 @@ object LiveUpdatesManager {
             .setRequestPromotedOngoing(true)
         notification.getLargeIcon()?.let(builder::setLargeIcon)
         if (hideOriginal) builder.setTimeoutAfter(HIDDEN_SOURCE_TIMEOUT_MS)
-        addSourceActions(context, builder, notification, MAX_ACTIONS)
+        addSourceActions(context, builder, notification.actions.orEmpty().toList(), MAX_ACTIONS)
         if (kind == Kind.PROGRESS) applyProgress(builder, source) else applyNavigation(builder, title)
 
         notificationManager(context).notify(sbn.key, MIRROR_ID, builder.build())
@@ -230,13 +213,52 @@ object LiveUpdatesManager {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.BAKLAVA)
+    private fun buildCodeNotification(context: Context, code: String, source: CodeSource): Notification {
+        val notification = source.notification
+        val extras = notification.extras
+        val body = (extras.getCharSequence(Notification.EXTRA_BIG_TEXT) ?: extras.getCharSequence(Notification.EXTRA_TEXT))
+            ?.takeIf { it.isNotBlank() }
+        val builder = codeBuilder(context, code)
+            .setContentTitle(extras.getCharSequence(Notification.EXTRA_TITLE)?.takeIf { it.isNotBlank() } ?: code)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setSubText(source.appLabel)
+            .setContentIntent(notification.contentIntent)
+            .setVisibility(notification.visibility)
+            .setPublicVersion(codeBuilder(context, code).build())
+            .addAction(
+                NotificationCompat.Action.Builder(
+                    IconCompat.createWithResource(context, R.drawable.ic_tile_content_copy),
+                    context.getString(R.string.otp_copier_copy),
+                    OtpCopyReceiver.pendingIntent(context, code)
+                ).build()
+            )
+        notification.getLargeIcon()?.let(builder::setLargeIcon)
+        addSourceActions(context, builder, notification.actions.orEmpty().toList(), MAX_ACTIONS - 1)
+        return builder.build()
+    }
+
+    private fun codeBuilder(context: Context, code: String): NotificationCompat.Builder =
+        NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_tile_pin)
+            .setContentTitle(code)
+            .setContentText(context.getString(R.string.otp_copier_copied, code))
+            .setCategory(NotificationCompat.CATEGORY_STATUS)
+            .setShortCriticalText(code)
+            .setTimeoutAfter(CODE_TIMEOUT_MS)
+            .setOngoing(true)
+            .setSilent(true)
+            .setShowWhen(false)
+            .setRequestPromotedOngoing(true)
+
     private fun addSourceActions(
         context: Context,
         builder: NotificationCompat.Builder,
-        source: Notification,
+        actions: List<Notification.Action>,
         limit: Int
     ) {
-        source.actions.orEmpty().filter { it.remoteInputs.isNullOrEmpty() }.take(limit).forEach { action ->
+        actions.filter { it.remoteInputs.isNullOrEmpty() }.take(limit).forEach { action ->
             val icon = action.getIcon()?.let { IconCompat.createFromIcon(context, it) }
             builder.addAction(NotificationCompat.Action.Builder(icon, action.title, action.actionIntent).build())
         }
