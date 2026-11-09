@@ -137,9 +137,10 @@ class NotifyListenerService : NotificationListenerService() {
 
     private fun handleOtp(sbn: StatusBarNotification, posted: PostedNotification) {
         val code = OtpCopierManager.onNotification(this, sbn.key, "${posted.title}\n${posted.body}") ?: return
-        val source = LiveUpdatesManager.CodeSource(sbn.notification, appLabel(sbn.packageName))
+        val dismiss = OtpCopierManager.isAutoDismissEnabled(this)
+        val source = LiveUpdatesManager.CodeSource(sbn.notification, appLabel(sbn.packageName), dismiss)
         LiveUpdatesManager.onCodeCopied(this, code, source)
-        if (!OtpCopierManager.isAutoDismissEnabled(this)) return
+        if (!dismiss) return
         OtpCopierManager.markAsRead(sbn.notification)
         cancelNotification(sbn.key)
     }

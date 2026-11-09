@@ -122,7 +122,7 @@ object LiveUpdatesManager {
         cancelMirror(context, sbn.key)
     }
 
-    data class CodeSource(val notification: Notification, val appLabel: String)
+    data class CodeSource(val notification: Notification, val appLabel: String, val wasDismissed: Boolean)
 
     fun onCodeCopied(context: Context, code: String, source: CodeSource) {
         if (!isSupported() || !isEnabled(context) || !isCodesEnabled(context)) return
@@ -235,7 +235,10 @@ object LiveUpdatesManager {
                 ).build()
             )
         notification.getLargeIcon()?.let(builder::setLargeIcon)
-        addSourceActions(context, builder, notification.actions.orEmpty().toList(), MAX_ACTIONS - 1)
+        val actions = notification.actions.orEmpty().filterNot {
+            source.wasDismissed && it.semanticAction == Notification.Action.SEMANTIC_ACTION_MARK_AS_READ
+        }
+        addSourceActions(context, builder, actions, MAX_ACTIONS - 1)
         return builder.build()
     }
 
