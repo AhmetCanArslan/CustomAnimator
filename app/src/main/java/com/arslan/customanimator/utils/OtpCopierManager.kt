@@ -131,13 +131,14 @@ object OtpCopierManager {
             arrayOf("appops", "set", context.packageName, SENSITIVE_OP, SENSITIVE_OP_ALLOWED)
         )
 
-    fun onNotification(context: Context, key: String, text: String) {
-        if (!isEnabled(context)) return
-        val code = extractCode(getKeywords(context), getPatterns(context), getExcludes(context), text) ?: return
+    fun onNotification(context: Context, key: String, text: String): String? {
+        if (!isEnabled(context)) return null
+        val code = extractCode(getKeywords(context), getPatterns(context), getExcludes(context), text) ?: return null
         val signature = "$key:$code"
-        if (signature == lastCopied) return
+        if (signature == lastCopied) return null
         lastCopied = signature
         copy(context, code)
+        return code
     }
 
     private fun readEntries(context: Context, key: String): List<String>? =
@@ -186,7 +187,6 @@ object OtpCopierManager {
     private fun copy(context: Context, code: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText(CLIP_LABEL, code))
-        LiveUpdatesManager.onCodeCopied(context, code)
         if (!isToastEnabled(context)) return
         Toast.makeText(context, context.getString(R.string.otp_copier_copied, code), Toast.LENGTH_SHORT).show()
     }

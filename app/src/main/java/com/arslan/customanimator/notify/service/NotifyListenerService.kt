@@ -115,9 +115,7 @@ class NotifyListenerService : NotificationListenerService() {
         )
         val isOwnPackage = posted.packageName == packageName
 
-        if (!isOwnPackage && OtpCopierManager.isEnabled(this)) {
-            OtpCopierManager.onNotification(this, sbn.key, "${posted.title}\n${posted.body}")
-        }
+        if (!isOwnPackage && OtpCopierManager.isEnabled(this)) handleOtp(sbn, posted)
         if (!isOwnPackage) LiveUpdatesManager.onPosted(this, sbn)
 
         val shouldProcess = NotificationGate.shouldProcess(
@@ -135,6 +133,11 @@ class NotifyListenerService : NotificationListenerService() {
         }
 
         logNotification(posted, runRules(posted))
+    }
+
+    private fun handleOtp(sbn: StatusBarNotification, posted: PostedNotification) {
+        val code = OtpCopierManager.onNotification(this, sbn.key, "${posted.title}\n${posted.body}") ?: return
+        LiveUpdatesManager.onCodeCopied(this, code)
     }
 
     private fun isPersistentChannel(sbn: StatusBarNotification): Boolean =

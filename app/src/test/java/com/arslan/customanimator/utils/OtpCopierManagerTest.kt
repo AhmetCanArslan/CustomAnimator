@@ -154,6 +154,13 @@ class OtpCopierManagerTest {
     }
 
     @Test
+    fun onNotificationReturnsTheCopiedCodeOnce() {
+        OtpCopierManager.setEnabled(context, true)
+        assertEquals("246810", OtpCopierManager.onNotification(context, "returned", "Your code is 246810"))
+        assertNull(OtpCopierManager.onNotification(context, "returned", "Your code is 246810"))
+    }
+
+    @Test
     fun sensitiveAccessFailsSafelyWithoutShizuku() {
         assertFalse(OtpCopierManager.hasSensitiveAccess(context))
         assertFalse(OtpCopierManager.grantSensitiveAccess(context))
