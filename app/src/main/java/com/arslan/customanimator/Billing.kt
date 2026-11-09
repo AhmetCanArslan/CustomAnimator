@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.core.content.edit
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -34,6 +35,7 @@ object Billing {
     private const val TAG = "Billing"
     private const val PREFS = "custom_animator_billing"
     private const val KEY_PREMIUM = "ad_free"
+    private const val KEY_DEBUG_PREMIUM = "debug_premium"
 
     private val _isPremium = MutableStateFlow(false)
     val isPremium: StateFlow<Boolean> = _isPremium.asStateFlow()
@@ -76,7 +78,7 @@ object Billing {
         appContextRef = appContext
         _isPremium.value = appContext
             .getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_PREMIUM, false)
+            .getBoolean(if (BuildConfig.DEBUG) KEY_DEBUG_PREMIUM else KEY_PREMIUM, false)
         if (!isChecking) queryPurchases()
     }
 
@@ -326,8 +328,14 @@ object Billing {
         }
     }
 
+    fun setDebugPremium(context: Context, value: Boolean) {
+        if (!BuildConfig.DEBUG) return
+        _isPremium.value = value
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit { putBoolean(KEY_DEBUG_PREMIUM, value) }
+    }
+
     private fun setPremium(value: Boolean) {
-        if (_isPremium.value == value) return
+        if (BuildConfig.DEBUG || _isPremium.value == value) return
         _isPremium.value = value
         appContextRef?.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
             ?.edit()
