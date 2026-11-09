@@ -128,6 +128,7 @@
     <string name="otp_copier_toast_desc">يعرض رسالة قصيرة تتضمن الرمز المنسوخ</string>
     <string name="otp_copier_dismiss">إغلاق الإشعار</string>
     <string name="otp_copier_dismiss_desc">يزيل إشعار الرمز بعد نسخه ويضع علامة مقروءة على الرسالة إن أتاح التطبيق ذلك</string>
+    <string name="otp_copier_copy">نسخ</string>
     <string name="otp_copier_needs_access">قراءة رموز التحقق تتطلب الوصول إلى الإشعارات.</string>
     <string name="otp_copier_sensitive">الإشعارات الحساسة</string>
     <string name="otp_copier_sensitive_desc">يخفي أندرويد 15 والإصدارات الأحدث رموز التحقق عن مستمعي الإشعارات إلى أن يُمنح هذا الإذن</string>

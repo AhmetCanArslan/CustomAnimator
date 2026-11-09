@@ -526,6 +526,7 @@ Animatör Süresi: %3$.2f</string>
     <string name="otp_copier_toast_desc">Kopyalanan kodu kısa bir bildirimle gösterir</string>
     <string name="otp_copier_dismiss">Bildirimi kapat</string>
     <string name="otp_copier_dismiss_desc">Kopyaladıktan sonra kod bildirimini kaldırır, uygulama destekliyorsa mesajı okundu olarak işaretler</string>
+    <string name="otp_copier_copy">Kopyala</string>
     <string name="otp_copier_needs_access">Doğrulama kodlarını okumak için bildirim erişimi gerekir.</string>
     <string name="otp_copier_sensitive">Hassas bildirimler</string>
     <string name="otp_copier_sensitive_desc">Android 15 ve sonrası, bu izin verilene kadar doğrulama kodlarını bildirim dinleyicilerinden gizler</string>

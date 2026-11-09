@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.arslan.customanimator.R
+import com.arslan.customanimator.service.OtpCopyReceiver
 import java.util.concurrent.ConcurrentHashMap
 
 object LiveUpdatesManager {
@@ -135,6 +136,13 @@ object LiveUpdatesManager {
             .setSilent(true)
             .setShowWhen(false)
             .setRequestPromotedOngoing(true)
+            .addAction(
+                NotificationCompat.Action.Builder(
+                    IconCompat.createWithResource(context, R.drawable.ic_tile_content_copy),
+                    context.getString(R.string.otp_copier_copy),
+                    OtpCopyReceiver.pendingIntent(context, code)
+                ).build()
+            )
             .build()
         notificationManager(context).notify(CODE_ID, notification)
     }

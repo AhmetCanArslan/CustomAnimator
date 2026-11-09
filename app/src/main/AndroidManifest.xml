@@ -70,6 +70,10 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".service.OtpCopyReceiver"
+            android:exported="false" />
+
         <service
             android:name=".service.ForegroundAppWatcherService"
             android:exported="false"

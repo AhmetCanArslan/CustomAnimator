@@ -526,6 +526,7 @@ Durasi Animator: %3$.2f</string>
     <string name="otp_copier_toast_desc">Menampilkan pesan singkat berisi kode yang disalin</string>
     <string name="otp_copier_dismiss">Tutup notifikasi</string>
     <string name="otp_copier_dismiss_desc">Menghapus notifikasi kode setelah disalin dan menandai pesan sebagai dibaca jika aplikasi mendukungnya</string>
+    <string name="otp_copier_copy">Salin</string>
     <string name="otp_copier_needs_access">Membaca kode verifikasi memerlukan akses notifikasi.</string>
     <string name="otp_copier_sensitive">Notifikasi sensitif</string>
     <string name="otp_copier_sensitive_desc">Android 15 dan yang lebih baru menyembunyikan kode verifikasi dari pendengar notifikasi sampai izin ini diberikan</string>

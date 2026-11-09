@@ -136,6 +136,7 @@
     <string name="otp_copier_toast_desc">Shows a short toast with the copied code</string>
     <string name="otp_copier_dismiss">Dismiss the notification</string>
     <string name="otp_copier_dismiss_desc">Clears the code notification after copying and marks the message as read when the app offers it</string>
+    <string name="otp_copier_copy">Copy</string>
     <string name="otp_copier_needs_access">Reading verification codes needs notification access.</string>
     <string name="otp_copier_sensitive">Sensitive notifications</string>
     <string name="otp_copier_sensitive_desc">Android 15 and newer hide verification codes from notification listeners until this is granted</string>

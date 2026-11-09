@@ -526,6 +526,7 @@ Tagal ng Animator: %3$.2f</string>
     <string name="otp_copier_toast_desc">Nagpapakita ng maikling mensahe na may nakopyang code</string>
     <string name="otp_copier_dismiss">I-dismiss ang notification</string>
     <string name="otp_copier_dismiss_desc">Inaalis ang notification ng code pagkatapos kopyahin at minamarkahang nabasa ang mensahe kung sinusuportahan ng app</string>
+    <string name="otp_copier_copy">Kopyahin</string>
     <string name="otp_copier_needs_access">Kailangan ng access sa notification para mabasa ang mga verification code.</string>
     <string name="otp_copier_sensitive">Mga sensitibong notification</string>
     <string name="otp_copier_sensitive_desc">Itinatago ng Android 15 at mas bago ang mga verification code mula sa mga notification listener hangga\'t hindi ito ibinibigay</string>
