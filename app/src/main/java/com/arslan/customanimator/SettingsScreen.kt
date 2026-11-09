@@ -16,6 +16,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.HelpOutline
+import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ChevronRight
@@ -185,6 +186,7 @@ fun SettingsScreen(
             }
 
             SettingsSection(title = stringResource(R.string.settings_premium)) {
+                if (BuildConfig.DEBUG) DebugPremiumRow(isPremium)
                 if (isPremium) {
                     ActionSettingRow(
                         icon = Icons.Filled.CheckCircle,
@@ -345,6 +347,19 @@ fun SettingsScreen(
             }
         )
     }
+}
+
+@Composable
+private fun DebugPremiumRow(isPremium: Boolean) {
+    val context = LocalContext.current
+    ToggleRow(
+        icon = Icons.Filled.BugReport,
+        title = stringResource(R.string.premium_debug),
+        description = stringResource(R.string.premium_debug_desc),
+        checked = isPremium,
+        onCheckedChange = { Billing.setDebugPremium(context, it) }
+    )
+    SettingDivider()
 }
 
 @Composable

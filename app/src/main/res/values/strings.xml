@@ -664,6 +664,8 @@ What you run is entirely your responsibility. The developer of this app cannot b
     <string name="premium_desc">One-time purchase that unlocks Premium</string>
     <string name="premium_desc_price">One-time purchase: %1$s</string>
     <string name="premium_owned">Premium is active. Thank you for the support!</string>
+    <string name="premium_debug" translatable="false">Premium (debug)</string>
+    <string name="premium_debug_desc" translatable="false">Debug builds only. Replaces the Google Play purchase state.</string>
     <string name="premium_thanks">Premium unlocked. Thank you!</string>
     <string name="premium_pending">Purchase pending. Premium will unlock once it completes.</string>
     <string name="premium_unavailable">Purchase is not available right now. Please try again later.</string>
