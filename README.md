@@ -39,4 +39,4 @@ Licensed under the GNU General Public License v3.0 — see [LICENSE](LICENSE).
 
 ---
 
-**Note**: This app modifies system-level settings and can force-stop or alter other apps. Use with caution and test on your own device first.
+**Note**: This app changes system-level settings and can force-stop, disable or modify other apps. Change one setting at a time and note its original value so you can restore it if something goes wrong.
